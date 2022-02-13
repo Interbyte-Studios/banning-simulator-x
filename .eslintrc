@@ -39,8 +39,8 @@
     "@typescript-eslint/array-type": [
       "warn",
       {
-        "default": "array-simple",
-        "readonly": "array-simple"
+        "default": "generic",
+        "readonly": "generic"
       }
     ],
     "@typescript-eslint/ban-ts-comment": [
