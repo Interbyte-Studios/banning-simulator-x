@@ -1,21 +1,99 @@
 {
-	"parser": "@typescript-eslint/parser",
-	"parserOptions": {
-		"jsx": true,
-		"useJSXTextNode": true,
-		"ecmaVersion": 2018,
-		"sourceType": "module",
-		"project": "./tsconfig.json"
-	},
-	"plugins": ["@typescript-eslint", "roblox-ts", "prettier"],
-	"ignorePatterns": ["/out"],
-	"extends": [
-		"eslint:recommended",
-		"plugin:@typescript-eslint/recommended",
-		"plugin:roblox-ts/recommended",
-		"plugin:prettier/recommended"
-	],
-	"rules": {
-		"prettier/prettier": "warn"
-	}
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "jsx": true,
+    "useJSXTextNode": true,
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "roblox-ts",
+    "prettier",
+    "jsdoc",
+    "promise",
+    "simple-import-sort"
+  ],
+  "ignorePatterns": ["/out"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:roblox-ts/recommended",
+    "plugin:prettier/recommended",
+    "prettier",
+    "plugin:jsdoc/recommended",
+    "plugin:promise/recommended"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "semi": true,
+        "printWidth": 120,
+        "trailingComma": "all",
+        "useTabs": true
+      }
+    ],
+
+    "@typescript-eslint/array-type": [
+      "warn",
+      {
+        "default": "array-simple",
+        "readonly": "array-simple"
+      }
+    ],
+    "@typescript-eslint/ban-ts-comment": [
+      "error",
+      {
+        "ts-expect-error": false,
+        "ts-ignore": false,
+        "ts-nocheck": false,
+        "ts-check": false
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": "error",
+    "@typescript-eslint/no-namespace": "error",
+    "@typescript-eslint/no-non-null-assertion": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/no-floating-promises": "error",
+    "@typescript-eslint/no-for-in-array": "error",
+    "@typescript-eslint/no-magic-numbers": "error",
+    "no-unused-expressions": "off",
+    "@typescript-eslint/no-unused-expressions": "error",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": "error",
+    "@typescript-eslint/prefer-for-of": "error",
+    "@typescript-eslint/prefer-includes": "error",
+    "@typescript-eslint/prefer-nullish-coalescing": "error",
+
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+
+    "prefer-const": "error",
+    "no-undef-init": "error",
+    "no-redeclare": "error",
+    "require-atomic-updates": "error",
+    "no-constant-condition": "error",
+    "no-mixed-spaces-and-tabs": "error",
+
+    "jsdoc/require-jsdoc": [
+      "error",
+      {
+        "publicOnly": false,
+        "require": {
+          "ArrowFunctionExpression": true,
+          "ClassDeclaration": true,
+          "ClassExpression": true,
+          "FunctionDeclaration": true,
+          "FunctionExpression": true,
+          "MethodDefinition": true
+        }
+      }
+    ],
+    "jsdoc/require-returns-description": "error",
+    "jsdoc/require-description-complete-sentence": "error"
+  }
 }
