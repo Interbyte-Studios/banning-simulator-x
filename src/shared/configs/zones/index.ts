@@ -1,5 +1,15 @@
 import { Currency } from "../currencies";
 
+export interface Npc {
+	name: string;
+	health: number;
+	reward: {
+		currency: number;
+		experience: number;
+	};
+	isBoss: boolean;
+}
+
 export interface Zone {
 	/**
 	 * The display name of the zone.
@@ -12,4 +22,6 @@ export interface Zone {
 		currency: Currency;
 		amount: number;
 	};
+
+	npcs: Array<Npc>;
 }
