@@ -1,34 +1,35 @@
 {
-	"name": "banning-simulator-x",
-	"version": "1.0.0",
-	"description": "A game produced on Roblox",
-	"main": "",
-	"scripts": {
-		"build": "run-script-os",
-		"build:windows": "cls && rbxtsc-dev --verbose",
-		"build:linux": "clear && rbxtsc-dev --verbose"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Interbyte-Studios/banning-simulator-x"
-	},
-	"keywords": [],
-	"author": "Interbyte Studios",
-	"license": "ISC",
-	"devDependencies": {
-		"@rbxts/compiler-types": "^1.2.9-types.0",
-		"@rbxts/types": "^1.0.571",
-		"@typescript-eslint/eslint-plugin": "^5.10.1",
-		"@typescript-eslint/parser": "^5.10.1",
-		"eslint": "^8.7.0",
-		"eslint-config-prettier": "^8.3.0",
-		"eslint-plugin-jsdoc": "^37.9.1",
-		"eslint-plugin-prettier": "^4.0.0",
-		"eslint-plugin-promise": "^6.0.0",
-		"eslint-plugin-roblox-ts": "^0.0.32",
-		"eslint-plugin-simple-import-sort": "^7.0.0",
-		"prettier": "^2.5.1",
-		"run-script-os": "^1.1.6",
-		"typescript": "^4.5.5"
-	}
+  "name": "banning-simulator-x",
+  "version": "1.0.0",
+  "description": "A game produced on Roblox",
+  "main": "",
+  "scripts": {
+    "build": "run-script-os",
+    "build:windows": "cls && rbxtsc-dev --verbose",
+    "build:linux": "clear && rbxtsc-dev --verbose",
+    "eslint": "eslint \"src/**\" --max-warnings 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Interbyte-Studios/banning-simulator-x"
+  },
+  "keywords": [],
+  "author": "Interbyte Studios",
+  "license": "ISC",
+  "devDependencies": {
+    "@rbxts/compiler-types": "^1.2.9-types.0",
+    "@rbxts/types": "^1.0.571",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
+    "eslint": "^8.7.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jsdoc": "^37.9.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-roblox-ts": "^0.0.32",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "prettier": "^2.5.1",
+    "run-script-os": "^1.1.6",
+    "typescript": "^4.5.5"
+  }
 }
