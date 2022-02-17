@@ -21,6 +21,7 @@ export interface Zone {
 	cost?: {
 		currency: Currency;
 		amount: number;
+		requiredRank: number;
 	};
 
 	npcs: Array<Npc>;

@@ -14,6 +14,7 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 		cost: {
 			currency: "gold",
 			amount: 10_000,
+			requiredRank: 3,
 		},
 	},
 	{
@@ -23,6 +24,7 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 		cost: {
 			currency: "gold",
 			amount: 40_000,
+			requiredRank: 6,
 		},
 	},
 	{
@@ -32,6 +34,7 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 		cost: {
 			currency: "gold",
 			amount: 200_000,
+			requiredRank: 8,
 		},
 	},
 	{
@@ -41,6 +44,7 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 		cost: {
 			currency: "gold",
 			amount: 1_000_000,
+			requiredRank: 10,
 		},
 	},
 	{
@@ -50,6 +54,7 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 		cost: {
 			currency: "gold",
 			amount: 5_000_000,
+			requiredRank: 12,
 		},
 	},
 	{
@@ -59,6 +64,7 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 		cost: {
 			currency: "gold",
 			amount: 30_000_000,
+			requiredRank: 14,
 		},
 	},
 	{
@@ -68,6 +74,7 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 		cost: {
 			currency: "gold",
 			amount: 180_000_000,
+			requiredRank: 15,
 		},
 	},
 	{
@@ -77,6 +84,7 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 		cost: {
 			currency: "gold",
 			amount: 1_000_000_000,
+			requiredRank: 16,
 		},
 	},
 ];
