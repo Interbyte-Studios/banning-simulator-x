@@ -34,6 +34,9 @@
   },
   "dependencies": {
     "@rbxts/abbreviate": "^3.0.4",
+    "@rbxts/net": "^2.1.5",
+    "@rbxts/rodux": "^3.0.0-ts.3",
+    "@rbxts/services": "^1.2.0",
     "@rbxts/t": "^3.0.0"
   }
 }
