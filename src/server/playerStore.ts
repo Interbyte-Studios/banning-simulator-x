@@ -2,6 +2,8 @@ import Rodux from "@rbxts/rodux";
 import { Players } from "@rbxts/services";
 import { Store, storeReducer } from "shared/rodux";
 
+import { replicationMiddleware } from "./modules/rodux/replicationMiddleware";
+
 export const stores: Map<Player, Store> = new Map();
 
 /**
@@ -10,7 +12,7 @@ export const stores: Map<Player, Store> = new Map();
  * @param player The player that is joining.
  */
 function onPlayerAdded(player: Player): void {
-	const store = new Rodux.Store(storeReducer);
+	const store = new Rodux.Store(storeReducer, {}, [replicationMiddleware(player)]);
 
 	stores.set(player, store);
 }
