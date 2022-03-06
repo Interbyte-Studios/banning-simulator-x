@@ -12,7 +12,7 @@ interface EquipWeapon extends Rodux.Action<"equipWeapon"> {
  * @param id The weapon id that is being equipped.
  * @returns The Rodux action to dispatch.
  */
-export function equipWeapon(id: number): EquipWeapon {
+export function equipWeapon(id: number): EquipWeapon & Rodux.AnyAction {
 	return {
 		type: "equipWeapon",
 		id,

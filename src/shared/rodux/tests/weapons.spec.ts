@@ -2,6 +2,7 @@
 
 import Object from "@rbxts/object-utils";
 import { currencies } from "shared/configs/currencies";
+import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 
 import { currenciesReducer } from "../currencies";
 import { purchaseWeapon, weaponsReducer, WeaponsState } from "../weapons";
@@ -22,7 +23,7 @@ export = (): void => {
 				},
 			});
 
-			expect(weaponsReducer(state, action)).to.equal(newState);
+			assertDeepEqual(weaponsReducer(state, action), newState);
 		});
 
 		it("should take away currency purchasing a weapon", () => {
@@ -39,7 +40,7 @@ export = (): void => {
 				},
 			});
 
-			expect(currenciesReducer(state, action)).to.equal(newState);
+			assertDeepEqual(currenciesReducer(state, action), newState);
 		});
 	});
 };

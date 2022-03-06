@@ -7,7 +7,7 @@ export type StoreState = {
 	currentWeapon: CurrentWeaponState;
 	weapons: WeaponsState;
 };
-export type StoreActions = CurrentWeaponActions | WeaponsActions;
+export type StoreActions = (CurrentWeaponActions | WeaponsActions) & Rodux.AnyAction;
 
 export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	weapons: weaponsReducer,
