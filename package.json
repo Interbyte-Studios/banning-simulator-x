@@ -4,9 +4,7 @@
   "description": "A game produced on Roblox",
   "main": "",
   "scripts": {
-    "build": "run-script-os",
-    "build:windows": "cls && rbxtsc-dev --verbose",
-    "build:linux": "clear && rbxtsc-dev --verbose",
+    "build": "rbxtsc-dev --verbose",
     "eslint": "eslint \"src/**\" --max-warnings 0"
   },
   "repository": {
@@ -29,7 +27,6 @@
     "eslint-plugin-roblox-ts": "^0.0.32",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "prettier": "^2.5.1",
-    "run-script-os": "^1.1.6",
     "typescript": "^4.5.5"
   },
   "dependencies": {
