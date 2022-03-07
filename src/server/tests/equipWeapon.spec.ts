@@ -25,5 +25,18 @@ export = (): void => {
 
 			cleanup();
 		});
+
+		it("should not equip a weapon not owned", () => {
+			const weaponId = 2;
+
+			const player = useMockPlayer();
+			const { store, dispatchedActions, cleanup } = createDummyStore(player, {});
+
+			// should throw an error when equipping
+			expect(() => equipWeapon(store, weaponId)).to.throw();
+			assertDeepEqual(dispatchedActions, []);
+
+			cleanup();
+		});
 	});
 };
