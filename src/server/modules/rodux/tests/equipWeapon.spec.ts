@@ -1,9 +1,10 @@
 /// <reference types="@rbxts/testez/globals" />
 
-import { equipWeapon } from "server/equipWeapon";
 import { createDummyStore } from "server/playerStore";
 import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 import { useMockPlayer } from "shared/mocks/player";
+
+import { equipWeapon } from "../equipWeapon";
 
 export = (): void => {
 	describe("equipWeapon", () => {

@@ -3,7 +3,7 @@ import { Players } from "@rbxts/services";
 import { createSpyMiddleware } from "shared/mocks/middleware/spyMiddleware";
 import { Store, StoreActions, storeReducer, StoreState } from "shared/rodux";
 
-import { replicationMiddleware } from "./modules/rodux/replicationMiddleware";
+import { replicationMiddleware } from "./modules/rodux/middlewares/replicationMiddleware";
 
 type DeepPartial<T> = { [K in keyof T]?: DeepPartial<T[K]> };
 
