@@ -41,7 +41,7 @@ export function createDummyStore(
 		store,
 		dispatchedActions,
 		// eslint-disable-next-line jsdoc/require-jsdoc
-		cleanup: () => {
+		cleanup: (): void => {
 			store.destruct();
 			stores.delete(player);
 		},

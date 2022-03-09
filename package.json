@@ -5,7 +5,7 @@
   "main": "",
   "scripts": {
     "build": "rbxtsc-dev --verbose",
-    "eslint": "eslint \"src/**\" --max-warnings 0"
+    "eslint": "eslint \"src/**/*.ts\" --max-warnings 0"
   },
   "repository": {
     "type": "git",
