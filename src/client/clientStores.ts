@@ -16,6 +16,11 @@ async function onPlayerAdded(player: Player): Promise<void> {
 	const getStoreState = remotes.Client.GetNamespace("rodux").Get("getStoreState");
 
 	const storeState = await getStoreState.CallServerAsync(player);
+	if (!storeState) {
+		// server did not have a store for the player when we requested in
+		// this likely needs some investigation to solve
+		throw `Failed to retrieve server state for ${player.Name}`;
+	}
 
 	const store = new Rodux.Store(storeReducer, storeState);
 	stores.set(player, store);

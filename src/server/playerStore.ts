@@ -1,6 +1,7 @@
 import Rodux from "@rbxts/rodux";
 import { Players } from "@rbxts/services";
 import { createSpyMiddleware } from "shared/mocks/middleware/spyMiddleware";
+import { remotes } from "shared/remotes";
 import { Store, StoreActions, storeReducer, StoreState } from "shared/rodux";
 
 import { replicationMiddleware } from "./modules/rodux/middlewares/replicationMiddleware";
@@ -62,6 +63,15 @@ function onPlayerRemoving(player: Player): void {
 	store.destruct();
 	stores.delete(player);
 }
+
+// connect to getStoreState event
+remotes.Server.GetNamespace("rodux")
+	.Create("getStoreState")
+	.SetCallback(async (_, player) => {
+		const storeState = stores.get(player);
+
+		return storeState?.getState();
+	});
 
 Players.PlayerAdded.Connect(onPlayerAdded);
 Players.GetPlayers().forEach(onPlayerAdded);

@@ -9,7 +9,7 @@ import { StoreActions } from "shared/rodux";
  * @returns The Rodux middleware to apply.
  */
 export const replicationMiddleware = (player: Player): Rodux.Middleware => {
-	const storeChangeEvent = remotes.Server.Create("storeChange");
+	const storeChangeEvent = remotes.Server.GetNamespace("rodux").Create("storeChange");
 
 	return (nextDispatch: Rodux.Dispatch<StoreActions>) => {
 		return (action: StoreActions): void => {
