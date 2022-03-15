@@ -1,7 +1,12 @@
 import Rodux from "@rbxts/rodux";
 import { Currency } from "shared/configs/currencies";
 
-export type WeaponsState = Set<number>;
+export type WeaponsState = Map<
+	number,
+	{
+		bans: number;
+	}
+>;
 export type WeaponsActions = PurchaseWeapon;
 
 export interface PurchaseWeapon extends Rodux.Action<"purchaseWeapon"> {
@@ -27,9 +32,9 @@ export function purchaseWeapon(data: Omit<PurchaseWeapon, "type">): PurchaseWeap
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions>(new Set(), {
+export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions>(new Map(), {
 	purchaseWeapon: (state, action) => {
-		return new Set([...state, action.id]);
+		return new Map([...state, [action.id, { bans: 0 }]]);
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */
