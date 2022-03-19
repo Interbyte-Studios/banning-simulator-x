@@ -1,5 +1,6 @@
 import { Players, ReplicatedStorage } from "@rbxts/services";
 import { remotes } from "shared/remotes";
+import { purchaseWeapon } from "shared/rodux/weapons";
 import { getItemById } from "shared/util/getItemById";
 
 import { withPlayerStore } from "./modules/net/withPlayerStore";
@@ -12,20 +13,16 @@ Players.PlayerAdded.Connect(async (player) => {
 	const store = await onStoreCreated(player);
 
 	// create weapon tools
-	const backpack = player.FindFirstChildWhichIsA("Backpack");
 	const starterGear = player.FindFirstChildWhichIsA("StarterGear");
-	if (!backpack) {
-		throw `Failed to get backpack for ${player.Name}`;
-	}
-	if (!starterGear) {
-		throw `Failed to get StarterGear for ${player.Name}`;
-	}
+	assert(starterGear, `Failed to get StarterGear for ${player.Name}`);
 
 	{
+		// backpack is deleted each time the player spawns
+		const backpack = player.FindFirstChildWhichIsA("Backpack");
+		assert(backpack, `Failed to get backpack for ${player.Name}`);
+
 		const weaponModel = getItemById(ReplicatedStorage.weapons, store.getState().currentWeapon);
-		if (!weaponModel) {
-			throw `Failed to get weapon with id "${store.getState().currentWeapon}"`;
-		}
+		assert(weaponModel, `Failed to get weapon with id "${store.getState().currentWeapon}"`);
 
 		// put into player backpack and starterGear
 		weaponModel.Clone().Parent = backpack;
@@ -34,14 +31,15 @@ Players.PlayerAdded.Connect(async (player) => {
 
 	// listen to store weapon changes and apply them
 	store.changed.connect((newState, oldState) => {
+		const backpack = player.FindFirstChildWhichIsA("Backpack");
+		assert(backpack, `Failed to get backpack for ${player.Name}`);
+
 		if (newState.currentWeapon === oldState.currentWeapon) {
 			return;
 		}
 
 		const oldWeaponModel = getItemById(ReplicatedStorage.weapons, oldState.currentWeapon);
-		if (!oldWeaponModel) {
-			throw `Failed to get weapon with id "${oldState.currentWeapon}"`;
-		}
+		assert(oldWeaponModel, `Failed to get weapon with id "${oldState.currentWeapon}"`);
 
 		// remove weapon model from player
 		// first, remove the old weapon
@@ -50,9 +48,8 @@ Players.PlayerAdded.Connect(async (player) => {
 
 		// remove from character
 		const oldWeapon = backpack.FindFirstChild(oldWeaponModel.Name) ?? characterWeapon;
-		if (oldWeapon) {
-			oldWeapon.Parent = undefined;
-		}
+		assert(oldWeapon, `Failed to get old weapon "${oldWeaponModel.Name}" from player`);
+		oldWeapon.Parent = undefined;
 
 		// remove from StarterGear
 		const starterGearWeapon = starterGear.FindFirstChild(oldWeaponModel.Name);
@@ -62,10 +59,8 @@ Players.PlayerAdded.Connect(async (player) => {
 
 		// give player new weapon
 		const newWeaponModel = getItemById(ReplicatedStorage.weapons, newState.currentWeapon);
-		if (!newWeaponModel) {
-			throw `Failed to get weapon with id "${newState.currentWeapon}"`;
-		}
-		newWeaponModel.Clone().Parent = wasEquipped ? player?.Character : backpack;
+		assert(newWeaponModel, `Failed to get weapon with id "${newState.currentWeapon}"`);
+		newWeaponModel.Clone().Parent = wasEquipped ? player.Character : backpack;
 		newWeaponModel.Clone().Parent = starterGear;
 	});
 });
