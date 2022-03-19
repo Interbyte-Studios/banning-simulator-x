@@ -23,7 +23,7 @@ export interface PurchaseWeapon extends Rodux.Action<"purchaseWeapon"> {
  * @param data The data associated with the weapon purchase.
  * @returns The Rodux action to dispatch.
  */
-export function purchaseWeapon(data: Omit<PurchaseWeapon, "type">): PurchaseWeapon {
+export function purchaseWeapon(data: Omit<PurchaseWeapon, "type">): PurchaseWeapon & Rodux.AnyAction {
 	return {
 		type: "purchaseWeapon",
 		id: data.id,
