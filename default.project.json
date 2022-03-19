@@ -16,7 +16,8 @@
           "$path": "node_modules/@rbxts"
         }
       },
-      "$path": "out/shared"
+      "$path": "out/shared",
+      "$ignoreUnknownInstances": true
     },
     "StarterPlayer": {
       "$className": "StarterPlayer",
