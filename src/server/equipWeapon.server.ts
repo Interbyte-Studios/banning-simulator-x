@@ -1,6 +1,5 @@
 import { Players, ReplicatedStorage } from "@rbxts/services";
 import { remotes } from "shared/remotes";
-import { purchaseWeapon } from "shared/rodux/weapons";
 import { getItemById } from "shared/util/getItemById";
 
 import { withPlayerStore } from "./modules/net/withPlayerStore";
