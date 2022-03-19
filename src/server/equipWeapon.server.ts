@@ -2,9 +2,9 @@ import { Players, ReplicatedStorage } from "@rbxts/services";
 import { remotes } from "shared/remotes";
 import { getItemById } from "shared/util/getItemById";
 
-import { withPlayerStore } from "../modules/net/withPlayerStore";
-import { equipWeapon } from "../modules/rodux/equipWeapon";
-import { onStoreCreated } from "../playerStore";
+import { withPlayerStore } from "./modules/net/withPlayerStore";
+import { equipWeapon } from "./modules/rodux/equipWeapon";
+import { onStoreCreated } from "./playerStore";
 
 remotes.Server.Create("equipWeapon").Connect(withPlayerStore((_, store, weaponId) => equipWeapon(store, weaponId)));
 
