@@ -12,8 +12,8 @@ export = (): void => {
 		it("should allow purchasing a weapon", () => {
 			const weaponId = 1;
 
-			const state: WeaponsState = new Set();
-			const newState = new Set([weaponId]);
+			const state: WeaponsState = new Map();
+			const newState: WeaponsState = new Map([[weaponId, { bans: 0 }]]);
 
 			const action = purchaseWeapon({
 				id: weaponId,
