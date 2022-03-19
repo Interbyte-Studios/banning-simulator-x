@@ -5,6 +5,6 @@
  * @param id The id of the item to look for. This should match the "id" attribute of the instance.
  * @returns The item found.
  */
-export function getItemById(folder: Folder, id: number): Instance | undefined {
+export function getItemById(folder: Instance, id: number): Instance | undefined {
 	return folder.GetChildren().find((item) => item.GetAttribute("id") === id);
 }

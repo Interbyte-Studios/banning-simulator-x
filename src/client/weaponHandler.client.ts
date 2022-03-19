@@ -1,9 +1,8 @@
-import { ContextActionService, Players, ReplicatedStorage } from "@rbxts/services";
+import { ContextActionService, Players, StarterGui } from "@rbxts/services";
 import { Store } from "shared/rodux";
 import { getItemById } from "shared/util/getItemById";
 
 import { onStoreCreated } from "./clientStores";
-import { equipWeapon } from "./weapons/equipWeapon";
 
 const player = Players.LocalPlayer;
 
@@ -15,7 +14,7 @@ let isEquipped = false;
  * @param store The players store.
  */
 async function main(store: Store): Promise<void> {
-	print("Retrieved store", store);
+	print("Retrieved store", store.getState());
 
 	ContextActionService.BindAction(
 		"weaponHandler",
@@ -26,23 +25,36 @@ async function main(store: Store): Promise<void> {
 
 			// toggle weapon equip weapon
 			isEquipped = !isEquipped;
+
+			// equip/unequip tool
 			const character = player.Character;
-			if (character) {
-				const weaponModel = getItemById(ReplicatedStorage.weapons, store.getState().currentWeapon);
+			if (!character) {
+				return;
+			}
+
+			const humanoid = character.FindFirstChildWhichIsA("Humanoid");
+			if (!humanoid) {
+				warn("attempt to equip weapon when Humanoid did not exist");
+				return;
+			}
+
+			if (isEquipped) {
+				const backpack = player.FindFirstChildWhichIsA("Backpack");
+				assert(backpack, "No backpack existed");
+
+				const weaponModel = getItemById(backpack, store.getState().currentWeapon);
 				if (!weaponModel) {
 					throw `Failed to get weapon for id "${store.getState().currentWeapon}"`;
 				}
-				if (!weaponModel.IsA("Model")) {
+				if (!weaponModel.IsA("Tool")) {
 					throw `Found weapon "${store.getState().currentWeapon}" but the model was a ${
 						weaponModel.ClassName
-					}, not a model`;
+					}, not a Tool`;
 				}
 
-				if (isEquipped) {
-					equipWeapon(character, weaponModel.Clone());
-				} else {
-					// unequip weapon
-				}
+				humanoid.EquipTool(weaponModel);
+			} else {
+				humanoid.UnequipTools();
 			}
 		},
 		false,
@@ -55,3 +67,6 @@ onStoreCreated(player)
 	.catch((e) => {
 		throw `Failed to perform weaponHandler due to ${e}`;
 	});
+
+// disable Roblox default backpack
+StarterGui.SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false);
