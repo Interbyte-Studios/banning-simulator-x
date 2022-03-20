@@ -6,5 +6,9 @@ import { a } from "@rbxts/fitumi";
  * @returns The mocked player.
  */
 export function useMockPlayer(): Player {
-	return a.fake<Player>();
+	const player = a.fake<Player>();
+
+	player.Character = undefined;
+
+	return player;
 }
