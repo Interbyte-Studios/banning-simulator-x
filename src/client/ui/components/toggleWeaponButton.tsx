@@ -5,6 +5,7 @@ import { toggleWeaponEquipped } from "client/weapons/weaponState";
 import { StoreState } from "shared/rodux";
 import { getItemById } from "shared/util/getItemById";
 
+import { color3White, vec2Middle } from "../commonValues";
 import { hooks } from "../hooks";
 
 interface ToggleWeaponButtonProps extends ToggleWeaponButtonMappedProps {
@@ -25,7 +26,7 @@ function mapStateToProps(state: StoreState): ToggleWeaponButtonMappedProps {
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const Button = RoactRodux.connect(mapStateToProps)(
+export const ToggleWeaponButton = RoactRodux.connect(mapStateToProps)(
 	hooks((props: ToggleWeaponButtonProps, { useState, useEffect }) => {
 		const [isEquipped, setIsEquipped] = useState(false);
 
@@ -56,14 +57,15 @@ export const Button = RoactRodux.connect(mapStateToProps)(
 
 		return (
 			<textbutton
-				Size={UDim2.fromScale(0.25, 0.125)}
-				Position={UDim2.fromScale(0.5, 0.8)}
-				AnchorPoint={new Vector2(0.5, 0.5)}
-				Text={(isEquipped ? "Unequip" : "Equip") + " " + weaponName}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-				Font={Enum.Font.Code}
+				Size={UDim2.fromScale(0.1, 0.1)}
+				SizeConstraint={Enum.SizeConstraint.RelativeYY}
+				Position={UDim2.fromScale(0.5, 0.925)}
+				AnchorPoint={vec2Middle}
 				BackgroundColor3={isEquipped ? Color3.fromRGB(0, 150, 0) : Color3.fromRGB(150, 0, 0)}
+				Text={isEquipped ? "Unequip" : "Equip"}
+				TextColor3={color3White}
 				TextScaled={true}
+				Font={Enum.Font.Code}
 				Event={{
 					Activated: (): void => setIsEquipped(!isEquipped),
 				}}
