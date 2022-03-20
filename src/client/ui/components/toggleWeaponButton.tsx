@@ -53,8 +53,7 @@ export const ToggleWeaponButton = RoactRodux.connect(mapStateToProps)(
 			toggleWeaponEquipped(props.player, props.currentWeaponId, isEquipped);
 		}, [isEquipped]);
 
-		const weaponName = getItemById(ReplicatedStorage.weapons, props.currentWeaponId)?.Name;
-
+		/* eslint-disable @typescript-eslint/no-magic-numbers */
 		return (
 			<textbutton
 				Size={UDim2.fromScale(0.1, 0.1)}
@@ -71,6 +70,7 @@ export const ToggleWeaponButton = RoactRodux.connect(mapStateToProps)(
 				}}
 			/>
 		);
+		/* eslint-enable @typescript-eslint/no-magic-numbers */
 	}),
 );
 /* eslint-enable jsdoc/require-jsdoc */
