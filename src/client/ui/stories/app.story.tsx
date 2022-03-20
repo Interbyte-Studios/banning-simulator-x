@@ -1,19 +1,12 @@
 import Roact from "@rbxts/roact";
-import Rodux from "@rbxts/rodux";
-import { useMockPlayer } from "shared/mocks/player";
-import { storeReducer } from "shared/rodux";
 
 import { app as App } from "../app";
+import { createMockStory } from "./createMockStory";
 
 export = (target: GuiBase): (() => void) => {
-	const store = new Rodux.Store(storeReducer);
-
-	const app = <App player={useMockPlayer()} store={store} />;
-
-	const handle = Roact.mount(app, target);
+	const { cleanup } = createMockStory({}, target, (player, store) => <App player={player} store={store} />);
 
 	return () => {
-		Roact.unmount(handle);
-		store.destruct();
+		cleanup();
 	};
 };
