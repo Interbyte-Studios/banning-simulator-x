@@ -6,8 +6,8 @@ import { CurrentWeaponActions, currentWeaponReducer, CurrentWeaponState } from "
 import { WeaponsActions, weaponsReducer, WeaponsState } from "./weapons";
 
 export type StoreState = {
-	currentAura: CurrentAuraState;
 	auras: AurasState;
+	currentAura: CurrentAuraState;
 	currentWeapon: CurrentWeaponState;
 	weapons: WeaponsState;
 };
