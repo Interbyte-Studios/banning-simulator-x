@@ -17,8 +17,8 @@ export type StoreActions = (CurrentWeaponActions | WeaponsActions | CurrentAuraA
 export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	auras: aurasReducer,
 	currentAura: currentAuraReducer,
-	weapons: weaponsReducer,
 	currentWeapon: currentWeaponReducer,
+	weapons: weaponsReducer,
 });
 
 export type Store = Rodux.Store<StoreState, StoreActions>;
