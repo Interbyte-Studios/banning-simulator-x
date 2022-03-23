@@ -19,7 +19,7 @@ export interface PurchaseAura extends Rodux.Action<"purchaseAura"> {
  * @param data The data associated with the aura purchase.
  * @returns The Rodux action to dispatch.
  */
-export function purchaseAura(data: Omit<PurchaseAura, "type">): PurchaseAura {
+export function purchaseAura(data: Omit<PurchaseAura, "type">): PurchaseAura & Rodux.AnyAction {
 	return {
 		type: "purchaseAura",
 		id: data.id,
