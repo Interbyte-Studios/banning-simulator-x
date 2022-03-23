@@ -5,3 +5,4 @@ import { t } from "@rbxts/t";
 export const equipWeaponDefinition = Net.Definitions.ClientToServerEvent<[weaponId: number]>([
 	createTypeChecker(t.integer),
 ]);
+export type EquipWeaponDefinition = typeof equipWeaponDefinition;
