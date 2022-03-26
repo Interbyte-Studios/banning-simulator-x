@@ -17,8 +17,19 @@ interface Aura {
 	walkSpeedMultiplier: number;
 }
 
-export const AURAS = {
-	Electric: identity<Aura>({
+/**
+ * Used to allow generic identities that align with a given type.
+ *
+ * @returns Any object that extends the given generic type when function is called.
+ */
+function preserveWithConstraint<X>(): <T extends X>(value: T) => T {
+	return <T extends X>(value: T) => {
+		return value;
+	};
+}
+
+export const AURAS = preserveWithConstraint<Record<string, Aura>>()({
+	Electric: {
 		cost: {
 			currency: "gold",
 			amount: twoDpAbbreviator.stringToNumber("10k"),
@@ -30,8 +41,8 @@ export const AURAS = {
 		},
 
 		walkSpeedMultiplier: 1.05,
-	}),
-	"Blue Sparkle": identity<Aura>({
+	},
+	"Blue Sparkle": {
 		cost: {
 			requiredRank: 2,
 			currency: "gold",
@@ -44,8 +55,8 @@ export const AURAS = {
 		},
 
 		walkSpeedMultiplier: 1.1,
-	}),
-	Leaf: identity<Aura>({
+	},
+	Leaf: {
 		cost: {
 			requiredRank: 4,
 			currency: "gold",
@@ -58,8 +69,8 @@ export const AURAS = {
 		},
 
 		walkSpeedMultiplier: 1.15,
-	}),
-	Sparks: identity<Aura>({
+	},
+	Sparks: {
 		cost: {
 			requiredRank: 6,
 			currency: "gold",
@@ -72,8 +83,8 @@ export const AURAS = {
 		},
 
 		walkSpeedMultiplier: 1.2,
-	}),
-	"Red Poison": identity<Aura>({
+	},
+	"Red Poison": {
 		cost: {
 			requiredRank: 8,
 			currency: "gold",
@@ -86,8 +97,8 @@ export const AURAS = {
 		},
 
 		walkSpeedMultiplier: 1.25,
-	}),
-	"Blue Fire": identity<Aura>({
+	},
+	"Blue Fire": {
 		cost: {
 			requiredRank: 10,
 			currency: "gold",
@@ -100,8 +111,8 @@ export const AURAS = {
 		},
 
 		walkSpeedMultiplier: 1.3,
-	}),
-	Fire: identity<Aura>({
+	},
+	Fire: {
 		cost: {
 			requiredRank: 10,
 			currency: "gold",
@@ -114,8 +125,8 @@ export const AURAS = {
 		},
 
 		walkSpeedMultiplier: 1.35,
-	}),
-	"Faint Glow": identity<Aura>({
+	},
+	"Faint Glow": {
 		cost: {
 			requiredRank: 12,
 			currency: "gold",
@@ -128,8 +139,8 @@ export const AURAS = {
 		},
 
 		walkSpeedMultiplier: 1.4,
-	}),
-	Sparkle: identity<Aura>({
+	},
+	Sparkle: {
 		cost: {
 			requiredRank: 12,
 			currency: "gold",
@@ -142,8 +153,8 @@ export const AURAS = {
 		},
 
 		walkSpeedMultiplier: 1.45,
-	}),
-	"Dark Aura": identity<Aura>({
+	},
+	"Dark Aura": {
 		cost: {
 			requiredRank: 14,
 			currency: "gold",
@@ -156,8 +167,8 @@ export const AURAS = {
 		},
 
 		walkSpeedMultiplier: 1.5,
-	}),
-	"Light Aura": identity<Aura>({
+	},
+	"Light Aura": {
 		cost: {
 			requiredRank: 14,
 			currency: "gold",
@@ -170,8 +181,8 @@ export const AURAS = {
 		},
 
 		walkSpeedMultiplier: 1.55,
-	}),
-	"Evil Aura": identity<Aura>({
+	},
+	"Evil Aura": {
 		cost: {
 			requiredRank: 16,
 			currency: "gold",
@@ -184,8 +195,8 @@ export const AURAS = {
 		},
 
 		walkSpeedMultiplier: 1.6,
-	}),
-	"Worldly Aura": identity<Aura>({
+	},
+	"Worldly Aura": {
 		cost: {
 			requiredRank: 16,
 			currency: "gold",
@@ -198,5 +209,5 @@ export const AURAS = {
 		},
 
 		walkSpeedMultiplier: 1.65,
-	}),
-};
+	},
+});
