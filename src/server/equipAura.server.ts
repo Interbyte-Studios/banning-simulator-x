@@ -2,7 +2,6 @@ import { Players, ReplicatedStorage } from "@rbxts/services";
 import { remotes } from "shared/remotes";
 import { Store } from "shared/rodux";
 import { getItemById } from "shared/util/getItemById";
-import { validateCharacter } from "shared/util/validateCharacter";
 
 import { withPlayerStore } from "./modules/net/withPlayerStore";
 import { equipAura } from "./modules/rodux/equipAura";
