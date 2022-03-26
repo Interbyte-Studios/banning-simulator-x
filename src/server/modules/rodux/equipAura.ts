@@ -1,5 +1,5 @@
 import { Store } from "shared/rodux";
-import { equipAura as dispatchEquipAura } from 'shared/rodux/currentAura';
+import { equipAura as dispatchEquipAura } from "shared/rodux/currentAura";
 
 /**
  * Equips an aura for a player.
