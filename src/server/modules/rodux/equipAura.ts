@@ -11,11 +11,11 @@ import { equipAura as dispatchEquipAura } from "shared/rodux/currentAura";
  * @param auraId The ID of the aura to equip.
  */
 export function equipAura(store: Store, auraId: number): void {
-	// check player owns weapon
+	// check player owns aura
 	if (!store.getState().auras.has(auraId)) {
 		throw `${store} did not own weapon ${auraId}`;
 	}
 
-	// equip weapon
+	// equip aura
 	store.dispatch(dispatchEquipAura(auraId));
 }

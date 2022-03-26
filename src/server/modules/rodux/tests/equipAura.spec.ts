@@ -13,7 +13,7 @@ export = (): void => {
 
 			const player = useMockPlayer();
 			const { store, dispatchedActions, cleanup } = createDummyStore(player, {
-				weapons: new Set([auraId]),
+				auras: new Set([auraId]),
 			});
 
 			equipAura(store, auraId);
