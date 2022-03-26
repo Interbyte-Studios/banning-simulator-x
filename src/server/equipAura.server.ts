@@ -16,7 +16,8 @@ remotes.Server.Create("equipAura").Connect(withPlayerStore((_, store, auraId) =>
  */
 function parentAuraToCharacter(character: Model, auraId: number): void {
 	// validate character
-	const humanoidRootPart = character?.FindFirstChildWhichIsA("Humanoid")?.RootPart;
+	assert(character, `Failed to get character, could not create aura.`);
+	const humanoidRootPart = character.FindFirstChildWhichIsA("Humanoid")?.RootPart;
 
 	// create aura
 	const auraModel = getItemById(ReplicatedStorage.auras, auraId);
