@@ -19,7 +19,7 @@ export function equipWeapon(id: number): EquipWeapon & Rodux.AnyAction {
 	};
 }
 
-const defaultWeaponId = -1;
+const defaultWeaponId = 1;
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const currentWeaponReducer = Rodux.createReducer<CurrentWeaponState, CurrentWeaponActions>(defaultWeaponId, {
