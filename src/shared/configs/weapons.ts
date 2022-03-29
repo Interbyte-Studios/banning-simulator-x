@@ -1,22 +1,29 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
+
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { Currency } from "./currencies";
 
 interface Weapon {
-	cost?: {
-		requiredRank?: number;
-		currency: Currency;
-		amount: number;
-	};
+	cost:
+		| {
+				requiredRank?: number;
+				currency: Currency;
+				amount: number;
+		  }
+		| undefined;
 
 	damage: number;
 
 	isBossWeapon: boolean;
 }
 
+export type ValidWeapon = keyof typeof WEAPONS;
 export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Stone Hammer": {
+		cost: undefined,
+
 		damage: 18,
 
 		isBossWeapon: false,
