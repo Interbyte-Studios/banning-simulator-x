@@ -28,10 +28,7 @@ export function purchaseWeapon(store: Store, weaponId: number): boolean {
 	// purchase weapon
 	store.dispatch(
 		dispatchPurchaseWeapon({
-			cost: {
-				currency: weaponInfo.cost.currency,
-				amount: weaponInfo.cost.amount,
-			},
+			cost: weaponInfo.cost,
 			id: weaponId,
 		}),
 	);
