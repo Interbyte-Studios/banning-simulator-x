@@ -1,8 +1,6 @@
-import { ReplicatedStorage } from "@rbxts/services";
-import { ValidWeapon, WEAPONS } from "shared/configs/weapons";
 import { Store } from "shared/rodux";
 import { purchaseWeapon as dispatchPurchaseWeapon } from "shared/rodux/weapons";
-import { getItemById } from "shared/util/getItemById";
+import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 /**
  * Purchases a weapon for a player.
@@ -18,8 +16,7 @@ export function purchaseWeapon(store: Store, weaponId: number): boolean {
 	}
 
 	// get weapon info
-	const weaponName = getItemById(ReplicatedStorage.weapons, weaponId);
-	const weaponInfo = WEAPONS[weaponName?.Name as ValidWeapon];
+	const weaponInfo = getWeaponInfo(weaponId);
 
 	// check to be sure weapon can be purchased
 	if (weaponInfo.cost === undefined) {

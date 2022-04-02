@@ -5,7 +5,7 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { Currency } from "./currencies";
 
-interface Weapon {
+export interface Weapon {
 	cost:
 		| {
 				requiredRank?: number;
