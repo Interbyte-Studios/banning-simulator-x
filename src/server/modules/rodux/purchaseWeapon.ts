@@ -1,6 +1,5 @@
 import { ReplicatedStorage } from "@rbxts/services";
 import { ValidWeapon, WEAPONS } from "shared/configs/weapons";
-import { PurchaseWeaponFailure } from "shared/enums/purchaseWeaponFailure";
 import { Store } from "shared/rodux";
 import { purchaseWeapon as dispatchPurchaseWeapon } from "shared/rodux/weapons";
 import { getItemById } from "shared/util/getItemById";
@@ -12,16 +11,10 @@ import { getItemById } from "shared/util/getItemById";
  * @param weaponId The ID of the weapon to equip.
  * @returns Whether or not the purchase was successful.
  */
-export function purchaseWeapon(
-	store: Store,
-	weaponId: number,
-): Promise<{ success: true } | { success: false; reason: PurchaseWeaponFailure }> {
+export function purchaseWeapon(store: Store, weaponId: number): boolean {
 	// check if player owns weapon
 	if (store.getState().weapons.has(weaponId)) {
-		return Promise.resolve({
-			success: false,
-			reason: PurchaseWeaponFailure.AlreadyOwned,
-		});
+		return false;
 	}
 
 	// get weapon info
@@ -30,10 +23,7 @@ export function purchaseWeapon(
 
 	// check to be sure weapon can be purchased
 	if (weaponInfo.cost === undefined) {
-		return Promise.resolve({
-			success: false,
-			reason: PurchaseWeaponFailure.NotPurchaseable,
-		});
+		return false;
 	}
 
 	// todo: check to be sure that player has enough currency
@@ -49,7 +39,5 @@ export function purchaseWeapon(
 		}),
 	);
 
-	return Promise.resolve({
-		success: true,
-	});
+	return true;
 }
