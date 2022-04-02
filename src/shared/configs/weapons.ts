@@ -19,7 +19,7 @@ export interface Weapon {
 	isBossWeapon: boolean;
 }
 
-export type ValidWeapon = keyof typeof WEAPONS;
+export type WeaponIndex = keyof typeof WEAPONS;
 export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Stone Hammer": {
 		cost: undefined,

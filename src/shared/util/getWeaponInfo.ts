@@ -1,5 +1,5 @@
 import { ReplicatedStorage } from "@rbxts/services";
-import { ValidWeapon, Weapon, WEAPONS } from "shared/configs/weapons";
+import { Weapon, WeaponIndex, WEAPONS } from "shared/configs/weapons";
 
 import { getItemById } from "./getItemById";
 
@@ -13,5 +13,5 @@ export function getWeaponInfo(weaponId: number): Weapon {
 	const weaponModel = getItemById(ReplicatedStorage.weapons, weaponId);
 	assert(weaponModel, `Failed to get weapon model for weapon with id: ${tostring(weaponId)}`);
 
-	return WEAPONS[weaponModel.Name as ValidWeapon];
+	return WEAPONS[weaponModel.Name as WeaponIndex];
 }
