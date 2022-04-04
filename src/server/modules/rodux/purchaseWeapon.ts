@@ -23,7 +23,10 @@ export function purchaseWeapon(store: Store, weaponId: number): boolean {
 		return false;
 	}
 
-	// todo: check to be sure that player has enough currency
+	// check to be sure player has enough currency to purchase weapon
+	if (store.getState().currencies[weaponInfo.cost.currency] < weaponInfo.cost.amount) {
+		return false;
+	}
 
 	// purchase weapon
 	store.dispatch(
