@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-namespace */
 import Net from "@rbxts/net";
 
 import { auras } from "./auras";
