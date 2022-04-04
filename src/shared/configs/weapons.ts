@@ -1,5 +1,3 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
-
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 

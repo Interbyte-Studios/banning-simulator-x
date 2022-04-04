@@ -82,7 +82,7 @@
     "no-redeclare": "error",
     "require-atomic-updates": "error",
     "no-constant-condition": "error",
-    "no-mixed-spaces-and-tabs": "error",
+    "no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
 
     "jsdoc/require-jsdoc": [
       "error",
