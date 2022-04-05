@@ -2,7 +2,6 @@ import Object from "@rbxts/object-utils";
 import Rodux from "@rbxts/rodux";
 import { currencies, Currency } from "shared/configs/currencies";
 
-import { PurchaseAura } from "./auras";
 import { PurchaseWeapon } from "./weapons";
 
 export type CurrenciesState = { [P in Currency]: number };
@@ -14,19 +13,11 @@ const defaultCurrencies = Object.fromEntries(
 );
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const currenciesReducer = Rodux.createReducer<CurrenciesState, PurchaseWeapon | PurchaseAura>(
-	defaultCurrencies,
-	{
-		purchaseWeapon: (state, action) => {
-			const purchasedCurrency = state[action.cost.currency] - action.cost.amount;
+export const currenciesReducer = Rodux.createReducer<CurrenciesState, PurchaseWeapon>(defaultCurrencies, {
+	purchaseWeapon: (state, action) => {
+		const purchasedCurrency = state[action.cost.currency] - action.cost.amount;
 
-			return { ...state, [action.cost.currency]: purchasedCurrency };
-		},
-		purchaseAura: (state, action) => {
-			const purchasedCurrency = state[action.cost.currency] - action.cost.amount;
-
-			return { ...state, [action.cost.currency]: purchasedCurrency };
-		},
+		return { ...state, [action.cost.currency]: purchasedCurrency };
 	},
-);
+});
 /* eslint-enable jsdoc/require-jsdoc */
