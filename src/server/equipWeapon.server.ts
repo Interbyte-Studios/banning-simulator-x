@@ -6,7 +6,9 @@ import { withPlayerStore } from "./modules/net/withPlayerStore";
 import { equipWeapon } from "./modules/rodux/equipWeapon";
 import { onStoreCreated } from "./playerStore";
 
-remotes.Server.Create("equipWeapon").Connect(withPlayerStore((_, store, weaponId) => equipWeapon(store, weaponId)));
+remotes.Server.GetNamespace("weapons")
+	.Create("equipWeapon")
+	.Connect(withPlayerStore((_, store, weaponId) => equipWeapon(store, weaponId)));
 
 Players.PlayerAdded.Connect(async (player) => {
 	const store = await onStoreCreated(player);

@@ -17,7 +17,7 @@ onStoreCreated(player)
 		Roact.mount(
 			<remoteContext.Provider
 				value={{
-					equipWeapon: remotes.Client.Get("equipWeapon"),
+					equipWeapon: remotes.Client.GetNamespace("weapons").Get("equipWeapon"),
 				}}
 			>
 				<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
