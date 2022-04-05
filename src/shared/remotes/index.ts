@@ -1,12 +1,12 @@
 import Net from "@rbxts/net";
 
-import { equipAuraDefinition } from "./auras/equipAura";
+import { auras } from "./auras";
 import { roduxDefinitions } from "./rodux";
-import { equipWeaponDefinition } from "./weapons/equipWeapon";
+import { weapons } from "./weapons";
 
 export const remotes = Net.Definitions.Create({
 	rodux: roduxDefinitions,
 
-	equipAura: equipAuraDefinition,
-	equipWeapon: equipWeaponDefinition,
+	auras: auras,
+	weapons: weapons,
 });
