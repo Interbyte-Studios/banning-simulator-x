@@ -19,19 +19,19 @@ export function purchaseWeapon(store: Store, weaponId: number): boolean {
 	const weaponInfo = getWeaponInfo(weaponId);
 
 	// check to be sure weapon can be purchased
-	if (weaponInfo.cost === undefined) {
+	if (weaponInfo.data.cost === undefined) {
 		return false;
 	}
 
 	// check to be sure player has enough currency to purchase weapon
-	if (store.getState().currencies[weaponInfo.cost.currency] < weaponInfo.cost.amount) {
+	if (store.getState().currencies[weaponInfo.data.cost.currency] < weaponInfo.data.cost.amount) {
 		return false;
 	}
 
 	// purchase weapon
 	store.dispatch(
 		dispatchPurchaseWeapon({
-			cost: weaponInfo.cost,
+			cost: weaponInfo.data.cost,
 			id: weaponId,
 		}),
 	);
