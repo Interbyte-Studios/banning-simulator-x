@@ -86,9 +86,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 							/**
 							 * Equips/Purchases weapon being currently viewed.
 							 */
-							Activated: (): void => {
-								
-							},
+							Activated: (): void => {},
 						}}
 					/>
 				</frame>

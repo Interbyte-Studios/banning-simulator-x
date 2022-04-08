@@ -41,5 +41,9 @@ export async function purchaseWeapon(player: Player, weaponId: number): Promise<
 	}
 
 	// send to server to request the purchase of the weapon
-	await purchaseWeaponRemote.CallServerAsync(weaponId);
+	const purchaseState = await purchaseWeaponRemote.CallServerAsync(weaponId);
+	if (purchaseState === false) {
+		warn(`There was an issue on the server while attempting to purchase weapon: ${weaponId}`);
+		return;
+	}
 }
