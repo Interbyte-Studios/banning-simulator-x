@@ -1,8 +1,10 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Store } from "shared/rodux";
+import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 import { ToggleWeaponButton } from "./components/toggleWeaponButton";
+import { WeaponShop } from "./components/weaponShop";
 import { fakeRemoteContext, remoteContext } from "./remoteContext";
 
 /**
@@ -14,10 +16,18 @@ import { fakeRemoteContext, remoteContext } from "./remoteContext";
  * @returns The Roact app to mount.
  */
 export function app(props: { player: Player; store: Store }): Roact.Element {
+	const weaponInfo = getWeaponInfo(props.store.getState().currentWeapon);
+
 	return (
 		<remoteContext.Provider value={fakeRemoteContext}>
 			<RoactRodux.StoreProvider store={props.store}>
 				<ToggleWeaponButton player={props.player} />
+				<WeaponShop
+					player={props.player}
+					viewedWeaponName={weaponInfo.name}
+					viewedWeaponOwned={true}
+					isVisible={false}
+				/>
 			</RoactRodux.StoreProvider>
 		</remoteContext.Provider>
 	);
