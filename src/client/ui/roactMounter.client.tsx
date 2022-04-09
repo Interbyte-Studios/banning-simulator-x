@@ -18,6 +18,7 @@ onStoreCreated(player)
 			<remoteContext.Provider
 				value={{
 					equipWeapon: remotes.Client.GetNamespace("weapons").Get("equipWeapon"),
+					purhcaseWeapon: remotes.Client.GetNamespace("weapons").Get("purchaseWeapon"),
 				}}
 			>
 				<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>

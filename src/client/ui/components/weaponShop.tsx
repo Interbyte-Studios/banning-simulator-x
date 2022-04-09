@@ -2,6 +2,8 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { purchaseWeapon } from "client/weapons/purchaseWeapon";
+import { toggleWeaponEquipped } from "client/weapons/weaponState";
 import { WEAPONS } from "shared/configs/weapons";
 import { StoreState } from "shared/rodux";
 import { WeaponsState } from "shared/rodux/weapons";
@@ -34,7 +36,7 @@ function mapStateToProps(state: StoreState): WeaponShopMappedProps {
 
 export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 	hooks((props: WeaponShopProps, { useState, useEffect }) => {
-		const [weaponViewingId, setWeaponViewingId] = useState(props.currentWeaponId);
+		const [viewedWeaponId, setViewedWeaponId] = useState(props.currentWeaponId);
 
 		useEffect(() => {
 			const _weaponData = {
@@ -43,7 +45,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 			};
 
 			Object.entries(WEAPONS).forEach((weaponData, weaponIndex) => {
-				if (weaponIndex === weaponViewingId) {
+				if (weaponIndex === viewedWeaponId) {
 					_weaponData.weaponName = weaponData[0];
 					_weaponData.isOwned = props.weaponsState.has(weaponIndex);
 					return;
@@ -52,7 +54,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 
 			props.viewedWeaponOwned = _weaponData.isOwned;
 			props.viewedWeaponName = _weaponData.weaponName;
-		}, [weaponViewingId]);
+		}, [viewedWeaponId]);
 
 		return (
 			<frame
@@ -76,7 +78,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 						Position={UDim2.fromScale(0.05, 0.3)}
 						Size={UDim2.fromScale(0.9, 0.1)}
 						Text={
-							weaponViewingId === props.currentWeaponId
+							viewedWeaponId === props.currentWeaponId
 								? "Equipped"
 								: props.viewedWeaponOwned === true
 								? "Owned"
@@ -86,7 +88,17 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 							/**
 							 * Equips/Purchases weapon being currently viewed.
 							 */
-							Activated: (): void => {},
+							Activated: async (): Promise<void> => {
+								if (viewedWeaponId === props.currentWeaponId) {
+									return;
+								}
+
+								if (props.viewedWeaponOwned) {
+									toggleWeaponEquipped(props.player, props.currentWeaponId, true);
+								} else {
+									await purchaseWeapon(props.player, viewedWeaponId);
+								}
+							},
 						}}
 					/>
 				</frame>
@@ -112,7 +124,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 									 * Change weapon currently being viewed in shop.
 									 */
 									Activated: (): void => {
-										setWeaponViewingId(weaponIndex);
+										setViewedWeaponId(weaponIndex);
 									},
 								}}
 							/>

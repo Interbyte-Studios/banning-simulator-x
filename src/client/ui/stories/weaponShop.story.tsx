@@ -7,7 +7,7 @@ import { createMockStory } from "./createMockStory";
 export = (target: GuiBase): (() => void) => {
 	const { cleanup } = createMockStory({}, target, (player, store) => (
 		<RoactRodux.StoreProvider store={store}>
-			<WeaponShop player={player} viewedWeaponName={"Stone Hammer"} viewedWeaponOwned={true} isVisible={false} />
+			<WeaponShop player={player} viewedWeaponName={"Stone Hammer"} viewedWeaponOwned={true} isVisible={true} />
 		</RoactRodux.StoreProvider>
 	));
 
