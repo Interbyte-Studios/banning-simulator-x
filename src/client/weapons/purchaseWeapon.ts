@@ -10,7 +10,7 @@ const purchaseWeaponRemote = remotes.Client.GetNamespace("weapons").Get("purchas
  * @param player The local player.
  * @param weaponId The ID of the weapon to purchase.
  */
-export async function purchaseWeapon(player: Player, weaponId: number): Promise<void> {
+export function purchaseWeapon(player: Player, weaponId: number): void {
 	// check for existing store
 	const store = stores.get(player);
 	if (store === undefined) {
@@ -41,9 +41,5 @@ export async function purchaseWeapon(player: Player, weaponId: number): Promise<
 	}
 
 	// send to server to request the purchase of the weapon
-	const purchaseState = await purchaseWeaponRemote.CallServerAsync(weaponId);
-	if (purchaseState === false) {
-		warn(`There was an issue on the server while attempting to purchase weapon: ${weaponId}`);
-		return;
-	}
+	purchaseWeaponRemote.SendToServer(weaponId);
 }

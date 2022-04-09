@@ -96,7 +96,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 								if (props.viewedWeaponOwned) {
 									toggleWeaponEquipped(props.player, props.currentWeaponId, true);
 								} else {
-									await purchaseWeapon(props.player, viewedWeaponId);
+									purchaseWeapon(props.player, viewedWeaponId);
 								}
 							},
 						}}
