@@ -18,6 +18,7 @@ export const BAN_LAND_NPCS = {
 			currency: 250,
 			experience: 5,
 		},
+		damage: 5,
 		isBoss: false,
 	}),
 	nyxun: identity<Npc>({
@@ -27,6 +28,7 @@ export const BAN_LAND_NPCS = {
 			currency: 750,
 			experience: 15,
 		},
+		damage: 10,
 		isBoss: false,
 	}),
 	onett: identity<Npc>({
@@ -36,6 +38,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("3k"),
 			experience: 25,
 		},
+		damage: 15,
 		isBoss: false,
 	}),
 	rellhub: identity<Npc>({
@@ -45,6 +48,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("12.5k"),
 			experience: 60,
 		},
+		damage: 20,
 		isBoss: false,
 	}),
 	buildIntoGames: identity<Npc>({
@@ -54,6 +58,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("50k"),
 			experience: 250,
 		},
+		damage: 25,
 		isBoss: false,
 	}),
 	foreverDev: identity<Npc>({
@@ -63,6 +68,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("250k"),
 			experience: shorten("1.75k"),
 		},
+		damage: 30,
 		isBoss: false,
 	}),
 	snickTrix: identity<Npc>({
@@ -72,6 +78,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("1.25M"),
 			experience: shorten("8.25k"),
 		},
+		damage: 35,
 		isBoss: false,
 	}),
 	mygame43: identity<Npc>({
@@ -81,6 +88,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("7M"),
 			experience: shorten("49k"),
 		},
+		damage: 40,
 		isBoss: false,
 	}),
 	gamesReborn: identity<Npc>({
@@ -90,6 +98,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("35M"),
 			experience: shorten("250k"),
 		},
+		damage: 45,
 		isBoss: false,
 	}),
 
@@ -100,6 +109,7 @@ export const BAN_LAND_NPCS = {
 			currency: 500,
 			experience: 10,
 		},
+		damage: 60,
 		isBoss: true,
 	}),
 	sonsofFun_YT: identity<Npc>({
@@ -109,6 +119,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("1.5k"),
 			experience: 30,
 		},
+		damage: 70,
 		isBoss: true,
 	}),
 	carbonMeister: identity<Npc>({
@@ -118,6 +129,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("6k"),
 			experience: 50,
 		},
+		damage: 80,
 		isBoss: true,
 	}),
 	sabrinaBrite: identity<Npc>({
@@ -127,6 +139,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("25k"),
 			experience: 120,
 		},
+		damage: 90,
 		isBoss: true,
 	}),
 	djMonopoli: identity<Npc>({
@@ -136,6 +149,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("100k"),
 			experience: 500,
 		},
+		damage: 95,
 		isBoss: true,
 	}),
 	merely: identity<Npc>({
@@ -145,6 +159,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("500k"),
 			experience: shorten("3.5k"),
 		},
+		damage: 100,
 		isBoss: true,
 	}),
 	alvin_Blox: identity<Npc>({
@@ -154,6 +169,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("2.5M"),
 			experience: shorten("16.5k"),
 		},
+		damage: 100,
 		isBoss: true,
 	}),
 	deeterPlays: identity<Npc>({
@@ -163,6 +179,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("14M"),
 			experience: shorten("98k"),
 		},
+		damage: 100,
 		isBoss: true,
 	}),
 	beeism: identity<Npc>({
@@ -172,6 +189,7 @@ export const BAN_LAND_NPCS = {
 			currency: shorten("70M"),
 			experience: shorten("500k"),
 		},
+		damage: 100,
 		isBoss: true,
 	}),
 };

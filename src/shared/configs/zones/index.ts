@@ -8,6 +8,7 @@ export interface Npc {
 		experience: number;
 	};
 	isBoss: boolean;
+	damage: number;
 }
 
 export interface Zone {
