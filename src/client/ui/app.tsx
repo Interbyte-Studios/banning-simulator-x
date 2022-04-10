@@ -19,7 +19,7 @@ export function app(props: { player: Player; store: Store }): Roact.Element {
 		<remoteContext.Provider value={fakeRemoteContext}>
 			<RoactRodux.StoreProvider store={props.store}>
 				<ToggleWeaponButton player={props.player} />
-				<WeaponShop player={props.player} />
+				<WeaponShop store={props.store} />
 			</RoactRodux.StoreProvider>
 		</remoteContext.Provider>
 	);

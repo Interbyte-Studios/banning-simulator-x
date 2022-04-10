@@ -2,18 +2,19 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { getWeaponLocalInfo } from "client/weapons/getWeaponInfo";
+import { ContextActionService } from "@rbxts/services";
 import { purchaseWeapon } from "client/weapons/purchaseWeapon";
-import { toggleWeaponEquipped } from "client/weapons/weaponState";
-import { WEAPONS } from "shared/configs/weapons";
-import { StoreState } from "shared/rodux";
+import { Weapon, WEAPONS } from "shared/configs/weapons";
+import { Store, StoreState } from "shared/rodux";
 import { WeaponsState } from "shared/rodux/weapons";
+import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 import { color3White, vec2Middle } from "../commonValues";
 import { hooks } from "../hooks";
+import { remoteContext } from "../remoteContext";
 
 interface WeaponShopProps extends WeaponShopMappedProps {
-	player: Player;
+	store: Store;
 }
 
 interface WeaponShopMappedProps {
@@ -32,12 +33,57 @@ function mapStateToProps(state: StoreState): WeaponShopMappedProps {
 	};
 }
 
+interface LocalWeaponInfo {
+	isOwned: boolean;
+	id: number;
+	weaponInfo: {
+		name: string;
+		data: Weapon;
+	};
+}
+
+/**
+ * @param weaponsState The current weapon state of the players store.
+ * @param id The id of the weapon.
+ * @returns Local data relative to the weapon id given.
+ */
+function getWeaponLocalInfo(weaponsState: WeaponsState, id: number): LocalWeaponInfo {
+	const weaponInfo = getWeaponInfo(id);
+
+	return {
+		weaponInfo,
+		id,
+		isOwned: weaponsState.has(id),
+	};
+}
+
 export const WeaponShop = RoactRodux.connect(mapStateToProps)(
-	hooks((props: WeaponShopProps, { useState, useEffect }) => {
+	hooks((props: WeaponShopProps, { useState, useContext, useEffect }) => {
 		const [isVisible, setVisibility] = useState(false);
 		const [viewedWeaponInfo, setViewedWeaponInfo] = useState(
 			getWeaponLocalInfo(props.weaponsState, props.currentWeaponId),
 		);
+		const remotes = useContext(remoteContext);
+
+		// bind to view button
+		useEffect(() => {
+			ContextActionService.BindAction(
+				"weaponShop",
+				(_, state) => {
+					if (state !== Enum.UserInputState.Begin) {
+						return;
+					}
+
+					setVisibility(!isVisible);
+				},
+				false,
+				Enum.KeyCode.B,
+			);
+
+			return (): void => {
+				ContextActionService.UnbindAction("weaponShop");
+			};
+		}, [isVisible]);
 
 		return (
 			<frame
@@ -64,7 +110,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 							viewedWeaponInfo.id === props.currentWeaponId
 								? "Equipped"
 								: viewedWeaponInfo.isOwned === true
-								? "Owned"
+								? "Equip"
 								: "Purchase"
 						}
 						Event={{
@@ -72,14 +118,17 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 							 * Equips/Purchases weapon being currently viewed.
 							 */
 							Activated: (): void => {
+								// check that the weapon is not already equipped
 								if (viewedWeaponInfo.id === props.currentWeaponId) {
 									return;
 								}
 
 								if (viewedWeaponInfo.isOwned) {
-									toggleWeaponEquipped(props.player, props.currentWeaponId, true);
+									// equip weapon
+									remotes.equipWeapon.SendToServer(viewedWeaponInfo.id);
 								} else {
-									purchaseWeapon(props.player, viewedWeaponInfo.id);
+									// purchase weapon
+									purchaseWeapon(props.store, viewedWeaponInfo.id, remotes.purchaseWeapon);
 								}
 							},
 						}}
@@ -92,22 +141,23 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 					BorderSizePixel={0}
 				>
 					<uigridlayout
-						CellPadding={UDim2.fromScale(0.05, 0.025)}
-						CellSize={UDim2.fromScale(0.275, 0.05)}
+						CellPadding={new UDim2(0, 4, 0.025, 0)}
+						CellSize={UDim2.fromScale(0.25, 0.05)}
 						HorizontalAlignment={Enum.HorizontalAlignment.Center}
 					/>
 
-					{Object.entries(WEAPONS).map((weaponData, weaponIndex) => {
+					{Object.entries(WEAPONS).map(([weaponName, weaponInfo]) => {
 						return (
 							<textbutton
-								LayoutOrder={weaponData[1].damage}
-								Text={weaponData[0]}
+								LayoutOrder={weaponInfo.damage}
+								Text={weaponName}
+								TextScaled={true}
 								Event={{
 									/**
 									 * Change weapon currently being viewed in shop.
 									 */
 									Activated: (): void => {
-										setViewedWeaponInfo(getWeaponLocalInfo(props.weaponsState, weaponIndex));
+										setViewedWeaponInfo(getWeaponLocalInfo(props.weaponsState, weaponInfo.id));
 									},
 								}}
 							/>

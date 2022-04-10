@@ -1,9 +1,8 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { ContextActionService, ReplicatedStorage } from "@rbxts/services";
+import { ContextActionService } from "@rbxts/services";
 import { toggleWeaponEquipped } from "client/weapons/weaponState";
 import { StoreState } from "shared/rodux";
-import { getItemById } from "shared/util/getItemById";
 
 import { color3White, vec2Middle } from "../commonValues";
 import { hooks } from "../hooks";
