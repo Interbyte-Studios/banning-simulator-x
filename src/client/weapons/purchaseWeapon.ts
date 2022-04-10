@@ -1,4 +1,3 @@
-import { stores } from "client/clientStores";
 import { remotes } from "shared/remotes";
 import { Store } from "shared/rodux";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
