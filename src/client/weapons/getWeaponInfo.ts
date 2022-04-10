@@ -12,8 +12,7 @@ interface LocalWeaponInfo {
 }
 
 /**
- * @param store The player's store.
- * @param weaponsState
+ * @param weaponsState The current weapon state of the players store.
  * @param id The id of the weapon.
  * @returns Local data relative to the weapon id given.
  */
