@@ -88,7 +88,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 							/**
 							 * Equips/Purchases weapon being currently viewed.
 							 */
-							Activated: async (): Promise<void> => {
+							Activated: (): void => {
 								if (viewedWeaponId === props.currentWeaponId) {
 									return;
 								}
