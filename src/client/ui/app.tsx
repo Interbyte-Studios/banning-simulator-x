@@ -16,18 +16,11 @@ import { fakeRemoteContext, remoteContext } from "./remoteContext";
  * @returns The Roact app to mount.
  */
 export function app(props: { player: Player; store: Store }): Roact.Element {
-	const weaponInfo = getWeaponInfo(props.store.getState().currentWeapon);
-
 	return (
 		<remoteContext.Provider value={fakeRemoteContext}>
 			<RoactRodux.StoreProvider store={props.store}>
 				<ToggleWeaponButton player={props.player} />
-				<WeaponShop
-					player={props.player}
-					viewedWeaponName={weaponInfo.name}
-					viewedWeaponOwned={true}
-					isVisible={false}
-				/>
+				<WeaponShop player={props.player} />
 			</RoactRodux.StoreProvider>
 		</remoteContext.Provider>
 	);
