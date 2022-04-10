@@ -1,9 +1,9 @@
 /// <reference types="@rbxts/testez/globals" />
 
 import { createDummyStore } from "server/playerStore";
+import { WEAPONS } from "shared/configs/weapons";
 import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 import { useMockPlayer } from "shared/mocks/player";
-import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { purchaseWeapon } from "../purchaseWeapon";
 
@@ -22,10 +22,7 @@ export = (): void => {
 				{
 					type: "purchaseWeapon",
 					id: weaponId,
-					cost: {
-						currency: "gold",
-						amount: twoDpAbbreviator.stringToNumber("1.1k"),
-					},
+					cost: WEAPONS["Basic Blade"].cost,
 				},
 			]);
 
