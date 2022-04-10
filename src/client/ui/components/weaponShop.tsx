@@ -2,6 +2,7 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { getWeaponLocalInfo } from "client/weapons/getWeaponInfo";
 import { purchaseWeapon } from "client/weapons/purchaseWeapon";
 import { toggleWeaponEquipped } from "client/weapons/weaponState";
 import { WEAPONS } from "shared/configs/weapons";
@@ -13,9 +14,6 @@ import { hooks } from "../hooks";
 
 interface WeaponShopProps extends WeaponShopMappedProps {
 	player: Player;
-	viewedWeaponName: string;
-	viewedWeaponOwned: boolean;
-	isVisible: boolean;
 }
 
 interface WeaponShopMappedProps {
@@ -36,25 +34,10 @@ function mapStateToProps(state: StoreState): WeaponShopMappedProps {
 
 export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 	hooks((props: WeaponShopProps, { useState, useEffect }) => {
-		const [viewedWeaponId, setViewedWeaponId] = useState(props.currentWeaponId);
-
-		useEffect(() => {
-			const _weaponData = {
-				isOwned: false,
-				weaponName: "",
-			};
-
-			Object.entries(WEAPONS).forEach((weaponData, weaponIndex) => {
-				if (weaponIndex === viewedWeaponId) {
-					_weaponData.weaponName = weaponData[0];
-					_weaponData.isOwned = props.weaponsState.has(weaponIndex);
-					return;
-				}
-			});
-
-			props.viewedWeaponOwned = _weaponData.isOwned;
-			props.viewedWeaponName = _weaponData.weaponName;
-		}, [viewedWeaponId]);
+		const [isVisible, setVisibility] = useState(false);
+		const [viewedWeaponInfo, setViewedWeaponInfo] = useState(
+			getWeaponLocalInfo(props.weaponsState, props.currentWeaponId),
+		);
 
 		return (
 			<frame
@@ -64,23 +47,23 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 				AnchorPoint={vec2Middle}
 				BackgroundColor3={color3White}
 				BorderSizePixel={0}
-				Visible={props.isVisible}
+				Visible={isVisible}
 			>
 				<frame Size={UDim2.fromScale(0.3, 1)} Position={UDim2.fromScale(0.7, 0)}>
 					<textlabel
 						Position={UDim2.fromScale(0.05, 0.1)}
 						BackgroundColor3={color3White}
 						Size={UDim2.fromScale(0.9, 0.1)}
-						Text={props.viewedWeaponName}
+						Text={viewedWeaponInfo.weaponInfo.name}
 					/>
 
 					<textbutton
 						Position={UDim2.fromScale(0.05, 0.3)}
 						Size={UDim2.fromScale(0.9, 0.1)}
 						Text={
-							viewedWeaponId === props.currentWeaponId
+							viewedWeaponInfo.id === props.currentWeaponId
 								? "Equipped"
-								: props.viewedWeaponOwned === true
+								: viewedWeaponInfo.isOwned === true
 								? "Owned"
 								: "Purchase"
 						}
@@ -89,14 +72,14 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 							 * Equips/Purchases weapon being currently viewed.
 							 */
 							Activated: (): void => {
-								if (viewedWeaponId === props.currentWeaponId) {
+								if (viewedWeaponInfo.id === props.currentWeaponId) {
 									return;
 								}
 
-								if (props.viewedWeaponOwned) {
+								if (viewedWeaponInfo.isOwned) {
 									toggleWeaponEquipped(props.player, props.currentWeaponId, true);
 								} else {
-									purchaseWeapon(props.player, viewedWeaponId);
+									purchaseWeapon(props.player, viewedWeaponInfo.id);
 								}
 							},
 						}}
@@ -124,7 +107,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 									 * Change weapon currently being viewed in shop.
 									 */
 									Activated: (): void => {
-										setViewedWeaponId(weaponIndex);
+										setViewedWeaponInfo(getWeaponLocalInfo(props.weaponsState, weaponIndex));
 									},
 								}}
 							/>
