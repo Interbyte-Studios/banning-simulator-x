@@ -1,7 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Store } from "shared/rodux";
-import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 import { ToggleWeaponButton } from "./components/toggleWeaponButton";
 import { WeaponShop } from "./components/weaponShop";
