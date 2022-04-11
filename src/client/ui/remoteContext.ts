@@ -1,6 +1,7 @@
 import { ClientToServerEventDeclaration } from "@rbxts/net/out/definitions/Types";
 import { createContext } from "@rbxts/roact";
 import { EquipWeaponDefinition } from "shared/remotes/weapons/equipWeapon";
+import { PurchaseWeaponDefinition } from "shared/remotes/weapons/purchaseWeapon";
 
 /**
  * Creates a fake dummy ClientToServer remote.
@@ -11,7 +12,7 @@ import { EquipWeaponDefinition } from "shared/remotes/weapons/equipWeapon";
 function fakeRemoteCall<T extends ClientToServerEventDeclaration<Array<unknown>>>(
 	name: string,
 ): {
-	SendToServer: (...args: T extends ClientToServerEventDeclaration<infer U> ? U : never) => void;
+	SendToServer(...args: T extends ClientToServerEventDeclaration<infer U> ? U : never): void;
 } {
 	return {
 		/**
@@ -19,7 +20,7 @@ function fakeRemoteCall<T extends ClientToServerEventDeclaration<Array<unknown>>
 		 *
 		 * @param args The args to send to the server.
 		 */
-		SendToServer: (...args): void => {
+		SendToServer(...args): void {
 			print(`Attempt to SendToServer on remote ${name} with args:`, args);
 		},
 	};
@@ -27,6 +28,7 @@ function fakeRemoteCall<T extends ClientToServerEventDeclaration<Array<unknown>>
 
 export const fakeRemoteContext = {
 	equipWeapon: fakeRemoteCall<EquipWeaponDefinition>("equipWeapon"),
+	purchaseWeapon: fakeRemoteCall<PurchaseWeaponDefinition>("purchaseWeapon"),
 };
 
 export const remoteContext = createContext(fakeRemoteContext);

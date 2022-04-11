@@ -7,34 +7,31 @@ import { getWeaponInfo } from "shared/util/getWeaponInfo";
  *
  * @param store The store to equip the weapon for.
  * @param weaponId The ID of the weapon to equip.
- * @returns Whether or not the purchase was successful.
  */
-export function purchaseWeapon(store: Store, weaponId: number): boolean {
+export function purchaseWeapon(store: Store, weaponId: number): void {
 	// check if player owns weapon
 	if (store.getState().weapons.has(weaponId)) {
-		return false;
+		return;
 	}
 
 	// get weapon info
 	const weaponInfo = getWeaponInfo(weaponId);
 
 	// check to be sure weapon can be purchased
-	if (weaponInfo.cost === undefined) {
-		return false;
+	if (weaponInfo.data.cost === undefined) {
+		return;
 	}
 
 	// check to be sure player has enough currency to purchase weapon
-	if (store.getState().currencies[weaponInfo.cost.currency] < weaponInfo.cost.amount) {
-		return false;
+	if (store.getState().currencies[weaponInfo.data.cost.currency] < weaponInfo.data.cost.amount) {
+		return;
 	}
 
 	// purchase weapon
 	store.dispatch(
 		dispatchPurchaseWeapon({
-			cost: weaponInfo.cost,
+			cost: weaponInfo.data.cost,
 			id: weaponId,
 		}),
 	);
-
-	return true;
 }
