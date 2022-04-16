@@ -14,6 +14,7 @@ for (const [worldName, worldInfo] of pairs(WORLDS)) {
 	const zones: NpcWorldState["zones"] = [];
 
 	const worldState: NpcWorldState = {
+		name: worldName,
 		zones: zones,
 	};
 	npcState.push(worldState);
@@ -30,9 +31,10 @@ for (const [worldName, worldInfo] of pairs(WORLDS)) {
 		const { Position: position, Size: size } = floor;
 		const halfSize = size.div(2).mul(new Vector3(1, 0, 1));
 
-		const halfHeight = position.add(new Vector3(0, size.Y, 0));
+		const halfHeight = new Vector3(0, size.Y / 2, 0);
 
 		zones.push({
+			name: zone.name,
 			npcs: [],
 			spawn: {
 				floor,

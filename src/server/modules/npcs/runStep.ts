@@ -1,7 +1,11 @@
 import { Players } from "@rbxts/services";
+import { WORLDS } from "shared/configs/worlds";
 import { Store } from "shared/rodux";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
+import { getNpcCharacter } from "./getNpcCharacter";
+import { getNpcFolder } from "./getNpcFolder";
+import { getRandomCFrame } from "./getRandomCFrame";
 import { NpcCharacter } from "./isNpcCharacter";
 import { NpcInstance, NpcWorldState } from "./worldState";
 
@@ -16,6 +20,8 @@ const NPC_ATTACK_COOLDOWN = 2;
 // min and max times for an NPC to wait between wanders
 const NPC_WANDER_COOLDOWN_MIN = 7;
 const NPC_WANDER_COOLDOWN_MAX = 15;
+// amount of NPCs in a zone
+const ZONE_NPC_AMOUNT = 4;
 
 const random = new Random();
 
@@ -36,6 +42,31 @@ export function runStep(
 	const npcCharacterToNpc: Map<NpcCharacter, NpcInstance> = new Map();
 	for (const world of state) {
 		for (const zone of world.zones) {
+			// spawn any npcs that need spawning
+			if (zone.npcs.size() < ZONE_NPC_AMOUNT) {
+				const zoneInfo = WORLDS[world.name].zones.find((v) => v.name === zone.name);
+				assert(zoneInfo, `Failed to find zone "${zone.name}" in world "${world.name}"`);
+
+				// if it's a boss zone, use the boss npc, otherwise, randomly choose an npc
+				const selectedNpc =
+					zoneInfo.npcs.find((npc) => npc.isBoss) ?? zoneInfo.npcs[random.NextInteger(0, zoneInfo.npcs.size() - 1)];
+
+				// spawn npc which will immediately start wandering
+				const npcCharacter = getNpcCharacter(selectedNpc.name).Clone();
+				npcCharacter.PivotTo(getRandomCFrame(zone.spawn.min, zone.spawn.max, random));
+				npcCharacter.Parent = getNpcFolder();
+
+				zone.npcs.push({
+					npc: selectedNpc,
+					instance: npcCharacter,
+					spawn: zone.spawn,
+					state: {
+						state: "WANDERING",
+						nextWanderTime: 0,
+					},
+				});
+			}
+
 			for (const npc of zone.npcs) {
 				npcs.add(npc);
 				npcCharacterToNpc.set(npc.instance, npc);
@@ -60,7 +91,7 @@ export function runStep(
 		npc.npc.health -= weapon.damage;
 	}
 
-	// move & attack npcs
+	// move & wander & attack players
 	for (const npc of npcs) {
 		// get closest character
 		let closestDistance = math.huge;
@@ -74,13 +105,10 @@ export function runStep(
 			}
 		}
 
-		if (!closestPlayer) {
-			continue;
-		}
-
 		const wanderingDistance = npc.instance.Head.Position.sub(npc.spawn.floor.Position).Magnitude;
-		// move to closest player if they are close enough
+		// move to closest player if they are close enough and exist
 		if (
+			closestPlayer &&
 			closestDistance < NPC_FOLLOW_DISTANCE &&
 			wanderingDistance < npc.spawn.floor.Size.X / 2 + NPC_SPAWN_SURROUNDING
 		) {
@@ -110,7 +138,10 @@ export function runStep(
 					followingState.lastAttackTime = time;
 				}
 			}
-		} else if (wanderingDistance > npc.spawn.floor.Size.X / 2 + NPC_SPAWN_SURROUNDING) {
+		} else if (
+			wanderingDistance > npc.spawn.floor.Size.X / 2 + NPC_SPAWN_SURROUNDING ||
+			(npc.state.state === "WANDERING" && time >= npc.state.nextWanderTime)
+		) {
 			// return back to a random spawn
 			let returnState = {
 				state: "WANDERING" as const,
@@ -122,17 +153,9 @@ export function runStep(
 				returnState = npc.state;
 			}
 
-			if (returnState.nextWanderTime <= time) {
-				npc.instance.Humanoid.MoveTo(
-					new Vector3(
-						random.NextInteger(npc.spawn.min.X, npc.spawn.max.X),
-						npc.spawn.min.Y,
-						random.NextInteger(npc.spawn.min.Z, npc.spawn.max.Z),
-					),
-				);
+			npc.instance.Humanoid.MoveTo(getRandomCFrame(npc.spawn.min, npc.spawn.max, random).Position);
 
-				returnState.nextWanderTime = time + random.NextInteger(NPC_WANDER_COOLDOWN_MIN, NPC_WANDER_COOLDOWN_MAX);
-			}
+			returnState.nextWanderTime = time + random.NextInteger(NPC_WANDER_COOLDOWN_MIN, NPC_WANDER_COOLDOWN_MAX);
 		}
 	}
 }

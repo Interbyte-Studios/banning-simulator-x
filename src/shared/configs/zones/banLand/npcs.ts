@@ -1,3 +1,5 @@
+import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
+
 import { Npc } from "..";
 
 /**
@@ -7,7 +9,7 @@ import { Npc } from "..";
  * @returns The abbreviated number, to two decimal places.
  */
 function shorten(x: string): number {
-	return shorten(x);
+	return twoDpAbbreviator.stringToNumber(x);
 }
 
 export const BAN_LAND_NPCS = {
