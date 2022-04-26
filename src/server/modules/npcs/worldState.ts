@@ -10,6 +10,7 @@ export interface NpcInstance {
 	instance: NpcCharacter;
 	spawn: NpcWorldState["zones"][number]["spawn"];
 	state: NpcState;
+	world: NpcWorldState;
 }
 
 export interface NpcWorldState {

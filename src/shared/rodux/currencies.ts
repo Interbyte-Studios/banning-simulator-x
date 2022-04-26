@@ -5,6 +5,28 @@ import { currencies, Currency } from "shared/configs/currencies";
 import { PurchaseWeapon } from "./weapons";
 
 export type CurrenciesState = { [P in Currency]: number };
+export type CurrenciesActions = KillNpc;
+
+export interface KillNpc extends Rodux.Action<"killNpc"> {
+	currency: number;
+	currencyType: Currency;
+	experience: number;
+}
+
+/**
+ * @param currencyAmount The amount of currency to reward the player with.
+ * @param currencyType The type of currency to reward the player with.
+ * @param experience The amount of experience to give them.
+ * @returns The Rodux action to dispatch.
+ */
+export function killNpc(currencyAmount: number, currencyType: Currency, experience: number): KillNpc & Rodux.AnyAction {
+	return {
+		type: "killNpc",
+		currency: currencyAmount,
+		currencyType,
+		experience,
+	};
+}
 
 // start with 0 currency
 const defaultCurrencyAmount = 0;
@@ -13,11 +35,19 @@ const defaultCurrencies = Object.fromEntries(
 );
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const currenciesReducer = Rodux.createReducer<CurrenciesState, PurchaseWeapon>(defaultCurrencies, {
-	purchaseWeapon: (state, action) => {
-		const purchasedCurrency = state[action.cost.currency] - action.cost.amount;
+export const currenciesReducer = Rodux.createReducer<CurrenciesState, CurrenciesActions | PurchaseWeapon>(
+	defaultCurrencies,
+	{
+		purchaseWeapon: (state, action) => {
+			const purchasedCurrency = state[action.cost.currency] - action.cost.amount;
 
-		return { ...state, [action.cost.currency]: purchasedCurrency };
+			return { ...state, [action.cost.currency]: purchasedCurrency };
+		},
+		killNpc: (state, action) => {
+			const increasedCurrency = state[action.currencyType] + action.currency;
+
+			return { ...state, [action.currencyType]: increasedCurrency };
+		},
 	},
-});
+);
 /* eslint-enable jsdoc/require-jsdoc */

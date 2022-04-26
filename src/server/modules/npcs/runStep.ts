@@ -1,6 +1,8 @@
 import { Players } from "@rbxts/services";
+import { stores } from "server/playerStore";
 import { WORLDS } from "shared/configs/worlds";
 import { Store } from "shared/rodux";
+import { killNpc } from "shared/rodux/currencies";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 import { getNpcCharacter } from "./getNpcCharacter";
@@ -64,6 +66,7 @@ export function runStep(
 						state: "WANDERING",
 						nextWanderTime: 0,
 					},
+					world,
 				});
 			}
 
@@ -83,12 +86,34 @@ export function runStep(
 
 		// check that npc is alive
 		if (!(npc.npc.health > 0)) {
+			// currently this is possible if two players kill and NPC in the same tick
 			throw `Player ${player.Name} attempted to attack ${character.Name}, but the NPC was dead`;
 		}
 
 		// apply weapon damage to npc
 		const weapon = getWeaponInfo(store.getState().currentWeapon);
 		npc.npc.health -= weapon.damage;
+
+		// check if npc is dead
+		if (npc.npc.health <= 0) {
+			// reward player
+			const store = stores.get(player);
+			assert(store, `Could not get store for "${player.GetFullName()}" when rewarding them for killing NPC`);
+
+			const { reward } = npc.npc;
+
+			store.dispatch(killNpc(reward.currency, WORLDS[npc.world.name].reward, reward.experience));
+
+			// kill npc
+			npcs.delete(npc);
+
+			// remove from state
+			const npcZone = npc.world.zones.find((zone) => zone.spawn === npc.spawn);
+			npcZone?.npcs.unorderedRemove(npcZone.npcs.indexOf(npc));
+
+			// get rid of npc instance
+			npc.instance.Parent = undefined;
+		}
 	}
 
 	// move & wander & attack players
