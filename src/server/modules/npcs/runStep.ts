@@ -4,6 +4,7 @@ import { WORLDS } from "shared/configs/worlds";
 import { Store } from "shared/rodux";
 import { killNpc } from "shared/rodux/currencies";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
+import { getWeaponLevel } from "shared/util/getWeaponLevel";
 
 import { getNpcCharacter } from "./getNpcCharacter";
 import { getNpcFolder } from "./getNpcFolder";
@@ -91,8 +92,18 @@ export function runStep(
 		}
 
 		// apply weapon damage to npc
-		const weapon = getWeaponInfo(store.getState().currentWeapon);
-		npc.npc.health -= weapon.damage;
+		const storeState = store.getState(); // storing state in a variable since it's mentioned multiple times in the next few lines
+
+		// get the ban data on the weapon
+		const currentWeaponData = storeState.weapons.get(storeState.currentWeapon);
+		// if weapon doesn't exist there's obviously an issue
+		if (currentWeaponData === undefined) {
+			throw `Player ${player.Name} does not own the weapon they're attacking with.`;
+		}
+
+		const weapon = getWeaponInfo(storeState.currentWeapon);
+		const weaponLevelBonus = getWeaponLevel(currentWeaponData.bans);
+		npc.npc.health -= weapon.data.damage + weapon.data.damage * 0.25 * weaponLevelBonus.level;
 
 		// check if npc is dead
 		if (npc.npc.health <= 0) {
