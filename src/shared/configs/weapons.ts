@@ -255,3 +255,46 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 });
+
+export const WEAPON_LEVELS: Array<{ level: number; requiredBans: number }> = [
+	{
+		level: 1,
+		requiredBans: 5,
+	},
+	{
+		level: 2,
+		requiredBans: 10,
+	},
+	{
+		level: 3,
+		requiredBans: 25,
+	},
+	{
+		level: 4,
+		requiredBans: 50,
+	},
+	{
+		level: 5,
+		requiredBans: 100,
+	},
+	{
+		level: 6,
+		requiredBans: 200,
+	},
+	{
+		level: 7,
+		requiredBans: 500,
+	},
+	{
+		level: 8,
+		requiredBans: 1000,
+	},
+	{
+		level: 9,
+		requiredBans: 2500,
+	},
+	{
+		level: 10,
+		requiredBans: 5000,
+	},
+];
