@@ -41,7 +41,7 @@ export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions |
 	killNpc: (state, action) => {
 		const currentWeapon = state.get(action.weaponId);
 		if (currentWeapon === undefined) {
-			return new Map([...state]);
+			throw `Expected player to have a current weapon equipped.`;
 		}
 
 		const increasedWeaponBanCounter = currentWeapon.bans + 1;
