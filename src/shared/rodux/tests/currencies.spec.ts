@@ -13,7 +13,7 @@ export = (): void => {
 			const state: CurrenciesState = { gold: 10 };
 			const newState: CurrenciesState = { gold: state.gold + currencyAmount };
 
-			const action = killNpc(currencyAmount, "gold", 0);
+			const action = killNpc(currencyAmount, "gold", 0, 1);
 
 			assertDeepEqual(currenciesReducer(state, action), newState);
 		});
@@ -23,7 +23,7 @@ export = (): void => {
 
 			const experienceAmount = 25;
 
-			const action = killNpc(50, "gold", experienceAmount);
+			const action = killNpc(50, "gold", experienceAmount, 1);
 			expect(experienceReducer(state, action)).to.equal(experienceAmount);
 		});
 	});
