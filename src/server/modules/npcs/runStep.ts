@@ -92,11 +92,9 @@ export function runStep(
 		}
 
 		// apply weapon damage to npc
-		const storeState = store.getState(); // storing state in a variable since it's mentioned multiple times in the next few lines
+		const storeState = store.getState();
 
-		// get the ban data on the weapon
 		const currentWeaponData = storeState.weapons.get(storeState.currentWeapon);
-		// if weapon doesn't exist there's obviously an issue
 		if (currentWeaponData === undefined) {
 			throw `Player ${player.Name} does not own the weapon they're attacking with.`;
 		}
