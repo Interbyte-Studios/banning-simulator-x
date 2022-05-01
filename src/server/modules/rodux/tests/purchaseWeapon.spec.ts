@@ -10,7 +10,7 @@ import { purchaseWeapon } from "../purchaseWeapon";
 export = (): void => {
 	describe("purchaseWeapon", () => {
 		it("should allow purchasing a weapon", () => {
-			const weaponId = 2;
+			const weaponId = 1;
 
 			const player = useMockPlayer();
 			const { store, dispatchedActions, cleanup } = createDummyStore(player, {
@@ -30,7 +30,7 @@ export = (): void => {
 		});
 
 		it("should not purchase a weapon the player cannot afford", () => {
-			const weaponId = 2;
+			const weaponId = 1;
 
 			const player = useMockPlayer();
 			const { store, dispatchedActions, cleanup } = createDummyStore(player, { currencies: { gold: 500 } });

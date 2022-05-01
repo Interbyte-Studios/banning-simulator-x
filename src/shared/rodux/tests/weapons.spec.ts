@@ -46,8 +46,8 @@ export = (): void => {
 		it("should add experience to the equipped weapon", () => {
 			const weaponId = 1;
 
-			const state: WeaponsState = new Map();
-			const newState: WeaponsState = new Map([[weaponId, { bans: 0 }]]);
+			const state: WeaponsState = new Map([[weaponId, { bans: 0 }]]);
+			const newState: WeaponsState = new Map([[weaponId, { bans: 1 }]]);
 
 			const action = killNpc(0, "gold", 1, weaponId);
 			assertDeepEqual(weaponsReducer(state, action), newState);

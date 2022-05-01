@@ -19,12 +19,13 @@ export = (): void => {
 		});
 
 		it("should reward experience for npc kill", () => {
-			const state: ExperienceState = 250;
-
 			const experienceAmount = 25;
 
+			const state: ExperienceState = 250;
+			const newState: ExperienceState = state + experienceAmount;
+
 			const action = killNpc(50, "gold", experienceAmount, 1);
-			expect(experienceReducer(state, action)).to.equal(experienceAmount);
+			expect(experienceReducer(state, action)).to.equal(newState);
 		});
 	});
 };
