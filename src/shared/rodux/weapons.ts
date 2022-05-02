@@ -1,6 +1,8 @@
 import Rodux from "@rbxts/rodux";
 import { Currency } from "shared/configs/currencies";
 
+import { KillNpc } from "./currencies";
+
 export type WeaponsState = Map<
 	number,
 	{
@@ -32,9 +34,19 @@ export function purchaseWeapon(data: Omit<PurchaseWeapon, "type">): PurchaseWeap
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions>(new Map(), {
+export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions | KillNpc>(new Map(), {
 	purchaseWeapon: (state, action) => {
 		return new Map([...state, [action.id, { bans: 0 }]]);
+	},
+	killNpc: (state, action) => {
+		const currentWeapon = state.get(action.weaponId);
+		if (currentWeapon === undefined) {
+			throw `Expected player to own the weapon ${action.weaponId}`;
+		}
+
+		const increasedWeaponBanCounter = currentWeapon.bans + 1;
+
+		return new Map([...state, [action.weaponId, { bans: increasedWeaponBanCounter }]]);
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */

@@ -11,20 +11,28 @@ export interface KillNpc extends Rodux.Action<"killNpc"> {
 	currency: number;
 	currencyType: Currency;
 	experience: number;
+	weaponId: number;
 }
 
 /**
  * @param currencyAmount The amount of currency to reward the player with.
  * @param currencyType The type of currency to reward the player with.
  * @param experience The amount of experience to give them.
+ * @param weaponId The id of the weapon the player has equipped.
  * @returns The Rodux action to dispatch.
  */
-export function killNpc(currencyAmount: number, currencyType: Currency, experience: number): KillNpc & Rodux.AnyAction {
+export function killNpc(
+	currencyAmount: number,
+	currencyType: Currency,
+	experience: number,
+	weaponId: number,
+): KillNpc & Rodux.AnyAction {
 	return {
 		type: "killNpc",
 		currency: currencyAmount,
 		currencyType,
 		experience,
+		weaponId,
 	};
 }
 

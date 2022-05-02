@@ -4,7 +4,7 @@ import Object from "@rbxts/object-utils";
 import { currencies } from "shared/configs/currencies";
 import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 
-import { currenciesReducer } from "../currencies";
+import { currenciesReducer, killNpc } from "../currencies";
 import { purchaseWeapon, weaponsReducer, WeaponsState } from "../weapons";
 
 export = (): void => {
@@ -41,6 +41,16 @@ export = (): void => {
 			});
 
 			assertDeepEqual(currenciesReducer(state, action), newState);
+		});
+
+		it("should add experience to the equipped weapon", () => {
+			const weaponId = 1;
+
+			const state: WeaponsState = new Map([[weaponId, { bans: 0 }]]);
+			const newState: WeaponsState = new Map([[weaponId, { bans: 1 }]]);
+
+			const action = killNpc(0, "gold", 1, weaponId);
+			assertDeepEqual(weaponsReducer(state, action), newState);
 		});
 	});
 };
