@@ -1,0 +1,8 @@
+name = "Banning Simulator X"
+upload-to-group-id = 5126818
+
+
+[[inputs]]
+glob = "images/**/*.png"
+codegen = true
+codegen-path = "src/Shared/assets.lua"
