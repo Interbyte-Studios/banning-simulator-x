@@ -1,9 +1,10 @@
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 
 import { CANDY_EGG_PETS, DESERT_EGG_PETS, HONEYCOMB_EGG_PETS, MOLTEN_EGG_PETS, Pet, STARTER_EGG_PETS } from "./pets";
-import { WORLDS } from "./worlds";
+import { WorldNames } from "./worlds";
+import { ZoneNames } from "./zones";
 
-interface Egg {
+export interface Egg {
 	/**
 	 * The id of the egg (for layout order).
 	 */
@@ -17,7 +18,12 @@ interface Egg {
 	/**
 	 * The world the egg comes from.
 	 */
-	world: keyof typeof WORLDS;
+	world: WorldNames;
+
+	/**
+	 * The zone the egg becomes available in.
+	 */
+	zone: ZoneNames;
 }
 
 /**
@@ -28,26 +34,33 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		id: 1,
 		pets: STARTER_EGG_PETS,
 		world: "Ban Land",
+		zone: "Forest",
 	},
 	Desert: {
 		id: 2,
 		pets: DESERT_EGG_PETS,
 		world: "Ban Land",
+		zone: "Desert",
 	},
 	Honeycomb: {
 		id: 3,
 		pets: HONEYCOMB_EGG_PETS,
 		world: "Ban Land",
+		zone: "Sakura",
 	},
 	Candy: {
 		id: 4,
 		pets: CANDY_EGG_PETS,
 		world: "Ban Land",
+		zone: "Food Land",
 	},
 	Molten: {
 		id: 5,
 		pets: MOLTEN_EGG_PETS,
 		world: "Ban Land",
+		zone: "Lavalands",
 	},
 });
+
+export type EggNames = keyof typeof EGGS;
 export type Eggs = typeof EGGS;

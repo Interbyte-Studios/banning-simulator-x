@@ -1,4 +1,4 @@
-import { WORLDS } from "shared/configs/worlds";
+import { WorldNames } from "shared/configs/worlds";
 import { Npc } from "shared/configs/zones";
 
 import { NpcCharacter } from "./isNpcCharacter";
@@ -14,7 +14,7 @@ export interface NpcInstance {
 }
 
 export interface NpcWorldState {
-	name: keyof typeof WORLDS;
+	name: WorldNames;
 	zones: Array<{
 		name: string;
 		npcs: Array<NpcInstance>;

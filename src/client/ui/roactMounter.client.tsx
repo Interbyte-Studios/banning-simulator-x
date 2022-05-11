@@ -4,6 +4,7 @@ import { onStoreCreated } from "client/clientStores";
 import { remotes } from "shared/remotes";
 
 import { app as App } from "./app";
+import { eggCosts as EggCosts } from "./components/eggCosts";
 import { remoteContext } from "./remoteContext";
 
 const player = Players.LocalPlayer;
@@ -23,6 +24,7 @@ onStoreCreated(player)
 			>
 				<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
 					{<App player={player} store={store} />}
+					{<EggCosts />}
 				</screengui>
 			</remoteContext.Provider>,
 			playerGui,

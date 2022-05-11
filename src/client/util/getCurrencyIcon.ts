@@ -1,0 +1,14 @@
+import assetIds from "shared/assetIds";
+import { Currency } from "shared/configs/currencies";
+
+/**
+ * @param currency The type of currency.
+ * @returns The asset id of the icon associated with the given currency.
+ */
+export function getCurrencyIcon(currency: Currency): string {
+	switch (currency) {
+		case "gold": {
+			return assetIds.images.currencies.gold;
+		}
+	}
+}
