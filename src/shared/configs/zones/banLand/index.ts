@@ -1,11 +1,12 @@
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
+
 import type { Zone } from "..";
 import { BAN_LAND_NPCS } from "./npcs";
 
 export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	// zone 1
 	Forest: {
-		npcs: [BAN_LAND_NPCS.bronzePiece, BAN_LAND_NPCS.russoTalks],		
+		npcs: [BAN_LAND_NPCS.bronzePiece, BAN_LAND_NPCS.russoTalks],
 	},
 
 	// zone 2
@@ -35,7 +36,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 			currency: "gold",
 			amount: 200_000,
 			requiredRank: 8,
-		},		
+		},
 	},
 
 	// zone 5
@@ -45,7 +46,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 			currency: "gold",
 			amount: 1_000_000,
 			requiredRank: 10,
-		},		
+		},
 	},
 
 	// zone 6
@@ -55,7 +56,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 			currency: "gold",
 			amount: 5_000_000,
 			requiredRank: 12,
-		},		
+		},
 	},
 
 	// zone 7
@@ -65,7 +66,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 			currency: "gold",
 			amount: 30_000_000,
 			requiredRank: 14,
-		},		
+		},
 	},
 
 	// zone 8
@@ -75,16 +76,16 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 			currency: "gold",
 			amount: 180_000_000,
 			requiredRank: 15,
-		},		
+		},
 	},
 
 	// zone 9
-	"Haunted Forst": {
+	"Haunted Forest": {
 		npcs: [BAN_LAND_NPCS.gamesReborn, BAN_LAND_NPCS.beeism],
 		cost: {
 			currency: "gold",
 			amount: 1_000_000_000,
 			requiredRank: 16,
-		},		
-	}
-}
+		},
+	},
+});

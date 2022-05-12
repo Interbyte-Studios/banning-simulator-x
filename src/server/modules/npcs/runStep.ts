@@ -47,7 +47,7 @@ export function runStep(
 		for (const zone of world.zones) {
 			// spawn any npcs that need spawning
 			if (zone.npcs.size() < ZONE_NPC_AMOUNT) {
-				const zoneInfo = WORLDS[world.name].zones.find((v) => v.name === zone.name);
+				const zoneInfo = WORLDS[world.name].zones[zone.name];
 				assert(zoneInfo, `Failed to find zone "${zone.name}" in world "${world.name}"`);
 
 				// if it's a boss zone, use the boss npc, otherwise, randomly choose an npc

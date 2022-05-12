@@ -1,5 +1,5 @@
 import { WorldNames } from "shared/configs/worlds";
-import { Npc } from "shared/configs/zones";
+import { Npc, ZoneNames } from "shared/configs/zones";
 
 import { NpcCharacter } from "./isNpcCharacter";
 
@@ -16,7 +16,7 @@ export interface NpcInstance {
 export interface NpcWorldState {
 	name: WorldNames;
 	zones: Array<{
-		name: string;
+		name: ZoneNames;
 		npcs: Array<NpcInstance>;
 		spawn: {
 			floor: BasePart;
