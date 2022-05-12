@@ -1,4 +1,4 @@
-import assetIds from "shared/assetIds";
+import assetIds from "shared/assets";
 import { Currency } from "shared/configs/currencies";
 
 /**
