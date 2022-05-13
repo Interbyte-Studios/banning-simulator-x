@@ -9,7 +9,7 @@ import { EggCostDisplay } from "../elements/eggCostDisplay";
 /* eslint-disable jsdoc/require-jsdoc */
 export function EggCost(): Roact.Element {
 	return (
-		<frame>
+		<frame Visible={false}>
 			{Object.entries(EGGS).map(([eggName]) => {
 				const eggModel = Workspace.interactions.eggs[eggName];
 
@@ -17,7 +17,7 @@ export function EggCost(): Roact.Element {
 				const eggCostVoid = getEggCost(eggName, false);
 
 				return (
-					<frame>
+					<frame Visible={false}>
 						<EggCostDisplay
 							adornee={eggModel.regular.cost}
 							cost={eggCostRegular.amount}
