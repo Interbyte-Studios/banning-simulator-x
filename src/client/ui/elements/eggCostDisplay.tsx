@@ -12,7 +12,7 @@ interface eggCostDisplayProps {
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-export function eggCostDisplay(props: eggCostDisplayProps): Roact.Element {
+export function EggCostDisplay(props: eggCostDisplayProps): Roact.Element {
 	return (
 		<surfacegui Adornee={props.adornee} Face={Enum.NormalId.Front} LightInfluence={0.8} ResetOnSpawn={false}>
 			<textlabel

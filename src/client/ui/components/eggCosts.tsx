@@ -4,10 +4,10 @@ import { Workspace } from "@rbxts/services";
 import { EGGS } from "shared/configs/eggs";
 import { getEggCost } from "shared/util/getEggCost";
 
-import { eggCostDisplay as EggCostDisplay } from "../elements/eggCostDisplay";
+import { EggCostDisplay } from "../elements/eggCostDisplay";
 
 /* eslint-disable jsdoc/require-jsdoc */
-export function eggCosts(): Roact.Element {
+export function EggCost(): Roact.Element {
 	return (
 		<>
 			{Object.entries(EGGS).map(([eggName]) => {
