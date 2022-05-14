@@ -4,5 +4,8 @@ return {
 		currencies = {
 			gold = "rbxassetid://9591269212",
 		},
+		misc = {
+			click = "rbxassetid://9619404897",
+		},
 	},
 }

@@ -32,6 +32,7 @@
   "dependencies": {
     "@rbxts/abbreviate": "^3.0.4",
     "@rbxts/fitumi": "^1.0.11",
+    "@rbxts/flipper": "^2.0.1",
     "@rbxts/net": "^2.1.5",
     "@rbxts/object-utils": "^1.0.4",
     "@rbxts/roact": "^1.4.0-ts.2",

@@ -2,3 +2,8 @@
 hash = "9aa6e2ab58a50dd5fbf70a95d57caa20c58e62d99487ea285c0a0df5ed3f3725"
 id = 9591269212
 packable = false
+
+[inputs."images/misc/click.png"]
+hash = "0eeabda68bd09fa99d9918decf984fb58d0b3d0fb081b40f30fb8f2ba8a5a05d"
+id = 9619404897
+packable = false

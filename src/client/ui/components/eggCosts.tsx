@@ -14,7 +14,7 @@ export function EggCost(): Roact.Element {
 				const eggModel = Workspace.interactions.eggs[eggName];
 
 				const eggCostRegular = getEggCost(eggName, false);
-				const eggCostVoid = getEggCost(eggName, false);
+				const eggCostVoid = getEggCost(eggName, true);
 
 				return (
 					<frame Visible={false}>
@@ -22,11 +22,13 @@ export function EggCost(): Roact.Element {
 							adornee={eggModel.regular.cost}
 							cost={eggCostRegular.amount}
 							currency={eggCostRegular.currencyType}
+							isVoid={false}
 						/>
 						<EggCostDisplay
 							adornee={eggModel.void.cost}
 							cost={eggCostVoid.amount}
 							currency={eggCostVoid.currencyType}
+							isVoid={true}
 						/>
 					</frame>
 				);
