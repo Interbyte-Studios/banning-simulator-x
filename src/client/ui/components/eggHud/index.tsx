@@ -20,8 +20,13 @@ export function EggHud(): Roact.Element {
 
 				return (
 					<frame Visible={false}>
-						<EggHudDisplay adornee={regularEgg} eggName={eggName} isVoid={false} pets={eggData.pets} />
-						<EggHudDisplay adornee={voidEgg} eggName={eggName} isVoid={true} pets={eggData.pets} />
+						<frame Visible={false}>
+							<EggHudDisplay adornee={regularEgg} eggName={eggName} isVoid={false} pets={eggData.pets} />
+						</frame>
+
+						<frame Visible={false}>
+							<EggHudDisplay adornee={voidEgg} eggName={eggName} isVoid={true} pets={eggData.pets} />
+						</frame>
 					</frame>
 				);
 			})}

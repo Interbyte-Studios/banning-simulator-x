@@ -8,7 +8,7 @@ import assetIds from "shared/assets";
 import { EggNames } from "shared/configs/eggs";
 import { Pet } from "shared/configs/pets";
 
-import { autoEnabled, udim2BottomRight, udim2Middle, udim2TopLeft, uiTheme, vec2Middle } from "../../commonValues";
+import { autoEnabled, udim2Middle, udim2TopLeft, uiTheme, vec2Middle } from "../../commonValues";
 import { PetFrame } from "../../elements/petFrame";
 import { RescalingScrollingFrame } from "../rescalingScrollingFrame";
 
@@ -31,7 +31,6 @@ export function EggHudDisplay(props: eggCostDisplayProps): Roact.Element {
 			ClipsDescendants={true}
 			ZIndexBehavior={Enum.ZIndexBehavior.Sibling}
 		>
-			<frame Visible={false} Size={udim2BottomRight} Position={udim2Middle} AnchorPoint={vec2Middle}></frame>
 			<BaseImageButton
 				Position={udim2Middle}
 				Size={new UDim2(0.175, 0, 0.135, 0)}
