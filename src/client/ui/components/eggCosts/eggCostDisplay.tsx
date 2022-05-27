@@ -1,9 +1,11 @@
 import Roact from "@rbxts/roact";
+import { BaseImageLabel } from "client/ui/elements/baseImageLabel";
+import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
 import { getCurrencyIcon } from "client/util/getCurrencyIcon";
 import { Currency } from "shared/configs/currencies";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
-import { font, vec2Middle } from "../commonValues";
+import { font, vec2Middle } from "../../commonValues";
 
 interface eggCostDisplayProps {
 	adornee: BasePart;
@@ -23,25 +25,19 @@ export function EggCostDisplay(props: eggCostDisplayProps): Roact.Element {
 			SizingMode={"PixelsPerStud"}
 			PixelsPerStud={50}
 		>
-			<textlabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={new UDim2(0.6, 0, 0.5, 0)}
-				Size={new UDim2(0.8, 0, 0.7, 0)}
-				Font={font}
+			<BaseTextLabel
+				Position={new UDim2(0.65, 0, 0.5, 0)}
+				Size={new UDim2(0.7, 0, 0.7, 0)}
 				Text={twoDpAbbreviator.numberToString(props.cost)}
-				TextScaled={true}
 				TextColor3={props.isVoid ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0)}
 			>
-				<imagelabel
+				<BaseImageLabel
 					AnchorPoint={new Vector2(1, 0.5)}
-					BackgroundTransparency={1}
-					Position={new UDim2(0.05, 0, 0.5, 0)}
-					Size={new UDim2(0.35, 0, 0.8, 0)}
+					Position={new UDim2(-0.05, 0, 0.5, 0)}
+					Size={new UDim2(0.35, 0, 1.1, 0)}
 					Image={getCurrencyIcon(props.currency)}
-					ScaleType={Enum.ScaleType.Fit}
 				/>
-			</textlabel>
+			</BaseTextLabel>
 		</surfacegui>
 	);
 }

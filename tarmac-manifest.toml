@@ -1,9 +1,114 @@
+[inputs."images/backgrounds/dark/AutoHatchBG.png"]
+hash = "59671121f265167c3fc6346ea75d881d13445d09d4bccbeac1c39fb73a8b5b24"
+id = 9724451796
+packable = false
+
+[inputs."images/backgrounds/dark/EggPetDisplay.png"]
+hash = "e5a1e521ccd48b5c97531cb8a2fe7e5d3defd5bbed6e36f7e992f3f4a0175d29"
+id = 9724447208
+packable = false
+
+[inputs."images/backgrounds/dark/PetBackground.png"]
+hash = "e7898bae6804666b1f2bb869c493d72006d148522128a29bafc250da65572bef"
+id = 9724447393
+packable = false
+
+[inputs."images/backgrounds/light/AutoHatchBG.png"]
+hash = "cb2e3efbc8955f37fcd71f49e9d88fa26db948c3f1a4bea5e514de78323cf8bc"
+id = 9724447550
+packable = false
+
+[inputs."images/backgrounds/light/EggPetDisplay.png"]
+hash = "5fb37770da8362ada4c6da0889ff2e2f3d6007942382cff4787a3f64b614b1fb"
+id = 9724447751
+packable = false
+
+[inputs."images/backgrounds/light/PetBackground.png"]
+hash = "8d86bc479b63984146f3ea047e41696fd69d792f8eb1d7da623262d692544106"
+id = 9724447903
+packable = false
+
+[inputs."images/buttons/dark/specialized/openEgg/OpenEgg.png"]
+hash = "b51684095e40d0fa88ffbdc6b5b5b1122334c75c0a57e335c5a44b1eea17a556"
+id = 9724448089
+packable = false
+
+[inputs."images/buttons/dark/specialized/openEgg/OpenEggSelected.png"]
+hash = "7d36b3a3c81d4ce47f130f7f4ac2c7e480b55e0f5b0fe8d69336ff72711d9e70"
+id = 9724448183
+packable = false
+
+[inputs."images/buttons/dark/templates/rectangular/RectangularButton.png"]
+hash = "8c968b48b477e59a47f15cd3c45f72e2cd335caeb6c7603d69ba33d4f0aacfd4"
+id = 9724448326
+packable = false
+
+[inputs."images/buttons/dark/templates/rectangular/RectangularButtonConfirmation.png"]
+hash = "40a81cebc535d07701945f76a8d3a5d1da0f56fccfb63e829aceda5a207ce0cb"
+id = 9724448476
+packable = false
+
+[inputs."images/buttons/dark/templates/rectangular/RectangularButtonWarning.png"]
+hash = "d1d0df47da44ebd038658950ad176bbd72880f45c767a3fe58a6b50273b4b483"
+id = 9724448606
+packable = false
+
+[inputs."images/buttons/dark/templates/square/SquareButton.png"]
+hash = "5ddbab1e289969aaa957022e9e310c0390832c5f3c7cbf02e62de687bcecf4d5"
+id = 9724448744
+packable = false
+
+[inputs."images/buttons/dark/templates/square/SquareButtonConfirmation.png"]
+hash = "678bff337c6863a54f2bd4b97ca75803ccc517032d97de97121866941186490c"
+id = 9724448873
+packable = false
+
+[inputs."images/buttons/dark/templates/square/SquareButtonWarning.png"]
+hash = "0827c4e9fdb6ed332322bcc5d4e453d8159fa1196fb1ae9cd3e8dfca2bdd11a0"
+id = 9724449051
+packable = false
+
+[inputs."images/buttons/light/specialized/openEgg/OpenEgg.png"]
+hash = "f2cb8bf854fca1bfa85a8d1fd3b94e8bb8707b217695dbf3922b0056af411a16"
+id = 9724449208
+packable = false
+
+[inputs."images/buttons/light/specialized/openEgg/OpenEggSelected.png"]
+hash = "590ab9466736e3c08726036d09e18d416b4d4bca7eaa22471423e37c0e1809e7"
+id = 9724449370
+packable = false
+
+[inputs."images/buttons/light/templates/rectangular/RectangularButton.png"]
+hash = "c653ed9eea1f530c7df2c3424d0edf30ba177cf83d161ed6dce9b66b4bfdb298"
+id = 9724449577
+packable = false
+
+[inputs."images/buttons/light/templates/rectangular/RectangularButtonConfirmation.png"]
+hash = "9dba83049027cecb9f24334f52414b00d60741e5b5141d69d5b372f37adb400a"
+id = 9724449681
+packable = false
+
+[inputs."images/buttons/light/templates/rectangular/RectangularButtonWarning.png"]
+hash = "ee3d76fa5cce9d7b91c484ea6ccc3adb200edb443f485c3b8cbcf142f5d61d04"
+id = 9724449836
+packable = false
+
+[inputs."images/buttons/light/templates/square/SquareButton.png"]
+hash = "aa5f17517ba9b60d3814f27b9c1efdf52451453651a3cea42be603c0a833a6f6"
+id = 9724449946
+packable = false
+
+[inputs."images/buttons/light/templates/square/SquareButtonConfirmation.png"]
+hash = "4d094943a8c15be35fb452384852af9c272fa3090d5a1874bdde18086e982c1b"
+id = 9724450043
+packable = false
+
+[inputs."images/buttons/light/templates/square/SquareButtonWarning.png"]
+hash = "34f5f328af9f676194662ea90ca486d56b99072439a5c557ebed031027dc0bee"
+id = 9724450192
+packable = false
+
 [inputs."images/currencies/gold.png"]
 hash = "9aa6e2ab58a50dd5fbf70a95d57caa20c58e62d99487ea285c0a0df5ed3f3725"
 id = 9591269212
-packable = false
-
-[inputs."images/misc/click.png"]
-hash = "0eeabda68bd09fa99d9918decf984fb58d0b3d0fb081b40f30fb8f2ba8a5a05d"
-id = 9619404897
 packable = false

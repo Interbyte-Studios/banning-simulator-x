@@ -4,7 +4,7 @@ import { Rarities } from "./rarities";
 
 export interface Pet {
 	/**
-	 * The chance of the pet (0 - 100);.
+	 * The chance of the pet (0 - 100).
 	 */
 	chance: number;
 
@@ -18,6 +18,9 @@ export interface Pet {
 	 */
 	rarity: Rarities;
 
+	/**
+	 * The stats of the pet.
+	 */
 	stats: {
 		damageMultiplier: number;
 		enchants?: Array<undefined>;

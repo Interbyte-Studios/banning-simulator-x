@@ -4,7 +4,7 @@ import { Workspace } from "@rbxts/services";
 import { EGGS } from "shared/configs/eggs";
 import { getEggCost } from "shared/util/getEggCost";
 
-import { EggCostDisplay } from "../elements/eggCostDisplay";
+import { EggCostDisplay } from "./eggCostDisplay";
 
 /* eslint-disable jsdoc/require-jsdoc */
 export function EggCost(): Roact.Element {
