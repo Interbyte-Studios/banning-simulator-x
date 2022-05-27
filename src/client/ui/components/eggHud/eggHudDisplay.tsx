@@ -8,7 +8,7 @@ import assetIds from "shared/assets";
 import { EggNames } from "shared/configs/eggs";
 import { Pet } from "shared/configs/pets";
 
-import { autoEnabled, uiTheme, vec2Middle } from "../../commonValues";
+import { autoEnabled, udim2BottomRight, udim2Middle, udim2TopLeft, uiTheme, vec2Middle } from "../../commonValues";
 import { PetFrame } from "../../elements/petFrame";
 import { RescalingScrollingFrame } from "../rescalingScrollingFrame";
 
@@ -31,8 +31,9 @@ export function EggHudDisplay(props: eggCostDisplayProps): Roact.Element {
 			ClipsDescendants={true}
 			ZIndexBehavior={Enum.ZIndexBehavior.Sibling}
 		>
+			<frame Visible={false} Size={udim2BottomRight} Position={udim2Middle} AnchorPoint={vec2Middle}></frame>
 			<BaseImageButton
-				Position={new UDim2(0.5, 0, 0.5, 0)}
+				Position={udim2Middle}
 				Size={new UDim2(0.175, 0, 0.135, 0)}
 				Image={assetIds.images.buttons[uiTheme].specialized.openEgg.OpenEgg}
 				HoverImage={assetIds.images.buttons[uiTheme].specialized.openEgg.OpenEggSelected}
@@ -62,11 +63,7 @@ export function EggHudDisplay(props: eggCostDisplayProps): Roact.Element {
 						]
 					}
 				>
-					<BaseTextLabel
-						Position={new UDim2(0.5, 0, 0.5, 0)}
-						Size={new UDim2(0.9, 0, 0.6, 0)}
-						Text={string.upper(autoEnabled)}
-					>
+					<BaseTextLabel Position={udim2Middle} Size={new UDim2(0.9, 0, 0.6, 0)} Text={string.upper(autoEnabled)}>
 						<BaseUIStroke Thickness={2.4} />
 					</BaseTextLabel>
 				</BaseImageButton>
@@ -86,7 +83,7 @@ export function EggHudDisplay(props: eggCostDisplayProps): Roact.Element {
 					Position={new UDim2(0.5, 0, 0.42, 0)}
 					Size={new UDim2(0.9, 0, 0.65, 0)}
 					BorderSizePixel={0}
-					CanvasSize={new UDim2(0, 0, 0, 0)}
+					CanvasSize={udim2TopLeft}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uigridlayout CellPadding={new UDim2(0.05, 0, 0.05, 0)} CellSize={new UDim2(0.3, 0, 0.48, 0)} />
