@@ -3,10 +3,13 @@ import Roact from "@rbxts/roact";
 import { Workspace } from "@rbxts/services";
 import { EGGS } from "shared/configs/eggs";
 
+import { eggHudAnimatorService } from "./eggHudAnimatorService";
 import { EggHudDisplay } from "./eggHudDisplay";
 
 /* eslint-disable jsdoc/require-jsdoc */
 export function EggHud(): Roact.Element {
+	eggHudAnimatorService.init();
+
 	return (
 		<frame Visible={false}>
 			{Object.entries(EGGS).map(([eggName, eggData]) => {
@@ -20,13 +23,8 @@ export function EggHud(): Roact.Element {
 
 				return (
 					<frame Visible={false}>
-						<frame Visible={false}>
-							<EggHudDisplay adornee={regularEgg} eggName={eggName} isVoid={false} pets={eggData.pets} />
-						</frame>
-
-						<frame Visible={false}>
-							<EggHudDisplay adornee={voidEgg} eggName={eggName} isVoid={true} pets={eggData.pets} />
-						</frame>
+						<EggHudDisplay adornee={regularEgg} eggName={eggName} isVoid={false} pets={eggData.pets} />
+						<EggHudDisplay adornee={voidEgg} eggName={eggName} isVoid={true} pets={eggData.pets} />
 					</frame>
 				);
 			})}
