@@ -11,7 +11,7 @@ import { Pet } from "shared/configs/pets";
 
 import { autoEnabled, udim2Middle, udim2TopLeft, uiTheme, vec2Middle } from "../../commonValues";
 import { PetFrame } from "../../elements/petFrame";
-import { RescalingScrollingFrame } from "../rescalingScrollingFrame";
+import { RescalingScrollingFrame } from "../../elements/rescalingScrollingFrame";
 import { eggHudAnimatorService } from "./eggHudAnimatorService";
 
 interface eggCostDisplayProps {
