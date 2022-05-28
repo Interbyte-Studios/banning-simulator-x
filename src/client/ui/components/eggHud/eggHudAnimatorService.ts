@@ -4,11 +4,7 @@ import { getMagnitudeBetweenPlayerAndObject } from "shared/util/getDistanceFromO
 
 interface HudBindingSet {
 	adornee: BasePart;
-	currentValue: {
-		X: number;
-		Y: number;
-	};
-	setGoal(goals: { X?: Flipper.Spring; Y?: Flipper.Spring }): void;
+	motor: Flipper.GroupMotor<{ X: number; Y: number }>;
 }
 
 /**
@@ -39,12 +35,12 @@ export class eggHudAnimatorService {
 	 * Expected binding values for a egg hud ui that is displayed to the player.
 	 */
 	private static isActive = {
-		X: new Flipper.Spring(this.isActiveGoal, {
+		X: new Flipper.Spring(eggHudAnimatorService.isActiveGoal, {
 			frequency: 5,
 			dampingRatio: 1,
 		}),
 
-		Y: new Flipper.Spring(this.isActiveGoal, {
+		Y: new Flipper.Spring(eggHudAnimatorService.isActiveGoal, {
 			frequency: 5,
 			dampingRatio: 1,
 		}),
@@ -54,12 +50,12 @@ export class eggHudAnimatorService {
 	 * Expected binding values for a egg hud ui that is not displayted to the player.
 	 */
 	private static isDormant = {
-		X: new Flipper.Spring(this.isDormantGoal, {
+		X: new Flipper.Spring(eggHudAnimatorService.isDormantGoal, {
 			frequency: 5,
 			dampingRatio: 1,
 		}),
 
-		Y: new Flipper.Spring(this.isDormantGoal, {
+		Y: new Flipper.Spring(eggHudAnimatorService.isDormantGoal, {
 			frequency: 4,
 			dampingRatio: 0.75,
 		}),
@@ -76,12 +72,12 @@ export class eggHudAnimatorService {
 				const magnitudeToBasePart = getMagnitudeBetweenPlayerAndObject(player, bindingSetData.adornee);
 				if (magnitudeToBasePart !== undefined) {
 					if (magnitudeToBasePart <= this.magnitudeRequirement) {
-						if (bindingSetData.currentValue !== { X: this.isActiveGoal, Y: this.isActiveGoal }) {
-							bindingSetData.setGoal(this.isActive);
+						if (bindingSetData.motor.getValue() !== { X: this.isActiveGoal, Y: this.isActiveGoal }) {
+							bindingSetData.motor.setGoal(this.isActive);
 						}
 					} else {
-						if (bindingSetData.currentValue !== { X: this.isDormantGoal, Y: this.isDormantGoal }) {
-							bindingSetData.setGoal(this.isDormant);
+						if (bindingSetData.motor.getValue() !== { X: this.isDormantGoal, Y: this.isDormantGoal }) {
+							bindingSetData.motor.setGoal(this.isDormant);
 						}
 					}
 				}

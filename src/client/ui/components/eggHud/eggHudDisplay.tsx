@@ -34,8 +34,7 @@ export function EggHudDisplay(props: eggCostDisplayProps): Roact.Element {
 
 	eggHudAnimatorService.bindingSets.push({
 		adornee: props.adornee,
-		currentValue: motor.getValue(),
-		setGoal: motor.setGoal,
+		motor: motor,
 	});
 
 	return (
