@@ -8,7 +8,7 @@ interface HudBindingSet {
 		X: number;
 		Y: number;
 	};
-	setGoal: (goals: { X?: Flipper.Spring; Y?: Flipper.Spring | Flipper.Instant }) => void;
+	setGoal(goals: { X?: Flipper.Spring; Y?: Flipper.Spring }): void;
 }
 
 /**
