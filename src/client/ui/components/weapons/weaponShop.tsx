@@ -9,9 +9,9 @@ import { Store, StoreState } from "shared/rodux";
 import { WeaponsState } from "shared/rodux/weapons";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
-import { color3White, vec2Middle } from "../commonValues";
-import { hooks } from "../hooks";
-import { remoteContext } from "../remoteContext";
+import { color3White, vec2Middle } from "../../commonValues";
+import { hooks } from "../../hooks";
+import { remoteContext } from "../../remoteContext";
 
 interface WeaponShopProps extends WeaponShopMappedProps {
 	store: Store;

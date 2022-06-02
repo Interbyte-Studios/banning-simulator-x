@@ -5,8 +5,6 @@ import { getCurrencyIcon } from "client/util/getCurrencyIcon";
 import { Currency } from "shared/configs/currencies";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
-import { font, vec2Middle } from "../../commonValues";
-
 interface eggCostDisplayProps {
 	adornee: BasePart;
 	cost: number;

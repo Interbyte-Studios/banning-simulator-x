@@ -1,6 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
+import { purchaseEgg } from "client/eggs/purchaseEgg";
 import { BaseImageButton } from "client/ui/elements/baseImageButton";
 import { BaseImageLabel } from "client/ui/elements/baseImageLabel";
 import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
@@ -8,10 +9,11 @@ import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import assetIds from "shared/assets";
 import { EggNames } from "shared/configs/eggs";
 import { Pet } from "shared/configs/pets";
+import { Store } from "shared/rodux";
 
-import { autoEnabled, udim2Middle, udim2TopLeft, uiTheme, vec2Middle } from "../../commonValues";
-import { PetFrame } from "../../elements/petFrame";
-import { RescalingScrollingFrame } from "../../elements/rescalingScrollingFrame";
+import { autoEnabled, udim2Middle, udim2TopLeft, uiTheme, vec2Middle } from "../../../commonValues";
+import { PetFrame } from "../../../elements/petFrame";
+import { RescalingScrollingFrame } from "../../../elements/rescalingScrollingFrame";
 import { eggHudAnimatorService } from "./eggHudAnimatorService";
 
 interface eggCostDisplayProps {
@@ -19,6 +21,7 @@ interface eggCostDisplayProps {
 	eggName: EggNames;
 	isVoid: boolean;
 	pets: Record<string, Pet>;
+	store: Store;
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
@@ -55,12 +58,17 @@ export function EggHudDisplay(props: eggCostDisplayProps): Roact.Element {
 					return new UDim2(value.X, 0, value.Y, 0);
 				})}
 			>
-				<BaseImageButton
+				<imagebutton
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
 					Position={udim2Middle}
 					Size={new UDim2(0.175, 0, 0.135, 0)}
 					Image={assetIds.images.buttons[uiTheme].specialized.openEgg.OpenEgg}
 					HoverImage={assetIds.images.buttons[uiTheme].specialized.openEgg.OpenEggSelected}
 					PressedImage={assetIds.images.buttons[uiTheme].specialized.openEgg.OpenEggSelected}
+					Event={{
+						Activated: (): void => purchaseEgg(props.eggName, props.store, props.isVoid),
+					}}
 				/>
 				<BaseImageLabel
 					Position={new UDim2(0.5, 0, 0.675, 0)}

@@ -42,7 +42,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 				Size={new UDim2(0.5, 0, 0.4, 0)}
 				Text={petData.rarity !== "Legendary" ? `${petData.chance}%` : "???"}
 			>
-				<RarityGradient rarity={petData.rarity} />
+				<RarityGradient Rarity={petData.rarity} />
 				<BaseUIStroke Thickness={3.2} />
 			</BaseTextLabel>
 		</frame>

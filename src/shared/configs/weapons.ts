@@ -17,7 +17,6 @@ export interface Weapon {
 	isBossWeapon: boolean;
 }
 
-export type WeaponIndex = keyof typeof WEAPONS;
 export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Stone Hammer": {
 		id: 1,
@@ -298,3 +297,6 @@ export const WEAPON_LEVELS: Array<{ level: number; requiredBans: number }> = [
 		requiredBans: 5000,
 	},
 ];
+
+export type Weapons = typeof WEAPONS;
+export type WeaponIndex = keyof typeof WEAPONS;

@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 
-import { ToggleWeaponButton } from "../components/toggleWeaponButton";
+import { ToggleWeaponButton } from "../components/weapons/toggleWeaponButton";
 import { createMockStory } from "./createMockStory";
 
 export = (target: GuiBase): (() => void) => {

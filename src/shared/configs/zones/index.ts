@@ -1,5 +1,6 @@
 import { Currency } from "../currencies";
 import { BAN_LAND_ZONES } from "./banLand";
+import { BAN_LAND_NPCS } from "./banLand/npcs";
 
 export interface Npc {
 	name: string;
@@ -27,3 +28,5 @@ export interface Zone {
 
 export type ZoneNames = keyof typeof BAN_LAND_ZONES;
 export type Zones = typeof BAN_LAND_ZONES;
+
+export type NPCs = keyof typeof BAN_LAND_NPCS;

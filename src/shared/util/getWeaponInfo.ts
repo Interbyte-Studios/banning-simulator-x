@@ -10,7 +10,7 @@ import { getItemById } from "./getItemById";
  * @returns Wepaon config data.
  */
 export function getWeaponInfo(weaponId: number): { name: string; data: Weapon } {
-	const weaponModel = getItemById(ReplicatedStorage.weapons, weaponId);
+	const weaponModel = getItemById(ReplicatedStorage.assetObjects.weapons, weaponId);
 	assert(weaponModel, `Failed to get weapon model for weapon with id: ${tostring(weaponId)}`);
 
 	return {

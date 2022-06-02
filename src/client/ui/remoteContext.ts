@@ -1,5 +1,7 @@
-import { ClientToServerEventDeclaration } from "@rbxts/net/out/definitions/Types";
+import { ClientToServerEventDeclaration, ServerToClientEventDeclaration } from "@rbxts/net/out/definitions/Types";
 import { createContext } from "@rbxts/roact";
+import { RelayHatchDefinition } from "shared/remotes/eggs/relayHatchInfo";
+import { RequestHatchDefinition } from "shared/remotes/eggs/requestHatch";
 import { EquipWeaponDefinition } from "shared/remotes/weapons/equipWeapon";
 import { PurchaseWeaponDefinition } from "shared/remotes/weapons/purchaseWeapon";
 
@@ -29,6 +31,7 @@ function fakeRemoteCall<T extends ClientToServerEventDeclaration<Array<unknown>>
 export const fakeRemoteContext = {
 	equipWeapon: fakeRemoteCall<EquipWeaponDefinition>("equipWeapon"),
 	purchaseWeapon: fakeRemoteCall<PurchaseWeaponDefinition>("purchaseWeapon"),
+	requestHatch: fakeRemoteCall<RequestHatchDefinition>("requestHatch"),
 };
 
 export const remoteContext = createContext(fakeRemoteContext);
