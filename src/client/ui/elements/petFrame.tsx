@@ -4,7 +4,7 @@ import { EggNames } from "shared/configs/eggs";
 import { getEggData } from "shared/util/getEggData";
 import { getPetData } from "shared/util/getPetData";
 
-import { udim2BottomRight, udim2Middle, udim2TopLeft, uiTheme, vec2Middle } from "../commonValues";
+import { udim2BottomRight, udim2Middle, uiTheme } from "../commonValues";
 import { BaseImageLabel } from "./baseImageLabel";
 import { BaseTextLabel } from "./baseTextLabel";
 import { BaseUIStroke } from "./baseUIStroke";
@@ -23,19 +23,8 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 	return (
 		<frame BackgroundTransparency={1} ZIndex={props.petId}>
 			<uiaspectratioconstraint AspectRatio={1} />
-			<BaseImageLabel
-				Position={udim2TopLeft}
-				Size={udim2BottomRight}
-				Image={assetIds.images.buttons[uiTheme].templates.square.SquareButton}
-				ScaleType={Enum.ScaleType.Fit}
-			>
-				<BaseImageLabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={udim2Middle}
-					Size={udim2Middle}
-					Image={"http://www.roblox.com/asset/?id=9125808056"}
-				/>
+			<BaseImageLabel Size={udim2BottomRight} Image={assetIds.images.buttons[uiTheme].templates.square.SquareButton}>
+				<BaseImageLabel Size={udim2Middle} Image={"http://www.roblox.com/asset/?id=9125808056"} />
 			</BaseImageLabel>
 			<BaseTextLabel
 				Position={new UDim2(0.3, 0, 0.15, 0)}

@@ -1,8 +1,11 @@
 import Roact from "@rbxts/roact";
 
-import { vec2Middle } from "../commonValues";
+import { udim2Middle, vec2Middle } from "../commonValues";
 
-interface BaseImageLabelProps extends Partial<ImageLabel> {}
+type BaseImageLabelProps = Omit<
+	Partial<WritableInstanceProperties<ImageLabel>>,
+	"BackgroundTransparency" | "ScaleType"
+>;
 
 /* eslint-disable jsdoc/require-jsdoc */
 export function BaseImageLabel(props: BaseImageLabelProps): Roact.Element {
@@ -10,10 +13,10 @@ export function BaseImageLabel(props: BaseImageLabelProps): Roact.Element {
 		<imagelabel
 			AnchorPoint={props.AnchorPoint ? props.AnchorPoint : vec2Middle}
 			BackgroundTransparency={1}
-			Position={props.Position}
+			Position={props.Position ? props.Position : udim2Middle}
 			Size={props.Size}
 			Image={props.Image}
-			ScaleType={props.ScaleType ? props.ScaleType : Enum.ScaleType.Fit}
+			ScaleType={Enum.ScaleType.Fit}
 			{...props}
 		/>
 	);

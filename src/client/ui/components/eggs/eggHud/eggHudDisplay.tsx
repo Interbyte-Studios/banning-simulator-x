@@ -11,7 +11,7 @@ import { EggNames } from "shared/configs/eggs";
 import { Pet } from "shared/configs/pets";
 import { Store } from "shared/rodux";
 
-import { autoEnabled, udim2Middle, udim2TopLeft, uiTheme, vec2Middle } from "../../../commonValues";
+import { autoEnabled, udim2Middle, uiTheme, vec2Middle } from "../../../commonValues";
 import { PetFrame } from "../../../elements/petFrame";
 import { RescalingScrollingFrame } from "../../../elements/rescalingScrollingFrame";
 import { eggHudAnimatorService } from "./eggHudAnimatorService";
@@ -114,10 +114,9 @@ export function EggHudDisplay(props: eggCostDisplayProps): Roact.Element {
 						Position={new UDim2(0.5, 0, 0.42, 0)}
 						Size={new UDim2(0.9, 0, 0.65, 0)}
 						BorderSizePixel={0}
-						CanvasSize={udim2TopLeft}
 						ScrollingDirection={Enum.ScrollingDirection.Y}
 					>
-						<uigridlayout CellPadding={new UDim2(0.05, 0, 0.05, 0)} CellSize={new UDim2(0.3, 0, 0.48, 0)} />
+						<uigridlayout CellSize={new UDim2(0.3, 0, 0.48, 0)} />
 						{Object.entries(props.pets).map(([, petInfo]) => {
 							return <PetFrame eggName={props.eggName} petId={petInfo.id} />;
 						})}
