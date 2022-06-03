@@ -13,9 +13,9 @@ import { NpcCharacter } from "./isNpcCharacter";
 import { NpcInstance, NpcWorldState } from "./worldState";
 
 // distance units for following a player
-const NPC_FOLLOW_DISTANCE = 10;
+const NPC_FOLLOW_DISTANCE = 20;
 // how far the npc will travel around spawn
-const NPC_SPAWN_SURROUNDING = 15;
+const NPC_SPAWN_SURROUNDING = 25;
 // distance to attack a player
 const NPC_ATTACK_DISTANCE = 2;
 // cooldown between attacks the NPC performs
@@ -146,7 +146,9 @@ export function runStep(
 		if (
 			closestPlayer &&
 			closestDistance < NPC_FOLLOW_DISTANCE &&
-			wanderingDistance < npc.spawn.floor.Size.X / 2 + NPC_SPAWN_SURROUNDING
+			wanderingDistance < npc.spawn.floor.Size.X / 2 + NPC_SPAWN_SURROUNDING &&
+			// check that npc would not walk to the player outside the region
+			closestPlayer.DistanceFromCharacter(npc.spawn.floor.Position) < npc.spawn.floor.Size.X / 2 + NPC_SPAWN_SURROUNDING
 		) {
 			const closestCharacter = closestPlayer.Character?.FindFirstChildWhichIsA("Humanoid");
 			if (!(closestCharacter && closestCharacter.RootPart)) {
@@ -175,8 +177,12 @@ export function runStep(
 				}
 			}
 		} else if (
+			// check if npc has walked outside of wandering zone
 			wanderingDistance > npc.spawn.floor.Size.X / 2 + NPC_SPAWN_SURROUNDING ||
-			(npc.state.state === "WANDERING" && time >= npc.state.nextWanderTime)
+			// check if npc needs to re-wander
+			(npc.state.state === "WANDERING" && time >= npc.state.nextWanderTime) ||
+			// check if npc has walked outside follow distance
+			(closestDistance > NPC_FOLLOW_DISTANCE && npc.state.state === "FOLLOWING")
 		) {
 			// return back to a random spawn
 			let returnState = {
