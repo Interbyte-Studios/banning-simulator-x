@@ -1,7 +1,6 @@
 import Roact from "@rbxts/roact";
 import assetIds from "shared/assets";
 import { EggNames } from "shared/configs/eggs";
-import { getEggData } from "shared/util/getEggData";
 import { getPetData } from "shared/util/getPetData";
 
 import { udim2BottomRight, udim2Middle, uiTheme } from "../commonValues";
@@ -17,8 +16,7 @@ interface PetFrameProps {
 
 /* eslint-disable jsdoc/require-jsdoc */
 export function PetFrame(props: PetFrameProps): Roact.Element {
-	const eggInfo = getEggData(props.eggName);
-	const petData = getPetData(eggInfo, props.petId);
+	const petData = getPetData(props.eggName, props.petId);
 
 	return (
 		<frame BackgroundTransparency={1} ZIndex={props.petId}>
@@ -29,9 +27,9 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 			<BaseTextLabel
 				Position={new UDim2(0.3, 0, 0.15, 0)}
 				Size={new UDim2(0.5, 0, 0.4, 0)}
-				Text={petData.rarity !== "Legendary" ? `${petData.chance}%` : "???"}
+				Text={petData.petData.rarity !== "Legendary" ? `${petData.petData.chance}%` : "???"}
 			>
-				<RarityGradient Rarity={petData.rarity} />
+				<RarityGradient Rarity={petData.petData.rarity} />
 				<BaseUIStroke Thickness={3.2} />
 			</BaseTextLabel>
 		</frame>

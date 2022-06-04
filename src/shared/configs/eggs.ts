@@ -64,3 +64,8 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 
 export type EggNames = keyof typeof EGGS;
 export type Eggs = typeof EGGS;
+
+/**
+ * How long a player must wait between egg hatches.
+ */
+export const hatchDebounce = 3.5;

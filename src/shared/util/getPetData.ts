@@ -1,5 +1,12 @@
-import { Egg } from "shared/configs/eggs";
+import { EggNames } from "shared/configs/eggs";
 import { Pet } from "shared/configs/pets";
+
+import { getEggData } from "./getEggData";
+
+interface PetData {
+	petName: string;
+	petData: Pet;
+}
 
 /**
  * Fetches the metadata of a specified pet.
@@ -8,14 +15,18 @@ import { Pet } from "shared/configs/pets";
  * @param petId The id of the pet.
  * @returns Pet data of specified pet.
  */
-export function getPetData(egg: Egg, petId: number): Pet {
-	let petInfo: Pet | undefined;
-	for (const [_, petData] of pairs(egg.pets)) {
+export function getPetData(egg: EggNames, petId: number): PetData {
+	const eggData = getEggData(egg);
+
+	for (const [petName, petData] of pairs(eggData.pets)) {
 		if (petData.id !== petId) continue;
 
-		petInfo = petData;
-	}
-	assert(petInfo !== undefined, `Expected to find pet data for pet with id: "${petId}"`);
+		const _petData = {
+			petName: petName,
+			petData: petData,
+		};
 
-	return petInfo;
+		return _petData;
+	}
+	throw `Expected to find pet data for pet with id: "${petId}"`;
 }

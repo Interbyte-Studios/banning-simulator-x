@@ -15,3 +15,5 @@ export const font = Enum.Font.FredokaOne;
 
 export const uiTheme: "light" | "dark" = "dark";
 export const autoEnabled: "On" | "Off" = "On";
+
+export const userOwnsTripleEggs = true;

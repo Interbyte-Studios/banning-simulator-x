@@ -1,11 +1,22 @@
+import Roact from "@rbxts/roact";
 import { HttpService, Players, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
+import { canHatchEgg } from "client/eggs/canHatchEgg";
 import { EggNames } from "shared/configs/eggs";
+import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
 const player = Players.LocalPlayer;
 
 type ValidAmount = 1 | 2 | 3;
 type ValidEggId = 1 | 2 | 3 | 4;
+
+export interface HatchEggParams {
+	amount: ValidAmount;
+	eggName: EggNames;
+	pets: Array<number>;
+	isVoid: boolean;
+	infoFrameBinding: Roact.BindingFunction<{ 0: boolean; 1: boolean; 2: boolean }>;
+}
 
 interface AnimatedEgg {
 	id: ValidAmount;
@@ -19,11 +30,18 @@ interface AnimatedEgg {
 	};
 }
 
+interface AnimatedPet {
+	id: ValidAmount;
+	currentCFrame: CFrameValue;
+	petModel: Model;
+}
+
 interface TweenDataDoc {
 	tweenInfo: {
 		segment1: TweenInfo;
 		segment2: TweenInfo;
 		segment3: TweenInfo;
+		pets: TweenInfo;
 	};
 	tweenData: {
 		middle: {
@@ -59,6 +77,7 @@ export class AnimateEggs {
 			segment1: new TweenInfo(1, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
 			segment2: new TweenInfo(0.3, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
 			segment3: new TweenInfo(0.3, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+			pets: new TweenInfo(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
 		},
 		tweenData: {
 			middle: {
@@ -68,29 +87,19 @@ export class AnimateEggs {
 				segment3: new CFrame(0, 0, -5).mul(CFrame.Angles(0, 0, math.rad(-23.5))),
 			},
 			left: {
-				segment0: new CFrame(-4.5, 7.5, -7.75),
-				segment1: new CFrame(-4.5, 0, -7.75),
-				segment2: new CFrame(-4.5, 0, -6.75).mul(CFrame.Angles(0, 0, math.rad(25))),
-				segment3: new CFrame(-4.5, 0, -6).mul(CFrame.Angles(0, 0, math.rad(-23.5))),
+				segment0: new CFrame(-3.5, 7.5, -7.75),
+				segment1: new CFrame(-3.5, 0, -7.75),
+				segment2: new CFrame(-3.5, 0, -6.75).mul(CFrame.Angles(0, 0, math.rad(25))),
+				segment3: new CFrame(-3.5, 0, -6).mul(CFrame.Angles(0, 0, math.rad(-23.5))),
 			},
 			right: {
-				segment0: new CFrame(4.5, 7.5, -7.75),
-				segment1: new CFrame(4.5, 0, -7.75),
-				segment2: new CFrame(4.5, 0, -6.75).mul(CFrame.Angles(0, 0, math.rad(25))),
-				segment3: new CFrame(4.5, 0, -6).mul(CFrame.Angles(0, 0, math.rad(-23.5))),
+				segment0: new CFrame(3.5, 7.5, -8),
+				segment1: new CFrame(3.5, 0, -8),
+				segment2: new CFrame(3.5, 0, -7).mul(CFrame.Angles(0, 0, math.rad(25))),
+				segment3: new CFrame(3.5, 0, -6.25).mul(CFrame.Angles(0, 0, math.rad(-23.5))),
 			},
 		},
 	};
-
-	/**
-	 * The timestamp at which the player last hatched eggs.
-	 */
-	private static lastHatchTime = 0;
-
-	/**
-	 * The amount of time a player must wait before attempting hatching again.
-	 */
-	private static hatchTimeLimit = 3.5;
 
 	/**
 	 * The render guid for the animation currently being displayed.
@@ -114,7 +123,7 @@ export class AnimateEggs {
 	 * @param id The id of the egg.
 	 * @returns The segment containing CFrames for egg positions.
 	 */
-	private static getEggSegment(amount: ValidAmount, id: ValidEggId): TweenDataDoc["tweenData"]["middle"] {
+	private static getSegment(amount: ValidAmount, id: ValidEggId): TweenDataDoc["tweenData"]["middle"] {
 		let segmentData: TweenDataDoc["tweenData"]["middle"] | undefined;
 		switch (amount) {
 			case 1: {
@@ -178,7 +187,7 @@ export class AnimateEggs {
 			_segment: "segment1" | "segment2" | "segment3",
 			moveToNextId?: boolean,
 		): void {
-			const segment = AnimateEggs.getEggSegment(amount, eggData.id);
+			const segment = AnimateEggs.getSegment(amount, eggData.id);
 
 			const animation = TweenService.Create(eggData.currentCFrame, AnimateEggs.tweenData.tweenInfo[_segment], {
 				Value: segment[_segment],
@@ -209,7 +218,7 @@ export class AnimateEggs {
 
 				animateEggSegment(eggData, "segment3", true);
 
-				const segment = this.getEggSegment(amount, eggData.id);
+				const segment = this.getSegment(amount, eggData.id);
 
 				const duration = 1;
 				let timeStamp = 0;
@@ -241,17 +250,92 @@ export class AnimateEggs {
 	}
 
 	/**
+	 * Handles the animation for pet display.
+	 *
+	 * @param animatedPets An array of pet data containing all the metadata necesarry to animate them.
+	 * @param amount The amount of pets being displayed.
+	 */
+	private static animatePetHatches(animatedPets: Array<AnimatedPet>, amount: ValidAmount): void {
+		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
+
+		let amountComplete = 0;
+		for (const petData of animatedPets) {
+			task.spawn(() => {
+				const segment = this.getSegment(amount, petData.id);
+
+				petData.petModel.SetPrimaryPartCFrame(camera.GetRenderCFrame().mul(segment.segment1));
+				petData.currentCFrame.Value = segment.segment3;
+
+				let rotationDegrees = 0;
+				switch (amount) {
+					case 1: {
+						rotationDegrees = 0;
+						break;
+					}
+					case 2: {
+						switch (petData.id) {
+							case 1: {
+								rotationDegrees = -15;
+								break;
+							}
+							case 2: {
+								rotationDegrees = 15;
+								break;
+							}
+						}
+						break;
+					}
+					case 3: {
+						switch (petData.id) {
+							case 1: {
+								rotationDegrees = 0;
+								break;
+							}
+							case 2: {
+								rotationDegrees = -15;
+								break;
+							}
+							case 3: {
+								rotationDegrees = 15;
+								break;
+							}
+						}
+						break;
+					}
+				}
+
+				const animation = TweenService.Create(petData.currentCFrame, this.tweenData.tweenInfo.pets, {
+					Value: segment.segment1.mul(CFrame.Angles(0, math.rad(180), math.rad(rotationDegrees))),
+				});
+
+				animation.Play();
+				animation.Completed.Wait();
+				task.wait(0.5);
+
+				amountComplete += 1;
+			});
+		}
+
+		while (amountComplete !== 3) {
+			RunService.RenderStepped.Wait();
+		}
+
+		this.petAnimationComplete = true;
+	}
+
+	/**
 	 * Hatches eggs upon request.
 	 *
-	 * @param amount The amount of eggs to animate for hatching.
-	 * @param eggName The name of the egg.
-	 * @param pets The pets being hatched.
-	 * @param isVoid Whether or not the pets are void.
+	 * @param params The parameters used for handling the hatching animation.
+	 * @param params.amount The amount of eggs to animate for hatching.
+	 * @param params.eggName The name of the egg.
+	 * @param params.pets The pets being hatched.
+	 * @param params.isVoid Whether or not the pets are void.
+	 * @param params.updateInfoBinding A function to update the visibility of info-frames.
 	 */
-	public static hatchEggs(amount: ValidAmount, eggName: EggNames, pets: Array<number>, isVoid: boolean): void {
-		const now = time();
-		if (now - this.lastHatchTime < this.hatchTimeLimit) return;
-		this.lastHatchTime = now;
+	public static hatchEggs(params: HatchEggParams): void {
+		const canHatch = canHatchEgg();
+		if (canHatch === false) return;
 
 		const character = player.Character;
 		assert(character, `No character found for player ${player.Name}`);
@@ -264,13 +348,16 @@ export class AnimateEggs {
 
 		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
 
-		const eggFolder = ReplicatedStorage.assetObjects.eggs[eggName][isVoid ? "void" : "regular"];
+		const eggFolder = ReplicatedStorage.assetObjects.eggs[params.eggName][params.isVoid ? "void" : "regular"];
+		const petFolder = ReplicatedStorage.assetObjects.pets[params.eggName];
 
-		const animatedEggs: Array<AnimatedEgg> = [];
+		let animatedEggs: Array<AnimatedEgg> = [];
+		let animatedPets: Array<AnimatedPet> = [];
+
 		this.eggAnimationComplete = false;
 		this.petAnimationComplete = false;
 
-		for (let i = 1; i <= amount; i++) {
+		for (let i = 1; i <= params.amount; i++) {
 			const eggData: AnimatedEgg = {
 				id: i as ValidAmount,
 				currentCFrame: new Instance("CFrameValue"),
@@ -288,10 +375,30 @@ export class AnimateEggs {
 				egg.Parent = Workspace;
 			}
 
-			const segment = this.getEggSegment(amount, eggData.id);
+			const segment = this.getSegment(params.amount, eggData.id);
 			eggData.currentCFrame.Value = segment.segment0;
 
 			animatedEggs.push(eggData);
+		}
+
+		let currentId = 0;
+		for (const pet of params.pets) {
+			const petMetadata = getPetData(params.eggName, pet);
+
+			const petModel = petFolder.FindFirstChild(petMetadata.petName) as Model;
+			assert(petModel, `Expected to find pet model for pet with name ${petMetadata.petName}`);
+
+			currentId += 1;
+			const petData: AnimatedPet = {
+				id: currentId as ValidAmount,
+				currentCFrame: new Instance("CFrameValue"),
+				petModel: petModel.Clone(),
+			};
+
+			setAssetProperties("pet", petData.petModel, params.isVoid);
+			petData.petModel.Parent = Workspace;
+
+			animatedPets.push(petData);
 		}
 
 		this.currentRenderGuid = HttpService.GenerateGUID(false);
@@ -303,10 +410,49 @@ export class AnimateEggs {
 			}
 
 			if (this.eggAnimationComplete) {
-				RunService.UnbindFromRenderStep(this.currentRenderGuid);
+				for (const petData of animatedPets) {
+					if (petData.petModel.PrimaryPart === undefined) {
+						warn(`No primary part for animated pet.`);
+						continue;
+					}
+
+					petData.petModel.SetPrimaryPartCFrame(camera.GetRenderCFrame().mul(petData.currentCFrame.Value));
+				}
+
+				if (this.petAnimationComplete) {
+					RunService.UnbindFromRenderStep(this.currentRenderGuid);
+				}
 			}
 		});
 
-		this.animateEggHatches(animatedEggs, amount);
+		this.animateEggHatches(animatedEggs, params.amount);
+
+		params.infoFrameBinding({
+			0: params.amount === 1 || params.amount === 3,
+			1: params.amount === 2 || params.amount === 3,
+			2: params.amount === 2 || params.amount === 3,
+		});
+
+		this.animatePetHatches(animatedPets, params.amount);
+
+		// cleanup
+		params.infoFrameBinding({
+			0: false,
+			1: false,
+			2: false,
+		});
+
+		for (const eggData of animatedEggs) {
+			for (const [, eggModel] of pairs(eggData.eggModels)) {
+				eggModel.Destroy();
+			}
+		}
+
+		for (const petData of animatedPets) {
+			petData.petModel.Destroy();
+		}
+
+		animatedEggs = [];
+		animatedPets = [];
 	}
 }

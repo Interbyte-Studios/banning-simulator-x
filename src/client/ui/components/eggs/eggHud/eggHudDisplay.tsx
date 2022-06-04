@@ -11,7 +11,7 @@ import { EggNames } from "shared/configs/eggs";
 import { Pet } from "shared/configs/pets";
 import { Store } from "shared/rodux";
 
-import { autoEnabled, udim2Middle, uiTheme, vec2Middle } from "../../../commonValues";
+import { autoEnabled, udim2Middle, uiTheme, userOwnsTripleEggs, vec2Middle } from "../../../commonValues";
 import { PetFrame } from "../../../elements/petFrame";
 import { RescalingScrollingFrame } from "../../../elements/rescalingScrollingFrame";
 import { eggHudAnimatorService } from "./eggHudAnimatorService";
@@ -67,7 +67,7 @@ export function EggHudDisplay(props: eggCostDisplayProps): Roact.Element {
 					HoverImage={assetIds.images.buttons[uiTheme].specialized.openEgg.OpenEggSelected}
 					PressedImage={assetIds.images.buttons[uiTheme].specialized.openEgg.OpenEggSelected}
 					Event={{
-						Activated: (): void => purchaseEgg(props.eggName, props.store, props.isVoid),
+						Activated: (): void => purchaseEgg(userOwnsTripleEggs ? 3 : 1, props.eggName, props.isVoid, props.store),
 					}}
 				/>
 				<BaseImageLabel
