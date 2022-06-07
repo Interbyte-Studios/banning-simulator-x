@@ -206,9 +206,9 @@ export class AnimateEggs {
 					camera.GetRenderCFrame().mul(eggData.currentCFrame.Value),
 				);
 
+				eggData.eggModels[eggData.currentEgg].SetPrimaryPartCFrame(new CFrame(0, 0, 0));
+				eggData.eggModels[eggData.currentEgg].Parent = undefined;
 				eggData.currentEgg += 1;
-				eggData.eggModels[(eggData.currentEgg - 1) as ValidEggId].SetPrimaryPartCFrame(new CFrame(0, 0, 0));
-				eggData.eggModels[(eggData.currentEgg - 1) as ValidEggId].Parent = undefined;
 			}
 		}
 
@@ -402,7 +402,7 @@ export class AnimateEggs {
 	 * Handles the run service connection for the animation.
 	 */
 	public static handleAnimation(): void {
-		if (!this.eggAnimationComplete || !this.petAnimationComplete) return;
+		if (this.eggAnimationComplete === false || this.petAnimationComplete === false) return;
 
 		const canHatch = canHatchEgg();
 		if (canHatch === false) return;
@@ -449,11 +449,5 @@ export class AnimateEggs {
 				}
 			}
 		});
-
-		for (const eggData of this.animatedEggs) {
-			for (const [, eggModel] of pairs(eggData.eggModels)) {
-				eggModel.Destroy();
-			}
-		}
 	}
 }
