@@ -10,14 +10,13 @@ interface EggHatchState {
 	eggName: EggNames;
 	isActive: boolean;
 	isVoid: boolean;
+	isVisible: {
+		1: boolean;
+		2: boolean;
+		3: boolean;
+	};
 	pets: Array<number>;
 }
-
-const [infoFramesVisible, updateInfoFramesVisibility] = Roact.createBinding({
-	0: false,
-	1: false,
-	2: false,
-});
 
 /* eslint-disable jsdoc/require-jsdoc */
 export class EggHatch extends Roact.Component<{}, EggHatchState> {
@@ -40,21 +39,21 @@ export class EggHatch extends Roact.Component<{}, EggHatchState> {
 					<InfoFrame
 						eggName={this.state.eggName}
 						id={0}
-						isVisible={infoFramesVisible.getValue()[0]}
+						isVisible={this.state.isVisible[1]}
 						isVoid={this.state.isVoid}
 						pet={this.state.pets[0]}
 					/>
 					<InfoFrame
 						eggName={this.state.eggName}
 						id={1}
-						isVisible={infoFramesVisible.getValue()[1]}
+						isVisible={this.state.isVisible[2]}
 						isVoid={this.state.isVoid}
 						pet={this.state.pets[1]}
 					/>
 					<InfoFrame
 						eggName={this.state.eggName}
 						id={2}
-						isVisible={infoFramesVisible.getValue()[2]}
+						isVisible={this.state.isVisible[3]}
 						isVoid={this.state.isVoid}
 						pet={this.state.pets[2]}
 					/>
@@ -71,24 +70,53 @@ export class EggHatch extends Roact.Component<{}, EggHatchState> {
 	protected didMount(): void {
 		this.setState({
 			isActive: false,
+			isVisible: {
+				1: false,
+				2: false,
+				3: false,
+			},
 		});
 
 		relayHatch.Connect((amount, eggName, petIds, isVoid) => {
-			const animatedEggsParams: HatchEggParams = {
-				amount: amount,
-				eggName: eggName,
-				pets: petIds,
-				infoFrameBinding: updateInfoFramesVisibility,
-				isVoid: isVoid,
-			};
-
-			AnimateEggs.hatchEggs(animatedEggsParams);
+			AnimateEggs.handleAnimation();
 
 			this.setState({
 				eggName: eggName,
 				isActive: true,
 				isVoid: isVoid,
 				pets: petIds,
+			});
+
+			const animatedEggsParams: HatchEggParams = {
+				amount: amount,
+				eggName: eggName,
+				isVoid: isVoid,
+			};
+			AnimateEggs.hatchEggs(animatedEggsParams);
+
+			this.setState({
+				isVisible: {
+					1: amount === 1 || amount === 3,
+					2: amount === 2 || amount === 3,
+					3: amount === 2 || amount === 3,
+				},
+			});
+
+			const animatedPetsParams: HatchEggParams = {
+				amount: amount,
+				eggName: eggName,
+				isVoid: isVoid,
+				pets: petIds,
+			};
+			AnimateEggs.hatchPets(animatedPetsParams);
+
+			this.setState({
+				isActive: false,
+				isVisible: {
+					1: false,
+					2: false,
+					3: false,
+				},
 			});
 		});
 	}

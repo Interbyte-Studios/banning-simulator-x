@@ -68,4 +68,4 @@ export type Eggs = typeof EGGS;
 /**
  * How long a player must wait between egg hatches.
  */
-export const hatchDebounce = 3.5;
+export const hatchDebounce = 4.5;

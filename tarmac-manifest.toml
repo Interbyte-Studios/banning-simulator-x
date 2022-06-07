@@ -113,6 +113,246 @@ hash = "9aa6e2ab58a50dd5fbf70a95d57caa20c58e62d99487ea285c0a0df5ed3f3725"
 id = 9591269212
 packable = false
 
+[inputs."images/decals/eggs/regular/Candy Egg.png"]
+hash = "ac177095be21e718eb8c5f064f736a61ad431188070ef263247a693127d7e903"
+id = 9846676951
+packable = false
+
+[inputs."images/decals/eggs/regular/Desert Egg.png"]
+hash = "ce4a2d87ddeccae6c34e1ca2f03dabda3f2fe9d914bac0f6b3253a6208678590"
+id = 9846665149
+packable = false
+
+[inputs."images/decals/eggs/regular/Honycomb Egg.png"]
+hash = "5844b927efea2a4e871b2cf09d61c6ce11552d174010d12370ccb69246ba14b5"
+id = 9846665330
+packable = false
+
+[inputs."images/decals/eggs/regular/Molten Egg.png"]
+hash = "5dd30e4b9ade4a4415a9aa2ca8624cf9669eae3979ae7f37451ae205eb5c5669"
+id = 9846665495
+packable = false
+
+[inputs."images/decals/eggs/regular/Starter_Egg.png"]
+hash = "e4cf352a8f0a56603e04827768438c14c82888481876812c32db76977e167295"
+id = 9846665655
+packable = false
+
+[inputs."images/decals/pets/radiant/Bee Doggy.png"]
+hash = "ece6d218eca98114f5d360b9c20303de63e6896241534e06d84f1ae63769a0b8"
+id = 9846665858
+packable = false
+
+[inputs."images/decals/pets/radiant/Bumble Bee.png"]
+hash = "9696294a3ed5a5994aa19c1ed1a7146353ae42f1d7b9a141d786f53e91ba97fe"
+id = 9846665995
+packable = false
+
+[inputs."images/decals/pets/radiant/Bunny Bee.png"]
+hash = "a798a3dff567d275768624672f68c8d142558cf4777cec48a1df9a4910e8b2b0"
+id = 9846666121
+packable = false
+
+[inputs."images/decals/pets/radiant/Bunny.png"]
+hash = "ccd110edba6e51aeeb98420106ff0ee16ac74166b5473ccb2483cec5d9fd8367"
+id = 9846666265
+packable = false
+
+[inputs."images/decals/pets/radiant/Cat.png"]
+hash = "c81be73c0c966e09e6fe5d2f57d67e8e74ca7567bfe751e971bd1b44316cbe0a"
+id = 9846666381
+packable = false
+
+[inputs."images/decals/pets/radiant/Coreye.png"]
+hash = "c4ebc0b84e665c18410d5ae8ef0e1c8a43e7f24286c35bc33b3810348796684b"
+id = 9846666505
+packable = false
+
+[inputs."images/decals/pets/radiant/Deer.png"]
+hash = "2b9989431c60010d047a0a627b075d8a1ca55dd4ecde5ae6027174691ff26815"
+id = 9846666629
+packable = false
+
+[inputs."images/decals/pets/radiant/Desert Angel.png"]
+hash = "b51574fc0afdac8dae0b63e95aa479502287bd55389f8d7cb53ab144c49d2e2a"
+id = 9846666868
+packable = false
+
+[inputs."images/decals/pets/radiant/Desert Demon.png"]
+hash = "c20a24b3deafa5df43123f97a4ba2c940cad7cd4d1b9e0e01a6e6d61e2cfc508"
+id = 9846667059
+packable = false
+
+[inputs."images/decals/pets/radiant/Desert Dragon.png"]
+hash = "28c5c0680d6b71a9779aac14ff598b9e800f5de09e8383aa889751a484b52a54"
+id = 9846667247
+packable = false
+
+[inputs."images/decals/pets/radiant/Desert Pegasus.png"]
+hash = "e5b7bee46e00f067be3ec2a02b6bb11525303356c29530cee02d37b4e1ad2bb3"
+id = 9846667396
+packable = false
+
+[inputs."images/decals/pets/radiant/Desert Ram.png"]
+hash = "43687379c79a66f4f76fd654e17f978e61b55de714c5b52bd3f0c0615ee9aa6e"
+id = 9846667493
+packable = false
+
+[inputs."images/decals/pets/radiant/Desert Scorpilord.png"]
+hash = "29a71da3bd59e972895477f80d07675ad3d9c7ea20681c721f1eb1d1adab2056"
+id = 9846667615
+packable = false
+
+[inputs."images/decals/pets/radiant/Desert Spider.png"]
+hash = "481508b9b65c610895a5e355710764b5fe74e28267ce93adba40225cd15094d2"
+id = 9846667707
+packable = false
+
+[inputs."images/decals/pets/radiant/Desert Wraith.png"]
+hash = "9a364c5eefa8fd5fb2db3e7ab4bb5c9f296fb1a9669d5d914cb49564a70f1a28"
+id = 9846667864
+packable = false
+
+[inputs."images/decals/pets/radiant/Dinosaur Bee.png"]
+hash = "d07b60e755dddcafa2a5d8a4960e30741e855f50de8998776257bdb71cca5aa7"
+id = 9846668066
+packable = false
+
+[inputs."images/decals/pets/radiant/Doggy.png"]
+hash = "f932f553f2cbbdafd60204ae79ee8d13a4385269f69a329a2b2bad0cfbe7fe9d"
+id = 9846668196
+packable = false
+
+[inputs."images/decals/pets/radiant/Evil Bee.png"]
+hash = "aa5993a7e5cbd45d5d2a1c3bb572824c43c60f2b41593c944382bc4d7e23837d"
+id = 9846668280
+packable = false
+
+[inputs."images/decals/pets/radiant/Gummy Bear.png"]
+hash = "2eb6e47d16c5035ca8e09db5376c39d8da8e45c606d6b71849a7a15aa76a6834"
+id = 9846668462
+packable = false
+
+[inputs."images/decals/pets/radiant/Gummy Bee.png"]
+hash = "6b8cfe7e8329c5c1c8cdeeffe7ebf78445921803f879493535721e180ceee8fd"
+id = 9846668692
+packable = false
+
+[inputs."images/decals/pets/radiant/Gummy Bunny.png"]
+hash = "f2c03e365ab703161342ff0c10fbe8079843ec13c1ef5468916ca07403f25cfc"
+id = 9846668891
+packable = false
+
+[inputs."images/decals/pets/radiant/Gummy Cat.png"]
+hash = "fe11c8c7a503b3bccc9af45d218246381ac3f8ce3d1f3ee26a7f9cf6b683ab88"
+id = 9846669134
+packable = false
+
+[inputs."images/decals/pets/radiant/Gummy Doggy.png"]
+hash = "372a686a2edf66b630ea6242c69500bd81676415646d08f0ec8b2d76091919ec"
+id = 9846669648
+packable = false
+
+[inputs."images/decals/pets/radiant/Gummy Dragon.png"]
+hash = "bd16f4e276ffbf7103cbc2d8fdeb50222e29f557a163c6a7c21197a6fdeed297"
+id = 9846669825
+packable = false
+
+[inputs."images/decals/pets/radiant/Gummy Gumdrop.png"]
+hash = "26efa23f906fac9e5f51a14f68dd1a1501205eac80891a8c3243903f35a4a525"
+id = 9846669934
+packable = false
+
+[inputs."images/decals/pets/radiant/Gummy Striker.png"]
+hash = "a775898a567dcf82872ae7c6d6a4077696674e6c66d920632226d907f4b5896d"
+id = 9846670041
+packable = false
+
+[inputs."images/decals/pets/radiant/Gummy Wyvern.png"]
+hash = "757ccbcdd6ef84f7fa76b466186254c423bf16af511d6937d639c64844ac1197"
+id = 9846670193
+packable = false
+
+[inputs."images/decals/pets/radiant/Honey Bee.png"]
+hash = "a7f11def77597c732f5d265f405a47a81449d1bd9951effe375fa228201e203f"
+id = 9846670328
+packable = false
+
+[inputs."images/decals/pets/radiant/Ice Cream Pop.png"]
+hash = "06bd7db6fd7ade7efcb49089b3e029f360a6aab5bae7c96f5a692e4d6402714f"
+id = 9846670510
+packable = false
+
+[inputs."images/decals/pets/radiant/Molten Blob.png"]
+hash = "9caa27ce94f1f9889c971db7f7ae9535271e1653e627864a3461356148f2ad1f"
+id = 9846670683
+packable = false
+
+[inputs."images/decals/pets/radiant/Molten Bunny.png"]
+hash = "1e5dcffa3a3c09c4db57406920afa5baf4d0068f578ec0cfadb17725a901d1d9"
+id = 9846670864
+packable = false
+
+[inputs."images/decals/pets/radiant/Molten Destroyer.png"]
+hash = "b48881b12749afad8d00d94086e1690fcdc08ad4e5b276f8478f647f80f11803"
+id = 9846671135
+packable = false
+
+[inputs."images/decals/pets/radiant/Molten Doggy.png"]
+hash = "cab967a5e57440d019f2af09d14f4567a081a1d8bc958e576142f8a23547d8f1"
+id = 9846671285
+packable = false
+
+[inputs."images/decals/pets/radiant/Molten Kitty.png"]
+hash = "cb34e37dd1ecf41bc01f69b49a24651fe9b614cdcbd6b6d60ae45d2c2393e239"
+id = 9846671442
+packable = false
+
+[inputs."images/decals/pets/radiant/Molten Leviathan.png"]
+hash = "bb02d58943642fc4bda07f2171e996ae3f8b3031e799ed6a728f173cbd1a0a7c"
+id = 9846671594
+packable = false
+
+[inputs."images/decals/pets/radiant/Molten Pegasus.png"]
+hash = "0309376f9fe1269196f301bd4872be10ce44501d4fe071af11770e85d630c3b8"
+id = 9846671733
+packable = false
+
+[inputs."images/decals/pets/radiant/Molten Squirrel.png"]
+hash = "414d9c8989ef34e1a07d015b5e08d2ad7d93314f1207c1f8e8a87b658269eb77"
+id = 9846671884
+packable = false
+
+[inputs."images/decals/pets/radiant/Molten Wraith.png"]
+hash = "9a21241827664760039a54b88fb78710b35861ae3a608d29728ef190635f2179"
+id = 9846672149
+packable = false
+
+[inputs."images/decals/pets/radiant/Mystical Bee.png"]
+hash = "b4f71420f770da19d31b1f15d9ebfb696c034b8793c34d32677f3c196fad7b42"
+id = 9846672370
+packable = false
+
+[inputs."images/decals/pets/radiant/Pegasus Bee.png"]
+hash = "98ae20fffe9c8e1b9dc4e424657955c721700cb012af44bff97eed029bd835d0"
+id = 9846672512
+packable = false
+
+[inputs."images/decals/pets/radiant/Piggy.png"]
+hash = "e3c92fbc5b5d943ce313fa7a4266cba11e24020e1b6fcc478b3989cd21d94a49"
+id = 9846672688
+packable = false
+
+[inputs."images/decals/pets/radiant/Queen Bee.png"]
+hash = "fd2fb9bae9634d1069448040c04fc4f606c18867c813310c7fab941216072d6f"
+id = 9846672936
+packable = false
+
+[inputs."images/decals/pets/radiant/Royal Bunny.png"]
+hash = "f11d5556e1c45ff1d22046cb2ccaaa4baa86e297dc6b7135021835d3e9273065"
+id = 9846673116
+packable = false
+
 [inputs."images/decals/pets/regular/BIG Royal Bunny.png"]
 hash = "7b086275aa152b120b0dbe27227ca81f443440567dd0276d47327cc497ef2016"
 id = 9805034915
@@ -131,11 +371,6 @@ packable = false
 [inputs."images/decals/pets/regular/Bunny.png"]
 hash = "87e739fc5f70c6b133886a4481bf52793635ad1b4c0bd5ef4c586f2af4b27a1b"
 id = 9805006672
-packable = false
-
-[inputs."images/decals/pets/regular/Candy Egg.png"]
-hash = "ac177095be21e718eb8c5f064f736a61ad431188070ef263247a693127d7e903"
-id = 9805006747
 packable = false
 
 [inputs."images/decals/pets/regular/Coreye.png"]
@@ -161,11 +396,6 @@ packable = false
 [inputs."images/decals/pets/regular/Desert Dragon.png"]
 hash = "495c63b627500edba18457736a30b7057e921f40c807907b3aab71f0d02f4982"
 id = 9805007402
-packable = false
-
-[inputs."images/decals/pets/regular/Desert Egg.png"]
-hash = "ce4a2d87ddeccae6c34e1ca2f03dabda3f2fe9d914bac0f6b3253a6208678590"
-id = 9805007572
 packable = false
 
 [inputs."images/decals/pets/regular/Desert Pegasus.png"]
@@ -263,11 +493,6 @@ hash = "5a5d3125e3f95de61edf40d09772ba42cdb64e0e73d17e3520d24776632c95f0"
 id = 9805010058
 packable = false
 
-[inputs."images/decals/pets/regular/Honycomb Egg.png"]
-hash = "5844b927efea2a4e871b2cf09d61c6ce11552d174010d12370ccb69246ba14b5"
-id = 9805010169
-packable = false
-
 [inputs."images/decals/pets/regular/Ice Cream Pop.png"]
 hash = "2448324acaf93fa9d6a94e01e39b776e6ee6864a3d4b64affcbe9313560af079"
 id = 9805010314
@@ -303,11 +528,6 @@ hash = "3d0a1756e64faa88e72c87610d821cb052b3f7c75e9124c5e265dca41302660f"
 id = 9805011093
 packable = false
 
-[inputs."images/decals/pets/regular/Molten Egg.png"]
-hash = "5dd30e4b9ade4a4415a9aa2ca8624cf9669eae3979ae7f37451ae205eb5c5669"
-id = 9805011217
-packable = false
-
 [inputs."images/decals/pets/regular/Molten Leviathan.png"]
 hash = "f32ecdb8c283f5b1086ae681262717b39eed3852b6346c30691b064731177e1b"
 id = 9805011350
@@ -326,6 +546,11 @@ packable = false
 [inputs."images/decals/pets/regular/Molten Wraith.png"]
 hash = "41d0c55000301eb606c65a0893256889238edb79f9ec45026c9c7fb3e9723d34"
 id = 9805011753
+packable = false
+
+[inputs."images/decals/pets/regular/Piggy.png"]
+hash = "5bf45a0a1504af48dff756a9a9c85e9467103f41f66c512bbd2f6486d03f80d3"
+id = 9846673244
 packable = false
 
 [inputs."images/decals/pets/void/Bumble Bee.png"]

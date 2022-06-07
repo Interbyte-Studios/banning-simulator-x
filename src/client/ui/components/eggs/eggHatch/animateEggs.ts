@@ -1,11 +1,8 @@
-import Roact from "@rbxts/roact";
-import { HttpService, Players, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
+import { HttpService, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
 import { canHatchEgg } from "client/eggs/canHatchEgg";
 import { EggNames } from "shared/configs/eggs";
 import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
-
-const player = Players.LocalPlayer;
 
 type ValidAmount = 1 | 2 | 3;
 type ValidEggId = 1 | 2 | 3 | 4;
@@ -13,9 +10,8 @@ type ValidEggId = 1 | 2 | 3 | 4;
 export interface HatchEggParams {
 	amount: ValidAmount;
 	eggName: EggNames;
-	pets: Array<number>;
+	pets?: Array<number>;
 	isVoid: boolean;
-	infoFrameBinding: Roact.BindingFunction<{ 0: boolean; 1: boolean; 2: boolean }>;
 }
 
 interface AnimatedEgg {
@@ -109,12 +105,22 @@ export class AnimateEggs {
 	/**
 	 * Documents whether or not the egg animation has been completed.
 	 */
-	private static eggAnimationComplete = false;
+	private static eggAnimationComplete = true;
 
 	/**
 	 * Documents whether or not the pet animation has been completed.
 	 */
-	private static petAnimationComplete = false;
+	private static petAnimationComplete = true;
+
+	/**
+	 * An array of egg metadata currently being used to animate an egg hatch.
+	 */
+	private static animatedEggs: Array<AnimatedEgg> = [];
+
+	/**
+	 * An array of pet metadata currently being used to animate an egg hatch.
+	 */
+	private static animatedPets: Array<AnimatedPet> = [];
 
 	/**
 	 * Gets the position that an egg should be at during a certain segment depending on its id.
@@ -169,10 +175,9 @@ export class AnimateEggs {
 	/**
 	 * Handles the animation for egg hatching.
 	 *
-	 * @param animatedEggs An array of eggData containing all the metadata necessary to animate them.
 	 * @param amount The amount of eggs being hatched.
 	 */
-	private static animateEggHatches(animatedEggs: Array<AnimatedEgg>, amount: ValidAmount): void {
+	private static animateEggHatches(amount: ValidAmount): void {
 		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
 
 		/**
@@ -208,7 +213,7 @@ export class AnimateEggs {
 		}
 
 		let amountComplete = 0;
-		for (const eggData of animatedEggs) {
+		for (const eggData of this.animatedEggs) {
 			task.spawn(() => {
 				animateEggSegment(eggData, "segment1");
 				task.wait(0.5);
@@ -252,14 +257,13 @@ export class AnimateEggs {
 	/**
 	 * Handles the animation for pet display.
 	 *
-	 * @param animatedPets An array of pet data containing all the metadata necesarry to animate them.
 	 * @param amount The amount of pets being displayed.
 	 */
-	private static animatePetHatches(animatedPets: Array<AnimatedPet>, amount: ValidAmount): void {
+	private static animatePetHatches(amount: ValidAmount): void {
 		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
 
 		let amountComplete = 0;
-		for (const petData of animatedPets) {
+		for (const petData of this.animatedPets) {
 			task.spawn(() => {
 				const segment = this.getSegment(amount, petData.id);
 
@@ -329,33 +333,9 @@ export class AnimateEggs {
 	 * @param params The parameters used for handling the hatching animation.
 	 * @param params.amount The amount of eggs to animate for hatching.
 	 * @param params.eggName The name of the egg.
-	 * @param params.pets The pets being hatched.
-	 * @param params.isVoid Whether or not the pets are void.
-	 * @param params.updateInfoBinding A function to update the visibility of info-frames.
 	 */
 	public static hatchEggs(params: HatchEggParams): void {
-		const canHatch = canHatchEgg();
-		if (canHatch === false) return;
-
-		const character = player.Character;
-		assert(character, `No character found for player ${player.Name}`);
-
-		const humanoid = character.FindFirstChild("Humanoid") as Humanoid;
-		assert(humanoid, `No Humanoid found for player ${player.Name}`);
-
-		const humanoidRootPart = humanoid.RootPart;
-		assert(humanoidRootPart, `No HumanoidRootPart found for player ${player.Name}`);
-
-		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
-
 		const eggFolder = ReplicatedStorage.assetObjects.eggs[params.eggName][params.isVoid ? "void" : "regular"];
-		const petFolder = ReplicatedStorage.assetObjects.pets[params.eggName];
-
-		let animatedEggs: Array<AnimatedEgg> = [];
-		let animatedPets: Array<AnimatedPet> = [];
-
-		this.eggAnimationComplete = false;
-		this.petAnimationComplete = false;
 
 		for (let i = 1; i <= params.amount; i++) {
 			const eggData: AnimatedEgg = {
@@ -378,8 +358,22 @@ export class AnimateEggs {
 			const segment = this.getSegment(params.amount, eggData.id);
 			eggData.currentCFrame.Value = segment.segment0;
 
-			animatedEggs.push(eggData);
+			this.animatedEggs.push(eggData);
 		}
+
+		this.animateEggHatches(params.amount);
+	}
+
+	/**
+	 * @param params The parameters used for handling the hatching animation.
+	 * @param params.amount The amount of eggs to animate for hatching.
+	 * @param params.eggName The name of the egg.
+	 * @param params.pets The pets being hatched.
+	 */
+	public static hatchPets(params: HatchEggParams): void {
+		if (params.pets === undefined) return;
+
+		const petFolder = ReplicatedStorage.assetObjects.pets[params.eggName];
 
 		let currentId = 0;
 		for (const pet of params.pets) {
@@ -398,19 +392,44 @@ export class AnimateEggs {
 			setAssetProperties("pet", petData.petModel, params.isVoid);
 			petData.petModel.Parent = Workspace;
 
-			animatedPets.push(petData);
+			this.animatedPets.push(petData);
 		}
+
+		this.animatePetHatches(params.amount);
+	}
+
+	/**
+	 * Handles the run service connection for the animation.
+	 */
+	public static handleAnimation(): void {
+		if (!this.eggAnimationComplete || !this.petAnimationComplete) return;
+
+		const canHatch = canHatchEgg();
+		if (canHatch === false) return;
+
+		this.eggAnimationComplete = false;
+		this.petAnimationComplete = false;
+
+		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
 
 		this.currentRenderGuid = HttpService.GenerateGUID(false);
 		RunService.BindToRenderStep(this.currentRenderGuid, Enum.RenderPriority.Camera.Value + 1, () => {
-			for (const eggData of animatedEggs) {
+			for (const eggData of this.animatedEggs) {
 				eggData.eggModels[eggData.currentEgg].SetPrimaryPartCFrame(
 					camera.GetRenderCFrame().mul(eggData.currentCFrame.Value),
 				);
 			}
 
 			if (this.eggAnimationComplete) {
-				for (const petData of animatedPets) {
+				for (const eggData of this.animatedEggs) {
+					for (const [, eggModel] of pairs(eggData.eggModels)) {
+						eggModel.Destroy();
+					}
+				}
+
+				this.animatedEggs = [];
+
+				for (const petData of this.animatedPets) {
 					if (petData.petModel.PrimaryPart === undefined) {
 						warn(`No primary part for animated pet.`);
 						continue;
@@ -420,39 +439,21 @@ export class AnimateEggs {
 				}
 
 				if (this.petAnimationComplete) {
+					for (const petData of this.animatedPets) {
+						petData.petModel.Destroy();
+					}
+
+					this.animatedPets = [];
+
 					RunService.UnbindFromRenderStep(this.currentRenderGuid);
 				}
 			}
 		});
 
-		this.animateEggHatches(animatedEggs, params.amount);
-
-		params.infoFrameBinding({
-			0: params.amount === 1 || params.amount === 3,
-			1: params.amount === 2 || params.amount === 3,
-			2: params.amount === 2 || params.amount === 3,
-		});
-
-		this.animatePetHatches(animatedPets, params.amount);
-
-		// cleanup
-		params.infoFrameBinding({
-			0: false,
-			1: false,
-			2: false,
-		});
-
-		for (const eggData of animatedEggs) {
+		for (const eggData of this.animatedEggs) {
 			for (const [, eggModel] of pairs(eggData.eggModels)) {
 				eggModel.Destroy();
 			}
 		}
-
-		for (const petData of animatedPets) {
-			petData.petModel.Destroy();
-		}
-
-		animatedEggs = [];
-		animatedPets = [];
 	}
 }
