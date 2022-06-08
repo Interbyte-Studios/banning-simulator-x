@@ -32,6 +32,11 @@ declare global {
 			npcs: Folder & {
 				[P in keyof NPCs]: Model;
 			};
+			hatch: Part & {
+				attachment: Attachment & {
+					flare: ParticleEmitter;
+				}
+			}
 		};
 	}
 }
