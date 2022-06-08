@@ -1,5 +1,6 @@
 import { HttpService, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
 import { canHatchEgg } from "client/eggs/canHatchEgg";
+import { playEffect, SoundEffect } from "client/util/playSound";
 import { EggNames } from "shared/configs/eggs";
 import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
@@ -227,12 +228,15 @@ export class AnimateEggs {
 		let amountComplete = 0;
 		for (const eggData of this.animatedEggs) {
 			task.spawn(() => {
+				playEffect(SoundEffect.HatchImpact_1);
 				animateEggSegment(eggData, "segment1");
 				task.wait(0.5);
 
+				playEffect(SoundEffect.HatchImpact_2);
 				animateEggSegment(eggData, "segment2", true);
 				task.wait(0.35);
 
+				playEffect(SoundEffect.HatchImpact_1);
 				animateEggSegment(eggData, "segment3", true);
 
 				const segment = this.getSegment(amount, eggData.id);
@@ -250,6 +254,7 @@ export class AnimateEggs {
 
 					const shookTween = eggData.currentCFrame.Value.Lerp(segment.segment1.mul(CFrame.Angles(0, spin, 0)), alpha);
 					eggData.currentCFrame.Value = shookTween;
+					playEffect(SoundEffect.HatchImpact_2);
 				}
 
 				eggData.eggModels[eggData.currentEgg].SetPrimaryPartCFrame(new CFrame(0, 0, 0));
@@ -343,6 +348,7 @@ export class AnimateEggs {
 				amountComplete += 1;
 			});
 		}
+		playEffect(SoundEffect.HatchReveal);
 
 		while (amountComplete !== 3) {
 			RunService.RenderStepped.Wait();
