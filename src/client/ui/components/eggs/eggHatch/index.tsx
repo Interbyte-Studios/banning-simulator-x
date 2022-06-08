@@ -78,6 +78,14 @@ export class EggHatch extends Roact.Component<{}, EggHatchState> {
 		});
 
 		relayHatch.Connect((amount, eggName, petIds, isVoid) => {
+			if (
+				!AnimateEggs.eggAnimationComplete ||
+				!AnimateEggs.petAnimationComplete ||
+				AnimateEggs.eggAnimationInitiated ||
+				AnimateEggs.petAnimationInitiated
+			)
+				return;
+
 			AnimateEggs.handleAnimation();
 
 			this.setState({

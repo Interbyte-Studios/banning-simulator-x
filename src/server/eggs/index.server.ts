@@ -6,6 +6,7 @@ import { remotes } from "shared/remotes";
 
 export const requestHatch = remotes.Server.GetNamespace("eggs").Create("requestHatch");
 export const relayHatch = remotes.Server.GetNamespace("eggs").Create("relayHatch");
+export const toggleHatch = remotes.Server.GetNamespace("eggs").Create("toggleAuto");
 
 Players.PlayerAdded.Connect(async (player) => {
 	const store = await onStoreCreated(player);

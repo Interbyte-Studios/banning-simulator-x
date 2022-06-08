@@ -29,6 +29,8 @@ interface AnimatedEgg {
 interface AnimatedPet {
 	id: ValidAmount;
 	currentCFrame: CFrameValue;
+	flareLifetime: NumberValue;
+	flare: typeof ReplicatedStorage.assetObjects.hatch;
 	petModel: Model;
 }
 
@@ -103,14 +105,24 @@ export class AnimateEggs {
 	private static currentRenderGuid: string;
 
 	/**
+	 * Documents whether or not the egg animation has been initiated.
+	 */
+	public static eggAnimationInitiated = false;
+
+	/**
+	 * Documents whether or not the pet animation has been initiated.
+	 */
+	public static petAnimationInitiated = false;
+
+	/**
 	 * Documents whether or not the egg animation has been completed.
 	 */
-	private static eggAnimationComplete = true;
+	public static eggAnimationComplete = true;
 
 	/**
 	 * Documents whether or not the pet animation has been completed.
 	 */
-	private static petAnimationComplete = true;
+	public static petAnimationComplete = true;
 
 	/**
 	 * An array of egg metadata currently being used to animate an egg hatch.
@@ -121,14 +133,6 @@ export class AnimateEggs {
 	 * An array of pet metadata currently being used to animate an egg hatch.
 	 */
 	private static animatedPets: Array<AnimatedPet> = [];
-
-	/**
-	 * Flare particle emitter used in the animation before revealing the hatched pets.
-	 */
-	private static flare = {
-		active: false,
-		model: ReplicatedStorage.assetObjects.hatch.Clone(),
-	};
 
 	/**
 	 * Gets the position that an egg should be at during a certain segment depending on its id.
@@ -233,7 +237,7 @@ export class AnimateEggs {
 
 				const segment = this.getSegment(amount, eggData.id);
 
-				const duration = 1;
+				const duration = 0.75;
 				let timeStamp = 0;
 				let spin = 0;
 				while (timeStamp < 1) {
@@ -271,18 +275,24 @@ export class AnimateEggs {
 		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
 
 		let amountComplete = 0;
-
-		this.flare.active = true;
-		task.delay(1, () => {
-			this.flare.active = false;
-		});
-
 		for (const petData of this.animatedPets) {
 			task.spawn(() => {
 				const segment = this.getSegment(amount, petData.id);
 
+				petData.flare.Parent = Workspace;
+
+				task.delay(0.15, () => {
+					TweenService.Create(
+						petData.flareLifetime,
+						new TweenInfo(0.85, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
+						{
+							Value: 0,
+						},
+					).Play();
+				});
+
 				petData.petModel.SetPrimaryPartCFrame(camera.GetRenderCFrame().mul(segment.segment1));
-				petData.currentCFrame.Value = segment.segment3;
+				petData.currentCFrame.Value = new CFrame(segment.segment1.X, segment.segment1.Y, segment.segment1.Z - 5);
 
 				let rotationDegrees = 0;
 				switch (amount) {
@@ -351,6 +361,8 @@ export class AnimateEggs {
 	 * @param params.eggName The name of the egg.
 	 */
 	public static hatchEggs(params: HatchEggParams): void {
+		this.eggAnimationInitiated = true;
+
 		const eggFolder = ReplicatedStorage.assetObjects.eggs[params.eggName][params.isVoid ? "void" : "regular"];
 
 		for (let i = 1; i <= params.amount; i++) {
@@ -388,6 +400,7 @@ export class AnimateEggs {
 	 */
 	public static hatchPets(params: HatchEggParams): void {
 		if (params.pets === undefined) return;
+		this.petAnimationInitiated = true;
 
 		const petFolder = ReplicatedStorage.assetObjects.pets[params.eggName];
 
@@ -402,11 +415,15 @@ export class AnimateEggs {
 			const petData: AnimatedPet = {
 				id: currentId as ValidAmount,
 				currentCFrame: new Instance("CFrameValue"),
+				flareLifetime: new Instance("NumberValue"),
+				flare: ReplicatedStorage.assetObjects.hatch.Clone(),
 				petModel: petModel.Clone(),
 			};
 
 			setAssetProperties("pet", petData.petModel, params.isVoid);
 			petData.petModel.Parent = Workspace;
+
+			petData.flareLifetime.Value = 0.75;
 
 			this.animatedPets.push(petData);
 		}
@@ -423,22 +440,16 @@ export class AnimateEggs {
 		const canHatch = canHatchEgg();
 		if (canHatch === false) return;
 
-		this.flare.active = false;
-
 		this.eggAnimationComplete = false;
 		this.petAnimationComplete = false;
+
+		this.animatedEggs = [];
+		this.animatedPets = [];
 
 		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
 
 		this.currentRenderGuid = HttpService.GenerateGUID(false);
 		RunService.BindToRenderStep(this.currentRenderGuid, Enum.RenderPriority.Camera.Value + 1, () => {
-			if (this.flare.active) {
-				this.flare.model.CFrame = camera.GetRenderCFrame().mul(this.tweenData.tweenData.middle.segment1);
-				this.flare.model.Parent = Workspace;
-			} else {
-				this.flare.model.Parent = ReplicatedStorage;
-			}
-
 			for (const eggData of this.animatedEggs) {
 				eggData.eggModels[eggData.currentEgg].SetPrimaryPartCFrame(
 					camera.GetRenderCFrame().mul(eggData.currentCFrame.Value),
@@ -448,6 +459,7 @@ export class AnimateEggs {
 			if (this.eggAnimationComplete) {
 				for (const eggData of this.animatedEggs) {
 					for (const [, eggModel] of pairs(eggData.eggModels)) {
+						eggData.currentCFrame.Destroy();
 						eggModel.Destroy();
 					}
 				}
@@ -455,20 +467,23 @@ export class AnimateEggs {
 				this.animatedEggs = [];
 
 				for (const petData of this.animatedPets) {
-					if (petData.petModel.PrimaryPart === undefined) {
-						warn(`No primary part for animated pet.`);
-						continue;
-					}
-
 					petData.petModel.SetPrimaryPartCFrame(camera.GetRenderCFrame().mul(petData.currentCFrame.Value));
+					petData.flare.CFrame = petData.petModel.GetPrimaryPartCFrame();
+					petData.flare.attachment.flare.Lifetime = new NumberRange(petData.flareLifetime.Value);
 				}
 
 				if (this.petAnimationComplete) {
 					for (const petData of this.animatedPets) {
+						petData.currentCFrame.Destroy();
+						petData.flareLifetime.Destroy();
 						petData.petModel.Destroy();
+						petData.flare.Destroy();
 					}
 
 					this.animatedPets = [];
+
+					this.eggAnimationInitiated = false;
+					this.petAnimationInitiated = false;
 
 					RunService.UnbindFromRenderStep(this.currentRenderGuid);
 				}
