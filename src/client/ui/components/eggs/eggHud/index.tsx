@@ -14,6 +14,7 @@ interface EggHudProps {
 
 interface EggHudState {
 	isActive: boolean;
+	autoHatch: boolean;
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
@@ -40,6 +41,7 @@ export class EggHud extends Roact.Component<EggHudProps, EggHudState> {
 							<frame Visible={false}>
 								<EggHudDisplay
 									adornee={regularEgg}
+									autoHatch={this.state.autoHatch}
 									eggName={eggName}
 									isVoid={false}
 									pets={eggData.pets}
@@ -47,6 +49,7 @@ export class EggHud extends Roact.Component<EggHudProps, EggHudState> {
 								/>
 								<EggHudDisplay
 									adornee={voidEgg}
+									autoHatch={this.state.autoHatch}
 									eggName={eggName}
 									isVoid={true}
 									pets={eggData.pets}
@@ -58,6 +61,7 @@ export class EggHud extends Roact.Component<EggHudProps, EggHudState> {
 				</frame>
 			);
 		} else {
+			eggHudAnimatorService.bindingSets.clear();
 			return <></>;
 		}
 	}
@@ -70,6 +74,15 @@ export class EggHud extends Roact.Component<EggHudProps, EggHudState> {
 
 		this.setState({
 			isActive: true,
+			autoHatch: this.props.store.getState().settings.autoHatch,
+		});
+
+		this.props.store.changed.connect((newState, oldState) => {
+			if (newState.settings.autoHatch === oldState.settings.autoHatch) return;
+
+			this.setState({
+				autoHatch: newState.settings.autoHatch,
+			});
 		});
 
 		RunService.Heartbeat.Connect(() => {

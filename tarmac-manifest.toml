@@ -138,11 +138,6 @@ hash = "e4cf352a8f0a56603e04827768438c14c82888481876812c32db76977e167295"
 id = 9846665655
 packable = false
 
-[inputs."images/decals/pets/radiant/Bee Doggy.png"]
-hash = "ece6d218eca98114f5d360b9c20303de63e6896241534e06d84f1ae63769a0b8"
-id = 9846665858
-packable = false
-
 [inputs."images/decals/pets/radiant/Bumble Bee.png"]
 hash = "9696294a3ed5a5994aa19c1ed1a7146353ae42f1d7b9a141d786f53e91ba97fe"
 id = 9846665995
@@ -213,6 +208,11 @@ hash = "d07b60e755dddcafa2a5d8a4960e30741e855f50de8998776257bdb71cca5aa7"
 id = 9846668066
 packable = false
 
+[inputs."images/decals/pets/radiant/Doggy Bee.png"]
+hash = "ece6d218eca98114f5d360b9c20303de63e6896241534e06d84f1ae63769a0b8"
+id = 9865160968
+packable = false
+
 [inputs."images/decals/pets/radiant/Doggy.png"]
 hash = "f932f553f2cbbdafd60204ae79ee8d13a4385269f69a329a2b2bad0cfbe7fe9d"
 id = 9846668196
@@ -238,11 +238,6 @@ hash = "f2c03e365ab703161342ff0c10fbe8079843ec13c1ef5468916ca07403f25cfc"
 id = 9846668891
 packable = false
 
-[inputs."images/decals/pets/radiant/Gummy Cat.png"]
-hash = "fe11c8c7a503b3bccc9af45d218246381ac3f8ce3d1f3ee26a7f9cf6b683ab88"
-id = 9846669134
-packable = false
-
 [inputs."images/decals/pets/radiant/Gummy Doggy.png"]
 hash = "372a686a2edf66b630ea6242c69500bd81676415646d08f0ec8b2d76091919ec"
 id = 9846669648
@@ -256,6 +251,11 @@ packable = false
 [inputs."images/decals/pets/radiant/Gummy Gumdrop.png"]
 hash = "26efa23f906fac9e5f51a14f68dd1a1501205eac80891a8c3243903f35a4a525"
 id = 9846669934
+packable = false
+
+[inputs."images/decals/pets/radiant/Gummy Kitty.png"]
+hash = "fe11c8c7a503b3bccc9af45d218246381ac3f8ce3d1f3ee26a7f9cf6b683ab88"
+id = 9865158288
 packable = false
 
 [inputs."images/decals/pets/radiant/Gummy Striker.png"]
@@ -463,11 +463,6 @@ hash = "ba5530da207d1bb7962b282a0dd9a21e1a4e7599ee57220ab5f8df1813be1fa8"
 id = 9805009365
 packable = false
 
-[inputs."images/decals/pets/regular/Gummy Cat.png"]
-hash = "e0d052ad412dc4b947b4e2cdf0523c49f226047bd59719359847e62c2247c5f7"
-id = 9805009496
-packable = false
-
 [inputs."images/decals/pets/regular/Gummy Doggy.png"]
 hash = "43ce21e701feb17f788d17b422bf569152822eb73dc27c99d92aff768c625bc6"
 id = 9805009615
@@ -476,6 +471,11 @@ packable = false
 [inputs."images/decals/pets/regular/Gummy Dragon.png"]
 hash = "e33fadacf3585b19e2af65a49ab245dd59cc5304f30fab843791e1ec6df1da51"
 id = 9805009736
+packable = false
+
+[inputs."images/decals/pets/regular/Gummy Kitty.png"]
+hash = "e0d052ad412dc4b947b4e2cdf0523c49f226047bd59719359847e62c2247c5f7"
+id = 9865158399
 packable = false
 
 [inputs."images/decals/pets/regular/Gummy Striker.png"]
@@ -513,11 +513,6 @@ hash = "6018d31b2948ba7a85f73c2b7ef7e7509a964ffc96722d2cc2d10dbd2d58243c"
 id = 9805010654
 packable = false
 
-[inputs."images/decals/pets/regular/Molten Cat.png"]
-hash = "cc2dfa48646aa2ab2d06ecad9f3e6834c539c188a66b1f83668db532cfb8f0b1"
-id = 9805010785
-packable = false
-
 [inputs."images/decals/pets/regular/Molten Destroyer.png"]
 hash = "bbce3fb6068153c4568bf00b65e0deb49cbfa9170f5cfc981b2ae319f032a487"
 id = 9805010960
@@ -526,6 +521,11 @@ packable = false
 [inputs."images/decals/pets/regular/Molten Doggy.png"]
 hash = "3d0a1756e64faa88e72c87610d821cb052b3f7c75e9124c5e265dca41302660f"
 id = 9805011093
+packable = false
+
+[inputs."images/decals/pets/regular/Molten Kitty.png"]
+hash = "cc2dfa48646aa2ab2d06ecad9f3e6834c539c188a66b1f83668db532cfb8f0b1"
+id = 9865136448
 packable = false
 
 [inputs."images/decals/pets/regular/Molten Leviathan.png"]
@@ -688,11 +688,6 @@ hash = "ede9aaea0aeafb1a507cbdfe0a979a5802c4b6baa035492b91665f3ca347e4cf"
 id = 9805014916
 packable = false
 
-[inputs."images/decals/pets/void/Gummy Cat.png"]
-hash = "62e83fe70c03f2f833a9c056efb960f73b2eb078f80b838324c4ad09b0a81944"
-id = 9805015062
-packable = false
-
 [inputs."images/decals/pets/void/Gummy Doggy.png"]
 hash = "3ad5c7f0097017a04caebb6b6cd14757f8939ea9a2354812895ccb9297193fcc"
 id = 9805015154
@@ -701,6 +696,11 @@ packable = false
 [inputs."images/decals/pets/void/Gummy Dragon.png"]
 hash = "76340c2c73d86989e21132d42a3ed63cb59e30f10cb7d04c43b8ebb60923d829"
 id = 9805015288
+packable = false
+
+[inputs."images/decals/pets/void/Gummy Kitty.png"]
+hash = "62e83fe70c03f2f833a9c056efb960f73b2eb078f80b838324c4ad09b0a81944"
+id = 9865158479
 packable = false
 
 [inputs."images/decals/pets/void/Gummy Striker.png"]
@@ -713,9 +713,9 @@ hash = "f5fcc55898c74fc7bf6a1df07806c4425440d71840393a09bfdba0991e617383"
 id = 9805015565
 packable = false
 
-[inputs."images/decals/pets/void/Honey bee.png"]
+[inputs."images/decals/pets/void/Honey Bee.png"]
 hash = "861c8d45a9b1ba65c6de95d22d8f7b96e24eafb0ca9c85f7b2c15cc3a9e80eb7"
-id = 9805015671
+id = 9865130471
 packable = false
 
 [inputs."images/decals/pets/void/Ice Cream Pop.png"]
@@ -738,11 +738,6 @@ hash = "8b91c8278822eff63acbefaf2e62c0d711e8d55561393fdfda501c0a0b803290"
 id = 9805016268
 packable = false
 
-[inputs."images/decals/pets/void/Molten Cat.png"]
-hash = "c0942eb97579260dbcdf7d2079900d99b8e85ae13f0b6d5c7f35e1f8f6f87b4b"
-id = 9805016394
-packable = false
-
 [inputs."images/decals/pets/void/Molten Destroyer.png"]
 hash = "2637cbcc2608126e215f0479402531576d8f583988f599873ea5bf689be29faf"
 id = 9805016495
@@ -751,6 +746,11 @@ packable = false
 [inputs."images/decals/pets/void/Molten Doggy.png"]
 hash = "5581c7d8a45a822d4a5e172a41b823178a698dcdd356fc67d23641abe1bf88af"
 id = 9805016628
+packable = false
+
+[inputs."images/decals/pets/void/Molten Kitty.png"]
+hash = "c0942eb97579260dbcdf7d2079900d99b8e85ae13f0b6d5c7f35e1f8f6f87b4b"
+id = 9865136690
 packable = false
 
 [inputs."images/decals/pets/void/Molten Leviathan.png"]

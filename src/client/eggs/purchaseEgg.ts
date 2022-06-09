@@ -1,3 +1,4 @@
+import { Players, RunService } from "@rbxts/services";
 import { requestHatch } from "client/network";
 import { EggNames } from "shared/configs/eggs";
 import { Store } from "shared/rodux";
@@ -6,6 +7,8 @@ import { getEggData } from "shared/util/getEggData";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
 
 import { canHatchEgg } from "./canHatchEgg";
+
+let activelyWatching = false;
 
 /**
  * Handles the purchasing of an egg.
@@ -67,4 +70,44 @@ export function purchaseEgg(amount: 1 | 2 | 3, eggName: EggNames, isVoid: boolea
 	}
 
 	requestHatch.SendToServer(amountToBeHatched as 1 | 2 | 3, eggName, isVoid);
+}
+
+/**
+ * Checks whether or not player owns auto hatch and responds accordingly.
+ *
+ * @param amount The amount of eggs to hatch.
+ * @param eggName The name of the egg.
+ * @param isVoid Whether or not the egg is void.
+ * @param store The player's store.
+ */
+export function handleEggPurchase(amount: 1 | 2 | 3, eggName: EggNames, isVoid: boolean, store: Store): void {
+	if (activelyWatching) return;
+
+	const currentState = store.getState();
+	if (currentState.settings.autoHatch) {
+		const player = Players.LocalPlayer;
+
+		const character = player.Character;
+		if (character === undefined) return;
+
+		const humanoid = character.FindFirstChildOfClass("Humanoid");
+		if (humanoid === undefined) return;
+
+		activelyWatching = true;
+
+		RunService.BindToRenderStep("autoHatch", Enum.RenderPriority.Last.Value, () => {
+			const canHatch = canHatchEgg();
+			if (!canHatch) return;
+
+			purchaseEgg(amount, eggName, isVoid, store);
+		});
+
+		const connection = humanoid.GetPropertyChangedSignal("MoveDirection").Connect(() => {
+			activelyWatching = false;
+			RunService.UnbindFromRenderStep("autoHatch");
+			connection.Disconnect();
+		});
+	} else {
+		purchaseEgg(amount, eggName, isVoid, store);
+	}
 }

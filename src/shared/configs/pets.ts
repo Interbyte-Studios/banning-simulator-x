@@ -162,7 +162,7 @@ export const HONEYCOMB_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()(
 			additionalDamage: 1,
 		},
 	},
-	"Doggy bee": {
+	"Doggy Bee": {
 		chance: 30,
 		id: 16,
 		rarity: "Basic",

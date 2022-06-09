@@ -40,7 +40,7 @@ export function killNpc(
 }
 
 // start with 0 currency
-const defaultCurrencyAmount = 1000;
+const defaultCurrencyAmount = 10000000000;
 const defaultCurrencies = Object.fromEntries(
 	Object.values(currencies).map((currency) => [currency, defaultCurrencyAmount] as const),
 );

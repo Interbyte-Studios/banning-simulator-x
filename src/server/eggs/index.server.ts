@@ -5,6 +5,7 @@ import { getPetPercentages } from "server/util/getPetPercentages";
 import { hatchDebounce } from "shared/configs/eggs";
 import { remotes } from "shared/remotes";
 import { ConfirmedPet } from "shared/remotes/eggs/relayHatchInfo";
+import { toggleAuto } from "shared/rodux/settings";
 
 export const requestHatch = remotes.Server.GetNamespace("eggs").Create("requestHatch");
 export const relayHatch = remotes.Server.GetNamespace("eggs").Create("relayHatch");
@@ -74,5 +75,14 @@ Players.PlayerAdded.Connect(async (player) => {
 		}
 
 		relayHatch.SendToPlayer(player, confirmedPets.size() as 1 | 2 | 3, eggName, confirmedPets, isVoid);
+	});
+
+	let lastRequestTime = 0;
+	toggleHatch.Connect(() => {
+		const now = time();
+		if (now - lastRequestTime < 0.5) return;
+		lastRequestTime = now;
+
+		store.dispatch(toggleAuto());
 	});
 });
