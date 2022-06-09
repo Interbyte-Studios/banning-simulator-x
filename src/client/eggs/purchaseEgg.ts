@@ -1,6 +1,9 @@
 import { requestHatch } from "client/network";
 import { EggNames } from "shared/configs/eggs";
 import { Store } from "shared/rodux";
+import { getEggCost } from "shared/util/getEggCost";
+import { getEggData } from "shared/util/getEggData";
+import { getPetInventorySize } from "shared/util/getPetInventorySize";
 
 import { canHatchEgg } from "./canHatchEgg";
 
@@ -17,17 +20,51 @@ export function purchaseEgg(amount: 1 | 2 | 3, eggName: EggNames, isVoid: boolea
 	const canHatch = canHatchEgg();
 	if (canHatch === false) return;
 
-	// todo: check that user owns world egg comes from
+	const currentState = store.getState();
+	const eggData = getEggData(eggName);
+	const eggCost = getEggCost(eggName, isVoid);
+
 	// check that user owns world
+	const ownsWorld = currentState.worlds.find((x) => x.name === eggData.world);
+	if (ownsWorld === undefined) {
+		warn(`User does not own ${eggData.world} World, and therefore canot purchase the ${eggName} egg.`);
+		return;
+	}
 
-	// todo: check that user owns the zone the egg comes from
 	// check that user owns zone
+	const ownsZone = ownsWorld.zones.find((x) => x.name === eggData.zone);
+	if (ownsZone === undefined) {
+		warn(`User does not own ${eggData.zone} Zone, and therefore canot purchase the ${eggName} egg.`);
+		return;
+	}
 
-	// todo: check that user has enough currency
 	// check for currency
+	let amountToBeHatched = 0;
+	switch (amount) {
+		case 1: {
+			if (currentState.currencies[eggCost.currencyType] < eggCost.amount) {
+				return;
+			}
+			amountToBeHatched += 1;
+			break;
+		}
+		case 2:
+		case 3: {
+			for (let i = 1; i <= amount; i++) {
+				if (currentState.currencies[eggCost.currencyType] >= eggCost.amount * i) {
+					amountToBeHatched += 1;
+				}
+			}
+			break;
+		}
+	}
+	if (amountToBeHatched <= 0 || amountToBeHatched > 3) return;
 
-	// todo: check that user has enough space to hatch the eggs
 	// check inventory space
+	if (currentState.pets.size() >= getPetInventorySize() + amountToBeHatched) {
+		warn(`User does not have enough inventory space to hatch the ${eggName} egg.`);
+		return;
+	}
 
-	requestHatch.SendToServer(amount, eggName, isVoid);
+	requestHatch.SendToServer(amountToBeHatched as 1 | 2 | 3, eggName, isVoid);
 }

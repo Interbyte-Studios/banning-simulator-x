@@ -2,6 +2,7 @@ import Roact from "@rbxts/roact";
 import { relayHatch } from "client/network";
 import { udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
 import { EggNames } from "shared/configs/eggs";
+import { ConfirmedPet } from "shared/remotes/eggs/relayHatchInfo";
 
 import { AnimateEggs, HatchEggParams } from "./animateEggs";
 import { InfoFrame } from "./infoFrame";
@@ -15,7 +16,7 @@ interface EggHatchState {
 		2: boolean;
 		3: boolean;
 	};
-	pets: Array<number>;
+	pets: Array<ConfirmedPet>;
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
@@ -41,21 +42,21 @@ export class EggHatch extends Roact.Component<{}, EggHatchState> {
 						id={0}
 						isVisible={this.state.isVisible[1]}
 						isVoid={this.state.isVoid}
-						pet={this.state.pets[0]}
+						pet={this.state.pets[0] ? this.state.pets[0].id : 1}
 					/>
 					<InfoFrame
 						eggName={this.state.eggName}
 						id={1}
 						isVisible={this.state.isVisible[2]}
 						isVoid={this.state.isVoid}
-						pet={this.state.pets[1]}
+						pet={this.state.pets[1] ? this.state.pets[1].id : 1}
 					/>
 					<InfoFrame
 						eggName={this.state.eggName}
 						id={2}
 						isVisible={this.state.isVisible[3]}
 						isVoid={this.state.isVoid}
-						pet={this.state.pets[2]}
+						pet={this.state.pets[2] ? this.state.pets[2].id : 1}
 					/>
 				</frame>
 			);
@@ -101,12 +102,12 @@ export class EggHatch extends Roact.Component<{}, EggHatchState> {
 				isVoid: isVoid,
 			};
 			AnimateEggs.hatchEggs(animatedEggsParams);
-
+			const confirmedPetsAmount = petIds.size();
 			this.setState({
 				isVisible: {
-					1: amount === 1 || amount === 3,
-					2: amount === 2 || amount === 3,
-					3: amount === 2 || amount === 3,
+					1: confirmedPetsAmount === 1 || confirmedPetsAmount === 3,
+					2: confirmedPetsAmount === 2 || confirmedPetsAmount === 3,
+					3: confirmedPetsAmount === 2 || confirmedPetsAmount === 3,
 				},
 			});
 

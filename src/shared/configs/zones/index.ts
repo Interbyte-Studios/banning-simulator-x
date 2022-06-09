@@ -23,6 +23,10 @@ export interface Zone {
 		requiredRank: number;
 	};
 
+	// The id of the zone.
+	id: number;
+
+	// The npcs in the zone.
 	npcs: Array<Npc>;
 }
 

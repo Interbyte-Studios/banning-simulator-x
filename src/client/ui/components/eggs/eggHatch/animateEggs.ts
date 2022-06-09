@@ -2,6 +2,7 @@ import { HttpService, ReplicatedStorage, RunService, TweenService, Workspace } f
 import { canHatchEgg } from "client/eggs/canHatchEgg";
 import { playEffect, SoundEffect } from "client/util/playSound";
 import { EggNames } from "shared/configs/eggs";
+import { ConfirmedPet } from "shared/remotes/eggs/relayHatchInfo";
 import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
@@ -11,7 +12,7 @@ type ValidEggId = 1 | 2 | 3 | 4;
 export interface HatchEggParams {
 	amount: ValidAmount;
 	eggName: EggNames;
-	pets?: Array<number>;
+	pets?: Array<ConfirmedPet>;
 	isVoid: boolean;
 }
 
@@ -264,7 +265,7 @@ export class AnimateEggs {
 			});
 		}
 
-		while (amountComplete !== 3) {
+		while (amountComplete !== amount) {
 			RunService.RenderStepped.Wait();
 		}
 
@@ -350,7 +351,7 @@ export class AnimateEggs {
 		}
 		playEffect(SoundEffect.HatchReveal);
 
-		while (amountComplete !== 3) {
+		while (amountComplete !== amount) {
 			RunService.RenderStepped.Wait();
 		}
 
@@ -412,7 +413,7 @@ export class AnimateEggs {
 
 		let currentId = 0;
 		for (const pet of params.pets) {
-			const petMetadata = getPetData(params.eggName, pet);
+			const petMetadata = getPetData(params.eggName, pet.id);
 
 			const petModel = petFolder.FindFirstChild(petMetadata.petName) as Model;
 			assert(petModel, `Expected to find pet model for pet with name ${petMetadata.petName}`);

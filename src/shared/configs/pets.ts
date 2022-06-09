@@ -22,8 +22,7 @@ export interface Pet {
 	 * The stats of the pet.
 	 */
 	stats: {
-		damageMultiplier: number;
-		enchants?: Array<undefined>;
+		additionalDamage: number;
 	};
 }
 
@@ -36,7 +35,7 @@ export const STARTER_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 1,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	Bunny: {
@@ -44,7 +43,7 @@ export const STARTER_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 2,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	Kitty: {
@@ -52,7 +51,7 @@ export const STARTER_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 3,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	Piggy: {
@@ -60,7 +59,7 @@ export const STARTER_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 4,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	Deer: {
@@ -68,7 +67,7 @@ export const STARTER_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 5,
 		rarity: "Ordinary",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Royal Bunny": {
@@ -76,7 +75,7 @@ export const STARTER_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 6,
 		rarity: "Rare",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 });
@@ -90,7 +89,7 @@ export const DESERT_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 7,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Desert Pegasus": {
@@ -98,7 +97,7 @@ export const DESERT_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 8,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Desert Ram": {
@@ -106,7 +105,7 @@ export const DESERT_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 9,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Desert Angel": {
@@ -114,7 +113,7 @@ export const DESERT_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 10,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Desert Dragon": {
@@ -122,7 +121,7 @@ export const DESERT_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 11,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Desert Spider": {
@@ -130,7 +129,7 @@ export const DESERT_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 12,
 		rarity: "Ordinary",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Desert Wraith": {
@@ -138,7 +137,7 @@ export const DESERT_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 13,
 		rarity: "Rare",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Desert Scorpilord": {
@@ -146,7 +145,7 @@ export const DESERT_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 14,
 		rarity: "Rare",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 });
@@ -160,7 +159,7 @@ export const HONEYCOMB_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()(
 		id: 15,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Doggy bee": {
@@ -168,7 +167,7 @@ export const HONEYCOMB_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()(
 		id: 16,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Dinosaur Bee": {
@@ -176,7 +175,7 @@ export const HONEYCOMB_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()(
 		id: 17,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Evil Bee": {
@@ -184,7 +183,7 @@ export const HONEYCOMB_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()(
 		id: 18,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Bunny Bee": {
@@ -192,7 +191,7 @@ export const HONEYCOMB_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()(
 		id: 19,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Honey Bee": {
@@ -200,7 +199,7 @@ export const HONEYCOMB_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()(
 		id: 20,
 		rarity: "Ordinary",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Pegasus Bee": {
@@ -208,7 +207,7 @@ export const HONEYCOMB_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()(
 		id: 21,
 		rarity: "Ordinary",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Queen Bee": {
@@ -216,7 +215,7 @@ export const HONEYCOMB_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()(
 		id: 22,
 		rarity: "Rare",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Mystical Bee": {
@@ -224,7 +223,7 @@ export const HONEYCOMB_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()(
 		id: 23,
 		rarity: "Legendary",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 });
@@ -238,7 +237,7 @@ export const CANDY_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 24,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Gummy Bunny": {
@@ -246,7 +245,7 @@ export const CANDY_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 25,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Gummy Kitty": {
@@ -254,7 +253,7 @@ export const CANDY_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 26,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Gummy Bear": {
@@ -262,7 +261,7 @@ export const CANDY_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 27,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	Gumdrop: {
@@ -270,7 +269,7 @@ export const CANDY_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 28,
 		rarity: "Ordinary",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Gummy Bee": {
@@ -278,7 +277,7 @@ export const CANDY_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 29,
 		rarity: "Ordinary",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Gummy Dragon": {
@@ -286,7 +285,7 @@ export const CANDY_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 30,
 		rarity: "Ordinary",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Gummy Striker": {
@@ -294,7 +293,7 @@ export const CANDY_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 31,
 		rarity: "Legendary",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Gummy Wyvern": {
@@ -302,7 +301,7 @@ export const CANDY_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 32,
 		rarity: "Legendary",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Ice Cream Pop": {
@@ -310,7 +309,7 @@ export const CANDY_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 33,
 		rarity: "Prismatic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 });
@@ -324,7 +323,7 @@ export const MOLTEN_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 34,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Molten Bunny": {
@@ -332,7 +331,7 @@ export const MOLTEN_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 35,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Molten Kitty": {
@@ -340,7 +339,7 @@ export const MOLTEN_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 36,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Molten Squirrel": {
@@ -348,7 +347,7 @@ export const MOLTEN_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 37,
 		rarity: "Basic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Molten Pegasus": {
@@ -356,7 +355,7 @@ export const MOLTEN_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 38,
 		rarity: "Ordinary",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Molten Blob": {
@@ -364,7 +363,7 @@ export const MOLTEN_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 39,
 		rarity: "Ordinary",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Molten Wraith": {
@@ -372,7 +371,7 @@ export const MOLTEN_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 40,
 		rarity: "Rare",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Molten Leviathan": {
@@ -380,7 +379,7 @@ export const MOLTEN_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 41,
 		rarity: "Rare",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	"Molten Destroyer": {
@@ -388,7 +387,7 @@ export const MOLTEN_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 42,
 		rarity: "Legendary",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 	Coreye: {
@@ -396,11 +395,14 @@ export const MOLTEN_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
 		id: 43,
 		rarity: "Prismatic",
 		stats: {
-			damageMultiplier: 1,
+			additionalDamage: 1,
 		},
 	},
 });
 
+/**
+ * Tags for creating pets.
+ */
 export const TAG_CONFIG = {
 	Void: {
 		Void_1: {
@@ -437,3 +439,13 @@ export const TAG_CONFIG = {
 		},
 	},
 };
+
+/**
+ * The default inventory size someone's allowed.
+ */
+export const DEFAULT_INVENTORY_SIZE = 100;
+
+/**
+ * The different types of pet variants in the game.
+ */
+export type Variants = "regular" | "void" | "radiant";
