@@ -445,6 +445,8 @@ export const TAG_CONFIG = {
  */
 export const DEFAULT_INVENTORY_SIZE = 100;
 
+export const DEFAULT_EQUIP_AMOUNT = 4;
+
 /**
  * The different types of pet variants in the game.
  */

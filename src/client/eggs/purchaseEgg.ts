@@ -64,7 +64,7 @@ export function purchaseEgg(amount: 1 | 2 | 3, eggName: EggNames, isVoid: boolea
 	if (amountToBeHatched <= 0 || amountToBeHatched > 3) return;
 
 	// check inventory space
-	if (currentState.pets.size() >= getPetInventorySize() + amountToBeHatched) {
+	if (currentState.pets.size() >= getPetInventorySize(store) + amountToBeHatched) {
 		warn(`User does not have enough inventory space to hatch the ${eggName} egg.`);
 		return;
 	}

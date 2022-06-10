@@ -9,7 +9,7 @@ import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import assetIds from "shared/assets";
 import { EggNames } from "shared/configs/eggs";
-import { MAIN_GROUP } from "shared/configs/group";
+import { MAIN_GROUP } from "shared/configs/game";
 import { Pet } from "shared/configs/pets";
 import { Store } from "shared/rodux";
 
