@@ -1,6 +1,5 @@
-import { ClientToServerEventDeclaration, ServerToClientEventDeclaration } from "@rbxts/net/out/definitions/Types";
+import { ClientToServerEventDeclaration } from "@rbxts/net/out/definitions/Types";
 import { createContext } from "@rbxts/roact";
-import { RelayHatchDefinition } from "shared/remotes/eggs/relayHatchInfo";
 import { RequestHatchDefinition } from "shared/remotes/eggs/requestHatch";
 import { EquipWeaponDefinition } from "shared/remotes/weapons/equipWeapon";
 import { PurchaseWeaponDefinition } from "shared/remotes/weapons/purchaseWeapon";

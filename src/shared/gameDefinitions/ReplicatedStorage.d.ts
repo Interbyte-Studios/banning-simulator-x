@@ -35,8 +35,8 @@ declare global {
 			hatch: Part & {
 				attachment: Attachment & {
 					flare: ParticleEmitter;
-				}
-			}
+				};
+			};
 		};
 	}
 }
