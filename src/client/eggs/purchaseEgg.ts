@@ -8,20 +8,20 @@ import { getPetInventorySize } from "shared/util/getPetInventorySize";
 
 import { canHatchEgg } from "./canHatchEgg";
 
-let activelyWatching = false;
-
 /**
  * Handles the purchasing of an egg.
  *
+ * @param store The player's store.
  * @param amount The amount of eggs to hatch.
  * @param eggName The name of the egg.
  * @param isVoid Whether or not the egg is void.
- * @param store The player's store.
  */
-export function purchaseEgg(amount: 1 | 2 | 3, eggName: EggNames, isVoid: boolean, store: Store): void {
+export function purchaseEgg(store: Store, amount: 1 | 2 | 3, eggName: EggNames, isVoid: boolean): void {
 	// check that the user has waited long enough to hatch eggs
 	const canHatch = canHatchEgg();
-	if (canHatch === false) return;
+	if (canHatch === false) {
+		return;
+	}
 
 	const currentState = store.getState();
 	const eggData = getEggData(eggName);
@@ -43,46 +43,56 @@ export function purchaseEgg(amount: 1 | 2 | 3, eggName: EggNames, isVoid: boolea
 
 	// check for currency
 	if (eggCost.amount * amount > currentState.currencies[eggCost.currencyType]) {
-            return;
-        }
+		return;
+	}
 
 	// check inventory space
-	if (currentState.pets.size() >= getPetInventorySize(store) + amountToBeHatched) {
+	if (currentState.pets.size() >= getPetInventorySize(store) + amount) {
 		warn(`User does not have enough inventory space to hatch the ${eggName} egg.`);
 		return;
 	}
 
-	requestHatch.SendToServer(amountToBeHatched as 1 | 2 | 3, eggName, isVoid);
+	requestHatch.SendToServer(amount, eggName, isVoid);
 }
+
+let activelyWatching = false;
 
 /**
  * Checks whether or not player owns auto hatch and responds accordingly.
  *
+ * @param store The player's store.
  * @param amount The amount of eggs to hatch.
  * @param eggName The name of the egg.
  * @param isVoid Whether or not the egg is void.
- * @param store The player's store.
  */
-export function handleEggPurchase(amount: 1 | 2 | 3, eggName: EggNames, isVoid: boolean, store: Store): void {
-	if (activelyWatching) return;
+export function handleEggPurchase(store: Store, amount: 1 | 2 | 3, eggName: EggNames, isVoid: boolean): void {
+	if (activelyWatching) {
+		return;
+	}
 
 	const currentState = store.getState();
 	if (currentState.settings.autoHatch) {
 		const player = Players.LocalPlayer;
 
 		const character = player.Character;
-		if (character === undefined) return;
+		if (character === undefined) {
+			return;
+		}
 
 		const humanoid = character.FindFirstChildOfClass("Humanoid");
-		if (humanoid === undefined) return;
+		if (humanoid === undefined) {
+			return;
+		}
 
 		activelyWatching = true;
 
 		RunService.BindToRenderStep("autoHatch", Enum.RenderPriority.Last.Value, () => {
 			const canHatch = canHatchEgg();
-			if (!canHatch) return;
+			if (!canHatch) {
+				return;
+			}
 
-			purchaseEgg(amount, eggName, isVoid, store);
+			purchaseEgg(store, amount, eggName, isVoid);
 		});
 
 		const connection = humanoid.GetPropertyChangedSignal("MoveDirection").Connect(() => {
@@ -91,6 +101,6 @@ export function handleEggPurchase(amount: 1 | 2 | 3, eggName: EggNames, isVoid: 
 			connection.Disconnect();
 		});
 	} else {
-		purchaseEgg(amount, eggName, isVoid, store);
+		purchaseEgg(store, amount, eggName, isVoid);
 	}
 }
