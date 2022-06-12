@@ -61,7 +61,7 @@ export class EggHud extends Roact.Component<EggHudProps, EggHudState> {
 				</frame>
 			);
 		} else {
-			eggHudAnimatorService.bindingSets.clear();
+			eggHudAnimatorService.motorSets.clear();
 			return <></>;
 		}
 	}

@@ -38,7 +38,7 @@ export function EggHudDisplay(props: EggHudProps): Roact.Element {
 
 	motor.onStep(setBinding);
 
-	eggHudAnimatorService.bindingSets.push({
+	eggHudAnimatorService.motorSets.push({
 		adornee: props.adornee,
 		motor: motor,
 	});

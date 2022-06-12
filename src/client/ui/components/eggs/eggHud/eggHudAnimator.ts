@@ -12,9 +12,9 @@ interface HudBindingSet {
  */
 export class eggHudAnimatorService {
 	/**
-	 * An array of "binding sets".
+	 * An array of motors connected to egg hud ui's.
 	 */
-	public static bindingSets: Array<HudBindingSet> = [];
+	public static motorSets: Array<HudBindingSet> = [];
 
 	/**
 	 * The required magnitude between the player's position and the egg hud adornee's position in order to display an egg hud UI.
@@ -56,7 +56,7 @@ export class eggHudAnimatorService {
 		RunService.Heartbeat.Connect(() => {
 			if (player.Character === undefined) return;
 
-			for (const bindingSetData of this.bindingSets) {
+			for (const bindingSetData of this.motorSets) {
 				const magnitudeToBasePart = getMagnitudeBetweenPlayerAndObject(player.Character, bindingSetData.adornee);
 				if (magnitudeToBasePart !== undefined) {
 					if (magnitudeToBasePart <= this.magnitudeRequirement) {
