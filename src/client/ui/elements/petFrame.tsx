@@ -28,8 +28,8 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 				<BaseImageLabel Size={udim2Middle} Image={getPetDecal(props.eggName, props.petId, props.variant)} />
 			</BaseImageLabel>
 			<BaseTextLabel
-				Position={new UDim2(0.3, 0, 0.15, 0)}
-				Size={new UDim2(0.5, 0, 0.4, 0)}
+				Position={UDim2.fromScale(0.3, 0.15)}
+				Size={UDim2.fromScale(0.5, 0.4)}
 				Text={petData.petData.rarity !== "Legendary" ? `${petData.petData.chance}%` : "???"}
 			>
 				<RarityGradient Rarity={petData.petData.rarity} />

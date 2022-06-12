@@ -24,15 +24,15 @@ export function EggCostDisplay(props: eggCostDisplayProps): Roact.Element {
 			PixelsPerStud={50}
 		>
 			<BaseTextLabel
-				Position={new UDim2(0.65, 0, 0.5, 0)}
-				Size={new UDim2(0.7, 0, 0.7, 0)}
+				Position={UDim2.fromScale(0.65, 0.5)}
+				Size={UDim2.fromScale(0.7, 0.7)}
 				Text={twoDpAbbreviator.numberToString(props.cost)}
 				TextColor3={props.isVoid ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0)}
 			>
 				<BaseImageLabel
 					AnchorPoint={new Vector2(1, 0.5)}
-					Position={new UDim2(-0.05, 0, 0.5, 0)}
-					Size={new UDim2(0.35, 0, 1.1, 0)}
+					Position={UDim2.fromScale(-0.05, 0.5)}
+					Size={UDim2.fromScale(0.35, 1.1)}
 					Image={getCurrencyIcon(props.currency)}
 				/>
 			</BaseTextLabel>

@@ -48,7 +48,7 @@ export function EggHudDisplay(props: EggHudProps): Roact.Element {
 			Active={true}
 			Adornee={props.adornee}
 			AlwaysOnTop={true}
-			Size={new UDim2(15, 0, 20, 0)}
+			Size={UDim2.fromScale(15, 20)}
 			ClipsDescendants={true}
 			ZIndexBehavior={Enum.ZIndexBehavior.Sibling}
 		>
@@ -58,14 +58,14 @@ export function EggHudDisplay(props: EggHudProps): Roact.Element {
 				AnchorPoint={vec2Middle}
 				Position={udim2Middle}
 				Size={binding.map((value) => {
-					return new UDim2(value.X, 0, value.Y, 0);
+					return UDim2.fromScale(value.X, value.Y);
 				})}
 			>
 				<imagebutton
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
 					Position={udim2Middle}
-					Size={new UDim2(0.175, 0, 0.135, 0)}
+					Size={UDim2.fromScale(0.175, 0.135)}
 					Image={assetIds.images.buttons[uiTheme].specialized.openEgg.OpenEgg}
 					HoverImage={assetIds.images.buttons[uiTheme].specialized.openEgg.OpenEggSelected}
 					PressedImage={assetIds.images.buttons[uiTheme].specialized.openEgg.OpenEggSelected}
@@ -80,15 +80,15 @@ export function EggHudDisplay(props: EggHudProps): Roact.Element {
 					}}
 				/>
 				<BaseImageLabel
-					Position={new UDim2(0.5, 0, 0.675, 0)}
-					Size={new UDim2(0.4, 0, 0.24, 0)}
+					Position={UDim2.fromScale(0.5, 0.675)}
+					Size={UDim2.fromScale(0.4, 0.24)}
 					Image={assetIds.images.backgrounds[uiTheme].AutoHatchBG}
 				>
 					<imagebutton
 						AnchorPoint={vec2Middle}
 						BackgroundTransparency={1}
-						Position={new UDim2(0.5, 0, 0.725, 0)}
-						Size={new UDim2(0.9, 0, 0.3, 0)}
+						Position={UDim2.fromScale(0.5, 0.725)}
+						Size={UDim2.fromScale(0.9, 0.3)}
 						Image={
 							assetIds.images.buttons[uiTheme].templates.rectangular[
 								props.autoHatch ? "RectangularButtonConfirmation" : "RectangularButtonWarning"
@@ -117,20 +117,20 @@ export function EggHudDisplay(props: EggHudProps): Roact.Element {
 					>
 						<BaseTextLabel
 							Position={udim2Middle}
-							Size={new UDim2(0.9, 0, 0.6, 0)}
+							Size={UDim2.fromScale(0.9, 0.6)}
 							Text={props.autoHatch ? "On" : "Off"}
 							AutomaticSize={Enum.AutomaticSize.X}
 						>
 							<BaseUIStroke Thickness={2.4} />
 						</BaseTextLabel>
 					</imagebutton>
-					<BaseTextLabel Position={new UDim2(0.5, 0, 0.425, 0)} Size={new UDim2(0.85, 0, 0.25, 0)} Text={"Auto Hatch"}>
+					<BaseTextLabel Position={UDim2.fromScale(0.5, 0.425)} Size={UDim2.fromScale(0.85, 0.25)} Text={"Auto Hatch"}>
 						<BaseUIStroke Thickness={2.4} />
 					</BaseTextLabel>
 				</BaseImageLabel>
 				<BaseImageLabel
-					Position={new UDim2(0.5, 0, 0.265, 0)}
-					Size={new UDim2(0.5, 0, 0.325, 0)}
+					Position={UDim2.fromScale(0.5, 0.265)}
+					Size={UDim2.fromScale(0.5, 0.325)}
 					Image={assetIds.images.backgrounds[uiTheme].EggPetDisplay}
 				>
 					<RescalingScrollingFrame
@@ -138,13 +138,13 @@ export function EggHudDisplay(props: EggHudProps): Roact.Element {
 						AnchorPoint={vec2Middle}
 						BackgroundTransparency={1}
 						ScrollBarThickness={0}
-						Position={new UDim2(0.5, 0, 0.42, 0)}
-						Size={new UDim2(0.9, 0, 0.65, 0)}
+						Position={UDim2.fromScale(0.5, 0.42)}
+						Size={UDim2.fromScale(0.9, 0.65)}
 						BorderSizePixel={0}
 						ScrollingDirection={Enum.ScrollingDirection.Y}
 					>
 						<uigridlayout
-							CellSize={new UDim2(0.3, 0, 0.48, 0)}
+							CellSize={UDim2.fromScale(0.3, 0.48)}
 							HorizontalAlignment={Enum.HorizontalAlignment.Center}
 							VerticalAlignment={Enum.VerticalAlignment.Center}
 							SortOrder={Enum.SortOrder.LayoutOrder}
@@ -156,8 +156,8 @@ export function EggHudDisplay(props: EggHudProps): Roact.Element {
 						})}
 					</RescalingScrollingFrame>
 					<BaseTextLabel
-						Position={new UDim2(0.5, 0, 0.01, 0)}
-						Size={new UDim2(1, 0, 0.1, 0)}
+						Position={UDim2.fromScale(0.5, 0.01)}
+						Size={UDim2.fromScale(1, 0.1)}
 						Text={props.isVoid ? `Void ${props.eggName} Egg` : `${props.eggName} Egg`}
 						TextXAlignment={Enum.TextXAlignment.Left}
 					>

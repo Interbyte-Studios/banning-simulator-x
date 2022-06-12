@@ -20,9 +20,9 @@ interface InfoFrameProps {
 /* eslint-disable jsdoc/require-jsdoc */
 export function InfoFrame(props: InfoFrameProps): Roact.Element {
 	const infoFramePositions = preserveWithConstraint<Record<0 | 1 | 2, UDim2>>()({
-		0: new UDim2(0.5, 0, 0.75, 0),
-		1: new UDim2(0.25, 0, 0.75, 0),
-		2: new UDim2(0.75, 0, 0.75, 0),
+		0: UDim2.fromScale(0.5, 0.75),
+		1: UDim2.fromScale(0.25, 0.75),
+		2: UDim2.fromScale(0.75, 0.75),
 	});
 
 	const petInfo = getPetData(props.eggName, props.pet);
@@ -32,26 +32,26 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 			AnchorPoint={vec2Middle}
 			BackgroundTransparency={1}
 			Position={infoFramePositions[props.id]}
-			Size={new UDim2(0.175, 0, 0.12, 0)}
+			Size={UDim2.fromScale(0.175, 0.12)}
 			Visible={props.isVisible}
 		>
 			<BaseTextLabel
-				Position={new UDim2(0.7, 0, 0.3, 0)}
-				Size={new UDim2(0.8, 0, 0.55, 0)}
+				Position={UDim2.fromScale(0.7, 0.3)}
+				Size={UDim2.fromScale(0.8, 0.55)}
 				Text={string.upper(petInfo.petName)}
 				TextXAlignment={Enum.TextXAlignment.Left}
 			>
 				<BaseImageLabel
 					AnchorPoint={new Vector2(1, 0.5)}
 					Position={udim2TopMiddle}
-					Size={new UDim2(0.4, 0, 1.15, 0)}
+					Size={UDim2.fromScale(0.4, 1.15)}
 					Image={getPetDecal(props.eggName, props.pet, props.isVoid ? "void" : "regular")}
 				/>
 				<BaseUIStroke Thickness={2.4} />
 			</BaseTextLabel>
 			<BaseTextLabel
-				Position={new UDim2(0.5, 0, 0.875, 0)}
-				Size={new UDim2(0.75, 0, 0.4, 0)}
+				Position={UDim2.fromScale(0.5, 0.875)}
+				Size={UDim2.fromScale(0.75, 0.4)}
 				Text={string.upper(petInfo.petData.rarity)}
 			>
 				<RarityGradient Rarity={petInfo.petData.rarity} />
