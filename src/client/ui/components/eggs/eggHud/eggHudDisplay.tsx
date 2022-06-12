@@ -76,7 +76,7 @@ export function EggHudDisplay(props: EggHudProps): Roact.Element {
 						 * @returns Nothing.
 						 */
 						Activated: (): void =>
-							handleEggPurchase(userOwnsTripleEggs ? 3 : 1, props.eggName, props.isVoid, props.store),
+							handleEggPurchase(props.store, userOwnsTripleEggs ? 3 : 1, props.eggName, props.isVoid),
 					}}
 				/>
 				<BaseImageLabel
