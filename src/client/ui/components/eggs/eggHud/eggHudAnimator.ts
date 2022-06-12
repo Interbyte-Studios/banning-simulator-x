@@ -54,8 +54,10 @@ export class eggHudAnimatorService {
 		const player = Players.LocalPlayer;
 
 		RunService.Heartbeat.Connect(() => {
+			if (player.Character === undefined) return;
+
 			for (const bindingSetData of this.bindingSets) {
-				const magnitudeToBasePart = getMagnitudeBetweenPlayerAndObject(player, bindingSetData.adornee);
+				const magnitudeToBasePart = getMagnitudeBetweenPlayerAndObject(player.Character, bindingSetData.adornee);
 				if (magnitudeToBasePart !== undefined) {
 					if (magnitudeToBasePart <= this.magnitudeRequirement) {
 						if (bindingSetData.motor.getValue() !== { X: this.isActiveGoal, Y: this.isActiveGoal }) {
