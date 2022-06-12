@@ -5,7 +5,7 @@ import { EGGS } from "shared/configs/eggs";
 import { Store } from "shared/rodux";
 
 import { AnimateEggs } from "../eggHatch/animateEggs";
-import { eggHudAnimatorService } from "./eggHudAnimatorService";
+import { eggHudAnimatorService } from "./eggHudAnimator";
 import { EggHudDisplay } from "./eggHudDisplay";
 
 interface EggHudProps {

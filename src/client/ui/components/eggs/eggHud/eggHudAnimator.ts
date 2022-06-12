@@ -34,32 +34,18 @@ export class eggHudAnimatorService {
 	/**
 	 * Expected binding values for a egg hud ui that is displayed to the player.
 	 */
-	private static isActive = {
-		X: new Flipper.Spring(eggHudAnimatorService.isActiveGoal, {
-			frequency: 5,
-			dampingRatio: 1,
-		}),
-
-		Y: new Flipper.Spring(eggHudAnimatorService.isActiveGoal, {
-			frequency: 5,
-			dampingRatio: 1,
-		}),
-	};
+	private static isActive = new Flipper.Spring(eggHudAnimatorService.isActiveGoal, {
+		frequency: 5,
+		dampingRatio: 1,
+	});
 
 	/**
 	 * Expected binding values for a egg hud ui that is not displayted to the player.
 	 */
-	private static isDormant = {
-		X: new Flipper.Spring(eggHudAnimatorService.isDormantGoal, {
-			frequency: 5,
-			dampingRatio: 1,
-		}),
-
-		Y: new Flipper.Spring(eggHudAnimatorService.isDormantGoal, {
-			frequency: 4,
-			dampingRatio: 0.75,
-		}),
-	};
+	private static isDormant = new Flipper.Spring(eggHudAnimatorService.isDormantGoal, {
+		frequency: 5,
+		dampingRatio: 1,
+	});
 
 	/**
 	 * Starts the animator service.
@@ -73,11 +59,17 @@ export class eggHudAnimatorService {
 				if (magnitudeToBasePart !== undefined) {
 					if (magnitudeToBasePart <= this.magnitudeRequirement) {
 						if (bindingSetData.motor.getValue() !== { X: this.isActiveGoal, Y: this.isActiveGoal }) {
-							bindingSetData.motor.setGoal(this.isActive);
+							bindingSetData.motor.setGoal({
+								X: this.isActive,
+								Y: this.isActive,
+							});
 						}
 					} else {
 						if (bindingSetData.motor.getValue() !== { X: this.isDormantGoal, Y: this.isDormantGoal }) {
-							bindingSetData.motor.setGoal(this.isDormant);
+							bindingSetData.motor.setGoal({
+								X: this.isDormant,
+								Y: this.isDormant,
+							});
 						}
 					}
 				}

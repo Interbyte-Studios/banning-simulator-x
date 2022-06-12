@@ -16,7 +16,7 @@ import { Store } from "shared/rodux";
 import { udim2Middle, uiTheme, userOwnsTripleEggs, vec2Middle } from "../../../commonValues";
 import { PetFrame } from "../../../elements/petFrame";
 import { RescalingScrollingFrame } from "../../../elements/rescalingScrollingFrame";
-import { eggHudAnimatorService } from "./eggHudAnimatorService";
+import { eggHudAnimatorService } from "./eggHudAnimator";
 
 interface EggHudProps {
 	adornee: BasePart;
