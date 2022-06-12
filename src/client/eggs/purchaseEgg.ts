@@ -30,14 +30,12 @@ export function purchaseEgg(store: Store, amount: 1 | 2 | 3, eggName: EggNames, 
 	// check that user owns world
 	const ownsWorld = currentState.worlds.find((x) => x.name === eggData.world);
 	if (ownsWorld === undefined) {
-		warn(`User does not own ${eggData.world} World, and therefore canot purchase the ${eggName} egg.`);
 		return;
 	}
 
 	// check that user owns zone
 	const ownsZone = ownsWorld.zones.find((x) => x.name === eggData.zone);
 	if (ownsZone === undefined) {
-		warn(`User does not own ${eggData.zone} Zone, and therefore canot purchase the ${eggName} egg.`);
 		return;
 	}
 
@@ -48,7 +46,6 @@ export function purchaseEgg(store: Store, amount: 1 | 2 | 3, eggName: EggNames, 
 
 	// check inventory space
 	if (currentState.pets.size() >= getPetInventorySize(store) + amount) {
-		warn(`User does not have enough inventory space to hatch the ${eggName} egg.`);
 		return;
 	}
 
