@@ -42,26 +42,9 @@ export function purchaseEgg(amount: 1 | 2 | 3, eggName: EggNames, isVoid: boolea
 	}
 
 	// check for currency
-	let amountToBeHatched = 0;
-	switch (amount) {
-		case 1: {
-			if (currentState.currencies[eggCost.currencyType] < eggCost.amount) {
-				return;
-			}
-			amountToBeHatched += 1;
-			break;
-		}
-		case 2:
-		case 3: {
-			for (let i = 1; i <= amount; i++) {
-				if (currentState.currencies[eggCost.currencyType] >= eggCost.amount * i) {
-					amountToBeHatched += 1;
-				}
-			}
-			break;
-		}
-	}
-	if (amountToBeHatched <= 0 || amountToBeHatched > 3) return;
+	if (eggCost.amount * amount > currentState.currencies[eggCost.currencyType]) {
+            return;
+        }
 
 	// check inventory space
 	if (currentState.pets.size() >= getPetInventorySize(store) + amountToBeHatched) {
