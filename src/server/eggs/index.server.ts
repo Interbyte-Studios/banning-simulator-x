@@ -11,10 +11,10 @@ export const requestHatch = remotes.Server.GetNamespace("eggs").Create("requestH
 export const relayHatch = remotes.Server.GetNamespace("eggs").Create("relayHatch");
 export const toggleHatch = remotes.Server.GetNamespace("eggs").Create("toggleAuto");
 
+const randomGenerator = new Random();
+
 Players.PlayerAdded.Connect(async (player) => {
 	const store = await onStoreCreated(player);
-
-	const randomGenerator = new Random();
 
 	let lastHatchTime = 0;
 	requestHatch.Connect((player, amount, eggName, isVoid) => {
