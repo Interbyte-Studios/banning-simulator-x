@@ -17,6 +17,14 @@ export class eggHudAnimatorService {
 	public static motorSets: Array<HudBindingSet> = [];
 
 	/**
+	 * The configuration for flipper motors.
+	 */
+	private static motorConfig = {
+		frequency: 5,
+		dampingRatio: 1,
+	};
+
+	/**
 	 * The required magnitude between the player's position and the egg hud adornee's position in order to display an egg hud UI.
 	 */
 	private static magnitudeRequirement = 15;
@@ -34,18 +42,12 @@ export class eggHudAnimatorService {
 	/**
 	 * Expected binding values for a egg hud ui that is displayed to the player.
 	 */
-	private static isActive = new Flipper.Spring(eggHudAnimatorService.isActiveGoal, {
-		frequency: 5,
-		dampingRatio: 1,
-	});
+	private static isActive = new Flipper.Spring(eggHudAnimatorService.isActiveGoal, eggHudAnimatorService.motorConfig);
 
 	/**
 	 * Expected binding values for a egg hud ui that is not displayted to the player.
 	 */
-	private static isDormant = new Flipper.Spring(eggHudAnimatorService.isDormantGoal, {
-		frequency: 5,
-		dampingRatio: 1,
-	});
+	private static isDormant = new Flipper.Spring(eggHudAnimatorService.isDormantGoal, eggHudAnimatorService.motorConfig);
 
 	/**
 	 * Starts the animator service.
