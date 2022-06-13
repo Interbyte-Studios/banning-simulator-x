@@ -1,4 +1,5 @@
 import { Players } from "@rbxts/services";
+import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { purchaseEgg } from "server/modules/rodux/purchaseEgg";
 import { onStoreCreated } from "server/playerStore";
 import { getPetPercentages } from "server/util/getPetPercentages";
@@ -13,11 +14,9 @@ export const toggleHatch = remotes.Server.GetNamespace("eggs").Create("toggleAut
 
 const randomGenerator = new Random();
 
-Players.PlayerAdded.Connect(async (player) => {
-	const store = await onStoreCreated(player);
-
-	let lastHatchTime = 0;
-	requestHatch.Connect((player, amount, eggName, isVoid) => {
+let lastHatchTime = 0;
+requestHatch.Connect(
+	withPlayerStore((player, store, amount, eggName, isVoid) => {
 		const now = time();
 		if (now - lastHatchTime < hatchDebounce) return;
 		lastHatchTime = now;
@@ -75,14 +74,16 @@ Players.PlayerAdded.Connect(async (player) => {
 		}
 
 		relayHatch.SendToPlayer(player, confirmedPets.size() as 1 | 2 | 3, eggName, confirmedPets, isVoid);
-	});
+	}),
+);
 
-	let lastRequestTime = 0;
-	toggleHatch.Connect(() => {
+let lastRequestTime = 0;
+toggleHatch.Connect(
+	withPlayerStore((_, store) => {
 		const now = time();
 		if (now - lastRequestTime < 0.5) return;
 		lastRequestTime = now;
 
 		store.dispatch(toggleAuto());
-	});
-});
+	}),
+);
