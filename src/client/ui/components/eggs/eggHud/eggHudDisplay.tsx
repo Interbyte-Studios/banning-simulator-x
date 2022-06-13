@@ -145,7 +145,7 @@ export function EggHudDisplay(props: EggHudProps): Roact.Element {
 							VerticalAlignment={Enum.VerticalAlignment.Center}
 							SortOrder={Enum.SortOrder.LayoutOrder}
 						/>
-						{Object.entries(props.pets).map(([, petInfo]) => {
+						{Object.values(props.pets).map((petInfo) => {
 							return (
 								<PetFrame eggName={props.eggName} petId={petInfo.id} variant={props.isVoid ? "void" : "regular"} />
 							);
