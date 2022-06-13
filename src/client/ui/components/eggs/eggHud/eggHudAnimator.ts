@@ -2,9 +2,11 @@ import Flipper from "@rbxts/flipper";
 import { Players, RunService } from "@rbxts/services";
 import { getMagnitudeBetweenPlayerAndObject } from "shared/util/getDistanceFromObject";
 
+type HudMotor = Flipper.GroupMotor<{ X: number; Y: number }>;
+
 interface HudBindingSet {
 	adornee: BasePart;
-	motor: Flipper.GroupMotor<{ X: number; Y: number }>;
+	motor: HudMotor;
 }
 
 /**
@@ -14,7 +16,7 @@ export class eggHudAnimatorService {
 	/**
 	 * An array of motors connected to egg hud ui's.
 	 */
-	public static motorSets: Array<HudBindingSet> = [];
+	private static motorSets: Array<HudBindingSet> = [];
 
 	/**
 	 * The configuration for flipper motors.
@@ -48,6 +50,38 @@ export class eggHudAnimatorService {
 	 * Expected binding values for a egg hud ui that is not displayted to the player.
 	 */
 	private static isDormant = new Flipper.Spring(eggHudAnimatorService.isDormantGoal, eggHudAnimatorService.motorConfig);
+
+	/**
+	 * Adds a motor to the array of active motors.
+	 *
+	 * @param adornee The part associated with the hud that the motor handles animation values for (for checking distance).
+	 * @param motor The motor to add to the registry.
+	 */
+	public static addMotor(adornee: BasePart, motor: HudMotor): void {
+		this.motorSets.push({
+			adornee: adornee,
+			motor: motor,
+		});
+	}
+
+	/**
+	 * Removes a motor from the array of active motors.
+	 *
+	 * @param adornee The part associated with the hud that the motor handles animation values for.
+	 */
+	public static removeMotors(adornee: BasePart): void {
+		const motorDataIndex = this.motorSets.findIndex((x) => x.adornee === adornee);
+		if (motorDataIndex !== undefined) {
+			this.motorSets.unorderedRemove(motorDataIndex);
+		}
+	}
+
+	/**
+	 * Clears all the motors from the active motors array.
+	 */
+	public static clearMotors(): void {
+		this.motorSets.clear();
+	}
 
 	/**
 	 * Starts the animator service.

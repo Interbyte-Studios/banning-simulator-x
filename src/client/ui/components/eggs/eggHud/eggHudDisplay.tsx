@@ -35,13 +35,9 @@ export function EggHudDisplay(props: EggHudProps): Roact.Element {
 	});
 
 	const [binding, setBinding] = Roact.createBinding(motor.getValue());
-
 	motor.onStep(setBinding);
 
-	eggHudAnimatorService.motorSets.push({
-		adornee: props.adornee,
-		motor: motor,
-	});
+	eggHudAnimatorService.addMotor(props.adornee, motor);
 
 	return (
 		<billboardgui
