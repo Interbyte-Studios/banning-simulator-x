@@ -59,28 +59,25 @@ requestHatch.Connect(
 		}
 
 		// confirm pet
-		const confirmedPets: Array<ConfirmedPet> = [];
+		const selectedPets: Array<ConfirmedPet> = [];
 		for (const pet of hatchedPets) {
 			const purchasePet = purchaseEgg(store, eggName, pet, isVoid);
 			if (purchasePet) {
 				// todo: check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 				// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 
-				confirmedPets.push({
+				selectedPets.push({
 					id: pet,
 					autoDeleted: purchasePet.wasAutoDeleted,
 				});
 			}
 		}
 
-		if (confirmedPets.size() <= 0 || confirmedPets.size() > 3) {
-			warn(
-				`Issue on the server confirming how many pets should be hatched. Player: ${player.Name} | Amount: ${amount} | Egg: ${eggName} | Void: ${isVoid}`,
-			);
-			return;
+		if (selectedPets.size() <= 0 || selectedPets.size() > 3) {
+			throw `Issue on the server confirming how many pets should be hatched. Player: ${player.Name} | Amount: ${amount} | Egg: ${eggName} | Void: ${isVoid}`;
 		}
 
-		relayHatch.SendToPlayer(player, confirmedPets.size() as 1 | 2 | 3, eggName, confirmedPets, isVoid);
+		relayHatch.SendToPlayer(player, selectedPets.size() as 1 | 2 | 3, eggName, selectedPets, isVoid);
 	}),
 );
 
