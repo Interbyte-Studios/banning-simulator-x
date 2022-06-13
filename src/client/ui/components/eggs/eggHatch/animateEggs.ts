@@ -127,6 +127,11 @@ export class AnimateEggs {
 	public static petAnimationComplete = true;
 
 	/**
+	 * The timestamp at which the player last hatched eggs.
+	 */
+	public static lasHatchTime = 0;
+
+	/**
 	 * An array of egg metadata currently being used to animate an egg hatch.
 	 */
 	private static animatedEggs: Array<AnimatedEgg> = [];
@@ -444,8 +449,8 @@ export class AnimateEggs {
 	public static handleAnimation(): void {
 		if (this.eggAnimationComplete === false || this.petAnimationComplete === false) return;
 
-		const canHatch = canHatchEgg();
-		if (canHatch === false) return;
+		if (!canHatchEgg(this.lasHatchTime)) return;
+		this.lasHatchTime = time();
 
 		this.eggAnimationComplete = false;
 		this.petAnimationComplete = false;

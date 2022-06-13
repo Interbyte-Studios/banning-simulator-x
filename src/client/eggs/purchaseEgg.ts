@@ -1,5 +1,6 @@
 import { Players, RunService } from "@rbxts/services";
 import { requestHatch } from "client/network";
+import { AnimateEggs } from "client/ui/components/eggs/eggHatch/animateEggs";
 import { EggNames } from "shared/configs/eggs";
 import { Store } from "shared/rodux";
 import { getEggCost } from "shared/util/getEggCost";
@@ -18,8 +19,7 @@ import { canHatchEgg } from "./canHatchEgg";
  */
 export function purchaseEgg(store: Store, amount: 1 | 2 | 3, eggName: EggNames, isVoid: boolean): void {
 	// check that the user has waited long enough to hatch eggs
-	const canHatch = canHatchEgg();
-	if (canHatch === false) {
+	if (!canHatchEgg(AnimateEggs.lasHatchTime)) {
 		return;
 	}
 
@@ -84,8 +84,7 @@ export function handleEggPurchase(store: Store, amount: 1 | 2 | 3, eggName: EggN
 		activelyWatching = true;
 
 		RunService.BindToRenderStep("autoHatch", Enum.RenderPriority.Last.Value, () => {
-			const canHatch = canHatchEgg();
-			if (!canHatch) {
+			if (!canHatchEgg(AnimateEggs.lasHatchTime)) {
 				return;
 			}
 

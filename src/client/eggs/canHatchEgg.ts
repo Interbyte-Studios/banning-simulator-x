@@ -1,17 +1,11 @@
 import { hatchDebounce } from "shared/configs/eggs";
 
-let lastHatchTime = 0;
-
 /**
  * Validates that the player has waited long enough and can hatch again.
  *
+ * @param lastHatchTime The time eggs were last hatched at.
  * @returns Whether or not the player can hatch.
  */
-export function canHatchEgg(): boolean {
-	const now = time();
-	if (now - lastHatchTime < hatchDebounce) {
-		return false;
-	}
-	lastHatchTime = now;
-	return true;
+export function canHatchEgg(lastHatchTime: number): boolean {
+	return time() - lastHatchTime > hatchDebounce;
 }
