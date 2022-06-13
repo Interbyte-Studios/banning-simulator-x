@@ -1,7 +1,6 @@
 import { Players } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { purchaseEgg } from "server/modules/rodux/purchaseEgg";
-import { onStoreCreated } from "server/playerStore";
 import { getPetPercentages } from "server/util/getPetPercentages";
 import { hatchDebounce } from "shared/configs/eggs";
 import { remotes } from "shared/remotes";
@@ -12,14 +11,22 @@ export const requestHatch = remotes.Server.GetNamespace("eggs").Create("requestH
 export const relayHatch = remotes.Server.GetNamespace("eggs").Create("relayHatch");
 export const toggleHatch = remotes.Server.GetNamespace("eggs").Create("toggleAuto");
 
+const hatchTimeCache: Map<Player, number> = new Map();
+
 const randomGenerator = new Random();
 
-let lastHatchTime = 0;
 requestHatch.Connect(
 	withPlayerStore((player, store, amount, eggName, isVoid) => {
+		// verify that player has waited long enough to hatch
+		const lastHatchTime = hatchTimeCache.get(player) ?? 0;
+
 		const now = time();
-		if (now - lastHatchTime < hatchDebounce) return;
-		lastHatchTime = now;
+		const canHatch = now - lastHatchTime > hatchDebounce;
+		if (!canHatch) {
+			return;
+		}
+
+		hatchTimeCache.set(player, now);
 
 		// randomly hatch eggs
 		const hatchedPets: Array<number> = [];
@@ -87,3 +94,10 @@ toggleHatch.Connect(
 		store.dispatch(toggleAuto());
 	}),
 );
+
+Players.PlayerRemoving.Connect((player) => {
+	const lastHatchData = hatchTimeCache.get(player);
+	if (lastHatchData !== undefined) {
+		hatchTimeCache.delete(player);
+	}
+});
