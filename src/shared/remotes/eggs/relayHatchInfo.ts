@@ -1,8 +1,10 @@
 import Net from "@rbxts/net";
 import { EggNames } from "shared/configs/eggs";
+import { Variants } from "shared/configs/pets";
 
 export interface ConfirmedPet {
 	id: number;
+	variant: Variants;
 	autoDeleted: boolean;
 }
 

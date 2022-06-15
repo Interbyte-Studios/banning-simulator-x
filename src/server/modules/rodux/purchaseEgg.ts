@@ -61,7 +61,6 @@ export function purchaseEgg(store: Store, eggName: EggNames, petId: number, isVo
 	// todo: check if it should be auto deleted
 
 	// register pet
-	store.dispatch(dispatchAddPet(eggName, petId, isVoid ? "void" : "regular"));
 	return {
 		success: true,
 		wasAutoDeleted: false,

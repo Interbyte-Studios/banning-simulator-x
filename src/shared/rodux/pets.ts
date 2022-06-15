@@ -15,24 +15,23 @@ export interface Pet {
 export type PetsState = Array<Pet>;
 export type PetsActions = AddPet;
 
-export interface AddPet extends Rodux.Action<"addPet"> {
-	eggName: EggNames;
+interface PetData {
 	id: number;
 	variant: Variants;
 }
 
+export interface AddPet extends Rodux.Action<"addPet"> {
+	pets: Array<PetData>;
+}
+
 /**
- * @param eggName The name of the egg the pet comes from.
- * @param id The pet id that is being added.
- * @param variant The variant of the pet.
+ * @param pets The pets to add.
  * @returns The Rodux action to dispatch.
  */
-export function addPet(eggName: EggNames, id: number, variant: Variants): AddPet & Rodux.AnyAction {
+export function addPets(pets: Array<PetData>): AddPet & Rodux.AnyAction {
 	return {
 		type: "addPet",
-		eggName: eggName,
-		id: id,
-		variant: variant,
+		pets: pets,
 	};
 }
 
@@ -43,17 +42,19 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions>(defaultPe
 	addPet: (state, action) => {
 		const newState: PetsState = [...state];
 
-		const petGuid = HttpService.GenerateGUID(false);
-		const newPet: Pet = {
-			id: action.id,
-			guid: petGuid,
-			equipped: false,
-			locked: false,
-			variant: "regular",
-			enhancements: [],
-		};
+		for (const pet of action.pets) {
+			const petGuid = HttpService.GenerateGUID(false);
+			const newPet: Pet = {
+				id: pet.id,
+				guid: petGuid,
+				equipped: false,
+				locked: false,
+				variant: pet.variant,
+				enhancements: [],
+			};
 
-		newState.push(newPet);
+			newState.push(newPet);
+		}
 		return newState;
 	},
 });

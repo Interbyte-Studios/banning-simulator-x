@@ -5,6 +5,7 @@ import { getPetPercentages } from "server/util/getPetPercentages";
 import { hatchDebounce } from "shared/configs/eggs";
 import { remotes } from "shared/remotes";
 import { ConfirmedPet } from "shared/remotes/eggs/relayHatchInfo";
+import { addPets } from "shared/rodux/pets";
 import { toggleAuto } from "shared/rodux/settings";
 
 export const requestHatch = remotes.Server.GetNamespace("eggs").Create("requestHatch");
@@ -62,12 +63,13 @@ requestHatch.Connect(
 		const selectedPets: Array<ConfirmedPet> = [];
 		for (const pet of hatchedPets) {
 			const purchasePet = purchaseEgg(store, eggName, pet, isVoid);
-			if (purchasePet) {
+			if (purchasePet.success) {
 				// todo: check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 				// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 
 				selectedPets.push({
 					id: pet,
+					variant: isVoid ? "void" : "regular",
 					autoDeleted: purchasePet.wasAutoDeleted,
 				});
 			}
@@ -77,6 +79,7 @@ requestHatch.Connect(
 			throw `Issue on the server confirming how many pets should be hatched. Player: ${player.Name} | Amount: ${amount} | Egg: ${eggName} | Void: ${isVoid}`;
 		}
 
+		store.dispatch(addPets(selectedPets));
 		relayHatch.SendToPlayer(player, selectedPets.size() as 1 | 2 | 3, eggName, selectedPets, isVoid);
 	}),
 );
