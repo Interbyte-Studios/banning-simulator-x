@@ -11,11 +11,7 @@ interface EggHatchState {
 	eggName: EggNames;
 	isActive: boolean;
 	isVoid: boolean;
-	isVisible: {
-		1: boolean;
-		2: boolean;
-		3: boolean;
-	};
+	isVisible: boolean;
 	pets: Array<ConfirmedPet>;
 }
 
@@ -35,29 +31,23 @@ export class EggHatch extends Roact.Component<{}, EggHatchState> {
 				return <></>;
 			}
 
+			const infoFrames: Array<Roact.Element> = [];
+			for (const pet of this.state.pets) {
+				const id = (infoFrames.size() + 1) as 1 | 2 | 3;
+				infoFrames.push(
+					<InfoFrame
+						eggName={this.state.eggName}
+						id={this.state.pets.size() === 1 ? 3 : id}
+						isVisible={this.state.isVisible}
+						isVoid={this.state.isVoid}
+						pet={pet.id}
+					/>,
+				);
+			}
+
 			return (
 				<frame AnchorPoint={vec2Middle} Position={udim2Middle} Size={udim2BottomRight} BackgroundTransparency={1}>
-					<InfoFrame
-						eggName={this.state.eggName}
-						id={0}
-						isVisible={this.state.isVisible[1]}
-						isVoid={this.state.isVoid}
-						pet={this.state.pets[0] ? this.state.pets[0].id : 1}
-					/>
-					<InfoFrame
-						eggName={this.state.eggName}
-						id={1}
-						isVisible={this.state.isVisible[2]}
-						isVoid={this.state.isVoid}
-						pet={this.state.pets[1] ? this.state.pets[1].id : 1}
-					/>
-					<InfoFrame
-						eggName={this.state.eggName}
-						id={2}
-						isVisible={this.state.isVisible[3]}
-						isVoid={this.state.isVoid}
-						pet={this.state.pets[2] ? this.state.pets[2].id : 1}
-					/>
+					{infoFrames}
 				</frame>
 			);
 		} else {
@@ -71,11 +61,7 @@ export class EggHatch extends Roact.Component<{}, EggHatchState> {
 	protected didMount(): void {
 		this.setState({
 			isActive: false,
-			isVisible: {
-				1: false,
-				2: false,
-				3: false,
-			},
+			isVisible: false,
 		});
 
 		relayHatch.Connect((amount, eggName, petIds, isVoid) => {
@@ -103,12 +89,11 @@ export class EggHatch extends Roact.Component<{}, EggHatchState> {
 			};
 			AnimateEggs.hatchEggs(animatedEggsParams);
 			const confirmedPetsAmount = petIds.size();
+
+			for (let i = 1; i <= confirmedPetsAmount; i++) {}
+
 			this.setState({
-				isVisible: {
-					1: confirmedPetsAmount === 1 || confirmedPetsAmount === 3,
-					2: confirmedPetsAmount === 2 || confirmedPetsAmount === 3,
-					3: confirmedPetsAmount === 2 || confirmedPetsAmount === 3,
-				},
+				isVisible: true,
 			});
 
 			const animatedPetsParams: HatchEggParams = {

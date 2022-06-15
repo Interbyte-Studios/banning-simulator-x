@@ -11,7 +11,7 @@ import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 
 interface InfoFrameProps {
 	eggName: EggNames;
-	id: 0 | 1 | 2;
+	id: 1 | 2 | 3;
 	isVisible: boolean;
 	pet: number;
 	isVoid: boolean;
@@ -19,8 +19,8 @@ interface InfoFrameProps {
 
 /* eslint-disable jsdoc/require-jsdoc */
 export function InfoFrame(props: InfoFrameProps): Roact.Element {
-	const infoFramePositions = preserveWithConstraint<Record<0 | 1 | 2, UDim2>>()({
-		0: UDim2.fromScale(0.5, 0.75),
+	const infoFramePositions = preserveWithConstraint<Record<1 | 2 | 3, UDim2>>()({
+		3: UDim2.fromScale(0.5, 0.75),
 		1: UDim2.fromScale(0.25, 0.75),
 		2: UDim2.fromScale(0.75, 0.75),
 	});
