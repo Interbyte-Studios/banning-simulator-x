@@ -16,7 +16,7 @@ import { Store } from "shared/rodux";
 import { udim2Middle, uiTheme, userOwnsTripleEggs, vec2Middle } from "../../../commonValues";
 import { PetFrame } from "../../../elements/petFrame";
 import { RescalingScrollingFrame } from "../../../elements/rescalingScrollingFrame";
-import { eggHudAnimatorService } from "./eggHudAnimator";
+import { eggHudAnimator } from "./eggHudAnimator";
 
 interface EggHudProps {
 	adornee: BasePart;
@@ -37,7 +37,7 @@ export function EggHudDisplay(props: EggHudProps): Roact.Element {
 	const [binding, setBinding] = Roact.createBinding(motor.getValue());
 	motor.onStep(setBinding);
 
-	eggHudAnimatorService.addMotor(props.adornee, motor);
+	eggHudAnimator.addMotor(props.adornee, motor);
 
 	return (
 		<billboardgui

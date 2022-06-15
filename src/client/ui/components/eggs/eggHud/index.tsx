@@ -5,7 +5,7 @@ import { EGGS } from "shared/configs/eggs";
 import { Store } from "shared/rodux";
 
 import { AnimateEggs } from "../eggHatch/animateEggs";
-import { eggHudAnimatorService } from "./eggHudAnimator";
+import { eggHudAnimator } from "./eggHudAnimator";
 import { EggHudDisplay } from "./eggHudDisplay";
 
 interface EggHudProps {
@@ -61,7 +61,7 @@ export class EggHud extends Roact.Component<EggHudProps, EggHudState> {
 				</frame>
 			);
 		} else {
-			eggHudAnimatorService.clearMotors();
+			eggHudAnimator.clearMotors();
 			return <></>;
 		}
 	}
@@ -70,7 +70,7 @@ export class EggHud extends Roact.Component<EggHudProps, EggHudState> {
 	 * Function that runs when the info hud Roact component mounts.
 	 */
 	protected didMount(): void {
-		eggHudAnimatorService.init();
+		eggHudAnimator.init();
 
 		this.setState({
 			isActive: true,
