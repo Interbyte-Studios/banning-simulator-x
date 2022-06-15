@@ -44,12 +44,12 @@ export class eggHudAnimator {
 	/**
 	 * Expected binding values for a egg hud ui that is displayed to the player.
 	 */
-	private static isActive = new Flipper.Spring(eggHudAnimatorService.isActiveGoal, eggHudAnimatorService.motorConfig);
+	private static isActive = new Flipper.Spring(eggHudAnimator.isActiveGoal, eggHudAnimator.motorConfig);
 
 	/**
 	 * Expected binding values for a egg hud ui that is not displayted to the player.
 	 */
-	private static isDormant = new Flipper.Spring(eggHudAnimatorService.isDormantGoal, eggHudAnimatorService.motorConfig);
+	private static isDormant = new Flipper.Spring(eggHudAnimator.isDormantGoal, eggHudAnimator.motorConfig);
 
 	/**
 	 * Adds a motor to the array of active motors.

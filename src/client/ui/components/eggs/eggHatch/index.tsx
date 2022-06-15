@@ -81,9 +81,6 @@ export class EggHatch extends Roact.Component<{}, EggHatchState> {
 				isVoid: isVoid,
 			};
 			AnimateEggs.hatchEggs(animatedEggsParams);
-			const confirmedPetsAmount = petIds.size();
-
-			for (let i = 1; i <= confirmedPetsAmount; i++) {}
 
 			this.setState({
 				isVisible: true,
@@ -99,11 +96,7 @@ export class EggHatch extends Roact.Component<{}, EggHatchState> {
 
 			this.setState({
 				isActive: false,
-				isVisible: {
-					1: false,
-					2: false,
-					3: false,
-				},
+				isVisible: false,
 			});
 		});
 	}
