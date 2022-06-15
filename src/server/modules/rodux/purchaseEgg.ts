@@ -27,7 +27,6 @@ export function purchaseEgg(store: Store, eggName: EggNames, petId: number, isVo
 	// check that user owns world
 	const ownsWorld = currentState.worlds.find((x) => x.name === eggData.world);
 	if (ownsWorld === undefined) {
-		warn(`User does not own ${eggData.world} World, and therefore canot purchase the ${eggName} egg.`);
 		return {
 			success: false,
 			wasAutoDeleted: false,
@@ -37,7 +36,6 @@ export function purchaseEgg(store: Store, eggName: EggNames, petId: number, isVo
 	// check that user owns zone
 	const ownsZone = ownsWorld.zones.find((x) => x.name === eggData.zone);
 	if (ownsZone === undefined) {
-		warn(`User does not own ${eggData.zone} Zone, and therefore canot purchase the ${eggName} egg.`);
 		return {
 			success: false,
 			wasAutoDeleted: false,
@@ -46,11 +44,6 @@ export function purchaseEgg(store: Store, eggName: EggNames, petId: number, isVo
 
 	// check for currency
 	if (currentState.currencies[eggCost.currencyType] < eggCost.amount) {
-		warn(
-			`User has ${currentState.currencies[eggCost.currencyType]} ${
-				eggCost.currencyType
-			}, which is not enough to purchase ${eggName}`,
-		);
 		return {
 			success: false,
 			wasAutoDeleted: false,
@@ -59,7 +52,6 @@ export function purchaseEgg(store: Store, eggName: EggNames, petId: number, isVo
 
 	// check inventory space
 	if (currentState.pets.size() >= getPetInventorySize(store) + 1) {
-		warn(`User does not have enough inventory space to hatch the ${eggName} egg.`);
 		return {
 			success: false,
 			wasAutoDeleted: false,
