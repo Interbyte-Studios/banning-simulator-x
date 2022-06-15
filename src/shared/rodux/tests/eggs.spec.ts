@@ -12,16 +12,19 @@ export = (): void => {
 			const petId = 1;
 
 			const state: EggsState = {
-				eggsHatched: 0,
-				basicHatched: 0,
-				ordinaryHatched: 0,
-				rareHatched: 0,
-				primordialHatched: 0,
-				prismaticHatched: 0,
+				eggs: 0,
+				specifics: {
+					Basic: 0,
+					Ordinary: 0,
+					Rare: 0,
+					Legendary: 0,
+					Primordial: 0,
+					Prismatic: 0,
+				},
 			};
 
 			const newState: EggsState = { ...state };
-			newState.eggsHatched += 1;
+			newState.eggs += 1;
 
 			const action = addPet(eggName, petId, "regular");
 
@@ -33,17 +36,20 @@ export = (): void => {
 			const petId = 1;
 
 			const state: EggsState = {
-				eggsHatched: 0,
-				basicHatched: 0,
-				ordinaryHatched: 0,
-				rareHatched: 0,
-				primordialHatched: 0,
-				prismaticHatched: 0,
+				eggs: 0,
+				specifics: {
+					Basic: 0,
+					Ordinary: 0,
+					Rare: 0,
+					Legendary: 0,
+					Primordial: 0,
+					Prismatic: 0,
+				},
 			};
 
 			const newState: EggsState = { ...state };
-			newState.eggsHatched += 1;
-			newState.basicHatched += 1;
+			newState.eggs += 1;
+			newState.specifics.Basic += 1;
 
 			const action = addPet(eggName, petId, "regular");
 
