@@ -12,7 +12,7 @@ interface HudBindingSet {
 /**
  * Handles storing and using setBinding functions to animate the egg hud displays.
  */
-export class eggHudAnimatorService {
+export class eggHudAnimator {
 	/**
 	 * An array of motors connected to egg hud ui's.
 	 */

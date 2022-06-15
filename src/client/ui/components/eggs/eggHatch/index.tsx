@@ -24,13 +24,6 @@ export class EggHatch extends Roact.Component<{}, EggHatchState> {
 	 */
 	public render(): Roact.Element {
 		if (this.state.isActive) {
-			if (this.state.eggName === undefined) {
-				return <></>;
-			}
-			if (this.state.pets === undefined) {
-				return <></>;
-			}
-
 			const infoFrames: Array<Roact.Element> = [];
 			for (const pet of this.state.pets) {
 				const id = (infoFrames.size() + 1) as 1 | 2 | 3;

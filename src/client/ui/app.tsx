@@ -2,9 +2,6 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Store } from "shared/rodux";
 
-import { EggCost } from "./components/eggs/eggCosts";
-import { EggHatch } from "./components/eggs/eggHatch";
-import { EggHud } from "./components/eggs/eggHud";
 import { ToggleWeaponButton } from "./components/weapons/toggleWeaponButton";
 import { WeaponShop } from "./components/weapons/weaponShop";
 import { fakeRemoteContext, remoteContext } from "./remoteContext";
@@ -24,9 +21,6 @@ export function app(props: { player: Player; store: Store }): Roact.Element {
 				<>
 					<ToggleWeaponButton player={props.player} />
 					<WeaponShop store={props.store} />
-					<EggCost />
-					<EggHud store={props.store} />
-					<EggHatch />
 				</>
 			</RoactRodux.StoreProvider>
 		</remoteContext.Provider>
