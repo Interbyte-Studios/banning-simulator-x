@@ -1,6 +1,5 @@
 import { EggNames } from "shared/configs/eggs";
 import { Store } from "shared/rodux";
-import { addPet as dispatchAddPet } from "shared/rodux/pets";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
@@ -11,9 +10,9 @@ interface TryEggPurchase {
 }
 
 /**
- * Purchases a weapon for a player.
+ * Runs checks to ensure a player can hatch a given egg.
  *
- * @param store The store to equip the weapon for.
+ * @param store The store of the player purchasing the egg.
  * @param eggName The name of the egg.
  * @param petId The id of the pet to purchase.
  * @param isVoid Whether or not the egg is void.
