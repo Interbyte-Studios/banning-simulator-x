@@ -1,26 +1,24 @@
 import Rodux from "@rbxts/rodux";
+import { Rarities } from "shared/configs/rarities";
 import { getPetData } from "shared/util/getPetData";
 
 import { AddPet } from "./pets";
 
-interface EggsHatched {
-	eggsHatched: number;
-	basicHatched: number;
-	ordinaryHatched: number;
-	rareHatched: number;
-	primordialHatched: number;
-	prismaticHatched: number;
+export interface EggsState {
+	eggs: number;
+	specifics: { [P in Rarities]: number };
 }
 
-export type EggsState = EggsHatched;
-
-const defaultEggs: EggsHatched = {
-	eggsHatched: 0,
-	basicHatched: 0,
-	ordinaryHatched: 0,
-	rareHatched: 0,
-	primordialHatched: 0,
-	prismaticHatched: 0,
+const defaultEggs: EggsState = {
+	eggs: 0,
+	specifics: {
+		Basic: 0,
+		Ordinary: 0,
+		Rare: 0,
+		Legendary: 0,
+		Primordial: 0,
+		Prismatic: 0,
+	},
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
@@ -28,9 +26,9 @@ export const eggsReducer = Rodux.createReducer<EggsState, AddPet>(defaultEggs, {
 	addPet: (state, action) => {
 		const petData = getPetData(action.eggName, action.id);
 
-		const newState: EggsHatched = { ...state };
-		newState.eggsHatched += 1;
-		newState[`${string.lower(petData.petData.rarity)}Hatched` as keyof EggsHatched] += 1;
+		const newState = { ...state };
+		newState.eggs += 1;
+		newState.specifics[petData.petData.rarity] += 1;
 
 		return newState;
 	},
