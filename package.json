@@ -43,5 +43,9 @@
     "@rbxts/services": "^1.2.0",
     "@rbxts/t": "^3.0.0",
     "@rbxts/testez": "^0.3.1-ts.7"
+  },
+  "overrides": {
+    "@rbxts/roact": "$@rbxts/roact",
+    "@rbxts/roact-rodux": "$@rbxts/roact-rodux"
   }
 }
