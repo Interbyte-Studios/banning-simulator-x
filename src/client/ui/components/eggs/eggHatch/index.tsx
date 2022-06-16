@@ -1,14 +1,14 @@
 import Roact from "@rbxts/roact";
 import { relayHatch } from "client/network";
 import { udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
-import { EggNames } from "shared/configs/eggs";
-import { ConfirmedPet } from "shared/remotes/eggs/relayHatchInfo";
+import { EggName } from "shared/configs/eggs";
+import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
 
 import { AnimateEggs, HatchEggParams } from "./animateEggs";
 import { InfoFrame } from "./infoFrame";
 
 interface EggHatchState {
-	eggName: EggNames;
+	eggName: EggName;
 	isActive: boolean;
 	isVoid: boolean;
 	isVisible: boolean;

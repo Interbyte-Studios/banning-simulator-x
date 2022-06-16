@@ -1,7 +1,7 @@
 import { Players, RunService } from "@rbxts/services";
 import { requestHatch } from "client/network";
 import { AnimateEggs } from "client/ui/components/eggs/eggHatch/animateEggs";
-import { EggNames } from "shared/configs/eggs";
+import { EggName } from "shared/configs/eggs";
 import { Store } from "shared/rodux";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
@@ -17,7 +17,7 @@ import { canHatchEgg } from "./canHatchEgg";
  * @param eggName The name of the egg.
  * @param isVoid Whether or not the egg is void.
  */
-export function purchaseEgg(store: Store, amount: 1 | 2 | 3, eggName: EggNames, isVoid: boolean): void {
+export function purchaseEgg(store: Store, amount: 1 | 3, eggName: EggName, isVoid: boolean): void {
 	// check that the user has waited long enough to hatch eggs
 	if (!canHatchEgg(AnimateEggs.lasHatchTime)) {
 		return;
@@ -62,7 +62,7 @@ let activelyWatching = false;
  * @param eggName The name of the egg.
  * @param isVoid Whether or not the egg is void.
  */
-export function handleEggPurchase(store: Store, amount: 1 | 2 | 3, eggName: EggNames, isVoid: boolean): void {
+export function handleEggPurchase(store: Store, amount: 1 | 2 | 3, eggName: EggName, isVoid: boolean): void {
 	if (activelyWatching) {
 		return;
 	}

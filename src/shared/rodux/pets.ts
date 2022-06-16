@@ -1,6 +1,6 @@
 import Rodux from "@rbxts/rodux";
 import { HttpService } from "@rbxts/services";
-import { EggNames } from "shared/configs/eggs";
+import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
 
 export interface Pet {

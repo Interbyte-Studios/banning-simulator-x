@@ -1,4 +1,4 @@
-import { EggNames } from "shared/configs/eggs";
+import { EggName } from "shared/configs/eggs";
 import { Pet } from "shared/configs/pets";
 
 import { getEggData } from "./getEggData";
@@ -15,7 +15,7 @@ interface PetData {
  * @param petId The id of the pet.
  * @returns Pet data of specified pet.
  */
-export function getPetData(egg: EggNames, petId: number): PetData {
+export function getPetData(egg: EggName, petId: number): PetData {
 	const eggData = getEggData(egg);
 
 	for (const [petName, petData] of pairs(eggData.pets)) {

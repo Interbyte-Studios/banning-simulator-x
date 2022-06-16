@@ -8,7 +8,7 @@ import { BaseImageLabel } from "client/ui/elements/baseImageLabel";
 import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import assetIds from "shared/assets";
-import { EggNames } from "shared/configs/eggs";
+import { EggName } from "shared/configs/eggs";
 import { MAIN_GROUP } from "shared/configs/game";
 import { Pet } from "shared/configs/pets";
 import { Store } from "shared/rodux";
@@ -21,7 +21,7 @@ import { eggHudAnimator } from "./eggHudAnimator";
 interface EggHudProps {
 	adornee: BasePart;
 	autoHatch: boolean;
-	eggName: EggNames;
+	eggName: EggName;
 	isVoid: boolean;
 	pets: Record<string, Pet>;
 	store: Store;

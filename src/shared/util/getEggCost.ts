@@ -1,5 +1,5 @@
 import { Currency } from "shared/configs/currencies";
-import { EggNames } from "shared/configs/eggs";
+import { EggName } from "shared/configs/eggs";
 
 import { getEggData } from "./getEggData";
 import { getZoneData } from "./getZoneData";
@@ -14,7 +14,7 @@ export interface EggCost {
  * @param isVoid Whether or not the egg is a void egg or not.
  * @returns The cost of the egg.
  */
-export function getEggCost(egg: EggNames, isVoid: boolean): EggCost {
+export function getEggCost(egg: EggName, isVoid: boolean): EggCost {
 	const eggData = getEggData(egg);
 	const zoneData = getZoneData(eggData.world, eggData.zone);
 

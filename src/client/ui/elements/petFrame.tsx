@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import { getPetDecal } from "client/util/getPetDecal";
 import assetIds from "shared/assets";
-import { EggNames } from "shared/configs/eggs";
+import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
 import { getPetData } from "shared/util/getPetData";
 
@@ -12,7 +12,7 @@ import { BaseUIStroke } from "./baseUIStroke";
 import { RarityGradient } from "./rarityGradient";
 
 interface PetFrameProps {
-	eggName: EggNames;
+	eggName: EggName;
 	petId: number;
 	variant: Variants;
 }

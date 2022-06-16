@@ -1,8 +1,8 @@
 import { HttpService, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
 import { canHatchEgg } from "client/eggs/canHatchEgg";
 import { playEffect, SoundEffect } from "client/util/playSound";
-import { EggNames } from "shared/configs/eggs";
-import { ConfirmedPet } from "shared/remotes/eggs/relayHatchInfo";
+import { EggName } from "shared/configs/eggs";
+import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
 import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
@@ -11,7 +11,7 @@ type ValidEggId = 1 | 2 | 3 | 4;
 
 export interface HatchEggParams {
 	amount: ValidAmount;
-	eggName: EggNames;
+	eggName: EggName;
 	pets?: Array<ConfirmedPet>;
 	isVoid: boolean;
 }

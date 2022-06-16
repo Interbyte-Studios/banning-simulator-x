@@ -1,4 +1,4 @@
-import { EggNames } from "shared/configs/eggs";
+import { EggName } from "shared/configs/eggs";
 import { Store } from "shared/rodux";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
@@ -18,7 +18,7 @@ interface TryEggPurchase {
  * @param isVoid Whether or not the egg is void.
  * @returns Whether or not the purchase was successful.
  */
-export function purchaseEgg(store: Store, eggName: EggNames, petId: number, isVoid: boolean): TryEggPurchase {
+export function purchaseEgg(store: Store, eggName: EggName, petId: number, isVoid: boolean): TryEggPurchase {
 	const currentState = store.getState();
 	const eggData = getEggData(eggName);
 	const eggCost = getEggCost(eggName, isVoid);

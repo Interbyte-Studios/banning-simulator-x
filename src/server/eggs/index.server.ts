@@ -4,19 +4,18 @@ import { purchaseEgg } from "server/modules/rodux/purchaseEgg";
 import { getPetPercentages } from "server/util/getPetPercentages";
 import { hatchDebounce } from "shared/configs/eggs";
 import { remotes } from "shared/remotes";
-import { ConfirmedPet } from "shared/remotes/eggs/relayHatchInfo";
+import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
 import { addPets } from "shared/rodux/pets";
 import { toggleAuto } from "shared/rodux/settings";
 
-export const requestHatch = remotes.Server.GetNamespace("eggs").Create("requestHatch");
-export const relayHatch = remotes.Server.GetNamespace("eggs").Create("relayHatch");
+export const hatchEgg = remotes.Server.GetNamespace("eggs").Create("hatchEgg");
 export const toggleHatch = remotes.Server.GetNamespace("eggs").Create("toggleAuto");
 
 const hatchTimeCache: Map<Player, number> = new Map();
 
 const randomGenerator = new Random();
 
-requestHatch.Connect(
+hatchEgg.SetCallback(
 	withPlayerStore((player, store, amount, eggName, isVoid) => {
 		// verify that player has waited long enough to hatch
 		const lastHatchTime = hatchTimeCache.get(player) ?? 0;

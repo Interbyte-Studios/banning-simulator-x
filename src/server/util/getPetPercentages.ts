@@ -1,4 +1,4 @@
-import { EggNames } from "shared/configs/eggs";
+import { EggName } from "shared/configs/eggs";
 import { getEggData } from "shared/util/getEggData";
 
 interface RegisteredPet {
@@ -13,7 +13,7 @@ interface RegisteredPet {
  * @param egg The name of the egg.
  * @returns An array of pets with calculated true percentages.
  */
-export function getPetPercentages(egg: EggNames): Array<RegisteredPet> {
+export function getPetPercentages(egg: EggName): Array<RegisteredPet> {
 	const eggData = getEggData(egg);
 
 	// get the pet with the lowest id in the egg.

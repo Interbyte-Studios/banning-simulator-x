@@ -62,7 +62,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 	},
 });
 
-export type EggNames = keyof typeof EGGS;
+export type EggName = keyof typeof EGGS;
 export type Eggs = typeof EGGS;
 
 /**

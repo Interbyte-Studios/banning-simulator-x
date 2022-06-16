@@ -1,5 +1,5 @@
 import assetIds from "shared/assets";
-import { EggNames } from "shared/configs/eggs";
+import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
 import { getPetData } from "shared/util/getPetData";
 
@@ -11,7 +11,7 @@ import { getPetData } from "shared/util/getPetData";
  * @param variant The variant of the pet.
  * @returns The decal id.
  */
-export function getPetDecal(eggName: EggNames, petId: number, variant: Variants): string {
+export function getPetDecal(eggName: EggName, petId: number, variant: Variants): string {
 	const petData = getPetData(eggName, petId);
 
 	const variantDecals = assetIds.images.decals.pets[variant];

@@ -5,13 +5,13 @@ import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { RarityGradient } from "client/ui/elements/rarityGradient";
 import { getPetDecal } from "client/util/getPetDecal";
-import { EggNames } from "shared/configs/eggs";
+import { EggName } from "shared/configs/eggs";
 import { getPetData } from "shared/util/getPetData";
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 
 interface InfoFrameProps {
-	eggName: EggNames;
 	id: 1 | 2 | 3;
+	eggName: EggName;
 	isVisible: boolean;
 	pet: number;
 	isVoid: boolean;
