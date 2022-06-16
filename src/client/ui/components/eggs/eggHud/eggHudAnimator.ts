@@ -70,18 +70,26 @@ export class eggHudAnimator {
 	 * @param adornee The part associated with the hud that the motor handles animation values for.
 	 */
 	public static removeMotors(adornee: BasePart): void {
-		const motorDataIndex = this.motorSets.findIndex((x) => x.adornee === adornee);
-		if (motorDataIndex !== undefined) {
-			this.motorSets.unorderedRemove(motorDataIndex);
-		}
+		const motorIndex = this.motorSets.findIndex((x) => x.adornee === adornee);
+		assert(motorIndex !== -1, `Attempt to destroy motor that did not exist with adornee ${adornee.GetFullName()}`);
+
+		const motor = this.motorSets[motorIndex];
+		motor.motor.destroy();
+		this.motorSets.unorderedRemove(motorIndex);
 	}
 
 	/**
 	 * Clears all the motors from the active motors array.
 	 */
 	public static clearMotors(): void {
+		for (const motor of this.motorSets) {
+			motor.motor.destroy();
+		}
+
 		this.motorSets.clear();
 	}
+
+	private static cleanupTasks: Array<() => void> = [];
 
 	/**
 	 * Starts the animator service.
@@ -89,8 +97,10 @@ export class eggHudAnimator {
 	public static init(): void {
 		const player = Players.LocalPlayer;
 
-		RunService.Heartbeat.Connect(() => {
-			if (player.Character === undefined) return;
+		const connection = RunService.Heartbeat.Connect(() => {
+			if (player.Character === undefined) {
+				return;
+			}
 
 			for (const bindingSetData of this.motorSets) {
 				const magnitudeToBasePart = getMagnitudeBetweenPlayerAndObject(player.Character, bindingSetData.adornee);
@@ -113,5 +123,17 @@ export class eggHudAnimator {
 				}
 			}
 		});
+
+		this.cleanupTasks.push(() => connection.Disconnect());
+	}
+
+	/**
+	 * Cleans up the animator.
+	 */
+	public static destroy(): void {
+		this.cleanupTasks.forEach((task) => task());
+
+		// clear motors
+		this.clearMotors();
 	}
 }

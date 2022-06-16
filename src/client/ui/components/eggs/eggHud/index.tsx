@@ -1,109 +1,111 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
+import RoactRodux from "@rbxts/roact-rodux";
 import { RunService, Workspace } from "@rbxts/services";
+import { hooks } from "client/ui/hooks";
 import { EGGS } from "shared/configs/eggs";
-import { Store } from "shared/rodux";
+import { Store, StoreState } from "shared/rodux";
 
 import { AnimateEggs } from "../eggHatch/animateEggs";
 import { eggHudAnimator } from "./eggHudAnimator";
 import { EggHudDisplay } from "./eggHudDisplay";
 
-interface EggHudProps {
+interface EggHudProps extends MappedEggHudProps {
 	store: Store;
 }
 
-interface EggHudState {
-	isActive: boolean;
+interface MappedEggHudProps {
 	autoHatch: boolean;
 }
 
+/**
+ * Maps the Rodux store's state to the props.
+ *
+ * @param state The current store state.
+ * @returns The mapped props to render with.
+ */
+function mapStateToProps(state: StoreState): MappedEggHudProps {
+	return {
+		autoHatch: state.settings.autoHatch,
+	};
+}
+
 /* eslint-disable jsdoc/require-jsdoc */
-export class EggHud extends Roact.Component<EggHudProps, EggHudState> {
-	/**
-	 * Required render function for a Roact component.
-	 *
-	 * @returns A info hud roact element.
-	 */
-	public render(): Roact.Element {
-		if (this.state.isActive) {
-			return (
-				<frame Visible={false}>
-					{Object.entries(EGGS).map(([eggName, eggData]) => {
-						const eggFolder = Workspace.interactions.eggs[eggName];
+export const EggHud = RoactRodux.connect(mapStateToProps)(
+	hooks((props: EggHudProps, { useState, useEffect }) => {
+		const [isActive, setIsActive] = useState(true);
 
-						const regularEgg = eggFolder.regular.egg.PrimaryPart;
-						assert(regularEgg, `Expected PrimaryPart for regular ${eggName} egg`);
+		// setup egg hud animator
+		useEffect(() => {
+			eggHudAnimator.init();
+			return (): void => {
+				eggHudAnimator.destroy();
+			};
+		}, []);
 
-						const voidEgg = eggFolder.void.egg.PrimaryPart;
-						assert(voidEgg, `Expected PrimaryPart for void ${eggName} egg`);
+		// handle hiding the hud when animating
+		useEffect(() => {
+			const connection = RunService.Heartbeat.Connect(() => {
+				if (
+					!AnimateEggs.eggAnimationComplete ||
+					!AnimateEggs.petAnimationComplete ||
+					AnimateEggs.eggAnimationInitiated ||
+					AnimateEggs.petAnimationInitiated
+				) {
+					if (isActive !== false) {
+						setIsActive(false);
+					}
+				} else {
+					if (isActive === false) {
+						setIsActive(true);
+					}
+				}
+			});
 
-						return (
-							<frame Visible={false}>
-								<EggHudDisplay
-									adornee={regularEgg}
-									autoHatch={this.state.autoHatch}
-									eggName={eggName}
-									isVoid={false}
-									pets={eggData.pets}
-									store={this.props.store}
-								/>
-								<EggHudDisplay
-									adornee={voidEgg}
-									autoHatch={this.state.autoHatch}
-									eggName={eggName}
-									isVoid={true}
-									pets={eggData.pets}
-									store={this.props.store}
-								/>
-							</frame>
-						);
-					})}
-				</frame>
-			);
-		} else {
+			return (): void => {
+				connection.Disconnect();
+			};
+		});
+
+		if (!isActive) {
+			// todo: clear this code up a bit
 			eggHudAnimator.clearMotors();
 			return <></>;
 		}
-	}
 
-	/**
-	 * Function that runs when the info hud Roact component mounts.
-	 */
-	protected didMount(): void {
-		eggHudAnimator.init();
+		return (
+			<frame Visible={false}>
+				{Object.entries(EGGS).map(([eggName, eggData]) => {
+					const eggFolder = Workspace.interactions.eggs[eggName];
 
-		this.setState({
-			isActive: true,
-			autoHatch: this.props.store.getState().settings.autoHatch,
-		});
+					const regularEgg = eggFolder.regular.egg.PrimaryPart;
+					assert(regularEgg, `Expected PrimaryPart for regular ${eggName} egg`);
 
-		this.props.store.changed.connect((newState, oldState) => {
-			if (newState.settings.autoHatch === oldState.settings.autoHatch) return;
+					const voidEgg = eggFolder.void.egg.PrimaryPart;
+					assert(voidEgg, `Expected PrimaryPart for void ${eggName} egg`);
 
-			this.setState({
-				autoHatch: newState.settings.autoHatch,
-			});
-		});
-
-		RunService.Heartbeat.Connect(() => {
-			if (
-				!AnimateEggs.eggAnimationComplete ||
-				!AnimateEggs.petAnimationComplete ||
-				AnimateEggs.eggAnimationInitiated ||
-				AnimateEggs.petAnimationInitiated
-			) {
-				if (this.state.isActive !== false) {
-					this.setState({
-						isActive: false,
-					});
-				}
-			} else {
-				if (this.state.isActive === false) {
-					this.setState({
-						isActive: true,
-					});
-				}
-			}
-		});
-	}
-}
+					return (
+						<frame Visible={false}>
+							<EggHudDisplay
+								adornee={regularEgg}
+								autoHatch={props.autoHatch}
+								eggName={eggName}
+								isVoid={false}
+								pets={eggData.pets}
+								store={props.store}
+							/>
+							<EggHudDisplay
+								adornee={voidEgg}
+								autoHatch={props.autoHatch}
+								eggName={eggName}
+								isVoid={true}
+								pets={eggData.pets}
+								store={props.store}
+							/>
+						</frame>
+					);
+				})}
+			</frame>
+		);
+	}),
+);
