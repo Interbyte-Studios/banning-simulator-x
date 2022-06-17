@@ -1,10 +1,12 @@
 import { EggName } from "shared/configs/eggs";
+import { Rarities } from "shared/configs/rarities";
 import { getEggData } from "shared/util/getEggData";
 
 interface RegisteredPet {
 	petId: number;
 	petChance: number;
 	isLowestId: boolean;
+	rarity: Rarities;
 }
 
 /**
@@ -36,6 +38,7 @@ export function getPetPercentages(egg: EggName): Array<RegisteredPet> {
 			petId: petData.id,
 			petChance: petChance,
 			isLowestId: lowestId === petData.id,
+			rarity: petData.rarity,
 		});
 	}
 

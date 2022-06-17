@@ -1,6 +1,5 @@
 import Rodux from "@rbxts/rodux";
 import { Rarities } from "shared/configs/rarities";
-import { getPetData } from "shared/util/getPetData";
 
 import { AddPet } from "./pets";
 
@@ -24,11 +23,12 @@ const defaultEggs: EggsState = {
 /* eslint-disable jsdoc/require-jsdoc */
 export const eggsReducer = Rodux.createReducer<EggsState, AddPet>(defaultEggs, {
 	addPet: (state, action) => {
-		const petData = getPetData(action.eggName, action.id);
-
 		const newState = { ...state };
-		newState.eggs += 1;
-		newState.specifics[petData.petData.rarity] += 1;
+
+		for (const pet of action.pets) {
+			newState.eggs += 1;
+			newState.specifics[pet.rarity] += 1;
+		}
 
 		return newState;
 	},

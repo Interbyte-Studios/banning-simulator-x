@@ -1,7 +1,6 @@
 import Object from "@rbxts/object-utils";
 import Rodux from "@rbxts/rodux";
 import { currencies, Currency } from "shared/configs/currencies";
-import { getEggCost } from "shared/util/getEggCost";
 
 import { AddPet } from "./pets";
 import { PurchaseWeapon } from "./weapons";
@@ -71,11 +70,14 @@ export const currenciesReducer = Rodux.createReducer<
 		return { ...state, [action.currency]: purchasedCurrency };
 	},
 	addPet: (state, action) => {
-		const eggData = getEggCost(action.eggName, action.variant === "void");
+		let purchasedCurrency = state[action.currencyType];
 
-		const purchasedCurrency = state[eggData.currencyType] - eggData.amount;
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		for (const pet of action.pets) {
+			purchasedCurrency -= action.cost;
+		}
 
-		return { ...state, [eggData.currencyType]: purchasedCurrency };
+		return { ...state, [action.currencyType]: purchasedCurrency };
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */

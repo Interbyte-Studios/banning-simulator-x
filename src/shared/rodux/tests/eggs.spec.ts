@@ -1,14 +1,16 @@
 /// <reference types="@rbxts/testez/globals" />
 
 import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
+import { getEggCost } from "shared/util/getEggCost";
 
 import { eggsReducer, EggsState } from "../eggs";
-import { addPet } from "../pets";
+import { addPets } from "../pets";
 
 export = (): void => {
 	describe("rodux/eggs", () => {
 		it("should increase total eggs hatched counter", () => {
 			const eggName = "Starter";
+			const eggCost = getEggCost(eggName, false);
 			const petId = 1;
 
 			const state: EggsState = {
@@ -26,13 +28,16 @@ export = (): void => {
 			const newState: EggsState = { ...state };
 			newState.eggs += 1;
 
-			const action = addPet(eggName, petId, "regular");
+			const action = addPets(eggCost.amount, eggCost.currencyType, [
+				{ id: petId, rarity: "Basic", variant: "regular" },
+			]);
 
 			assertDeepEqual(eggsReducer(state, action), newState);
 		});
 
 		it("should increase rarity specific eggs hatched counter", () => {
 			const eggName = "Starter";
+			const eggCost = getEggCost(eggName, false);
 			const petId = 1;
 
 			const state: EggsState = {
@@ -51,7 +56,9 @@ export = (): void => {
 			newState.eggs += 1;
 			newState.specifics.Basic += 1;
 
-			const action = addPet(eggName, petId, "regular");
+			const action = addPets(eggCost.amount, eggCost.currencyType, [
+				{ id: petId, rarity: "Basic", variant: "regular" },
+			]);
 
 			assertDeepEqual(eggsReducer(state, action), newState);
 		});

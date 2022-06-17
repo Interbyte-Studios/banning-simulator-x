@@ -1,7 +1,8 @@
 import Rodux from "@rbxts/rodux";
 import { HttpService } from "@rbxts/services";
-import { EggName } from "shared/configs/eggs";
+import { Currency } from "shared/configs/currencies";
 import { Variants } from "shared/configs/pets";
+import { Rarities } from "shared/configs/rarities";
 
 export interface Pet {
 	id: number;
@@ -15,22 +16,29 @@ export interface Pet {
 export type PetsState = Array<Pet>;
 export type PetsActions = AddPet;
 
-interface PetData {
+export interface PetData {
 	id: number;
+	rarity: Rarities;
 	variant: Variants;
 }
 
 export interface AddPet extends Rodux.Action<"addPet"> {
+	cost: number;
+	currencyType: Currency;
 	pets: Array<PetData>;
 }
 
 /**
+ * @param cost The cost of the egg hatch.
+ * @param currencyType The type of currency the eggs were purchased with.
  * @param pets The pets to add.
  * @returns The Rodux action to dispatch.
  */
-export function addPets(pets: Array<PetData>): AddPet & Rodux.AnyAction {
+export function addPets(cost: number, currencyType: Currency, pets: Array<PetData>): AddPet & Rodux.AnyAction {
 	return {
 		type: "addPet",
+		cost: cost,
+		currencyType: currencyType,
 		pets: pets,
 	};
 }

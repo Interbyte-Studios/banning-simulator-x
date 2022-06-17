@@ -64,8 +64,8 @@ export const fakeRemoteContext = {
 	equipWeapon: fakeRemoteCall<EquipWeaponDefinition>("equipWeapon"),
 	purchaseWeapon: fakeRemoteCall<PurchaseWeaponDefinition>("purchaseWeapon"),
 
-	hatchEgg: fakeFunctionCall<HatchEggDefinition>("hatchEgg", (_, __, ___) => {
-		return [];
+	hatchEgg: fakeFunctionCall<HatchEggDefinition>("hatchEgg", () => {
+		return { success: false };
 	}),
 };
 
