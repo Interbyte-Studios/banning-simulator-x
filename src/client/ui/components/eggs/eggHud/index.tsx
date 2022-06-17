@@ -4,15 +4,11 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { RunService, Workspace } from "@rbxts/services";
 import { hooks } from "client/ui/hooks";
 import { EGGS } from "shared/configs/eggs";
-import { Store, StoreState } from "shared/rodux";
+import { StoreState } from "shared/rodux";
 
 import { AnimateEggs } from "../eggHatch/animateEggs";
 import { eggHudAnimator } from "./eggHudAnimator";
 import { EggHudDisplay } from "./eggHudDisplay";
-
-interface EggHudProps extends MappedEggHudProps {
-	store: Store;
-}
 
 interface MappedEggHudProps {
 	autoHatch: boolean;
@@ -32,7 +28,7 @@ function mapStateToProps(state: StoreState): MappedEggHudProps {
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const EggHud = RoactRodux.connect(mapStateToProps)(
-	hooks((props: EggHudProps, { useState, useEffect }) => {
+	hooks((props: MappedEggHudProps, { useState, useEffect }) => {
 		const [isActive, setIsActive] = useState(true);
 
 		// setup egg hud animator
@@ -92,7 +88,6 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 								eggName={eggName}
 								isVoid={false}
 								pets={eggData.pets}
-								store={props.store}
 							/>
 							<EggHudDisplay
 								adornee={voidEgg}
@@ -100,7 +95,6 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 								eggName={eggName}
 								isVoid={true}
 								pets={eggData.pets}
-								store={props.store}
 							/>
 						</frame>
 					);

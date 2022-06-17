@@ -12,7 +12,6 @@ import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 interface InfoFrameProps {
 	id: 1 | 2 | 3;
 	eggName: EggName;
-	isVisible: boolean;
 	pet: number;
 	isVoid: boolean;
 }
@@ -33,7 +32,6 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 			BackgroundTransparency={1}
 			Position={infoFramePositions[props.id]}
 			Size={UDim2.fromScale(0.175, 0.12)}
-			Visible={props.isVisible}
 		>
 			<BaseTextLabel
 				Position={UDim2.fromScale(0.7, 0.3)}

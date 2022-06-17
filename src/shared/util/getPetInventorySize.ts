@@ -1,21 +1,19 @@
 import { DEFAULT_INVENTORY_SIZE } from "shared/configs/pets";
-import { Store } from "shared/rodux";
+import { GamepassesState } from "shared/rodux/gamepasses";
 
 /**
  * Returns the number of pets a player can have in their inventory.
  *
- * @param store The rodux store of the player.
+ * @param gamepassesState The state of the player's gamepasses data.
  * @returns The pet inventory size.
  */
-export function getPetInventorySize(store: Store): number {
-	const currentState = store.getState();
-
+export function getPetInventorySize(gamepassesState: GamepassesState): number {
 	let additionalSize = 0;
-	if (currentState.gamepasses["+250 Inventory Slots"]) {
+	if (gamepassesState["+250 Inventory Slots"]) {
 		additionalSize += 250;
 	}
 
-	if (currentState.gamepasses["+450 Inventory Slots"]) {
+	if (gamepassesState["+450 Inventory Slots"]) {
 		additionalSize += 450;
 	}
 
