@@ -71,6 +71,16 @@ export type EggName = keyof typeof EGGS;
 export type Eggs = typeof EGGS;
 
 /**
+ * Checks if an unknown value is a valid `EggName`.
+ *
+ * @param name The name to validate.
+ * @returns If the passed `name` is a valid `EggName`.
+ */
+export function isEggName(name: unknown): name is EggName {
+	return EGGS[name as EggName] !== undefined;
+}
+
+/**
  * How long a player must wait between egg hatches.
  */
 export const hatchDebounce = 5.5;
