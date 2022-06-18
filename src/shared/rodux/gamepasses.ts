@@ -20,7 +20,7 @@ export function claimGamepass(gamepassName: Gamepasses): ClaimGamepass & Rodux.A
 	};
 }
 
-const defaultSettings: GamepassesState = {
+const defaultGamepasses: GamepassesState = {
 	"+3 Pets": false,
 	"+2 Pets": false,
 	"+250 Inventory Slots": false,
@@ -35,7 +35,7 @@ const defaultSettings: GamepassesState = {
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const gamepassesReducer = Rodux.createReducer<GamepassesState, GamepassActions>(defaultSettings, {
+export const gamepassesReducer = Rodux.createReducer<GamepassesState, GamepassActions>(defaultGamepasses, {
 	claimGamepass: (state, action) => {
 		const newState = { ...state };
 		newState[action.name] = true;
