@@ -1,37 +1,48 @@
 import Roact from "@rbxts/roact";
-import RoactRodux from "@rbxts/roact-rodux";
-import { StoreState } from "shared/rodux";
+import { hatchEgg } from "client/network";
+import { EggName } from "shared/configs/eggs";
+import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
 
 import { hooks } from "../../hooks";
 import { EggCost } from "./eggCosts";
 import { EggHatch } from "./eggHatch";
 import { EggHud } from "./eggHud";
 
-interface EggUIProps extends EggUIMappedProps {
-	player: Player;
-}
-interface EggUIMappedProps {}
-
-/**
- * @param state The current state of the store.
- * @returns The mapped props.
- */
-function mapStateToProps(state: StoreState): EggUIMappedProps {
-	return {};
+interface HatchData {
+	eggName: EggName;
+	pets: Array<ConfirmedPet>;
+	isVoid: boolean;
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const EggsUI = RoactRodux.connect(mapStateToProps)(
-	hooks((props: EggUIProps, { useState, useEffect }) => {
-		useEffect(() => {});
+export const EggsUI = hooks((_, { useState }) => {
+	const [currentHatchData, setCurrentHatchData] = useState<HatchData | undefined>(undefined);
 
-		return (
-			<frame BackgroundTransparency={1}>
-				<EggCost />
-				<EggHud />
-				<EggHatch eggName={undefined} isVoid={undefined} pets={undefined} />
-			</frame>
+	const children = [
+		<EggCost />,
+		<EggHud
+			initiateHatch={async (amount: 1 | 3, egg: EggName, isVoid: boolean): Promise<void> => {
+				const requestEggHatch = await hatchEgg.CallServerAsync(amount, egg, isVoid);
+
+				if (requestEggHatch.success) {
+					setCurrentHatchData({
+						eggName: egg,
+						pets: requestEggHatch.pets,
+						isVoid,
+					});
+				} else {
+					setCurrentHatchData(undefined);
+				}
+			}}
+		/>,
+	];
+
+	if (currentHatchData) {
+		children.push(
+			<EggHatch eggName={currentHatchData.eggName} isVoid={currentHatchData.isVoid} pets={currentHatchData.pets} />,
 		);
-	}),
-);
+	}
+
+	return <frame BackgroundTransparency={1}>{children}</frame>;
+});
 /* eslint-enable jsdoc/require-jsdoc */

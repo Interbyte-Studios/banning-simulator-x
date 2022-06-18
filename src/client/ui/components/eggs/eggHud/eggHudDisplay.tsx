@@ -2,8 +2,10 @@ import Flipper from "@rbxts/flipper";
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Players } from "@rbxts/services";
-import { handleEggPurchase } from "client/eggs/purchaseEgg";
+import { Players, RunService } from "@rbxts/services";
+import { canHatchEgg } from "client/eggs/canHatchEgg";
+import { tryPurchaseEgg } from "client/eggs/purchaseEgg";
+import { toggleAuto } from "client/network";
 import { BaseImageLabel } from "client/ui/elements/baseImageLabel";
 import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
@@ -22,14 +24,17 @@ import { WorldsState } from "shared/rodux/worlds";
 import { udim2Middle, uiTheme, userOwnsTripleEggs, vec2Middle } from "../../../commonValues";
 import { PetFrame } from "../../../elements/petFrame";
 import { RescalingScrollingFrame } from "../../../elements/rescalingScrollingFrame";
+import { AnimateEggs } from "../eggHatch/animateEggs";
 import { eggHudAnimator } from "./eggHudAnimator";
+
+const player = Players.LocalPlayer;
 
 interface EggHudProps extends MappedEggHudProps {
 	adornee: BasePart;
-	autoHatch: boolean;
 	eggName: EggName;
 	isVoid: boolean;
 	pets: Record<string, Pet>;
+	initiateHatch: (amount: 1 | 3, egg: EggName, isVoid: boolean) => void;
 }
 
 interface MappedEggHudProps {
@@ -58,7 +63,7 @@ function mapStateToProps(state: StoreState): MappedEggHudProps {
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
-	hooks((props: EggHudProps, { useEffect, useContext }) => {
+	hooks((props: EggHudProps, { useState, useEffect, useContext }) => {
 		// motor
 		const motor = new Flipper.GroupMotor({
 			X: 1,
@@ -69,6 +74,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 
 		// bindings
 		const [binding, setBinding] = Roact.createBinding(motor.getValue());
+		const [activelyWatching, setActivelyWatching] = useState(false);
 
 		// bind motor to update on step && cleanup
 		useEffect(() => {
@@ -110,20 +116,73 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 						Event={{
 							/**
 							 * Purchases eggs.
-							 *
-							 * @returns Nothing.
 							 */
-							Activated: (): void =>
-								handleEggPurchase(
-									props.currenciesState,
-									props.gamepassesState,
-									props.petsState,
-									props.worldsState,
-									userOwnsTripleEggs ? 3 : 1,
-									props.autoActive,
-									props.eggName,
-									props.isVoid,
-								),
+							Activated: (): void => {
+								if (activelyWatching) {
+									return;
+								}
+
+								if (props.autoActive) {
+									const character = player.Character;
+									if (character === undefined) {
+										return;
+									}
+
+									const humanoid = character.FindFirstChildOfClass("Humanoid");
+									if (humanoid === undefined) {
+										return;
+									}
+
+									setActivelyWatching(true);
+
+									RunService.BindToRenderStep("autoHatch", Enum.RenderPriority.Last.Value, () => {
+										if (!canHatchEgg(AnimateEggs.lasHatchTime)) {
+											return;
+										}
+
+										const canPurchase = tryPurchaseEgg(
+											props.currenciesState,
+											props.gamepassesState,
+											props.petsState,
+											props.worldsState,
+											userOwnsTripleEggs ? 3 : 1,
+											props.eggName,
+											props.isVoid,
+										);
+
+										if (canPurchase) {
+											props.initiateHatch(userOwnsTripleEggs ? 3 : 1, props.eggName, props.isVoid);
+										} else {
+											setActivelyWatching(false);
+											RunService.UnbindFromRenderStep("autoHatch");
+										}
+									});
+
+									const connection = humanoid.GetPropertyChangedSignal("MoveDirection").Connect(() => {
+										setActivelyWatching(false);
+										RunService.UnbindFromRenderStep("autoHatch");
+										connection.Disconnect();
+									});
+								} else {
+									setActivelyWatching(true);
+
+									const canPurchase = tryPurchaseEgg(
+										props.currenciesState,
+										props.gamepassesState,
+										props.petsState,
+										props.worldsState,
+										userOwnsTripleEggs ? 3 : 1,
+										props.eggName,
+										props.isVoid,
+									);
+
+									if (canPurchase) {
+										props.initiateHatch(userOwnsTripleEggs ? 3 : 1, props.eggName, props.isVoid);
+									} else {
+										setActivelyWatching(false);
+									}
+								}
+							},
 						}}
 					/>
 					<BaseImageLabel
@@ -138,17 +197,17 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 							Size={UDim2.fromScale(0.9, 0.3)}
 							Image={
 								assetIds.images.buttons[uiTheme].templates.rectangular[
-									props.autoHatch ? "RectangularButtonConfirmation" : "RectangularButtonWarning"
+									props.autoActive ? "RectangularButtonConfirmation" : "RectangularButtonWarning"
 								]
 							}
 							HoverImage={
 								assetIds.images.buttons[uiTheme].templates.rectangular[
-									props.autoHatch ? "RectangularButtonWarning" : "RectangularButtonConfirmation"
+									props.autoActive ? "RectangularButtonWarning" : "RectangularButtonConfirmation"
 								]
 							}
 							PressedImage={
 								assetIds.images.buttons[uiTheme].templates.rectangular[
-									props.autoHatch ? "RectangularButtonWarning" : "RectangularButtonConfirmation"
+									props.autoActive ? "RectangularButtonWarning" : "RectangularButtonConfirmation"
 								]
 							}
 							Event={{
@@ -165,7 +224,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 							<BaseTextLabel
 								Position={udim2Middle}
 								Size={UDim2.fromScale(0.9, 0.6)}
-								Text={props.autoHatch ? "On" : "Off"}
+								Text={props.autoActive ? "On" : "Off"}
 								AutomaticSize={Enum.AutomaticSize.X}
 							>
 								<BaseUIStroke Thickness={2.4} />

@@ -6,17 +6,13 @@ import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
 import { InfoFrame } from "./infoFrame";
 
 interface EggHatchProps {
-	eggName: EggName | undefined;
-	isVoid: boolean | undefined;
-	pets: Array<ConfirmedPet> | undefined;
+	eggName: EggName;
+	isVoid: boolean;
+	pets: Array<ConfirmedPet>;
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
 export function EggHatch(props: EggHatchProps): Roact.Element {
-	if (props.eggName === undefined || props.isVoid === undefined || props.pets === undefined) {
-		return <></>;
-	}
-
 	const infoFrames: Array<Roact.Element> = [];
 	for (const pet of props.pets) {
 		const id = (infoFrames.size() + 1) as 1 | 2 | 3;
