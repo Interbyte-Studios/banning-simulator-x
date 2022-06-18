@@ -4,11 +4,11 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players } from "@rbxts/services";
 import { handleEggPurchase } from "client/eggs/purchaseEgg";
-import { toggleAuto } from "client/network";
 import { BaseImageLabel } from "client/ui/elements/baseImageLabel";
 import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import { remoteContext } from "client/ui/remoteContext";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
 import { MAIN_GROUP } from "shared/configs/game";
@@ -58,12 +58,14 @@ function mapStateToProps(state: StoreState): MappedEggHudProps {
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
-	hooks((props: EggHudProps, { useEffect }) => {
+	hooks((props: EggHudProps, { useEffect, useContext }) => {
 		// motor
 		const motor = new Flipper.GroupMotor({
 			X: 1,
 			Y: 1,
 		});
+
+		const { toggleAuto } = useContext(remoteContext);
 
 		// bindings
 		const [binding, setBinding] = Roact.createBinding(motor.getValue());
