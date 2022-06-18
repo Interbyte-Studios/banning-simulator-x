@@ -30,6 +30,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 			<BaseTextLabel
 				Position={UDim2.fromScale(0.3, 0.15)}
 				Size={UDim2.fromScale(0.5, 0.4)}
+				// todo: clarify whether or not this is allowed by ToS so long as the rarity and chance are displayed in the pet index.
 				Text={petData.petData.rarity !== "Legendary" ? `${petData.petData.chance}%` : "???"}
 			>
 				<RarityGradient Rarity={petData.petData.rarity} />
