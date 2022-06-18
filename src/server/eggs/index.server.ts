@@ -140,8 +140,5 @@ toggleHatch.Connect(
 );
 
 Players.PlayerRemoving.Connect((player) => {
-	const lastHatchData = hatchTimeCache.get(player);
-	if (lastHatchData !== undefined) {
-		hatchTimeCache.delete(player);
-	}
+	hatchTimeCache.delete(player);
 });
