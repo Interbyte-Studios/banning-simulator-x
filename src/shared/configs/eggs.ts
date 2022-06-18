@@ -1,6 +1,11 @@
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 
-import { CANDY_EGG_PETS, DESERT_EGG_PETS, HONEYCOMB_EGG_PETS, MOLTEN_EGG_PETS, Pet, STARTER_EGG_PETS } from "./pets";
+import { Pet } from "./pets";
+import { CANDY_EGG_PETS } from "./pets/candy";
+import { DESERT_EGG_PETS } from "./pets/desert";
+import { HONEYCOMB_EGG_PETS } from "./pets/honeycomb";
+import { MOLTEN_EGG_PETS } from "./pets/molten";
+import { STARTER_EGG_PETS } from "./pets/starter";
 import { WorldNames } from "./worlds";
 import { ZoneNames } from "./zones";
 
