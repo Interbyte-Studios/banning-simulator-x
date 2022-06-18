@@ -6,7 +6,7 @@ import { DESERT_EGG_PETS } from "./pets/desert";
 import { HONEYCOMB_EGG_PETS } from "./pets/honeycomb";
 import { MOLTEN_EGG_PETS } from "./pets/molten";
 import { STARTER_EGG_PETS } from "./pets/starter";
-import { WorldNames } from "./worlds";
+import { WorldName } from "./worlds";
 import { ZoneNames } from "./zones";
 
 export interface Egg {
@@ -23,7 +23,7 @@ export interface Egg {
 	/**
 	 * The world the egg comes from.
 	 */
-	world: WorldNames;
+	world: WorldName;
 
 	/**
 	 * The zone the egg becomes available in.

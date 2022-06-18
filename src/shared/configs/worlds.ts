@@ -25,5 +25,5 @@ export const WORLDS = preserveWithConstraint<Record<string, World>>()({
 	},
 });
 
-export type WorldNames = keyof typeof WORLDS;
+export type WorldName = keyof typeof WORLDS;
 export type Worlds = typeof WORLDS;

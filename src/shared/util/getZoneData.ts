@@ -1,4 +1,4 @@
-import { WorldNames } from "shared/configs/worlds";
+import { WorldName } from "shared/configs/worlds";
 import { Zone, ZoneNames } from "shared/configs/zones";
 import { BAN_LAND_ZONES } from "shared/configs/zones/banLand";
 
@@ -9,7 +9,7 @@ import { UnreachableCaseError } from "./unreachableCaseError";
  * @param zone The zone name.
  * @returns The metadata of the requested zone.
  */
-export function getZoneData(world: WorldNames, zone: ZoneNames): Zone {
+export function getZoneData(world: WorldName, zone: ZoneNames): Zone {
 	let zoneData: Zone;
 
 	switch (world) {

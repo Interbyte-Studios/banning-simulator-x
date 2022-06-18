@@ -1,10 +1,10 @@
 import Rodux from "@rbxts/rodux";
 import { Currency } from "shared/configs/currencies";
-import { WorldNames } from "shared/configs/worlds";
+import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
 
 export type WorldsState = Array<{
-	name: WorldNames;
+	name: WorldName;
 	zones: Array<ZoneNames>;
 }>;
 export type WorldActions = UnlockWorld | UnlockZone;
@@ -14,7 +14,7 @@ export interface UnlockWorld extends Rodux.Action<"unlockWorld"> {
 		amount: number;
 		type: Currency;
 	};
-	worldName: WorldNames;
+	worldName: WorldName;
 	zoneName: ZoneNames;
 }
 
@@ -23,7 +23,7 @@ export interface UnlockZone extends Rodux.Action<"unlockZone"> {
 		amount: number;
 		type: Currency;
 	};
-	worldName: WorldNames;
+	worldName: WorldName;
 	zoneName: ZoneNames;
 }
 
