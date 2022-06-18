@@ -9,7 +9,7 @@ import { eggHudAnimator } from "./eggHudAnimator";
 import { EggHudDisplay } from "./eggHudDisplay";
 
 interface EggHudProps {
-	initiateHatch: (amount: 1 | 3, egg: EggName, isVoid: boolean) => void;
+	initiateHatch: (amount: 1 | 3, egg: EggName, isVoid: boolean) => Promise<void>;
 }
 
 /* eslint-disable jsdoc/require-jsdoc */

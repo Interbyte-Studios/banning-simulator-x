@@ -33,7 +33,7 @@ interface EggHudProps extends MappedEggHudProps {
 	eggName: EggName;
 	isVoid: boolean;
 	pets: Record<string, Pet>;
-	initiateHatch: (amount: 1 | 3, egg: EggName, isVoid: boolean) => void;
+	initiateHatch: (amount: 1 | 3, egg: EggName, isVoid: boolean) => Promise<void>;
 }
 
 interface MappedEggHudProps {
@@ -116,7 +116,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 							/**
 							 * Purchases eggs.
 							 */
-							Activated: (): void => {
+							Activated: async (): Promise<void> => {
 								if (activelyWatching) {
 									return;
 								}
@@ -134,7 +134,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 
 									setActivelyWatching(true);
 
-									RunService.BindToRenderStep("autoHatch", Enum.RenderPriority.Last.Value, () => {
+									RunService.BindToRenderStep("autoHatch", Enum.RenderPriority.Last.Value, async () => {
 										if (!canHatchEgg(AnimateEggs.lasHatchTime)) {
 											return;
 										}
@@ -150,7 +150,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 										);
 
 										if (canPurchase) {
-											props.initiateHatch(userOwnsTripleEggs ? 3 : 1, props.eggName, props.isVoid);
+											await props.initiateHatch(userOwnsTripleEggs ? 3 : 1, props.eggName, props.isVoid);
 										} else {
 											setActivelyWatching(false);
 											RunService.UnbindFromRenderStep("autoHatch");
@@ -176,7 +176,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 									);
 
 									if (canPurchase) {
-										props.initiateHatch(userOwnsTripleEggs ? 3 : 1, props.eggName, props.isVoid);
+										await props.initiateHatch(userOwnsTripleEggs ? 3 : 1, props.eggName, props.isVoid);
 									} else {
 										setActivelyWatching(false);
 									}
