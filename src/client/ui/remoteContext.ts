@@ -43,7 +43,7 @@ function fakeFunctionCall<T extends AsyncServerFunctionDeclaration<Array<unknown
 ): {
 	CallServerAsync(
 		...args: T extends AsyncServerFunctionDeclaration<infer R, unknown> ? R : never
-	): T extends AsyncServerFunctionDeclaration<Array<unknown>, infer P> ? P : never;
+	): Promise<T extends AsyncServerFunctionDeclaration<Array<unknown>, infer P> ? P : never>;
 } {
 	return {
 		/**
@@ -54,9 +54,9 @@ function fakeFunctionCall<T extends AsyncServerFunctionDeclaration<Array<unknown
 		 */
 		CallServerAsync(
 			...args: T extends AsyncServerFunctionDeclaration<infer R, unknown> ? R : never
-		): T extends AsyncServerFunctionDeclaration<Array<unknown>, infer P> ? P : never {
+		): Promise<T extends AsyncServerFunctionDeclaration<Array<unknown>, infer P> ? P : never> {
 			print(`Attempt to CallServerAsync on remote ${name}`);
-			return dummyCall(...args);
+			return Promise.resolve(dummyCall(...args));
 		},
 	};
 }
