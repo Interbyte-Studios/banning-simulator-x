@@ -13,7 +13,7 @@ interface EggHatchProps {
 
 /* eslint-disable jsdoc/require-jsdoc */
 export function EggHatch(props: EggHatchProps): Roact.Element {
-	const infoFrames: Array<Roact.Element> = [];
+	const infoFrames = [];
 	for (const pet of props.pets) {
 		const id = (infoFrames.size() + 1) as 1 | 2 | 3;
 		infoFrames.push(
