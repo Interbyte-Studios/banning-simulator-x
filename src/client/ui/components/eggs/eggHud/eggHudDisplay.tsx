@@ -5,7 +5,6 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService } from "@rbxts/services";
 import { canHatchEgg } from "client/eggs/canHatchEgg";
 import { tryPurchaseEgg } from "client/eggs/purchaseEgg";
-import { toggleAuto } from "client/network";
 import { BaseImageLabel } from "client/ui/elements/baseImageLabel";
 import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
