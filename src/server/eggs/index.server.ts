@@ -45,7 +45,7 @@ hatchEgg.SetCallback(
 		}
 
 		// check that user owns zone
-		const ownsZone = ownsWorld.zones.find((x) => x.name === eggData.zone);
+		const ownsZone = ownsWorld.zones.find((x) => x === eggData.zone);
 		if (ownsZone === undefined) {
 			return {
 				success: false,
