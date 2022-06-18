@@ -98,7 +98,7 @@ hatchEgg.SetCallback(
 			}
 
 			// check inventory space
-			if (currentState.pets.size() >= getPetInventorySize(store) + 1) {
+			if (currentState.pets.size() >= getPetInventorySize(currentState.gamepasses) + 1) {
 				continue;
 			}
 
