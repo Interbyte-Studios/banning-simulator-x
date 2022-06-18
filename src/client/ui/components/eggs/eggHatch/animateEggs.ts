@@ -420,8 +420,8 @@ export class AnimateEggs {
 		for (const pet of params.pets) {
 			const petMetadata = getPetData(params.eggName, pet.id);
 
-			const petModel = petFolder.FindFirstChild(petMetadata.petName) as Model;
-			assert(petModel, `Expected to find pet model for pet with name ${petMetadata.petName}`);
+			const petModel = petFolder.FindFirstChild(petMetadata.name) as Model;
+			assert(petModel, `Expected to find pet model for pet with name ${petMetadata.name}`);
 
 			currentId += 1;
 			const petData: AnimatedPet = {

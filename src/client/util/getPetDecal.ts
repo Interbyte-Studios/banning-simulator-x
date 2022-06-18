@@ -15,8 +15,8 @@ export function getPetDecal(eggName: EggName, petId: number, variant: Variants):
 	const petData = getPetData(eggName, petId);
 
 	const variantDecals = assetIds.images.decals.pets[variant];
-	const petDecal = variantDecals[petData.petName as keyof typeof variantDecals];
-	assert(petDecal, `Did not find decal for pet ${petData.petName} of variant ${variant}`);
+	const petDecal = variantDecals[petData.name as keyof typeof variantDecals];
+	assert(petDecal, `Did not find decal for pet ${petData.name} of variant ${variant}`);
 
 	return petDecal;
 }

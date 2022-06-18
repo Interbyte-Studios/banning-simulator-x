@@ -3,9 +3,8 @@ import { Pet } from "shared/configs/pets";
 
 import { getEggData } from "./getEggData";
 
-interface PetData {
-	petName: string;
-	petData: Pet;
+interface PetData extends Pet {
+	name: string;
 }
 
 /**
@@ -18,13 +17,10 @@ interface PetData {
 export function getPetData(egg: EggName, petId: number): PetData {
 	const eggData = getEggData(egg);
 
-	for (const [petName, petData] of pairs(eggData.pets)) {
-		if (petData.id !== petId) continue;
+	for (const [name, metadata] of pairs(eggData.pets)) {
+		if (metadata.id !== petId) continue;
 
-		const _petData = {
-			petName: petName,
-			petData: petData,
-		};
+		const _petData = { ...metadata, name };
 
 		return _petData;
 	}

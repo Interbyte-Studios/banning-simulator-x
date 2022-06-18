@@ -36,7 +36,7 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 			<BaseTextLabel
 				Position={UDim2.fromScale(0.7, 0.3)}
 				Size={UDim2.fromScale(0.8, 0.55)}
-				Text={string.upper(petInfo.petName)}
+				Text={string.upper(petInfo.name)}
 				TextXAlignment={Enum.TextXAlignment.Left}
 			>
 				<BaseImageLabel
@@ -50,9 +50,9 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 			<BaseTextLabel
 				Position={UDim2.fromScale(0.5, 0.875)}
 				Size={UDim2.fromScale(0.75, 0.4)}
-				Text={string.upper(petInfo.petData.rarity)}
+				Text={string.upper(petInfo.rarity)}
 			>
-				<RarityGradient Rarity={petInfo.petData.rarity} />
+				<RarityGradient Rarity={petInfo.rarity} />
 				<BaseUIStroke Thickness={2.4} />
 			</BaseTextLabel>
 		</frame>
