@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { hatchEgg } from "client/network";
+import { remoteContext } from "client/ui/remoteContext";
 import { EggName } from "shared/configs/eggs";
 import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
 
@@ -15,8 +15,10 @@ interface HatchData {
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const EggsUI = hooks((_, { useState }) => {
+export const EggsUI = hooks((_, { useState, useContext }) => {
 	const [currentHatchData, setCurrentHatchData] = useState<HatchData | undefined>(undefined);
+
+	const { hatchEgg } = useContext(remoteContext);
 
 	const children = [
 		<EggCost />,
