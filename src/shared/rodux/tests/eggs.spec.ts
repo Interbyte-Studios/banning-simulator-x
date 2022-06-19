@@ -15,7 +15,7 @@ export = (): void => {
 
 			const state: EggsState = {
 				eggs: 0,
-				specifics: {
+				rarities: {
 					Basic: 0,
 					Ordinary: 0,
 					Rare: 0,
@@ -42,7 +42,7 @@ export = (): void => {
 
 			const state: EggsState = {
 				eggs: 0,
-				specifics: {
+				rarities: {
 					Basic: 0,
 					Ordinary: 0,
 					Rare: 0,
@@ -54,7 +54,7 @@ export = (): void => {
 
 			const newState: EggsState = { ...state };
 			newState.eggs += 1;
-			newState.specifics.Basic += 1;
+			newState.rarities.Basic += 1;
 
 			const action = addPets(eggCost.amount, eggCost.currencyType, [
 				{ id: petId, rarity: "Basic", variant: "regular" },
