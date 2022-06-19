@@ -5,7 +5,7 @@ import { RARITIES, Rarities } from "shared/configs/rarities";
 export function RarityGradient(props: { Rarity: Rarities }): Roact.Element {
 	const rarityData = RARITIES[props.Rarity];
 	const rarityColorSequence = new ColorSequence([
-		new ColorSequenceKeypoint(0, rarityData.BegginingColor),
+		new ColorSequenceKeypoint(0, rarityData.BeginningColor),
 		new ColorSequenceKeypoint(1, rarityData.EndingColor),
 	]);
 
