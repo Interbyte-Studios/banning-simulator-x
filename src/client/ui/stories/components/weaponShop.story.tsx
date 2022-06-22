@@ -2,9 +2,9 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 
-import { WeaponShop } from "../components/weapons/weaponShop";
-import { fakeRemoteContext, remoteContext } from "../remoteContext";
-import { createMockStory } from "./createMockStory";
+import { WeaponShop } from "../../components/weapons/weaponShop";
+import { fakeRemoteContext, remoteContext } from "../../remoteContext";
+import { createMockStory } from "../createMockStory";
 
 export = (target: GuiBase): (() => void) => {
 	const { cleanup } = createMockStory(
