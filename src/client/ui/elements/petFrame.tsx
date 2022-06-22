@@ -1,14 +1,14 @@
 import Roact from "@rbxts/roact";
-import { getPetDecal } from "client/util/getPetDecal";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
 import { getPetData } from "shared/util/getPetData";
 
-import { udim2BottomRight, udim2Middle, uiTheme } from "../commonValues";
+import { udim2BottomRight, udim2Middle, uiTheme, vec2Middle } from "../commonValues";
 import { BaseImageLabel } from "./baseImageLabel";
 import { BaseTextLabel } from "./baseTextLabel";
 import { BaseUIStroke } from "./baseUIStroke";
+import { PetViewport } from "./petViewport";
 import { RarityGradient } from "./rarityGradient";
 
 interface PetFrameProps {
@@ -25,7 +25,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 		<frame BackgroundTransparency={1} LayoutOrder={props.petId}>
 			<uiaspectratioconstraint AspectRatio={1} />
 			<BaseImageLabel Size={udim2BottomRight} Image={assetIds.images.buttons[uiTheme].templates.square.SquareButton}>
-				<BaseImageLabel Size={udim2Middle} Image={getPetDecal(props.eggName, props.petId, props.variant)} />
+				<PetViewport AnchorPoint={vec2Middle} Position={udim2Middle} Size={udim2Middle} petId={props.petId} />
 			</BaseImageLabel>
 			<BaseTextLabel
 				Position={UDim2.fromScale(0.3, 0.15)}
