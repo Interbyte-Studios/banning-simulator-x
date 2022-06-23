@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { WeaponShop } from "client/ui/components/weapons/weaponShop";
+import { fakeRemoteContext, remoteContext } from "client/ui/remoteContext";
 
-import { WeaponShop } from "../../components/weapons/weaponShop";
-import { fakeRemoteContext, remoteContext } from "../../remoteContext";
-import { createMockStory } from "../createMockStory";
+import { createMockStory } from "../../createMockStory";
 
 export = (target: GuiBase): (() => void) => {
 	const { cleanup } = createMockStory(

@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import { EggCost } from "client/ui/components/eggs/eggCosts";
 
-import { createMockStory } from "../createMockStory";
+import { createMockStory } from "../../createMockStory";
 
 export = (target: GuiBase): (() => void) => {
 	const { cleanup } = createMockStory({}, target, () => <EggCost />);
