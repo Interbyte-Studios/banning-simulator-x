@@ -5,7 +5,8 @@ import { setAssetProperties } from "shared/util/setAssetProperties";
 
 import { hooks } from "../hooks";
 
-interface PetViewportProps extends Partial<ViewportFrame> {
+interface PetViewportProps {
+	native: Partial<WritableInstanceProperties<ViewportFrame>>;
 	petId: number;
 }
 
@@ -36,7 +37,7 @@ export const PetViewport = hooks((props: PetViewportProps, { useValue, useEffect
 	}, []);
 
 	return (
-		<viewportframe {...props} Ref={viewportRef.value}>
+		<viewportframe {...props.native} Ref={viewportRef.value}>
 			<camera Ref={cameraRef.value} />
 		</viewportframe>
 	);

@@ -25,7 +25,14 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 		<frame BackgroundTransparency={1} LayoutOrder={props.petId}>
 			<uiaspectratioconstraint AspectRatio={1} />
 			<BaseImageLabel Size={udim2BottomRight} Image={assetIds.images.buttons[uiTheme].templates.square.SquareButton}>
-				<PetViewport AnchorPoint={vec2Middle} Position={udim2Middle} Size={udim2Middle} petId={props.petId} />
+				<PetViewport
+					native={{
+						AnchorPoint: vec2Middle,
+						Position: udim2Middle,
+						Size: udim2Middle,
+					}}
+					petId={props.petId}
+				/>
 			</BaseImageLabel>
 			<BaseTextLabel
 				Position={UDim2.fromScale(0.3, 0.15)}

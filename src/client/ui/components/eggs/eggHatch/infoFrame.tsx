@@ -39,9 +39,11 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 				TextXAlignment={Enum.TextXAlignment.Left}
 			>
 				<PetViewport
-					AnchorPoint={new Vector2(1, 0.5)}
-					Position={udim2TopMiddle}
-					Size={UDim2.fromScale(0.4, 1.15)}
+					native={{
+						AnchorPoint: new Vector2(1, 0.5),
+						Position: udim2TopMiddle,
+						Size: UDim2.fromScale(0.4, 1.15),
+					}}
 					petId={props.pet}
 				/>
 				<BaseUIStroke Thickness={2.4} />
