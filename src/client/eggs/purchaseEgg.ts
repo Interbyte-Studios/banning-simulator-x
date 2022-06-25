@@ -1,4 +1,3 @@
-import { AnimateEggs } from "client/ui/components/eggs/eggHatch/animateEggs";
 import { EggName } from "shared/configs/eggs";
 import { CurrenciesState } from "shared/rodux/currencies";
 import { GamepassesState } from "shared/rodux/gamepasses";
@@ -7,8 +6,6 @@ import { WorldsState } from "shared/rodux/worlds";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
-
-import { canHatchEgg } from "./canHatchEgg";
 
 /**
  * Handles the purchasing of an egg.
@@ -31,11 +28,6 @@ export function tryPurchaseEgg(
 	eggName: EggName,
 	isVoid: boolean,
 ): boolean {
-	// check that the user has waited long enough to hatch eggs
-	if (!canHatchEgg(AnimateEggs.lasHatchTime)) {
-		return false;
-	}
-
 	const eggData = getEggData(eggName);
 	const eggCost = getEggCost(eggName, isVoid);
 

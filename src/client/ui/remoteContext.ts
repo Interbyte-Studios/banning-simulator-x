@@ -66,7 +66,29 @@ export const fakeRemoteContext = {
 	purchaseWeapon: fakeRemoteCall<PurchaseWeaponDefinition>("purchaseWeapon"),
 
 	hatchEgg: fakeFunctionCall<HatchEggDefinition>("hatchEgg", () => {
-		return { success: false };
+		return {
+			success: true,
+			pets: [
+				{
+					autoDeleted: false,
+					id: 1,
+					rarity: "Basic",
+					variant: "regular",
+				},
+				{
+					autoDeleted: false,
+					id: 2,
+					rarity: "Basic",
+					variant: "regular",
+				},
+				{
+					autoDeleted: false,
+					id: 3,
+					rarity: "Basic",
+					variant: "regular",
+				},
+			],
+		};
 	}),
 	toggleAuto: fakeRemoteCall<ToggleAutoHatchDefinition>("toggleAuto"),
 };

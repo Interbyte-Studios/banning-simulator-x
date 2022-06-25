@@ -21,6 +21,8 @@ export function EggHatch(props: EggHatchProps): Roact.Element {
 		);
 	}
 
+	warn(infoFrames.size());
+
 	return (
 		<frame AnchorPoint={vec2Middle} Position={udim2Middle} Size={udim2BottomRight} BackgroundTransparency={1}>
 			{infoFrames}

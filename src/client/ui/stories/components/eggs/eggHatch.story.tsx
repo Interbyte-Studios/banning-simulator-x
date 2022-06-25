@@ -6,13 +6,21 @@ import { fakeRemoteContext, remoteContext } from "client/ui/remoteContext";
 import { createMockStory } from "../../createMockStory";
 
 export = (target: GuiBase): (() => void) => {
-	const { cleanup } = createMockStory({}, target, (_, store) => (
-		<remoteContext.Provider value={fakeRemoteContext}>
-			<RoactRodux.StoreProvider store={store}>
-				<EggsUI />
-			</RoactRodux.StoreProvider>
-		</remoteContext.Provider>
-	));
+	const { cleanup } = createMockStory(
+		{
+			currencies: {
+				gold: 50000000,
+			},
+		},
+		target,
+		(_, store) => (
+			<remoteContext.Provider value={fakeRemoteContext}>
+				<RoactRodux.StoreProvider store={store}>
+					<EggsUI />
+				</RoactRodux.StoreProvider>
+			</remoteContext.Provider>
+		),
+	);
 	return () => {
 		cleanup();
 	};

@@ -3,7 +3,6 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService } from "@rbxts/services";
-import { canHatchEgg } from "client/eggs/canHatchEgg";
 import { tryPurchaseEgg } from "client/eggs/purchaseEgg";
 import { BaseImageLabel } from "client/ui/elements/baseImageLabel";
 import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
@@ -162,6 +161,8 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 						Event={{
 							/**
 							 * Purchases eggs.
+							 *
+							 * @returns Nil if the player cannot hatch.
 							 */
 							Activated: async (): Promise<void> => {
 								if (activelyWatching) {
@@ -182,7 +183,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 									setActivelyWatching(true);
 
 									RunService.BindToRenderStep("autoHatch", Enum.RenderPriority.Last.Value, async () => {
-										if (!canHatchEgg(AnimateEggs.lasHatchTime)) {
+										if (!AnimateEggs.canHatchEgg()) {
 											return;
 										}
 
@@ -210,6 +211,10 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 										connection.Disconnect();
 									});
 								} else {
+									if (!AnimateEggs.canHatchEgg()) {
+										return;
+									}
+
 									setActivelyWatching(true);
 
 									const canPurchase = tryPurchaseEgg(

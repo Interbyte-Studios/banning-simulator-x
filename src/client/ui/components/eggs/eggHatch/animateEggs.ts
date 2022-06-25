@@ -1,7 +1,6 @@
 import { HttpService, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
-import { canHatchEgg } from "client/eggs/canHatchEgg";
 import { playEffect, SoundEffect } from "client/util/playSound";
-import { EggName } from "shared/configs/eggs";
+import { EggName, hatchDebounce } from "shared/configs/eggs";
 import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
 import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
@@ -12,7 +11,7 @@ type ValidEggId = 1 | 2 | 3 | 4;
 export interface HatchEggParams {
 	amount: ValidAmount;
 	eggName: EggName;
-	pets?: Array<ConfirmedPet>;
+	pets: Array<ConfirmedPet>;
 	isVoid: boolean;
 }
 
@@ -140,6 +139,19 @@ export class AnimateEggs {
 	 * An array of pet metadata currently being used to animate an egg hatch.
 	 */
 	private static animatedPets: Array<AnimatedPet> = [];
+
+	/**
+	 * Checks whether or not the player has waited the alotted time and can hatch an egg.
+	 *
+	 * @returns Whether or not the player has waited the specified debounce time.
+	 */
+	public static canHatchEgg(): boolean {
+		if (RunService.IsStudio()) {
+			return true;
+		}
+
+		return time() - this.lasHatchTime > hatchDebounce;
+	}
 
 	/**
 	 * Gets the position that an egg should be at during a certain segment depending on its id.
@@ -372,7 +384,7 @@ export class AnimateEggs {
 	 * @param params.amount The amount of eggs to animate for hatching.
 	 * @param params.eggName The name of the egg.
 	 */
-	public static hatchEggs(params: HatchEggParams): void {
+	public static initiateAnimation(params: HatchEggParams): void {
 		this.eggAnimationInitiated = true;
 
 		const eggFolder = ReplicatedStorage.assetObjects.eggs[params.eggName][params.isVoid ? "void" : "regular"];
@@ -402,16 +414,7 @@ export class AnimateEggs {
 		}
 
 		this.animateEggHatches(params.amount);
-	}
 
-	/**
-	 * @param params The parameters used for handling the hatching animation.
-	 * @param params.amount The amount of eggs to animate for hatching.
-	 * @param params.eggName The name of the egg.
-	 * @param params.pets The pets being hatched.
-	 */
-	public static hatchPets(params: HatchEggParams): void {
-		if (params.pets === undefined) return;
 		this.petAnimationInitiated = true;
 
 		const petFolder = ReplicatedStorage.assetObjects.pets[params.eggName];
@@ -449,7 +452,7 @@ export class AnimateEggs {
 	public static handleAnimation(): void {
 		if (this.eggAnimationComplete === false || this.petAnimationComplete === false) return;
 
-		if (!canHatchEgg(this.lasHatchTime)) return;
+		if (this.canHatchEgg()) return;
 		this.lasHatchTime = time();
 
 		this.eggAnimationComplete = false;
