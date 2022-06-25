@@ -5,7 +5,6 @@ import { hooks } from "client/ui/hooks";
 import { EggName, EGGS } from "shared/configs/eggs";
 
 import { AnimateEggs } from "../eggHatch/animateEggs";
-import { eggHudAnimator } from "./eggHudAnimator";
 import { EggHudDisplay } from "./eggHudDisplay";
 
 interface EggHudProps {
@@ -15,14 +14,6 @@ interface EggHudProps {
 /* eslint-disable jsdoc/require-jsdoc */
 export const EggHud = hooks((props: EggHudProps, { useState, useEffect }) => {
 	const [isActive, setIsActive] = useState(true);
-
-	// setup egg hud animator
-	useEffect(() => {
-		eggHudAnimator.init();
-		return (): void => {
-			eggHudAnimator.destroy();
-		};
-	}, []);
 
 	// handle hiding the hud when animating
 	useEffect(() => {
@@ -49,8 +40,6 @@ export const EggHud = hooks((props: EggHudProps, { useState, useEffect }) => {
 	});
 
 	if (!isActive) {
-		// todo: clear this code up a bit
-		eggHudAnimator.clearMotors();
 		return <></>;
 	}
 

@@ -19,12 +19,15 @@ import { CurrenciesState } from "shared/rodux/currencies";
 import { GamepassesState } from "shared/rodux/gamepasses";
 import { PetsState } from "shared/rodux/pets";
 import { WorldsState } from "shared/rodux/worlds";
+import { getMagnitudeBetweenPlayerAndObject } from "shared/util/getDistanceFromObject";
 
 import { udim2Middle, uiTheme, userOwnsTripleEggs, vec2Middle } from "../../../commonValues";
 import { PetFrame } from "../../../elements/petFrame";
 import { RescalingScrollingFrame } from "../../../elements/rescalingScrollingFrame";
 import { AnimateEggs } from "../eggHatch/animateEggs";
-import { eggHudAnimator } from "./eggHudAnimator";
+
+// The distance required to be within to activate an egg display
+const ACTIVATION_DISTANCE = 15;
 
 const player = Players.LocalPlayer;
 
@@ -60,6 +63,9 @@ function mapStateToProps(state: StoreState): MappedEggHudProps {
 	};
 }
 
+const inactiveSpring = new Flipper.Spring(0, { frequency: 5 });
+const activeSpring = new Flipper.Spring(1, { frequency: 5 });
+
 /* eslint-disable jsdoc/require-jsdoc */
 export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 	hooks((props: EggHudProps, { useState, useEffect, useContext }) => {
@@ -76,15 +82,56 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 		const [activelyWatching, setActivelyWatching] = useState(false);
 
 		// bind motor to update on step && cleanup
+		motor.onStep(setBinding);
 		useEffect(() => {
-			motor.onStep(setBinding);
-			eggHudAnimator.addMotor(props.adornee, motor);
+			return (): void => {
+				motor.destroy();
+			};
+		}, []);
+
+		useEffect(() => {
+			// todo: not use Players.LocalPlayer!
+			// somehow mock a player/character
+			const player = Players.LocalPlayer;
+
+			let isViewing = false;
+
+			const connection = RunService.RenderStepped.Connect(() => {
+				const character = player.Character;
+				if (!character) {
+					return;
+				}
+
+				const magnitudeToBasePart = getMagnitudeBetweenPlayerAndObject(character, props.adornee);
+				if (magnitudeToBasePart === undefined) {
+					// character did not exist
+					return;
+				}
+
+				if (magnitudeToBasePart <= ACTIVATION_DISTANCE) {
+					// set target
+					if (!isViewing) {
+						motor.setGoal({
+							X: activeSpring,
+							Y: activeSpring,
+						});
+						isViewing = true;
+					}
+				} else {
+					if (!isViewing) {
+						motor.setGoal({
+							X: inactiveSpring,
+							Y: inactiveSpring,
+						});
+						isViewing = false;
+					}
+				}
+			});
 
 			return (): void => {
-				motor.stop();
-				eggHudAnimator.removeMotors(props.adornee);
+				connection.Disconnect();
 			};
-		});
+		}, [props.adornee]);
 
 		return (
 			<billboardgui
