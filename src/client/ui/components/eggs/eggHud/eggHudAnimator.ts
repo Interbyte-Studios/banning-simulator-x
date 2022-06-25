@@ -71,11 +71,7 @@ export class eggHudAnimator {
 	 */
 	public static removeMotors(adornee: BasePart): void {
 		const motorIndex = this.motorSets.findIndex((x) => x.adornee === adornee);
-
-		if (motorIndex !== -1) {
-			warn(`Attempt to destroy motor that did not exist with adornee ${adornee.GetFullName()}`);
-			return;
-		}
+		assert(motorIndex !== -1, `Expected ${adornee.GetFullName()} to have a motor`);
 
 		const motor = this.motorSets[motorIndex];
 		motor.motor.destroy();
