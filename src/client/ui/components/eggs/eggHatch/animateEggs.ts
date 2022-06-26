@@ -11,7 +11,7 @@ type ValidEggId = 1 | 2 | 3 | 4;
 export interface HatchEggParams {
 	amount: ValidAmount;
 	eggName: EggName;
-	pets: Array<ConfirmedPet>;
+	pets?: Array<ConfirmedPet>;
 	isVoid: boolean;
 }
 
@@ -384,7 +384,7 @@ export class AnimateEggs {
 	 * @param params.amount The amount of eggs to animate for hatching.
 	 * @param params.eggName The name of the egg.
 	 */
-	public static initiateAnimation(params: HatchEggParams): void {
+	public static initiateEggHatch(params: HatchEggParams): void {
 		this.eggAnimationInitiated = true;
 
 		const eggFolder = ReplicatedStorage.assetObjects.eggs[params.eggName][params.isVoid ? "void" : "regular"];
@@ -414,6 +414,17 @@ export class AnimateEggs {
 		}
 
 		this.animateEggHatches(params.amount);
+	}
+
+	/**
+	 * Displays the hatched pets.
+	 *
+	 * @param params The parameters used for handling the hatching animation.
+	 * @param params.amount The amount of eggs to animate for hatching.
+	 * @param params.eggName The name of the egg.
+	 */
+	public static initiatePetHatch(params: HatchEggParams): void {
+		assert(params.pets, `Expected to have pets to hatch.`);
 
 		this.petAnimationInitiated = true;
 
@@ -450,9 +461,15 @@ export class AnimateEggs {
 	 * Handles the run service connection for the animation.
 	 */
 	public static handleAnimation(): void {
-		if (this.eggAnimationComplete === false || this.petAnimationComplete === false) return;
+		if (this.eggAnimationComplete === false || this.petAnimationComplete === false) {
+			warn("not complete");
+			return;
+		}
 
-		if (this.canHatchEgg()) return;
+		if (!this.canHatchEgg()) {
+			warn("cannot hatch");
+			return;
+		}
 		this.lasHatchTime = time();
 
 		this.eggAnimationComplete = false;
