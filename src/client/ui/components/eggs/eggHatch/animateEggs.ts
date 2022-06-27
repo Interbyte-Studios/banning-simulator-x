@@ -1,22 +1,21 @@
 import { HttpService, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
 import { playEffect, SoundEffect } from "client/util/playSound";
 import { EggName, hatchDebounce } from "shared/configs/eggs";
-import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
+import { ConfirmedPet, ValidEggAmount } from "shared/remotes/eggs/hatchEgg";
 import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
-type ValidAmount = 1 | 2 | 3;
 type ValidEggId = 1 | 2 | 3 | 4;
 
 export interface HatchEggParams {
-	amount: ValidAmount;
+	amount: ValidEggAmount;
 	eggName: EggName;
 	pets?: Array<ConfirmedPet>;
 	isVoid: boolean;
 }
 
 interface AnimatedEgg {
-	id: ValidAmount;
+	id: ValidEggAmount;
 	currentCFrame: CFrameValue;
 	currentEgg: ValidEggId;
 	eggModels: {
@@ -28,7 +27,7 @@ interface AnimatedEgg {
 }
 
 interface AnimatedPet {
-	id: ValidAmount;
+	id: ValidEggAmount;
 	currentCFrame: CFrameValue;
 	flareLifetime: NumberValue;
 	flare: typeof ReplicatedStorage.assetObjects.hatch;
@@ -160,7 +159,7 @@ export class AnimateEggs {
 	 * @param id The id of the egg.
 	 * @returns The segment containing CFrames for egg positions.
 	 */
-	private static getSegment(amount: ValidAmount, id: ValidEggId): TweenDataDoc["tweenData"]["middle"] {
+	private static getSegment(amount: ValidEggAmount, id: ValidEggId): TweenDataDoc["tweenData"]["middle"] {
 		let segmentData: TweenDataDoc["tweenData"]["middle"] | undefined;
 		switch (amount) {
 			case 1: {
@@ -208,7 +207,7 @@ export class AnimateEggs {
 	 *
 	 * @param amount The amount of eggs being hatched.
 	 */
-	private static animateEggHatches(amount: ValidAmount): void {
+	private static animateEggHatches(amount: ValidEggAmount): void {
 		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
 
 		/**
@@ -294,7 +293,7 @@ export class AnimateEggs {
 	 *
 	 * @param amount The amount of pets being displayed.
 	 */
-	private static animatePetHatches(amount: ValidAmount): void {
+	private static animatePetHatches(amount: ValidEggAmount): void {
 		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
 
 		let amountComplete = 0;
@@ -391,7 +390,7 @@ export class AnimateEggs {
 
 		for (let i = 1; i <= params.amount; i++) {
 			const eggData: AnimatedEgg = {
-				id: i as ValidAmount,
+				id: i as ValidEggAmount,
 				currentCFrame: new Instance("CFrameValue"),
 				currentEgg: 1,
 				eggModels: {
@@ -439,7 +438,7 @@ export class AnimateEggs {
 
 			currentId += 1;
 			const petData: AnimatedPet = {
-				id: currentId as ValidAmount,
+				id: currentId as ValidEggAmount,
 				currentCFrame: new Instance("CFrameValue"),
 				flareLifetime: new Instance("NumberValue"),
 				flare: ReplicatedStorage.assetObjects.hatch.Clone(),

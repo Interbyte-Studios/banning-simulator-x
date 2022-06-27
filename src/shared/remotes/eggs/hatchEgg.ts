@@ -4,13 +4,15 @@ import { t } from "@rbxts/t";
 import { EggName, isEggName } from "shared/configs/eggs";
 import { PetData } from "shared/rodux/pets";
 
+export type ValidEggAmount = 1 | 2 | 3;
+
 export interface ConfirmedPet extends PetData {
 	autoDeleted: boolean;
 }
 
 export const hatchEggDefinition = Net.Definitions.ServerAsyncFunction<
 	(
-		amount: 1 | 2 | 3,
+		amount: ValidEggAmount,
 		egg: EggName,
 		isVoid: boolean,
 	) => { success: false } | { success: true; pets: Array<ConfirmedPet> }
