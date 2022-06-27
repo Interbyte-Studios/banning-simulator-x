@@ -16,5 +16,5 @@ export const hatchEggDefinition = Net.Definitions.ServerAsyncFunction<
 		egg: EggName,
 		isVoid: boolean,
 	) => { success: false } | { success: true; pets: Array<ConfirmedPet> }
->([createTypeChecker(t.literal(1, 3), isEggName, t.boolean)]);
+>([createTypeChecker(t.literal(1, 2, 3), isEggName, t.boolean)]);
 export type HatchEggDefinition = typeof hatchEggDefinition;

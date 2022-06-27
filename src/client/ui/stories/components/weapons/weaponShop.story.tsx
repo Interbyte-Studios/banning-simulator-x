@@ -2,7 +2,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { WeaponShop } from "client/ui/components/weapons/weaponShop";
-import { fakeRemoteContext, remoteContext } from "client/ui/remoteContext";
+import { fakeRemoteContext, remoteContext } from "client/ui/mocks/remoteContext";
 
 import { createMockStory } from "../../createMockStory";
 

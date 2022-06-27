@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import { udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
-import { remoteContext } from "client/ui/remoteContext";
+import { remoteContext } from "client/ui/mocks/remoteContext";
 import { EggName } from "shared/configs/eggs";
 import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
 
