@@ -5,7 +5,7 @@ import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
 import { getPetData } from "shared/util/getPetData";
 
-import { udim2BottomRight, udim2Middle, uiTheme } from "../commonValues";
+import { udim2BottomRight, udim2Middle, uiTheme, vec2Middle } from "../commonValues";
 import { BaseImageLabel } from "./baseImageLabel";
 import { BaseTextLabel } from "./baseTextLabel";
 import { BaseUIStroke } from "./baseUIStroke";
@@ -22,7 +22,13 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 	const petData = getPetData(props.eggName, props.petId);
 
 	return (
-		<frame BackgroundTransparency={1} LayoutOrder={props.petId}>
+		<frame
+			BackgroundTransparency={1}
+			LayoutOrder={props.petId}
+			AnchorPoint={vec2Middle}
+			Size={udim2Middle}
+			Position={udim2Middle}
+		>
 			<uiaspectratioconstraint AspectRatio={1} />
 			<BaseImageLabel Size={udim2BottomRight} Image={assetIds.images.buttons[uiTheme].templates.square.SquareButton}>
 				<BaseImageLabel Size={udim2Middle} Image={getPetDecal(props.eggName, props.petId, props.variant)} />

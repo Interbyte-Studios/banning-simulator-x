@@ -1,9 +1,10 @@
 import { AsyncServerFunctionDeclaration, ClientToServerEventDeclaration } from "@rbxts/net/out/definitions/Types";
 import { createContext } from "@rbxts/roact";
-import { HatchEggDefinition } from "shared/remotes/eggs/hatchEgg";
 import { ToggleAutoHatchDefinition } from "shared/remotes/eggs/toggleAuto";
 import { EquipWeaponDefinition } from "shared/remotes/weapons/equipWeapon";
 import { PurchaseWeaponDefinition } from "shared/remotes/weapons/purchaseWeapon";
+
+import { fakeHatchEgg } from "./hatchEgg";
 
 /**
  * Creates a fake dummy ClientToServer remote.
@@ -35,7 +36,7 @@ function fakeRemoteCall<T extends ClientToServerEventDeclaration<Array<unknown>>
  * @param dummyCall A dummy handler to handle the callback.
  * @returns A dummy RemoteFunction.
  */
-function fakeFunctionCall<T extends AsyncServerFunctionDeclaration<Array<unknown>, unknown>>(
+export function fakeFunctionCall<T extends AsyncServerFunctionDeclaration<Array<unknown>, unknown>>(
 	name: string,
 	dummyCall: (
 		...args: T extends AsyncServerFunctionDeclaration<infer R, unknown> ? R : never
@@ -65,9 +66,7 @@ export const fakeRemoteContext = {
 	equipWeapon: fakeRemoteCall<EquipWeaponDefinition>("equipWeapon"),
 	purchaseWeapon: fakeRemoteCall<PurchaseWeaponDefinition>("purchaseWeapon"),
 
-	hatchEgg: fakeFunctionCall<HatchEggDefinition>("hatchEgg", () => {
-		return { success: false };
-	}),
+	hatchEgg: fakeHatchEgg,
 	toggleAuto: fakeRemoteCall<ToggleAutoHatchDefinition>("toggleAuto"),
 };
 
