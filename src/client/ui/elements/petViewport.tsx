@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import { ReplicatedStorage } from "@rbxts/services";
+import { EggName } from "shared/configs/eggs";
 import { getItemById } from "shared/util/getItemById";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
@@ -7,6 +8,7 @@ import { hooks } from "../hooks";
 
 interface PetViewportProps {
 	native: Partial<WritableInstanceProperties<ViewportFrame>>;
+	eggName: EggName;
 	petId: number;
 }
 
@@ -23,7 +25,7 @@ export const PetViewport = hooks((props: PetViewportProps, { useValue, useEffect
 
 		const petsFolder = ReplicatedStorage.assetObjects.pets;
 
-		const petModel = getItemById(petsFolder, props.petId);
+		const petModel = getItemById(petsFolder[props.eggName], props.petId);
 		assert(petModel, `Did not find pet model for pet with id ${props.petId}`);
 
 		const pet = petModel.Clone() as Model;

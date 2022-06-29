@@ -1,12 +1,10 @@
-import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
-
 import { Pet } from ".";
 
 /**
  * Honeycomb egg.
  */
-export const HONEYCOMB_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()({
-	"Desert Demon": {
+export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
+	"Bumble Bee": {
 		chance: 30,
 		id: 15,
 		rarity: "Basic",
@@ -78,4 +76,4 @@ export const HONEYCOMB_EGG_PETS = preserveWithConstraint<Record<string, Pet>>()(
 			additionalDamage: 1,
 		},
 	},
-});
+};

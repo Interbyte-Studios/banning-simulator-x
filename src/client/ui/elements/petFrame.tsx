@@ -22,7 +22,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 	const petData = getPetData(props.eggName, props.petId);
 
 	return (
-		<frame BackgroundTransparency={1} LayoutOrder={props.petId}>
+		<frame BackgroundTransparency={0} LayoutOrder={props.petId}>
 			<uiaspectratioconstraint AspectRatio={1} />
 			<BaseImageLabel Size={udim2BottomRight} Image={assetIds.images.buttons[uiTheme].templates.square.SquareButton}>
 				<PetViewport
@@ -30,7 +30,9 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 						AnchorPoint: vec2Middle,
 						Position: udim2Middle,
 						Size: udim2Middle,
+						BackgroundTransparency: 1,
 					}}
+					eggName={props.eggName}
 					petId={props.petId}
 				/>
 			</BaseImageLabel>

@@ -43,7 +43,9 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 						AnchorPoint: new Vector2(1, 0.5),
 						Position: udim2TopMiddle,
 						Size: UDim2.fromScale(0.4, 1.15),
+						BackgroundTransparency: 1,
 					}}
+					eggName={props.eggName}
 					petId={props.pet}
 				/>
 				<BaseUIStroke Thickness={2.4} />
