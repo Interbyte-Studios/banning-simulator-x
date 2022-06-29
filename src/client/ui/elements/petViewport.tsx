@@ -36,7 +36,7 @@ export const PetViewport = hooks((props: PetViewportProps, { useValue, useEffect
 		pet.Parent = viewport;
 
 		camera.CameraType = Enum.CameraType.Scriptable;
-		camera.CFrame = pet.PrimaryPart.CFrame.mul(new CFrame(0, -5, 0));
+		camera.CFrame = new CFrame(pet.PrimaryPart.Position);
 	}, []);
 
 	return (
