@@ -34,8 +34,9 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 				<PetViewport
 					native={{
 						AnchorPoint: vec2Middle,
-						Position: udim2Middle,
-						Size: udim2Middle,
+						Position: UDim2.fromScale(0.5, 0.5),
+						Size: UDim2.fromScale(0.65, 0.65),
+						BackgroundColor3: Color3.fromRGB(0, 0, 0),
 						BackgroundTransparency: 1,
 					}}
 					eggName={props.eggName}

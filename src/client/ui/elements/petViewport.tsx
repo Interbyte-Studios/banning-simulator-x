@@ -23,6 +23,8 @@ export const PetViewport = hooks((props: PetViewportProps, { useValue, useEffect
 		const camera = cameraRef.value.getValue();
 		assert(camera, `Failed to get camera.`);
 
+		viewport.CurrentCamera = camera;
+
 		const petsFolder = ReplicatedStorage.assetObjects.pets;
 
 		const petModel = getItemById(petsFolder[props.eggName], props.petId);
@@ -36,7 +38,14 @@ export const PetViewport = hooks((props: PetViewportProps, { useValue, useEffect
 		pet.Parent = viewport;
 
 		camera.CameraType = Enum.CameraType.Scriptable;
-		camera.CFrame = new CFrame(pet.PrimaryPart.Position);
+		camera.FieldOfView = 10;
+
+		const [, petSize] = pet.GetBoundingBox();
+		pet.SetPrimaryPartCFrame(
+			camera.CFrame.ToWorldSpace(new CFrame(0, -petSize.Y / 50, -petSize.Z * 5)).mul(
+				CFrame.Angles(0, math.rad(180), 0),
+			),
+		);
 	}, []);
 
 	return (
