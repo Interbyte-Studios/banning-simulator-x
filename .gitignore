@@ -1,6 +1,7 @@
 out/
 include/
 node_modules/
+.vscode/
 
 roblox.toml
-.vscode/
+sourcemap.json

@@ -1,28 +1,26 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers */
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { EggsUI } from "client/ui/components/eggs";
+import { fakeRemoteContext, remoteContext } from "client/ui/mocks/remoteContext";
 
-import { WeaponShop } from "../components/weapons/weaponShop";
-import { fakeRemoteContext, remoteContext } from "../remoteContext";
-import { createMockStory } from "./createMockStory";
+import { createMockStory } from "../../createMockStory";
 
 export = (target: GuiBase): (() => void) => {
 	const { cleanup } = createMockStory(
 		{
 			currencies: {
-				gold: 100_000,
+				gold: 50000000,
 			},
 		},
 		target,
 		(_, store) => (
 			<remoteContext.Provider value={fakeRemoteContext}>
 				<RoactRodux.StoreProvider store={store}>
-					<WeaponShop store={store} />
+					<EggsUI />
 				</RoactRodux.StoreProvider>
 			</remoteContext.Provider>
 		),
 	);
-
 	return () => {
 		cleanup();
 	};

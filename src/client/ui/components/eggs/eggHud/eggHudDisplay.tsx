@@ -3,13 +3,12 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService } from "@rbxts/services";
-import { canHatchEgg } from "client/eggs/canHatchEgg";
 import { tryPurchaseEgg } from "client/eggs/purchaseEgg";
 import { BaseImageLabel } from "client/ui/elements/baseImageLabel";
 import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
-import { remoteContext } from "client/ui/remoteContext";
+import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
 import { MAIN_GROUP } from "shared/configs/game";
@@ -19,12 +18,15 @@ import { CurrenciesState } from "shared/rodux/currencies";
 import { GamepassesState } from "shared/rodux/gamepasses";
 import { PetsState } from "shared/rodux/pets";
 import { WorldsState } from "shared/rodux/worlds";
+import { getMagnitudeBetweenPlayerAndObject } from "shared/util/getDistanceFromObject";
 
 import { udim2Middle, uiTheme, userOwnsTripleEggs, vec2Middle } from "../../../commonValues";
 import { PetFrame } from "../../../elements/petFrame";
 import { RescalingScrollingFrame } from "../../../elements/rescalingScrollingFrame";
 import { AnimateEggs } from "../eggHatch/animateEggs";
-import { eggHudAnimator } from "./eggHudAnimator";
+
+// The distance required to be within to activate an egg display
+const ACTIVATION_DISTANCE = 15;
 
 const player = Players.LocalPlayer;
 
@@ -60,6 +62,9 @@ function mapStateToProps(state: StoreState): MappedEggHudProps {
 	};
 }
 
+const inactiveSpring = new Flipper.Spring(0, { frequency: 5 });
+const activeSpring = new Flipper.Spring(1, { frequency: 5 });
+
 /* eslint-disable jsdoc/require-jsdoc */
 export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 	hooks((props: EggHudProps, { useState, useEffect, useContext }) => {
@@ -76,15 +81,56 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 		const [activelyWatching, setActivelyWatching] = useState(false);
 
 		// bind motor to update on step && cleanup
+		motor.onStep(setBinding);
 		useEffect(() => {
-			motor.onStep(setBinding);
-			eggHudAnimator.addMotor(props.adornee, motor);
+			return (): void => {
+				motor.destroy();
+			};
+		}, []);
+
+		useEffect(() => {
+			// todo: not use Players.LocalPlayer!
+			// somehow mock a player/character
+			const player = Players.LocalPlayer;
+
+			let isViewing = false;
+
+			const connection = RunService.RenderStepped.Connect(() => {
+				const character = player.Character;
+				if (!character) {
+					return;
+				}
+
+				const magnitudeToBasePart = getMagnitudeBetweenPlayerAndObject(character, props.adornee);
+				if (magnitudeToBasePart === undefined) {
+					// character did not exist
+					return;
+				}
+
+				if (magnitudeToBasePart <= ACTIVATION_DISTANCE) {
+					// set target
+					if (!isViewing) {
+						motor.setGoal({
+							X: activeSpring,
+							Y: activeSpring,
+						});
+						isViewing = true;
+					}
+				} else {
+					if (!isViewing) {
+						motor.setGoal({
+							X: inactiveSpring,
+							Y: inactiveSpring,
+						});
+						isViewing = false;
+					}
+				}
+			});
 
 			return (): void => {
-				motor.stop();
-				eggHudAnimator.removeMotors(props.adornee);
+				connection.Disconnect();
 			};
-		});
+		}, [props.adornee]);
 
 		return (
 			<billboardgui
@@ -115,6 +161,8 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 						Event={{
 							/**
 							 * Purchases eggs.
+							 *
+							 * @returns Nil if the player cannot hatch.
 							 */
 							Activated: async (): Promise<void> => {
 								if (activelyWatching) {
@@ -135,7 +183,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 									setActivelyWatching(true);
 
 									RunService.BindToRenderStep("autoHatch", Enum.RenderPriority.Last.Value, async () => {
-										if (!canHatchEgg(AnimateEggs.lasHatchTime)) {
+										if (!AnimateEggs.canHatchEgg()) {
 											return;
 										}
 
@@ -163,6 +211,10 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 										connection.Disconnect();
 									});
 								} else {
+									if (!AnimateEggs.canHatchEgg()) {
+										return;
+									}
+
 									setActivelyWatching(true);
 
 									const canPurchase = tryPurchaseEgg(

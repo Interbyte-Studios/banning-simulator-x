@@ -1,11 +1,13 @@
 import Roact from "@rbxts/roact";
-import { remoteContext } from "client/ui/remoteContext";
+import { udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
+import { remoteContext } from "client/ui/mocks/remoteContext";
 import { EggName } from "shared/configs/eggs";
 import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
 
 import { hooks } from "../../hooks";
 import { EggCost } from "./eggCosts";
 import { EggHatch } from "./eggHatch";
+import { AnimateEggs } from "./eggHatch/animateEggs";
 import { EggHud } from "./eggHud";
 
 interface HatchData {
@@ -23,15 +25,31 @@ export const EggsUI = hooks((_, { useState, useContext }) => {
 	const children = [
 		<EggCost />,
 		<EggHud
-			initiateHatch={async (amount: 1 | 3, egg: EggName, isVoid: boolean): Promise<void> => {
+			initiateHatch={async (amount: 1 | 2 | 3, egg: EggName, isVoid: boolean): Promise<void> => {
 				const requestEggHatch = await hatchEgg.CallServerAsync(amount, egg, isVoid);
 
 				if (requestEggHatch.success) {
+					AnimateEggs.handleAnimation();
+					AnimateEggs.initiateEggHatch({
+						amount,
+						eggName: egg,
+						isVoid,
+					});
+
 					setCurrentHatchData({
 						eggName: egg,
 						pets: requestEggHatch.pets,
 						isVoid,
 					});
+
+					AnimateEggs.initiatePetHatch({
+						amount,
+						eggName: egg,
+						pets: requestEggHatch.pets,
+						isVoid,
+					});
+
+					setCurrentHatchData(undefined);
 				} else {
 					setCurrentHatchData(undefined);
 				}
@@ -45,6 +63,10 @@ export const EggsUI = hooks((_, { useState, useContext }) => {
 		);
 	}
 
-	return <frame BackgroundTransparency={1}>{children}</frame>;
+	return (
+		<frame AnchorPoint={vec2Middle} Position={udim2Middle} Size={udim2BottomRight} BackgroundTransparency={1}>
+			{children}
+		</frame>
+	);
 });
 /* eslint-enable jsdoc/require-jsdoc */

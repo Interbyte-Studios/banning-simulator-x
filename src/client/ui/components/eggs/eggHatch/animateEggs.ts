@@ -1,23 +1,21 @@
 import { HttpService, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
-import { canHatchEgg } from "client/eggs/canHatchEgg";
 import { playEffect, SoundEffect } from "client/util/playSound";
-import { EggName } from "shared/configs/eggs";
-import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
+import { EggName, hatchDebounce } from "shared/configs/eggs";
+import { ConfirmedPet, ValidEggAmount } from "shared/remotes/eggs/hatchEgg";
 import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
-type ValidAmount = 1 | 2 | 3;
 type ValidEggId = 1 | 2 | 3 | 4;
 
 export interface HatchEggParams {
-	amount: ValidAmount;
+	amount: ValidEggAmount;
 	eggName: EggName;
 	pets?: Array<ConfirmedPet>;
 	isVoid: boolean;
 }
 
 interface AnimatedEgg {
-	id: ValidAmount;
+	id: ValidEggAmount;
 	currentCFrame: CFrameValue;
 	currentEgg: ValidEggId;
 	eggModels: {
@@ -29,7 +27,7 @@ interface AnimatedEgg {
 }
 
 interface AnimatedPet {
-	id: ValidAmount;
+	id: ValidEggAmount;
 	currentCFrame: CFrameValue;
 	flareLifetime: NumberValue;
 	flare: typeof ReplicatedStorage.assetObjects.hatch;
@@ -142,13 +140,26 @@ export class AnimateEggs {
 	private static animatedPets: Array<AnimatedPet> = [];
 
 	/**
+	 * Checks whether or not the player has waited the alotted time and can hatch an egg.
+	 *
+	 * @returns Whether or not the player has waited the specified debounce time.
+	 */
+	public static canHatchEgg(): boolean {
+		if (RunService.IsStudio()) {
+			return true;
+		}
+
+		return time() - this.lasHatchTime > hatchDebounce;
+	}
+
+	/**
 	 * Gets the position that an egg should be at during a certain segment depending on its id.
 	 *
 	 * @param amount The amount of eggs being animated.
 	 * @param id The id of the egg.
 	 * @returns The segment containing CFrames for egg positions.
 	 */
-	private static getSegment(amount: ValidAmount, id: ValidEggId): TweenDataDoc["tweenData"]["middle"] {
+	private static getSegment(amount: ValidEggAmount, id: ValidEggId): TweenDataDoc["tweenData"]["middle"] {
 		let segmentData: TweenDataDoc["tweenData"]["middle"] | undefined;
 		switch (amount) {
 			case 1: {
@@ -196,7 +207,7 @@ export class AnimateEggs {
 	 *
 	 * @param amount The amount of eggs being hatched.
 	 */
-	private static animateEggHatches(amount: ValidAmount): void {
+	private static animateEggHatches(amount: ValidEggAmount): void {
 		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
 
 		/**
@@ -282,7 +293,7 @@ export class AnimateEggs {
 	 *
 	 * @param amount The amount of pets being displayed.
 	 */
-	private static animatePetHatches(amount: ValidAmount): void {
+	private static animatePetHatches(amount: ValidEggAmount): void {
 		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
 
 		let amountComplete = 0;
@@ -372,14 +383,14 @@ export class AnimateEggs {
 	 * @param params.amount The amount of eggs to animate for hatching.
 	 * @param params.eggName The name of the egg.
 	 */
-	public static hatchEggs(params: HatchEggParams): void {
+	public static initiateEggHatch(params: HatchEggParams): void {
 		this.eggAnimationInitiated = true;
 
 		const eggFolder = ReplicatedStorage.assetObjects.eggs[params.eggName][params.isVoid ? "void" : "regular"];
 
 		for (let i = 1; i <= params.amount; i++) {
 			const eggData: AnimatedEgg = {
-				id: i as ValidAmount,
+				id: i as ValidEggAmount,
 				currentCFrame: new Instance("CFrameValue"),
 				currentEgg: 1,
 				eggModels: {
@@ -405,13 +416,15 @@ export class AnimateEggs {
 	}
 
 	/**
+	 * Displays the hatched pets.
+	 *
 	 * @param params The parameters used for handling the hatching animation.
 	 * @param params.amount The amount of eggs to animate for hatching.
 	 * @param params.eggName The name of the egg.
-	 * @param params.pets The pets being hatched.
 	 */
-	public static hatchPets(params: HatchEggParams): void {
-		if (params.pets === undefined) return;
+	public static initiatePetHatch(params: HatchEggParams): void {
+		assert(params.pets, `Expected to have pets to hatch.`);
+
 		this.petAnimationInitiated = true;
 
 		const petFolder = ReplicatedStorage.assetObjects.pets[params.eggName];
@@ -425,7 +438,7 @@ export class AnimateEggs {
 
 			currentId += 1;
 			const petData: AnimatedPet = {
-				id: currentId as ValidAmount,
+				id: currentId as ValidEggAmount,
 				currentCFrame: new Instance("CFrameValue"),
 				flareLifetime: new Instance("NumberValue"),
 				flare: ReplicatedStorage.assetObjects.hatch.Clone(),
@@ -447,9 +460,15 @@ export class AnimateEggs {
 	 * Handles the run service connection for the animation.
 	 */
 	public static handleAnimation(): void {
-		if (this.eggAnimationComplete === false || this.petAnimationComplete === false) return;
+		if (this.eggAnimationComplete === false || this.petAnimationComplete === false) {
+			warn("not complete");
+			return;
+		}
 
-		if (!canHatchEgg(this.lasHatchTime)) return;
+		if (!this.canHatchEgg()) {
+			warn("cannot hatch");
+			return;
+		}
 		this.lasHatchTime = time();
 
 		this.eggAnimationComplete = false;
