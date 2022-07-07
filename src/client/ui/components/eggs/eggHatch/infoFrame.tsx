@@ -1,10 +1,9 @@
 import Roact from "@rbxts/roact";
 import { udim2TopMiddle, vec2Middle } from "client/ui/commonValues";
-import { BaseImageLabel } from "client/ui/elements/baseImageLabel";
 import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { PetViewport } from "client/ui/elements/petViewport";
 import { RarityGradient } from "client/ui/elements/rarityGradient";
-import { getPetDecal } from "client/util/getPetDecal";
 import { EggName } from "shared/configs/eggs";
 import { getPetData } from "shared/util/getPetData";
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
@@ -39,11 +38,15 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 				Text={string.upper(petInfo.name)}
 				TextXAlignment={Enum.TextXAlignment.Left}
 			>
-				<BaseImageLabel
-					AnchorPoint={new Vector2(1, 0.5)}
-					Position={udim2TopMiddle}
-					Size={UDim2.fromScale(0.4, 1.15)}
-					Image={getPetDecal(props.eggName, props.pet, props.isVoid ? "void" : "regular")}
+				<PetViewport
+					native={{
+						AnchorPoint: new Vector2(1, 0.5),
+						Position: udim2TopMiddle,
+						Size: UDim2.fromScale(0.4, 1.15),
+						BackgroundTransparency: 1,
+					}}
+					eggName={props.eggName}
+					petId={props.pet}
 				/>
 				<BaseUIStroke Thickness={2.4} />
 			</BaseTextLabel>
