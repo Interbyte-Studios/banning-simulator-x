@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { EggsUI } from "client/ui/components/eggs";
-import { fakeRemoteContext, remoteContext } from "client/ui/mocks/remoteContext";
+import { fakeRemoteContext, remoteContext } from "client/ui/mocks/remoteContext/init";
 
 import { createMockStory } from "../../createMockStory";
 
