@@ -20,6 +20,7 @@ const randomGenerator = new Random();
 
 hatchEgg.SetCallback(
 	withPlayerStore((player, store, amount, eggName, isVoid) => {
+		warn("player is hatching egg");
 		// verify that player has waited long enough to hatch
 		const lastHatchTime = hatchTimeCache.get(player) ?? 0;
 
@@ -124,6 +125,7 @@ hatchEgg.SetCallback(
 		}
 
 		store.dispatch(addPets(eggCost.amount * selectedPets.size(), eggCost.currencyType, selectedPets));
+		warn("success");
 		return {
 			success: true,
 			pets: selectedPets,

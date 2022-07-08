@@ -28,6 +28,7 @@ export const EggsUI = hooks((_, { useState, useContext }) => {
 			initiateHatch={async (amount: 1 | 2 | 3, egg: EggName, isVoid: boolean): Promise<void> => {
 				warn("initiating hatch");
 				const requestEggHatch = await hatchEgg.CallServerAsync(amount, egg, isVoid);
+				warn(requestEggHatch);
 
 				if (requestEggHatch.success) {
 					AnimateEggs.handleAnimation();

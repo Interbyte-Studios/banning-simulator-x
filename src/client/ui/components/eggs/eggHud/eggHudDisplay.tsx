@@ -67,7 +67,7 @@ const activeSpring = new Flipper.Spring(1, { frequency: 5 });
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
-	hooks((props: EggHudProps, { useState, useEffect, useContext }) => {
+	hooks((props: EggHudProps, { useEffect, useContext }) => {
 		// motor
 		const motor = new Flipper.GroupMotor({
 			X: 1,
@@ -78,7 +78,6 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 
 		// bindings
 		const [binding, setBinding] = Roact.createBinding(motor.getValue());
-		const [activelyWatching, setActivelyWatching] = useState(false);
 
 		// bind motor to update on step && cleanup
 		motor.onStep(setBinding);
@@ -165,11 +164,6 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 							 * @returns Nil if the player cannot hatch.
 							 */
 							Activated: async (): Promise<void> => {
-								if (activelyWatching) {
-									warn("actively watching");
-									return;
-								}
-
 								if (props.autoActive) {
 									const character = player.Character;
 									if (character === undefined) {
@@ -180,8 +174,6 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 									if (humanoid === undefined) {
 										return;
 									}
-
-									setActivelyWatching(true);
 
 									RunService.BindToRenderStep("autoHatch", Enum.RenderPriority.Last.Value, async () => {
 										if (!AnimateEggs.canHatchEgg()) {
@@ -201,13 +193,11 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 										if (canPurchase) {
 											await props.initiateHatch(userOwnsTripleEggs ? 3 : 1, props.eggName, props.isVoid);
 										} else {
-											setActivelyWatching(false);
 											RunService.UnbindFromRenderStep("autoHatch");
 										}
 									});
 
 									const connection = humanoid.GetPropertyChangedSignal("MoveDirection").Connect(() => {
-										setActivelyWatching(false);
 										RunService.UnbindFromRenderStep("autoHatch");
 										connection.Disconnect();
 									});
@@ -216,8 +206,6 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 										warn("can't hatch");
 										return;
 									}
-
-									setActivelyWatching(true);
 
 									const canPurchase = tryPurchaseEgg(
 										props.currenciesState,
@@ -233,8 +221,6 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 										warn("purchasing");
 										await props.initiateHatch(userOwnsTripleEggs ? 3 : 1, props.eggName, props.isVoid);
 									}
-
-									setActivelyWatching(false);
 								}
 							},
 						}}
