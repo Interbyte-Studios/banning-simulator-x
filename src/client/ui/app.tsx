@@ -5,7 +5,7 @@ import { Store } from "shared/rodux";
 import { EggsUI } from "./components/eggs";
 import { ToggleWeaponButton } from "./components/weapons/toggleWeaponButton";
 import { WeaponShop } from "./components/weapons/weaponShop";
-import { fakeRemoteContext, remoteContext } from "./mocks/remoteContext/init";
+import { fakeRemoteContext, remoteContext } from "./mocks/remoteContext";
 
 /**
  * Creates the Roact app to display.

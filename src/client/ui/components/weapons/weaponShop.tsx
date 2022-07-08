@@ -11,7 +11,7 @@ import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 import { color3White, vec2Middle } from "../../commonValues";
 import { hooks } from "../../hooks";
-import { remoteContext } from "../../mocks/remoteContext/init";
+import { remoteContext } from "../../mocks/remoteContext";
 
 interface WeaponShopProps extends WeaponShopMappedProps {
 	store: Store;
