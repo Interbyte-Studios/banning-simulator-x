@@ -1,14 +1,14 @@
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 
 import { Currency } from "./currencies";
-import { Zone } from "./zones";
+import { Zones } from "./zones";
 import { BAN_LAND_ZONES } from "./zones/banLand";
 
 interface World {
 	/**
 	 * The zones available in the world.
 	 */
-	zones: Array<Zone>;
+	zones: Zones;
 	/**
 	 * The currency to reward players with.
 	 */
@@ -24,4 +24,6 @@ export const WORLDS = preserveWithConstraint<Record<string, World>>()({
 		reward: "gold",
 	},
 });
+
+export type WorldName = keyof typeof WORLDS;
 export type Worlds = typeof WORLDS;

@@ -19,9 +19,9 @@ for (const [worldName, worldInfo] of pairs(WORLDS)) {
 	};
 	npcState.push(worldState);
 
-	for (const zone of worldInfo.zones) {
-		const zoneFolder = world.zones.FindFirstChild(zone.name);
-		assert(zoneFolder, `World ${worldName} did not contain zone ${zone.name}`);
+	for (const [zoneName] of pairs(worldInfo.zones)) {
+		const zoneFolder = world.zones.FindFirstChild(zoneName);
+		assert(zoneFolder, `World ${worldName} did not contain zone ${zoneName}`);
 
 		// get floor to spawn on
 		const floor = zoneFolder.FindFirstChild("floor");
@@ -34,7 +34,7 @@ for (const [worldName, worldInfo] of pairs(WORLDS)) {
 		const halfHeight = new Vector3(0, size.Y / 2, 0);
 
 		zones.push({
-			name: zone.name,
+			name: zoneName,
 			npcs: [],
 			spawn: {
 				floor,

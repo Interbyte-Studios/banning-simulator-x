@@ -2,9 +2,10 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Store } from "shared/rodux";
 
-import { ToggleWeaponButton } from "./components/toggleWeaponButton";
-import { WeaponShop } from "./components/weaponShop";
-import { fakeRemoteContext, remoteContext } from "./remoteContext";
+import { EggsUI } from "./components/eggs";
+import { ToggleWeaponButton } from "./components/weapons/toggleWeaponButton";
+import { WeaponShop } from "./components/weapons/weaponShop";
+import { fakeRemoteContext, remoteContext } from "./mocks/remoteContext";
 
 /**
  * Creates the Roact app to display.
@@ -18,8 +19,11 @@ export function app(props: { player: Player; store: Store }): Roact.Element {
 	return (
 		<remoteContext.Provider value={fakeRemoteContext}>
 			<RoactRodux.StoreProvider store={props.store}>
-				<ToggleWeaponButton player={props.player} />
-				<WeaponShop store={props.store} />
+				<>
+					<ToggleWeaponButton player={props.player} />
+					<WeaponShop store={props.store} />
+					<EggsUI />
+				</>
 			</RoactRodux.StoreProvider>
 		</remoteContext.Provider>
 	);

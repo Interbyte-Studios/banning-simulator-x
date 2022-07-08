@@ -22,7 +22,7 @@ Players.PlayerAdded.Connect(async (player) => {
 		const backpack = player.FindFirstChildWhichIsA("Backpack");
 		assert(backpack, `Failed to get backpack for ${player.Name}`);
 
-		const weaponModel = getItemById(ReplicatedStorage.weapons, store.getState().currentWeapon);
+		const weaponModel = getItemById(ReplicatedStorage.assetObjects.weapons, store.getState().currentWeapon);
 		assert(weaponModel, `Failed to get weapon with id "${store.getState().currentWeapon}"`);
 
 		// put into player backpack and starterGear
@@ -39,7 +39,7 @@ Players.PlayerAdded.Connect(async (player) => {
 			return;
 		}
 
-		const oldWeaponModel = getItemById(ReplicatedStorage.weapons, oldState.currentWeapon);
+		const oldWeaponModel = getItemById(ReplicatedStorage.assetObjects.weapons, oldState.currentWeapon);
 		assert(oldWeaponModel, `Failed to get weapon with id "${oldState.currentWeapon}"`);
 
 		// remove weapon model from player
@@ -59,7 +59,7 @@ Players.PlayerAdded.Connect(async (player) => {
 		}
 
 		// give player new weapon
-		const newWeaponModel = getItemById(ReplicatedStorage.weapons, newState.currentWeapon);
+		const newWeaponModel = getItemById(ReplicatedStorage.assetObjects.weapons, newState.currentWeapon);
 		assert(newWeaponModel, `Failed to get weapon with id "${newState.currentWeapon}"`);
 		newWeaponModel.Clone().Parent = wasEquipped ? player.Character : backpack;
 		newWeaponModel.Clone().Parent = starterGear;

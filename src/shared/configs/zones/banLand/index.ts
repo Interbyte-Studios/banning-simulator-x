@@ -1,15 +1,18 @@
+import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
+
 import type { Zone } from "..";
 import { BAN_LAND_NPCS } from "./npcs";
 
-export const BAN_LAND_ZONES: Array<Zone> = [
-	{
-		// zone 1
-		name: "Forest",
+export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
+	// zone 1
+	Forest: {
+		id: 1,
 		npcs: [BAN_LAND_NPCS.bronzePiece, BAN_LAND_NPCS.russoTalks],
 	},
-	{
-		// zone 2
-		name: "Desert",
+
+	// zone 2
+	Desert: {
+		id: 2,
 		npcs: [BAN_LAND_NPCS.nyxun, BAN_LAND_NPCS.sonsofFun_YT],
 		cost: {
 			currency: "gold",
@@ -17,9 +20,10 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 			requiredRank: 3,
 		},
 	},
-	{
-		// zone 3
-		name: "Sunflower Field",
+
+	// zone 3
+	"Sunflower Field": {
+		id: 3,
 		npcs: [BAN_LAND_NPCS.onett, BAN_LAND_NPCS.carbonMeister],
 		cost: {
 			currency: "gold",
@@ -27,9 +31,10 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 			requiredRank: 6,
 		},
 	},
-	{
-		// zone 4
-		name: "Sakura",
+
+	// zone 4
+	Sakura: {
+		id: 4,
 		npcs: [BAN_LAND_NPCS.rellhub, BAN_LAND_NPCS.sabrinaBrite],
 		cost: {
 			currency: "gold",
@@ -37,9 +42,10 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 			requiredRank: 8,
 		},
 	},
-	{
-		// zone 5
-		name: "Atlantis",
+
+	// zone 5
+	Atlantis: {
+		id: 5,
 		npcs: [BAN_LAND_NPCS.buildIntoGames, BAN_LAND_NPCS.djMonopoli],
 		cost: {
 			currency: "gold",
@@ -47,9 +53,10 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 			requiredRank: 10,
 		},
 	},
-	{
-		// zone 6
-		name: "Circus",
+
+	// zone 6
+	Circus: {
+		id: 6,
 		npcs: [BAN_LAND_NPCS.foreverDev, BAN_LAND_NPCS.merely],
 		cost: {
 			currency: "gold",
@@ -57,9 +64,10 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 			requiredRank: 12,
 		},
 	},
-	{
-		// zone 7
-		name: "Food Land",
+
+	// zone 7
+	"Food Land": {
+		id: 7,
 		npcs: [BAN_LAND_NPCS.snickTrix, BAN_LAND_NPCS.alvin_Blox],
 		cost: {
 			currency: "gold",
@@ -67,9 +75,10 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 			requiredRank: 14,
 		},
 	},
-	{
-		// zone 8
-		name: "Lavalands",
+
+	// zone 8
+	Lavalands: {
+		id: 8,
 		npcs: [BAN_LAND_NPCS.mygame43, BAN_LAND_NPCS.deeterPlays],
 		cost: {
 			currency: "gold",
@@ -77,9 +86,10 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 			requiredRank: 15,
 		},
 	},
-	{
-		// zone 9
-		name: "Haunted Forest",
+
+	// zone 9
+	"Haunted Forest": {
+		id: 9,
 		npcs: [BAN_LAND_NPCS.gamesReborn, BAN_LAND_NPCS.beeism],
 		cost: {
 			currency: "gold",
@@ -87,4 +97,4 @@ export const BAN_LAND_ZONES: Array<Zone> = [
 			requiredRank: 16,
 		},
 	},
-];
+});

@@ -1,0 +1,66 @@
+import { CollectionService } from "@rbxts/services";
+import { TAG_CONFIG } from "shared/configs/pets";
+
+/**
+ * Sets the properties of an asset object<model> depending on the type of asset it is.
+ *
+ * @param assetType The type of asset to set properties for.
+ * @param assetObject The object<model>.
+ * @param isVoid Whether or not the asset is a void asset.
+ */
+export function setAssetProperties(assetType: "egg" | "pet", assetObject: Model, isVoid?: boolean): void {
+	switch (assetType) {
+		case "egg": {
+			for (const child of assetObject.GetChildren()) {
+				if (!child.IsA("BasePart")) continue;
+
+				if (assetObject.PrimaryPart === undefined && child.Name === "Primary") {
+					assetObject.PrimaryPart = child;
+				}
+
+				child.CanCollide = false;
+				child.Anchored = true;
+				child.Name = "meshPart";
+			}
+
+			assert(assetObject.PrimaryPart, `No PrimaryPart set for ${assetObject.Name}`);
+			assetObject.PrimaryPart.Name = "Primary";
+
+			break;
+		}
+		case "pet": {
+			for (const child of assetObject.GetChildren()) {
+				if (!child.IsA("BasePart")) continue;
+
+				if (assetObject.PrimaryPart === undefined && child.Name === "Primary") {
+					assetObject.PrimaryPart = child;
+				}
+
+				child.CanCollide = false;
+				child.Anchored = false;
+				child.Name = "meshPart";
+
+				if (child.IsA("MeshPart")) {
+					child.Massless = true;
+				}
+
+				if (isVoid) {
+					const petEyes = child.FindFirstChild("Eyes");
+					if (petEyes !== undefined && petEyes.IsA("Decal")) {
+						petEyes.Color3 = Color3.fromRGB(255, 0, 255);
+					}
+
+					const tags = CollectionService.GetTags(child);
+					for (const tag of tags) {
+						for (const [tagIndex, tagPropertyData] of pairs(TAG_CONFIG.Void)) {
+							if (tag !== tagIndex) continue;
+
+							child.Color = tagPropertyData.Color;
+							child.Material = tagPropertyData.Material;
+						}
+					}
+				}
+			}
+		}
+	}
+}

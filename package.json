@@ -16,7 +16,7 @@
   "license": "ISC",
   "devDependencies": {
     "@rbxts/compiler-types": "^1.2.9-types.0",
-    "@rbxts/types": "^1.0.571",
+    "@rbxts/types": "^1.0.592",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
     "eslint": "^8.7.0",
@@ -32,14 +32,20 @@
   "dependencies": {
     "@rbxts/abbreviate": "^3.0.4",
     "@rbxts/fitumi": "^1.0.11",
+    "@rbxts/flipper": "^2.0.1",
+    "@rbxts/make": "^1.0.6",
     "@rbxts/net": "^2.1.5",
     "@rbxts/object-utils": "^1.0.4",
-    "@rbxts/roact": "^1.4.0-ts.2",
-    "@rbxts/roact-hooks": "^0.3.0-ts.2",
+    "@rbxts/roact": "^1.4.2-ts.2",
+    "@rbxts/roact-hooks": "^0.4.1-ts.0",
     "@rbxts/roact-rodux": "^0.2.2-ts.5",
     "@rbxts/rodux": "^3.0.0-ts.3",
     "@rbxts/services": "^1.2.0",
     "@rbxts/t": "^3.0.0",
     "@rbxts/testez": "^0.3.1-ts.7"
+  },
+  "overrides": {
+    "@rbxts/roact": "$@rbxts/roact",
+    "@rbxts/roact-rodux": "$@rbxts/roact-rodux"
   }
 }

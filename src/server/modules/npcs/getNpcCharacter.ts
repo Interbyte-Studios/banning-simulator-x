@@ -9,7 +9,7 @@ import { isNpcCharacter, NpcCharacter } from "./isNpcCharacter";
  * @returns The NPC character.
  */
 export function getNpcCharacter(npcName: string): NpcCharacter {
-	const character = ReplicatedStorage.npcs.FindFirstChild(npcName);
+	const character = ReplicatedStorage.assetObjects.npcs.FindFirstChild(npcName);
 	assert(character, `Failed to get npc instance "${npcName}"`);
 	assert(isNpcCharacter(character), `Npc "${npcName}" is not an Npc character`);
 

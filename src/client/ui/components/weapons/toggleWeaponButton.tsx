@@ -4,8 +4,8 @@ import { ContextActionService } from "@rbxts/services";
 import { toggleWeaponEquipped } from "client/weapons/weaponState";
 import { StoreState } from "shared/rodux";
 
-import { color3White, vec2Middle } from "../commonValues";
-import { hooks } from "../hooks";
+import { color3White, vec2Middle } from "../../commonValues";
+import { hooks } from "../../hooks";
 
 interface ToggleWeaponButtonProps extends ToggleWeaponButtonMappedProps {
 	player: Player;

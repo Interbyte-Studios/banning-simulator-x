@@ -1,4 +1,6 @@
 import { Currency } from "../currencies";
+import { BAN_LAND_ZONES } from "./banLand";
+import { BAN_LAND_NPCS } from "./banLand/npcs";
 
 export interface Npc {
 	name: string;
@@ -13,10 +15,6 @@ export interface Npc {
 
 export interface Zone {
 	/**
-	 * The display name of the zone.
-	 */
-	name: string;
-	/**
 	 * The cost of the zone.
 	 */
 	cost?: {
@@ -25,5 +23,14 @@ export interface Zone {
 		requiredRank: number;
 	};
 
+	// The id of the zone.
+	id: number;
+
+	// The npcs in the zone.
 	npcs: Array<Npc>;
 }
+
+export type ZoneNames = keyof typeof BAN_LAND_ZONES;
+export type Zones = typeof BAN_LAND_ZONES;
+
+export type NPCs = keyof typeof BAN_LAND_NPCS;

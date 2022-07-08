@@ -9,9 +9,9 @@ import { Store, StoreState } from "shared/rodux";
 import { WeaponsState } from "shared/rodux/weapons";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
-import { color3White, vec2Middle } from "../commonValues";
-import { hooks } from "../hooks";
-import { remoteContext } from "../remoteContext";
+import { color3White, vec2Middle } from "../../commonValues";
+import { hooks } from "../../hooks";
+import { remoteContext } from "../../mocks/remoteContext";
 
 interface WeaponShopProps extends WeaponShopMappedProps {
 	store: Store;
@@ -141,7 +141,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 					BorderSizePixel={0}
 				>
 					<uigridlayout
-						CellPadding={new UDim2(0, 4, 0.025, 0)}
+						CellPadding={UDim2.fromScale(0, 0.025)}
 						CellSize={UDim2.fromScale(0.25, 0.05)}
 						HorizontalAlignment={Enum.HorizontalAlignment.Center}
 					/>

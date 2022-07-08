@@ -4,7 +4,7 @@ import { onStoreCreated } from "client/clientStores";
 import { remotes } from "shared/remotes";
 
 import { app as App } from "./app";
-import { remoteContext } from "./remoteContext";
+import { remoteContext } from "./mocks/remoteContext";
 
 const player = Players.LocalPlayer;
 const playerGui = player.WaitForChild("PlayerGui");
@@ -19,6 +19,8 @@ onStoreCreated(player)
 				value={{
 					equipWeapon: remotes.Client.GetNamespace("weapons").Get("equipWeapon"),
 					purchaseWeapon: remotes.Client.GetNamespace("weapons").Get("purchaseWeapon"),
+					hatchEgg: remotes.Client.GetNamespace("eggs").Get("hatchEgg"),
+					toggleAuto: remotes.Client.GetNamespace("eggs").Get("toggleAuto"),
 				}}
 			>
 				<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
