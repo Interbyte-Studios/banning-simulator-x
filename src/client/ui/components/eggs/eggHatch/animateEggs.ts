@@ -413,6 +413,7 @@ export class AnimateEggs {
 		}
 
 		this.animateEggHatches(params.amount);
+		warn("egg anim complete");
 	}
 
 	/**
@@ -454,6 +455,7 @@ export class AnimateEggs {
 		}
 
 		this.animatePetHatches(params.amount);
+		warn("pet anim complete");
 	}
 
 	/**

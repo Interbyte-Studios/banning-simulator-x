@@ -26,6 +26,7 @@ hatchEgg.SetCallback(
 		const now = time();
 		const canHatch = now - lastHatchTime > hatchDebounce;
 		if (!canHatch) {
+			warn("cannot hatch");
 			return {
 				success: false,
 			};
@@ -39,6 +40,7 @@ hatchEgg.SetCallback(
 		// check that user owns world
 		const ownsWorld = currentState.worlds.find((x) => x.name === eggData.world);
 		if (ownsWorld === undefined) {
+			warn("does not own world");
 			return {
 				success: false,
 			};
@@ -47,6 +49,7 @@ hatchEgg.SetCallback(
 		// check that user owns zone
 		const ownsZone = ownsWorld.zones.find((x) => x === eggData.zone);
 		if (ownsZone === undefined) {
+			warn("does not own zone");
 			return {
 				success: false,
 			};

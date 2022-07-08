@@ -166,6 +166,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 							 */
 							Activated: async (): Promise<void> => {
 								if (activelyWatching) {
+									warn("actively watching");
 									return;
 								}
 
@@ -212,6 +213,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 									});
 								} else {
 									if (!AnimateEggs.canHatchEgg()) {
+										warn("can't hatch");
 										return;
 									}
 
@@ -228,10 +230,11 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 									);
 
 									if (canPurchase) {
+										warn("purchasing");
 										await props.initiateHatch(userOwnsTripleEggs ? 3 : 1, props.eggName, props.isVoid);
-									} else {
-										setActivelyWatching(false);
 									}
+
+									setActivelyWatching(false);
 								}
 							},
 						}}
