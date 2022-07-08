@@ -8,7 +8,7 @@ import { BaseImageLabel } from "client/ui/elements/baseImageLabel";
 import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
-import { remoteContext } from "client/ui/mocks/remoteContext";
+import { remoteContext } from "client/ui/mocks/remoteContext/init";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
 import { MAIN_GROUP } from "shared/configs/game";

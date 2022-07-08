@@ -4,7 +4,7 @@ import { onStoreCreated } from "client/clientStores";
 import { remotes } from "shared/remotes";
 
 import { app as App } from "./app";
-import { remoteContext } from "./mocks/remoteContext";
+import { remoteContext } from "./mocks/remoteContext/init";
 
 const player = Players.LocalPlayer;
 const playerGui = player.WaitForChild("PlayerGui");

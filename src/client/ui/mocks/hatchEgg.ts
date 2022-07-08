@@ -1,7 +1,7 @@
 import { AsyncServerFunctionDeclaration } from "@rbxts/net/out/definitions/Types";
 import { HatchEggDefinition } from "shared/remotes/eggs/hatchEgg";
 
-import { fakeFunctionCall } from "./remoteContext";
+import { fakeFunctionCall } from "./remoteContext/fakeFunctionCall";
 
 let requestIndex = -1;
 const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<Array<unknown>, infer P> ? P : never> = [
