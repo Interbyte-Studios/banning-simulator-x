@@ -11,12 +11,12 @@ interface Title {
 export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 	{
 		name: "500 exp",
-		effect: new Color3(50, 50, 50),
+		effect: Color3.fromRGB(50, 50, 50),
 		condition: (state): boolean => state.experience >= 500,
 	},
 	{
 		name: "free title!",
-		effect: new Color3(75, 75, 75),
+		effect: Color3.fromRGB(75, 75, 75),
 		condition: (): boolean => true,
 	},
 ] as const);
