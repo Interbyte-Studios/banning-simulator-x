@@ -180,6 +180,8 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 											return;
 										}
 
+										print(AnimateEggs.canHatchEgg());
+
 										const canPurchase = tryPurchaseEgg(
 											props.currenciesState,
 											props.gamepassesState,
@@ -203,7 +205,6 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 									});
 								} else {
 									if (!AnimateEggs.canHatchEgg()) {
-										warn("can't hatch");
 										return;
 									}
 
@@ -218,7 +219,6 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 									);
 
 									if (canPurchase) {
-										warn("purchasing");
 										await props.initiateHatch(userOwnsTripleEggs ? 3 : 1, props.eggName, props.isVoid);
 									}
 								}

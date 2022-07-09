@@ -145,6 +145,10 @@ export class AnimateEggs {
 	 * @returns Whether or not the player has waited the specified debounce time.
 	 */
 	public static canHatchEgg(): boolean {
+		if (this.eggAnimationComplete === false || this.petAnimationComplete === false) {
+			return false;
+		}
+
 		if (RunService.IsStudio()) {
 			return true;
 		}
@@ -413,7 +417,6 @@ export class AnimateEggs {
 		}
 
 		this.animateEggHatches(params.amount);
-		warn("egg anim complete");
 	}
 
 	/**
@@ -455,20 +458,13 @@ export class AnimateEggs {
 		}
 
 		this.animatePetHatches(params.amount);
-		warn("pet anim complete");
 	}
 
 	/**
 	 * Handles the run service connection for the animation.
 	 */
 	public static handleAnimation(): void {
-		if (this.eggAnimationComplete === false || this.petAnimationComplete === false) {
-			warn("not complete");
-			return;
-		}
-
 		if (!this.canHatchEgg()) {
-			warn("cannot hatch");
 			return;
 		}
 		this.lasHatchTime = time();
