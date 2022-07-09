@@ -21,3 +21,15 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 	},
 ] as const);
 /* eslint-enable jsdoc/require-jsdoc */
+export type PossibleTitle = typeof TITLES[number]["name"];
+
+/**
+ * Checks if a given title is a valid title name.
+ *
+ * @param x The name of the title to validate.
+ * @returns If the passed object was a valid tile.
+ */
+export function isValidTitle(x: unknown): x is PossibleTitle {
+	const data = TITLES.find((title) => title.name === x);
+	return data !== undefined;
+}

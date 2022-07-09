@@ -1,11 +1,11 @@
 import Rodux from "@rbxts/rodux";
-import { TITLES } from "shared/configs/titles";
+import { PossibleTitle } from "shared/configs/titles";
 
-export type TitleState = typeof TITLES[number]["name"] | undefined;
+export type TitleState = PossibleTitle | undefined;
 export type TitleActions = EquipTitle;
 
 interface EquipTitle extends Rodux.Action<"equipTitle"> {
-	title: typeof TITLES[number]["name"];
+	title: PossibleTitle;
 }
 
 /**
@@ -14,7 +14,7 @@ interface EquipTitle extends Rodux.Action<"equipTitle"> {
  * @param titleName The name of the title to equip.
  * @returns The rodux action to dispatch.
  */
-export function equipTitle(titleName: typeof TITLES[number]["name"]): EquipTitle & Rodux.AnyAction {
+export function equipTitle(titleName: PossibleTitle): EquipTitle & Rodux.AnyAction {
 	return {
 		type: "equipTitle",
 		title: titleName,
