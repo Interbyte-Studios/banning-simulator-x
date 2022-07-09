@@ -3,6 +3,8 @@ import Rodux from "@rbxts/rodux";
 import { useMockPlayer } from "shared/mocks/player";
 import { Store, storeReducer, StoreState } from "shared/rodux";
 
+import { fakeRemoteContext, remoteContext } from "../mocks/remoteContext";
+
 type DeepPartial<T> = { [K in keyof T]?: DeepPartial<T[K]> };
 
 /**
@@ -26,7 +28,11 @@ export function createMockStory(
 	const store = new Rodux.Store(storeReducer, initialState);
 
 	const element = elementCallback(player, store);
-	const tree = Roact.mount(element, target);
+	// inject remote context into element
+	const tree = Roact.mount(
+		<remoteContext.Provider value={fakeRemoteContext}>{element}</remoteContext.Provider>,
+		target,
+	);
 
 	return {
 		store,
