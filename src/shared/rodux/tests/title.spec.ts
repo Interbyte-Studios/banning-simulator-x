@@ -9,7 +9,7 @@ export = (): void => {
 
 			const action = equipTitle("free title!");
 
-			expect(titleReducer(state, action)).to.equal("free title");
+			expect(titleReducer(state, action)).to.equal("free title!");
 		});
 
 		it("should equip title for first time", () => {
