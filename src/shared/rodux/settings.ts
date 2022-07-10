@@ -4,12 +4,12 @@ export type ValidGraphicsQuality = "High" | "Low";
 export type ValidUIColor = "Dark"; // will support more when ui is made.
 export type ValidPetAnimationType = "Following" | "Surrounding";
 
-interface Settings {
+export interface Settings {
 	autoHatch: boolean;
 	graphicsQuality: ValidGraphicsQuality;
 	musicVolume: number;
 	timeOfDay: number;
-	uiColor: ValidUIColor; // will support more when ui is made
+	uiColor: ValidUIColor;
 	walkSpeed: number;
 	pets: {
 		animationType: ValidPetAnimationType;
