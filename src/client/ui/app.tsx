@@ -3,6 +3,7 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { Store } from "shared/rodux";
 
 import { EggsUI } from "./components/eggs";
+import { SettingsUI } from "./components/settings";
 import { ToggleWeaponButton } from "./components/weapons/toggleWeaponButton";
 import { WeaponShop } from "./components/weapons/weaponShop";
 
@@ -21,6 +22,7 @@ export function app(props: { player: Player; store: Store }): Roact.Element {
 				<ToggleWeaponButton player={props.player} />
 				<WeaponShop store={props.store} />
 				<EggsUI />
+				<SettingsUI />
 			</>
 		</RoactRodux.StoreProvider>
 	);
