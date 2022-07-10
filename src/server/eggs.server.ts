@@ -11,8 +11,8 @@ import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
 
-export const hatchEgg = remotes.Server.GetNamespace("eggs").Create("hatchEgg");
-export const toggleHatch = remotes.Server.GetNamespace("eggs").Create("toggleAuto");
+const hatchEgg = remotes.Server.GetNamespace("eggs").Create("hatchEgg");
+const toggleHatch = remotes.Server.GetNamespace("eggs").Create("toggleAuto");
 
 const hatchTimeCache: Map<Player, number> = new Map();
 
