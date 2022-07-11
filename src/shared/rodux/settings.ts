@@ -124,7 +124,7 @@ export function toggleUIColor(color: ValidUIColor): ToggleUIColor & Rodux.AnyAct
 export function toggleWalkSpeed(walkSpeed: number): ToggleWalkSpeed & Rodux.AnyAction {
 	return {
 		type: "toggleWalkSpeed",
-		walkSpeed: walkSpeed,
+		walkSpeed,
 	};
 }
 
