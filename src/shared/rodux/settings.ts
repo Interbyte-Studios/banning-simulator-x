@@ -80,7 +80,7 @@ export function toggleAuto(): ToggleAuto & Rodux.AnyAction {
 export function toggleGraphics(quality: ValidGraphicsQuality): ToggleGraphics & Rodux.AnyAction {
 	return {
 		type: "toggleGraphics",
-		quality: quality,
+		quality,
 	};
 }
 
