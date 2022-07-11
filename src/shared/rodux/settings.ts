@@ -113,7 +113,7 @@ export function toggleTimeOfDay(_time: number): ToggleTimeOfDay & Rodux.AnyActio
 export function toggleUIColor(color: ValidUIColor): ToggleUIColor & Rodux.AnyAction {
 	return {
 		type: "toggleUIColor",
-		color: color,
+		color,
 	};
 }
 
