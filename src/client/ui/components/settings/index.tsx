@@ -9,19 +9,7 @@ import { Settings } from "shared/rodux/settings";
  * @returns The mapped props.
  */
 function mapStateToProps(state: StoreState): Settings {
-	return {
-		autoHatch: state.settings.autoHatch,
-		graphicsQuality: state.settings.graphicsQuality,
-		musicVolume: state.settings.musicVolume,
-		timeOfDay: state.settings.timeOfDay,
-		uiColor: state.settings.uiColor,
-		walkSpeed: state.settings.walkSpeed,
-		pets: {
-			animationType: state.settings.pets.animationType,
-			displayed: state.settings.pets.displayed,
-			studsOfDistance: state.settings.pets.studsOfDistance,
-		},
-	};
+	return state.settings
 }
 
 export const SettingsUI = RoactRodux.connect(mapStateToProps)(
