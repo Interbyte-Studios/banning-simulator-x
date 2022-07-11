@@ -1,4 +1,4 @@
-import { ValidTitle, TITLES } from "shared/configs/titles";
+import { TITLES, ValidTitle } from "shared/configs/titles";
 import { Store } from "shared/rodux";
 import { equipTitle as dispatchEquipTitle } from "shared/rodux/title";
 
