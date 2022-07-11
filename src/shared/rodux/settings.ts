@@ -91,7 +91,7 @@ export function toggleGraphics(quality: ValidGraphicsQuality): ToggleGraphics & 
 export function toggleMusicVolume(volume: number): ToggleMusicVolume & Rodux.AnyAction {
 	return {
 		type: "toggleMusicVolume",
-		volume: volume,
+		volume,
 	};
 }
 
