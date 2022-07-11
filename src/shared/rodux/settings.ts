@@ -146,7 +146,7 @@ export function togglePetAnimationType(animationType: ValidPetAnimationType): To
 export function togglePetsDisplayed(displayed: boolean): TogglePetsDisplayed & Rodux.AnyAction {
 	return {
 		type: "togglePetsDisplayed",
-		displayed: displayed,
+		displayed,
 	};
 }
 
