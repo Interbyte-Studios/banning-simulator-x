@@ -227,7 +227,7 @@ export const settingsReducer = Rodux.createReducer<SettingsState, SettingsAction
 	},
 	togglePetsStudsOfDistance: (state, action) => {
 		const newState: Settings = { ...state };
-		newState.pets.studsOfDistance = action.studs;
+		newState.pets = { ...state.pets, studsOfDistance: action.studs };
 
 		return newState;
 	},
