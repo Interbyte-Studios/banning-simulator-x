@@ -1,7 +1,7 @@
 /// <reference types="@rbxts/testez/globals" />
 
 import { createDummyStore } from "server/playerStore";
-import { PossibleTitle } from "shared/configs/titles";
+import { ValidTitle } from "shared/configs/titles";
 import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 import { useMockPlayer } from "shared/mocks/player";
 
@@ -28,7 +28,7 @@ export = (): void => {
 			const player = useMockPlayer();
 			const { store, dispatchedActions, cleanup } = createDummyStore(player, {});
 
-			expect(() => equipTitle(store, "NOT A VALID TITLE" as PossibleTitle)).to.throw();
+			expect(() => equipTitle(store, "NOT A VALID TITLE" as ValidTitle)).to.throw();
 			assertDeepEqual(dispatchedActions, []);
 
 			cleanup();

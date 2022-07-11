@@ -1,4 +1,4 @@
-import { PossibleTitle, TITLES } from "shared/configs/titles";
+import { ValidTitle, TITLES } from "shared/configs/titles";
 import { Store } from "shared/rodux";
 import { equipTitle as dispatchEquipTitle } from "shared/rodux/title";
 
@@ -11,7 +11,7 @@ import { equipTitle as dispatchEquipTitle } from "shared/rodux/title";
  * @param store The store to equip the title for.
  * @param title The name of the title to equip.
  */
-export function equipTitle(store: Store, title: PossibleTitle): void {
+export function equipTitle(store: Store, title: ValidTitle): void {
 	// check that player has the pre-requisites for the title
 	const titleConfig = TITLES.find((x) => x.name === title);
 	assert(titleConfig, `Failed to get title ${title} from config`);
