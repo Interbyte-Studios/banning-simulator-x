@@ -15,13 +15,8 @@ import {
 // [ Toggle Auto Remote ]
 const toggleAutoRemote = remotes.Server.GetNamespace("settings").Create("toggleAuto");
 
-let lastRequestTime = 0;
 toggleAutoRemote.Connect(
 	withPlayerStore((_, store) => {
-		const now = time();
-		if (now - lastRequestTime < 0.5) return;
-		lastRequestTime = now;
-
 		store.dispatch(toggleAuto());
 	}),
 );
