@@ -157,7 +157,7 @@ export function togglePetsDisplayed(displayed: boolean): TogglePetsDisplayed & R
 export function togglePetsStudsOfDistance(studs: number): TogglePetsStudsOfDistance & Rodux.AnyAction {
 	return {
 		type: "togglePetsStudsOfDistance",
-		studs: studs,
+		studs,
 	};
 }
 
