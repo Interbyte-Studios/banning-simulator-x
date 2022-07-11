@@ -215,13 +215,13 @@ export const settingsReducer = Rodux.createReducer<SettingsState, SettingsAction
 	},
 	togglePetAnimationType: (state, action) => {
 		const newState: Settings = { ...state };
-		newState.pets.animationType = action.animationType;
+		newState.pets = { ...state.pets, animationType: action.animationType };
 
 		return newState;
 	},
 	togglePetsDisplayed: (state, action) => {
 		const newState: Settings = { ...state };
-		newState.pets.displayed = action.displayed;
+		newState.pets = { ...state.pets, displayed: action.displayed };
 
 		return newState;
 	},
