@@ -12,7 +12,7 @@ export function ZoneInfoUI(): Roact.Element {
 		<>
 			{Object.entries(WORLDS).map(([worldName, worldData]) => {
 				return (
-					<frame>
+					<>
 						{Object.entries(worldData.zones).map(([zoneName, zoneData]) => {
 							const sign = Workspace.decoration[worldName][zoneName].sign.description.infoPart;
 							const nextZoneData = getZoneData(worldName, { specificId: zoneData.id + 1 });
@@ -28,7 +28,7 @@ export function ZoneInfoUI(): Roact.Element {
 								/>
 							);
 						})}
-					</frame>
+					</>
 				);
 			})}
 		</>
