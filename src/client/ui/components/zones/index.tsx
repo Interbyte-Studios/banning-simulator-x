@@ -22,8 +22,8 @@ export function ZoneInfoUI(): Roact.Element {
 									zoneName={nextZoneData.name}
 									worldName={worldName}
 									currency={worldData.reward}
-									price={nextZoneData.data.cost !== undefined ? nextZoneData.data.cost.amount : 0}
-									rank={nextZoneData.data.cost !== undefined ? nextZoneData.data.cost.requiredRank : 0}
+									price={nextZoneData.cost !== undefined ? nextZoneData.cost.amount : 0}
+									rank={nextZoneData.cost !== undefined ? nextZoneData.cost.requiredRank : 0}
 									adornee={sign}
 								/>
 							);
