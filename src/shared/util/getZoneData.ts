@@ -16,10 +16,9 @@ interface ZoneData extends Zone {
  * @returns The metadata of the requested zone.
  */
 export function getZoneData(world: WorldName, searchSpecifics: { zone?: ZoneNames; specificId?: number }): ZoneData {
-	assert(
-		searchSpecifics.zone !== undefined && searchSpecifics.specificId !== undefined,
-		`Expected one method of searching for a zone but received two.`,
-	);
+	if (searchSpecifics.zone !== undefined && searchSpecifics.specificId !== undefined) {
+		warn(`Expected one method of searching for a zone but received two.`)
+	}
 
 	let zoneData: ZoneData = { name: "forest", ...BAN_LAND_ZONES["forest"] }
 
