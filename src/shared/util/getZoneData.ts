@@ -4,8 +4,9 @@ import { BAN_LAND_ZONES } from "shared/configs/zones/banLand";
 
 import { UnreachableCaseError } from "./unreachableCaseError";
 
-interface ZoneData extends Zone {
+interface ZoneData {
 	name: ZoneNames;
+	data: Zone;
 }
 
 /**
@@ -20,14 +21,14 @@ export function getZoneData(world: WorldName, searchSpecifics: { zone?: ZoneName
 		warn(`Expected one method of searching for a zone but received two.`);
 	}
 
-	let zoneData: ZoneData = { name: "forest", ...BAN_LAND_ZONES["forest"] };
+	let zoneData: ZoneData | undefined;
 
 	switch (world) {
 		case "ban land": {
 			if (searchSpecifics.zone !== undefined) {
 				zoneData = {
 					name: searchSpecifics.zone,
-					...BAN_LAND_ZONES[searchSpecifics.zone],
+					data: BAN_LAND_ZONES[searchSpecifics.zone],
 				};
 			} else if (searchSpecifics.specificId !== undefined) {
 				for (const [zoneName, _zoneData] of pairs(BAN_LAND_ZONES)) {
@@ -37,7 +38,7 @@ export function getZoneData(world: WorldName, searchSpecifics: { zone?: ZoneName
 
 					zoneData = {
 						name: zoneName,
-						..._zoneData,
+						data: _zoneData,
 					};
 				}
 			}
@@ -47,10 +48,13 @@ export function getZoneData(world: WorldName, searchSpecifics: { zone?: ZoneName
 			throw new UnreachableCaseError(world);
 		}
 	}
-	assert(
-		zoneData,
-		`Failed to get zone data with search specific given | World: ${world} | Search Specifics: ${searchSpecifics} |`,
-	);
+
+	if (zoneData === undefined) {
+		return (zoneData = {
+			name: "forest",
+			data: BAN_LAND_ZONES["forest"],
+		});
+	}
 
 	return zoneData;
 }

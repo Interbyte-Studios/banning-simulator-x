@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { vec2Middle } from "client/ui/commonValues";
+import { font, vec2Middle } from "client/ui/commonValues";
 import assetIds from "shared/assets";
 import { Currency } from "shared/configs/currencies";
 import { WorldName } from "shared/configs/worlds";
@@ -15,7 +15,7 @@ interface ZoneInfoProps {
 	adornee: BasePart;
 }
 
-export function ZoneInfoDisplay(props: ZoneInfoProps) {
+export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 	return (
 		<surfacegui
 			AlwaysOnTop={false}
@@ -34,6 +34,7 @@ export function ZoneInfoDisplay(props: ZoneInfoProps) {
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 				BackgroundTransparency={1}
 				TextScaled={true}
+				Font={font}
 			>
 				<uistroke Thickness={3} Color={Color3.fromRGB(0, 0, 0)} />
 			</textlabel>
@@ -45,6 +46,7 @@ export function ZoneInfoDisplay(props: ZoneInfoProps) {
 				TextColor3={Color3.fromRGB(52, 190, 255)}
 				BackgroundTransparency={1}
 				TextScaled={true}
+				Font={font}
 			>
 				<uistroke Thickness={3} Color={Color3.fromRGB(10, 50, 65)} />
 			</textlabel>
@@ -56,6 +58,7 @@ export function ZoneInfoDisplay(props: ZoneInfoProps) {
 				BackgroundTransparency={1}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 				TextScaled={true}
+				Font={font}
 				TextXAlignment={Enum.TextXAlignment.Left}
 			>
 				<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={3} />
