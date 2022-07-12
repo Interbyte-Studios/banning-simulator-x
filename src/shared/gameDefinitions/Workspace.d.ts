@@ -1,5 +1,5 @@
 import { Eggs } from "shared/configs/eggs";
-import {  Worlds } from "shared/configs/worlds";
+import { Worlds } from "shared/configs/worlds";
 import { Zones } from "shared/configs/zones";
 
 declare global {
@@ -31,11 +31,11 @@ declare global {
 				[P in keyof Zones]: Folder & {
 					sign: Folder & {
 						description: Folder & {
-							infoPart: Part
-						}
-					}
-				}
-			}
-		}
+							infoPart: Part;
+						};
+					};
+				};
+			};
+		};
 	}
 }

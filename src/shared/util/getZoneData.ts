@@ -5,7 +5,7 @@ import { BAN_LAND_ZONES } from "shared/configs/zones/banLand";
 import { UnreachableCaseError } from "./unreachableCaseError";
 
 interface ZoneData extends Zone {
-	name: ZoneNames
+	name: ZoneNames;
 }
 
 /**
@@ -17,18 +17,18 @@ interface ZoneData extends Zone {
  */
 export function getZoneData(world: WorldName, searchSpecifics: { zone?: ZoneNames; specificId?: number }): ZoneData {
 	if (searchSpecifics.zone !== undefined && searchSpecifics.specificId !== undefined) {
-		warn(`Expected one method of searching for a zone but received two.`)
+		warn(`Expected one method of searching for a zone but received two.`);
 	}
 
-	let zoneData: ZoneData = { name: "forest", ...BAN_LAND_ZONES["forest"] }
+	let zoneData: ZoneData = { name: "forest", ...BAN_LAND_ZONES["forest"] };
 
 	switch (world) {
 		case "ban land": {
 			if (searchSpecifics.zone !== undefined) {
 				zoneData = {
 					name: searchSpecifics.zone,
-					...BAN_LAND_ZONES[searchSpecifics.zone]
-				}
+					...BAN_LAND_ZONES[searchSpecifics.zone],
+				};
 			} else if (searchSpecifics.specificId !== undefined) {
 				for (const [zoneName, _zoneData] of pairs(BAN_LAND_ZONES)) {
 					if (_zoneData.id !== searchSpecifics.specificId) {
@@ -37,8 +37,8 @@ export function getZoneData(world: WorldName, searchSpecifics: { zone?: ZoneName
 
 					zoneData = {
 						name: zoneName,
-						..._zoneData
-					}
+						..._zoneData,
+					};
 				}
 			}
 			break;

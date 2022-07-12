@@ -45,7 +45,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	},
 
 	// zone 5
-	'ice land': {
+	"ice land": {
 		id: 5,
 		npcs: [BAN_LAND_NPCS.buildIntoGames, BAN_LAND_NPCS.djMonopoli],
 		cost: {
