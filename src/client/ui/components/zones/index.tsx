@@ -5,9 +5,8 @@ import { WORLDS } from "shared/configs/worlds";
 import { getZoneData } from "shared/util/getZoneData";
 
 import { ZoneInfoDisplay } from "./zoneInfoDisplay";
-/* eslint-disable jsdoc/require-jsdoc */
-/* eslint-disable jsdoc/require-jsdoc */
 
+/* eslint-disable jsdoc/require-jsdoc */
 export function ZoneInfoUI(): Roact.Element {
 	return (
 		<>
