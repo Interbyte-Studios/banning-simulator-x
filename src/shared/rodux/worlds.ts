@@ -29,8 +29,8 @@ export interface UnlockZone extends Rodux.Action<"unlockZone"> {
 
 const defaultWorlds: WorldsState = [
 	{
-		name: "Ban Land",
-		zones: ["Forest"],
+		name: "ban land",
+		zones: ["forest"],
 	},
 ];
 

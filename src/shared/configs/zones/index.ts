@@ -17,11 +17,11 @@ export interface Zone {
 	/**
 	 * The cost of the zone.
 	 */
-	cost?: {
+	cost: {
 		currency: Currency;
 		amount: number;
 		requiredRank: number;
-	};
+	} | undefined;
 
 	// The id of the zone.
 	id: number;

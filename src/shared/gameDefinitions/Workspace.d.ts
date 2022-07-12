@@ -1,5 +1,6 @@
 import { Eggs } from "shared/configs/eggs";
-import { Worlds } from "shared/configs/worlds";
+import {  Worlds } from "shared/configs/worlds";
+import { Zones } from "shared/configs/zones";
 
 declare global {
 	interface Workspace extends WorldRoot {
@@ -25,5 +26,16 @@ declare global {
 				};
 			};
 		};
+		decoration: Folder & {
+			[P in keyof Worlds]: Folder & {
+				[P in keyof Zones]: Folder & {
+					sign: Folder & {
+						description: Folder & {
+							infoPart: Part
+						}
+					}
+				}
+			}
+		}
 	}
 }
