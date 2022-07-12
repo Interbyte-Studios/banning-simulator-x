@@ -4,9 +4,8 @@ import { BAN_LAND_ZONES } from "shared/configs/zones/banLand";
 
 import { UnreachableCaseError } from "./unreachableCaseError";
 
-interface ZoneData {
+interface ZoneData extends Zone {
 	name: ZoneNames;
-	data: Zone;
 }
 
 /**
@@ -28,7 +27,7 @@ export function getZoneData(world: WorldName, searchSpecifics: { zone?: ZoneName
 			if (searchSpecifics.zone !== undefined) {
 				zoneData = {
 					name: searchSpecifics.zone,
-					data: BAN_LAND_ZONES[searchSpecifics.zone],
+					...BAN_LAND_ZONES[searchSpecifics.zone],
 				};
 			} else if (searchSpecifics.specificId !== undefined) {
 				for (const [zoneName, _zoneData] of pairs(BAN_LAND_ZONES)) {
@@ -38,7 +37,7 @@ export function getZoneData(world: WorldName, searchSpecifics: { zone?: ZoneName
 
 					zoneData = {
 						name: zoneName,
-						data: _zoneData,
+						..._zoneData,
 					};
 				}
 			}
@@ -48,13 +47,7 @@ export function getZoneData(world: WorldName, searchSpecifics: { zone?: ZoneName
 			throw new UnreachableCaseError(world);
 		}
 	}
-
-	if (zoneData === undefined) {
-		return (zoneData = {
-			name: "forest",
-			data: BAN_LAND_ZONES["forest"],
-		});
-	}
+	assert(zoneData, `Expected to retrieve zone data, but it was undefined.`);
 
 	return zoneData;
 }
