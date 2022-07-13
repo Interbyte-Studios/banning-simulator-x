@@ -35,7 +35,7 @@ export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 			<textlabel
 				Text={string.upper(props.zoneName)}
 				AnchorPoint={vec2Middle}
-				Size={UDim2.fromScale(0.8, 0.2)}
+				Size={UDim2.fromScale(0.8, 0.23)}
 				Position={UDim2.fromScale(0.5, 0.43)}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 				BackgroundTransparency={1}
@@ -47,7 +47,7 @@ export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 			<textlabel
 				Text={props.worldName}
 				AnchorPoint={vec2Middle}
-				Position={UDim2.fromScale(0.5, 0.6)}
+				Position={UDim2.fromScale(0.5, 0.65)}
 				Size={UDim2.fromScale(0.3, 0.12)}
 				TextColor3={Color3.fromRGB(52, 190, 255)}
 				BackgroundTransparency={1}
@@ -57,9 +57,9 @@ export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 				<uistroke Thickness={3} Color={Color3.fromRGB(10, 50, 65)} />
 			</textlabel>
 			<textlabel
-				Text={props.price !== undefined ? twoDpAbbreviator.numberToString(props.price) : "Free"}
+				Text={props?.price !== undefined ? twoDpAbbreviator.numberToString(props.price) : "Free"}
 				AnchorPoint={vec2Middle}
-				Position={UDim2.fromScale(0.56, 0.75)}
+				Position={UDim2.fromScale(0.55, 0.85)}
 				Size={UDim2.fromScale(0.22, 0.16)}
 				BackgroundTransparency={1}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
@@ -80,10 +80,10 @@ export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 				</imagelabel>
 			</textlabel>
 			<imagelabel
-				Image={""}
+				Image={"rbxassetid://10210423447"}
 				AnchorPoint={vec2Middle}
 				Position={UDim2.fromScale(0.5, 0.18)}
-				Size={UDim2.fromScale(0.162, 0.3)}
+				Size={UDim2.fromScale(0.165, 0.306)}
 				BackgroundTransparency={1}
 				ScaleType={Enum.ScaleType.Fit}
 			>
