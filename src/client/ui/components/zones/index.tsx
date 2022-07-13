@@ -5,7 +5,11 @@ import { WORLDS } from "shared/configs/worlds";
 
 import { ZoneInfoDisplay } from "./zoneInfoDisplay";
 
-/* eslint-disable jsdoc/require-jsdoc */
+/**
+ * Displays zone information on zone signs.
+ *
+ * @returns The zone info signs.
+ */
 export function ZoneInfoUI(): Roact.Element {
 	return (
 		<>
