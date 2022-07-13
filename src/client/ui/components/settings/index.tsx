@@ -5,6 +5,7 @@ import { hooks } from "client/ui/hooks";
 import { StoreState } from "shared/rodux";
 import { Settings } from "shared/rodux/settings";
 
+import { SettingsMenu } from "./menu";
 import { SettingsMenuButton } from "./menuIcon";
 
 /**
@@ -30,6 +31,8 @@ export const SettingsUI = RoactRodux.connect(mapStateToProps)(
 					}}
 				/>,
 			);
+		} else {
+			children.push(<SettingsMenu />);
 		}
 
 		return (
