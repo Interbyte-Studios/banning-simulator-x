@@ -21,22 +21,23 @@ export function ZoneInfoUI(): Roact.Element {
 								.FindFirstChild(zoneName)
 								?.FindFirstChild("sign")
 								?.FindFirstChild("description")
-								?.FindFirstChild("infoPart") as BasePart;
+								?.FindFirstChild("infoPart");
 
 							if (sign === undefined) {
 								return <></>;
-							} else {
-								return (
-									<ZoneInfoDisplay
-										zoneName={zoneName}
-										worldName={worldName}
-										currency={worldData.reward}
-										price={zoneData.cost !== undefined ? zoneData.cost.amount : 0}
-										rank={zoneData.cost !== undefined ? zoneData.cost.requiredRank : 0}
-										adornee={sign}
-									/>
-								);
 							}
+
+							assert(sign.IsA("BasePart"), `Expected ${sign.GetFullName()} to be a BasePart but it wasn't`);
+							return (
+								<ZoneInfoDisplay
+									zoneName={zoneName}
+									worldName={worldName}
+									currency={worldData.reward}
+									price={zoneData.cost !== undefined ? zoneData.cost.amount : 0}
+									rank={zoneData.cost !== undefined ? zoneData.cost.requiredRank : 0}
+									adornee={sign}
+								/>
+							);
 						})}
 					</>
 				);
