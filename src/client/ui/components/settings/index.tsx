@@ -36,7 +36,7 @@ export const SettingsUI = RoactRodux.connect(mapStateToProps)(
 			<frame
 				BackgroundTransparency={1}
 				AnchorPoint={vec2Middle}
-				Position={UDim2.fromScale(0.5, 0.9)}
+				Position={UDim2.fromScale(0.5, 0.925)}
 				Size={UDim2.fromScale(0.1, 0.1)}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
