@@ -4,7 +4,7 @@ export const udim2TopLeft = UDim2.fromScale(0, 0);
 export const udim2TopRight = UDim2.fromScale(1, 0);
 export const udim2TopMiddle = UDim2.fromScale(0, 0.5);
 export const udim2Middle = UDim2.fromScale(0.5, 0.5);
-export const udim2BottomMiddle = UDim2.fromScale(1, 0.5);
+export const udim2BottomMiddle = UDim2.fromScale(0.5, 1);
 export const udim2BottomLeft = UDim2.fromScale(0, 1);
 export const udim2BottomRight = UDim2.fromScale(1, 1);
 
