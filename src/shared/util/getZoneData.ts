@@ -13,7 +13,7 @@ export function getZoneData(world: WorldName, zone: ZoneNames): Zone {
 	let zoneData: Zone;
 
 	switch (world) {
-		case "ban land": {
+		case "Ban Land": {
 			zoneData = BAN_LAND_ZONES[zone];
 			break;
 		}
