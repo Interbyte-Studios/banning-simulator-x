@@ -15,7 +15,12 @@ interface ZoneInfoProps {
 	adornee: BasePart;
 }
 
-/* eslint-disable jsdoc/require-jsdoc */
+/**
+ * The Roact element to display zone info.
+ *
+ * @param props Information of the zone.
+ * @returns Roact Element for zone info.
+ */
 export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 	return (
 		<surfacegui
