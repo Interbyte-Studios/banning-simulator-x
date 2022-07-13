@@ -5,14 +5,14 @@ import { BAN_LAND_NPCS } from "./npcs";
 
 export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	// zone 1
-	forest: {
+	Forest: {
 		id: 1,
 		npcs: [BAN_LAND_NPCS.bronzePiece, BAN_LAND_NPCS.russoTalks],
 		cost: undefined,
 	},
 
 	// zone 2
-	desert: {
+	Desert: {
 		id: 2,
 		npcs: [BAN_LAND_NPCS.nyxun, BAN_LAND_NPCS.sonsofFun_YT],
 		cost: {
@@ -23,7 +23,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	},
 
 	// zone 3
-	"sunflower field": {
+	"Sunflower Field": {
 		id: 3,
 		npcs: [BAN_LAND_NPCS.onett, BAN_LAND_NPCS.carbonMeister],
 		cost: {
@@ -34,7 +34,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	},
 
 	// zone 4
-	honeycomb: {
+	Honeycomb: {
 		id: 4,
 		npcs: [BAN_LAND_NPCS.rellhub, BAN_LAND_NPCS.sabrinaBrite],
 		cost: {
@@ -45,7 +45,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	},
 
 	// zone 5
-	"ice land": {
+	"Ice Land": {
 		id: 5,
 		npcs: [BAN_LAND_NPCS.buildIntoGames, BAN_LAND_NPCS.djMonopoli],
 		cost: {
@@ -56,7 +56,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	},
 
 	// zone 6
-	beach: {
+	Beach: {
 		id: 6,
 		npcs: [BAN_LAND_NPCS.foreverDev, BAN_LAND_NPCS.merely],
 		cost: {
@@ -67,7 +67,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	},
 
 	// zone 7
-	"candy land": {
+	"Candy Land": {
 		id: 7,
 		npcs: [BAN_LAND_NPCS.snickTrix, BAN_LAND_NPCS.alvin_Blox],
 		cost: {
@@ -78,7 +78,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	},
 
 	// zone 8
-	"the mines": {
+	"The Mines": {
 		id: 8,
 		npcs: [BAN_LAND_NPCS.mygame43, BAN_LAND_NPCS.deeterPlays],
 		cost: {
@@ -89,7 +89,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	},
 
 	// zone 9
-	"lava lands": {
+	"Lava Lands": {
 		id: 9,
 		npcs: [BAN_LAND_NPCS.gamesReborn, BAN_LAND_NPCS.beeism],
 		cost: {
