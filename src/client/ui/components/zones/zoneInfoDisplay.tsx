@@ -10,8 +10,8 @@ interface ZoneInfoProps {
 	zoneName: ZoneNames;
 	worldName: WorldName;
 	currency: Currency;
-	price: number;
-	rank: number;
+	price?: number;
+	rank?: number;
 	adornee: BasePart;
 }
 
@@ -52,7 +52,7 @@ export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 				<uistroke Thickness={3} Color={Color3.fromRGB(10, 50, 65)} />
 			</textlabel>
 			<textlabel
-				Text={twoDpAbbreviator.numberToString(props.price)}
+				Text={props.price !== undefined ? twoDpAbbreviator.numberToString(props.price) : "Free"}
 				AnchorPoint={vec2Middle}
 				Position={UDim2.fromScale(0.56, 0.75)}
 				Size={UDim2.fromScale(0.22, 0.16)}
