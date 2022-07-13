@@ -19,7 +19,7 @@ interface World {
  * All the worlds in the game.
  */
 export const WORLDS = preserveWithConstraint<Record<string, World>>()({
-	"ban land": {
+	"Ban Land": {
 		zones: BAN_LAND_ZONES,
 		reward: "gold",
 	},
