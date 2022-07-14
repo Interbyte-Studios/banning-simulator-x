@@ -20,31 +20,43 @@ export const SettingsUI = RoactRodux.connect(mapStateToProps)(
 	hooks((_, { useState }) => {
 		const [isMenuButtonVisible, setMenuButtonVisibility] = useState(true);
 
-		const children: Array<Roact.Element> = [];
+		let component: Roact.Element;
 
 		if (isMenuButtonVisible) {
-			children.push(
-				<SettingsMenuButton
-					isVisible={isMenuButtonVisible}
-					toggleVisibility={(visible: boolean): void => {
-						setMenuButtonVisibility(visible);
-					}}
-				/>,
+			component = (
+				<frame
+					BackgroundTransparency={1}
+					AnchorPoint={vec2Middle}
+					Position={UDim2.fromScale(0.5, 0.925)}
+					Size={UDim2.fromScale(0.1, 0.1)}
+				>
+					<uiaspectratioconstraint AspectRatio={1} />
+					<SettingsMenuButton
+						isVisible={isMenuButtonVisible}
+						toggleVisibility={(visible: boolean): void => {
+							setMenuButtonVisibility(visible);
+						}}
+					/>
+				</frame>
 			);
 		} else {
-			children.push(<SettingsMenu />);
+			component = (
+				<frame
+					BackgroundTransparency={1}
+					AnchorPoint={vec2Middle}
+					Position={UDim2.fromScale(0.5, 0.5)}
+					Size={UDim2.fromScale(0.3, 0.5)}
+				>
+					<SettingsMenu
+						isVisible={!isMenuButtonVisible}
+						toggleVisibility={(visible: boolean): void => {
+							setMenuButtonVisibility(!visible);
+						}}
+					/>
+				</frame>
+			);
 		}
 
-		return (
-			<frame
-				BackgroundTransparency={1}
-				AnchorPoint={vec2Middle}
-				Position={UDim2.fromScale(0.5, 0.925)}
-				Size={UDim2.fromScale(0.1, 0.1)}
-			>
-				<uiaspectratioconstraint AspectRatio={1} />
-				{children}
-			</frame>
-		);
+		return component;
 	}),
 );

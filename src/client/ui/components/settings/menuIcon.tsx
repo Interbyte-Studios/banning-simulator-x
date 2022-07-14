@@ -39,6 +39,7 @@ export const SettingsMenuButton = hooks((props: SettingsMenuButtonProps, { useEf
 				Image={assetIds.images.buttons.dark.specialized.settings.Settings}
 				PressedImage={assetIds.images.buttons.dark.specialized.settings["Settings Selected"]}
 				HoverImage={assetIds.images.buttons.dark.specialized.settings["Settings Selected"]}
+				ScaleType={Enum.ScaleType.Fit}
 				Event={{
 					Activated: (): void => props.toggleVisibility(!props.isVisible),
 					MouseEnter: (): void => {

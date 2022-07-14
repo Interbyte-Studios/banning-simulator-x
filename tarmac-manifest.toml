@@ -1,3 +1,8 @@
+[inputs."images/Exit.png"]
+hash = "7b356995c62e5e9521afd90de0ba26219bce7be562a37f05547ef8a60da4073d"
+id = 10220935323
+packable = false
+
 [inputs."images/backgrounds/dark/AutoHatchBG.png"]
 hash = "59671121f265167c3fc6346ea75d881d13445d09d4bccbeac1c39fb73a8b5b24"
 id = 9724451796
@@ -14,13 +19,13 @@ id = 9724447393
 packable = false
 
 [inputs."images/backgrounds/dark/Settings.png"]
-hash = "d67ed65300d1bc0407a90f87059bd4b41446537fc3cdaaf8bc1f2e19e828501d"
-id = 10193276702
+hash = "887d5c0b4567129b433271867e9323f9db4a14438ec7c5b0d4d278222f3b4453"
+id = 10220867439
 packable = false
 
 [inputs."images/backgrounds/dark/SettingsOption.png"]
-hash = "6d93bbddbfc3bab917d5251f82db3a021befb89709d83d50eb61e919f1b1f948"
-id = 10193277086
+hash = "04c16a3ea1a6e087be567729f48ec3092c2719b269a4cdeba86bef6944ee003a"
+id = 10220867594
 packable = false
 
 [inputs."images/backgrounds/light/AutoHatchBG.png"]
@@ -36,6 +41,26 @@ packable = false
 [inputs."images/backgrounds/light/PetBackground.png"]
 hash = "8d86bc479b63984146f3ea047e41696fd69d792f8eb1d7da623262d692544106"
 id = 9724447903
+packable = false
+
+[inputs."images/buttons/LeftArrow.png"]
+hash = "aba6bb405c196ef80927a0aa60b706aa6ca9e6ff8915d9812ed335fc49eeb975"
+id = 10227395307
+packable = false
+
+[inputs."images/buttons/Off.png"]
+hash = "3311d38a4d5a0ca427571ab1ce469f5f4dcd526e41614322d8773e4d77fd6388"
+id = 10221118714
+packable = false
+
+[inputs."images/buttons/On.png"]
+hash = "1dbaa003ab47a08a8fb93bcb1c332803d6d89a253de5aebf38fe1d3c5ee4bc53"
+id = 10221143827
+packable = false
+
+[inputs."images/buttons/RightArrow.png"]
+hash = "94436a9a1fa4acfcb4ad3404f713853644d99240091e194726a43051723a6843"
+id = 10227395746
 packable = false
 
 [inputs."images/buttons/dark/specialized/openEgg/OpenEgg.png"]

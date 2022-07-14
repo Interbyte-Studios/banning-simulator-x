@@ -1,8 +1,6 @@
 declare namespace assetIds {
 	const images: {
-		currencies: {
-			gold: string;
-		};
+		Exit: string;
 		backgrounds: {
 			light: {
 				AutoHatchBG: string;
@@ -17,7 +15,14 @@ declare namespace assetIds {
 				EggPetDisplay: string;
 			};
 		};
+		currencies: {
+			gold: string;
+		};
 		buttons: {
+			RightArrow: string;
+			LeftArrow: string;
+			Off: string;
+			On: string;
 			light: {
 				specialized: {
 					openEgg: {
