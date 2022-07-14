@@ -5,6 +5,7 @@ import { Store } from "shared/rodux";
 import { EggsUI } from "./components/eggs";
 import { ToggleWeaponButton } from "./components/weapons/toggleWeaponButton";
 import { WeaponShop } from "./components/weapons/weaponShop";
+import { ZoneInfoUI } from "./components/zones";
 
 /**
  * Creates the Roact app to display.
@@ -21,6 +22,7 @@ export function app(props: { player: Player; store: Store }): Roact.Element {
 				<ToggleWeaponButton player={props.player} />
 				<WeaponShop store={props.store} />
 				<EggsUI />
+				<ZoneInfoUI />
 			</>
 		</RoactRodux.StoreProvider>
 	);
