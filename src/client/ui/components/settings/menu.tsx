@@ -1,9 +1,7 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { EnabledButton } from "client/ui/elements/enabledButton";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
@@ -84,14 +82,14 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 							position={UDim2.fromScale(0.5, 0.09)}
 							size={UDim2.fromScale(0.95, 0.045)}
 							settingName={`Button Click`}
-							isEnabled={props.settings.autoHatch}
+							isEnabled={props.settings.sound.buttonClick}
 							onClicked={(): void => {}}
 						/>
 						<SettingsOption
 							position={UDim2.fromScale(0.5, 0.145)}
 							size={UDim2.fromScale(0.95, 0.045)}
 							settingName={`Master Volume`}
-							isEnabled={props.settings.autoHatch}
+							isEnabled={props.settings.sound.masterVolume}
 							onClicked={(): void => {}}
 						/>
 					</scrollingframe>

@@ -5,24 +5,34 @@ export type ValidUIColor = "Dark"; // will support more when ui is made.
 export type ValidPetAnimationType = "Following" | "Surrounding";
 
 export interface Settings {
-	autoHatch: boolean;
-	graphicsQuality: ValidGraphicsQuality;
-	musicVolume: number;
-	timeOfDay: number;
-	uiColor: ValidUIColor;
-	walkSpeed: number;
-	pets: {
-		animationType: ValidPetAnimationType;
-		displayed: boolean;
-		studsOfDistance: number;
+	sound: {
+		buttonClick: boolean;
+		masterVolume: number;
+		music: number;
+		soundEffects: number;
+	};
+	gameplay: {
+		autoHatch: boolean;
+		walkSpeed: number;
+	};
+	visual: {
+		graphicsQuality: ValidGraphicsQuality;
+		timeOfDay: number;
+		uiColor: ValidUIColor;
+		petAnimationType: ValidPetAnimationType;
+		petsDisplayed: boolean;
+		petsStudsOfDistance: number;
 	};
 }
 
 export type SettingsState = Settings;
 export type SettingsActions =
+	| ToggleButtonClickSounds
+	| ToggleMasterVolume
+	| ToggleMusicVolume
+	| ToggleSoundEffectsVolume
 	| ToggleAuto
 	| ToggleGraphics
-	| ToggleMusicVolume
 	| ToggleTimeOfDay
 	| ToggleUIColor
 	| ToggleWalkSpeed
@@ -30,18 +40,30 @@ export type SettingsActions =
 	| TogglePetsDisplayed
 	| TogglePetsStudsOfDistance;
 
-interface ToggleAuto extends Rodux.Action<"toggleAuto"> {}
+interface ToggleButtonClickSounds extends Rodux.Action<"toggleButtonClickSounds"> {
+	enabled: boolean;
+}
 
-interface ToggleGraphics extends Rodux.Action<"toggleGraphics"> {
-	quality: ValidGraphicsQuality;
+interface ToggleMasterVolume extends Rodux.Action<"toggleMasterVolume"> {
+	volume: number;
 }
 
 interface ToggleMusicVolume extends Rodux.Action<"toggleMusicVolume"> {
 	volume: number;
 }
 
+interface ToggleSoundEffectsVolume extends Rodux.Action<"toggleSoundEffectsVolume"> {
+	volume: number;
+}
+
+interface ToggleAuto extends Rodux.Action<"toggleAuto"> {}
+
+interface ToggleGraphics extends Rodux.Action<"toggleGraphics"> {
+	quality: ValidGraphicsQuality;
+}
+
 interface ToggleTimeOfDay extends Rodux.Action<"toggleTimeOfDay"> {
-	time: number;
+	timeOfDay: number;
 }
 
 interface ToggleUIColor extends Rodux.Action<"toggleUIColor"> {
@@ -65,6 +87,50 @@ interface TogglePetsStudsOfDistance extends Rodux.Action<"togglePetsStudsOfDista
 }
 
 /**
+ * @param enabled Whether button click sounds are enabled are not.
+ * @returns The Rodux action to dispatch.
+ */
+export function toggleButtonClickSounds(enabled: boolean): ToggleButtonClickSounds & Rodux.AnyAction {
+	return {
+		type: "toggleButtonClickSounds",
+		enabled,
+	};
+}
+
+/**
+ * @param volume The scaled volume of all sounds.
+ * @returns The Rodux action to dispatch.
+ */
+export function toggleMasterVolume(volume: number): ToggleMasterVolume & Rodux.AnyAction {
+	return {
+		type: "toggleMasterVolume",
+		volume,
+	};
+}
+
+/**
+ * @param volume The volume of the music.
+ * @returns The Rodux action to dispatch.
+ */
+export function toggleMusicVolume(volume: number): ToggleMusicVolume & Rodux.AnyAction {
+	return {
+		type: "toggleMusicVolume",
+		volume,
+	};
+}
+
+/**
+ * @param volume The volume of the sound effects..
+ * @returns The Rodux action to dispatch.
+ */
+export function toggleSoundEffectsVolume(volume: number): ToggleSoundEffectsVolume & Rodux.AnyAction {
+	return {
+		type: "toggleSoundEffectsVolume",
+		volume,
+	};
+}
+
+/**
  * @returns The Rodux action to dispatch.
  */
 export function toggleAuto(): ToggleAuto & Rodux.AnyAction {
@@ -85,24 +151,13 @@ export function toggleGraphics(quality: ValidGraphicsQuality): ToggleGraphics & 
 }
 
 /**
- * @param volume The volume of the music.
+ * @param timeOfDay The time of day.
  * @returns The Rodux action to dispatch.
  */
-export function toggleMusicVolume(volume: number): ToggleMusicVolume & Rodux.AnyAction {
-	return {
-		type: "toggleMusicVolume",
-		volume,
-	};
-}
-
-/**
- * @param _time The time of day.
- * @returns The Rodux action to dispatch.
- */
-export function toggleTimeOfDay(_time: number): ToggleTimeOfDay & Rodux.AnyAction {
+export function toggleTimeOfDay(timeOfDay: number): ToggleTimeOfDay & Rodux.AnyAction {
 	return {
 		type: "toggleTimeOfDay",
-		time: _time,
+		timeOfDay,
 	};
 }
 
@@ -135,7 +190,7 @@ export function toggleWalkSpeed(walkSpeed: number): ToggleWalkSpeed & Rodux.AnyA
 export function togglePetAnimationType(animationType: ValidPetAnimationType): TogglePetAnimationType & Rodux.AnyAction {
 	return {
 		type: "togglePetAnimationType",
-		animationType: animationType,
+		animationType,
 	};
 }
 
@@ -162,72 +217,97 @@ export function togglePetsStudsOfDistance(studs: number): TogglePetsStudsOfDista
 }
 
 const defaultSettings: Settings = {
-	autoHatch: false,
-	graphicsQuality: "High",
-	musicVolume: 10,
-	timeOfDay: 12,
-	uiColor: "Dark",
-	walkSpeed: 16,
-	pets: {
-		animationType: "Surrounding",
-		displayed: true,
-		studsOfDistance: 10,
+	sound: {
+		buttonClick: true,
+		masterVolume: 7,
+		music: 10,
+		soundEffects: 10,
+	},
+	gameplay: {
+		autoHatch: false,
+		walkSpeed: 16,
+	},
+	visual: {
+		graphicsQuality: "High",
+		timeOfDay: 14,
+		uiColor: "Dark",
+		petAnimationType: "Surrounding",
+		petsDisplayed: true,
+		petsStudsOfDistance: 10,
 	},
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const settingsReducer = Rodux.createReducer<SettingsState, SettingsActions>(defaultSettings, {
-	toggleAuto: (state) => {
+	toggleButtonClickSounds: (state, action) => {
 		const newState: Settings = { ...state };
-		newState.autoHatch = !newState.autoHatch;
+		newState.sound = { ...state.sound, buttonClick: action.enabled };
 
 		return newState;
 	},
-	toggleGraphics: (state, action) => {
+	toggleMasterVolume: (state, action) => {
 		const newState: Settings = { ...state };
-		newState.graphicsQuality = action.quality;
+		newState.sound = { ...state.sound, masterVolume: action.volume };
 
 		return newState;
 	},
 	toggleMusicVolume: (state, action) => {
 		const newState: Settings = { ...state };
-		newState.musicVolume = action.volume;
+		newState.sound = { ...state.sound, music: action.volume };
 
 		return newState;
 	},
-	toggleTimeOfDay: (state, action) => {
+	toggleSoundEffectsVolume: (state, action) => {
 		const newState: Settings = { ...state };
-		newState.timeOfDay = action.time;
+		newState.sound = { ...state.sound, soundEffects: action.volume };
 
 		return newState;
 	},
-	toggleUIColor: (state, action) => {
+	toggleAuto: (state) => {
 		const newState: Settings = { ...state };
-		newState.uiColor = action.color;
+		newState.gameplay = { ...state.gameplay, autoHatch: !state.gameplay.autoHatch };
 
 		return newState;
 	},
 	toggleWalkSpeed: (state, action) => {
 		const newState: Settings = { ...state };
-		newState.walkSpeed = action.walkSpeed;
+		newState.gameplay = { ...state.gameplay, walkSpeed: action.walkSpeed };
+
+		return newState;
+	},
+	toggleGraphics: (state, action) => {
+		const newState: Settings = { ...state };
+		newState.visual = { ...state.visual, graphicsQuality: action.quality };
+
+		return newState;
+	},
+	toggleTimeOfDay: (state, action) => {
+		const newState: Settings = { ...state };
+		newState.visual = { ...state.visual, timeOfDay: action.timeOfDay };
+
+		return newState;
+	},
+	toggleUIColor: (state, action) => {
+		const newState: Settings = { ...state };
+		newState.visual = { ...state.visual, uiColor: action.color };
 
 		return newState;
 	},
 	togglePetAnimationType: (state, action) => {
 		const newState: Settings = { ...state };
-		newState.pets = { ...state.pets, animationType: action.animationType };
+		newState.visual = { ...state.visual, petAnimationType: action.animationType };
 
 		return newState;
 	},
 	togglePetsDisplayed: (state, action) => {
 		const newState: Settings = { ...state };
-		newState.pets = { ...state.pets, displayed: action.displayed };
+		newState.visual = { ...state.visual, petsDisplayed: action.displayed };
 
 		return newState;
 	},
 	togglePetsStudsOfDistance: (state, action) => {
 		const newState: Settings = { ...state };
-		newState.pets = { ...state.pets, studsOfDistance: action.studs };
+		newState.visual = { ...state.visual, petsStudsOfDistance: action.studs };
 
 		return newState;
 	},
