@@ -39,7 +39,7 @@ export const ToggleSettingOption = hooks((props: ToggleSettingOptionProps) => {
 				AnchorPoint={vec2Middle}
 				isEnabled={props.isEnabled}
 				Position={UDim2.fromScale(0.85, 0.5)}
-				minimizedSize={{ x: 0.2, y: 0.8 }}
+				minimizedSize={{ x: 0.225, y: 0.8 }}
 				maximizedSize={{ x: 0.25, y: 0.85 }}
 				onClicked={(): void => props.onClicked()}
 			/>
