@@ -20,7 +20,24 @@ onStoreCreated(player)
 					equipWeapon: remotes.Client.GetNamespace("weapons").Get("equipWeapon"),
 					purchaseWeapon: remotes.Client.GetNamespace("weapons").Get("purchaseWeapon"),
 					hatchEgg: remotes.Client.GetNamespace("eggs").Get("hatchEgg"),
+					toggleButtonClickSFX: remotes.Client.GetNamespace("settings").GetNamespace("sound").Get("toggleButtonClick"),
+					toggleMusicVolume: remotes.Client.GetNamespace("settings").GetNamespace("sound").Get("toggleMusicVolume"),
+					toggleSoundEffectsVolume: remotes.Client.GetNamespace("settings")
+						.GetNamespace("sound")
+						.Get("toggleSoundEffectsVolume"),
 					toggleAuto: remotes.Client.GetNamespace("settings").GetNamespace("gameplay").Get("toggleAuto"),
+					toggleWalkSpeed: remotes.Client.GetNamespace("settings").GetNamespace("gameplay").Get("toggleWalkSpeed"),
+					toggleGraphics: remotes.Client.GetNamespace("settings").GetNamespace("visual").Get("toggleGraphics"),
+					togglePetAnimationType: remotes.Client.GetNamespace("settings")
+						.GetNamespace("visual")
+						.Get("togglePetAnimationType"),
+					togglePetsDisplayed: remotes.Client.GetNamespace("settings")
+						.GetNamespace("visual")
+						.Get("togglePetsDisplayed"),
+					togglePetsStudsOfDistance: remotes.Client.GetNamespace("settings")
+						.GetNamespace("visual")
+						.Get("togglePetsStudsOfDistance"),
+					toggleTimeOfDay: remotes.Client.GetNamespace("settings").GetNamespace("visual").Get("toggleTimeOfDay"),
 				}}
 			>
 				<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
