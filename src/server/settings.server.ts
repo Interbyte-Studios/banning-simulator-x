@@ -4,7 +4,6 @@ import {
 	toggleAuto,
 	toggleButtonClickSounds,
 	toggleGraphics,
-	toggleMasterVolume,
 	toggleMusicVolume,
 	togglePetAnimationType,
 	togglePetsDisplayed,
@@ -32,9 +31,6 @@ const toggleButtonClickRemote = soundRemotes.Create("toggleButtonClick");
 toggleButtonClickRemote.Connect(
 	withPlayerStore((_, store, enabled) => store.dispatch(toggleButtonClickSounds(enabled))),
 );
-
-const toggleMasterVolumeRemote = soundRemotes.Create("toggleMasterVolume");
-toggleMasterVolumeRemote.Connect(withPlayerStore((_, store, volume) => store.dispatch(toggleMasterVolume(volume))));
 
 const toggleMusicVolumeRemote = soundRemotes.Create("toggleMusicVolume");
 toggleMusicVolumeRemote.Connect(withPlayerStore((_, store, volume) => store.dispatch(toggleMusicVolume(volume))));

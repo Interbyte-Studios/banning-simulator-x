@@ -6,7 +6,6 @@ export type ValidPetAnimationType = "Following" | "Surrounding";
 export interface Settings {
 	sound: {
 		buttonClick: boolean;
-		masterVolume: number;
 		music: number;
 		soundEffects: number;
 	};
@@ -26,7 +25,6 @@ export interface Settings {
 export type SettingsState = Settings;
 export type SettingsActions =
 	| ToggleButtonClickSounds
-	| ToggleMasterVolume
 	| ToggleMusicVolume
 	| ToggleSoundEffectsVolume
 	| ToggleAuto
@@ -39,10 +37,6 @@ export type SettingsActions =
 
 interface ToggleButtonClickSounds extends Rodux.Action<"toggleButtonClickSounds"> {
 	enabled: boolean;
-}
-
-interface ToggleMasterVolume extends Rodux.Action<"toggleMasterVolume"> {
-	volume: number;
 }
 
 interface ToggleMusicVolume extends Rodux.Action<"toggleMusicVolume"> {
@@ -87,17 +81,6 @@ export function toggleButtonClickSounds(enabled: boolean): ToggleButtonClickSoun
 	return {
 		type: "toggleButtonClickSounds",
 		enabled,
-	};
-}
-
-/**
- * @param volume The scaled volume of all sounds.
- * @returns The Rodux action to dispatch.
- */
-export function toggleMasterVolume(volume: number): ToggleMasterVolume & Rodux.AnyAction {
-	return {
-		type: "toggleMasterVolume",
-		volume,
 	};
 }
 
@@ -201,7 +184,6 @@ export function togglePetsStudsOfDistance(studs: number): TogglePetsStudsOfDista
 const defaultSettings: Settings = {
 	sound: {
 		buttonClick: true,
-		masterVolume: 7,
 		music: 10,
 		soundEffects: 10,
 	},
@@ -223,12 +205,6 @@ export const settingsReducer = Rodux.createReducer<SettingsState, SettingsAction
 	toggleButtonClickSounds: (state, action) => {
 		const newState: Settings = { ...state };
 		newState.sound = { ...state.sound, buttonClick: action.enabled };
-
-		return newState;
-	},
-	toggleMasterVolume: (state, action) => {
-		const newState: Settings = { ...state };
-		newState.sound = { ...state.sound, masterVolume: action.volume };
 
 		return newState;
 	},

@@ -8,7 +8,6 @@ import {
 	toggleAuto,
 	toggleButtonClickSounds,
 	toggleGraphics,
-	toggleMasterVolume,
 	toggleMusicVolume,
 	togglePetAnimationType,
 	togglePetsDisplayed,
@@ -21,7 +20,6 @@ import {
 const defaultSettings: SettingsState = {
 	sound: {
 		buttonClick: true,
-		masterVolume: 5,
 		music: 10,
 		soundEffects: 10,
 	},
@@ -49,17 +47,6 @@ export = (): void => {
 			newState.sound = { ...newState.sound, buttonClick: enabled };
 
 			const action = toggleButtonClickSounds(enabled);
-			assertDeepEqual(settingsReducer(state, action), newState);
-		});
-
-		it("should modify master volume", () => {
-			const state = defaultSettings;
-			const volume = 6;
-
-			const newState: SettingsState = { ...state };
-			newState.sound = { ...newState.sound, masterVolume: volume };
-
-			const action = toggleMasterVolume(volume);
 			assertDeepEqual(settingsReducer(state, action), newState);
 		});
 
