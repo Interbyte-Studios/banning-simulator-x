@@ -82,15 +82,23 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 						<ToggleSettingOption
 							position={UDim2.fromScale(0.5, 0.09)}
 							size={UDim2.fromScale(0.98, 0.045)}
-							settingName={`Button Click`}
+							settingName={`Button Click SFX`}
 							isEnabled={props.settings.sound.buttonClick}
 							onClicked={(): void => {}}
 						/>
 						<ModifySettingOption
-							position={UDim2.fromScale(0.5, 0.145)}
+							position={UDim2.fromScale(0.5, 0.2)}
 							size={UDim2.fromScale(0.98, 0.045)}
-							settingName={`Master Volume`}
-							settingState={props.settings.sound.masterVolume}
+							settingName={`Music Volume`}
+							settingState={props.settings.sound.music}
+							onIncrease={(): void => {}}
+							onDecrease={(): void => {}}
+						/>
+						<ModifySettingOption
+							position={UDim2.fromScale(0.5, 0.255)}
+							size={UDim2.fromScale(0.98, 0.045)}
+							settingName={`SFX Volume`}
+							settingState={props.settings.sound.soundEffects}
 							onIncrease={(): void => {}}
 							onDecrease={(): void => {}}
 						/>
