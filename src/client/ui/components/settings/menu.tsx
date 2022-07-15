@@ -97,7 +97,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					<ExitButton
 						Position={UDim2.fromScale(0.975, 0.065)}
 						minimizedSize={0.125}
-						maximimizedSize={0.15}
+						maximizedSize={0.15}
 						onClose={(): void => props.toggleVisibility(!props.isVisible)}
 					/>
 				</imagebutton>

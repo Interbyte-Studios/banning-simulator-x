@@ -2,43 +2,80 @@ import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
 import {
 	toggleAuto,
+	toggleButtonClickSounds,
 	toggleGraphics,
+	toggleMasterVolume,
 	toggleMusicVolume,
 	togglePetAnimationType,
 	togglePetsDisplayed,
 	togglePetsStudsOfDistance,
+	toggleSoundEffectsVolume,
 	toggleTimeOfDay,
-	toggleUIColor,
 	toggleWalkSpeed,
 } from "shared/rodux/settings";
 
-// [ Toggle Auto Remote ]
-const toggleAutoRemote = remotes.Server.GetNamespace("settings").Create("toggleAuto");
+const settingsRemotes = remotes.Server.GetNamespace("settings");
 
+// [ Gameplay Remotes ] \\
+const gameplayRemotes = settingsRemotes.GetNamespace("gameplay");
+
+const toggleAutoRemote = gameplayRemotes.Create("toggleAuto");
 toggleAutoRemote.Connect(
 	withPlayerStore((_, store) => {
 		store.dispatch(toggleAuto());
 	}),
 );
 
-// [ Toggle Graphics Remote ]
-const toggleGraphicsRemote = remotes.Server.GetNamespace("settings").Create("toggleGraphics");
-toggleGraphicsRemote.Connect(
-	withPlayerStore((_, store, quality) => {
-		store.dispatch(toggleGraphics(quality));
+const toggleWalkSpeedRemote = gameplayRemotes.Create("toggleWalkSpeed");
+toggleWalkSpeedRemote.Connect(
+	withPlayerStore((_, store, walkSpeed) => {
+		store.dispatch(toggleWalkSpeed(walkSpeed));
 	}),
 );
 
-// [ Toggle Music Volume Remote ]
-const toggleMusicVolumeRemote = remotes.Server.GetNamespace("settings").Create("toggleMusicVolume");
+// [ Sound Remotes ] \\
+const soundRemotes = settingsRemotes.GetNamespace("sound");
+
+const toggleButtonClickRemote = soundRemotes.Create("toggleButtonClick");
+toggleButtonClickRemote.Connect(
+	withPlayerStore((_, store, enabled) => {
+		store.dispatch(toggleButtonClickSounds(enabled));
+	}),
+);
+
+const toggleMasterVolumeRemote = soundRemotes.Create("toggleMasterVolume");
+toggleMasterVolumeRemote.Connect(
+	withPlayerStore((_, store, volume) => {
+		store.dispatch(toggleMasterVolume(volume));
+	}),
+);
+
+const toggleMusicVolumeRemote = soundRemotes.Create("toggleMusicVolume");
 toggleMusicVolumeRemote.Connect(
 	withPlayerStore((_, store, volume) => {
 		store.dispatch(toggleMusicVolume(volume));
 	}),
 );
 
+const toggleSoundEffectsVolumeRemote = soundRemotes.Create("toggleSoundEffectsVolume");
+toggleSoundEffectsVolumeRemote.Connect(
+	withPlayerStore((_, store, volume) => {
+		store.dispatch(toggleSoundEffectsVolume(volume));
+	}),
+);
+
+// [ Visual Remotes ] \\
+const visualRemotes = settingsRemotes.GetNamespace("visual");
+
+const toggleGraphicsRemote = visualRemotes.Create("toggleGraphics");
+toggleGraphicsRemote.Connect(
+	withPlayerStore((_, store, quality) => {
+		store.dispatch(toggleGraphics(quality));
+	}),
+);
+
 // [ Toggle Pet Animation Remote ]
-const togglePetAnimationTypeRemote = remotes.Server.GetNamespace("settings").Create("togglePetAnimationType");
+const togglePetAnimationTypeRemote = visualRemotes.Create("togglePetAnimationType");
 togglePetAnimationTypeRemote.Connect(
 	withPlayerStore((_, store, animationType) => {
 		store.dispatch(togglePetAnimationType(animationType));
@@ -46,7 +83,7 @@ togglePetAnimationTypeRemote.Connect(
 );
 
 // [ Toggle Pets Displayed Remote ]
-const togglePetsDisplayedRemote = remotes.Server.GetNamespace("settings").Create("togglePetsDisplayed");
+const togglePetsDisplayedRemote = visualRemotes.Create("togglePetsDisplayed");
 togglePetsDisplayedRemote.Connect(
 	withPlayerStore((_, store, displayed) => {
 		store.dispatch(togglePetsDisplayed(displayed));
@@ -54,7 +91,7 @@ togglePetsDisplayedRemote.Connect(
 );
 
 // [ Toggle Pets Studs of Distance Remote ]
-const togglePetsStudsOfDistanceRemote = remotes.Server.GetNamespace("settings").Create("togglePetsStudsOfDistance");
+const togglePetsStudsOfDistanceRemote = visualRemotes.Create("togglePetsStudsOfDistance");
 togglePetsStudsOfDistanceRemote.Connect(
 	withPlayerStore((_, store, studs) => {
 		store.dispatch(togglePetsStudsOfDistance(studs));
@@ -62,25 +99,9 @@ togglePetsStudsOfDistanceRemote.Connect(
 );
 
 // [ Toggle Time of Day Remote ]
-const toggleTimeOfDayRemote = remotes.Server.GetNamespace("settings").Create("toggleTimeOfDay");
+const toggleTimeOfDayRemote = visualRemotes.Create("toggleTimeOfDay");
 toggleTimeOfDayRemote.Connect(
 	withPlayerStore((_, store, _time) => {
 		store.dispatch(toggleTimeOfDay(_time));
-	}),
-);
-
-// [ Toggle UI Color Remote ]
-const toggleUIColorRemote = remotes.Server.GetNamespace("settings").Create("toggleUIColor");
-toggleUIColorRemote.Connect(
-	withPlayerStore((_, store, color) => {
-		store.dispatch(toggleUIColor(color));
-	}),
-);
-
-// [ Toggle WalkSpeed Remote ]
-const toggleWalkSpeedRemote = remotes.Server.GetNamespace("settings").Create("toggleWalkSpeed");
-toggleWalkSpeedRemote.Connect(
-	withPlayerStore((_, store, walkSpeed) => {
-		store.dispatch(toggleWalkSpeed(walkSpeed));
 	}),
 );
