@@ -69,7 +69,10 @@ export const EnabledButton = hooks((props: EnabledButtonProps, { useEffect }) =>
 				Text={props.isEnabled ? `On` : `Off`}
 				Font={font}
 			>
-				<uistroke Color={Color3.fromRGB(138, 92, 92)} Thickness={2} />
+				<uistroke
+					Color={props.isEnabled ? Color3.fromRGB(111, 158, 113) : Color3.fromRGB(138, 92, 92)}
+					Thickness={2.5}
+				/>
 			</textlabel>
 		</imagebutton>
 	);

@@ -54,8 +54,8 @@ id = 10221118714
 packable = false
 
 [inputs."images/buttons/On.png"]
-hash = "1dbaa003ab47a08a8fb93bcb1c332803d6d89a253de5aebf38fe1d3c5ee4bc53"
-id = 10221143827
+hash = "0c45d37feeedbd9fb40c37242a5ecb4373297289d47e8c20f0eb9d7e1ec42642"
+id = 10231063722
 packable = false
 
 [inputs."images/buttons/RightArrow.png"]

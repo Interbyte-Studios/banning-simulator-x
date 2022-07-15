@@ -5,13 +5,13 @@ import assetIds from "shared/assets";
 import { vec2Middle } from "../commonValues";
 import { hooks } from "../hooks";
 
-interface DecreaseButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
+interface IncreaseButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
 	onPressed: () => void;
 	minimizedSize: number;
 	maximizedSize: number;
 }
 
-export const DecreaseButton = hooks((props: DecreaseButtonProps, { useEffect }) => {
+export const IncreaseButton = hooks((props: IncreaseButtonProps, { useEffect }) => {
 	// springs
 	const minizmizedSpring = new Flipper.Spring(props.minimizedSize, { frequency: 5 });
 	const maximizedSpring = new Flipper.Spring(props.maximizedSize, { frequency: 5 });
@@ -37,7 +37,7 @@ export const DecreaseButton = hooks((props: DecreaseButtonProps, { useEffect }) 
 			Size={binding.map((value) => {
 				return UDim2.fromScale(value, value);
 			})}
-			Image={assetIds.images.buttons.LeftArrow}
+			Image={assetIds.images.buttons.RightArrow}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
 				// eslint-disable-next-line jsdoc/require-jsdoc

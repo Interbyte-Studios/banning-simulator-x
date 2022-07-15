@@ -19,7 +19,7 @@ return {
 		buttons = {
 			LeftArrow = "rbxassetid://10227395307",
 			Off = "rbxassetid://10221118714",
-			On = "rbxassetid://10221143827",
+			On = "rbxassetid://10231063722",
 			RightArrow = "rbxassetid://10227395746",
 			dark = {
 				specialized = {
