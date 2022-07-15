@@ -90,8 +90,8 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 							position={UDim2.fromScale(0.5, 0.145)}
 							size={UDim2.fromScale(0.95, 0.045)}
 							settingName={`Master Volume`}
-							isEnabled={props.settings.sound.masterVolume}
-							onClicked={(): void => {}}
+							onIncrease={(): void => {}}
+							onDecrease={(): void => {}}
 						/>
 					</scrollingframe>
 					<ExitButton
