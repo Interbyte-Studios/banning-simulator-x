@@ -47,6 +47,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					Image={assetIds.images.backgrounds.dark.Settings}
 					ScaleType={Enum.ScaleType.Fit}
 				>
+					<uiaspectratioconstraint AspectRatio={0.8} />
 					<textlabel
 						AnchorPoint={vec2Middle}
 						Position={UDim2.fromScale(0.5, 0.02)}
@@ -87,18 +88,101 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 							onClicked={(): void => {}}
 						/>
 						<ModifySettingOption
-							position={UDim2.fromScale(0.5, 0.2)}
+							position={UDim2.fromScale(0.5, 0.145)}
 							size={UDim2.fromScale(0.98, 0.045)}
 							settingName={`Music Volume`}
 							settingState={props.settings.sound.music}
+							displayPercentage={true}
 							onIncrease={(): void => {}}
 							onDecrease={(): void => {}}
 						/>
 						<ModifySettingOption
-							position={UDim2.fromScale(0.5, 0.255)}
+							position={UDim2.fromScale(0.5, 0.2)}
 							size={UDim2.fromScale(0.98, 0.045)}
 							settingName={`SFX Volume`}
 							settingState={props.settings.sound.soundEffects}
+							displayPercentage={true}
+							onIncrease={(): void => {}}
+							onDecrease={(): void => {}}
+						/>
+						<textlabel
+							AnchorPoint={vec2Middle}
+							Position={UDim2.fromScale(0.5, 0.265)}
+							Size={UDim2.fromScale(0.4, 0.04)}
+							BackgroundTransparency={1}
+							TextScaled={true}
+							TextColor3={Color3.fromRGB(255, 255, 255)}
+							Text={"Gameplay"}
+							Font={font}
+						>
+							<BaseUIStroke Thickness={2} />
+						</textlabel>
+						<ToggleSettingOption
+							position={UDim2.fromScale(0.5, 0.31)}
+							size={UDim2.fromScale(0.98, 0.045)}
+							settingName={`Auto Hatch`}
+							isEnabled={props.settings.gameplay.autoHatch}
+							onClicked={(): void => {}}
+						/>
+						<ModifySettingOption
+							position={UDim2.fromScale(0.5, 0.365)}
+							size={UDim2.fromScale(0.98, 0.045)}
+							settingName={`Walk Speed`}
+							settingState={props.settings.gameplay.walkSpeed}
+							displayPercentage={false}
+							onIncrease={(): void => {}}
+							onDecrease={(): void => {}}
+						/>
+						<textlabel
+							AnchorPoint={vec2Middle}
+							Position={UDim2.fromScale(0.5, 0.43)}
+							Size={UDim2.fromScale(0.4, 0.04)}
+							BackgroundTransparency={1}
+							TextScaled={true}
+							TextColor3={Color3.fromRGB(255, 255, 255)}
+							Text={"Visual"}
+							Font={font}
+						>
+							<BaseUIStroke Thickness={2} />
+						</textlabel>
+						<ToggleSettingOption
+							position={UDim2.fromScale(0.5, 0.485)}
+							size={UDim2.fromScale(0.98, 0.045)}
+							settingName={`Low Graphics`}
+							isEnabled={props.settings.visual.graphicsQuality === "Low"}
+							onClicked={(): void => {}}
+						/>
+						<ToggleSettingOption
+							position={UDim2.fromScale(0.5, 0.54)}
+							size={UDim2.fromScale(0.98, 0.045)}
+							settingName={`Pets Hidden`}
+							isEnabled={!props.settings.visual.petsDisplayed}
+							onClicked={(): void => {}}
+						/>
+						<ModifySettingOption
+							position={UDim2.fromScale(0.5, 0.595)}
+							size={UDim2.fromScale(0.98, 0.045)}
+							settingName={`Pet Animation`}
+							settingState={props.settings.visual.petAnimationType}
+							displayPercentage={false}
+							onIncrease={(): void => {}}
+							onDecrease={(): void => {}}
+						/>
+						<ModifySettingOption
+							position={UDim2.fromScale(0.5, 0.65)}
+							size={UDim2.fromScale(0.98, 0.045)}
+							settingName={`Pet Distance`}
+							settingState={props.settings.visual.petsStudsOfDistance}
+							displayPercentage={false}
+							onIncrease={(): void => {}}
+							onDecrease={(): void => {}}
+						/>
+						<ModifySettingOption
+							position={UDim2.fromScale(0.5, 0.705)}
+							size={UDim2.fromScale(0.98, 0.045)}
+							settingName={`Time of Day`}
+							settingState={props.settings.visual.timeOfDay}
+							displayPercentage={false}
 							onIncrease={(): void => {}}
 							onDecrease={(): void => {}}
 						/>

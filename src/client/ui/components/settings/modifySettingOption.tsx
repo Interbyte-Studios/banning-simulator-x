@@ -5,12 +5,14 @@ import { DecreaseButton } from "client/ui/elements/decreaseButton";
 import { IncreaseButton } from "client/ui/elements/increaseButton";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
+import { ValidPetAnimationType } from "shared/rodux/settings";
 
 interface ModifySettingOptionProps {
 	position: UDim2;
 	size: UDim2;
 	settingName: string;
-	settingState: number;
+	settingState: number | ValidPetAnimationType;
+	displayPercentage: boolean;
 	onIncrease: () => void;
 	onDecrease: () => void;
 }
@@ -46,11 +48,19 @@ export const ModifySettingOption = hooks((props: ModifySettingOptionProps) => {
 			<textlabel
 				AnchorPoint={vec2Middle}
 				Position={UDim2.fromScale(0.775, 0.5)}
-				Size={UDim2.fromScale()}
+				Size={UDim2.fromScale(0.175, 0.9)}
 				BackgroundTransparency={1}
-				TextSize={20}
+				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
-				Text={`${props.settingState * 10}%`}
+				Text={
+					typeIs(props.settingState, "number")
+						? props.displayPercentage
+							? `${props.settingState * 10}%`
+							: `${props.settingState}`
+						: props.settingState === "Following"
+						? `1`
+						: `2`
+				}
 				Font={font}
 			>
 				<BaseUIStroke Thickness={2} />
