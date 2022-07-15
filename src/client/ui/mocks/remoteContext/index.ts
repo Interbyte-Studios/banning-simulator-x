@@ -1,5 +1,5 @@
 import { createContext } from "@rbxts/roact";
-import { ToggleAutoHatchDefinition } from "shared/remotes/settings/toggleAuto";
+import { ToggleAutoHatchDefinition } from "shared/remotes/settings/gameplay/toggleAuto";
 import { EquipWeaponDefinition } from "shared/remotes/weapons/equipWeapon";
 import { PurchaseWeaponDefinition } from "shared/remotes/weapons/purchaseWeapon";
 

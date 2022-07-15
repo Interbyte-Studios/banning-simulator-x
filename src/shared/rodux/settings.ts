@@ -1,7 +1,6 @@
 import Rodux from "@rbxts/rodux";
 
 export type ValidGraphicsQuality = "High" | "Low";
-export type ValidUIColor = "Dark"; // will support more when ui is made.
 export type ValidPetAnimationType = "Following" | "Surrounding";
 
 export interface Settings {
@@ -18,7 +17,6 @@ export interface Settings {
 	visual: {
 		graphicsQuality: ValidGraphicsQuality;
 		timeOfDay: number;
-		uiColor: ValidUIColor;
 		petAnimationType: ValidPetAnimationType;
 		petsDisplayed: boolean;
 		petsStudsOfDistance: number;
@@ -34,7 +32,6 @@ export type SettingsActions =
 	| ToggleAuto
 	| ToggleGraphics
 	| ToggleTimeOfDay
-	| ToggleUIColor
 	| ToggleWalkSpeed
 	| TogglePetAnimationType
 	| TogglePetsDisplayed
@@ -64,10 +61,6 @@ interface ToggleGraphics extends Rodux.Action<"toggleGraphics"> {
 
 interface ToggleTimeOfDay extends Rodux.Action<"toggleTimeOfDay"> {
 	timeOfDay: number;
-}
-
-interface ToggleUIColor extends Rodux.Action<"toggleUIColor"> {
-	color: ValidUIColor;
 }
 
 interface ToggleWalkSpeed extends Rodux.Action<"toggleWalkSpeed"> {
@@ -162,17 +155,6 @@ export function toggleTimeOfDay(timeOfDay: number): ToggleTimeOfDay & Rodux.AnyA
 }
 
 /**
- * @param color The color of the ui.
- * @returns The Rodux action to dispatch.
- */
-export function toggleUIColor(color: ValidUIColor): ToggleUIColor & Rodux.AnyAction {
-	return {
-		type: "toggleUIColor",
-		color,
-	};
-}
-
-/**
  * @param walkSpeed The WalkSpeed of the player.
  * @returns The Rodux action to dispatch.
  */
@@ -230,7 +212,6 @@ const defaultSettings: Settings = {
 	visual: {
 		graphicsQuality: "High",
 		timeOfDay: 14,
-		uiColor: "Dark",
 		petAnimationType: "Surrounding",
 		petsDisplayed: true,
 		petsStudsOfDistance: 10,
@@ -284,12 +265,6 @@ export const settingsReducer = Rodux.createReducer<SettingsState, SettingsAction
 	toggleTimeOfDay: (state, action) => {
 		const newState: Settings = { ...state };
 		newState.visual = { ...state.visual, timeOfDay: action.timeOfDay };
-
-		return newState;
-	},
-	toggleUIColor: (state, action) => {
-		const newState: Settings = { ...state };
-		newState.visual = { ...state.visual, uiColor: action.color };
 
 		return newState;
 	},

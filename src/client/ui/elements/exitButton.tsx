@@ -8,16 +8,16 @@ import { hooks } from "../hooks";
 interface ExitButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
 	onClose: () => void;
 	minimizedSize: number;
-	maximimizedSize: number;
+	maximizedSize: number;
 }
 
 export const ExitButton = hooks((props: ExitButtonProps, { useEffect }) => {
 	// springs
 	const minizmizedSpring = new Flipper.Spring(props.minimizedSize, { frequency: 5 });
-	const maximizedSpring = new Flipper.Spring(props.maximimizedSize, { frequency: 5 });
+	const maximizedSpring = new Flipper.Spring(props.maximizedSize, { frequency: 5 });
 
 	// motor
-	const motor = new Flipper.SingleMotor(props.maximimizedSize);
+	const motor = new Flipper.SingleMotor(props.maximizedSize);
 	const [binding, setBinding] = Roact.createBinding(motor.getValue());
 
 	motor.onStep(setBinding);

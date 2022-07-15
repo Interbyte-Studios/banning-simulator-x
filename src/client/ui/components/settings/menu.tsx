@@ -9,7 +9,8 @@ import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { Settings } from "shared/rodux/settings";
 
-import { SettingsOption } from "./option";
+import { ModifySettingOption } from "./modifySettingOption";
+import { ToggleSettingOption } from "./toggleSettingOption";
 
 interface SettingsMenuProps extends SettingsMenuMappedProps {
 	isVisible: boolean;
@@ -78,14 +79,14 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 						>
 							<BaseUIStroke Thickness={2} />
 						</textlabel>
-						<SettingsOption
+						<ToggleSettingOption
 							position={UDim2.fromScale(0.5, 0.09)}
 							size={UDim2.fromScale(0.95, 0.045)}
 							settingName={`Button Click`}
 							isEnabled={props.settings.sound.buttonClick}
 							onClicked={(): void => {}}
 						/>
-						<SettingsOption
+						<ModifySettingOption
 							position={UDim2.fromScale(0.5, 0.145)}
 							size={UDim2.fromScale(0.95, 0.045)}
 							settingName={`Master Volume`}
