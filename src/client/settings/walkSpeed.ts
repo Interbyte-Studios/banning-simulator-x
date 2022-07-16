@@ -17,7 +17,7 @@ export function modifyWalkSpeed(
 	// check for maximum walk speed
 
 	// check for minimum walk speed
-	if (walkSpeedState <= 16) {
+	if (!increase && walkSpeedState <= 16) {
 		return;
 	}
 

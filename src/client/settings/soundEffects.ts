@@ -13,11 +13,11 @@ export function modifySoundEffects(
 	soundEffectsVolumeState: number,
 	remote: InferClientRemote<ToggleSoundEffectsVolumeDefinition>,
 ): void {
-	if (soundEffectsVolumeState >= 10) {
+	if (increase && soundEffectsVolumeState >= 10) {
 		return;
 	}
 
-	if (soundEffectsVolumeState <= 0) {
+	if (!increase && soundEffectsVolumeState <= 0) {
 		return;
 	}
 

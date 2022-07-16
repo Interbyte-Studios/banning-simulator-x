@@ -13,11 +13,11 @@ export function modifyPetsStudsOfDistance(
 	distanceState: number,
 	remote: InferClientRemote<TogglePetsStudsOfDistanceDefinition>,
 ): void {
-	if (distanceState >= 20) {
+	if (increase && distanceState >= 20) {
 		return;
 	}
 
-	if (distanceState <= 10) {
+	if (!increase && distanceState <= 10) {
 		return;
 	}
 
