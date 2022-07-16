@@ -6,6 +6,8 @@ import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
+import { ZonePurchaseButton } from "./zonePurchase/zonePurchaseButton";
+
 interface ZoneInfoProps {
 	zoneName: ZoneNames;
 	worldName: WorldName;
@@ -13,6 +15,7 @@ interface ZoneInfoProps {
 	price?: number;
 	rank?: number;
 	adornee: BasePart;
+	purchaseClicked: (zoneName: ZoneNames, worldname: WorldName) => void;
 }
 
 /**
@@ -35,8 +38,8 @@ export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 			<textlabel
 				Text={string.upper(props.zoneName)}
 				AnchorPoint={vec2Middle}
-				Size={UDim2.fromScale(0.8, 0.23)}
-				Position={UDim2.fromScale(0.5, 0.43)}
+				Size={UDim2.fromScale(0.8, 0.22)}
+				Position={UDim2.fromScale(0.5, 0.38)}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 				BackgroundTransparency={1}
 				TextScaled={true}
@@ -47,8 +50,8 @@ export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 			<textlabel
 				Text={props.worldName}
 				AnchorPoint={vec2Middle}
-				Position={UDim2.fromScale(0.5, 0.65)}
-				Size={UDim2.fromScale(0.3, 0.12)}
+				Position={UDim2.fromScale(0.5, 0.55)}
+				Size={UDim2.fromScale(0.3, 0.1)}
 				TextColor3={Color3.fromRGB(52, 190, 255)}
 				BackgroundTransparency={1}
 				TextScaled={true}
@@ -59,8 +62,8 @@ export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 			<textlabel
 				Text={props?.price !== undefined ? twoDpAbbreviator.numberToString(props.price) : "Free"}
 				AnchorPoint={vec2Middle}
-				Position={UDim2.fromScale(0.55, 0.85)}
-				Size={UDim2.fromScale(0.22, 0.16)}
+				Position={UDim2.fromScale(0.54, 0.71)}
+				Size={UDim2.fromScale(0.22, 0.17)}
 				BackgroundTransparency={1}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 				TextScaled={true}
@@ -89,6 +92,7 @@ export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
 			</imagelabel>
+			<ZonePurchaseButton onClick={(): void => props.purchaseClicked(props.zoneName, props.worldName)} />
 		</surfacegui>
 	);
 }
