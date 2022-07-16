@@ -1,6 +1,7 @@
 import Object from "@rbxts/object-utils";
 import Rodux from "@rbxts/rodux";
 import { t } from "@rbxts/t";
+import { QuestReward } from "shared/configs/quests";
 import { WorldName, WORLDS, Worlds } from "shared/configs/worlds";
 import { isValidZone, ZoneNames } from "shared/configs/zones";
 import { isValidWorld } from "shared/util/isValidWorld";
@@ -22,6 +23,7 @@ type QuestType = WorldQuest | ZoneQuest;
 
 export interface RedeemQuest extends Rodux.Action<"redeemQuest"> {
 	questType: QuestType;
+	rewardType: QuestReward;
 	name: string;
 }
 
@@ -29,9 +31,15 @@ export interface RedeemQuest extends Rodux.Action<"redeemQuest"> {
  * @param world The name of the world to redeem the quest for.
  * @param zone The name of the zone to redeem the quest for.
  * @param quest The name of the quest to redeem.
+ * @param reward The reward to give the user.
  * @returns The Rodux action to dispatch.
  */
-export function redeemZoneQuest(world: WorldName, zone: ZoneNames, quest: string): RedeemQuest & Rodux.AnyAction {
+export function redeemZoneQuest(
+	world: WorldName,
+	zone: ZoneNames,
+	quest: string,
+	reward: QuestReward,
+): RedeemQuest & Rodux.AnyAction {
 	return {
 		type: "redeemQuest",
 		questType: {
@@ -39,21 +47,24 @@ export function redeemZoneQuest(world: WorldName, zone: ZoneNames, quest: string
 			zone,
 		},
 		name: quest,
+		rewardType: reward,
 	};
 }
 
 /**
  * @param world The name of the world to redeem the quest for.
  * @param quest The name of the quest to redeem.
+ * @param reward The reward to give the user.
  * @returns The Rodux action to dispatch.
  */
-export function redeemWorldQuest(world: WorldName, quest: string): RedeemQuest & Rodux.AnyAction {
+export function redeemWorldQuest(world: WorldName, quest: string, reward: QuestReward): RedeemQuest & Rodux.AnyAction {
 	return {
 		type: "redeemQuest",
 		questType: {
 			world,
 		},
 		name: quest,
+		rewardType: reward,
 	};
 }
 

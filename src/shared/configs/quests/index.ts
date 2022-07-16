@@ -1,6 +1,7 @@
 import { StoreState } from "shared/rodux";
 
 import { Currency } from "../currencies";
+import { Variants } from "../pets";
 import { Worlds } from "../worlds";
 import { ZoneNames } from "../zones";
 
@@ -13,11 +14,15 @@ interface CurrencyReward {
 interface PetReward {
 	kind: "pet";
 	id: number;
+	guid: string;
+	variant: Variants;
 }
 
 interface TitleReward {
 	kind: "title";
 }
+
+export type QuestReward = CurrencyReward | PetReward | TitleReward;
 
 interface Quest {
 	/**
@@ -31,7 +36,7 @@ interface Quest {
 	/**
 	 * The reward to give to the player once they have completed the quest.
 	 */
-	specialReward: CurrencyReward | PetReward | TitleReward;
+	specialReward: QuestReward;
 	/**
 	 * The amount of experience to reward.
 	 */

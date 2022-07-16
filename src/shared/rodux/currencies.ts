@@ -3,6 +3,7 @@ import Rodux from "@rbxts/rodux";
 import { currencies, Currency } from "shared/configs/currencies";
 
 import { AddPet } from "./pets";
+import { RedeemQuest } from "./quests";
 import { PurchaseWeapon } from "./weapons";
 import { UnlockWorld, UnlockZone } from "./worlds";
 
@@ -47,7 +48,7 @@ const defaultCurrencies = Object.fromEntries(
 /* eslint-disable jsdoc/require-jsdoc */
 export const currenciesReducer = Rodux.createReducer<
 	CurrenciesState,
-	CurrenciesActions | PurchaseWeapon | UnlockWorld | UnlockZone | AddPet
+	CurrenciesActions | PurchaseWeapon | UnlockWorld | UnlockZone | AddPet | RedeemQuest
 >(defaultCurrencies, {
 	purchaseWeapon: (state, action) => {
 		const purchasedCurrency = state[action.cost.currency] - action.cost.amount;
@@ -78,6 +79,15 @@ export const currenciesReducer = Rodux.createReducer<
 		}
 
 		return { ...state, [action.currencyType]: purchasedCurrency };
+	},
+	redeemQuest: (state, action) => {
+		if (action.rewardType.kind !== "currency") {
+			return state;
+		}
+
+		const redeemedCurrency = state[action.rewardType.currency] + action.rewardType.amount;
+
+		return { ...state, [action.rewardType.currency]: redeemedCurrency };
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */

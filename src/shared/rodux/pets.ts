@@ -4,6 +4,8 @@ import { Currency } from "shared/configs/currencies";
 import { Variants } from "shared/configs/pets";
 import { Rarities } from "shared/configs/rarities";
 
+import { RedeemQuest } from "./quests";
+
 export interface Pet {
 	id: number;
 	guid: string;
@@ -46,7 +48,7 @@ export function addPets(cost: number, currencyType: Currency, pets: Array<PetDat
 const defaultPets: PetsState = [];
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const petsReducer = Rodux.createReducer<PetsState, PetsActions>(defaultPets, {
+export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQuest>(defaultPets, {
 	addPet: (state, action) => {
 		const newState: PetsState = [...state];
 
@@ -64,6 +66,25 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions>(defaultPe
 			newState.push(newPet);
 		}
 		return newState;
+	},
+	redeemQuest: (state, action) => {
+		if (action.rewardType.kind !== "pet") {
+			return state;
+		}
+
+		const { id, guid, variant } = action.rewardType;
+
+		return [
+			...state,
+			{
+				id,
+				guid,
+				equipped: false,
+				locked: false,
+				variant,
+				enhancements: [],
+			},
+		];
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */
