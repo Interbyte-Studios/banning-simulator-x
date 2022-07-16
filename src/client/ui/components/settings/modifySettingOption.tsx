@@ -43,7 +43,7 @@ export const ModifySettingOption = hooks((props: ModifySettingOptionProps) => {
 				Position={UDim2.fromScale(0.625, 0.5)}
 				minimizedSize={0.75}
 				maximizedSize={0.85}
-				onPressed={(): void => {}}
+				onPressed={(): void => props.onDecrease()}
 			/>
 			<textlabel
 				AnchorPoint={vec2Middle}
@@ -69,7 +69,7 @@ export const ModifySettingOption = hooks((props: ModifySettingOptionProps) => {
 				Position={UDim2.fromScale(0.925, 0.5)}
 				minimizedSize={0.75}
 				maximizedSize={0.85}
-				onPressed={(): void => {}}
+				onPressed={(): void => props.onIncrease()}
 			/>
 		</imagelabel>
 	);

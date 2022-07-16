@@ -13,6 +13,7 @@ export function modifyMusicVolume(
 	musicVolumeState: number,
 	remote: InferClientRemote<ToggleMusicVolumeDefinition>,
 ): void {
+	warn("music called");
 	if (musicVolumeState >= 10) {
 		return;
 	}
@@ -23,4 +24,5 @@ export function modifyMusicVolume(
 
 	const currentState = increase ? musicVolumeState + 1 : musicVolumeState - 1;
 	remote.SendToServer(currentState);
+	warn("music sent");
 }
