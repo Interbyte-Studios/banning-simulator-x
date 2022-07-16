@@ -51,19 +51,19 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		id: 3,
 		pets: HONEYCOMB_EGG_PETS,
 		world: "Ban Land",
-		zone: "Sakura",
+		zone: "Honeycomb",
 	},
 	Candy: {
 		id: 4,
 		pets: CANDY_EGG_PETS,
 		world: "Ban Land",
-		zone: "Food Land",
+		zone: "Candy Land",
 	},
 	Molten: {
 		id: 5,
 		pets: MOLTEN_EGG_PETS,
 		world: "Ban Land",
-		zone: "Lavalands",
+		zone: "Lava Lands",
 	},
 });
 
