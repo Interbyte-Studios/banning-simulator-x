@@ -13,7 +13,7 @@ export function modifyTimeOfDay(
 	timeOfDayState: number,
 	remote: InferClientRemote<ToggleTimeOfDayDefinition>,
 ): void {
-	if (increase && timeOfDayState >= 10) {
+	if (increase && timeOfDayState >= 24) {
 		return;
 	}
 
