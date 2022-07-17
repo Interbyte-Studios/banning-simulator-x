@@ -44,7 +44,7 @@ export function purchaseZone(
 	// check if the player owns the previous zone.
 	const ownsPreviousZone = worldData.zones.find((zone) => zone === previousZoneData.name) !== undefined;
 	if (!ownsPreviousZone) {
-		warn(`Expected player to own previous zone ${previousZoneData?.name}`);
+		warn(`Expected player to own previous zone ${previousZoneData.name}`);
 		return;
 	}
 
