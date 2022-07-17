@@ -4,6 +4,7 @@ import { ZoneNames } from "shared/configs/zones";
 import { PurchaseZoneDefinition } from "shared/remotes/purchaseZone";
 import { Store } from "shared/rodux";
 import { getZoneData } from "shared/util/getZoneData";
+import { getZoneDataById } from "shared/util/getZoneDataById";
 
 /**
  * Handles the purchasing of the zone.
@@ -20,14 +21,32 @@ export function purchaseZone(
 	purchaseZoneRemote: InferClientRemote<PurchaseZoneDefinition>,
 ): void {
 	const worldData = store.getState().worlds.find((world) => world.name === worldName);
-	const doesOwnZone = worldData?.zones.find((zone) => zone === zoneName) !== undefined;
+	if (worldData === undefined) {
+		return;
+	}
 
+	const doesOwnZone = worldData?.zones.find((zone) => zone === zoneName) !== undefined;
 	if (doesOwnZone) {
 		return;
 	}
 
 	// get zone data.
 	const zoneData = getZoneData(worldName, zoneName);
+
+	// get zone data for the previous zone.
+	const previousZoneData = getZoneDataById(worldName, zoneData.id - 1);
+
+	// check if its valid.
+	if (!previousZoneData) {
+		return;
+	}
+
+	// check if the player owns the previous zone.
+	const ownsPreviousZone = worldData.zones.find((zone) => zone === previousZoneData.name) !== undefined;
+	if (!ownsPreviousZone) {
+		warn(`Expected player to own previous zone ${previousZoneData?.name}`);
+		return;
+	}
 
 	// check to be sure if the zone is for purchase.
 	assert(zoneData.cost !== undefined, `Zone ${zoneName} of world ${worldName} was not purchasable`);
