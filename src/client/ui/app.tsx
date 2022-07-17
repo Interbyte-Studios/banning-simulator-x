@@ -22,7 +22,7 @@ export function app(props: { player: Player; store: Store }): Roact.Element {
 				<ToggleWeaponButton player={props.player} />
 				<WeaponShop store={props.store} />
 				<EggsUI />
-				<ZoneInfoUI />
+				<ZoneInfoUI store={props.store} />
 			</>
 		</RoactRodux.StoreProvider>
 	);
