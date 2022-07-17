@@ -38,8 +38,6 @@ export function purchaseZone(
 		return;
 	}
 
-	print("wow");
-
 	// send to server to request purchase of zone
 	purchaseZoneRemote.SendToServer(worldName, zoneName);
 }
