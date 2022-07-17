@@ -23,6 +23,7 @@ type QuestType = WorldQuest | ZoneQuest;
 
 export interface RedeemQuest extends Rodux.Action<"redeemQuest"> {
 	questType: QuestType;
+	experience: number;
 	rewardType: QuestReward;
 	name: string;
 }
@@ -31,6 +32,7 @@ export interface RedeemQuest extends Rodux.Action<"redeemQuest"> {
  * @param world The name of the world to redeem the quest for.
  * @param zone The name of the zone to redeem the quest for.
  * @param quest The name of the quest to redeem.
+ * @param experience The amount of experience to reward the user with.
  * @param reward The reward to give the user.
  * @returns The Rodux action to dispatch.
  */
@@ -38,6 +40,7 @@ export function redeemZoneQuest(
 	world: WorldName,
 	zone: ZoneNames,
 	quest: string,
+	experience: number,
 	reward: QuestReward,
 ): RedeemQuest & Rodux.AnyAction {
 	return {
@@ -47,6 +50,7 @@ export function redeemZoneQuest(
 			zone,
 		},
 		name: quest,
+		experience,
 		rewardType: reward,
 	};
 }
@@ -54,16 +58,23 @@ export function redeemZoneQuest(
 /**
  * @param world The name of the world to redeem the quest for.
  * @param quest The name of the quest to redeem.
+ * @param experience The amount of experience to reward the user with.
  * @param reward The reward to give the user.
  * @returns The Rodux action to dispatch.
  */
-export function redeemWorldQuest(world: WorldName, quest: string, reward: QuestReward): RedeemQuest & Rodux.AnyAction {
+export function redeemWorldQuest(
+	world: WorldName,
+	quest: string,
+	experience: number,
+	reward: QuestReward,
+): RedeemQuest & Rodux.AnyAction {
 	return {
 		type: "redeemQuest",
 		questType: {
 			world,
 		},
 		name: quest,
+		experience,
 		rewardType: reward,
 	};
 }

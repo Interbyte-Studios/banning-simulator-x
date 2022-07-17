@@ -78,3 +78,25 @@ export const QUESTS: {
 	},
 };
 /* eslint-enable jsdoc/require-jsdoc */
+
+/**
+ * Returns if the value is a valid quest.
+ *
+ * @param x The value to check.
+ * @returns If the given object was a valid quest name.
+ */
+export function isValidQuest(x: unknown): x is string {
+	for (const [, world] of pairs(QUESTS)) {
+		if (world.world.find((quest) => quest.name === x)) {
+			return true;
+		}
+
+		for (const [, zone] of pairs(world.zone)) {
+			if (zone.find((quest) => quest.name === x)) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
