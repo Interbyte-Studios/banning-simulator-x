@@ -34,6 +34,21 @@ const defaultWorlds: WorldsState = [
 	},
 ];
 
+/**
+ * Purchases a zone, saving it to players owned zones.
+ *
+ * @param data The data associated with the zone purchase.
+ * @returns The Rodux action to dispatch.
+ */
+export function unlockZone(data: Omit<UnlockZone, "type">): UnlockZone & Rodux.AnyAction {
+	return {
+		type: "unlockZone",
+		zoneName: data.zoneName,
+		worldName: data.worldName,
+		currency: data.currency,
+	};
+}
+
 /* eslint-disable jsdoc/require-jsdoc */
 export const worldsReducer = Rodux.createReducer<WorldsState, WorldActions>(defaultWorlds, {
 	unlockWorld: (state, action) => {
