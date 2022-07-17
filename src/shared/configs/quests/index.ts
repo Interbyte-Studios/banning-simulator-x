@@ -68,7 +68,7 @@ export const QUESTS: {
 		world: [
 			{
 				name: "Kill 30 mobs",
-				validate: () => ({ progress: 10, completionProgress: 20 }),
+				validate: () => ({ progress: 20, completionProgress: 20 }),
 				experienceReward: 50,
 				specialReward: {
 					kind: "title",
@@ -79,6 +79,22 @@ export const QUESTS: {
 };
 /* eslint-enable jsdoc/require-jsdoc */
 
+// runtime-check against duplicate quest names
+const questNames = new Set();
+for (const [, world] of pairs(QUESTS)) {
+	for (const quest of world.world) {
+		assert(!questNames.has(quest.name), `Quest ${quest.name} was a duplicate quest`);
+		questNames.add(quest.name);
+	}
+
+	for (const [, zone] of pairs(world.zone)) {
+		for (const quest of zone) {
+			assert(!questNames.has(quest.name), `Quest ${quest.name} was a duplicate quest`);
+			questNames.add(quest.name);
+		}
+	}
+}
+
 /**
  * Returns if the value is a valid quest.
  *
@@ -86,17 +102,5 @@ export const QUESTS: {
  * @returns If the given object was a valid quest name.
  */
 export function isValidQuest(x: unknown): x is string {
-	for (const [, world] of pairs(QUESTS)) {
-		if (world.world.find((quest) => quest.name === x)) {
-			return true;
-		}
-
-		for (const [, zone] of pairs(world.zone)) {
-			if (zone.find((quest) => quest.name === x)) {
-				return true;
-			}
-		}
-	}
-
-	return false;
+	return questNames.has(x);
 }
