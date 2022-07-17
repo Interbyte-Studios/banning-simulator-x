@@ -87,5 +87,19 @@ export = (): void => {
 
 			cleanup();
 		});
+
+		it("should not purchase a zone the player does not own the previous zone", () => {
+			const worldName = "Ban Land";
+			const zoneName = "Honeycomb";
+
+			const player = useMockPlayer();
+			const { store, dispatchedActions, cleanup } = createDummyStore(player, {
+				worlds: [{ name: "Ban Land", zones: ["Forest", "Desert"] }],
+			});
+			purchaseZone(store, worldName, zoneName);
+			assertDeepEqual(dispatchedActions, []);
+
+			cleanup();
+		});
 	});
 };
