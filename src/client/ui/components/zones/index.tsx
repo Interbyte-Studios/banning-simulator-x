@@ -44,9 +44,13 @@ export const ZoneInfoUI = hooks((props: ZoneInfoUIProps, { useState, useContext 
 				}}
 			/>
 			{Object.entries(WORLDS).map(([worldName, worldData]) => {
+				const worldInfo = props.store.getState().worlds.find((world) => world.name === worldName);
+
 				return (
 					<>
 						{Object.entries(worldData.zones).map(([zoneName, zoneData]) => {
+							const ownsZone =
+								worldInfo !== undefined ? worldInfo?.zones.find((zone) => zone === zoneName) !== undefined : false;
 							const sign = Workspace.decoration[worldName]
 								.FindFirstChild(zoneName)
 								?.FindFirstChild("sign")
@@ -66,6 +70,7 @@ export const ZoneInfoUI = hooks((props: ZoneInfoUIProps, { useState, useContext 
 									price={zoneData.cost?.amount ?? 0}
 									rank={zoneData.cost?.requiredRank ?? 0}
 									adornee={sign}
+									ownsZone={ownsZone}
 									purchaseClicked={(zoneName: ZoneNames, worldName: WorldName): void => {
 										updateInfo({ world: worldName, zone: zoneName });
 										updatePromptStatus(true);
