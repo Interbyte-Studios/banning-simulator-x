@@ -3,6 +3,7 @@ import { ZoneNames } from "shared/configs/zones";
 import { Store } from "shared/rodux";
 import { unlockZone } from "shared/rodux/worlds";
 import { getZoneData } from "shared/util/getZoneData";
+import { getZoneDataById } from "shared/util/getZoneDataById";
 
 /**
  * Purchases a zone for a player.
@@ -13,15 +14,33 @@ import { getZoneData } from "shared/util/getZoneData";
  */
 export function purchaseZone(store: Store, worldName: WorldName, zoneName: ZoneNames): void {
 	const worldData = store.getState().worlds.find((worldData) => worldData.name === worldName);
-	const ownsZone = worldData?.zones.find((zone) => zone === zoneName) !== undefined;
+	if (worldData === undefined) {
+		return;
+	}
 
 	// check if player owns the zone
+	const ownsZone = worldData.zones.find((zone) => zone === zoneName) !== undefined;
 	if (ownsZone) {
 		return;
 	}
 
 	// get zone data
 	const zoneData = getZoneData(worldName, zoneName);
+
+	// get zone data for the previous zone.
+	const previousZoneData = getZoneDataById(worldName, zoneData.id - 1);
+
+	// check if its valid.
+	if (!previousZoneData) {
+		return;
+	}
+
+	// check if the player owns the previous zone.
+	const ownsPreviousZone = worldData.zones.find((zone) => zone === previousZoneData.name) !== undefined;
+	if (!ownsPreviousZone) {
+		warn(`Expected player to own previous zone ${previousZoneData?.name}`);
+		return;
+	}
 
 	// check to be sure the zone can be purchased
 	if (zoneData.cost === undefined) {
