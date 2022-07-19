@@ -95,14 +95,14 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					<ToggleSettingOption
 						position={UDim2.fromScale(0.5, 0.09)}
 						size={UDim2.fromScale(0.98, 0.045)}
-						settingName={`Button Click SFX`}
+						settingName={"Button Click SFX"}
 						isEnabled={props.settings.sound.buttonClick}
 						onClicked={(): void => toggleButtonClickSFX.SendToServer(!props.settings.sound.buttonClick)}
 					/>
 					<ModifySettingOption
 						position={UDim2.fromScale(0.5, 0.145)}
 						size={UDim2.fromScale(0.98, 0.045)}
-						settingName={`Music Volume`}
+						settingName={"Music Volume"}
 						settingState={props.settings.sound.music}
 						displayPercentage={true}
 						onIncrease={(): void => setMusicVolume(props.settings.sound.music + 1, toggleMusicVolume)}
@@ -111,7 +111,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					<ModifySettingOption
 						position={UDim2.fromScale(0.5, 0.2)}
 						size={UDim2.fromScale(0.98, 0.045)}
-						settingName={`SFX Volume`}
+						settingName={"SFX Volume"}
 						settingState={props.settings.sound.soundEffects}
 						displayPercentage={true}
 						onIncrease={(): void => setSoundEffects(props.settings.sound.soundEffects + 1, toggleSoundEffectsVolume)}
@@ -132,14 +132,14 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					<ToggleSettingOption
 						position={UDim2.fromScale(0.5, 0.31)}
 						size={UDim2.fromScale(0.98, 0.045)}
-						settingName={`Auto Hatch`}
+						settingName={"Auto Hatch"}
 						isEnabled={props.settings.gameplay.autoHatch}
 						onClicked={(): void => toggleAuto.SendToServer()}
 					/>
 					<ModifySettingOption
 						position={UDim2.fromScale(0.5, 0.365)}
 						size={UDim2.fromScale(0.98, 0.045)}
-						settingName={`Walk Speed`}
+						settingName={"Walk Speed"}
 						settingState={props.settings.gameplay.walkSpeed}
 						displayPercentage={false}
 						onIncrease={(): void => setWalkSpeed(props.settings.gameplay.walkSpeed + 1, toggleWalkSpeed)}
@@ -160,7 +160,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					<ToggleSettingOption
 						position={UDim2.fromScale(0.5, 0.485)}
 						size={UDim2.fromScale(0.98, 0.045)}
-						settingName={`Low Graphics`}
+						settingName={"Low Graphics"}
 						isEnabled={props.settings.visual.graphicsQuality === "Low"}
 						onClicked={(): void =>
 							toggleGraphics.SendToServer(props.settings.visual.graphicsQuality === "High" ? "Low" : "High")
@@ -169,14 +169,14 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					<ToggleSettingOption
 						position={UDim2.fromScale(0.5, 0.54)}
 						size={UDim2.fromScale(0.98, 0.045)}
-						settingName={`Pets Hidden`}
+						settingName={"Pets Hidden"}
 						isEnabled={!props.settings.visual.petsDisplayed}
 						onClicked={(): void => togglePetsDisplayed.SendToServer(!props.settings.visual.petsDisplayed)}
 					/>
 					<ModifySettingOption
 						position={UDim2.fromScale(0.5, 0.595)}
 						size={UDim2.fromScale(0.98, 0.045)}
-						settingName={`Pet Animation`}
+						settingName={"Pet Animation"}
 						settingState={props.settings.visual.petAnimationType}
 						displayPercentage={false}
 						onIncrease={(): void =>
@@ -193,7 +193,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					<ModifySettingOption
 						position={UDim2.fromScale(0.5, 0.65)}
 						size={UDim2.fromScale(0.98, 0.045)}
-						settingName={`Pet Distance`}
+						settingName={"Pet Distance"}
 						settingState={props.settings.visual.petsStudsOfDistance}
 						displayPercentage={false}
 						onIncrease={(): void =>
@@ -206,7 +206,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					<ModifySettingOption
 						position={UDim2.fromScale(0.5, 0.705)}
 						size={UDim2.fromScale(0.98, 0.045)}
-						settingName={`Time of Day`}
+						settingName={"Time of Day"}
 						settingState={props.settings.visual.timeOfDay}
 						displayPercentage={false}
 						onIncrease={(): void => setTimeOfDay(props.settings.visual.timeOfDay + 1, toggleTimeOfDay)}
