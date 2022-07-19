@@ -12,21 +12,22 @@ import { getZoneDataById } from "shared/util/getZoneDataById";
  * @param currencies The Player's currencies state.
  * @param worldName The name of the world the zone belongs to.
  * @param zoneName The name of the zone to purchase.
+ * @returns A boolean to determine if the player can purchase the zone.
  */
-export function zonePurchaseCheck(
+export function canPurchaseZone(
 	worlds: WorldsState,
 	currencies: CurrenciesState,
 	worldName: WorldName,
 	zoneName: ZoneNames,
-): void {
+): boolean {
 	const worldData = worlds.find((world) => world.name === worldName);
 	if (worldData === undefined) {
-		return;
+		return false;
 	}
 
 	const doesOwnZone = worldData.zones.find((zone) => zone === zoneName) !== undefined;
 	if (doesOwnZone) {
-		return;
+		return false;
 	}
 
 	// get zone data.
@@ -37,25 +38,27 @@ export function zonePurchaseCheck(
 
 	// check if its valid.
 	if (previousZoneData === undefined) {
-		return;
+		return false;
 	}
 
 	// check if the player owns the previous zone.
 	const ownsPreviousZone = worldData.zones.find((zone) => zone === previousZoneData.name) !== undefined;
 	if (!ownsPreviousZone) {
 		warn(`Expected player to own previous zone ${previousZoneData.name}`);
-		return;
+		return false;
 	}
 
 	// check to be sure if the zone is for purchase.
 	if (zoneData.cost === undefined) {
 		warn(`Zone ${zoneName} of world ${worldName} was not purchasable`);
-		return;
+		return false;
 	}
 
 	// check to be sure player has enough currency to purchase the zone
 	if (currencies[zoneData.cost.currency] < zoneData.cost.amount) {
 		warn(`Not enough currency to purchase zone ${zoneName}`);
-		return;
+		return false;
 	}
+
+	return true;
 }
