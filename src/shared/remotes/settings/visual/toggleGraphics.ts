@@ -1,5 +1,8 @@
 import Net from "@rbxts/net";
-import { ValidGraphicsQuality } from "shared/rodux/settings";
+import { createTypeChecker } from "@rbxts/net/out/middleware";
+import { isValidGraphicsQuality, ValidGraphicsQuality } from "shared/rodux/settings";
 
-export const toggleGraphicsDefinition = Net.Definitions.ClientToServerEvent<[quality: ValidGraphicsQuality]>();
+export const toggleGraphicsDefinition = Net.Definitions.ClientToServerEvent<[quality: ValidGraphicsQuality]>([
+	createTypeChecker(isValidGraphicsQuality),
+]);
 export type ToggleGraphicsDefinition = typeof toggleGraphicsDefinition;

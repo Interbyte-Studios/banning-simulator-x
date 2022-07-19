@@ -1,7 +1,11 @@
 import Rodux from "@rbxts/rodux";
+import { t } from "@rbxts/t";
 
-export type ValidGraphicsQuality = "High" | "Low";
-export type ValidPetAnimationType = "Following" | "Surrounding";
+export const isValidGraphicsQuality = t.literal("High", "Low");
+export type ValidGraphicsQuality = t.static<typeof isValidGraphicsQuality>;
+
+export const isValidPetAnimationType = t.literal("Following", "Surrounding");
+export type ValidPetAnimationType = t.static<typeof isValidPetAnimationType>;
 
 export interface Settings {
 	sound: {
