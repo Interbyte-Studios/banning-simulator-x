@@ -18,12 +18,26 @@ function mapStateToProps(state: StoreState): Settings {
 
 export const SettingsUI = RoactRodux.connect(mapStateToProps)(
 	hooks((_, { useState }) => {
-		const [isMenuButtonVisible, setMenuButtonVisibility] = useState(true);
+		const [isMenuOpen, setMenuVisibility] = useState(false);
 
-		let component: Roact.Element;
-
-		if (isMenuButtonVisible) {
-			component = (
+		if (isMenuOpen) {
+			return (
+				<frame
+					BackgroundTransparency={1}
+					AnchorPoint={vec2Middle}
+					Position={UDim2.fromScale(0.5, 0.5)}
+					Size={UDim2.fromScale(0.3, 0.5)}
+				>
+					<SettingsMenu
+						isVisible={isMenuOpen}
+						toggleVisibility={(visible: boolean): void => {
+							setMenuVisibility(visible);
+						}}
+					/>
+				</frame>
+			);
+		} else {
+			return (
 				<frame
 					BackgroundTransparency={1}
 					AnchorPoint={vec2Middle}
@@ -32,31 +46,13 @@ export const SettingsUI = RoactRodux.connect(mapStateToProps)(
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 					<SettingsMenuButton
-						isVisible={isMenuButtonVisible}
+						isVisible={!isMenuOpen}
 						toggleVisibility={(visible: boolean): void => {
-							setMenuButtonVisibility(visible);
-						}}
-					/>
-				</frame>
-			);
-		} else {
-			component = (
-				<frame
-					BackgroundTransparency={1}
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.3, 0.5)}
-				>
-					<SettingsMenu
-						isVisible={!isMenuButtonVisible}
-						toggleVisibility={(visible: boolean): void => {
-							setMenuButtonVisibility(!visible);
+							setMenuVisibility(!visible);
 						}}
 					/>
 				</frame>
 			);
 		}
-
-		return component;
 	}),
 );
