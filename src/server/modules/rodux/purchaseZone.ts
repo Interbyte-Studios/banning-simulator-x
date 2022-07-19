@@ -2,8 +2,8 @@ import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
 import { Store } from "shared/rodux";
 import { unlockZone } from "shared/rodux/worlds";
+import { canPurchaseZone } from "shared/util/canPurchaseZone";
 import { getZoneData } from "shared/util/getZoneData";
-import { zonePurchaseCheck } from "shared/util/zonePurchaseCheck";
 
 /**
  * Purchases a zone for a player.
@@ -18,8 +18,10 @@ export function purchaseZone(store: Store, worldName: WorldName, zoneName: ZoneN
 		return;
 	}
 
-	// check if the player can purchase the zone.
-	zonePurchaseCheck(store.getState().worlds, store.getState().currencies, worldName, zoneName);
+	// Checks if the player can purchase the zone.
+	if (!canPurchaseZone(store.getState().worlds, store.getState().currencies, worldName, zoneName)) {
+		return;
+	}
 
 	// purchase zone
 	store.dispatch(
