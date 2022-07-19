@@ -1,9 +1,9 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import assetIds from "shared/assets";
-import { Currency } from "shared/configs/currencies";
 import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
+import { getZoneData } from "shared/util/getZoneData";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { ZonePurchaseButton } from "./zonePurchase/zonePurchaseButton";
@@ -11,12 +11,9 @@ import { ZonePurchaseButton } from "./zonePurchase/zonePurchaseButton";
 interface ZoneInfoProps {
 	zoneName: ZoneNames;
 	worldName: WorldName;
-	currency: Currency;
-	price?: number;
-	rank?: number;
 	adornee: BasePart;
 	ownsZone: boolean;
-	purchaseClicked: (zoneName: ZoneNames, worldname: WorldName) => void;
+	onPurchase: (zoneName: ZoneNames, worldName: WorldName) => void;
 }
 
 /**
@@ -26,6 +23,8 @@ interface ZoneInfoProps {
  * @returns Roact Element for zone info.
  */
 export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
+	const zoneData = getZoneData(props.worldName, props.zoneName);
+
 	if (props.ownsZone) {
 		return (
 			<surfacegui
@@ -121,7 +120,7 @@ export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 					<uistroke Thickness={3} Color={Color3.fromRGB(10, 50, 65)} />
 				</textlabel>
 				<textlabel
-					Text={props?.price !== undefined ? twoDpAbbreviator.numberToString(props.price) : "Free"}
+					Text={twoDpAbbreviator.numberToString(zoneData.cost?.amount ?? 0) ?? "Free"}
 					AnchorPoint={vec2Middle}
 					Position={UDim2.fromScale(0.54, 0.71)}
 					Size={UDim2.fromScale(0.22, 0.17)}
@@ -133,7 +132,7 @@ export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 				>
 					<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={3} />
 					<imagelabel
-						Image={assetIds.images.currencies[props.currency]}
+						Image={assetIds.images.currencies[zoneData.cost?.currency ?? "gold"]}
 						BackgroundTransparency={1}
 						ScaleType={Enum.ScaleType.Fit}
 						AnchorPoint={vec2Middle}
@@ -153,7 +152,7 @@ export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 				</imagelabel>
-				<ZonePurchaseButton onClick={(): void => props.purchaseClicked(props.zoneName, props.worldName)} />
+				<ZonePurchaseButton onClicked={(): void => props.onPurchase(props.zoneName, props.worldName)} />
 			</surfacegui>
 		);
 	}
