@@ -29,8 +29,8 @@ export const SettingsUI = RoactRodux.connect(mapStateToProps)(
 					Size={UDim2.fromScale(0.3, 0.5)}
 				>
 					<SettingsMenu
-						toggleVisibility={(visible: boolean): void => {
-							setMenuVisibility(visible);
+						hideMenu={(): void => {
+							setMenuVisibility(false);
 						}}
 					/>
 				</frame>

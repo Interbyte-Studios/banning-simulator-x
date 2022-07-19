@@ -18,7 +18,7 @@ import { ModifySettingOption } from "./modifySettingOption";
 import { ToggleSettingOption } from "./toggleSettingOption";
 
 interface SettingsMenuProps extends SettingsMenuMappedProps {
-	toggleVisibility: (visible: boolean) => void;
+	hideMenu: () => void;
 }
 
 interface SettingsMenuMappedProps {
@@ -217,7 +217,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.975, 0.065)}
 					minimizedSize={0.125}
 					maximizedSize={0.15}
-					onClose={(): void => props.toggleVisibility(false)}
+					onClose={(): void => props.hideMenu()}
 				/>
 			</imagebutton>
 		);
