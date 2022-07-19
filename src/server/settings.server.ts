@@ -66,4 +66,4 @@ togglePetsStudsOfDistanceRemote.Connect(
 
 // [ Toggle Time of Day Remote ]
 const toggleTimeOfDayRemote = visualRemotes.Create("toggleTimeOfDay");
-toggleTimeOfDayRemote.Connect(withPlayerStore((_, store, _time) => store.dispatch(toggleTimeOfDay(_time))));
+toggleTimeOfDayRemote.Connect(withPlayerStore((_, store, timeOfDay) => store.dispatch(toggleTimeOfDay(timeOfDay))));
