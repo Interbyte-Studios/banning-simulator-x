@@ -8,7 +8,7 @@ const player = Players.LocalPlayer;
  *
  * @param walkSpeed The amount of WalkSpeed the player has.
  */
-function manageWalkSpeed(walkSpeed: number): void {
+function changeWalkSpeed(walkSpeed: number): void {
 	const character = player.Character;
 	assert(character, `Failed to get Character for ${player.Name}`);
 
@@ -20,10 +20,10 @@ function manageWalkSpeed(walkSpeed: number): void {
 
 onStoreCreated(player)
 	.andThen((store) => {
-		manageWalkSpeed(store.getState().settings.gameplay.walkSpeed);
+		changeWalkSpeed(store.getState().settings.gameplay.walkSpeed);
 
 		player.CharacterAdded.Connect(() => {
-			manageWalkSpeed(store.getState().settings.gameplay.walkSpeed);
+			changeWalkSpeed(store.getState().settings.gameplay.walkSpeed);
 		});
 
 		store.changed.connect((newState, oldState) => {
@@ -31,7 +31,7 @@ onStoreCreated(player)
 				return;
 			}
 
-			manageWalkSpeed(store.getState().settings.gameplay.walkSpeed);
+			changeWalkSpeed(store.getState().settings.gameplay.walkSpeed);
 		});
 	})
 	.catch((e) => {
