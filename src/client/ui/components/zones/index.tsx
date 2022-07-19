@@ -9,7 +9,7 @@ import { ZoneNames } from "shared/configs/zones";
 import { Store } from "shared/rodux";
 
 import { ZoneInfoDisplay } from "./zoneInfoDisplay";
-import { ZonePurhasePromtpFrame } from "./zonePurchase/zonePurchasePromptFrame";
+import { ZonePurhcasePromptFrame } from "./zonePurchase/zonePurchasePromptFrame";
 
 interface ZoneInfoUIProps {
 	store: Store;
@@ -32,7 +32,7 @@ export const ZoneInfoUI = hooks((props: ZoneInfoUIProps, { useState, useContext 
 
 	return (
 		<>
-			<ZonePurhasePromtpFrame
+			<ZonePurhcasePromptFrame
 				worldName={selectedInfo.world}
 				zoneName={selectedInfo.zone}
 				visibility={promptStatus}

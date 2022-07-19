@@ -23,7 +23,7 @@ const springProps = {
 	dampingRatio: 0.5,
 };
 
-export const ZonePurhasePromtpFrame = hooks((props: ZonePurchasePromptProps) => {
+export const ZonePurhcasePromptFrame = hooks((props: ZonePurchasePromptProps) => {
 	const zoneData = getZoneData(props.worldName, props.zoneName);
 
 	// confirm button motor
