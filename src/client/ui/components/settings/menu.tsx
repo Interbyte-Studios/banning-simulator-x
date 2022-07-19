@@ -1,10 +1,10 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { modifyMusicVolume } from "client/settings/musicVolume";
-import { modifyPetsStudsOfDistance } from "client/settings/petStudsOfDistance";
-import { modifySoundEffects } from "client/settings/soundEffects";
-import { modifyTimeOfDay } from "client/settings/timeOfDay";
-import { modifyWalkSpeed } from "client/settings/walkSpeed";
+import { setMusicVolume } from "client/settings/musicVolume";
+import { setsPetsStudsOfDistance } from "client/settings/petStudsOfDistance";
+import { setSoundEffects } from "client/settings/soundEffects";
+import { setTimeOfDay } from "client/settings/timeOfDay";
+import { setWalkSpeed } from "client/settings/walkSpeed";
 import { font, udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { ExitButton } from "client/ui/elements/exitButton";
@@ -109,8 +109,8 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 							settingName={`Music Volume`}
 							settingState={props.settings.sound.music}
 							displayPercentage={true}
-							onIncrease={(): void => modifyMusicVolume(true, props.settings.sound.music, toggleMusicVolume)}
-							onDecrease={(): void => modifyMusicVolume(false, props.settings.sound.music, toggleMusicVolume)}
+							onIncrease={(): void => setMusicVolume(props.settings.sound.music + 1, toggleMusicVolume)}
+							onDecrease={(): void => setMusicVolume(props.settings.sound.music - 1, toggleMusicVolume)}
 						/>
 						<ModifySettingOption
 							position={UDim2.fromScale(0.5, 0.2)}
@@ -118,12 +118,8 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 							settingName={`SFX Volume`}
 							settingState={props.settings.sound.soundEffects}
 							displayPercentage={true}
-							onIncrease={(): void =>
-								modifySoundEffects(true, props.settings.sound.soundEffects, toggleSoundEffectsVolume)
-							}
-							onDecrease={(): void =>
-								modifySoundEffects(false, props.settings.sound.soundEffects, toggleSoundEffectsVolume)
-							}
+							onIncrease={(): void => setSoundEffects(props.settings.sound.soundEffects + 1, toggleSoundEffectsVolume)}
+							onDecrease={(): void => setSoundEffects(props.settings.sound.soundEffects - 1, toggleSoundEffectsVolume)}
 						/>
 						<textlabel
 							AnchorPoint={vec2Middle}
@@ -150,8 +146,8 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 							settingName={`Walk Speed`}
 							settingState={props.settings.gameplay.walkSpeed}
 							displayPercentage={false}
-							onIncrease={(): void => modifyWalkSpeed(true, props.settings.gameplay.walkSpeed, toggleWalkSpeed)}
-							onDecrease={(): void => modifyWalkSpeed(false, props.settings.gameplay.walkSpeed, toggleWalkSpeed)}
+							onIncrease={(): void => setWalkSpeed(props.settings.gameplay.walkSpeed + 1, toggleWalkSpeed)}
+							onDecrease={(): void => setWalkSpeed(props.settings.gameplay.walkSpeed + 1, toggleWalkSpeed)}
 						/>
 						<textlabel
 							AnchorPoint={vec2Middle}
@@ -192,7 +188,11 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 									props.settings.visual.petAnimationType === "Following" ? "Surrounding" : "Following",
 								)
 							}
-							onDecrease={(): void => {}}
+							onDecrease={(): void =>
+								togglePetAnimationType.SendToServer(
+									props.settings.visual.petAnimationType === "Surrounding" ? "Following" : "Surrounding",
+								)
+							}
 						/>
 						<ModifySettingOption
 							position={UDim2.fromScale(0.5, 0.65)}
@@ -201,10 +201,10 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 							settingState={props.settings.visual.petsStudsOfDistance}
 							displayPercentage={false}
 							onIncrease={(): void =>
-								modifyPetsStudsOfDistance(true, props.settings.visual.petsStudsOfDistance, togglePetsStudsOfDistance)
+								setsPetsStudsOfDistance(props.settings.visual.petsStudsOfDistance + 1, togglePetsStudsOfDistance)
 							}
 							onDecrease={(): void =>
-								modifyPetsStudsOfDistance(false, props.settings.visual.petsStudsOfDistance, togglePetsStudsOfDistance)
+								setsPetsStudsOfDistance(props.settings.visual.petsStudsOfDistance - 1, togglePetsStudsOfDistance)
 							}
 						/>
 						<ModifySettingOption
@@ -213,8 +213,8 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 							settingName={`Time of Day`}
 							settingState={props.settings.visual.timeOfDay}
 							displayPercentage={false}
-							onIncrease={(): void => modifyTimeOfDay(true, props.settings.visual.timeOfDay, toggleTimeOfDay)}
-							onDecrease={(): void => modifyTimeOfDay(false, props.settings.visual.timeOfDay, toggleTimeOfDay)}
+							onIncrease={(): void => setTimeOfDay(props.settings.visual.timeOfDay + 1, toggleTimeOfDay)}
+							onDecrease={(): void => setTimeOfDay(props.settings.visual.timeOfDay - 1, toggleTimeOfDay)}
 						/>
 					</scrollingframe>
 					<ExitButton

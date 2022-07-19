@@ -4,23 +4,13 @@ import { ToggleSoundEffectsVolumeDefinition } from "shared/remotes/settings/soun
 /**
  * Increases or decreases the volume of the sound effects setting.
  *
- * @param increase Whether or not to increase the volume of sound effects.
- * @param soundEffectsVolumeState The current state of the sound effects volume setting.
+ * @param volume The volume to set.
  * @param remote The remote used to communicate the action with the server.
  */
-export function modifySoundEffects(
-	increase: boolean,
-	soundEffectsVolumeState: number,
-	remote: InferClientRemote<ToggleSoundEffectsVolumeDefinition>,
-): void {
-	if (increase && soundEffectsVolumeState >= 10) {
+export function setSoundEffects(volume: number, remote: InferClientRemote<ToggleSoundEffectsVolumeDefinition>): void {
+	if (volume >= 10 || volume <= 0) {
 		return;
 	}
 
-	if (!increase && soundEffectsVolumeState <= 0) {
-		return;
-	}
-
-	const currentState = increase ? soundEffectsVolumeState + 1 : soundEffectsVolumeState - 1;
-	remote.SendToServer(currentState);
+	remote.SendToServer(volume);
 }

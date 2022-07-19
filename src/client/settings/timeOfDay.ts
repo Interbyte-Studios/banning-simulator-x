@@ -4,23 +4,13 @@ import { ToggleTimeOfDayDefinition } from "shared/remotes/settings/visual/toggle
 /**
  * Increases or decreases the time of day.
  *
- * @param increase Whether or not to increase the time of day.
- * @param timeOfDayState The current time of day.
+ * @param timeOfDay The time to set.
  * @param remote The remote used to communicate the action with the server.
  */
-export function modifyTimeOfDay(
-	increase: boolean,
-	timeOfDayState: number,
-	remote: InferClientRemote<ToggleTimeOfDayDefinition>,
-): void {
-	if (increase && timeOfDayState >= 24) {
+export function setTimeOfDay(timeOfDay: number, remote: InferClientRemote<ToggleTimeOfDayDefinition>): void {
+	if (timeOfDay >= 24 || timeOfDay <= 0) {
 		return;
 	}
 
-	if (!increase && timeOfDayState <= 0) {
-		return;
-	}
-
-	const currentState = increase ? timeOfDayState + 1 : timeOfDayState - 1;
-	remote.SendToServer(currentState);
+	remote.SendToServer(timeOfDay);
 }
