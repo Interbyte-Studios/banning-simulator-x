@@ -12,7 +12,7 @@ interface ZoneInfo extends Zone {
  * @param id The id of the zone.
  * @returns Zone config data.
  */
-export function getZoneDataById(worldName: WorldName, id: number): ZoneInfo | undefined {
+export function getZoneDataById(worldName: WorldName, id: number): ZoneInfo {
 	const worldData = WORLDS[worldName];
 
 	for (const [zoneName, zone] of pairs(worldData.zones)) {
@@ -20,4 +20,6 @@ export function getZoneDataById(worldName: WorldName, id: number): ZoneInfo | un
 			return { ...zone, name: zoneName };
 		}
 	}
+
+	throw `Expected to get data for zone of Id:${id} of world:${worldName}`;
 }
