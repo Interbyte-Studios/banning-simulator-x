@@ -113,7 +113,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 						position={UDim2.fromScale(0.5, 0.145)}
 						size={UDim2.fromScale(0.98, 0.045)}
 						settingName={"Music Volume"}
-						settingState={props.settings.sound.music}
+						displayValue={`${props.settings.sound.music * 10}%`}
 						displayPercentage={true}
 						onIncrease={(): void => setMusicVolume(props.settings.sound.music + 1, toggleMusicVolume)}
 						onDecrease={(): void => setMusicVolume(props.settings.sound.music - 1, toggleMusicVolume)}
@@ -122,7 +122,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 						position={UDim2.fromScale(0.5, 0.2)}
 						size={UDim2.fromScale(0.98, 0.045)}
 						settingName={"SFX Volume"}
-						settingState={props.settings.sound.soundEffects}
+						displayValue={`${props.settings.sound.soundEffects * 10}%`}
 						displayPercentage={true}
 						onIncrease={(): void => setSoundEffects(props.settings.sound.soundEffects + 1, toggleSoundEffectsVolume)}
 						onDecrease={(): void => setSoundEffects(props.settings.sound.soundEffects - 1, toggleSoundEffectsVolume)}
@@ -150,7 +150,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 						position={UDim2.fromScale(0.5, 0.365)}
 						size={UDim2.fromScale(0.98, 0.045)}
 						settingName={"Walk Speed"}
-						settingState={props.settings.gameplay.walkSpeed}
+						displayValue={`${props.settings.gameplay.walkSpeed}`}
 						displayPercentage={false}
 						onIncrease={(): void => setWalkSpeed(props.settings.gameplay.walkSpeed + 1, toggleWalkSpeed)}
 						onDecrease={(): void => setWalkSpeed(props.settings.gameplay.walkSpeed + 1, toggleWalkSpeed)}
@@ -187,7 +187,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 						position={UDim2.fromScale(0.5, 0.595)}
 						size={UDim2.fromScale(0.98, 0.045)}
 						settingName={"Pet Animation"}
-						settingState={props.settings.visual.petAnimationType}
+						displayValue={props.settings.visual.petAnimationType === "Following" ? "1" : "2"}
 						displayPercentage={false}
 						onIncrease={(): void =>
 							togglePetAnimationType.SendToServer(
@@ -204,7 +204,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 						position={UDim2.fromScale(0.5, 0.65)}
 						size={UDim2.fromScale(0.98, 0.045)}
 						settingName={"Pet Distance"}
-						settingState={props.settings.visual.petsStudsOfDistance}
+						displayValue={`${props.settings.visual.petsStudsOfDistance}`}
 						displayPercentage={false}
 						onIncrease={(): void =>
 							setsPetsStudsOfDistance(props.settings.visual.petsStudsOfDistance + 1, togglePetsStudsOfDistance)
@@ -217,7 +217,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 						position={UDim2.fromScale(0.5, 0.705)}
 						size={UDim2.fromScale(0.98, 0.045)}
 						settingName={"Time of Day"}
-						settingState={props.settings.visual.timeOfDay}
+						displayValue={`${props.settings.visual.timeOfDay}`}
 						displayPercentage={false}
 						onIncrease={(): void => setTimeOfDay(props.settings.visual.timeOfDay + 1, toggleTimeOfDay)}
 						onDecrease={(): void => setTimeOfDay(props.settings.visual.timeOfDay - 1, toggleTimeOfDay)}
