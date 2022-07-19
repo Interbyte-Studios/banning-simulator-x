@@ -28,11 +28,7 @@ export const SettingsUI = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.5, 0.5)}
 					Size={UDim2.fromScale(0.3, 0.5)}
 				>
-					<SettingsMenu
-						hideMenu={(): void => {
-							setMenuVisibility(false);
-						}}
-					/>
+					<SettingsMenu hideMenu={(): void => setMenuVisibility(false)} />
 				</frame>
 			);
 		} else {
@@ -44,12 +40,7 @@ export const SettingsUI = RoactRodux.connect(mapStateToProps)(
 					Size={UDim2.fromScale(0.1, 0.1)}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
-					<SettingsMenuButton
-						isVisible={!isMenuOpen}
-						toggleVisibility={(visible: boolean): void => {
-							setMenuVisibility(!visible);
-						}}
-					/>
+					<SettingsMenuButton showMenu={(): void => setMenuVisibility(true)} />
 				</frame>
 			);
 		}
