@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-description-complete-sentence */
+
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { vec2Middle } from "client/ui/commonValues";
@@ -16,6 +18,12 @@ function mapStateToProps(state: StoreState): Settings {
 	return state.settings;
 }
 
+/**
+ * **<< Roact Component >>**
+ *
+ * The highest ordered settings roact component.
+ * Displays either the settings menu component as a child or the settings menu icon.
+ */
 export const SettingsUI = RoactRodux.connect(mapStateToProps)(
 	hooks((_, { useState }) => {
 		const [isMenuOpen, setMenuVisibility] = useState(false);

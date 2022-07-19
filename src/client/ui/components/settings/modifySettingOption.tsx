@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-description-complete-sentence */
+
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
@@ -17,6 +19,19 @@ interface ModifySettingOptionProps {
 	onDecrease: () => void;
 }
 
+/**
+ * **<< Roact Component >>**
+ *
+ * An option component that displays buttons for the user to either increase or decrease the value of a setting.
+ *
+ * @param props Properties of the modify option component.
+ * @param props.position The position of the component.
+ * @param props.size The size of the component.
+ * @param props.settingName The name of the setting that is being displayed in the component.
+ * @param props.displayPercentage Whether or not to display a percentage sign after the value of setting.
+ * @param props.onIncrease A function used to increase the value of the setting.
+ * @param props.onDecrease A function used to decrease the value of the setting.
+ */
 export const ModifySettingOption = hooks((props: ModifySettingOptionProps) => {
 	return (
 		<imagelabel

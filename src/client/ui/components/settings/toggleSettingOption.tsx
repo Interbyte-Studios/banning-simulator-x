@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-description-complete-sentence */
+
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
@@ -13,6 +15,18 @@ interface ToggleSettingOptionProps {
 	onClicked: () => void;
 }
 
+/**
+ * **<< Roact Component >>**
+ *
+ * An option component that displays a button to either disable or enable the features of a setting.
+ *
+ * @param props Properties of the toggle option component.
+ * @param props.position The position of the component.
+ * @param props.size The size of the component.
+ * @param props.settingName The name of the setting that is being displayed in the component.
+ * @param props.isEnabled Whether or not the features of the setting are currently enabled.
+ * @param props.onClicked A function used to change the toggleable setting.
+ */
 export const ToggleSettingOption = hooks((props: ToggleSettingOptionProps) => {
 	return (
 		<imagelabel

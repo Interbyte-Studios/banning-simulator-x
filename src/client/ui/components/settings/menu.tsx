@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-description-complete-sentence */
+
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { setMusicVolume } from "client/settings/musicVolume";
@@ -35,6 +37,14 @@ function mapStateToProps(state: StoreState): SettingsMenuMappedProps {
 	};
 }
 
+/**
+ * **<< Roact Component >>**
+ *
+ * A menu user interface that displays various methods of game configurations editable by the player.
+ *
+ * @param props Properties of the settings menu component.
+ * @param props.hideMenu A function used to hide the settings menu ui.
+ */
 export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 	hooks((props: SettingsMenuProps, { useContext }) => {
 		const {
@@ -217,7 +227,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.975, 0.065)}
 					minimizedSize={0.125}
 					maximizedSize={0.15}
-					onClose={(): void => props.hideMenu()}
+					onClosed={(): void => props.hideMenu()}
 				/>
 			</imagebutton>
 		);

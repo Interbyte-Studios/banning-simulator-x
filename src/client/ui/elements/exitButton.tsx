@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-description-complete-sentence */
+
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import assetIds from "shared/assets";
@@ -6,17 +8,25 @@ import { font, vec2Middle } from "../commonValues";
 import { hooks } from "../hooks";
 
 interface ExitButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
-	onClose: () => void;
 	minimizedSize: number;
 	maximizedSize: number;
+	onClosed: () => void;
 }
 
+/**
+ * **<< Roact Element >>**
+ *
+ * A button used to exit another ui component.
+ *
+ * @param props Properties of the exit button component.
+ * @param props.minimizedSize The minimum size of the component.
+ * @param props.maximizedSize The maximum size of the component.
+ * @param props.onClose A function to close out of another ui component.
+ */
 export const ExitButton = hooks((props: ExitButtonProps, { useEffect }) => {
-	// springs
 	const minizmizedSpring = new Flipper.Spring(props.minimizedSize, { frequency: 5 });
 	const maximizedSpring = new Flipper.Spring(props.maximizedSize, { frequency: 5 });
 
-	// motor
 	const motor = new Flipper.SingleMotor(props.maximizedSize);
 	const [binding, setBinding] = Roact.createBinding(motor.getValue());
 
@@ -28,7 +38,6 @@ export const ExitButton = hooks((props: ExitButtonProps, { useEffect }) => {
 		};
 	}, []);
 
-	// component
 	return (
 		<imagebutton
 			AnchorPoint={vec2Middle}
@@ -39,16 +48,26 @@ export const ExitButton = hooks((props: ExitButtonProps, { useEffect }) => {
 			BackgroundTransparency={1}
 			Image={assetIds.images.Exit}
 			Event={{
-				// eslint-disable-next-line jsdoc/require-jsdoc
-				Activated: (): void => props.onClose(),
-				// eslint-disable-next-line jsdoc/require-jsdoc
-				MouseEnter: (): void => {
-					motor.setGoal(minizmizedSpring);
-				},
-				// eslint-disable-next-line jsdoc/require-jsdoc
-				MouseLeave: (): void => {
-					motor.setGoal(maximizedSpring);
-				},
+				/**
+				 * Event that connects to the `onClosed` function prop.
+				 *
+				 * @returns Nothing.
+				 */
+				Activated: (): void => props.onClosed(),
+
+				/**
+				 * Event that connects to the motors `setGoal` method.
+				 *
+				 * @returns Nothing.
+				 */
+				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
+
+				/**
+				 * Event that connects to the motors `setGoal` method.
+				 *
+				 * @returns Nothing.
+				 */
+				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
 		>
 			<uiaspectratioconstraint AspectRatio={1} />
