@@ -12,16 +12,18 @@ const springProps = {
 };
 
 interface ZonePurchaseButtonProps {
-	onClick: () => void;
+	onClicked: () => void;
 }
 
 /**
- * Roact Element in zone info display to prompt zone purchase.
+ * Roact Element on the zone info display where the player can interact to purchase the zone.
  *
- * @param props
+ * @param props Props of the element.
  */
+/* eslint-disable jsdoc/require-jsdoc */
 export const ZonePurchaseButton = hooks((props: ZonePurchaseButtonProps) => {
-	// motor
+	/* eslint-disable jsdoc/require-jsdoc */
+
 	const motor = new Flipper.GroupMotor({
 		x: maximizedSize.x,
 		y: maximizedSize.y,
@@ -40,7 +42,7 @@ export const ZonePurchaseButton = hooks((props: ZonePurchaseButtonProps) => {
 			BackgroundColor3={Color3.fromRGB(167, 240, 170)}
 			Event={{
 				// eslint-disable-next-line jsdoc/require-jsdoc
-				Activated: (): void => props.onClick(),
+				Activated: (): void => props.onClicked(),
 				// eslint-disable-next-line jsdoc/require-jsdoc
 				MouseEnter: (): void => {
 					motor.setGoal({
