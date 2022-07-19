@@ -37,7 +37,7 @@ export function purchaseZone(
 	const previousZoneData = getZoneDataById(worldName, zoneData.id - 1);
 
 	// check if its valid.
-	if (!previousZoneData) {
+	if (previousZoneData === undefined) {
 		return;
 	}
 
