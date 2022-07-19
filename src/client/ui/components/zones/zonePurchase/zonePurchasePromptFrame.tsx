@@ -12,7 +12,8 @@ interface ZonePurchasePromptProps {
 	worldName: WorldName;
 	zoneName: ZoneNames;
 	visibility: boolean;
-	selectedAction: (action: boolean) => void;
+	onPurchase: () => void;
+	onCancel: () => void;
 }
 
 const maximizedSize = { x: 0.375, y: 0.2 };
@@ -71,7 +72,7 @@ export const ZonePurhcasePromptFrame = hooks((props: ZonePurchasePromptProps) =>
 				AutoButtonColor={false}
 				Event={{
 					// eslint-disable-next-line jsdoc/require-jsdoc
-					Activated: (): void => props.selectedAction(true),
+					Activated: (): void => props.onPurchase(),
 					// eslint-disable-next-line jsdoc/require-jsdoc
 					MouseEnter: (): void => {
 						confirmButtonMotor.setGoal({
@@ -115,7 +116,7 @@ export const ZonePurhcasePromptFrame = hooks((props: ZonePurchasePromptProps) =>
 				AutoButtonColor={false}
 				Event={{
 					// eslint-disable-next-line jsdoc/require-jsdoc
-					Activated: (): void => props.selectedAction(false),
+					Activated: (): void => props.onCancel(),
 					// eslint-disable-next-line jsdoc/require-jsdoc
 					MouseEnter: (): void => {
 						cancelButtonMotor.setGoal({
