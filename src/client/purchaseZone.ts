@@ -4,7 +4,7 @@ import { ZoneNames } from "shared/configs/zones";
 import { PurchaseZoneDefinition } from "shared/remotes/purchaseZone";
 import { CurrenciesState } from "shared/rodux/currencies";
 import { WorldsState } from "shared/rodux/worlds";
-import { zonePurchaseCheck } from "shared/util/zonePurchaseCheck";
+import { canPurchaseZone } from "shared/util/canPurchaseZone";
 
 /**
  * Handles the purchasing of the zone.
@@ -23,7 +23,9 @@ export function purchaseZone(
 	purchaseZoneRemote: InferClientRemote<PurchaseZoneDefinition>,
 ): void {
 	// Checks if the player can purchase the zone.
-	zonePurchaseCheck(worlds, currencies, worldName, zoneName);
+	if (!canPurchaseZone(worlds, currencies, worldName, zoneName)) {
+		return;
+	}
 
 	// send to server to request purchase of zone
 	purchaseZoneRemote.SendToServer(worldName, zoneName);
