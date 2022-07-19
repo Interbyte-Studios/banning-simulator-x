@@ -21,6 +21,7 @@ onStoreCreated(player)
 					purchaseWeapon: remotes.Client.GetNamespace("weapons").Get("purchaseWeapon"),
 					hatchEgg: remotes.Client.GetNamespace("eggs").Get("hatchEgg"),
 					toggleAuto: remotes.Client.GetNamespace("eggs").Get("toggleAuto"),
+					redeemQuest: remotes.Client.Get("redeemQuest"),
 				}}
 			>
 				<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>

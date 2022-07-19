@@ -1,3 +1,5 @@
+import { WorldName } from "./configs/worlds";
+
 declare namespace assetIds {
 	const images: {
 		currencies: {
@@ -206,6 +208,11 @@ declare namespace assetIds {
 						SquareButtonWarning: string;
 					};
 				};
+			};
+		};
+		maps: {
+			["Ban Land"]: {
+				world: string;
 			};
 		};
 	};

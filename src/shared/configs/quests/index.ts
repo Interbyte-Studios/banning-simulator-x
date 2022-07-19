@@ -24,7 +24,7 @@ interface TitleReward {
 
 export type QuestReward = CurrencyReward | PetReward | TitleReward;
 
-interface Quest {
+export interface Quest {
 	/**
 	 * The name of the quest to display to the user.
 	 */
@@ -48,7 +48,7 @@ interface Quest {
  */
 /* eslint-disable jsdoc/require-jsdoc */
 export const QUESTS: {
-	[P in keyof Worlds]: { zone: { [P in ZoneNames]?: Array<Quest> }; world: Array<Quest> };
+	[P in keyof Worlds]: { zone: { [P in ZoneNames]: Array<Quest> }; world: Array<Quest> };
 } = {
 	"Ban Land": {
 		zone: {
@@ -64,6 +64,14 @@ export const QUESTS: {
 					},
 				},
 			],
+			"Candy Land": [],
+			"Ice Land": [],
+			"Lava Lands": [],
+			"Sunflower Field": [],
+			"The Mines": [],
+			Beach: [],
+			Forest: [],
+			Honeycomb: [],
 		},
 		world: [
 			{

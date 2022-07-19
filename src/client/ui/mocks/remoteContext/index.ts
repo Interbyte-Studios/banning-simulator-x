@@ -1,5 +1,6 @@
 import { createContext } from "@rbxts/roact";
 import { ToggleAutoHatchDefinition } from "shared/remotes/eggs/toggleAuto";
+import { RedeemQuestDefinition } from "shared/remotes/redeemQuest";
 import { EquipWeaponDefinition } from "shared/remotes/weapons/equipWeapon";
 import { PurchaseWeaponDefinition } from "shared/remotes/weapons/purchaseWeapon";
 
@@ -12,6 +13,8 @@ export const fakeRemoteContext = {
 
 	hatchEgg: fakeHatchEgg,
 	toggleAuto: fakeRemoteCall<ToggleAutoHatchDefinition>("toggleAuto"),
+
+	redeemQuest: fakeRemoteCall<RedeemQuestDefinition>("redeemQuest"),
 };
 
 export const remoteContext = createContext(fakeRemoteContext);
