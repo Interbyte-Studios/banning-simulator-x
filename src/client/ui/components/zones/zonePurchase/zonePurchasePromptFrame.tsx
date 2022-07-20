@@ -11,7 +11,6 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 interface ZonePurchasePromptProps {
 	worldName: WorldName;
 	zoneName: ZoneNames;
-	visibility: boolean;
 	onPurchase: () => void;
 	onCancel: () => void;
 }
@@ -44,7 +43,6 @@ export const ZonePurhcasePromptFrame = hooks((props: ZonePurchasePromptProps) =>
 			Position={UDim2.fromScale(0.5, 0.5)}
 			Size={UDim2.fromScale(0.289, 0.367)}
 			BackgroundColor3={Color3.fromRGB(255, 226, 188)}
-			Visible={props.visibility}
 		>
 			<uiaspectratioconstraint AspectRatio={1.601} />
 			<uistroke Thickness={4} Color={Color3.fromRGB(182, 161, 133)} />
