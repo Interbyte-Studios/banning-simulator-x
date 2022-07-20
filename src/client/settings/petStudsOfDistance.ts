@@ -8,7 +8,7 @@ import { isValidPetDistance } from "shared/rodux/settings";
  * @param studs The distance to set.
  * @param remote The remote used to communicate the action with the server.
  */
-export function setsPetsStudsOfDistance(
+export function setPetsStudsOfDistance(
 	studs: number,
 	remote: InferClientRemote<TogglePetsStudsOfDistanceDefinition>,
 ): void {
