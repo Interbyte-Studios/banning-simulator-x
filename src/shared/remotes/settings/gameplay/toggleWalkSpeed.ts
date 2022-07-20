@@ -1,8 +1,8 @@
 import Net from "@rbxts/net";
 import { createTypeChecker } from "@rbxts/net/out/middleware";
-import { t } from "@rbxts/t";
+import { isValidWalkSpeed } from "shared/rodux/settings";
 
 export const toggleWalkSpeedDefinition = Net.Definitions.ClientToServerEvent<[walkSpeed: number]>([
-	createTypeChecker(t.number),
+	createTypeChecker(isValidWalkSpeed),
 ]);
 export type ToggleWalkSpeedDefinition = typeof toggleWalkSpeedDefinition;

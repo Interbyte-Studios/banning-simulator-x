@@ -1,5 +1,6 @@
 import { InferClientRemote } from "@rbxts/net/out/definitions/Types";
 import { TogglePetsStudsOfDistanceDefinition } from "shared/remotes/settings/visual/togglePetsStudsOfDistance";
+import { isValidPetDistance } from "shared/rodux/settings";
 
 /**
  * Sets the studs of distance between the player and their pets.
@@ -11,7 +12,7 @@ export function setsPetsStudsOfDistance(
 	studs: number,
 	remote: InferClientRemote<TogglePetsStudsOfDistanceDefinition>,
 ): void {
-	if (studs >= 20 || studs <= 10) {
+	if (!isValidPetDistance(studs)) {
 		return;
 	}
 

@@ -7,6 +7,11 @@ export type ValidGraphicsQuality = t.static<typeof isValidGraphicsQuality>;
 export const isValidPetAnimationType = t.literal("Following", "Surrounding");
 export type ValidPetAnimationType = t.static<typeof isValidPetAnimationType>;
 
+export const isValidVolume = t.numberConstrained(0, 10);
+export const isValidWalkSpeed = t.numberMin(16);
+export const isValidTimeOfDay = t.numberConstrained(0, 24);
+export const isValidPetDistance = t.numberConstrained(10, 20);
+
 export interface Settings {
 	sound: {
 		buttonClick: boolean;

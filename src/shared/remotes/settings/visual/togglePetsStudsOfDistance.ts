@@ -1,8 +1,8 @@
 import Net from "@rbxts/net";
 import { createTypeChecker } from "@rbxts/net/out/middleware";
-import { t } from "@rbxts/t";
+import { isValidPetDistance } from "shared/rodux/settings";
 
 export const togglePetsStudsOfDistanceDefinition = Net.Definitions.ClientToServerEvent<[studs: number]>([
-	createTypeChecker(t.number),
+	createTypeChecker(isValidPetDistance),
 ]);
 export type TogglePetsStudsOfDistanceDefinition = typeof togglePetsStudsOfDistanceDefinition;

@@ -1,5 +1,6 @@
 import { InferClientRemote } from "@rbxts/net/out/definitions/Types";
 import { ToggleTimeOfDayDefinition } from "shared/remotes/settings/visual/toggleTimeOfDay";
+import { isValidTimeOfDay } from "shared/rodux/settings";
 
 /**
  * Increases or decreases the time of day.
@@ -8,7 +9,7 @@ import { ToggleTimeOfDayDefinition } from "shared/remotes/settings/visual/toggle
  * @param remote The remote used to communicate the action with the server.
  */
 export function setTimeOfDay(timeOfDay: number, remote: InferClientRemote<ToggleTimeOfDayDefinition>): void {
-	if (timeOfDay >= 24 || timeOfDay <= 0) {
+	if (!isValidTimeOfDay) {
 		return;
 	}
 

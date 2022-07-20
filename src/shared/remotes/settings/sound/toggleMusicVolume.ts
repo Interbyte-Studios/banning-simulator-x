@@ -1,8 +1,8 @@
 import Net from "@rbxts/net";
 import { createTypeChecker } from "@rbxts/net/out/middleware";
-import { t } from "@rbxts/t";
+import { isValidVolume } from "shared/rodux/settings";
 
 export const toggleMusicVolumeDefinition = Net.Definitions.ClientToServerEvent<[volume: number]>([
-	createTypeChecker(t.number),
+	createTypeChecker(isValidVolume),
 ]);
 export type ToggleMusicVolumeDefinition = typeof toggleMusicVolumeDefinition;
