@@ -19,8 +19,6 @@ function mapStateToProps(state: StoreState): Settings {
 }
 
 /**
- * **<< Roact Component >>**
- *
  * The highest ordered settings roact component.
  * Displays either the settings menu component as a child or the settings menu icon.
  */

@@ -38,8 +38,6 @@ function mapStateToProps(state: StoreState): SettingsMenuMappedProps {
 }
 
 /**
- * **<< Roact Component >>**
- *
  * A menu user interface that displays various methods of game configurations editable by the player.
  *
  * @param props Properties of the settings menu component.

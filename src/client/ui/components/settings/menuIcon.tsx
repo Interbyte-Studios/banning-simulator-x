@@ -14,8 +14,6 @@ const hiddenSpring = new Flipper.Spring(0.95, { frequency: 5 });
 const displayedSpring = new Flipper.Spring(1, { frequency: 5 });
 
 /**
- * **<< Roact Component >>**
- *
  * An icon image that, once clicked, will display the settings menu component.
  *
  * @param props Properties of the settings icon component.

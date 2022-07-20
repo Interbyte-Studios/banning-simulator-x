@@ -19,8 +19,6 @@ interface ModifySettingOptionProps {
 }
 
 /**
- * **<< Roact Component >>**
- *
  * An option component that displays buttons for the user to either increase or decrease the value of a setting.
  *
  * @param props Properties of the modify option component.

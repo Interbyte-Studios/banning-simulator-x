@@ -16,8 +16,6 @@ interface ToggleSettingOptionProps {
 }
 
 /**
- * **<< Roact Component >>**
- *
  * An option component that displays a button to either disable or enable the features of a setting.
  *
  * @param props Properties of the toggle option component.

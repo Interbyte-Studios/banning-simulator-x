@@ -14,8 +14,6 @@ interface IncreaseButtonProps extends Partial<WritableInstanceProperties<ImageBu
 }
 
 /**
- * **<< Roact Element >>**
- *
  * A button used to increase the value of something.
  *
  * @param props Properties of the increase button component.

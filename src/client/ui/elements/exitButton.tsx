@@ -14,8 +14,6 @@ interface ExitButtonProps extends Partial<WritableInstanceProperties<ImageButton
 }
 
 /**
- * **<< Roact Element >>**
- *
  * A button used to exit another ui component.
  *
  * @param props Properties of the exit button component.

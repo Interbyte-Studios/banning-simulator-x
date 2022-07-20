@@ -14,8 +14,6 @@ interface DecreaseButtonProps extends Partial<WritableInstanceProperties<ImageBu
 }
 
 /**
- * **<< Roact Element >>**
- *
  * A button used to decrease the value of something.
  *
  * @param props Properties of the decrease button component.

@@ -20,8 +20,6 @@ const springProps = {
 };
 
 /**
- * **<< Roact Element >>**
- *
  * A button used to change the value of a boolean.
  *
  * @param props Properties of the enable button component.
