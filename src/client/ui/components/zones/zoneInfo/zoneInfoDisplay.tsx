@@ -6,7 +6,7 @@ import { ZoneNames } from "shared/configs/zones";
 import { getZoneData } from "shared/util/getZoneData";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
-import { ZonePurchaseButton } from "./zonePurchase/zonePurchaseButton";
+import { ZonePurchaseButton } from "../zonePurchase/zonePurchaseButton";
 
 interface ZoneInfoProps {
 	zoneName: ZoneNames;
