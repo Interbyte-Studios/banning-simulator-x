@@ -1,5 +1,3 @@
-/* eslint-disable jsdoc/require-description-complete-sentence */
-
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { vec2Middle } from "client/ui/commonValues";

@@ -1,9 +1,7 @@
-/* eslint-disable jsdoc/require-description-complete-sentence */
-
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { setMusicVolume } from "client/settings/musicVolume";
-import { setsPetsStudsOfDistance } from "client/settings/petStudsOfDistance";
+import { setPetsStudsOfDistance } from "client/settings/petStudsOfDistance";
 import { setSoundEffects } from "client/settings/soundEffects";
 import { setTimeOfDay } from "client/settings/timeOfDay";
 import { setWalkSpeed } from "client/settings/walkSpeed";
@@ -205,10 +203,10 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 						displayValue={`${props.settings.visual.petsStudsOfDistance}`}
 						displayPercentage={false}
 						onIncrease={(): void =>
-							setsPetsStudsOfDistance(props.settings.visual.petsStudsOfDistance + 1, togglePetsStudsOfDistance)
+							setPetsStudsOfDistance(props.settings.visual.petsStudsOfDistance + 1, togglePetsStudsOfDistance)
 						}
 						onDecrease={(): void =>
-							setsPetsStudsOfDistance(props.settings.visual.petsStudsOfDistance - 1, togglePetsStudsOfDistance)
+							setPetsStudsOfDistance(props.settings.visual.petsStudsOfDistance - 1, togglePetsStudsOfDistance)
 						}
 					/>
 					<ModifySettingOption

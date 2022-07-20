@@ -1,5 +1,3 @@
-/* eslint-disable jsdoc/require-description-complete-sentence */
-
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import assetIds from "shared/assets";

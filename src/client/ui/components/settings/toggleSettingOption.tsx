@@ -1,5 +1,3 @@
-/* eslint-disable jsdoc/require-description-complete-sentence */
-
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
