@@ -6,16 +6,12 @@ import { Rarities } from "shared/configs/rarities";
 import { remotes } from "shared/remotes";
 import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
 import { addPets } from "shared/rodux/pets";
-import { toggleAuto } from "shared/rodux/settings";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
 
-export const hatchEgg = remotes.Server.GetNamespace("eggs").Create("hatchEgg");
-export const toggleHatch = remotes.Server.GetNamespace("eggs").Create("toggleAuto");
-
+const hatchEgg = remotes.Server.GetNamespace("eggs").Create("hatchEgg");
 const hatchTimeCache: Map<Player, number> = new Map();
-
 const randomGenerator = new Random();
 
 hatchEgg.SetCallback(
@@ -125,17 +121,6 @@ hatchEgg.SetCallback(
 			success: true,
 			pets: selectedPets,
 		};
-	}),
-);
-
-let lastRequestTime = 0;
-toggleHatch.Connect(
-	withPlayerStore((_, store) => {
-		const now = time();
-		if (now - lastRequestTime < 0.5) return;
-		lastRequestTime = now;
-
-		store.dispatch(toggleAuto());
 	}),
 );
 
