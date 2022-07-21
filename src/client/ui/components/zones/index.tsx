@@ -10,7 +10,7 @@ import { CurrenciesState } from "shared/rodux/currencies";
 import { WorldsState } from "shared/rodux/worlds";
 
 import { ZonesInfo } from "./zoneInfo";
-import { ZonePurhcasePromptFrame } from "./zonePurchase/zonePurchasePromptFrame";
+import { ZonePurchasePromptFrame } from "./zonePurchase/zonePurchasePromptFrame";
 
 interface ZonesUIProps extends MappedZonesUIProps {}
 
@@ -44,41 +44,34 @@ function mapStateToProps(state: StoreState): MappedZonesUIProps {
  */
 export const ZonesUI = RoactRodux.connect(mapStateToProps)(
 	hooks((props: ZonesUIProps, { useState, useContext }) => {
-		const [promptStatus, updatePromptStatus] = useState<boolean>(false);
-		const [selectedInfo, updateInfo] = useState<PromptInfo>({ world: "Ban Land", zone: "Forest" });
+		const [selectedInfo, setSelectedInfo] = useState<PromptInfo | undefined>(undefined);
 		const { purchaseZone } = useContext(remoteContext);
 
-		if (promptStatus) {
-			return (
-				<>
-					<ZonePurhcasePromptFrame
-						worldName={selectedInfo.world}
-						zoneName={selectedInfo.zone}
-						onPurchase={(): void => {
-							unlockZone(props.worlds, props.currencies, selectedInfo.world, selectedInfo.zone, purchaseZone);
-							updatePromptStatus(false);
-						}}
-						onCancel={(): void => updatePromptStatus(false)}
-					/>
-					<ZonesInfo
-						togglePurchasePrompt={(worldName, zoneName): void => {
-							updateInfo({ world: worldName, zone: zoneName });
-							updatePromptStatus(true);
-						}}
-					/>
-				</>
-			);
-		} else {
-			return (
-				<>
-					<ZonesInfo
-						togglePurchasePrompt={(worldName, zoneName): void => {
-							updateInfo({ world: worldName, zone: zoneName });
-							updatePromptStatus(true);
-						}}
-					/>
-				</>
+		const children: Array<Roact.Element> = [];
+
+		if (selectedInfo !== undefined) {
+			children.push(
+				<ZonePurchasePromptFrame
+					worldName={selectedInfo.world}
+					zoneName={selectedInfo.zone}
+					onPurchase={(): void => {
+						unlockZone(props.worlds, props.currencies, selectedInfo.world, selectedInfo.zone, purchaseZone);
+						setSelectedInfo(undefined);
+					}}
+					onCancel={(): void => setSelectedInfo(undefined)}
+				/>,
 			);
 		}
+
+		return (
+			<>
+				{children}
+				<ZonesInfo
+					togglePurchasePrompt={(worldName, zoneName): void => {
+						setSelectedInfo({ world: worldName, zone: zoneName });
+					}}
+				/>
+			</>
+		);
 	}),
 );
