@@ -30,31 +30,19 @@ export function canPurchaseZone(
 		return false;
 	}
 
-	// get zone data.
 	const zoneData = getZoneData(worldName, zoneName);
-
-	// get zone data for the previous zone.
 	const previousZoneData = getZoneDataById(worldName, zoneData.id - 1);
 
-	// check if its valid.
-	if (previousZoneData === undefined) {
-		return false;
-	}
-
-	// check if the player owns the previous zone.
-	const ownsPreviousZone = worldData.zones.find((zone) => zone === previousZoneData.name) !== undefined;
-	if (!ownsPreviousZone) {
+	if (previousZoneData !== undefined) {
 		warn(`Expected player to own previous zone ${previousZoneData.name}`);
 		return false;
 	}
 
-	// check to be sure if the zone is for purchase.
 	if (zoneData.cost === undefined) {
 		warn(`Zone ${zoneName} of world ${worldName} was not purchasable`);
 		return false;
 	}
 
-	// check to be sure player has enough currency to purchase the zone
 	if (currencies[zoneData.cost.currency] < zoneData.cost.amount) {
 		warn(`Not enough currency to purchase zone ${zoneName}`);
 		return false;
