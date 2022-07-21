@@ -22,11 +22,9 @@ export function purchaseZone(
 	zoneName: ZoneNames,
 	purchaseZoneRemote: InferClientRemote<PurchaseZoneDefinition>,
 ): void {
-	// Checks if the player can purchase the zone.
 	if (!canPurchaseZone(worlds, currencies, worldName, zoneName)) {
 		return;
 	}
 
-	// send to server to request purchase of zone
 	purchaseZoneRemote.SendToServer(worldName, zoneName);
 }
