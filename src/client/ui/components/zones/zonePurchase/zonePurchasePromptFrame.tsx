@@ -23,14 +23,12 @@ const springProps = {
 	dampingRatio: 0.5,
 };
 
-export const ZonePurhcasePromptFrame = hooks((props: ZonePurchasePromptProps) => {
+export const ZonePurchasePromptFrame = hooks((props: ZonePurchasePromptProps) => {
 	const zoneData = getZoneData(props.worldName, props.zoneName);
 
-	// confirm button motor
 	const confirmButtonMotor = new Flipper.GroupMotor({ x: maximizedSize.x, y: maximizedSize.y });
 	const [confirmButtonBinding, setConfirmButtonBinding] = Roact.createBinding(confirmButtonMotor.getValue());
 
-	// cancel button motor
 	const cancelButtonMotor = new Flipper.GroupMotor({ x: maximizedSize.x, y: maximizedSize.y });
 	const [cancelButtonBinding, setCancelButtonBinding] = Roact.createBinding(confirmButtonMotor.getValue());
 
