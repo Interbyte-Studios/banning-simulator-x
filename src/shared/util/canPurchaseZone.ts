@@ -32,8 +32,9 @@ export function canPurchaseZone(
 
 	const zoneData = getZoneData(worldName, zoneName);
 	const previousZoneData = getZoneDataById(worldName, zoneData.id - 1);
+	const ownsPreviousZone = worldData.zones.find((zone) => zone === previousZoneData.name);
 
-	if (previousZoneData !== undefined) {
+	if (previousZoneData !== undefined && !ownsPreviousZone) {
 		warn(`Expected player to own previous zone ${previousZoneData.name}`);
 		return false;
 	}
