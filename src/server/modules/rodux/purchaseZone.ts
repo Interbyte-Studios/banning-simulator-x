@@ -18,12 +18,11 @@ export function purchaseZone(store: Store, worldName: WorldName, zoneName: ZoneN
 		return;
 	}
 
-	// Checks if the player can purchase the zone.
-	if (!canPurchaseZone(store.getState().worlds, store.getState().currencies, worldName, zoneName)) {
+	const canPurchase = canPurchaseZone(store.getState().worlds, store.getState().currencies, worldName, zoneName);
+	if (!canPurchase) {
 		return;
 	}
 
-	// purchase zone
 	store.dispatch(
 		unlockZone({
 			zoneName: zoneName,
