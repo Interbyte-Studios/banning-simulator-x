@@ -1,11 +1,11 @@
 import Roact from "@rbxts/roact";
-import { ZonePurhcasePromptFrame } from "client/ui/components/zones/zonePurchase/zonePurchasePromptFrame";
+import { ZonePurchasePromptFrame } from "client/ui/components/zones/zonePurchase/zonePurchasePromptFrame";
 
 import { createMockStory } from "../../createMockStory";
 
 export = (target: GuiBase): (() => void) => {
 	const { cleanup } = createMockStory({}, target, () => (
-		<ZonePurhcasePromptFrame
+		<ZonePurchasePromptFrame
 			worldName={"Ban Land"}
 			zoneName={"Honeycomb"}
 			onPurchase={(): void => print("purchase")}
