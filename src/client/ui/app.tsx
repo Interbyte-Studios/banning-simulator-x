@@ -4,6 +4,7 @@ import { Store } from "shared/rodux";
 
 import { EggsUI } from "./components/eggs";
 import { Quests } from "./components/quests";
+import { SettingsUI } from "./components/settings";
 import { ToggleWeaponButton } from "./components/weapons/toggleWeaponButton";
 import { WeaponShop } from "./components/weapons/weaponShop";
 import { ZoneInfoUI } from "./components/zones";
@@ -23,6 +24,7 @@ export function app(props: { player: Player; store: Store }): Roact.Element {
 				<ToggleWeaponButton player={props.player} />
 				<WeaponShop store={props.store} />
 				<EggsUI />
+				<SettingsUI />
 				<ZoneInfoUI />
 				<Quests />
 			</>

@@ -1,3 +1,8 @@
+[inputs."images/Exit.png"]
+hash = "7b356995c62e5e9521afd90de0ba26219bce7be562a37f05547ef8a60da4073d"
+id = 10220935323
+packable = false
+
 [inputs."images/backgrounds/dark/AutoHatchBG.png"]
 hash = "59671121f265167c3fc6346ea75d881d13445d09d4bccbeac1c39fb73a8b5b24"
 id = 9724451796
@@ -11,6 +16,16 @@ packable = false
 [inputs."images/backgrounds/dark/PetBackground.png"]
 hash = "e7898bae6804666b1f2bb869c493d72006d148522128a29bafc250da65572bef"
 id = 9724447393
+packable = false
+
+[inputs."images/backgrounds/dark/Settings.png"]
+hash = "887d5c0b4567129b433271867e9323f9db4a14438ec7c5b0d4d278222f3b4453"
+id = 10220867439
+packable = false
+
+[inputs."images/backgrounds/dark/SettingsOption.png"]
+hash = "04c16a3ea1a6e087be567729f48ec3092c2719b269a4cdeba86bef6944ee003a"
+id = 10220867594
 packable = false
 
 [inputs."images/backgrounds/light/AutoHatchBG.png"]
@@ -28,6 +43,26 @@ hash = "8d86bc479b63984146f3ea047e41696fd69d792f8eb1d7da623262d692544106"
 id = 9724447903
 packable = false
 
+[inputs."images/buttons/LeftArrow.png"]
+hash = "aba6bb405c196ef80927a0aa60b706aa6ca9e6ff8915d9812ed335fc49eeb975"
+id = 10227395307
+packable = false
+
+[inputs."images/buttons/Off.png"]
+hash = "3311d38a4d5a0ca427571ab1ce469f5f4dcd526e41614322d8773e4d77fd6388"
+id = 10221118714
+packable = false
+
+[inputs."images/buttons/On.png"]
+hash = "0c45d37feeedbd9fb40c37242a5ecb4373297289d47e8c20f0eb9d7e1ec42642"
+id = 10231063722
+packable = false
+
+[inputs."images/buttons/RightArrow.png"]
+hash = "94436a9a1fa4acfcb4ad3404f713853644d99240091e194726a43051723a6843"
+id = 10227395746
+packable = false
+
 [inputs."images/buttons/dark/specialized/openEgg/OpenEgg.png"]
 hash = "b51684095e40d0fa88ffbdc6b5b5b1122334c75c0a57e335c5a44b1eea17a556"
 id = 9724448089
@@ -36,6 +71,16 @@ packable = false
 [inputs."images/buttons/dark/specialized/openEgg/OpenEggSelected.png"]
 hash = "7d36b3a3c81d4ce47f130f7f4ac2c7e480b55e0f5b0fe8d69336ff72711d9e70"
 id = 9724448183
+packable = false
+
+[inputs."images/buttons/dark/specialized/settings/Settings Selected.png"]
+hash = "6bce5a917c145c18f5cc4e15a5b8c74cd548c7247c75a41692eb672c547a6b64"
+id = 10185228992
+packable = false
+
+[inputs."images/buttons/dark/specialized/settings/Settings.png"]
+hash = "bbda4c4c3f5ce6a8f36d04bff5c51882d3f68aca317c45c6dab8414a62cd49a4"
+id = 10185230092
 packable = false
 
 [inputs."images/buttons/dark/templates/rectangular/RectangularButton.png"]

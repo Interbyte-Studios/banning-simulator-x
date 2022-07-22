@@ -54,7 +54,7 @@ interface MappedEggHudProps {
  */
 function mapStateToProps(state: StoreState): MappedEggHudProps {
 	return {
-		autoActive: state.settings.autoHatch,
+		autoActive: state.settings.gameplay.autoHatch,
 		currenciesState: state.currencies,
 		gamepassesState: state.gamepasses,
 		petsState: state.pets,
