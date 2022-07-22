@@ -62,7 +62,13 @@ export const Quests = RoactRodux.connect(mapStateToProps)(
 
 		if (world === undefined) {
 			// display world selector
-			return <WorldSelector worlds={Object.keys(WORLDS)} onWorldSelected={setWorld} />;
+			return (
+				<WorldSelector
+					worlds={Object.keys(WORLDS)}
+					onWorldSelected={setWorld}
+					onClose={(): void => setVisible(false)}
+				/>
+			);
 		}
 
 		if (zone === undefined) {
@@ -73,6 +79,7 @@ export const Quests = RoactRodux.connect(mapStateToProps)(
 					zones={Object.entries(WORLDS[world].zones).map(([name, data]) => ({ name, layoutOrder: data.id }))}
 					// if user presses the world, it will set zone to "none" rather than undefined
 					onZoneSelected={(zone): void => setZone(zone === undefined ? "none" : zone)}
+					onClose={(): void => setWorld(undefined)}
 				/>
 			);
 		}
