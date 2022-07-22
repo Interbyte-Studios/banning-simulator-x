@@ -1,5 +1,3 @@
-import { WorldName } from "./configs/worlds";
-
 declare namespace assetIds {
 	const images: {
 		Exit: string;

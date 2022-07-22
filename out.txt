@@ -1,0 +1,129 @@
+diff --git a/src/client/ui/components/quests/index.tsx b/src/client/ui/components/quests/index.tsx
+index 4ba0235..d12dd30 100644
+--- a/src/client/ui/components/quests/index.tsx
++++ b/src/client/ui/components/quests/index.tsx
+@@ -104,6 +104,12 @@ export const Quests = RoactRodux.connect(mapStateToProps)(
+ 			};
+ 		});
+ 
+-		return <QuestDisplayer quests={displayQuests} onQuestClaim={(quest): void => redeemQuest.SendToServer(quest)} />;
++		return (
++			<QuestDisplayer
++				quests={displayQuests}
++				onQuestClaim={(quest): void => redeemQuest.SendToServer(quest)}
++				onClose={(): void => setZone(undefined)}
++			/>
++		);
+ 	}),
+ );
+diff --git a/src/client/ui/components/quests/questDisplayer.tsx b/src/client/ui/components/quests/questDisplayer.tsx
+index d31f769..684318f 100644
+--- a/src/client/ui/components/quests/questDisplayer.tsx
++++ b/src/client/ui/components/quests/questDisplayer.tsx
+@@ -1,6 +1,7 @@
+ import Roact from "@rbxts/roact";
+-import { font, udim2Middle, vec2Middle } from "client/ui/commonValues";
++import { font, udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
+ import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
++import { ExitButton } from "client/ui/elements/exitButton";
+ import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
+ import { QuestReward } from "shared/configs/quests";
+ 
+@@ -14,6 +15,7 @@ interface QuestDisplayerProps {
+ 		hasPreviouslyClaimed: boolean;
+ 	}>;
+ 	onQuestClaim: (quest: string) => void;
++	onClose: () => void;
+ }
+ 
+ /**
+@@ -57,38 +59,44 @@ function ClaimButton(props: {
+  */
+ export function QuestDisplayer(props: QuestDisplayerProps): Roact.Element {
+ 	return (
+-		<RescalingScrollingFrame
+-			Position={udim2Middle}
+-			Size={UDim2.fromScale(0.65, 0.6)}
+-			AnchorPoint={vec2Middle}
+-			ScrollBarThickness={0}
+-			ScrollingDirection={Enum.ScrollingDirection.Y}
+-			BorderSizePixel={0}
+-		>
+-			<uigridlayout CellSize={UDim2.fromScale(1, 0.15)} SortOrder={Enum.SortOrder.LayoutOrder} />
+-			{props.quests.map((quest, i) => (
+-				<frame BackgroundTransparency={1} LayoutOrder={i}>
+-					{/* display quest name */}
+-					<BaseTextLabel Size={UDim2.fromScale(0.2, 1)} Position={UDim2.fromScale(0.125, 0.5)} Text={quest.name} />
+-					{/* display quest progress */}
+-					<frame
+-						Size={UDim2.fromScale(0.375 * (quest.progress / quest.completionProgress), 0.5)}
+-						Position={UDim2.fromScale(0.275, 0.25)}
+-						BackgroundColor3={Color3.fromRGB(0, 255, 0)}
+-					/>
+-					<BaseTextLabel
+-						Size={UDim2.fromScale(0.1, 0.75)}
+-						Position={UDim2.fromScale(0.725, 0.5)}
+-						Text={`${quest.progress} / ${quest.completionProgress}`}
+-					/>
+-					<ClaimButton
+-						progress={quest.progress}
+-						completionProgress={quest.completionProgress}
+-						hasPreviouslyClaimed={quest.hasPreviouslyClaimed}
+-						onClaimQuest={(): void => props.onQuestClaim(quest.name)}
+-					/>
+-				</frame>
+-			))}
+-		</RescalingScrollingFrame>
++		<frame Position={udim2Middle} Size={UDim2.fromScale(0.65, 0.6)} AnchorPoint={vec2Middle} BackgroundTransparency={1}>
++			<RescalingScrollingFrame
++				Size={udim2BottomRight}
++				ScrollBarThickness={0}
++				ScrollingDirection={Enum.ScrollingDirection.Y}
++				BorderSizePixel={0}
++			>
++				<uigridlayout CellSize={UDim2.fromScale(1, 0.15)} SortOrder={Enum.SortOrder.LayoutOrder} />
++				{props.quests.map((quest, i) => (
++					<frame BackgroundTransparency={1} LayoutOrder={i}>
++						{/* display quest name */}
++						<BaseTextLabel Size={UDim2.fromScale(0.2, 1)} Position={UDim2.fromScale(0.125, 0.5)} Text={quest.name} />
++						{/* display quest progress */}
++						<frame
++							Size={UDim2.fromScale(0.375 * (quest.progress / quest.completionProgress), 0.5)}
++							Position={UDim2.fromScale(0.275, 0.25)}
++							BackgroundColor3={Color3.fromRGB(0, 255, 0)}
++						/>
++						<BaseTextLabel
++							Size={UDim2.fromScale(0.1, 0.75)}
++							Position={UDim2.fromScale(0.725, 0.5)}
++							Text={`${quest.progress} / ${quest.completionProgress}`}
++						/>
++						<ClaimButton
++							progress={quest.progress}
++							completionProgress={quest.completionProgress}
++							hasPreviouslyClaimed={quest.hasPreviouslyClaimed}
++							onClaimQuest={(): void => props.onQuestClaim(quest.name)}
++						/>
++					</frame>
++				))}
++			</RescalingScrollingFrame>
++			<ExitButton
++				Position={UDim2.fromScale(0.975, 0.065)}
++				minimizedSize={0.125}
++				maximizedSize={0.15}
++				onClosed={props.onClose}
++			/>
++		</frame>
+ 	);
+ }
+diff --git a/src/client/ui/stories/components/quests/questDisplayer.story.tsx b/src/client/ui/stories/components/quests/questDisplayer.story.tsx
+index b5751b3..3f4da52 100644
+--- a/src/client/ui/stories/components/quests/questDisplayer.story.tsx
++++ b/src/client/ui/stories/components/quests/questDisplayer.story.tsx
+@@ -56,6 +56,7 @@ export = (target: GuiBase): (() => void) => {
+ 				},
+ 			]}
+ 			onQuestClaim={(quest): void => print(`Attempt to claim ${quest}`)}
++			onClose={(): void => print("attempt to close")}
+ 		/>
+ 	));
+ 
