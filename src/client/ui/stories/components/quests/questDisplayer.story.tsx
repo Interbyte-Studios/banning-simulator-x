@@ -56,6 +56,7 @@ export = (target: GuiBase): (() => void) => {
 				},
 			]}
 			onQuestClaim={(quest): void => print(`Attempt to claim ${quest}`)}
+			onClose={(): void => print("attempt to close")}
 		/>
 	));
 

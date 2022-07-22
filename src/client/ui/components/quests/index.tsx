@@ -104,6 +104,12 @@ export const Quests = RoactRodux.connect(mapStateToProps)(
 			};
 		});
 
-		return <QuestDisplayer quests={displayQuests} onQuestClaim={(quest): void => redeemQuest.SendToServer(quest)} />;
+		return (
+			<QuestDisplayer
+				quests={displayQuests}
+				onQuestClaim={(quest): void => redeemQuest.SendToServer(quest)}
+				onClose={(): void => setZone(undefined)}
+			/>
+		);
 	}),
 );
