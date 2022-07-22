@@ -20,6 +20,7 @@ interface ZonePurchaseButtonProps {
  *
  * @param props Props of the element.
  */
+/* eslint-disable jsdoc/require-jsdoc */
 export const ZonePurchaseButton = hooks((props: ZonePurchaseButtonProps) => {
 	const motor = new Flipper.GroupMotor({
 		x: maximizedSize.x,
@@ -38,25 +39,13 @@ export const ZonePurchaseButton = hooks((props: ZonePurchaseButtonProps) => {
 			AutoButtonColor={false}
 			BackgroundColor3={Color3.fromRGB(167, 240, 170)}
 			Event={{
-				/**
-				 * Calls the onClicked event in props when activated.
-				 *
-				 * @returns Void.
-				 */
 				Activated: (): void => props.onClicked(),
-				/**
-				 *
-				 */
 				MouseEnter: (): void => {
 					motor.setGoal({
 						x: new Flipper.Spring(minimizedSize.x, springProps),
 						y: new Flipper.Spring(minimizedSize.y, springProps),
 					});
 				},
-
-				/**
-				 *
-				 */
 				MouseLeave: (): void => {
 					motor.setGoal({
 						x: new Flipper.Spring(maximizedSize.x, springProps),
@@ -80,5 +69,6 @@ export const ZonePurchaseButton = hooks((props: ZonePurchaseButtonProps) => {
 				<uistroke Thickness={3} Color={Color3.fromRGB(112, 158, 113)} />
 			</textlabel>
 		</textbutton>
+		/* eslint-enable jsdoc/require-jsdoc */
 	);
 });
