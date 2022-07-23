@@ -3,6 +3,6 @@ upload-to-group-id = 5126818
 
 
 [[inputs]]
-glob = "images/**/*.png"
+glob = "images/**/*.{png,jpg}"
 codegen = true
 codegen-path = "src/Shared/assets.lua"

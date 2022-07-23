@@ -1,4 +1,5 @@
 import { createContext } from "@rbxts/roact";
+import { RedeemQuestDefinition } from "shared/remotes/redeemQuest";
 import { ToggleAutoHatchDefinition } from "shared/remotes/settings/gameplay/toggleAuto";
 import { ToggleWalkSpeedDefinition } from "shared/remotes/settings/gameplay/toggleWalkSpeed";
 import { ToggleButtonClickDefinition } from "shared/remotes/settings/sound/toggleButtonClick";
@@ -20,6 +21,8 @@ export const fakeRemoteContext = {
 	purchaseWeapon: fakeRemoteCall<PurchaseWeaponDefinition>("purchaseWeapon"),
 
 	toggleAuto: fakeRemoteCall<ToggleAutoHatchDefinition>("toggleAuto"),
+
+	redeemQuest: fakeRemoteCall<RedeemQuestDefinition>("redeemQuest"),
 	toggleWalkSpeed: fakeRemoteCall<ToggleWalkSpeedDefinition>("toggleWalkSpeed"),
 	toggleButtonClickSFX: fakeRemoteCall<ToggleButtonClickDefinition>("toggleButtonClickSFX"),
 	toggleMusicVolume: fakeRemoteCall<ToggleMusicVolumeDefinition>("toggleMusicVolume"),

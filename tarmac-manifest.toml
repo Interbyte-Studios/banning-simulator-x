@@ -157,3 +157,8 @@ packable = false
 hash = "9aa6e2ab58a50dd5fbf70a95d57caa20c58e62d99487ea285c0a0df5ed3f3725"
 id = 9591269212
 packable = false
+
+[inputs."images/maps/Ban Land.jpg"]
+hash = "ca1e87c9948257fed7ac980ef92c8398b411f49a7e6d0b7b598646e8fd832b3a"
+id = 10266321808
+packable = false

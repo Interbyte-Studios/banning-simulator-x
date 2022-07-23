@@ -2,10 +2,14 @@ import Roact from "@rbxts/roact";
 
 import { vec2Middle } from "../commonValues";
 
-interface BaseImageButtonProps extends Partial<ImageButton> {}
+interface BaseImageButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
+	Event?: Roact.JsxInstanceEvents<ImageButton>;
+}
 
 /* eslint-disable jsdoc/require-jsdoc */
 export function BaseImageButton(props: BaseImageButtonProps): Roact.Element {
+	const propsWithoutEvent: Partial<WritableInstanceProperties<ImageButton>> = props;
+
 	return (
 		<imagebutton
 			AnchorPoint={vec2Middle}
@@ -16,7 +20,8 @@ export function BaseImageButton(props: BaseImageButtonProps): Roact.Element {
 			HoverImage={props.HoverImage}
 			PressedImage={props.PressedImage}
 			ScaleType={Enum.ScaleType.Fit}
-			{...props}
+			{...propsWithoutEvent}
+			Event={props.Event ?? {}}
 		/>
 	);
 }

@@ -20,6 +20,7 @@ onStoreCreated(player)
 					equipWeapon: remotes.Client.GetNamespace("weapons").Get("equipWeapon"),
 					purchaseWeapon: remotes.Client.GetNamespace("weapons").Get("purchaseWeapon"),
 					hatchEgg: remotes.Client.GetNamespace("eggs").Get("hatchEgg"),
+					redeemQuest: remotes.Client.Get("redeemQuest"),
 					toggleButtonClickSFX: remotes.Client.GetNamespace("settings").GetNamespace("sound").Get("toggleButtonClick"),
 					toggleMusicVolume: remotes.Client.GetNamespace("settings").GetNamespace("sound").Get("toggleMusicVolume"),
 					toggleSoundEffectsVolume: remotes.Client.GetNamespace("settings")

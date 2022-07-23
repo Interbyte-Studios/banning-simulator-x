@@ -69,5 +69,10 @@ return {
 		currencies = {
 			gold = "rbxassetid://9591269212",
 		},
+		maps = {
+			["Ban Land"] = {
+				world = "rbxassetid://10266321808",
+			},
+		},
 	},
 }

@@ -68,6 +68,11 @@ declare namespace assetIds {
 				};
 			};
 		};
+		maps: {
+			["Ban Land"]: {
+				world: string;
+			};
+		};
 	};
 }
 
