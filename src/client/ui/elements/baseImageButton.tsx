@@ -9,7 +9,6 @@ interface BaseImageButtonProps extends Partial<WritableInstanceProperties<ImageB
 /* eslint-disable jsdoc/require-jsdoc */
 export function BaseImageButton(props: BaseImageButtonProps): Roact.Element {
 	const propsWithoutEvent: Partial<WritableInstanceProperties<ImageButton>> = props;
-	// propsWithoutEvent["Event"] = undefined;
 
 	return (
 		<imagebutton
