@@ -9,9 +9,7 @@ import { ZoneNames } from "shared/configs/zones";
  */
 export function isValidZone(value: unknown): value is ZoneNames {
 	for (const [, worldData] of pairs(WORLDS)) {
-		if (worldData.zones[value as ZoneNames]) {
-			return true;
-		}
+		return worldData.zones[value as ZoneNames] !== undefined;
 	}
 	return false;
 }
