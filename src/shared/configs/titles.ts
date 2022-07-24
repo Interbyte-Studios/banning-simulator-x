@@ -17,7 +17,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 	{
 		name: "free title!",
 		effect: Color3.fromRGB(75, 75, 75),
-		condition: (): boolean => true,
+		condition: (state): boolean => state.quests["Ban Land"].world.has("Kill 30 mobs"),
 	},
 ] as const);
 /* eslint-enable jsdoc/require-jsdoc */

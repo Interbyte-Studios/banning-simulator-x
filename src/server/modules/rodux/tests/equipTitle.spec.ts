@@ -11,7 +11,13 @@ export = (): void => {
 	describe("equipTitle", () => {
 		it("should allow equipping a title with pre-requisites met", () => {
 			const player = useMockPlayer();
-			const { store, dispatchedActions, cleanup } = createDummyStore(player, {});
+			const { store, dispatchedActions, cleanup } = createDummyStore(player, {
+				quests: {
+					"Ban Land": {
+						world: new Set(["Kill 30 mobs"]),
+					},
+				},
+			});
 
 			equipTitle(store, "free title!");
 			assertDeepEqual(dispatchedActions, [

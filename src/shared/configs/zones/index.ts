@@ -1,3 +1,5 @@
+import { t } from "@rbxts/t";
+
 import { Currency } from "../currencies";
 import { BAN_LAND_ZONES } from "./banLand";
 import { BAN_LAND_NPCS } from "./banLand/npcs";
@@ -30,7 +32,15 @@ export interface Zone {
 	npcs: Array<Npc>;
 }
 
-export type ZoneNames = keyof typeof BAN_LAND_ZONES;
+/**
+ * @param x The object to check.
+ * @returns If the given object was a valid zone.
+ */
+export function isValidZone(x: unknown): x is keyof typeof BAN_LAND_ZONES {
+	return BAN_LAND_ZONES[x as keyof typeof BAN_LAND_ZONES] !== undefined;
+}
+
+export type ZoneNames = t.static<typeof isValidZone>;
 export type Zones = typeof BAN_LAND_ZONES;
 
 export type NPCs = keyof typeof BAN_LAND_NPCS;

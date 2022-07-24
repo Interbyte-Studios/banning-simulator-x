@@ -1,6 +1,16 @@
 import { createContext } from "@rbxts/roact";
-import { ToggleAutoHatchDefinition } from "shared/remotes/eggs/toggleAuto";
 import { PurchaseZoneDefinition } from "shared/remotes/purchaseZone";
+import { RedeemQuestDefinition } from "shared/remotes/redeemQuest";
+import { ToggleAutoHatchDefinition } from "shared/remotes/settings/gameplay/toggleAuto";
+import { ToggleWalkSpeedDefinition } from "shared/remotes/settings/gameplay/toggleWalkSpeed";
+import { ToggleButtonClickDefinition } from "shared/remotes/settings/sound/toggleButtonClick";
+import { ToggleMusicVolumeDefinition } from "shared/remotes/settings/sound/toggleMusicVolume";
+import { ToggleSoundEffectsVolumeDefinition } from "shared/remotes/settings/sound/toggleSoundEffectsVolume";
+import { ToggleGraphicsDefinition } from "shared/remotes/settings/visual/toggleGraphics";
+import { TogglePetAnimationTypeDefinition } from "shared/remotes/settings/visual/togglePetAnimationType";
+import { TogglePetsDisplayedDefinition } from "shared/remotes/settings/visual/togglePetsDisplayed";
+import { TogglePetsStudsOfDistanceDefinition } from "shared/remotes/settings/visual/togglePetsStudsOfDistance";
+import { ToggleTimeOfDayDefinition } from "shared/remotes/settings/visual/toggleTimeOfDay";
 import { EquipWeaponDefinition } from "shared/remotes/weapons/equipWeapon";
 import { PurchaseWeaponDefinition } from "shared/remotes/weapons/purchaseWeapon";
 
@@ -13,8 +23,20 @@ export const fakeRemoteContext = {
 
 	purchaseZone: fakeRemoteCall<PurchaseZoneDefinition>("purchaseZone"),
 
-	hatchEgg: fakeHatchEgg,
 	toggleAuto: fakeRemoteCall<ToggleAutoHatchDefinition>("toggleAuto"),
+
+	redeemQuest: fakeRemoteCall<RedeemQuestDefinition>("redeemQuest"),
+	toggleWalkSpeed: fakeRemoteCall<ToggleWalkSpeedDefinition>("toggleWalkSpeed"),
+	toggleButtonClickSFX: fakeRemoteCall<ToggleButtonClickDefinition>("toggleButtonClickSFX"),
+	toggleMusicVolume: fakeRemoteCall<ToggleMusicVolumeDefinition>("toggleMusicVolume"),
+	toggleSoundEffectsVolume: fakeRemoteCall<ToggleSoundEffectsVolumeDefinition>("toggleSoundEffectsVolume"),
+	toggleGraphics: fakeRemoteCall<ToggleGraphicsDefinition>("toggleGraphics"),
+	togglePetAnimationType: fakeRemoteCall<TogglePetAnimationTypeDefinition>("togglePetAnimationType"),
+	togglePetsDisplayed: fakeRemoteCall<TogglePetsDisplayedDefinition>("togglePetsDisplayed"),
+	togglePetsStudsOfDistance: fakeRemoteCall<TogglePetsStudsOfDistanceDefinition>("togglePetsStudsOfDistance"),
+	toggleTimeOfDay: fakeRemoteCall<ToggleTimeOfDayDefinition>("toggleTimeOfDay"),
+
+	hatchEgg: fakeHatchEgg,
 };
 
 export const remoteContext = createContext(fakeRemoteContext);
