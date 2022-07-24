@@ -52,7 +52,7 @@ function updateBanList(): void {
 	}
 
 	if (!(newBanListResult.success && isBanList(newBanListResult.value))) {
-		warn(`Faiiled to decode ban server to JSON format`);
+		warn(`Faiiled to decode ban list to JSON format`);
 		return;
 	}
 
