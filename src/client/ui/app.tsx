@@ -7,7 +7,7 @@ import { Quests } from "./components/quests";
 import { SettingsUI } from "./components/settings";
 import { ToggleWeaponButton } from "./components/weapons/toggleWeaponButton";
 import { WeaponShop } from "./components/weapons/weaponShop";
-import { ZoneInfoUI } from "./components/zones";
+import { ZonesUI } from "./components/zones";
 
 /**
  * Creates the Roact app to display.
@@ -25,8 +25,8 @@ export function app(props: { player: Player; store: Store }): Roact.Element {
 				<WeaponShop store={props.store} />
 				<EggsUI />
 				<SettingsUI />
-				<ZoneInfoUI />
 				<Quests />
+				<ZonesUI />
 			</>
 		</RoactRodux.StoreProvider>
 	);

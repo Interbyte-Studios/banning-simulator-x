@@ -2,6 +2,7 @@ import Net from "@rbxts/net";
 
 import { eggs } from "./eggs";
 import { equipTitleDefinition } from "./equipTitle";
+import { purchaseZoneDefinition } from "./purchaseZone";
 import { redeemQuestDefinition } from "./redeemQuest";
 import { roduxDefinitions } from "./rodux";
 import { settings } from "./settings";
@@ -14,5 +15,7 @@ export const remotes = Net.Definitions.Create({
 	weapons: weapons,
 
 	equipTitle: equipTitleDefinition,
+
+	purchaseZone: purchaseZoneDefinition,
 	redeemQuest: redeemQuestDefinition,
 });
