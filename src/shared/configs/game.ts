@@ -2,15 +2,31 @@ export const MAIN_GROUP = 5126818;
 
 export type Gamepasses = keyof typeof GAMEPASSES;
 export const GAMEPASSES = {
-	Teleportation: 27753320,
-	["+3 Pets"]: 27753311,
-	["+2 Pets"]: 27753303,
-	["+250 Inventory Slots"]: 27753294,
-	["+450 Inventory Slots"]: 27753287,
-	["VIP"]: 27753277,
-	["x2 Currency"]: 27753265,
-	["Auto Open"]: 27753255,
-	["x3 Egg Open"]: 27753252,
-	["x2 Hatch Speed"]: 27753244,
-	["x2 Luck"]: 27753234,
+	["x2 Luck"]: 1,
+	["Fast Hatch"]: 1,
+	["x3 Eggs Hatched"]: 1,
+	["x2 Currency"]: 1,
+	["x2 Experience"]: 1,
+	["x2 Fusion Luck"]: 1,
+	["Extra Drops"]: 1,
+	VIP: 1,
+	["+800 Inventory"]: 1,
+	["+450 Inventory"]: 1,
+	["+250 Inventory"]: 1,
+	["+2 Pets Equipped"]: 1,
+	["+3 Pets Equipped"]: 1,
+	Teleportation: 1,
+};
+
+export type DevProducts = keyof typeof DEV_PRODUCTS;
+export const DEV_PRODUCTS = {
+	["Pet Tasks"]: {
+		Regular: 1,
+		Void: 1,
+		Radiant: 1,
+	},
+	["x2 Boss Drop Luck"]: 1,
+	["x2 Currency"]: 1,
+	["x2 Experience"]: 1,
+	["x2 Pet Experience"]: 1,
 };
