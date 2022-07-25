@@ -1,0 +1,50 @@
+import Roact from "@rbxts/roact";
+import { BaseImageLabel } from "client/roact/elements/baseImageLabel";
+import { BaseTextLabel } from "client/roact/elements/baseTextLabel";
+import { getCurrencyIcon } from "client/util/getCurrencyIcon";
+import { Currency } from "shared/configs/currencies";
+import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
+
+interface eggCostDisplayProps {
+	adornee: BasePart;
+	cost: number;
+	currency: Currency;
+	isVoid: boolean;
+}
+
+/**
+ * A component that displays the currency type and cost amount of an egg.
+ *
+ * @param props Properties of the component.
+ * @param props.adornee The adornee the component is set to.
+ * @param props.cost The cost of the egg.
+ * @param props.currency The currency type of the egg.
+ * @param props.isVoid Whether or not the egg is a void egg.
+ * @returns A roact element.
+ */
+export function EggCostDisplay(props: eggCostDisplayProps): Roact.Element {
+	return (
+		<surfacegui
+			Adornee={props.adornee}
+			Face={Enum.NormalId.Front}
+			LightInfluence={0.8}
+			ResetOnSpawn={false}
+			SizingMode={"PixelsPerStud"}
+			PixelsPerStud={50}
+		>
+			<BaseTextLabel
+				Position={UDim2.fromScale(0.65, 0.5)}
+				Size={UDim2.fromScale(0.7, 0.7)}
+				Text={twoDpAbbreviator.numberToString(props.cost)}
+				TextColor3={props.isVoid ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0)}
+			>
+				<BaseImageLabel
+					AnchorPoint={new Vector2(1, 0.5)}
+					Position={UDim2.fromScale(-0.05, 0.5)}
+					Size={UDim2.fromScale(0.35, 1.1)}
+					Image={getCurrencyIcon(props.currency)}
+				/>
+			</BaseTextLabel>
+		</surfacegui>
+	);
+}
