@@ -21,16 +21,19 @@ export function claimGamepass(gamepassName: Gamepasses): ClaimGamepass & Rodux.A
 }
 
 const defaultGamepasses: GamepassesState = {
-	"+3 Pets": false,
-	"+2 Pets": false,
-	"+250 Inventory Slots": false,
-	"+450 Inventory Slots": false,
+	["x2 Luck"]: false,
+	["Fast Hatch"]: false,
+	["x3 Eggs Hatched"]: false,
+	["x2 Currency"]: false,
+	["x2 Experience"]: false,
+	["x2 Fusion Luck"]: false,
+	["Extra Drops"]: false,
 	VIP: false,
-	"x2 Currency": false,
-	"Auto Open": false,
-	"x3 Egg Open": false,
-	"x2 Hatch Speed": false,
-	"x2 Luck": false,
+	["+800 Inventory"]: false,
+	["+450 Inventory"]: false,
+	["+250 Inventory"]: false,
+	["+2 Pets Equipped"]: false,
+	["+3 Pets Equipped"]: false,
 	Teleportation: false,
 };
 
