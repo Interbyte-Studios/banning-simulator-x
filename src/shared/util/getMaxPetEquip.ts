@@ -11,11 +11,11 @@ export function getMaxPetEquip(store: Store): number {
 	const currentState = store.getState();
 
 	let additionalPets = 0;
-	if (currentState.gamepasses["+2 Pets"]) {
+	if (currentState.gamepasses["+2 Pets Equipped"]) {
 		additionalPets += 2;
 	}
 
-	if (currentState.gamepasses["+3 Pets"]) {
+	if (currentState.gamepasses["+3 Pets Equipped"]) {
 		additionalPets += 3;
 	}
 
