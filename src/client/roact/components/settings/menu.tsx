@@ -1,10 +1,10 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { setMusicVolume } from "client/handlers/settings/musicVolume";
-import { setPetsStudsOfDistance } from "client/handlers/settings/petStudsOfDistance";
-import { setSoundEffects } from "client/handlers/settings/soundEffects";
-import { setTimeOfDay } from "client/handlers/settings/timeOfDay";
-import { setWalkSpeed } from "client/handlers/settings/walkSpeed";
+import { setMusicVolume } from "client/modules/settings/musicVolume";
+import { setPetsStudsOfDistance } from "client/modules/settings/petStudsOfDistance";
+import { setSoundEffects } from "client/modules/settings/soundEffects";
+import { setTimeOfDay } from "client/modules/settings/timeOfDay";
+import { setWalkSpeed } from "client/modules/settings/walkSpeed";
 import { font, udim2BottomRight, udim2Middle, vec2Middle } from "client/roact/commonValues";
 import { BaseUIStroke } from "client/roact/elements/baseUIStroke";
 import { ExitButton } from "client/roact/elements/exitButton";
