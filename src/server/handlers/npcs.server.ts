@@ -1,8 +1,8 @@
 import { Workspace } from "@rbxts/services";
 import { WORLDS } from "shared/configs/worlds";
 
-import { runStep } from "./modules/npcs/runStep";
-import { NpcWorldState } from "./modules/npcs/worldState";
+import { runStep } from "../modules/npcs/runStep";
+import { NpcWorldState } from "../modules/npcs/worldState";
 
 // generate world state
 const npcState = [];
