@@ -17,7 +17,15 @@ interface PetFrameProps {
 	variant: Variants;
 }
 
-/* eslint-disable jsdoc/require-jsdoc */
+/**
+ * An image frame which displays a viewport of a pet.
+ *
+ * @param props The properties of the pet frame.
+ * @param props.eggName The name of the egg the pet comes from.
+ * @param props.petId The id of the pet that is being displayed.
+ * @param props.variant The variant of the pet.
+ * @returns A roact component.
+ */
 export function PetFrame(props: PetFrameProps): Roact.Element {
 	const petData = getPetData(props.eggName, props.petId);
 

@@ -12,13 +12,14 @@ const springProps = {
 };
 
 interface ZonePurchaseButtonProps {
-	onClicked: () => void;
+	onPurchased: () => void;
 }
 
 /**
- * Roact Element on the zone info display where the player can interact to purchase the zone.
+ * Provides zone purchase interaction functionality on a zone's corresponding sign.
  *
- * @param props Props of the element.
+ * @param props Properties of the component.
+ * @param props.onClicked A function which prompts the user with a purchase interface component.
  */
 /* eslint-disable jsdoc/require-jsdoc */
 export const ZonePurchaseButton = hooks((props: ZonePurchaseButtonProps) => {
@@ -39,7 +40,7 @@ export const ZonePurchaseButton = hooks((props: ZonePurchaseButtonProps) => {
 			AutoButtonColor={false}
 			BackgroundColor3={Color3.fromRGB(167, 240, 170)}
 			Event={{
-				Activated: (): void => props.onClicked(),
+				Activated: (): void => props.onPurchased(),
 				MouseEnter: (): void => {
 					motor.setGoal({
 						x: new Flipper.Spring(minimizedSize.x, springProps),
@@ -69,6 +70,6 @@ export const ZonePurchaseButton = hooks((props: ZonePurchaseButtonProps) => {
 				<uistroke Thickness={3} Color={Color3.fromRGB(112, 158, 113)} />
 			</textlabel>
 		</textbutton>
-		/* eslint-enable jsdoc/require-jsdoc */
 	);
 });
+/* eslint-enable jsdoc/require-jsdoc */

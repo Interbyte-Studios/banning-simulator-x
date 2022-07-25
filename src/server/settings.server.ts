@@ -46,24 +46,20 @@ const visualRemotes = settingsRemotes.GetNamespace("visual");
 const toggleGraphicsRemote = visualRemotes.Create("toggleGraphics");
 toggleGraphicsRemote.Connect(withPlayerStore((_, store, quality) => store.dispatch(toggleGraphics(quality))));
 
-// [ Toggle Pet Animation Remote ]
 const togglePetAnimationTypeRemote = visualRemotes.Create("togglePetAnimationType");
 togglePetAnimationTypeRemote.Connect(
 	withPlayerStore((_, store, animationType) => store.dispatch(togglePetAnimationType(animationType))),
 );
 
-// [ Toggle Pets Displayed Remote ]
 const togglePetsDisplayedRemote = visualRemotes.Create("togglePetsDisplayed");
 togglePetsDisplayedRemote.Connect(
 	withPlayerStore((_, store, displayed) => store.dispatch(togglePetsDisplayed(displayed))),
 );
 
-// [ Toggle Pets Studs of Distance Remote ]
 const togglePetsStudsOfDistanceRemote = visualRemotes.Create("togglePetsStudsOfDistance");
 togglePetsStudsOfDistanceRemote.Connect(
 	withPlayerStore((_, store, studs) => store.dispatch(togglePetsStudsOfDistance(studs))),
 );
 
-// [ Toggle Time of Day Remote ]
 const toggleTimeOfDayRemote = visualRemotes.Create("toggleTimeOfDay");
 toggleTimeOfDayRemote.Connect(withPlayerStore((_, store, timeOfDay) => store.dispatch(toggleTimeOfDay(timeOfDay))));

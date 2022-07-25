@@ -28,6 +28,9 @@ function mapeStateToProps(state: StoreState): MappedZoneInfoProps {
 	};
 }
 
+/**
+ * Displays the information of every zone on their corresponding signs.
+ */
 export const ZonesInfo = RoactRodux.connect(mapeStateToProps)(
 	hooks((props: ZoneInfoProps) => {
 		return (

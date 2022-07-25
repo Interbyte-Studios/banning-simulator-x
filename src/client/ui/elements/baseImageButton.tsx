@@ -6,7 +6,10 @@ interface BaseImageButtonProps extends Partial<WritableInstanceProperties<ImageB
 	Event?: Roact.JsxInstanceEvents<ImageButton>;
 }
 
-/* eslint-disable jsdoc/require-jsdoc */
+/**
+ * @param props The properties of the image button.
+ * @returns An image button roact component with preset properties.
+ */
 export function BaseImageButton(props: BaseImageButtonProps): Roact.Element {
 	const propsWithoutEvent: Partial<WritableInstanceProperties<ImageButton>> = props;
 

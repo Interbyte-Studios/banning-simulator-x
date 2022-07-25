@@ -17,6 +17,7 @@ const displayedSpring = new Flipper.Spring(1, { frequency: 5 });
  * @param props Properties of the settings icon component.
  * @param props.showMenu A function used to hide the settings menu ui.
  */
+/* eslint-disable jsdoc/require-jsdoc */
 export const SettingsMenuButton = hooks((props: SettingsMenuButtonProps, { useEffect }) => {
 	const motor = new Flipper.SingleMotor(1);
 	const [binding, setBinding] = Roact.createBinding(motor.getValue());
@@ -42,19 +43,10 @@ export const SettingsMenuButton = hooks((props: SettingsMenuButtonProps, { useEf
 			HoverImage={assetIds.images.buttons.dark.specialized.settings["Settings Selected"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
-				/**
-				 *
-				 */
 				Activated: (): void => props.showMenu(),
-				/**
-				 *
-				 */
 				MouseEnter: (): void => {
 					motor.setGoal(hiddenSpring);
 				},
-				/**
-				 *
-				 */
 				MouseLeave: (): void => {
 					motor.setGoal(displayedSpring);
 				},
@@ -62,3 +54,4 @@ export const SettingsMenuButton = hooks((props: SettingsMenuButtonProps, { useEf
 		/>
 	);
 });
+/* eslint-enable jsdoc/require-jsdoc */

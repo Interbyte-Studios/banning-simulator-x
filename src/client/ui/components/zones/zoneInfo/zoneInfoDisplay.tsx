@@ -17,7 +17,7 @@ interface ZoneInfoProps {
 }
 
 /**
- * The Roact element to display zone info.
+ * Displays information about a zone on it's corresponding sign.
  *
  * @param props Information of the zone.
  * @returns Roact Element for zone info.
@@ -152,7 +152,7 @@ export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 				</imagelabel>
-				<ZonePurchaseButton onClicked={(): void => props.onPurchase(props.zoneName, props.worldName)} />
+				<ZonePurchaseButton onPurchased={(): void => props.onPurchase(props.zoneName, props.worldName)} />
 			</surfacegui>
 		);
 	}

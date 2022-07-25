@@ -15,7 +15,16 @@ interface InfoFrameProps {
 	isVoid: boolean;
 }
 
-/* eslint-disable jsdoc/require-jsdoc */
+/**
+ * Displays information about a pet.
+ *
+ * @param props Properties of the component.
+ * @param props.id An id deciding the position on the screen where the component is displayed.
+ * @param props.eggName The name of the egg that the pet was hatched from.
+ * @param props.pet The id of the pet that was hatched.
+ * @param props.isVoid Whether or not the pet is void.
+ * @returns A roact element.
+ */
 export function InfoFrame(props: InfoFrameProps): Roact.Element {
 	const infoFramePositions = preserveWithConstraint<Record<1 | 2 | 3, UDim2>>()({
 		3: UDim2.fromScale(0.5, 0.75),

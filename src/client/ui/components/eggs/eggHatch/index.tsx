@@ -11,7 +11,15 @@ interface EggHatchProps {
 	pets: Array<ConfirmedPet>;
 }
 
-/* eslint-disable jsdoc/require-jsdoc */
+/**
+ * Displays information about pets that have been hatched.
+ *
+ * @param props Properties of the component.
+ * @param props.eggName The name of the egg that has been hatched.
+ * @param props.isVoid Whether or not the egg and hatched pets are void.
+ * @param props.pets The pet(s) that were hatched from the egg(s).
+ * @returns A roact element.
+ */
 export function EggHatch(props: EggHatchProps): Roact.Element {
 	const infoFrames = [];
 	for (const pet of props.pets) {

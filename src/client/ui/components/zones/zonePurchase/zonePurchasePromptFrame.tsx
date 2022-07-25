@@ -23,6 +23,10 @@ const springProps = {
 	dampingRatio: 0.5,
 };
 
+/**
+ * A zone prompt purchase interface.
+ */
+/* eslint-disable jsdoc/require-jsdoc */
 export const ZonePurchasePromptFrame = hooks((props: ZonePurchasePromptProps) => {
 	const zoneData = getZoneData(props.worldName, props.zoneName);
 
@@ -67,17 +71,13 @@ export const ZonePurchasePromptFrame = hooks((props: ZonePurchasePromptProps) =>
 				})}
 				AutoButtonColor={false}
 				Event={{
-					// eslint-disable-next-line jsdoc/require-jsdoc
 					Activated: (): void => props.onPurchase(),
-					// eslint-disable-next-line jsdoc/require-jsdoc
 					MouseEnter: (): void => {
 						confirmButtonMotor.setGoal({
 							x: new Flipper.Spring(minimizedSize.x, springProps),
 							y: new Flipper.Spring(minimizedSize.y, springProps),
 						});
 					},
-
-					// eslint-disable-next-line jsdoc/require-jsdoc
 					MouseLeave: (): void => {
 						confirmButtonMotor.setGoal({
 							x: new Flipper.Spring(maximizedSize.x, springProps),
@@ -111,17 +111,13 @@ export const ZonePurchasePromptFrame = hooks((props: ZonePurchasePromptProps) =>
 				})}
 				AutoButtonColor={false}
 				Event={{
-					// eslint-disable-next-line jsdoc/require-jsdoc
 					Activated: (): void => props.onCancel(),
-					// eslint-disable-next-line jsdoc/require-jsdoc
 					MouseEnter: (): void => {
 						cancelButtonMotor.setGoal({
 							x: new Flipper.Spring(minimizedSize.x, springProps),
 							y: new Flipper.Spring(minimizedSize.y, springProps),
 						});
 					},
-
-					// eslint-disable-next-line jsdoc/require-jsdoc
 					MouseLeave: (): void => {
 						cancelButtonMotor.setGoal({
 							x: new Flipper.Spring(maximizedSize.x, springProps),
@@ -210,3 +206,4 @@ export const ZonePurchasePromptFrame = hooks((props: ZonePurchasePromptProps) =>
 		</frame>
 	);
 });
+/* eslint-enable jsdoc/require-jsdoc */
