@@ -11,7 +11,13 @@ interface EggHudProps {
 	initiateHatch: (amount: 1 | 3, egg: EggName, isVoid: boolean) => Promise<void>;
 }
 
-/* eslint-disable jsdoc/require-jsdoc */
+/**
+ * Displays informational and interactable ui components for all eggs in the game.
+ *
+ * @param props Properties of the component.
+ * @param props.initiateHatch A function that allows the player to hatch eggs.
+ * @returns A roact element.
+ */
 export const EggHud = hooks((props: EggHudProps, { useState, useEffect }) => {
 	const [isActive, setIsActive] = useState(true);
 

@@ -7,7 +7,10 @@ type BaseImageLabelProps = Omit<
 	"BackgroundTransparency" | "ScaleType"
 >;
 
-/* eslint-disable jsdoc/require-jsdoc */
+/**
+ * @param props The properties of the image label.
+ * @returns An image label roact component with preset properties.
+ */
 export function BaseImageLabel(props: BaseImageLabelProps): Roact.Element {
 	return (
 		<imagelabel

@@ -6,10 +6,14 @@ import { getEggCost } from "shared/util/getEggCost";
 
 import { EggCostDisplay } from "./eggCostDisplay";
 
-/* eslint-disable jsdoc/require-jsdoc */
+/**
+ * Creates an egg cost component for every egg in the game.
+ *
+ * @returns A roact element.
+ */
 export function EggCost(): Roact.Element {
 	return (
-		<frame Visible={false}>
+		<>
 			{Object.entries(EGGS).map(([eggName]) => {
 				const eggModel = Workspace.interactions.eggs[eggName];
 
@@ -17,7 +21,7 @@ export function EggCost(): Roact.Element {
 				const eggCostVoid = getEggCost(eggName, true);
 
 				return (
-					<frame Visible={false}>
+					<>
 						<EggCostDisplay
 							adornee={eggModel.regular.cost}
 							cost={eggCostRegular.amount}
@@ -30,9 +34,9 @@ export function EggCost(): Roact.Element {
 							currency={eggCostVoid.currencyType}
 							isVoid={true}
 						/>
-					</frame>
+					</>
 				);
 			})}
-		</frame>
+		</>
 	);
 }

@@ -65,7 +65,17 @@ function mapStateToProps(state: StoreState): MappedEggHudProps {
 const inactiveSpring = new Flipper.Spring(0, { frequency: 5 });
 const activeSpring = new Flipper.Spring(1, { frequency: 5 });
 
-/* eslint-disable jsdoc/require-jsdoc */
+/**
+ * Displays the information of an egg and allows the user to hatch eggs.
+ *
+ * @param props Properties of the component.
+ * @param props.adornee The adornee the component is set to.
+ * @param props.eggName The name of the egg being displayed.
+ * @param props.isVoid Whether or not the egg is void.
+ * @param props.pets The pets that could potentially be hatched from the egg.
+ * @param props.initiateHatch A function that allows the player to hatch the egg.
+ * @returns A roact element.
+ */
 export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 	hooks((props: EggHudProps, { useEffect, useContext }) => {
 		// motor

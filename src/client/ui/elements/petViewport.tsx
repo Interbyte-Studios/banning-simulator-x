@@ -12,6 +12,14 @@ interface PetViewportProps {
 	petId: number;
 }
 
+/**
+ * A viewport of a pet.
+ *
+ * @param props The properties of the pet viewport.
+ * @param props.native The native properties of the viewport frame.
+ * @param props.eggName The name of the egg the pet comes from.
+ * @param props.petId The id of the pet being displayed.
+ */
 export const PetViewport = hooks((props: PetViewportProps, { useValue, useEffect }) => {
 	const viewportRef = useValue(Roact.createRef<ViewportFrame>());
 	const cameraRef = useValue(Roact.createRef<Camera>());

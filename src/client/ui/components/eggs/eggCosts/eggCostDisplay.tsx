@@ -12,7 +12,16 @@ interface eggCostDisplayProps {
 	isVoid: boolean;
 }
 
-/* eslint-disable jsdoc/require-jsdoc */
+/**
+ * A component that displays the currency type and cost amount of an egg.
+ *
+ * @param props Properties of the component.
+ * @param props.adornee The adornee the component is set to.
+ * @param props.cost The cost of the egg.
+ * @param props.currency The currency type of the egg.
+ * @param props.isVoid Whether or not the egg is a void egg.
+ * @returns A roact element.
+ */
 export function EggCostDisplay(props: eggCostDisplayProps): Roact.Element {
 	return (
 		<surfacegui

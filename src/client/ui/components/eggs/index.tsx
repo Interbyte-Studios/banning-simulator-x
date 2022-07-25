@@ -16,7 +16,9 @@ interface HatchData {
 	isVoid: boolean;
 }
 
-/* eslint-disable jsdoc/require-jsdoc */
+/**
+ * A higher ordered component that displays both information for all the eggs in the game and functionality to hatch those eggs.
+ */
 export const EggsUI = hooks((_, { useState, useContext }) => {
 	const [currentHatchData, setCurrentHatchData] = useState<HatchData | undefined>(undefined);
 

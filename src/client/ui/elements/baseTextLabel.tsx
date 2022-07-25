@@ -4,7 +4,10 @@ import { font, uiTheme, vec2Middle } from "../commonValues";
 
 interface BaseTextLabelProps extends Partial<TextLabel> {}
 
-/* eslint-disable jsdoc/require-jsdoc */
+/**
+ * @param props The properties of the text label.
+ * @returns A text label roact component with preset properties.
+ */
 export function BaseTextLabel(props: BaseTextLabelProps): Roact.Element {
 	return (
 		<textlabel
