@@ -3,7 +3,7 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService } from "@rbxts/services";
-import { tryPurchaseEgg } from "client/eggs/purchaseEgg";
+import { tryPurchaseEgg } from "client/handlers/eggs/purchaseEgg";
 import { BaseImageLabel } from "client/ui/elements/baseImageLabel";
 import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";

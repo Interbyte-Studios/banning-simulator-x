@@ -1,6 +1,6 @@
 import { remotes } from "shared/remotes";
 
-import { stores } from "./clientStores";
+import { stores } from "../clientStores";
 
 remotes.Client.GetNamespace("rodux")
 	.Get("storeChange")
