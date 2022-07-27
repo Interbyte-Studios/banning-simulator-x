@@ -1,7 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
-import { udim2Middle, vec2Middle } from "client/roact/commonValues";
-import { hooks } from "client/roact/hooks";
+import { udim2Middle, vec2Middle } from "client/ui/commonValues";
+import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
 interface SettingsMenuButtonProps {
