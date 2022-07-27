@@ -23,10 +23,10 @@ export function claimBoost(boostName: BoostProducts, boostTime: number): ClaimBo
 }
 
 const defaultBoosts: BoostsState = {
-	["x2 Boss Drop Luck"]: 1,
-	["x2 Currency"]: 1,
-	["x2 Experience"]: 1,
-	["x2 Pet Experience"]: 1,
+	["x2 Boss Drop Luck"]: 0,
+	["x2 Currency"]: 0,
+	["x2 Experience"]: 0,
+	["x2 Pet Experience"]: 0,
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
