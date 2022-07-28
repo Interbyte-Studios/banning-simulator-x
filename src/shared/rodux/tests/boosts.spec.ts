@@ -1,8 +1,9 @@
 /// <reference types="@rbxts/testez/globals" />
 
+import { BoostProducts } from "shared/configs/game";
 import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 
-import { boostsReducer, BoostsState, claimBoost } from "../boosts";
+import { boostsReducer, BoostsState, claimBoost, useBoosts, ValidBoostUseRecord } from "../boosts";
 
 export = (): void => {
 	describe("rodux/boosts", () => {
@@ -31,6 +32,12 @@ export = (): void => {
 
 		it("should allow using a boost", () => {
 			const boostTime = 6 * 60;
+			const boostsToCheck: Array<BoostProducts> = [
+				"x2 Boss Drop Luck",
+				"x2 Currency",
+				"x2 Experience",
+				"x2 Pet Experience",
+			];
 
 			const state: BoostsState = {
 				["x2 Boss Drop Luck"]: boostTime,
@@ -39,14 +46,17 @@ export = (): void => {
 				["x2 Pet Experience"]: boostTime,
 			};
 
-			const newState: BoostsState = {
-				["x2 Boss Drop Luck"]: boostTime - 1,
-				["x2 Currency"]: boostTime,
-				["x2 Experience"]: boostTime,
-				["x2 Pet Experience"]: boostTime,
-			};
+			const newState = { ...state };
+			for (const boost of boostsToCheck) {
+				newState[boost] -= 1;
+			}
 
-			const action = claimBoost("x2 Boss Drop Luck", boostTime - 1);
+			const boostsToUse: Array<ValidBoostUseRecord> = [];
+			for (const boost of boostsToCheck) {
+				boostsToUse.push({ name: boost, timeLeft: boostTime - 1 });
+			}
+
+			const action = useBoosts(boostsToUse);
 
 			assertDeepEqual(boostsReducer(state, action), newState);
 		});

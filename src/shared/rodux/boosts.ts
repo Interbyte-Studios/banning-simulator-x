@@ -2,15 +2,20 @@ import Rodux from "@rbxts/rodux";
 import { BoostProducts } from "shared/configs/game";
 
 export type BoostsState = { [P in BoostProducts]: number };
-export type BoostActions = ClaimBoost | UseBoost;
+export type BoostActions = ClaimBoost | UseBoosts;
 
 interface ClaimBoost extends Rodux.Action<"claimBoost"> {
 	name: BoostProducts;
 	boostTime: number;
 }
 
-interface UseBoost extends Rodux.Action<"useBoost"> {
+export interface ValidBoostUseRecord {
 	name: BoostProducts;
+	timeLeft: number;
+}
+
+interface UseBoosts extends Rodux.Action<"useBoosts"> {
+	boosts: Array<ValidBoostUseRecord>;
 }
 
 /**
@@ -27,13 +32,13 @@ export function claimBoost(boostName: BoostProducts, boostTime: number): ClaimBo
 }
 
 /**
- * @param boostName The name of the product that's being used.
+ * @param boosts Array of boosts that should be used.
  * @returns The Rodux action to dispatch.
  */
-export function useBoost(boostName: BoostProducts): UseBoost & Rodux.AnyAction {
+export function useBoosts(boosts: Array<ValidBoostUseRecord>): UseBoosts & Rodux.AnyAction {
 	return {
-		type: "useBoost",
-		name: boostName,
+		type: "useBoosts",
+		boosts,
 	};
 }
 
@@ -52,9 +57,11 @@ export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions>(defa
 
 		return newState;
 	},
-	useBoost: (state, action) => {
+	useBoosts: (state, action) => {
 		const newState = { ...state };
-		newState[action.name] -= 1;
+		for (const boost of action.boosts) {
+			newState[boost.name] = boost.timeLeft;
+		}
 
 		return newState;
 	},
