@@ -28,5 +28,27 @@ export = (): void => {
 
 			assertDeepEqual(boostsReducer(state, action), newState);
 		});
+
+		it("should allow using a boost", () => {
+			const boostTime = 6 * 60;
+
+			const state: BoostsState = {
+				["x2 Boss Drop Luck"]: boostTime,
+				["x2 Currency"]: boostTime,
+				["x2 Experience"]: boostTime,
+				["x2 Pet Experience"]: boostTime,
+			};
+
+			const newState: BoostsState = {
+				["x2 Boss Drop Luck"]: boostTime - 1,
+				["x2 Currency"]: boostTime,
+				["x2 Experience"]: boostTime,
+				["x2 Pet Experience"]: boostTime,
+			};
+
+			const action = claimBoost("x2 Boss Drop Luck", boostTime - 1);
+
+			assertDeepEqual(boostsReducer(state, action), newState);
+		});
 	});
 };
