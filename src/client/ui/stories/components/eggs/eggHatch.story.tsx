@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { EggsUI } from "client/roact/components/eggs";
+import { EggsUI } from "client/ui/components/eggs";
 
 import { createMockStory } from "../../createMockStory";
 

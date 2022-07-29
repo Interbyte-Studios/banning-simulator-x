@@ -1,7 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
-import { color3White, font, vec2Middle } from "client/roact/commonValues";
-import { hooks } from "client/roact/hooks";
+import { color3White, font, vec2Middle } from "client/ui/commonValues";
+import { hooks } from "client/ui/hooks";
 
 const maximizedSize = { x: 0.238, y: 0.147 };
 const minimizedSize = { x: 0.22, y: 0.13 };

@@ -1,9 +1,9 @@
 import Roact from "@rbxts/roact";
-import { udim2TopMiddle, vec2Middle } from "client/roact/commonValues";
-import { BaseTextLabel } from "client/roact/elements/baseTextLabel";
-import { BaseUIStroke } from "client/roact/elements/baseUIStroke";
-import { PetViewport } from "client/roact/elements/petViewport";
-import { RarityGradient } from "client/roact/elements/rarityGradient";
+import { udim2TopMiddle, vec2Middle } from "client/ui/commonValues";
+import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { PetViewport } from "client/ui/elements/petViewport";
+import { RarityGradient } from "client/ui/elements/rarityGradient";
 import { EggName } from "shared/configs/eggs";
 import { getPetData } from "shared/util/getPetData";
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";

@@ -5,11 +5,11 @@ import { setPetsStudsOfDistance } from "client/modules/settings/petStudsOfDistan
 import { setSoundEffects } from "client/modules/settings/soundEffects";
 import { setTimeOfDay } from "client/modules/settings/timeOfDay";
 import { setWalkSpeed } from "client/modules/settings/walkSpeed";
-import { font, udim2BottomRight, udim2Middle, vec2Middle } from "client/roact/commonValues";
-import { BaseUIStroke } from "client/roact/elements/baseUIStroke";
-import { ExitButton } from "client/roact/elements/exitButton";
-import { hooks } from "client/roact/hooks";
-import { remoteContext } from "client/roact/mocks/remoteContext";
+import { font, udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { ExitButton } from "client/ui/elements/exitButton";
+import { hooks } from "client/ui/hooks";
+import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { Settings } from "shared/rodux/settings";

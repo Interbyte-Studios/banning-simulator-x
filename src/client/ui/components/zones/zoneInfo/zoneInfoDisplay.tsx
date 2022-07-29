@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { font, vec2Middle } from "client/roact/commonValues";
+import { font, vec2Middle } from "client/ui/commonValues";
 import assetIds from "shared/assets";
 import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";

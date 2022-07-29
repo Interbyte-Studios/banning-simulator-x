@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { WeaponShop } from "client/roact/components/weapons/weaponShop";
-import { fakeRemoteContext, remoteContext } from "client/roact/mocks/remoteContext";
+import { WeaponShop } from "client/ui/components/weapons/weaponShop";
+import { fakeRemoteContext, remoteContext } from "client/ui/mocks/remoteContext";
 
 import { createMockStory } from "../../createMockStory";
 

@@ -2,7 +2,7 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Workspace } from "@rbxts/services";
-import { hooks } from "client/roact/hooks";
+import { hooks } from "client/ui/hooks";
 import { WorldName, WORLDS } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
 import { StoreState } from "shared/rodux";

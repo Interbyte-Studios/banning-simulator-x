@@ -1,9 +1,9 @@
 import Roact from "@rbxts/roact";
-import { font, vec2Middle } from "client/roact/commonValues";
-import { BaseUIStroke } from "client/roact/elements/baseUIStroke";
-import { DecreaseButton } from "client/roact/elements/decreaseButton";
-import { IncreaseButton } from "client/roact/elements/increaseButton";
-import { hooks } from "client/roact/hooks";
+import { font, vec2Middle } from "client/ui/commonValues";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { DecreaseButton } from "client/ui/elements/decreaseButton";
+import { IncreaseButton } from "client/ui/elements/increaseButton";
+import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
 interface ModifySettingOptionProps {

@@ -1,7 +1,7 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import { RunService, Workspace } from "@rbxts/services";
-import { hooks } from "client/roact/hooks";
+import { hooks } from "client/ui/hooks";
 import { EggName, EGGS } from "shared/configs/eggs";
 
 import { AnimateEggs } from "../eggHatch/animateEggs";

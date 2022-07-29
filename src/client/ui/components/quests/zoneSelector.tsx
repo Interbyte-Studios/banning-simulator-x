@@ -6,10 +6,10 @@ import {
 	udim2BottomRight,
 	udim2Middle,
 	vec2Middle,
-} from "client/roact/commonValues";
-import { BaseImageButton } from "client/roact/elements/baseImageButton";
-import { ExitButton } from "client/roact/elements/exitButton";
-import { RescalingScrollingFrame } from "client/roact/elements/rescalingScrollingFrame";
+} from "client/ui/commonValues";
+import { BaseImageButton } from "client/ui/elements/baseImageButton";
+import { ExitButton } from "client/ui/elements/exitButton";
+import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
 import assetIds from "shared/assets";
 import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";

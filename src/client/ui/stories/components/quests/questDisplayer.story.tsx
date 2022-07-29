@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { QuestDisplayer } from "client/roact/components/quests/questDisplayer";
+import { QuestDisplayer } from "client/ui/components/quests/questDisplayer";
 
 import { createMockStory } from "../../createMockStory";
 

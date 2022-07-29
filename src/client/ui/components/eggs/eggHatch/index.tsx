@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { udim2BottomRight, udim2Middle, vec2Middle } from "client/roact/commonValues";
+import { udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
 import { EggName } from "shared/configs/eggs";
 import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
 

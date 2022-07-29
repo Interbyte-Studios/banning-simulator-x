@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { ZonesUI } from "client/roact/components/zones";
+import { ZonesUI } from "client/ui/components/zones";
 
 import { createMockStory } from "../../createMockStory";
 

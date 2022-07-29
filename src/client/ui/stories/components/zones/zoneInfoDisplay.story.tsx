@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { ZoneInfoDisplay } from "client/roact/components/zones/zoneInfo/zoneInfoDisplay";
+import { ZoneInfoDisplay } from "client/ui/components/zones/zoneInfo/zoneInfoDisplay";
 
 import { createMockStory } from "../../createMockStory";
 

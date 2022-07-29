@@ -1,8 +1,8 @@
 import Roact from "@rbxts/roact";
-import { font, vec2Middle } from "client/roact/commonValues";
-import { BaseUIStroke } from "client/roact/elements/baseUIStroke";
-import { EnabledButton } from "client/roact/elements/enabledButton";
-import { hooks } from "client/roact/hooks";
+import { font, vec2Middle } from "client/ui/commonValues";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { EnabledButton } from "client/ui/elements/enabledButton";
+import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
 interface ToggleSettingOptionProps {

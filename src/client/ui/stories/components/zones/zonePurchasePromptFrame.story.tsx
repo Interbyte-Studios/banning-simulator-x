@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { ZonePurchasePromptFrame } from "client/roact/components/zones/zonePurchase/zonePurchasePromptFrame";
+import { ZonePurchasePromptFrame } from "client/ui/components/zones/zonePurchase/zonePurchasePromptFrame";
 
 import { createMockStory } from "../../createMockStory";
 

@@ -1,7 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
-import { color3White, font, vec2Middle } from "client/roact/commonValues";
-import { hooks } from "client/roact/hooks";
+import { color3White, font, vec2Middle } from "client/ui/commonValues";
+import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";

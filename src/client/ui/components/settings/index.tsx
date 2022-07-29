@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { vec2Middle } from "client/roact/commonValues";
-import { hooks } from "client/roact/hooks";
+import { vec2Middle } from "client/ui/commonValues";
+import { hooks } from "client/ui/hooks";
 import { StoreState } from "shared/rodux";
 import { Settings } from "shared/rodux/settings";
 

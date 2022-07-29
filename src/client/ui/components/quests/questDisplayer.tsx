@@ -1,8 +1,8 @@
 import Roact from "@rbxts/roact";
-import { font, udim2BottomRight, udim2Middle, vec2Middle } from "client/roact/commonValues";
-import { BaseTextLabel } from "client/roact/elements/baseTextLabel";
-import { ExitButton } from "client/roact/elements/exitButton";
-import { RescalingScrollingFrame } from "client/roact/elements/rescalingScrollingFrame";
+import { font, udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
+import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
+import { ExitButton } from "client/ui/elements/exitButton";
+import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
 import { QuestReward } from "shared/configs/quests";
 
 interface QuestDisplayerProps {

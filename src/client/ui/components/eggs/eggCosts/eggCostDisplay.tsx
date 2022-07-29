@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
-import { BaseImageLabel } from "client/roact/elements/baseImageLabel";
-import { BaseTextLabel } from "client/roact/elements/baseTextLabel";
+import { BaseImageLabel } from "client/ui/elements/baseImageLabel";
+import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
 import { getCurrencyIcon } from "client/util/getCurrencyIcon";
 import { Currency } from "shared/configs/currencies";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";

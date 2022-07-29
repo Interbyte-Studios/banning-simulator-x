@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { EggCost } from "client/roact/components/eggs/eggCosts";
+import { EggCost } from "client/ui/components/eggs/eggCosts";
 
 import { createMockStory } from "../../createMockStory";
 
