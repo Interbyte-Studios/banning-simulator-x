@@ -9,7 +9,7 @@ import { isValidWalkSpeed } from "shared/rodux/settings";
  * @param remote The remote used to communicate the action with the server.
  */
 export function setWalkSpeed(walkSpeed: number, remote: InferClientRemote<ToggleWalkSpeedDefinition>): void {
-	if (!isValidWalkSpeed) {
+	if (!isValidWalkSpeed(walkSpeed)) {
 		return;
 	}
 
