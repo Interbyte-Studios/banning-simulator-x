@@ -149,7 +149,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 						displayValue={`${props.settings.gameplay.walkSpeed}`}
 						displayPercentage={false}
 						onIncrease={(): void => setWalkSpeed(props.settings.gameplay.walkSpeed + 1, toggleWalkSpeed)}
-						onDecrease={(): void => setWalkSpeed(props.settings.gameplay.walkSpeed + 1, toggleWalkSpeed)}
+						onDecrease={(): void => setWalkSpeed(props.settings.gameplay.walkSpeed - 1, toggleWalkSpeed)}
 					/>
 					<textlabel
 						AnchorPoint={vec2Middle}
