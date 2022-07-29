@@ -3,7 +3,7 @@
 import { BoostProducts } from "shared/configs/game";
 import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 
-import { boostsReducer, BoostsState, claimBoost, useBoosts, ValidBoostUseRecord } from "../boosts";
+import { boostsReducer, BoostsState, claimBoost, useBoosts } from "../boosts";
 
 export = (): void => {
 	describe("rodux/boosts", () => {
