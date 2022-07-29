@@ -26,7 +26,7 @@ export const BOOST_PRODUCTS = {
 	["x2 Pet Experience"]: 1,
 };
 
-export type TaskProducts = keyof typeof TASK_PRODUCTS;
+export type TaskProduct = keyof typeof TASK_PRODUCTS;
 export const TASK_PRODUCTS = {
 	Regular: 1,
 	Void: 1,
