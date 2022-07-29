@@ -18,7 +18,7 @@ export const GAMEPASSES = {
 	Teleportation: 1,
 };
 
-export type BoostProducts = keyof typeof BOOST_PRODUCTS;
+export type BoostProduct = keyof typeof BOOST_PRODUCTS;
 export const BOOST_PRODUCTS = {
 	["x2 Boss Drop Luck"]: 1,
 	["x2 Currency"]: 1,

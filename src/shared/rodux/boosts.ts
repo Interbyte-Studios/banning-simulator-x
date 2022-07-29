@@ -1,18 +1,18 @@
 import Rodux from "@rbxts/rodux";
-import { BoostProducts } from "shared/configs/game";
+import { BoostProduct } from "shared/configs/game";
 
-export type BoostsState = { [P in BoostProducts]: number };
+export type BoostsState = { [P in BoostProduct]: number };
 export type BoostActions = ClaimBoost | UseBoosts;
 
 interface ClaimBoost extends Rodux.Action<"claimBoost"> {
-	name: BoostProducts;
+	name: BoostProduct;
 	boostTime: number;
 }
 
-export type ValidBoostUseRecord = Array<BoostProducts>;
+export type ValidBoostUseRecord = Array<BoostProduct>;
 
 interface UseBoosts extends Rodux.Action<"useBoosts"> {
-	boosts: Array<BoostProducts>;
+	boosts: Array<BoostProduct>;
 }
 
 /**
@@ -20,7 +20,7 @@ interface UseBoosts extends Rodux.Action<"useBoosts"> {
  * @param boostTime The time that should be added.
  * @returns The Rodux action to dispatch.
  */
-export function claimBoost(boostName: BoostProducts, boostTime: number): ClaimBoost & Rodux.AnyAction {
+export function claimBoost(boostName: BoostProduct, boostTime: number): ClaimBoost & Rodux.AnyAction {
 	return {
 		type: "claimBoost",
 		name: boostName,

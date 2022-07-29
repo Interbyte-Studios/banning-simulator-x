@@ -1,6 +1,6 @@
 /// <reference types="@rbxts/testez/globals" />
 
-import { BoostProducts } from "shared/configs/game";
+import { BoostProduct } from "shared/configs/game";
 import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 
 import { boostsReducer, BoostsState, claimBoost, useBoosts } from "../boosts";
@@ -32,7 +32,7 @@ export = (): void => {
 
 		it("should allow using a boost", () => {
 			const boostTime = 6 * 60;
-			const boostsToUse: Array<BoostProducts> = [
+			const boostsToUse: Array<BoostProduct> = [
 				"x2 Boss Drop Luck",
 				"x2 Currency",
 				"x2 Experience",
