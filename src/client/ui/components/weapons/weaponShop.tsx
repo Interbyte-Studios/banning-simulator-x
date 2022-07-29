@@ -3,7 +3,7 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { ContextActionService } from "@rbxts/services";
-import { purchaseWeapon } from "client/weapons/purchaseWeapon";
+import { purchaseWeapon } from "client/modules/weapons/purchaseWeapon";
 import { Weapon, WEAPONS } from "shared/configs/weapons";
 import { Store, StoreState } from "shared/rodux";
 import { WeaponsState } from "shared/rodux/weapons";

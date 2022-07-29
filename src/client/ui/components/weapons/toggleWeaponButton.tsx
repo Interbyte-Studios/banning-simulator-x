@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { ContextActionService } from "@rbxts/services";
-import { toggleWeaponEquipped } from "client/weapons/weaponState";
+import { toggleWeaponEquipped } from "client/modules/weapons/weaponState";
 import { StoreState } from "shared/rodux";
 
 import { color3White, vec2Middle } from "../../commonValues";

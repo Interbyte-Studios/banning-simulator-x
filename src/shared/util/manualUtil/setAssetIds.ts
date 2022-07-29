@@ -1,7 +1,7 @@
 import { ReplicatedStorage } from "@rbxts/services";
 import { EGGS } from "shared/configs/eggs";
 
-import { UnreachableCaseError } from "./unreachableCaseError";
+import { UnreachableCaseError } from "../unreachableCaseError";
 
 /**
  * This is a true utility function that should be ran in command line in studio to asset asset ids.

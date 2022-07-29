@@ -1,7 +1,7 @@
 import { Players, TextChatService } from "@rbxts/services";
 import { TITLES } from "shared/configs/titles";
 
-import { stores } from "./clientStores";
+import { stores } from "../clientStores";
 
 /**
  * Triggers whenever a message is about to be sent in the chat.

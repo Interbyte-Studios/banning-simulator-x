@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { purchaseZone as unlockZone } from "client/purchaseZone";
+import { purchaseZone as unlockZone } from "client/modules/zones/purchaseZone";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { WorldName } from "shared/configs/worlds";
