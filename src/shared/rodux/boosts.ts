@@ -9,13 +9,10 @@ interface ClaimBoost extends Rodux.Action<"claimBoost"> {
 	boostTime: number;
 }
 
-export interface ValidBoostUseRecord {
-	name: BoostProducts;
-	timeLeft: number;
-}
+export type ValidBoostUseRecord = Array<BoostProducts>;
 
 interface UseBoosts extends Rodux.Action<"useBoosts"> {
-	boosts: Array<ValidBoostUseRecord>;
+	boosts: Array<BoostProducts>;
 }
 
 /**
@@ -35,7 +32,7 @@ export function claimBoost(boostName: BoostProducts, boostTime: number): ClaimBo
  * @param boosts Array of boosts that should be used.
  * @returns The Rodux action to dispatch.
  */
-export function useBoosts(boosts: Array<ValidBoostUseRecord>): UseBoosts & Rodux.AnyAction {
+export function useBoosts(boosts: ValidBoostUseRecord): UseBoosts & Rodux.AnyAction {
 	return {
 		type: "useBoosts",
 		boosts,
@@ -60,7 +57,7 @@ export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions>(defa
 	useBoosts: (state, action) => {
 		const newState = { ...state };
 		for (const boost of action.boosts) {
-			newState[boost.name] = boost.timeLeft;
+			newState[boost] -= 1;
 		}
 
 		return newState;

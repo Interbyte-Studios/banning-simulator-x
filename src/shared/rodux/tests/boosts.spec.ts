@@ -32,7 +32,7 @@ export = (): void => {
 
 		it("should allow using a boost", () => {
 			const boostTime = 6 * 60;
-			const boostsToCheck: Array<BoostProducts> = [
+			const boostsToUse: Array<BoostProducts> = [
 				"x2 Boss Drop Luck",
 				"x2 Currency",
 				"x2 Experience",
@@ -47,13 +47,8 @@ export = (): void => {
 			};
 
 			const newState = { ...state };
-			for (const boost of boostsToCheck) {
+			for (const boost of boostsToUse) {
 				newState[boost] -= 1;
-			}
-
-			const boostsToUse: Array<ValidBoostUseRecord> = [];
-			for (const boost of boostsToCheck) {
-				boostsToUse.push({ name: boost, timeLeft: boostTime - 1 });
 			}
 
 			const action = useBoosts(boostsToUse);
