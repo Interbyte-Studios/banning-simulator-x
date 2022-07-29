@@ -9,7 +9,7 @@ import { isValidTimeOfDay } from "shared/rodux/settings";
  * @param remote The remote used to communicate the action with the server.
  */
 export function setTimeOfDay(timeOfDay: number, remote: InferClientRemote<ToggleTimeOfDayDefinition>): void {
-	if (!isValidTimeOfDay) {
+	if (!isValidTimeOfDay(timeOfDay)) {
 		return;
 	}
 
