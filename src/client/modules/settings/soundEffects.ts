@@ -9,7 +9,7 @@ import { isValidVolume } from "shared/rodux/settings";
  * @param remote The remote used to communicate the action with the server.
  */
 export function setSoundEffects(volume: number, remote: InferClientRemote<ToggleSoundEffectsVolumeDefinition>): void {
-	if (!isValidVolume) {
+	if (!isValidVolume(volume)) {
 		return;
 	}
 
