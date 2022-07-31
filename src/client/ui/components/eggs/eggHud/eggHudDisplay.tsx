@@ -80,8 +80,8 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 	hooks((props: EggHudProps, { useEffect, useContext }) => {
 		// motor
 		const motor = new Flipper.GroupMotor({
-			X: 1,
-			Y: 1,
+			X: 0,
+			Y: 0,
 		});
 
 		const { toggleAuto } = useContext(remoteContext);
@@ -126,7 +126,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 						isViewing = true;
 					}
 				} else {
-					if (!isViewing) {
+					if (isViewing) {
 						motor.setGoal({
 							X: inactiveSpring,
 							Y: inactiveSpring,
@@ -139,7 +139,14 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 			return (): void => {
 				connection.Disconnect();
 			};
-		}, [props.adornee]);
+		}, [
+			props.adornee,
+			props.autoActive,
+			props.currenciesState,
+			props.gamepassesState,
+			props.petsState,
+			props.worldsState,
+		]);
 
 		return (
 			<billboardgui
