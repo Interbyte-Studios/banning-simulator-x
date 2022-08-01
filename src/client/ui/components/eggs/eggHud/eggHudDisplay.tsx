@@ -139,14 +139,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 			return (): void => {
 				connection.Disconnect();
 			};
-		}, [
-			props.adornee,
-			props.autoActive,
-			props.currenciesState,
-			props.gamepassesState,
-			props.petsState,
-			props.worldsState,
-		]);
+		});
 
 		return (
 			<billboardgui
@@ -196,8 +189,6 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 										if (!AnimateEggs.canHatchEgg()) {
 											return;
 										}
-
-										print(AnimateEggs.canHatchEgg());
 
 										const canPurchase = tryPurchaseEgg(
 											props.currenciesState,
