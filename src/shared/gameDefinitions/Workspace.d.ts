@@ -34,6 +34,11 @@ declare global {
 							infoPart: Part;
 						};
 					};
+					door: Folder & {
+						door: Folder;
+						locks: Folder;
+						passage: BasePart;
+					};
 				};
 			};
 		};
