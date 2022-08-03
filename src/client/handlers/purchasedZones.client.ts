@@ -42,7 +42,7 @@ function unlockZones(worldState: WorldsState): void {
 
 			const ownsNextZone = unlockedWorld.zones.find((zone) => zone === nextZone.name);
 			if (ownsNextZone === undefined) {
-				return;
+				continue;
 			}
 
 			grantZoneEntry(unlockedWorld.name, unlockedZone);
