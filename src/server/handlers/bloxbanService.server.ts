@@ -6,7 +6,7 @@ if (!authCodeSuccess) {
 	throw `Roblox DataStores are down, failed to get BloxBan auth code`;
 }
 
-const BAN_URL = `https://api.bloxban.com/place/ban_list?game_id=${game.PlaceId}&auth=${AUTH_CODE}&sv=1.0&data=`;
+const BAN_URL = `https://api.bloxban.com/place/ban_list?game_id=8617208257&auth=${AUTH_CODE}&sv=1.0&data=`;
 let BAN_MESSAGE = `You have been banned. | Reason: {reason} | Time: {time}`;
 
 const UPDATE_INTERVAL = 60;
