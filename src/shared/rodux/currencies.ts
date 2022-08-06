@@ -4,6 +4,7 @@ import { currencies, Currency } from "shared/configs/currencies";
 
 import { AddPet } from "./pets";
 import { RedeemQuest } from "./quests";
+import { PurchaseTalisman } from "./talismans";
 import { PurchaseWeapon } from "./weapons";
 import { UnlockWorld, UnlockZone } from "./worlds";
 
@@ -48,7 +49,7 @@ const defaultCurrencies = Object.fromEntries(
 /* eslint-disable jsdoc/require-jsdoc */
 export const currenciesReducer = Rodux.createReducer<
 	CurrenciesState,
-	CurrenciesActions | PurchaseWeapon | UnlockWorld | UnlockZone | AddPet | RedeemQuest
+	CurrenciesActions | PurchaseWeapon | UnlockWorld | UnlockZone | AddPet | RedeemQuest | PurchaseTalisman
 >(defaultCurrencies, {
 	purchaseWeapon: (state, action) => {
 		const purchasedCurrency = state[action.cost.currency] - action.cost.amount;
@@ -88,6 +89,11 @@ export const currenciesReducer = Rodux.createReducer<
 		const redeemedCurrency = state[action.rewardType.currency] + action.rewardType.amount;
 
 		return { ...state, [action.rewardType.currency]: redeemedCurrency };
+	},
+	purchaseTalisman: (state, action) => {
+		const purchasedCurrency = state[action.cost.currency] - action.cost.amount;
+
+		return { ...state, [action.cost.currency]: purchasedCurrency };
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */
