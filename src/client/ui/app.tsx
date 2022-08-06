@@ -5,6 +5,7 @@ import { Store } from "shared/rodux";
 import { EggsUI } from "./components/eggs";
 import { Quests } from "./components/quests";
 import { SettingsUI } from "./components/settings";
+import { TalismanShop } from "./components/talismans/talismanShop";
 import { ZonesUI } from "./components/zones";
 
 /**
@@ -19,6 +20,7 @@ export function app(props: { player: Player; store: Store }): Roact.Element {
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
+				<TalismanShop />
 				<EggsUI />
 				<SettingsUI />
 				<Quests />
