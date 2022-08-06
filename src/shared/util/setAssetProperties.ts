@@ -8,7 +8,7 @@ import { TAG_CONFIG } from "shared/configs/pets";
  * @param assetObject The object<model>.
  * @param isVoid Whether or not the asset is a void asset.
  */
-export function setAssetProperties(assetType: "egg" | "pet", assetObject: Model, isVoid?: boolean): void {
+export function setAssetProperties(assetType: "egg" | "pet" | "talisman", assetObject: Model, isVoid?: boolean): void {
 	switch (assetType) {
 		case "egg": {
 			for (const child of assetObject.GetChildren()) {
@@ -61,6 +61,24 @@ export function setAssetProperties(assetType: "egg" | "pet", assetObject: Model,
 					}
 				}
 			}
+
+			break;
+		}
+		case "talisman": {
+			for (const child of assetObject.GetChildren()) {
+				if (!child.IsA("BasePart")) continue;
+
+				if (assetObject.PrimaryPart === undefined && child.Name === "Primary") {
+					assetObject.PrimaryPart = child;
+				}
+
+				child.CanCollide = false;
+				child.Anchored = true;
+				child.Name = "meshPart";
+			}
+
+			assert(assetObject.PrimaryPart, `No PrimaryPart set for ${assetObject.Name}`);
+			assetObject.PrimaryPart.Name = "Primary";
 		}
 	}
 }
