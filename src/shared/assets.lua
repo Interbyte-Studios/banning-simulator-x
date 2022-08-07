@@ -45,6 +45,9 @@ return {
 					},
 				},
 			},
+			icons = {
+				["Settings Icon"] = "rbxassetid://10509317134",
+			},
 			light = {
 				specialized = {
 					openEgg = {
@@ -71,7 +74,7 @@ return {
 		},
 		maps = {
 			["Ban Land"] = {
-				world = "rbxassetid://10266321808",
+				world = "rbxassetid://10509318265",
 			},
 		},
 	},

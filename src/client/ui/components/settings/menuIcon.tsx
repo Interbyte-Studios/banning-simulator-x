@@ -8,7 +8,7 @@ interface SettingsMenuButtonProps {
 	showMenu: () => void;
 }
 
-const hiddenSpring = new Flipper.Spring(0.95, { frequency: 5 });
+const hiddenSpring = new Flipper.Spring(0.9, { frequency: 5 });
 const displayedSpring = new Flipper.Spring(1, { frequency: 5 });
 
 /**
@@ -38,9 +38,7 @@ export const SettingsMenuButton = hooks((props: SettingsMenuButtonProps, { useEf
 				return UDim2.fromScale(value, value);
 			})}
 			BackgroundTransparency={1}
-			Image={assetIds.images.buttons.dark.specialized.settings.Settings}
-			PressedImage={assetIds.images.buttons.dark.specialized.settings["Settings Selected"]}
-			HoverImage={assetIds.images.buttons.dark.specialized.settings["Settings Selected"]}
+			Image={assetIds.images.buttons.icons["Settings Icon"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
 				Activated: (): void => props.showMenu(),

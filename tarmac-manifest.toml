@@ -113,6 +113,11 @@ hash = "0827c4e9fdb6ed332322bcc5d4e453d8159fa1196fb1ae9cd3e8dfca2bdd11a0"
 id = 9724449051
 packable = false
 
+[inputs."images/buttons/icons/Settings Icon.png"]
+hash = "6411c21a3d1400b1407b2a21266ac32ac879e5e636676357eb3b7f4c0c7aa6aa"
+id = 10509317134
+packable = false
+
 [inputs."images/buttons/light/specialized/openEgg/OpenEgg.png"]
 hash = "f2cb8bf854fca1bfa85a8d1fd3b94e8bb8707b217695dbf3922b0056af411a16"
 id = 9724449208
@@ -158,7 +163,7 @@ hash = "9aa6e2ab58a50dd5fbf70a95d57caa20c58e62d99487ea285c0a0df5ed3f3725"
 id = 9591269212
 packable = false
 
-[inputs."images/maps/Ban Land.jpg"]
+[inputs."images/maps/Ban Land/world.jpg"]
 hash = "ca1e87c9948257fed7ac980ef92c8398b411f49a7e6d0b7b598646e8fd832b3a"
-id = 10266321808
+id = 10509318265
 packable = false

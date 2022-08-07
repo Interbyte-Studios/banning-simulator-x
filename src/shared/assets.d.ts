@@ -43,6 +43,9 @@ declare namespace assetIds {
 					};
 				};
 			};
+			icons: {
+				["Settings Icon"]: "rbxassetid://10509317134";
+			};
 			dark: {
 				specialized: {
 					settings: {

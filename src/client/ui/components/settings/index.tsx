@@ -41,7 +41,7 @@ export const SettingsUI = RoactRodux.connect(mapStateToProps)(
 					BackgroundTransparency={1}
 					AnchorPoint={vec2Middle}
 					Position={UDim2.fromScale(0.5, 0.925)}
-					Size={UDim2.fromScale(0.1, 0.1)}
+					Size={UDim2.fromScale(0.08, 0.08)}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 					<SettingsMenuButton showMenu={(): void => setMenuVisibility(true)} />
