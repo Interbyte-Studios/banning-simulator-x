@@ -1,6 +1,5 @@
 import { Players, Workspace } from "@rbxts/services";
-import { isValidWorldName, validWorldName, WorldName } from "shared/configs/worlds";
-import { isValidWorld } from "shared/util/isValidWorld";
+import { validWorldName, WorldName } from "shared/configs/worlds";
 
 const landingParts: Array<Instance> = [];
 
