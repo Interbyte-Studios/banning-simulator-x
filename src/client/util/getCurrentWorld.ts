@@ -1,5 +1,6 @@
 import { Players, Workspace } from "@rbxts/services";
-import { WorldName } from "shared/configs/worlds";
+import { isValidWorldName, validWorldName, WorldName } from "shared/configs/worlds";
+import { isValidWorld } from "shared/util/isValidWorld";
 
 const landingParts: Array<Instance> = [];
 
@@ -55,5 +56,9 @@ export function getCurrentWorld(): WorldName | void {
 		return;
 	}
 
-	return world.Name as WorldName;
+	if (!validWorldName(world.Name)) {
+		return;
+	}
+
+	return world.Name;
 }
