@@ -4,7 +4,7 @@ import { udim2Middle, vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
-interface SettingsMenuButtonProps {
+interface SettingsIconProps {
 	showMenu: () => void;
 }
 
@@ -18,7 +18,7 @@ const displayedSpring = new Flipper.Spring(1, { frequency: 5 });
  * @param props.showMenu A function used to hide the settings menu ui.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const SettingsMenuButton = hooks((props: SettingsMenuButtonProps, { useEffect }) => {
+export const SettingsIcon = hooks((props: SettingsIconProps, { useEffect }) => {
 	const motor = new Flipper.SingleMotor(1);
 	const [binding, setBinding] = Roact.createBinding(motor.getValue());
 

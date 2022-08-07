@@ -3,9 +3,16 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { Store } from "shared/rodux";
 
 import { EggsUI } from "./components/eggs";
+import { Hud } from "./components/hud";
 import { Quests } from "./components/quests";
 import { SettingsUI } from "./components/settings";
 import { ZonesUI } from "./components/zones";
+import { hooks } from "./hooks";
+
+interface AppProps {
+	player: Player;
+	store: Store;
+}
 
 /**
  * Creates the Roact app to display.
@@ -15,15 +22,18 @@ import { ZonesUI } from "./components/zones";
  * @param props.store The store to create the app with.
  * @returns The Roact app to mount.
  */
-export function app(props: { player: Player; store: Store }): Roact.Element {
+export const app = hooks((props: AppProps, { useState }) => {
+	const [settingsMenuVisible, setSettingsVisibility] = useState(false);
+
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
 				<EggsUI />
-				<SettingsUI />
+				<SettingsUI visible={settingsMenuVisible} hideMenu={(): void => setSettingsVisibility(false)} />
 				<Quests />
 				<ZonesUI />
+				<Hud visible={!settingsMenuVisible} displaySettingsMenu={(): void => setSettingsVisibility(true)} />
 			</>
 		</RoactRodux.StoreProvider>
 	);
-}
+});

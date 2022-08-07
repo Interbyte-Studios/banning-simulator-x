@@ -113,6 +113,11 @@ hash = "0827c4e9fdb6ed332322bcc5d4e453d8159fa1196fb1ae9cd3e8dfca2bdd11a0"
 id = 9724449051
 packable = false
 
+[inputs."images/buttons/icons/Quests Icon.png"]
+hash = "d71bda9c0e459fed25dc7b9330950155e0347989be21bf7245663d28c0f3af6e"
+id = 10509456956
+packable = false
+
 [inputs."images/buttons/icons/Settings Icon.png"]
 hash = "6411c21a3d1400b1407b2a21266ac32ac879e5e636676357eb3b7f4c0c7aa6aa"
 id = 10509317134

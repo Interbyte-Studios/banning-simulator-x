@@ -44,6 +44,7 @@ declare namespace assetIds {
 				};
 			};
 			icons: {
+				["Quests Icon"]: "rbxassetid://10509456956";
 				["Settings Icon"]: "rbxassetid://10509317134";
 			};
 			dark: {
