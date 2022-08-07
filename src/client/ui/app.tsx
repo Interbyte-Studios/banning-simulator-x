@@ -31,7 +31,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 			<>
 				<EggsUI />
 				<SettingsUI visible={settingsMenuVisible} hideMenu={(): void => setSettingsVisibility(false)} />
-				<Quests />
+				<Quests visible={questsMenuVisible} hideMenu={(): void => setQuestsVisibility(false)} />
 				<ZonesUI />
 				<Hud
 					visible={!settingsMenuVisible}
