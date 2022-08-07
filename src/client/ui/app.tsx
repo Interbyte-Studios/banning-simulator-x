@@ -23,6 +23,7 @@ interface AppProps {
  * @returns The Roact app to mount.
  */
 export const app = hooks((props: AppProps, { useState }) => {
+	const [questsMenuVisible, setQuestsVisibility] = useState(false);
 	const [settingsMenuVisible, setSettingsVisibility] = useState(false);
 
 	return (
@@ -32,7 +33,11 @@ export const app = hooks((props: AppProps, { useState }) => {
 				<SettingsUI visible={settingsMenuVisible} hideMenu={(): void => setSettingsVisibility(false)} />
 				<Quests />
 				<ZonesUI />
-				<Hud visible={!settingsMenuVisible} displaySettingsMenu={(): void => setSettingsVisibility(true)} />
+				<Hud
+					visible={!settingsMenuVisible}
+					displayQuestsMenu={(): void => setQuestsVisibility(true)}
+					displaySettingsMenu={(): void => setSettingsVisibility(true)}
+				/>
 			</>
 		</RoactRodux.StoreProvider>
 	);

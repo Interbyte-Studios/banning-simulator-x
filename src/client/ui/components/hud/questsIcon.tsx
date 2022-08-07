@@ -1,10 +1,10 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
-import { udim2Middle, vec2Middle } from "client/ui/commonValues";
+import { vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
-interface SettingsIconProps {
+interface QuestsIconProps {
 	showMenu: () => void;
 }
 
@@ -12,13 +12,13 @@ const hiddenSpring = new Flipper.Spring(0.9, { frequency: 5 });
 const displayedSpring = new Flipper.Spring(1, { frequency: 5 });
 
 /**
- * An icon image that, once clicked, will display the settings menu component.
+ * An icon image that, once clicked, will display the quests menu component.
  *
- * @param props Properties of the settings icon component.
- * @param props.showMenu A function used to hide the settings menu ui.
+ * @param props Properties of the quests icon component.
+ * @param props.showMenu A function used to hide the quests menu ui.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const SettingsIcon = hooks((props: SettingsIconProps, { useEffect }) => {
+export const QuestsIcon = hooks((props: QuestsIconProps, { useEffect }) => {
 	const motor = new Flipper.SingleMotor(1);
 	const [binding, setBinding] = Roact.createBinding(motor.getValue());
 
@@ -33,12 +33,12 @@ export const SettingsIcon = hooks((props: SettingsIconProps, { useEffect }) => {
 	return (
 		<imagebutton
 			AnchorPoint={vec2Middle}
-			Position={udim2Middle}
+			Position={UDim2.fromScale(0.275, 0.5)}
 			Size={binding.map((value) => {
 				return UDim2.fromScale(0.2, value);
 			})}
 			BackgroundTransparency={1}
-			Image={assetIds.images.buttons.icons["Settings Icon"]}
+			Image={assetIds.images.buttons.icons["Quests Icon"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
 				Activated: (): void => props.showMenu(),
