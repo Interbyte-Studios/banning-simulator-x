@@ -12,7 +12,7 @@ export = (target: GuiBase): (() => void) => {
 		target,
 		(_, store) => (
 			<RoactRodux.StoreProvider store={store}>
-				<TalismanShop />
+				<TalismanShop store={store} />
 			</RoactRodux.StoreProvider>
 		),
 	);
