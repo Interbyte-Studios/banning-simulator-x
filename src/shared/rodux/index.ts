@@ -2,7 +2,7 @@ import Rodux from "@rbxts/rodux";
 
 import { BoostActions, boostsReducer, BoostsState } from "./boosts";
 import { CurrenciesActions, currenciesReducer, CurrenciesState } from "./currencies";
-import { currentTalismanReducer, CurrentTalismanState } from "./currentTalisman";
+import { CurrentTalismanActions, currentTalismanReducer, CurrentTalismanState } from "./currentTalisman";
 import { CurrentWeaponActions, currentWeaponReducer, CurrentWeaponState } from "./currentWeapon";
 import { experienceReducer, ExperienceState } from "./experience";
 import { GamepassActions, gamepassesReducer, GamepassesState } from "./gamepasses";
@@ -41,6 +41,7 @@ export type StoreActions = (
 	| WeaponsActions
 	| WorldActions
 	| TalismanActions
+	| CurrentTalismanActions
 ) &
 	Rodux.AnyAction;
 
