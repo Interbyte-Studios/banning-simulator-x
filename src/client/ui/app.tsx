@@ -20,7 +20,7 @@ export function app(props: { player: Player; store: Store }): Roact.Element {
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
-				<TalismanShop />
+				<TalismanShop store={props.store} />
 				<EggsUI />
 				<SettingsUI />
 				<Quests />
