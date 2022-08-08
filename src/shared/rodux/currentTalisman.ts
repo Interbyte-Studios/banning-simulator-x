@@ -15,7 +15,7 @@ interface EquipTalisman extends Rodux.Action<"equipTalisman"> {
 export function equipTalisman(id: number): EquipTalisman & Rodux.AnyAction {
 	return {
 		type: "equipTalisman",
-		id: id,
+		id,
 	};
 }
 
