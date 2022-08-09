@@ -16,6 +16,14 @@ export function purchaseTalisman(
 ): void {
 	const talismanData = getTalismanData(talismanId);
 
+	if (talismanId - 1 > 0) {
+		const ownsPreviousTalisman = store.getState().talismans.has(talismanId - 1);
+		if (!ownsPreviousTalisman) {
+			warn(`Does not own talisman ${getTalismanData(talismanId - 1).name} of id ${talismanId - 1}}`);
+			return;
+		}
+	}
+
 	if (store.getState().talismans.has(talismanId)) {
 		warn(`Already owns talisman ${talismanData.name} of id ${talismanId}`);
 		return;
