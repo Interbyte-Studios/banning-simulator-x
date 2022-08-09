@@ -73,7 +73,7 @@ export function setAssetProperties(assetType: "egg" | "pet" | "talisman", assetO
 				}
 
 				child.CanCollide = false;
-				child.Anchored = true;
+				child.Anchored = false;
 				child.Name = "meshPart";
 			}
 
