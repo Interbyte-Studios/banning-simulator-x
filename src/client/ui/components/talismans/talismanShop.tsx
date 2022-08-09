@@ -1,29 +1,35 @@
 import Flipper from "@rbxts/flipper";
-import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { ContextActionService } from "@rbxts/services";
+import { ContextActionService, Players, VRService, Workspace } from "@rbxts/services";
+import { purchaseTalisman } from "client/modules/talismans/purchaseTalisman";
 import { color3White, font, vec2Middle } from "client/ui/commonValues";
-import { TalismanViewport } from "client/ui/elements/talismanViewport";
 import { hooks } from "client/ui/hooks";
-import { Talisman, TALISMANS } from "shared/configs/talismans";
-import { StoreState } from "shared/rodux";
+import { remoteContext } from "client/ui/mocks/remoteContext";
+import assetIds from "shared/assets";
+import { Talisman } from "shared/configs/talismans";
+import { Store, StoreState } from "shared/rodux";
 import { TalismansState } from "shared/rodux/talismans";
 import { getTalismanData } from "shared/util/getTalismanData";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
-interface TalismanShopProps extends TalismanShopMappedProps {}
+interface TalismanShopProps extends TalismanShopMappedProps {
+	store: Store;
+}
 
 interface TalismanShopMappedProps {
 	currentTalismanId: number;
 	talismansState: TalismansState;
 }
 
-const maximizedSize = { x: 0.8, y: 0.13 };
-const minimizedSize = { x: 0.72, y: 0.12 };
+const maximizedSize = { x: 0.25, y: 0.1 };
+const minimizedSize = { x: 0.23, y: 0.09 };
 
-const closeMaximizedSize = { x: 0.08, y: 0.12 };
-const closeMinimizedSize = { x: 0.07, y: 0.11 };
+const closeMaximizedSize = { x: 0.06, y: 0.115 };
+const closeMinimizedSize = { x: 0.055, y: 0.105 };
+
+const arrowButtonMaximizdSize = { x: 0.08, y: 0.15 };
+const arrowButtonMinimizedSize = { x: 0.07, y: 0.14 };
 
 const springProps = {
 	frequency: 5,
@@ -57,7 +63,6 @@ interface LocalTalismanInfo {
  */
 function getTalismanLocalInfo(talismanState: TalismansState, id: number): LocalTalismanInfo {
 	const talismanData = getTalismanData(id);
-
 	return {
 		isOwned: talismanState.has(id),
 		id: id,
@@ -70,11 +75,12 @@ function getTalismanLocalInfo(talismanState: TalismansState, id: number): LocalT
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const TalismanShop = RoactRodux.connect(mapStateToProps)(
-	hooks((props: TalismanShopProps, { useState, useEffect }) => {
-		const [isVisible, setVisibility] = useState(true);
+	hooks((props: TalismanShopProps, { useState, useEffect, useContext }) => {
+		const [isVisible, setVisibility] = useState(false);
 		const [viewedTalismanInfo, setViewedTalismanInfo] = useState(
 			getTalismanLocalInfo(props.talismansState, props.currentTalismanId),
 		);
+		const remotes = useContext(remoteContext);
 
 		const actionButtonMotor = new Flipper.GroupMotor({ x: maximizedSize.x, y: maximizedSize.y });
 		const [actionButtonBinding, setActionButtonBinding] = Roact.createBinding(actionButtonMotor.getValue());
@@ -82,8 +88,16 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 		const closeButtonMotor = new Flipper.GroupMotor({ x: closeMaximizedSize.x, y: closeMaximizedSize.y });
 		const [closeButtonBinding, setCloseButtonBinding] = Roact.createBinding(closeButtonMotor.getValue());
 
+		const arrowButtonUpMotor = new Flipper.GroupMotor({ x: arrowButtonMaximizdSize.x, y: arrowButtonMaximizdSize.y });
+		const [arrowButtonUpBinding, setArrowButtonUpBinding] = Roact.createBinding(arrowButtonUpMotor.getValue());
+
+		const arrowButtonDownMotor = new Flipper.GroupMotor({ x: arrowButtonMaximizdSize.x, y: arrowButtonMaximizdSize.y });
+		const [arrowButtonDownBinding, setArrowButtonDownBinding] = Roact.createBinding(arrowButtonDownMotor.getValue());
+
 		actionButtonMotor.onStep(setActionButtonBinding);
 		closeButtonMotor.onStep(setCloseButtonBinding);
+		arrowButtonUpMotor.onStep(setArrowButtonUpBinding);
+		arrowButtonDownMotor.onStep(setArrowButtonDownBinding);
 
 		useEffect(() => {
 			ContextActionService.BindAction(
@@ -104,25 +118,180 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 			};
 		}, [isVisible]);
 
+		useEffect(() => {
+			const camera = Workspace.CurrentCamera;
+			assert(camera, `Expected to find camera`);
+
+			if (!isVisible) {
+				const character = Players.LocalPlayer.Character;
+				const humanoid = character?.WaitForChild("Humanoid") as Humanoid;
+				camera.CameraType = Enum.CameraType.Custom;
+				camera.CameraSubject = humanoid;
+			} else {
+				const camPart = Workspace.interactions["talisman tower"]
+					?.FindFirstChild(`Tier ${viewedTalismanInfo.talismanInfo.data.tier}`)
+					?.FindFirstChild("CamPart");
+				assert(camPart, `Expected to find Camera Part for ${viewedTalismanInfo.talismanInfo.name}`);
+				assert(camPart?.IsA("BasePart"), `Expected campart to be a base part`);
+
+				camera.CameraType = Enum.CameraType.Scriptable;
+				camera.CFrame = camPart.CFrame;
+			}
+		}, [viewedTalismanInfo, isVisible]);
+
 		return (
 			<frame
+				Size={UDim2.fromScale(1, 1)}
+				BackgroundTransparency={1}
 				Visible={isVisible}
 				AnchorPoint={vec2Middle}
 				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.45, 0.6)}
-				BackgroundColor3={Color3.fromRGB(255, 226, 188)}
 			>
-				<textbutton
-					TextTransparency={1}
-					AutoButtonColor={false}
+				<uiaspectratioconstraint AspectRatio={1.95} />
+				<textlabel
+					Text={viewedTalismanInfo.talismanInfo.name}
 					AnchorPoint={vec2Middle}
-					BackgroundColor3={Color3.fromRGB(211, 141, 141)}
+					Position={UDim2.fromScale(0.5, 0.15)}
+					Size={UDim2.fromScale(0.4, 0.1)}
+					TextScaled={true}
+					Font={font}
+					TextColor3={color3White}
+					BackgroundTransparency={1}
+				>
+					<uistroke Thickness={3} Color={Color3.fromRGB(11, 52, 68)} />
+				</textlabel>
+				<textlabel
+					Text={twoDpAbbreviator.numberToString(viewedTalismanInfo.talismanInfo.data.cost.amount)}
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					TextScaled={true}
+					Font={font}
+					TextXAlignment={Enum.TextXAlignment.Left}
+					Size={UDim2.fromScale(0.12, 0.1)}
+					Position={UDim2.fromScale(0.53, 0.78)}
+					TextColor3={color3White}
+				>
+					<uistroke Thickness={2} Color={Color3.fromRGB(11, 52, 68)} />
+					<imagelabel
+						Image={"rbxassetid://10498937588"}
+						ScaleType={Enum.ScaleType.Fit}
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(-0.23, 0.5)}
+						Size={UDim2.fromScale(0.4, 1)}
+					/>
+				</textlabel>
+				<textlabel
+					Text={`+ ${viewedTalismanInfo.talismanInfo.data.stats.amount}`}
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					TextScaled={true}
+					Font={font}
+					TextXAlignment={Enum.TextXAlignment.Left}
+					Size={UDim2.fromScale(0.12, 0.1)}
+					Position={UDim2.fromScale(0.74, 0.76)}
+					TextColor3={color3White}
+				>
+					<uistroke Thickness={2} Color={Color3.fromRGB(11, 52, 68)} />
+					<imagelabel
+						Image={assetIds.images.statIcons[viewedTalismanInfo.talismanInfo.data.stats.name]}
+						ScaleType={Enum.ScaleType.Fit}
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(-0.21, 0.5)}
+						Size={UDim2.fromScale(0.4, 1)}
+					/>
+				</textlabel>
+				<textlabel
+					Text={`Tier ${viewedTalismanInfo.talismanInfo.data.tier}`}
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					TextScaled={true}
+					Font={font}
+					TextXAlignment={Enum.TextXAlignment.Left}
+					Size={UDim2.fromScale(0.12, 0.1)}
+					Position={UDim2.fromScale(0.3, 0.76)}
+					TextColor3={color3White}
+				>
+					<uistroke Thickness={2} Color={Color3.fromRGB(11, 52, 68)} />
+					<imagelabel
+						Image={"rbxassetid://10189531403"}
+						ScaleType={Enum.ScaleType.Fit}
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(-0.23, 0.5)}
+						Size={UDim2.fromScale(0.4, 1)}
+					/>
+				</textlabel>
+				<textbutton
+					AnchorPoint={vec2Middle}
+					TextTransparency={1}
+					BackgroundColor3={Color3.fromRGB(167, 240, 170)}
+					Position={UDim2.fromScale(0.5, 0.9)}
+					Size={actionButtonBinding.map((value) => {
+						return UDim2.fromScale(value.x, value.y);
+					})}
+					AutoButtonColor={false}
+					Event={{
+						Activated: (): void => {
+							if (viewedTalismanInfo.id === props.currentTalismanId) {
+								return;
+							}
+
+							if (props.talismansState.has(viewedTalismanInfo.id)) {
+								remotes.equipTalisman.SendToServer(viewedTalismanInfo.id);
+							} else {
+								purchaseTalisman(props.store, viewedTalismanInfo.id, remotes.purchaseTalisman);
+							}
+						},
+						MouseEnter: (): void => {
+							actionButtonMotor.setGoal({
+								x: new Flipper.Spring(minimizedSize.x, springProps),
+								y: new Flipper.Spring(minimizedSize.y, springProps),
+							});
+						},
+						MouseLeave: (): void => {
+							actionButtonMotor.setGoal({
+								x: new Flipper.Spring(maximizedSize.x, springProps),
+								y: new Flipper.Spring(maximizedSize.y, springProps),
+							});
+						},
+					}}
+				>
+					<uistroke Thickness={3} Color={Color3.fromRGB(112, 158, 113)} ApplyStrokeMode={Enum.ApplyStrokeMode.Border} />
+					<uicorner CornerRadius={new UDim(0.2, 0)} />
+					<textlabel
+						Text={
+							viewedTalismanInfo.id === props.currentTalismanId
+								? "Equipped"
+								: props.talismansState.has(viewedTalismanInfo.id)
+								? "Equip"
+								: "Purchase"
+						}
+						AnchorPoint={vec2Middle}
+						Position={UDim2.fromScale(0.5, 0.5)}
+						Size={UDim2.fromScale(0.8, 0.7)}
+						TextColor3={color3White}
+						BackgroundTransparency={1}
+						TextScaled={true}
+						Font={font}
+					>
+						<uistroke Thickness={3} Color={Color3.fromRGB(112, 158, 113)} />
+					</textlabel>
+				</textbutton>
+				<textbutton
+					AnchorPoint={vec2Middle}
+					Position={UDim2.fromScale(0.95, 0.1)}
+					AutoButtonColor={false}
 					Size={closeButtonBinding.map((value) => {
 						return UDim2.fromScale(value.x, value.y);
 					})}
-					Position={UDim2.fromScale(0.98, 0.02)}
+					BackgroundColor3={Color3.fromRGB(211, 141, 141)}
+					TextTransparency={1}
 					Event={{
-						Activated: (): void => setVisibility(false),
+						Activated: (): void => {
+							setVisibility(false);
+						},
 						MouseEnter: (): void => {
 							closeButtonMotor.setGoal({
 								x: new Flipper.Spring(closeMinimizedSize.x, springProps),
@@ -137,216 +306,93 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 						},
 					}}
 				>
+					<uicorner CornerRadius={new UDim(0.1, 0)} />
+					<uistroke Thickness={3} Color={Color3.fromRGB(138, 92, 92)} ApplyStrokeMode={Enum.ApplyStrokeMode.Border} />
 					<textlabel
 						Text={"X"}
+						Font={font}
+						BackgroundTransparency={1}
 						TextScaled={true}
 						TextColor3={color3White}
-						BackgroundTransparency={1}
 						AnchorPoint={vec2Middle}
 						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
 						Position={UDim2.fromScale(0.5, 0.5)}
 					/>
-					<uicorner CornerRadius={new UDim(0.2, 0)} />
-					<uistroke Thickness={3} Color={Color3.fromRGB(138, 92, 92)} ApplyStrokeMode={Enum.ApplyStrokeMode.Border} />
 				</textbutton>
-				<uiaspectratioconstraint AspectRatio={1.53} />
-				<uicorner CornerRadius={new UDim(0.05, 0)} />
-				<uistroke Thickness={3} Color={Color3.fromRGB(182, 161, 133)} />
-				<textlabel
-					Text={"Talisman Shop"}
+				<imagebutton
 					AnchorPoint={vec2Middle}
-					Size={UDim2.fromScale(0.5, 0.12)}
-					Position={UDim2.fromScale(0.3, -0.01)}
-					Font={font}
-					TextScaled={true}
-					TextColor3={color3White}
-					BackgroundTransparency={1}
-				>
-					<uistroke Thickness={3} Color={Color3.fromRGB(11, 52, 68)} />
-				</textlabel>
-				<frame
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.694, 0.5)}
-					BorderSizePixel={0}
-					Size={UDim2.fromScale(0.01, 0.998)}
-					BackgroundColor3={Color3.fromRGB(182, 161, 133)}
-				></frame>
-				<frame
-					Size={UDim2.fromScale(0.3, 1)}
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.85, 0.5)}
-					BackgroundTransparency={1}
-				>
-					<textlabel
-						Text={viewedTalismanInfo.talismanInfo.name}
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.2)}
-						Size={UDim2.fromScale(0.95, 0.2)}
-						Font={font}
-						TextColor3={color3White}
-						TextScaled={true}
-					>
-						<uistroke Thickness={2} Color={Color3.fromRGB(11, 52, 68)} />
-					</textlabel>
-					<textlabel
-						Text={twoDpAbbreviator.numberToString(viewedTalismanInfo.talismanInfo.data.cost.amount)}
-						AnchorPoint={vec2Middle}
-						TextColor3={color3White}
-						Position={UDim2.fromScale(0.62, 0.4)}
-						TextScaled={true}
-						Font={font}
-						BackgroundTransparency={1}
-						TextXAlignment={Enum.TextXAlignment.Left}
-						Size={UDim2.fromScale(0.5, 0.1)}
-					>
-						<imagelabel
-							Image={"rbxassetid://10498937588"}
-							BackgroundTransparency={1}
-							ScaleType={Enum.ScaleType.Fit}
-							AnchorPoint={vec2Middle}
-							Position={UDim2.fromScale(-0.3, 0.5)}
-							Size={UDim2.fromScale(0.5, 1.1)}
-						></imagelabel>
-						<uistroke Thickness={2} Color={Color3.fromRGB(11, 52, 68)} />
-					</textlabel>
-					<textlabel
-						Text={`+ ${viewedTalismanInfo.talismanInfo.data.stats.damage}`}
-						AnchorPoint={vec2Middle}
-						TextColor3={color3White}
-						Position={UDim2.fromScale(0.62, 0.53)}
-						TextScaled={true}
-						Font={font}
-						BackgroundTransparency={1}
-						TextXAlignment={Enum.TextXAlignment.Left}
-						Size={UDim2.fromScale(0.5, 0.1)}
-					>
-						<imagelabel
-							Image={"rbxassetid://10497685527"}
-							BackgroundTransparency={1}
-							ScaleType={Enum.ScaleType.Fit}
-							AnchorPoint={vec2Middle}
-							Position={UDim2.fromScale(-0.3, 0.5)}
-							Size={UDim2.fromScale(0.5, 1.1)}
-						></imagelabel>
-						<uistroke Thickness={2} Color={Color3.fromRGB(11, 52, 68)} />
-					</textlabel>
-					<textlabel
-						Text={`Tier ${viewedTalismanInfo.talismanInfo.data.tier}`}
-						AnchorPoint={vec2Middle}
-						TextColor3={color3White}
-						Position={UDim2.fromScale(0.62, 0.66)}
-						TextScaled={true}
-						Font={font}
-						BackgroundTransparency={1}
-						TextXAlignment={Enum.TextXAlignment.Left}
-						Size={UDim2.fromScale(0.5, 0.1)}
-					>
-						<imagelabel
-							Image={"rbxassetid://10498643127"}
-							BackgroundTransparency={1}
-							ScaleType={Enum.ScaleType.Fit}
-							AnchorPoint={vec2Middle}
-							Position={UDim2.fromScale(-0.3, 0.5)}
-							Size={UDim2.fromScale(0.5, 1.1)}
-						></imagelabel>
-						<uistroke Thickness={2} Color={Color3.fromRGB(11, 52, 68)} />
-					</textlabel>
-					<textbutton
-						TextTransparency={1}
-						AnchorPoint={vec2Middle}
-						AutoButtonColor={false}
-						Position={UDim2.fromScale(0.5, 0.84)}
-						Size={actionButtonBinding.map((value) => {
-							return UDim2.fromScale(value.x, value.y);
-						})}
-						BackgroundColor3={Color3.fromRGB(167, 240, 170)}
-						Event={{
-							MouseEnter: (): void => {
-								actionButtonMotor.setGoal({
-									x: new Flipper.Spring(minimizedSize.x, springProps),
-									y: new Flipper.Spring(minimizedSize.y, springProps),
-								});
-							},
-							MouseLeave: (): void => {
-								actionButtonMotor.setGoal({
-									x: new Flipper.Spring(maximizedSize.x, springProps),
-									y: new Flipper.Spring(maximizedSize.y, springProps),
-								});
-							},
-						}}
-					>
-						<uistroke
-							Color={Color3.fromRGB(112, 158, 113)}
-							Thickness={3}
-							ApplyStrokeMode={Enum.ApplyStrokeMode.Border}
-						/>
-						<uicorner CornerRadius={new UDim(0.2, 0)} />
-						<textlabel
-							Text={"Purchase"}
-							AnchorPoint={vec2Middle}
-							Position={UDim2.fromScale(0.5, 0.5)}
-							Size={UDim2.fromScale(0.8, 0.8)}
-							Font={font}
-							BackgroundTransparency={1}
-							TextScaled={true}
-							TextColor3={color3White}
-						>
-							<uistroke Thickness={2} Color={Color3.fromRGB(112, 158, 113)} />
-						</textlabel>
-					</textbutton>
-				</frame>
-				<scrollingframe
-					AnchorPoint={vec2Middle}
-					BorderSizePixel={0}
-					ScrollBarThickness={8}
-					Position={UDim2.fromScale(0.342, 0.5)}
-					SizeConstraint={Enum.SizeConstraint.RelativeXY}
-					Size={UDim2.fromScale(0.69, 1)}
-					BackgroundTransparency={1}
-				>
-					<uigridlayout
-						CellSize={UDim2.fromScale(0.28, 0.15)}
-						CellPadding={UDim2.fromScale(0.05, 0.023)}
-						HorizontalAlignment={Enum.HorizontalAlignment.Left}
-					/>
-					<uipadding PaddingLeft={new UDim(0.03, 0)} PaddingTop={new UDim(0.03, 0)} />
-
-					{Object.entries(TALISMANS).map(([, talismanData]) => {
-						return (
-							<textbutton
-								BackgroundTransparency={1}
-								TextTransparency={1}
-								TextScaled={true}
-								AutoButtonColor={false}
-								Font={font}
-								Event={{
-									Activated: (): void => {
-										setViewedTalismanInfo(getTalismanLocalInfo(props.talismansState, talismanData.id));
-									},
-								}}
-							>
-								<TalismanViewport
-									native={{
-										AnchorPoint: vec2Middle,
-										Position: UDim2.fromScale(0.5, 0.5),
-										Size: UDim2.fromScale(1, 1),
-										BackgroundColor3: Color3.fromRGB(0, 0, 0),
-										BackgroundTransparency: 1,
-									}}
-									talismanId={talismanData.id}
-								/>
-								<uistroke
-									Thickness={3}
-									Color={Color3.fromRGB(0, 80, 120)}
-									ApplyStrokeMode={Enum.ApplyStrokeMode.Border}
-								/>
-								<uicorner CornerRadius={new UDim(0.1, 0)} />
-							</textbutton>
-						);
+					Position={UDim2.fromScale(0.9, 0.4)}
+					Size={arrowButtonUpBinding.map((value) => {
+						return UDim2.fromScale(value.x, value.y);
 					})}
-				</scrollingframe>
+					Image={"rbxassetid://10521456604"}
+					ScaleType={Enum.ScaleType.Fit}
+					BackgroundTransparency={1}
+					Visible={
+						Workspace.interactions["talisman tower"].FindFirstChild(
+							`Tier ${viewedTalismanInfo.talismanInfo.data.tier + 1}`,
+						) !== undefined
+					}
+					Event={{
+						Activated: (): void => {
+							const talismanFolder = Workspace.interactions["talisman tower"].FindFirstChild(
+								`Tier ${viewedTalismanInfo.talismanInfo.data.tier + 1}`,
+							);
+							if (talismanFolder === undefined) {
+								return;
+							}
+
+							setViewedTalismanInfo(getTalismanLocalInfo(props.talismansState, viewedTalismanInfo.id + 1));
+						},
+						MouseEnter: (): void => {
+							arrowButtonUpMotor.setGoal({
+								x: new Flipper.Spring(arrowButtonMinimizedSize.x, springProps),
+								y: new Flipper.Spring(arrowButtonMinimizedSize.y, springProps),
+							});
+						},
+						MouseLeave: (): void => {
+							arrowButtonUpMotor.setGoal({
+								x: new Flipper.Spring(arrowButtonMaximizdSize.x, springProps),
+								y: new Flipper.Spring(arrowButtonMaximizdSize.y, springProps),
+							});
+						},
+					}}
+				>
+					<uiaspectratioconstraint AspectRatio={1} />
+				</imagebutton>
+				<imagebutton
+					AnchorPoint={vec2Middle}
+					Position={UDim2.fromScale(0.9, 0.55)}
+					Size={arrowButtonDownBinding.map((value) => {
+						return UDim2.fromScale(value.x, value.y);
+					})}
+					Visible={viewedTalismanInfo.id - 1 > 0}
+					Image={"rbxassetid://10521457453"}
+					ScaleType={Enum.ScaleType.Fit}
+					BackgroundTransparency={1}
+					Event={{
+						Activated: (): void => {
+							if (viewedTalismanInfo.id - 1 <= 0) {
+								return;
+							}
+							setViewedTalismanInfo(getTalismanLocalInfo(props.talismansState, viewedTalismanInfo.id - 1));
+						},
+						MouseEnter: (): void => {
+							arrowButtonDownMotor.setGoal({
+								x: new Flipper.Spring(arrowButtonMinimizedSize.x, springProps),
+								y: new Flipper.Spring(arrowButtonMinimizedSize.y, springProps),
+							});
+						},
+						MouseLeave: (): void => {
+							arrowButtonDownMotor.setGoal({
+								x: new Flipper.Spring(arrowButtonMaximizdSize.x, springProps),
+								y: new Flipper.Spring(arrowButtonMaximizdSize.y, springProps),
+							});
+						},
+					}}
+				>
+					<uiaspectratioconstraint AspectRatio={1} />
+				</imagebutton>
 			</frame>
 		);
 	}),
