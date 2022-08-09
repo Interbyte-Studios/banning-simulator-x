@@ -25,6 +25,7 @@ declare global {
 					};
 				};
 			};
+			["talisman tower"]: Folder;
 		};
 		decoration: Folder & {
 			[P in keyof Worlds]: Folder & {
