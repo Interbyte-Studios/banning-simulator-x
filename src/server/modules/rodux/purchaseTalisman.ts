@@ -9,6 +9,13 @@ import { getTalismanData } from "shared/util/getTalismanData";
  * @param talismanId The id of the talisman being purchased.
  */
 export function purchaseTalisman(store: Store, talismanId: number): void {
+	if (talismanId - 1 > 0) {
+		const ownsPreviousTalisman = store.getState().talismans.has(talismanId - 1);
+		if (!ownsPreviousTalisman) {
+			return;
+		}
+	}
+
 	if (store.getState().talismans.has(talismanId)) {
 		return;
 	}
