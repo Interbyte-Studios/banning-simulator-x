@@ -3,6 +3,8 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { Currency } from "./currencies";
 
+export type talismanStats = "health" | "damage" | "experience";
+
 export interface Talisman {
 	id: number;
 
@@ -14,9 +16,8 @@ export interface Talisman {
 	};
 
 	stats: {
-		experience?: number;
-		damage?: number;
-		health?: number;
+		name: talismanStats;
+		amount: number;
 	};
 }
 
@@ -29,7 +30,8 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 			amount: twoDpAbbreviator.stringToNumber("1k"),
 		},
 		stats: {
-			damage: 2,
+			name: "damage",
+			amount: 2,
 		},
 	},
 	"Jester Talisman": {
@@ -40,7 +42,8 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 			amount: twoDpAbbreviator.stringToNumber("3k"),
 		},
 		stats: {
-			damage: 5,
+			name: "damage",
+			amount: 5,
 		},
 	},
 	"Blade Talisman": {
@@ -51,7 +54,8 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 			amount: twoDpAbbreviator.stringToNumber("7k"),
 		},
 		stats: {
-			damage: 8,
+			name: "damage",
+			amount: 10,
 		},
 	},
 	"Target Talisman": {
@@ -62,7 +66,8 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 			amount: twoDpAbbreviator.stringToNumber("10k"),
 		},
 		stats: {
-			damage: 12,
+			name: "health",
+			amount: 10,
 		},
 	},
 	"Lunar Talisman": {
@@ -73,7 +78,8 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 			amount: twoDpAbbreviator.stringToNumber("14k"),
 		},
 		stats: {
-			damage: 15,
+			name: "experience",
+			amount: 10,
 		},
 	},
 });
