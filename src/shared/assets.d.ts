@@ -18,6 +18,11 @@ declare namespace assetIds {
 		currencies: {
 			gold: string;
 		};
+		statIcons: {
+			health: string;
+			damage: string;
+			experience: string;
+		};
 		buttons: {
 			RightArrow: string;
 			LeftArrow: string;
