@@ -1,7 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { ContextActionService, Players, VRService, Workspace } from "@rbxts/services";
+import { ContextActionService, Players, TweenService, Workspace } from "@rbxts/services";
 import { purchaseTalisman } from "client/modules/talismans/purchaseTalisman";
 import { color3White, font, vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
@@ -135,7 +135,15 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 				assert(camPart?.IsA("BasePart"), `Expected campart to be a base part`);
 
 				camera.CameraType = Enum.CameraType.Scriptable;
-				camera.CFrame = camPart.CFrame;
+
+				const tween = TweenService.Create(
+					camera,
+					new TweenInfo(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In),
+					{
+						CFrame: camPart.CFrame,
+					},
+				);
+				tween.Play();
 			}
 		}, [viewedTalismanInfo, isVisible]);
 
@@ -291,6 +299,7 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 					Event={{
 						Activated: (): void => {
 							setVisibility(false);
+							setViewedTalismanInfo(getTalismanLocalInfo(props.talismansState, 1));
 						},
 						MouseEnter: (): void => {
 							closeButtonMotor.setGoal({
