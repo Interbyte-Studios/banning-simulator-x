@@ -1,4 +1,3 @@
-import { t } from "@rbxts/t";
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 
 import { Currency } from "./currencies";
@@ -16,9 +15,6 @@ interface World {
 	reward: Currency;
 }
 
-export const validWorldName = t.literal("Ban Land");
-export type WorldName = t.static<typeof validWorldName>;
-
 /**
  * All the worlds in the game.
  */
@@ -35,4 +31,5 @@ export const WORLDS = preserveWithConstraint<Record<string, World>>()({
 	},
 });
 
+export type WorldName = keyof typeof WORLDS;
 export type Worlds = typeof WORLDS;

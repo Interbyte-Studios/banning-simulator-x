@@ -1,5 +1,6 @@
 import { Players, Workspace } from "@rbxts/services";
-import { validWorldName, WorldName } from "shared/configs/worlds";
+import { WorldName } from "shared/configs/worlds";
+import { isValidWorld } from "shared/util/isValidWorld";
 
 const landingParts: Array<Instance> = [];
 
@@ -17,7 +18,7 @@ for (const world of Workspace.worlds.GetChildren()) {
  *
  * @returns The world the player is currently in.
  */
-export function getCurrentWorld(): WorldName | void {
+export function getCurrentWorld(): WorldName | undefined {
 	const character = Players.LocalPlayer.Character;
 	if (character === undefined) {
 		return;
@@ -55,7 +56,7 @@ export function getCurrentWorld(): WorldName | void {
 		return;
 	}
 
-	if (!validWorldName(world.Name)) {
+	if (!isValidWorld(world.Name)) {
 		return;
 	}
 
