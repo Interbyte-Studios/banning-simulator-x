@@ -84,13 +84,13 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 	},
 });
 
-export const TALISMAN_LEVELS: Array<{ level: number; requiredBans: number }> = [
+export const TALISMAN_LEVELS: Array<{ phase: string; requiredBans: number }> = [
 	{
-		level: 1,
+		phase: "Awakend",
 		requiredBans: 5,
 	},
 	{
-		level: 2,
+		phase: "Supreme",
 		requiredBans: 10,
 	},
 ];
