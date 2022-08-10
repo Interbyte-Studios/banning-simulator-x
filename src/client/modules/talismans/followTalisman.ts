@@ -6,7 +6,7 @@ import { setAssetProperties } from "shared/util/setAssetProperties";
 const talismansFolder = ReplicatedStorage.assetObjects.talismans;
 
 /**.
- *Equips a talisman to the player
+ * Equips a talisman to the player that follows them.
  *
  * @param player The lcoal player.
  * @param talismanId The id of the talisman thats being equipped.
@@ -26,11 +26,21 @@ export function talismanEquipped(player: Player, talismanId: number): void {
 	const character = player.Character;
 	const humanoidRootPart = character?.PrimaryPart as BasePart;
 
+	const bodyPosition = new Instance("BodyPosition", talisman.PrimaryPart);
+	const bodyGyro = new Instance("BodyGyro", talisman.PrimaryPart);
+
+	bodyPosition.MaxForce = new Vector3(4000000, 4000000, 4000000);
+	bodyPosition.P = 20000;
+	bodyGyro.MaxTorque = new Vector3(400000, 400000, 400000);
+
 	talisman.Name = player.Name;
 	talisman.Parent = Workspace.interactions.FindFirstChild("talismans");
+
 	RunService.RenderStepped.Connect(() => {
-		if (humanoidRootPart && talisman.PrimaryPart) {
-			talisman.PrimaryPart.CFrame = humanoidRootPart.CFrame.mul(new CFrame(4, 0, 3));
+		const hover = math.cos(tick() * 3) * 1;
+		if (humanoidRootPart) {
+			bodyPosition.Position = humanoidRootPart.CFrame.mul(new CFrame(2, hover, 3)).Position;
+			bodyGyro.CFrame = humanoidRootPart.CFrame;
 		}
 	});
 }
