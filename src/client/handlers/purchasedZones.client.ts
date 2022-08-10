@@ -15,7 +15,10 @@ const player = Players.LocalPlayer;
  * @param zone The zone to grant entry to.
  */
 function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
-	const barrierFolder = Workspace.decoration[world][zone].door;
+	const barrierFolder = Workspace.decoration[world][zone].FindFirstChild("door");
+	if (barrierFolder === undefined) {
+		return;
+	}
 
 	const locksFolder = barrierFolder.FindFirstChild("locks");
 	if (locksFolder) {
@@ -36,14 +39,6 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 function unlockZones(worldState: WorldsState): void {
 	for (const unlockedWorld of worldState) {
 		for (const unlockedZone of unlockedWorld.zones) {
-			const zoneInfo = getZoneData(unlockedWorld.name, unlockedZone);
-			const nextZone = getZoneDataById(unlockedWorld.name, zoneInfo.id + 1);
-
-			const ownsNextZone = unlockedWorld.zones.find((zone) => zone === nextZone.name);
-			if (ownsNextZone === undefined) {
-				continue;
-			}
-
 			grantZoneEntry(unlockedWorld.name, unlockedZone);
 		}
 	}
