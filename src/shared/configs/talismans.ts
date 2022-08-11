@@ -8,7 +8,7 @@ export type talismanStats = "health" | "damage" | "experience";
 export interface Talisman {
 	id: number;
 
-	tier: number;
+	tier: number | string;
 
 	cost: {
 		currency: Currency;
@@ -66,7 +66,7 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 			amount: twoDpAbbreviator.stringToNumber("10k"),
 		},
 		stats: {
-			name: "health",
+			name: "damage",
 			amount: 10,
 		},
 	},
@@ -78,8 +78,44 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 			amount: twoDpAbbreviator.stringToNumber("14k"),
 		},
 		stats: {
-			name: "experience",
+			name: "damage",
 			amount: 10,
+		},
+	},
+	"Star Talisman": {
+		id: 6,
+		tier: "6 A",
+		cost: {
+			currency: "gold",
+			amount: twoDpAbbreviator.stringToNumber("14k"),
+		},
+		stats: {
+			name: "experience",
+			amount: 30,
+		},
+	},
+	"Skull Talisman": {
+		id: 7,
+		tier: "6 B",
+		cost: {
+			currency: "gold",
+			amount: twoDpAbbreviator.stringToNumber("14k"),
+		},
+		stats: {
+			name: "damage",
+			amount: 20,
+		},
+	},
+	"Heart Talisman": {
+		id: 8,
+		tier: "6 C",
+		cost: {
+			currency: "gold",
+			amount: twoDpAbbreviator.stringToNumber("14k"),
+		},
+		stats: {
+			name: "health",
+			amount: 15,
 		},
 	},
 });
