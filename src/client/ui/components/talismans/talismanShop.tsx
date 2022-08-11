@@ -1,7 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { ContextActionService, Players, TweenService, Workspace } from "@rbxts/services";
+import { ContextActionService, Lighting, Players, TweenService, Workspace } from "@rbxts/services";
 import { purchaseTalisman } from "client/modules/talismans/purchaseTalisman";
 import { color3White, font, vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
@@ -127,14 +127,17 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 				const humanoid = character?.WaitForChild("Humanoid") as Humanoid;
 				camera.CameraType = Enum.CameraType.Custom;
 				camera.CameraSubject = humanoid;
+				Lighting.ClockTime = 11;
 			} else {
 				const camPart = Workspace.interactions["talisman tower"]
-					?.FindFirstChild(`Tier ${viewedTalismanInfo.talismanInfo.data.tier}`)
+					?.FindFirstChild(viewedTalismanInfo.talismanInfo.data.id)
 					?.FindFirstChild("CamPart");
+
 				assert(camPart, `Expected to find Camera Part for ${viewedTalismanInfo.talismanInfo.name}`);
 				assert(camPart?.IsA("BasePart"), `Expected campart to be a base part`);
 
 				camera.CameraType = Enum.CameraType.Scriptable;
+				Lighting.ClockTime = viewedTalismanInfo.talismanInfo.data.id > 4 ? 5 : 11;
 
 				const tween = TweenService.Create(
 					camera,
@@ -338,15 +341,15 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 					ScaleType={Enum.ScaleType.Fit}
 					BackgroundTransparency={1}
 					Visible={
-						Workspace.interactions["talisman tower"].FindFirstChild(
-							`Tier ${viewedTalismanInfo.talismanInfo.data.tier + 1}`,
-						) !== undefined
+						Workspace.interactions["talisman tower"].FindFirstChild(viewedTalismanInfo.talismanInfo.data.id + 1) !==
+						undefined
 					}
 					Event={{
 						Activated: (): void => {
 							const talismanFolder = Workspace.interactions["talisman tower"].FindFirstChild(
-								`Tier ${viewedTalismanInfo.talismanInfo.data.tier + 1}`,
+								viewedTalismanInfo.talismanInfo.data.id,
 							);
+
 							if (talismanFolder === undefined) {
 								return;
 							}
