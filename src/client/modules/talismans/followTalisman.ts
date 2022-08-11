@@ -23,7 +23,7 @@ export function talismanEquipped(player: Player, talismanId: number): void {
 	assert(talisman, `Could not get model for talisman of Id${talismanId} of name ${talismanData.name}`);
 	setAssetProperties("talisman", talisman);
 
-	const character = player.Character;
+	const character = player.Character ?? player.CharacterAdded.Wait()[0];
 	const humanoidRootPart = character?.PrimaryPart as BasePart;
 
 	const bodyPosition = new Instance("BodyPosition", talisman.PrimaryPart);
@@ -37,8 +37,9 @@ export function talismanEquipped(player: Player, talismanId: number): void {
 	talisman.Parent = Workspace.interactions.FindFirstChild("talismans");
 
 	RunService.RenderStepped.Connect(() => {
-		const hover = math.cos(tick() * 3) * 1;
 		if (humanoidRootPart) {
+			const hover = math.cos(tick() * 3) * 1;
+
 			bodyPosition.Position = humanoidRootPart.CFrame.mul(new CFrame(2, hover, 3)).Position;
 			bodyGyro.CFrame = humanoidRootPart.CFrame;
 		}
