@@ -27,9 +27,9 @@ interface InfoFrameProps {
  */
 export function InfoFrame(props: InfoFrameProps): Roact.Element {
 	const infoFramePositions = preserveWithConstraint<Record<1 | 2 | 3, UDim2>>()({
-		3: UDim2.fromScale(0.5, 0.75),
-		1: UDim2.fromScale(0.25, 0.75),
-		2: UDim2.fromScale(0.75, 0.75),
+		3: UDim2.fromScale(0.75, 0.75),
+		1: UDim2.fromScale(0.5, 0.75),
+		2: UDim2.fromScale(0.25, 0.75),
 	});
 
 	const petInfo = getPetData(props.eggName, props.pet);
