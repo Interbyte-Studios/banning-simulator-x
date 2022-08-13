@@ -3,8 +3,6 @@ import { onStoreCreated } from "client/clientStores";
 import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
 import { WorldsState } from "shared/rodux/worlds";
-import { getZoneData } from "shared/util/getZoneData";
-import { getZoneDataById } from "shared/util/getZoneDataById";
 
 const player = Players.LocalPlayer;
 
