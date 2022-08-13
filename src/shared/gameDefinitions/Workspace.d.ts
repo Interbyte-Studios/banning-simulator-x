@@ -7,6 +7,7 @@ declare global {
 		worlds: Folder & {
 			[P in keyof Worlds]: Folder & {
 				zones: Folder;
+				landing: Folder;
 			};
 		};
 		interactions: Folder & {
