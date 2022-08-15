@@ -10,6 +10,13 @@ interface TalismanViewportProps {
 	talismanId: number;
 }
 
+/**
+ * A viewport of a talisman.
+ *
+ * @param props The properties of the talisman viewport.
+ * @param props.native The native properties of the viewport frame.
+ * @param props.talismanId The id of the talisman being displayed.
+ */
 export const TalismanViewport = hooks((props: TalismanViewportProps, { useValue, useEffect }) => {
 	const viewportRef = useValue(Roact.createRef<ViewportFrame>());
 	const cameraRef = useValue(Roact.createRef<Camera>());
