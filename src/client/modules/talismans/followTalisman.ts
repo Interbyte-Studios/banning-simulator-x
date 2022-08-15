@@ -8,10 +8,10 @@ const talismansFolder = ReplicatedStorage.assetObjects.talismans;
 /**.
  * Equips a talisman to the player that follows them.
  *
- * @param player The lcoal player.
+ * @param player The local player.
  * @param talismanId The id of the talisman thats being equipped.
  */
-export function talismanEquipped(player: Player, talismanId: number): void {
+export function equipTalisman(player: Player, talismanId: number): void {
 	const talismanData = getTalismanData(talismanId);
 	const talismanModel = getItemById(talismansFolder, talismanId);
 
@@ -21,14 +21,20 @@ export function talismanEquipped(player: Player, talismanId: number): void {
 
 	const character = player.Character ?? player.CharacterAdded.Wait()[0];
 	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
-	const humanoidRootPart = character?.PrimaryPart as BasePart;
+	const humanoidRootPart = humanoid.RootPart;
 
-	const bodyPosition = new Instance("BodyPosition", talisman.PrimaryPart);
-	const bodyGyro = new Instance("BodyGyro", talisman.PrimaryPart);
+	const talismanAttachment = new Instance("Attachment", talisman.PrimaryPart);
 
-	bodyPosition.MaxForce = new Vector3(4000000, 4000000, 4000000);
-	bodyPosition.P = 20000;
-	bodyGyro.MaxTorque = new Vector3(400000, 400000, 400000);
+	const alignPosition = new Instance("AlignPosition", talisman.PrimaryPart);
+	alignPosition.Mode = Enum.PositionAlignmentMode.OneAttachment;
+	alignPosition.MaxForce = 50000;
+	alignPosition.Attachment0 = talismanAttachment;
+	alignPosition.Responsiveness = 50;
+
+	const alignOrientation = new Instance("AlignOrientation", talisman.PrimaryPart);
+	alignOrientation.Mode = Enum.OrientationAlignmentMode.OneAttachment;
+	alignOrientation.Attachment0 = talismanAttachment;
+	alignOrientation.Responsiveness = 80;
 
 	if (Workspace.interactions.talismans.FindFirstChild(player.Name)) {
 		Workspace.interactions.talismans.FindFirstChild(player.Name)?.Destroy();
@@ -39,17 +45,15 @@ export function talismanEquipped(player: Player, talismanId: number): void {
 
 	const talismanRender = RunService.RenderStepped.Connect(() => {
 		if (humanoidRootPart) {
-			const hover = math.cos(tick() * 3) * 1;
+			const hover = math.cos(os.clock() * 3) * 1;
 
-			bodyPosition.Position = humanoidRootPart.CFrame.mul(new CFrame(2, hover, 3)).Position;
-			bodyGyro.CFrame = humanoidRootPart.CFrame;
+			alignPosition.Position = humanoidRootPart.CFrame.mul(new CFrame(2, hover, 3)).Position;
+			alignOrientation.CFrame = humanoidRootPart.CFrame;
 		}
 	});
 
 	humanoid.Died.Connect(() => {
 		talismanRender.Disconnect();
-		if (Workspace.interactions.talismans.FindFirstChild(player.Name)) {
-			Workspace.interactions.talismans.FindFirstChild(player.Name)?.Destroy();
-		}
+		Workspace.interactions.talismans.FindFirstChild(player.Name)?.Destroy();
 	});
 }
