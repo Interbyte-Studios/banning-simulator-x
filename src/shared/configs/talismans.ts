@@ -1,10 +1,13 @@
+import { t } from "@rbxts/t";
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { Currency } from "./currencies";
 
-export type talismanStats = "health" | "damage" | "experience";
-export type talismanPhases = "Normal" | "Awakend" | "Supreme";
+export const talismanStats = ["health", "damage", "experience"] as const;
+export const isTalismanStat = t.literal(...talismanStats);
+export type TalismanStats = t.static<typeof isTalismanStat>;
+export type talismanPhases = "normal" | "awakend" | "supreme";
 
 export interface Talisman {
 	id: number;
@@ -17,7 +20,7 @@ export interface Talisman {
 	};
 
 	stats: {
-		name: talismanStats;
+		name: TalismanStats;
 		amount: number;
 	};
 }
@@ -121,17 +124,17 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 	},
 });
 
-export const TALISMAN_LEVELS: Array<{ phase: talismanPhases; requiredBans: number }> = [
+export const TALISMAN_PHASES: Array<{ phase: talismanPhases; requiredBans: number }> = [
 	{
-		phase: "Normal",
+		phase: "normal",
 		requiredBans: 0,
 	},
 	{
-		phase: "Awakend",
+		phase: "awakend",
 		requiredBans: 5,
 	},
 	{
-		phase: "Supreme",
+		phase: "supreme",
 		requiredBans: 10,
 	},
 ];
