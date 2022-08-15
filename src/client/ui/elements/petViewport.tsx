@@ -39,7 +39,7 @@ export const PetViewport = hooks((props: PetViewportProps, { useValue, useEffect
 		assert(petModel, `Did not find pet model for pet with id ${props.petId}`);
 
 		const pet = petModel.Clone() as Model;
-		setAssetProperties("Pet", pet, false);
+		setAssetProperties("pet", pet, false);
 
 		assert(pet.PrimaryPart, `Failed to get Primary Part for pet ${pet.Name} of id ${props.petId}`);
 
