@@ -15,15 +15,12 @@ export function talismanEquipped(player: Player, talismanId: number): void {
 	const talismanData = getTalismanData(talismanId);
 	const talismanModel = getItemById(talismansFolder, talismanId);
 
-	if (Workspace.interactions.FindFirstChild("talismans")?.FindFirstChild(player.Name)) {
-		Workspace.interactions.FindFirstChild("talismans")?.FindFirstChild(player.Name)?.Destroy();
-	}
-
 	const talisman = talismanModel?.Clone() as Model;
 	assert(talisman, `Could not get model for talisman of Id${talismanId} of name ${talismanData.name}`);
 	setAssetProperties("talisman", talisman);
 
 	const character = player.Character ?? player.CharacterAdded.Wait()[0];
+	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
 	const humanoidRootPart = character?.PrimaryPart as BasePart;
 
 	const bodyPosition = new Instance("BodyPosition", talisman.PrimaryPart);
@@ -33,15 +30,26 @@ export function talismanEquipped(player: Player, talismanId: number): void {
 	bodyPosition.P = 20000;
 	bodyGyro.MaxTorque = new Vector3(400000, 400000, 400000);
 
+	if (Workspace.interactions.talismans.FindFirstChild(player.Name)) {
+		Workspace.interactions.talismans.FindFirstChild(player.Name)?.Destroy();
+	}
+
 	talisman.Name = player.Name;
 	talisman.Parent = Workspace.interactions.FindFirstChild("talismans");
 
-	RunService.RenderStepped.Connect(() => {
+	const talismanRender = RunService.RenderStepped.Connect(() => {
 		if (humanoidRootPart) {
 			const hover = math.cos(tick() * 3) * 1;
 
 			bodyPosition.Position = humanoidRootPart.CFrame.mul(new CFrame(2, hover, 3)).Position;
 			bodyGyro.CFrame = humanoidRootPart.CFrame;
+		}
+	});
+
+	humanoid.Died.Connect(() => {
+		talismanRender.Disconnect();
+		if (Workspace.interactions.talismans.FindFirstChild(player.Name)) {
+			Workspace.interactions.talismans.FindFirstChild(player.Name)?.Destroy();
 		}
 	});
 }
