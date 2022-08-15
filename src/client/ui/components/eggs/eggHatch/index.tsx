@@ -12,7 +12,7 @@ interface EggHatchProps {
 	pets: Array<ConfirmedPet>;
 }
 
-const isValidPetId = t.literal(1, 2, 3);
+const isValidPetSlotId = t.literal(1, 2, 3);
 
 /**
  * Displays information about pets that have been hatched.
@@ -27,9 +27,7 @@ export function EggHatch(props: EggHatchProps): Roact.Element {
 	const infoFrames = [];
 	for (const pet of props.pets) {
 		const id = infoFrames.size() + 1;
-		if (!isValidPetId(id)) {
-			continue;
-		}
+		if (!isValidPetSlotId(id)) throw `Expected pet slot id to be 1, 2, or 3, but got ${id}`;
 
 		infoFrames.push(
 			<InfoFrame eggName={props.eggName} id={props.pets.size() === 1 ? 3 : id} isVoid={props.isVoid} pet={pet.id} />,
