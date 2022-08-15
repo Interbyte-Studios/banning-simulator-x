@@ -1,7 +1,7 @@
 import { Store } from "shared/rodux";
 import { equipTalisman as dispatchEquipTalisman } from "shared/rodux/currentTalisman";
 
-/**.
+/**
  * Equips a talisman for a player.
  *
  * Errors if the store does not own the talisman.
