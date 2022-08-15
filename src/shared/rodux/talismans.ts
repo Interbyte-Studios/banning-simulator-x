@@ -1,6 +1,8 @@
 import Rodux from "@rbxts/rodux";
 import { Currency } from "shared/configs/currencies";
 
+import { KillNpc } from "./currencies";
+
 export type TalismansState = Map<number, { bans: number }>;
 
 export type TalismanActions = PurchaseTalisman;
@@ -30,9 +32,19 @@ export function purchaseTalisman(data: Omit<PurchaseTalisman, "type">): Purchase
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const talismanReducer = Rodux.createReducer<TalismansState, TalismanActions>(defaultTalismans, {
+export const talismanReducer = Rodux.createReducer<TalismansState, TalismanActions | KillNpc>(defaultTalismans, {
 	purchaseTalisman: (state, action) => {
 		return new Map([...state, [action.id, { bans: 0 }]]);
+	},
+	killNpc: (state, action) => {
+		const currentTalisman = state.get(action.talismanId);
+		if (currentTalisman === undefined) {
+			throw `Expected player to own the talisman ${action.talismanId}`;
+		}
+
+		const increaseTalismanBanCounter = currentTalisman.bans + 1;
+
+		return new Map([...state, [action.talismanId, { bans: increaseTalismanBanCounter }]]);
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */
