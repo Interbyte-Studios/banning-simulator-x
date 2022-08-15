@@ -4,11 +4,12 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 import { Currency } from "./currencies";
 
 export type talismanStats = "health" | "damage" | "experience";
+export type talismanPhases = "Normal" | "Awakend" | "Supreme";
 
 export interface Talisman {
 	id: number;
 
-	tier: number | string;
+	tier: number;
 
 	cost: {
 		currency: Currency;
@@ -84,7 +85,7 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 	},
 	"Star Talisman": {
 		id: 6,
-		tier: "6 A",
+		tier: 6,
 		cost: {
 			currency: "gold",
 			amount: twoDpAbbreviator.stringToNumber("14k"),
@@ -96,7 +97,7 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 	},
 	"Skull Talisman": {
 		id: 7,
-		tier: "6 B",
+		tier: 6,
 		cost: {
 			currency: "gold",
 			amount: twoDpAbbreviator.stringToNumber("14k"),
@@ -108,7 +109,7 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 	},
 	"Heart Talisman": {
 		id: 8,
-		tier: "6 C",
+		tier: 6,
 		cost: {
 			currency: "gold",
 			amount: twoDpAbbreviator.stringToNumber("14k"),
@@ -120,7 +121,11 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 	},
 });
 
-export const TALISMAN_LEVELS: Array<{ phase: string; requiredBans: number }> = [
+export const TALISMAN_LEVELS: Array<{ phase: talismanPhases; requiredBans: number }> = [
+	{
+		phase: "Normal",
+		requiredBans: 0,
+	},
 	{
 		phase: "Awakend",
 		requiredBans: 5,
