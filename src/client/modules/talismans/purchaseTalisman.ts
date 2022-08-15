@@ -3,7 +3,7 @@ import { PurchaseTalismanDefinition } from "shared/remotes/talismans/purchaseTal
 import { Store } from "shared/rodux";
 import { getTalismanData } from "shared/util/getTalismanData";
 
-/**.
+/**
  *
  * @param store The store of the player.
  * @param talismanId The id of the talisman that will be purchased.
