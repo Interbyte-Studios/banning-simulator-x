@@ -1,7 +1,7 @@
 import { CollectionService } from "@rbxts/services";
 import { TAG_CONFIG } from "shared/configs/pets";
 
-export type ValidAssetType = "Egg" | "Pet" | "Talisman";
+export type ValidAssetType = "egg" | "pet" | "talisman";
 
 /**
  * Sets the properties of an asset object<model> depending on the type of asset it is.
@@ -12,7 +12,7 @@ export type ValidAssetType = "Egg" | "Pet" | "Talisman";
  */
 export function setAssetProperties(assetType: ValidAssetType, assetObject: Model, isVoid?: boolean): void {
 	switch (assetType) {
-		case "Egg": {
+		case "egg": {
 			for (const child of assetObject.GetChildren()) {
 				if (!child.IsA("BasePart")) continue;
 
@@ -30,7 +30,7 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 
 			break;
 		}
-		case "Pet": {
+		case "pet": {
 			for (const child of assetObject.GetChildren()) {
 				if (!child.IsA("BasePart")) continue;
 
@@ -66,7 +66,7 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 
 			break;
 		}
-		case "Talisman": {
+		case "talisman": {
 			for (const child of assetObject.GetChildren()) {
 				if (!child.IsA("BasePart")) continue;
 
