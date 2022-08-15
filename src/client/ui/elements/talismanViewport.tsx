@@ -32,7 +32,7 @@ export const TalismanViewport = hooks((props: TalismanViewportProps, { useValue,
 		assert(talismanModel, `Did not find talisman model for talisman with id ${props.talismanId}`);
 
 		const talisman = talismanModel.Clone() as Model;
-		setAssetProperties("talisman", talisman, undefined);
+		setAssetProperties("Talisman", talisman, undefined);
 
 		assert(talisman.PrimaryPart, `Failed to get Primary Part for talisman ${talisman.Name} of id ${props.talismanId}`);
 
