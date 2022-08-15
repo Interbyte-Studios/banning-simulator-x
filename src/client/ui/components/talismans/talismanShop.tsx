@@ -1,14 +1,16 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { ContextActionService, Lighting, Players, TweenService, Workspace } from "@rbxts/services";
+import { ContextActionService, Lighting, TweenService, Workspace } from "@rbxts/services";
 import { purchaseTalisman } from "client/modules/talismans/purchaseTalisman";
 import { color3White, font, vec2Middle } from "client/ui/commonValues";
+import { ExitButton } from "client/ui/elements/exitButton";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
 import { Talisman } from "shared/configs/talismans";
 import { Store, StoreState } from "shared/rodux";
+import { SettingsState } from "shared/rodux/settings";
 import { TalismansState } from "shared/rodux/talismans";
 import { getTalismanData } from "shared/util/getTalismanData";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
@@ -20,13 +22,11 @@ interface TalismanShopProps extends TalismanShopMappedProps {
 interface TalismanShopMappedProps {
 	currentTalismanId: number;
 	talismansState: TalismansState;
+	settingsState: SettingsState;
 }
 
 const maximizedSize = { x: 0.25, y: 0.1 };
 const minimizedSize = { x: 0.23, y: 0.09 };
-
-const closeMaximizedSize = { x: 0.06, y: 0.115 };
-const closeMinimizedSize = { x: 0.055, y: 0.105 };
 
 const arrowButtonMaximizdSize = { x: 0.08, y: 0.15 };
 const arrowButtonMinimizedSize = { x: 0.07, y: 0.14 };
@@ -44,6 +44,7 @@ function mapStateToProps(state: StoreState): TalismanShopMappedProps {
 	return {
 		currentTalismanId: state.currentTalisman,
 		talismansState: state.talismans,
+		settingsState: state.settings,
 	};
 }
 
@@ -74,6 +75,7 @@ function getTalismanLocalInfo(talismanState: TalismansState, id: number): LocalT
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
+// Talisman shop roact component to view and purchase.
 export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 	hooks((props: TalismanShopProps, { useState, useEffect, useContext }) => {
 		const [isVisible, setVisibility] = useState(false);
@@ -85,9 +87,6 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 		const actionButtonMotor = new Flipper.GroupMotor({ x: maximizedSize.x, y: maximizedSize.y });
 		const [actionButtonBinding, setActionButtonBinding] = Roact.createBinding(actionButtonMotor.getValue());
 
-		const closeButtonMotor = new Flipper.GroupMotor({ x: closeMaximizedSize.x, y: closeMaximizedSize.y });
-		const [closeButtonBinding, setCloseButtonBinding] = Roact.createBinding(closeButtonMotor.getValue());
-
 		const arrowButtonUpMotor = new Flipper.GroupMotor({ x: arrowButtonMaximizdSize.x, y: arrowButtonMaximizdSize.y });
 		const [arrowButtonUpBinding, setArrowButtonUpBinding] = Roact.createBinding(arrowButtonUpMotor.getValue());
 
@@ -95,7 +94,6 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 		const [arrowButtonDownBinding, setArrowButtonDownBinding] = Roact.createBinding(arrowButtonDownMotor.getValue());
 
 		actionButtonMotor.onStep(setActionButtonBinding);
-		closeButtonMotor.onStep(setCloseButtonBinding);
 		arrowButtonUpMotor.onStep(setArrowButtonUpBinding);
 		arrowButtonDownMotor.onStep(setArrowButtonDownBinding);
 
@@ -123,11 +121,8 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 			assert(camera, `Expected to find camera`);
 
 			if (!isVisible) {
-				const character = Players.LocalPlayer.Character;
-				const humanoid = character?.WaitForChild("Humanoid") as Humanoid;
 				camera.CameraType = Enum.CameraType.Custom;
-				camera.CameraSubject = humanoid;
-				Lighting.ClockTime = 11;
+				Lighting.ClockTime = props.settingsState.visual.timeOfDay;
 			} else {
 				const camPart = Workspace.interactions["talisman tower"]
 					?.FindFirstChild(viewedTalismanInfo.talismanInfo.data.id)
@@ -149,6 +144,10 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 				tween.Play();
 			}
 		}, [viewedTalismanInfo, isVisible]);
+
+		if (!isVisible) {
+			return <></>;
+		}
 
 		return (
 			<frame
@@ -290,47 +289,12 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 						<uistroke Thickness={3} Color={Color3.fromRGB(112, 158, 113)} />
 					</textlabel>
 				</textbutton>
-				<textbutton
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.95, 0.1)}
-					AutoButtonColor={false}
-					Size={closeButtonBinding.map((value) => {
-						return UDim2.fromScale(value.x, value.y);
-					})}
-					BackgroundColor3={Color3.fromRGB(211, 141, 141)}
-					TextTransparency={1}
-					Event={{
-						Activated: (): void => {
-							setVisibility(false);
-							setViewedTalismanInfo(getTalismanLocalInfo(props.talismansState, 1));
-						},
-						MouseEnter: (): void => {
-							closeButtonMotor.setGoal({
-								x: new Flipper.Spring(closeMinimizedSize.x, springProps),
-								y: new Flipper.Spring(closeMinimizedSize.y, springProps),
-							});
-						},
-						MouseLeave: (): void => {
-							closeButtonMotor.setGoal({
-								x: new Flipper.Spring(closeMaximizedSize.x, springProps),
-								y: new Flipper.Spring(closeMaximizedSize.y, springProps),
-							});
-						},
-					}}
-				>
-					<uicorner CornerRadius={new UDim(0.1, 0)} />
-					<uistroke Thickness={3} Color={Color3.fromRGB(138, 92, 92)} ApplyStrokeMode={Enum.ApplyStrokeMode.Border} />
-					<textlabel
-						Text={"X"}
-						Font={font}
-						BackgroundTransparency={1}
-						TextScaled={true}
-						TextColor3={color3White}
-						AnchorPoint={vec2Middle}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Position={UDim2.fromScale(0.5, 0.5)}
-					/>
-				</textbutton>
+				<ExitButton
+					minimizedSize={0.1}
+					maximizedSize={0.12}
+					onClosed={(): void => setVisibility(false)}
+					Position={UDim2.fromScale(0.9, 0.1)}
+				/>
 				<imagebutton
 					AnchorPoint={vec2Middle}
 					Position={UDim2.fromScale(0.9, 0.4)}
