@@ -406,7 +406,7 @@ export class AnimateEggs {
 			};
 
 			for (const [, egg] of pairs(eggData.eggModels)) {
-				setAssetProperties("egg", egg);
+				setAssetProperties("Egg", egg);
 				egg.Parent = Workspace;
 			}
 
@@ -449,7 +449,7 @@ export class AnimateEggs {
 				petModel: petModel.Clone(),
 			};
 
-			setAssetProperties("pet", petData.petModel, params.isVoid);
+			setAssetProperties("Pet", petData.petModel, params.isVoid);
 			petData.petModel.Parent = Workspace;
 
 			petData.flareLifetime.Value = 0.75;
