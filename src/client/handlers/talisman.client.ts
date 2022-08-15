@@ -15,6 +15,8 @@ onStoreCreated(player)
 
 			talismanEquipped(player, store.getState().currentTalisman);
 		});
+
+		player.CharacterAdded.Connect(() => talismanEquipped(player, store.getState().currentTalisman));
 	})
 	.catch((e) => {
 		throw `Failed to get store for player ${player.Name} | ${e}`;
