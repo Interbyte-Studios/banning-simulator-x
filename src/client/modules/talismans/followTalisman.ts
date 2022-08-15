@@ -17,7 +17,7 @@ export function talismanEquipped(player: Player, talismanId: number): void {
 
 	const talisman = talismanModel?.Clone() as Model;
 	assert(talisman, `Could not get model for talisman of Id${talismanId} of name ${talismanData.name}`);
-	setAssetProperties("talisman", talisman);
+	setAssetProperties("Talisman", talisman);
 
 	const character = player.Character ?? player.CharacterAdded.Wait()[0];
 	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
