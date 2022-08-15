@@ -112,7 +112,13 @@ export function runStep(
 			const { reward } = npc.npc;
 
 			store.dispatch(
-				killNpc(reward.currency, WORLDS[npc.world.name].reward, reward.experience, storeState.currentWeapon),
+				killNpc(
+					reward.currency,
+					WORLDS[npc.world.name].reward,
+					reward.experience,
+					storeState.currentWeapon,
+					storeState.currentTalisman,
+				),
 			);
 
 			// kill npc
