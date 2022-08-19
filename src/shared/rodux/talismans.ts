@@ -15,7 +15,7 @@ export interface PurchaseTalisman extends Rodux.Action<"purchaseTalisman"> {
 	id: number;
 }
 
-const defaultTalismans: TalismansState = new Map([[1, { bans: 0 }]]);
+const defaultTalismans: TalismansState = new Map();
 
 /**
  * Purchases a talisman from the stor, saving it to players talisman inventory.
@@ -37,6 +37,10 @@ export const talismanReducer = Rodux.createReducer<TalismansState, TalismanActio
 		return new Map([...state, [action.id, { bans: 0 }]]);
 	},
 	killNpc: (state, action) => {
+		if (action.talismanId === undefined) {
+			return state;
+		}
+
 		const currentTalisman = state.get(action.talismanId);
 		if (currentTalisman === undefined) {
 			throw `Expected player to own the talisman ${action.talismanId}`;
