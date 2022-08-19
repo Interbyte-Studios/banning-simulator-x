@@ -4,4 +4,11 @@ import { remotes } from "shared/remotes";
 
 remotes.Server.GetNamespace("talismans")
 	.Create("equipTalisman")
-	.Connect(withPlayerStore((_, store, talismanId) => equipTalisman(store, talismanId)));
+	.Connect(
+		withPlayerStore((_, store, talismanId) => {
+			if (!store.getState().talismans.has(talismanId)) {
+				return;
+			}
+			equipTalisman(store, talismanId);
+		}),
+	);
