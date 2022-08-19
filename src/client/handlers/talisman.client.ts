@@ -6,17 +6,37 @@ const player = Players.LocalPlayer;
 
 onStoreCreated(player)
 	.andThen((store) => {
-		equipTalisman(player, store.getState().currentTalisman);
+		const talismanEquipped = store.getState().currentTalisman;
+		if (talismanEquipped !== undefined) {
+			const ownedTalisman = store.getState().talismans.get(talismanEquipped);
+			if (ownedTalisman !== undefined) {
+				equipTalisman(player, talismanEquipped, ownedTalisman.bans);
+			}
+		}
 
-		store.changed.connect((newState, oldState) => {
-			if (newState.currentTalisman === oldState.currentTalisman) {
+		player.CharacterAdded.Connect(() => {
+			const talismanEquipped = store.getState().currentTalisman;
+			if (talismanEquipped !== undefined) {
+				const ownedTalisman = store.getState().talismans.get(talismanEquipped);
+				if (ownedTalisman !== undefined) {
+					equipTalisman(player, talismanEquipped, ownedTalisman.bans);
+				}
+			}
+		});
+
+		store.changed.connect((newState) => {
+			const talismanEquipped = newState.currentTalisman;
+			if (talismanEquipped === undefined) {
 				return;
 			}
 
-			equipTalisman(player, store.getState().currentTalisman);
-		});
+			const ownedTalisman = newState.talismans.get(talismanEquipped);
+			if (ownedTalisman === undefined) {
+				return;
+			}
 
-		player.CharacterAdded.Connect(() => equipTalisman(player, store.getState().currentTalisman));
+			equipTalisman(player, talismanEquipped, ownedTalisman.bans);
+		});
 	})
 	.catch((e) => {
 		throw `Failed to get store for player ${player.Name} | ${e}`;
