@@ -1,5 +1,5 @@
 import { ReplicatedStorage, RunService, Workspace } from "@rbxts/services";
-import { getItemById } from "shared/util/getItemById";
+import { TALISMAN_PHASES } from "shared/configs/talismans";
 import { getTalismanData } from "shared/util/getTalismanData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
@@ -10,13 +10,21 @@ const talismansFolder = ReplicatedStorage.assetObjects.talismans;
  *
  * @param player The local player.
  * @param talismanId The id of the talisman thats being equipped.
+ * @param bans The number of bans the talisman has.
  */
-export function equipTalisman(player: Player, talismanId: number): void {
+export function equipTalisman(player: Player, talismanId: number, bans: number): void {
 	const talismanData = getTalismanData(talismanId);
-	const talismanModel = getItemById(talismansFolder, talismanId);
+	const talismanPhase = TALISMAN_PHASES.find((phase) => phase.requiredBans >= bans);
+	assert(talismanPhase, `Could not get talisman phase for ${bans} bans`);
 
-	const talisman = talismanModel?.Clone() as Model;
-	assert(talisman, `Could not get model for talisman of Id${talismanId} of name ${talismanData.name}`);
+	const talisman = talismansFolder
+		.FindFirstChild(talismanData.name)
+		?.FindFirstChild(talismanPhase.phase)
+		?.Clone() as Model;
+	assert(
+		talisman,
+		`Could not get model for talisman of Id${talismanId} of name ${talismanData.name} for phase ${talismanPhase.phase}`,
+	);
 	setAssetProperties("talisman", talisman);
 
 	const character = player.Character ?? player.CharacterAdded.Wait()[0];
