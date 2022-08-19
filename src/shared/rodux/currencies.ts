@@ -16,7 +16,7 @@ export interface KillNpc extends Rodux.Action<"killNpc"> {
 	currencyType: Currency;
 	experience: number;
 	weaponId: number;
-	talismanId: number;
+	talismanId: number | undefined;
 }
 
 /**
@@ -32,7 +32,7 @@ export function killNpc(
 	currencyType: Currency,
 	experience: number,
 	weaponId: number,
-	talismanId: number,
+	talismanId: number | undefined,
 ): KillNpc & Rodux.AnyAction {
 	return {
 		type: "killNpc",
