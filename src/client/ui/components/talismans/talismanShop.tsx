@@ -20,7 +20,7 @@ interface TalismanShopProps extends TalismanShopMappedProps {
 }
 
 interface TalismanShopMappedProps {
-	currentTalismanId: number;
+	currentTalismanId: number | undefined;
 	talismansState: TalismansState;
 	settingsState: SettingsState;
 }
@@ -80,7 +80,7 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 	hooks((props: TalismanShopProps, { useState, useEffect, useContext }) => {
 		const [isVisible, setVisibility] = useState(false);
 		const [viewedTalismanInfo, setViewedTalismanInfo] = useState(
-			getTalismanLocalInfo(props.talismansState, props.currentTalismanId),
+			getTalismanLocalInfo(props.talismansState, props.currentTalismanId ?? 1),
 		);
 		const remotes = useContext(remoteContext);
 
