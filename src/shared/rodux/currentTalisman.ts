@@ -1,6 +1,6 @@
 import Rodux from "@rbxts/rodux";
 
-export type CurrentTalismanState = number;
+export type CurrentTalismanState = number | undefined;
 export type CurrentTalismanActions = EquipTalisman;
 
 interface EquipTalisman extends Rodux.Action<"equipTalisman"> {
@@ -19,7 +19,7 @@ export function equipTalisman(id: number): EquipTalisman & Rodux.AnyAction {
 	};
 }
 
-const defaultTalismanId = 1;
+const defaultTalismanId = undefined;
 
 /*eslint-disable jsdoc/require-jsdoc */
 export const currentTalismanReducer = Rodux.createReducer<CurrentTalismanState, CurrentTalismanActions>(
