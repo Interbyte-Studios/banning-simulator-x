@@ -75,7 +75,9 @@ function getTalismanLocalInfo(talismanState: TalismansState, id: number): LocalT
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-// Talisman shop roact component to view and purchase.
+/**
+ * The talisman shop Roact component to view and purchase talismans.
+ */
 export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 	hooks((props: TalismanShopProps, { useState, useEffect, useContext }) => {
 		const [isVisible, setVisibility] = useState(false);
@@ -153,7 +155,6 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 			<frame
 				Size={UDim2.fromScale(1, 1)}
 				BackgroundTransparency={1}
-				Visible={isVisible}
 				AnchorPoint={vec2Middle}
 				Position={UDim2.fromScale(0.5, 0.5)}
 			>
@@ -244,7 +245,7 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 					AutoButtonColor={false}
 					Event={{
 						Activated: (): void => {
-							if (viewedTalismanInfo.id === props.currentTalismanId) {
+							if (props.currentTalismanId === viewedTalismanInfo.id) {
 								return;
 							}
 
