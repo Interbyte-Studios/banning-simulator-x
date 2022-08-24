@@ -4,6 +4,7 @@ return {
 		Exit = "rbxassetid://10220935323",
 		buttons = {
 			["back arrow"] = "rbxassetid://10705131644",
+			["down button"] = "rbxassetid://10705221247",
 			exit = "rbxassetid://10705132600",
 			["forward arrow"] = "rbxassetid://10705132723",
 			["green button"] = "rbxassetid://10705132961",
@@ -19,6 +20,12 @@ return {
 		},
 		ui = {
 			default = {
+				quests = {
+					["entry background"] = "rbxassetid://10705221363",
+					["quests background"] = "rbxassetid://10705221523",
+					["world background"] = "rbxassetid://10705221628",
+					["world entry background"] = "rbxassetid://10705221743",
+				},
 				settings = {
 					background = "rbxassetid://10705133477",
 					["setting background"] = "rbxassetid://10705133739",

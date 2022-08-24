@@ -11,6 +11,7 @@ declare namespace assetIds {
 			"red button": string;
 			"green button": string;
 			"forward arrow": string;
+			"down button": "rbxassetid://10705221247";
 			exit: string;
 		};
 		currencies: {
@@ -18,6 +19,12 @@ declare namespace assetIds {
 		};
 		ui: {
 			default: {
+				quests: {
+					"entry background": "rbxassetid://10705221363";
+					"quests background": "rbxassetid://10705221523";
+					"world background": "rbxassetid://10705221628";
+					"world entry background": "rbxassetid://10705221743";
+				};
 				settings: {
 					"setting background": string;
 					background: string;
