@@ -42,7 +42,7 @@ export const IncreaseButton = hooks((props: IncreaseButtonProps, { useEffect }) 
 			Size={binding.map((value) => {
 				return UDim2.fromScale(value, value);
 			})}
-			Image={assetIds.images.buttons.RightArrow}
+			Image={assetIds.images.buttons["forward arrow"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
 				/**

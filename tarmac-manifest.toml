@@ -3,164 +3,29 @@ hash = "7b356995c62e5e9521afd90de0ba26219bce7be562a37f05547ef8a60da4073d"
 id = 10220935323
 packable = false
 
-[inputs."images/backgrounds/dark/AutoHatchBG.png"]
-hash = "59671121f265167c3fc6346ea75d881d13445d09d4bccbeac1c39fb73a8b5b24"
-id = 9724451796
+[inputs."images/buttons/back arrow.png"]
+hash = "5e918a5bcee020cb3e460eae1bcfab1c0f37ead30ccb97b59e23e06f1c87a35a"
+id = 10705131644
 packable = false
 
-[inputs."images/backgrounds/dark/EggPetDisplay.png"]
-hash = "e5a1e521ccd48b5c97531cb8a2fe7e5d3defd5bbed6e36f7e992f3f4a0175d29"
-id = 9724447208
+[inputs."images/buttons/exit.png"]
+hash = "c80057777fc42c24129c77b55a27f6225263c93a492358428d152ead52264ddf"
+id = 10705132600
 packable = false
 
-[inputs."images/backgrounds/dark/PetBackground.png"]
-hash = "e7898bae6804666b1f2bb869c493d72006d148522128a29bafc250da65572bef"
-id = 9724447393
+[inputs."images/buttons/forward arrow.png"]
+hash = "34c1d7e959ced15d935272cecd51e761ff0a1aaea71b4805821eb6d52e7fc472"
+id = 10705132723
 packable = false
 
-[inputs."images/backgrounds/dark/Settings.png"]
-hash = "887d5c0b4567129b433271867e9323f9db4a14438ec7c5b0d4d278222f3b4453"
-id = 10220867439
+[inputs."images/buttons/green button.png"]
+hash = "630ee4725d7f8ee80fd34fa502a504e84240804ef156bba6e4311998a890e435"
+id = 10705132961
 packable = false
 
-[inputs."images/backgrounds/dark/SettingsOption.png"]
-hash = "04c16a3ea1a6e087be567729f48ec3092c2719b269a4cdeba86bef6944ee003a"
-id = 10220867594
-packable = false
-
-[inputs."images/backgrounds/light/AutoHatchBG.png"]
-hash = "cb2e3efbc8955f37fcd71f49e9d88fa26db948c3f1a4bea5e514de78323cf8bc"
-id = 9724447550
-packable = false
-
-[inputs."images/backgrounds/light/EggPetDisplay.png"]
-hash = "5fb37770da8362ada4c6da0889ff2e2f3d6007942382cff4787a3f64b614b1fb"
-id = 9724447751
-packable = false
-
-[inputs."images/backgrounds/light/PetBackground.png"]
-hash = "8d86bc479b63984146f3ea047e41696fd69d792f8eb1d7da623262d692544106"
-id = 9724447903
-packable = false
-
-[inputs."images/buttons/LeftArrow.png"]
-hash = "aba6bb405c196ef80927a0aa60b706aa6ca9e6ff8915d9812ed335fc49eeb975"
-id = 10227395307
-packable = false
-
-[inputs."images/buttons/Off.png"]
-hash = "3311d38a4d5a0ca427571ab1ce469f5f4dcd526e41614322d8773e4d77fd6388"
-id = 10221118714
-packable = false
-
-[inputs."images/buttons/On.png"]
-hash = "0c45d37feeedbd9fb40c37242a5ecb4373297289d47e8c20f0eb9d7e1ec42642"
-id = 10231063722
-packable = false
-
-[inputs."images/buttons/RightArrow.png"]
-hash = "94436a9a1fa4acfcb4ad3404f713853644d99240091e194726a43051723a6843"
-id = 10227395746
-packable = false
-
-[inputs."images/buttons/dark/specialized/openEgg/OpenEgg.png"]
-hash = "b51684095e40d0fa88ffbdc6b5b5b1122334c75c0a57e335c5a44b1eea17a556"
-id = 9724448089
-packable = false
-
-[inputs."images/buttons/dark/specialized/openEgg/OpenEggSelected.png"]
-hash = "7d36b3a3c81d4ce47f130f7f4ac2c7e480b55e0f5b0fe8d69336ff72711d9e70"
-id = 9724448183
-packable = false
-
-[inputs."images/buttons/dark/specialized/settings/Settings Selected.png"]
-hash = "6bce5a917c145c18f5cc4e15a5b8c74cd548c7247c75a41692eb672c547a6b64"
-id = 10185228992
-packable = false
-
-[inputs."images/buttons/dark/specialized/settings/Settings.png"]
-hash = "bbda4c4c3f5ce6a8f36d04bff5c51882d3f68aca317c45c6dab8414a62cd49a4"
-id = 10185230092
-packable = false
-
-[inputs."images/buttons/dark/templates/rectangular/RectangularButton.png"]
-hash = "8c968b48b477e59a47f15cd3c45f72e2cd335caeb6c7603d69ba33d4f0aacfd4"
-id = 9724448326
-packable = false
-
-[inputs."images/buttons/dark/templates/rectangular/RectangularButtonConfirmation.png"]
-hash = "40a81cebc535d07701945f76a8d3a5d1da0f56fccfb63e829aceda5a207ce0cb"
-id = 9724448476
-packable = false
-
-[inputs."images/buttons/dark/templates/rectangular/RectangularButtonWarning.png"]
-hash = "d1d0df47da44ebd038658950ad176bbd72880f45c767a3fe58a6b50273b4b483"
-id = 9724448606
-packable = false
-
-[inputs."images/buttons/dark/templates/square/SquareButton.png"]
-hash = "5ddbab1e289969aaa957022e9e310c0390832c5f3c7cbf02e62de687bcecf4d5"
-id = 9724448744
-packable = false
-
-[inputs."images/buttons/dark/templates/square/SquareButtonConfirmation.png"]
-hash = "678bff337c6863a54f2bd4b97ca75803ccc517032d97de97121866941186490c"
-id = 9724448873
-packable = false
-
-[inputs."images/buttons/dark/templates/square/SquareButtonWarning.png"]
-hash = "0827c4e9fdb6ed332322bcc5d4e453d8159fa1196fb1ae9cd3e8dfca2bdd11a0"
-id = 9724449051
-packable = false
-
-[inputs."images/buttons/icons/Quests Icon.png"]
-hash = "d71bda9c0e459fed25dc7b9330950155e0347989be21bf7245663d28c0f3af6e"
-id = 10509456956
-packable = false
-
-[inputs."images/buttons/icons/Settings Icon.png"]
-hash = "6411c21a3d1400b1407b2a21266ac32ac879e5e636676357eb3b7f4c0c7aa6aa"
-id = 10509317134
-packable = false
-
-[inputs."images/buttons/light/specialized/openEgg/OpenEgg.png"]
-hash = "f2cb8bf854fca1bfa85a8d1fd3b94e8bb8707b217695dbf3922b0056af411a16"
-id = 9724449208
-packable = false
-
-[inputs."images/buttons/light/specialized/openEgg/OpenEggSelected.png"]
-hash = "590ab9466736e3c08726036d09e18d416b4d4bca7eaa22471423e37c0e1809e7"
-id = 9724449370
-packable = false
-
-[inputs."images/buttons/light/templates/rectangular/RectangularButton.png"]
-hash = "c653ed9eea1f530c7df2c3424d0edf30ba177cf83d161ed6dce9b66b4bfdb298"
-id = 9724449577
-packable = false
-
-[inputs."images/buttons/light/templates/rectangular/RectangularButtonConfirmation.png"]
-hash = "9dba83049027cecb9f24334f52414b00d60741e5b5141d69d5b372f37adb400a"
-id = 9724449681
-packable = false
-
-[inputs."images/buttons/light/templates/rectangular/RectangularButtonWarning.png"]
-hash = "ee3d76fa5cce9d7b91c484ea6ccc3adb200edb443f485c3b8cbcf142f5d61d04"
-id = 9724449836
-packable = false
-
-[inputs."images/buttons/light/templates/square/SquareButton.png"]
-hash = "aa5f17517ba9b60d3814f27b9c1efdf52451453651a3cea42be603c0a833a6f6"
-id = 9724449946
-packable = false
-
-[inputs."images/buttons/light/templates/square/SquareButtonConfirmation.png"]
-hash = "4d094943a8c15be35fb452384852af9c272fa3090d5a1874bdde18086e982c1b"
-id = 9724450043
-packable = false
-
-[inputs."images/buttons/light/templates/square/SquareButtonWarning.png"]
-hash = "34f5f328af9f676194662ea90ca486d56b99072439a5c557ebed031027dc0bee"
-id = 9724450192
+[inputs."images/buttons/red button.png"]
+hash = "1d509295e1715921ab77b3dab8cd58dea28371b14c524530b8d841840b56ebf4"
+id = 10705133176
 packable = false
 
 [inputs."images/currencies/gold.png"]
@@ -171,4 +36,14 @@ packable = false
 [inputs."images/maps/Ban Land/world.jpg"]
 hash = "ca1e87c9948257fed7ac980ef92c8398b411f49a7e6d0b7b598646e8fd832b3a"
 id = 10509318265
+packable = false
+
+[inputs."images/ui/default/settings/background.png"]
+hash = "24b2d26d506332150dd522e0b004337910233501ef492bec4414d8480b14c6ec"
+id = 10705133477
+packable = false
+
+[inputs."images/ui/default/settings/setting background.png"]
+hash = "df18ddecccb0bed5855584f33d755bbf0fbf7661d543195d253f4c57a8a23d8b"
+id = 10705133739
 packable = false

@@ -57,12 +57,12 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 		} = useContext(remoteContext);
 
 		return (
-			<imagebutton
+			<imagelabel
 				AnchorPoint={vec2Middle}
 				Size={udim2BottomRight}
 				Position={udim2Middle}
 				BackgroundTransparency={1}
-				Image={assetIds.images.backgrounds.dark.Settings}
+				Image={assetIds.images.ui.default.settings.background}
 				ScaleType={Enum.ScaleType.Fit}
 			>
 				<uiaspectratioconstraint AspectRatio={0.8} />
@@ -225,7 +225,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					maximizedSize={0.15}
 					onClosed={(): void => props.hideMenu()}
 				/>
-			</imagebutton>
+			</imagelabel>
 		);
 	}),
 );

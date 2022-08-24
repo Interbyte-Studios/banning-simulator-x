@@ -34,7 +34,7 @@ export const ModifySettingOption = hooks((props: ModifySettingOptionProps) => {
 			Position={props.position}
 			Size={props.size}
 			BackgroundTransparency={1}
-			Image={assetIds.images.backgrounds.dark.SettingsOption}
+			Image={assetIds.images.ui.default.settings["setting background"]}
 		>
 			<textlabel
 				AnchorPoint={vec2Middle}

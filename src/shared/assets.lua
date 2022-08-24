@@ -2,73 +2,12 @@
 return {
 	images = {
 		Exit = "rbxassetid://10220935323",
-		backgrounds = {
-			dark = {
-				AutoHatchBG = "rbxassetid://9724451796",
-				EggPetDisplay = "rbxassetid://9724447208",
-				PetBackground = "rbxassetid://9724447393",
-				Settings = "rbxassetid://10220867439",
-				SettingsOption = "rbxassetid://10220867594",
-			},
-			light = {
-				AutoHatchBG = "rbxassetid://9724447550",
-				EggPetDisplay = "rbxassetid://9724447751",
-				PetBackground = "rbxassetid://9724447903",
-			},
-		},
 		buttons = {
-			LeftArrow = "rbxassetid://10227395307",
-			Off = "rbxassetid://10221118714",
-			On = "rbxassetid://10231063722",
-			RightArrow = "rbxassetid://10227395746",
-			dark = {
-				specialized = {
-					openEgg = {
-						OpenEgg = "rbxassetid://9724448089",
-						OpenEggSelected = "rbxassetid://9724448183",
-					},
-					settings = {
-						Settings = "rbxassetid://10185230092",
-						["Settings Selected"] = "rbxassetid://10185228992",
-					},
-				},
-				templates = {
-					rectangular = {
-						RectangularButton = "rbxassetid://9724448326",
-						RectangularButtonConfirmation = "rbxassetid://9724448476",
-						RectangularButtonWarning = "rbxassetid://9724448606",
-					},
-					square = {
-						SquareButton = "rbxassetid://9724448744",
-						SquareButtonConfirmation = "rbxassetid://9724448873",
-						SquareButtonWarning = "rbxassetid://9724449051",
-					},
-				},
-			},
-			icons = {
-				["Quests Icon"] = "rbxassetid://10509456956",
-				["Settings Icon"] = "rbxassetid://10509317134",
-			},
-			light = {
-				specialized = {
-					openEgg = {
-						OpenEgg = "rbxassetid://9724449208",
-						OpenEggSelected = "rbxassetid://9724449370",
-					},
-				},
-				templates = {
-					rectangular = {
-						RectangularButton = "rbxassetid://9724449577",
-						RectangularButtonConfirmation = "rbxassetid://9724449681",
-						RectangularButtonWarning = "rbxassetid://9724449836",
-					},
-					square = {
-						SquareButton = "rbxassetid://9724449946",
-						SquareButtonConfirmation = "rbxassetid://9724450043",
-						SquareButtonWarning = "rbxassetid://9724450192",
-					},
-				},
-			},
+			["back arrow"] = "rbxassetid://10705131644",
+			exit = "rbxassetid://10705132600",
+			["forward arrow"] = "rbxassetid://10705132723",
+			["green button"] = "rbxassetid://10705132961",
+			["red button"] = "rbxassetid://10705133176",
 		},
 		currencies = {
 			gold = "rbxassetid://9591269212",
@@ -76,6 +15,14 @@ return {
 		maps = {
 			["Ban Land"] = {
 				world = "rbxassetid://10509318265",
+			},
+		},
+		ui = {
+			default = {
+				settings = {
+					background = "rbxassetid://10705133477",
+					["setting background"] = "rbxassetid://10705133739",
+				},
 			},
 		},
 	},

@@ -1,10 +1,9 @@
 import Roact from "@rbxts/roact";
-import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
 import { getPetData } from "shared/util/getPetData";
 
-import { udim2BottomRight, udim2Middle, uiTheme, vec2Middle } from "../commonValues";
+import { udim2BottomRight, udim2Middle, vec2Middle } from "../commonValues";
 import { BaseImageLabel } from "./baseImageLabel";
 import { BaseTextLabel } from "./baseTextLabel";
 import { BaseUIStroke } from "./baseUIStroke";
@@ -38,7 +37,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 			LayoutOrder={props.petId}
 		>
 			<uiaspectratioconstraint AspectRatio={1} />
-			<BaseImageLabel Size={udim2BottomRight} Image={assetIds.images.buttons[uiTheme].templates.square.SquareButton}>
+			<BaseImageLabel Size={udim2BottomRight} Image={""}>
 				<PetViewport
 					native={{
 						AnchorPoint: vec2Middle,
