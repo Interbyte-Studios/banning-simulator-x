@@ -4,6 +4,7 @@ import assetIds from "shared/assets";
 
 import { font, vec2Middle } from "../commonValues";
 import { hooks } from "../hooks";
+import { useBindingMotor } from "../hooks/useBindingMotor";
 
 interface ExitButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
 	minimizedSize: number;
@@ -19,20 +20,11 @@ interface ExitButtonProps extends Partial<WritableInstanceProperties<ImageButton
  * @param props.maximizedSize The maximum size of the component.
  * @param props.onClose A function to close out of another ui component.
  */
-export const ExitButton = hooks((props: ExitButtonProps, { useEffect }) => {
-	const minizmizedSpring = new Flipper.Spring(props.minimizedSize, { frequency: 5 });
+export const ExitButton = hooks((props: ExitButtonProps, hooks) => {
+	const minimizedSpring = new Flipper.Spring(props.minimizedSize, { frequency: 5 });
 	const maximizedSpring = new Flipper.Spring(props.maximizedSize, { frequency: 5 });
 
-	const motor = new Flipper.SingleMotor(props.maximizedSize);
-	const [binding, setBinding] = Roact.createBinding(motor.getValue());
-
-	motor.onStep(setBinding);
-
-	useEffect(() => {
-		return (): void => {
-			motor.destroy();
-		};
-	}, []);
+	const { motor, binding } = useBindingMotor(hooks, props.maximizedSize);
 
 	return (
 		<imagebutton
@@ -56,7 +48,7 @@ export const ExitButton = hooks((props: ExitButtonProps, { useEffect }) => {
 				 *
 				 * @returns Nothing.
 				 */
-				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
+				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 
 				/**
 				 * Event that connects to the motors `setGoal` method.

@@ -4,6 +4,7 @@ import assetIds from "shared/assets";
 
 import { font, vec2Middle } from "../commonValues";
 import { hooks } from "../hooks";
+import { useBindingMotor } from "../hooks/useBindingMotor";
 
 interface EnabledButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
 	minimizedSize: { x: number; y: number };
@@ -26,17 +27,8 @@ const springProps = {
  * @param props.isEnabled The value of the boolean.
  * @param props.onPressed A function to change the value of the boolean.
  */
-export const EnabledButton = hooks((props: EnabledButtonProps, { useEffect }) => {
-	const motor = new Flipper.GroupMotor({ x: props.maximizedSize.x, y: props.maximizedSize.y });
-	const [binding, setBinding] = Roact.createBinding(motor.getValue());
-
-	motor.onStep(setBinding);
-
-	useEffect(() => {
-		return (): void => {
-			motor.destroy();
-		};
-	}, []);
+export const EnabledButton = hooks((props: EnabledButtonProps, hooks) => {
+	const { motor, binding } = useBindingMotor(hooks, { x: props.maximizedSize.x, y: props.maximizedSize.y });
 
 	return (
 		<imagebutton

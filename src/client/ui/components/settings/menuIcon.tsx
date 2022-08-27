@@ -2,6 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { udim2Middle, vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
+import { useBindingMotor } from "client/ui/hooks/useBindingMotor";
 import assetIds from "shared/assets";
 
 interface SettingsMenuButtonProps {
@@ -18,17 +19,8 @@ const displayedSpring = new Flipper.Spring(1, { frequency: 5 });
  * @param props.showMenu A function used to hide the settings menu ui.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const SettingsMenuButton = hooks((props: SettingsMenuButtonProps, { useEffect }) => {
-	const motor = new Flipper.SingleMotor(1);
-	const [binding, setBinding] = Roact.createBinding(motor.getValue());
-
-	motor.onStep(setBinding);
-
-	useEffect(() => {
-		return (): void => {
-			motor.destroy();
-		};
-	}, []);
+export const SettingsMenuButton = hooks((props: SettingsMenuButtonProps, hooks) => {
+	const { motor, binding } = useBindingMotor(hooks, 1);
 
 	return (
 		<imagebutton

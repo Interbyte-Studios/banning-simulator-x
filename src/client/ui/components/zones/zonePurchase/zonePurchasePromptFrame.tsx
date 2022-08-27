@@ -2,6 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { color3White, font, vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
+import { useBindingMotor } from "client/ui/hooks/useBindingMotor";
 import assetIds from "shared/assets";
 import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
@@ -27,17 +28,17 @@ const springProps = {
  * A zone prompt purchase interface.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const ZonePurchasePromptFrame = hooks((props: ZonePurchasePromptProps) => {
+export const ZonePurchasePromptFrame = hooks((props: ZonePurchasePromptProps, hooks) => {
+	const { motor: confirmButtonMotor, binding: confirmButtonBinding } = useBindingMotor(hooks, {
+		x: maximizedSize.x,
+		y: maximizedSize.y,
+	});
+	const { motor: cancelButtonMotor, binding: cancelButtonBinding } = useBindingMotor(hooks, {
+		x: maximizedSize.x,
+		y: maximizedSize.y,
+	});
+
 	const zoneData = getZoneData(props.worldName, props.zoneName);
-
-	const confirmButtonMotor = new Flipper.GroupMotor({ x: maximizedSize.x, y: maximizedSize.y });
-	const [confirmButtonBinding, setConfirmButtonBinding] = Roact.createBinding(confirmButtonMotor.getValue());
-
-	const cancelButtonMotor = new Flipper.GroupMotor({ x: maximizedSize.x, y: maximizedSize.y });
-	const [cancelButtonBinding, setCancelButtonBinding] = Roact.createBinding(confirmButtonMotor.getValue());
-
-	confirmButtonMotor.onStep(setConfirmButtonBinding);
-	cancelButtonMotor.onStep(setCancelButtonBinding);
 
 	return (
 		<frame
