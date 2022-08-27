@@ -33,7 +33,9 @@ export function useMotor<T extends MotorInitialValue>(hooks: CoreHooks, initialV
 	if (!isFirstUse.value) {
 		isFirstUse.value = true;
 		hooks.useEffect(() => {
-			motor.destroy();
+			return () => {
+				motor.destroy();
+			};
 		}, []);
 	}
 

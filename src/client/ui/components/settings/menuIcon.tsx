@@ -1,8 +1,8 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { udim2Middle, vec2Middle } from "client/ui/commonValues";
+import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { hooks } from "client/ui/hooks";
-import { useBindingMotor } from "client/ui/hooks/useBindingMotor";
 import assetIds from "shared/assets";
 
 interface SettingsMenuButtonProps {

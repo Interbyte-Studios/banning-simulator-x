@@ -1,8 +1,8 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { color3White, font, vec2Middle } from "client/ui/commonValues";
+import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { hooks } from "client/ui/hooks";
-import { useBindingMotor } from "client/ui/hooks/useBindingMotor";
 import assetIds from "shared/assets";
 import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";

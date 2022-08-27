@@ -1,8 +1,8 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { color3White, font, vec2Middle } from "client/ui/commonValues";
+import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { hooks } from "client/ui/hooks";
-import { useBindingMotor } from "client/ui/hooks/useBindingMotor";
 
 const maximizedSize = { x: 0.238, y: 0.147 };
 const minimizedSize = { x: 0.22, y: 0.13 };

@@ -3,8 +3,8 @@ import Roact from "@rbxts/roact";
 import assetIds from "shared/assets";
 
 import { font, vec2Middle } from "../commonValues";
+import { useBindingMotor } from "../customHooks/useBindingMotor";
 import { hooks } from "../hooks";
-import { useBindingMotor } from "../hooks/useBindingMotor";
 
 interface EnabledButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
 	minimizedSize: { x: number; y: number };
