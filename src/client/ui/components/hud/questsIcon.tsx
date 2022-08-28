@@ -38,7 +38,7 @@ export const QuestsIcon = hooks((props: QuestsIconProps, { useEffect }) => {
 				return UDim2.fromScale(0.2, value);
 			})}
 			BackgroundTransparency={1}
-			Image={assetIds.images.buttons.icons["Quests Icon"]}
+			Image={'assetIds.images.buttons.icons["Quests Icon"]'}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
 				Activated: (): void => props.showMenu(),

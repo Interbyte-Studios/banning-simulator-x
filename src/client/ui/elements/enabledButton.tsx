@@ -46,7 +46,9 @@ export const EnabledButton = hooks((props: EnabledButtonProps, { useEffect }) =>
 				return UDim2.fromScale(value.x, value.y);
 			})}
 			BackgroundTransparency={1}
-			Image={props.isEnabled ? assetIds.images.buttons["green button"] : assetIds.images.buttons["red button"]}
+			Image={
+				'props.isEnabled ? assetIds.images.buttons["green toggle button"] : assetIds.images.buttons["red toggle button"]'
+			}
 			Event={{
 				/**
 				 * Event that connects to the `onClicked` function prop.

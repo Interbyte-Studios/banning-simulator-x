@@ -42,7 +42,7 @@ export const ExitButton = hooks((props: ExitButtonProps, { useEffect }) => {
 				return UDim2.fromScale(value, value);
 			})}
 			BackgroundTransparency={1}
-			Image={assetIds.images.Exit}
+			Image={"assetIds.images.buttons.exit"}
 			Event={{
 				/**
 				 * Event that connects to the `onClosed` function prop.

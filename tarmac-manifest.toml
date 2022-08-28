@@ -24,13 +24,28 @@ id = 10705132723
 packable = false
 
 [inputs."images/buttons/green button.png"]
-hash = "630ee4725d7f8ee80fd34fa502a504e84240804ef156bba6e4311998a890e435"
-id = 10705132961
+hash = "60d4707ca43936c31e179c0f93d1eb1b7d9c492464ca2eae97cb9808be17c269"
+id = 10705288438
 packable = false
 
-[inputs."images/buttons/red button.png"]
+[inputs."images/buttons/green toggle button.png"]
+hash = "c590bd53d5eb1e4ab61535acfe79f0db569590da69cf3f5a7f24f2a674179289"
+id = 10705304739
+packable = false
+
+[inputs."images/buttons/purple button.png"]
+hash = "1a9199e3033ba1dc11b3e019a354ee8be992d4df7421092ccf7f30fe56029d85"
+id = 10705288573
+packable = false
+
+[inputs."images/buttons/red toggle button.png"]
 hash = "1d509295e1715921ab77b3dab8cd58dea28371b14c524530b8d841840b56ebf4"
-id = 10705133176
+id = 10705304953
+packable = false
+
+[inputs."images/buttons/teal button.png"]
+hash = "0c9dcc4ad1148352abdec79609dfde379dc1d044bc01c9ceebe160f60453a603"
+id = 10705288749
 packable = false
 
 [inputs."images/currencies/gold.png"]
@@ -41,6 +56,16 @@ packable = false
 [inputs."images/maps/Ban Land/world.jpg"]
 hash = "ca1e87c9948257fed7ac980ef92c8398b411f49a7e6d0b7b598646e8fd832b3a"
 id = 10509318265
+packable = false
+
+[inputs."images/ui/default/egg/background.png"]
+hash = "a7a6769791c6d2bbbeced0ae62342f1525a5288bac5a677ba6ff37d28bc08a3c"
+id = 10705288882
+packable = false
+
+[inputs."images/ui/default/egg/pet frame.png"]
+hash = "76fe48a80428880c2d847a8488e230aa23a896107b501ef57e03a3b29dc2bb55"
+id = 10705289053
 packable = false
 
 [inputs."images/ui/default/quests/entry background.png"]

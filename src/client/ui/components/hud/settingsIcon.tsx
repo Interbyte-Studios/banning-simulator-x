@@ -38,7 +38,7 @@ export const SettingsIcon = hooks((props: SettingsIconProps, { useEffect }) => {
 				return UDim2.fromScale(0.2, value);
 			})}
 			BackgroundTransparency={1}
-			Image={assetIds.images.buttons.icons["Settings Icon"]}
+			Image={'assetIds.images.buttons.icons["Settings Icon"]'}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
 				Activated: (): void => props.showMenu(),

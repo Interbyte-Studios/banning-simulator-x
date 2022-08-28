@@ -7,8 +7,11 @@ return {
 			["down button"] = "rbxassetid://10705221247",
 			exit = "rbxassetid://10705132600",
 			["forward arrow"] = "rbxassetid://10705132723",
-			["green button"] = "rbxassetid://10705132961",
-			["red button"] = "rbxassetid://10705133176",
+			["green button"] = "rbxassetid://10705288438",
+			["green toggle button"] = "rbxassetid://10705304739",
+			["purple button"] = "rbxassetid://10705288573",
+			["red toggle button"] = "rbxassetid://10705304953",
+			["teal button"] = "rbxassetid://10705288749",
 		},
 		currencies = {
 			gold = "rbxassetid://9591269212",
@@ -20,6 +23,10 @@ return {
 		},
 		ui = {
 			default = {
+				egg = {
+					background = "rbxassetid://10705288882",
+					["pet frame"] = "rbxassetid://10705289053",
+				},
 				quests = {
 					["entry background"] = "rbxassetid://10705221363",
 					["quests background"] = "rbxassetid://10705221523",
