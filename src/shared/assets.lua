@@ -22,21 +22,25 @@ return {
 			},
 		},
 		ui = {
-			default = {
-				egg = {
-					background = "rbxassetid://10705288882",
-					["pet frame"] = "rbxassetid://10705289053",
-				},
-				quests = {
-					["entry background"] = "rbxassetid://10705221363",
-					["quests background"] = "rbxassetid://10705221523",
-					["world background"] = "rbxassetid://10705221628",
-					["world entry background"] = "rbxassetid://10705221743",
-				},
-				settings = {
-					background = "rbxassetid://10705133477",
-					["setting background"] = "rbxassetid://10705133739",
-				},
+			egg = {
+				background = "rbxassetid://10832814885",
+				["pet frame"] = "rbxassetid://10832815008",
+			},
+			hud = {
+				["interface button"] = "rbxassetid://10832815096",
+				["rank fill"] = "rbxassetid://10832815201",
+				shop = "rbxassetid://10832809320",
+				["viewer background"] = "rbxassetid://10832809474",
+			},
+			quests = {
+				["entry background"] = "rbxassetid://10832809634",
+				["quests background"] = "rbxassetid://10832809841",
+				["world background"] = "rbxassetid://10832810080",
+				["world entry background"] = "rbxassetid://10832810250",
+			},
+			settings = {
+				background = "rbxassetid://10832810485",
+				["setting background"] = "rbxassetid://10832810658",
 			},
 		},
 	},

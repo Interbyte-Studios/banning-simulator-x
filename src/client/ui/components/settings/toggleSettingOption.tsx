@@ -30,7 +30,7 @@ export const ToggleSettingOption = hooks((props: ToggleSettingOptionProps) => {
 			Position={props.position}
 			Size={props.size}
 			BackgroundTransparency={1}
-			Image={assetIds.images.ui.default.settings["setting background"]}
+			Image={assetIds.images.ui.settings["setting background"]}
 		>
 			<textlabel
 				AnchorPoint={vec2Middle}

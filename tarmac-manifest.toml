@@ -58,42 +58,62 @@ hash = "ca1e87c9948257fed7ac980ef92c8398b411f49a7e6d0b7b598646e8fd832b3a"
 id = 10509318265
 packable = false
 
-[inputs."images/ui/default/egg/background.png"]
+[inputs."images/ui/egg/background.png"]
 hash = "a7a6769791c6d2bbbeced0ae62342f1525a5288bac5a677ba6ff37d28bc08a3c"
-id = 10705288882
+id = 10832814885
 packable = false
 
-[inputs."images/ui/default/egg/pet frame.png"]
+[inputs."images/ui/egg/pet frame.png"]
 hash = "76fe48a80428880c2d847a8488e230aa23a896107b501ef57e03a3b29dc2bb55"
-id = 10705289053
+id = 10832815008
 packable = false
 
-[inputs."images/ui/default/quests/entry background.png"]
+[inputs."images/ui/hud/interface button.png"]
+hash = "62c9f7e4f5e5fa0fa98c488c2866b287458e28b8994f0dd60fc88e7c9076129e"
+id = 10832815096
+packable = false
+
+[inputs."images/ui/hud/rank fill.png"]
+hash = "c7c5ffa5a5bcef1e8eb26eb21bb177db0b67762f755c752846f1d65de83b495c"
+id = 10832815201
+packable = false
+
+[inputs."images/ui/hud/shop.png"]
+hash = "15b89801b08c29dfb6d95382801444e7298693b373492175efc9550f0f5c7065"
+id = 10832809320
+packable = false
+
+[inputs."images/ui/hud/viewer background.png"]
+hash = "14ef5182d4586b96cf692024624ba232eacb2b80f744889df2f6b7b50d3049d7"
+id = 10832809474
+packable = false
+
+[inputs."images/ui/quests/entry background.png"]
 hash = "ddd4ef03eacfb8d19f73252017992e29551d978e7358917f14ea899f73d36283"
-id = 10705221363
+id = 10832809634
 packable = false
 
-[inputs."images/ui/default/quests/quests background.png"]
+[inputs."images/ui/quests/quests background.png"]
 hash = "be81f942b194c846b461ea4432c6f7d3de4f345d9aa080ba26a84f5be2109170"
-id = 10705221523
+id = 10832809841
 packable = false
 
-[inputs."images/ui/default/quests/world background.png"]
+[inputs."images/ui/quests/world background.png"]
 hash = "58a7d8af6c181853fc167f9fce377da6ef3b81132ea91e78e791438ae095cce0"
-id = 10705221628
+id = 10832810080
 packable = false
 
-[inputs."images/ui/default/quests/world entry background.png"]
+[inputs."images/ui/quests/world entry background.png"]
 hash = "93ce09d6f4dbb80a1c8c8d8d03e7faf7a5fe0f46a904a993836703e14bbe14b0"
-id = 10705221743
+id = 10832810250
 packable = false
 
-[inputs."images/ui/default/settings/background.png"]
+[inputs."images/ui/settings/background.png"]
 hash = "24b2d26d506332150dd522e0b004337910233501ef492bec4414d8480b14c6ec"
-id = 10705133477
+id = 10832810485
 packable = false
 
-[inputs."images/ui/default/settings/setting background.png"]
+[inputs."images/ui/settings/setting background.png"]
 hash = "df18ddecccb0bed5855584f33d755bbf0fbf7661d543195d253f4c57a8a23d8b"
-id = 10705133739
+id = 10832810658
 packable = false

@@ -62,7 +62,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 				Size={udim2BottomRight}
 				Position={udim2Middle}
 				BackgroundTransparency={1}
-				Image={assetIds.images.ui.default.settings.background}
+				Image={assetIds.images.ui.settings.background}
 				ScaleType={Enum.ScaleType.Fit}
 			>
 				<uiaspectratioconstraint AspectRatio={0.8} />
