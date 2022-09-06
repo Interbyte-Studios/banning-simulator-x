@@ -18,7 +18,8 @@ declare namespace assetIds {
 			"purple button": string;
 		};
 		currencies: {
-			gold: string;
+			coins: string;
+			gems: string;
 		};
 		ui: {
 			egg: {

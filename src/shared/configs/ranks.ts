@@ -17,7 +17,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.05,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("1k"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 2,
 		},
 	},
@@ -26,7 +26,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.075,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("2.5k"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 4,
 		},
 	},
@@ -35,7 +35,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.1,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("7.5k"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 8,
 		},
 	},
@@ -44,7 +44,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.125,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("12.5k"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 12,
 		},
 	},
@@ -53,7 +53,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.15,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("20k"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 16,
 		},
 	},
@@ -62,7 +62,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.175,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("30k"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 20,
 		},
 	},
@@ -71,7 +71,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.2,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("75k"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 25,
 		},
 	},
@@ -80,7 +80,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.25,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("150k"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 30,
 		},
 	},
@@ -89,7 +89,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.3,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("375k"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 35,
 		},
 	},
@@ -98,7 +98,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.35,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("750k"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 40,
 		},
 	},
@@ -107,7 +107,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.4,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("1.875M"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 45,
 		},
 	},
@@ -116,7 +116,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.45,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("3.75M"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 50,
 		},
 	},
@@ -125,7 +125,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.5,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("11.25M"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 55,
 		},
 	},
@@ -134,7 +134,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.6,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("22.5M"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 60,
 		},
 	},
@@ -143,7 +143,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.7,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("135M"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 70,
 		},
 	},
@@ -152,7 +152,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.8,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("750M"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 80,
 		},
 	},
@@ -161,7 +161,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 1.9,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("1.5B"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 90,
 		},
 	},
@@ -170,7 +170,7 @@ export const RANKS: Array<Rank> = [
 		currencyMultiplier: 2,
 		cost: {
 			amount: twoDpAbbreviator.stringToNumber("5B"),
-			currency: "gold",
+			currency: "coins",
 			requiredLevel: 100,
 		},
 	},

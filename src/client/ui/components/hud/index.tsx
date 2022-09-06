@@ -1,9 +1,8 @@
 import Roact from "@rbxts/roact";
-import { vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
 
-import { QuestsIcon } from "./questsIcon";
-import { SettingsIcon } from "./settingsIcon";
+import { CoinsCurrency } from "./coinsCurrency";
+import { GemsCurrency } from "./gemsCurrency";
 
 interface HudProps {
 	visible: boolean;
@@ -15,13 +14,14 @@ export const Hud = hooks((props: HudProps) => {
 	if (props.visible) {
 		return (
 			<frame
-				BackgroundTransparency={1}
-				AnchorPoint={vec2Middle}
-				Position={UDim2.fromScale(0.5, 0.925)}
-				Size={UDim2.fromScale(0.3, 0.08)}
+				BackgroundTransparency={0}
+				AnchorPoint={new Vector2(0, 0.5)}
+				Position={UDim2.fromScale(0.01, 0.5)}
+				Size={UDim2.fromScale(0.25, 0.5)}
 			>
-				<QuestsIcon showMenu={(): void => props.displayQuestsMenu()} />
-				<SettingsIcon showMenu={(): void => props.displaySettingsMenu()} />
+				<uiaspectratioconstraint AspectRatio={0.8} />
+				<CoinsCurrency />
+				<GemsCurrency />
 			</frame>
 		);
 	}

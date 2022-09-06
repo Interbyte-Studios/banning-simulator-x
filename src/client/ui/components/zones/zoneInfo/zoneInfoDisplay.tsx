@@ -132,7 +132,7 @@ export function ZoneInfoDisplay(props: ZoneInfoProps): Roact.Element {
 				>
 					<uistroke Color={Color3.fromRGB(0, 0, 0)} Thickness={3} />
 					<imagelabel
-						Image={assetIds.images.currencies[zoneData.cost?.currency ?? "gold"]}
+						Image={assetIds.images.currencies[zoneData.cost?.currency ?? "coins"]}
 						BackgroundTransparency={1}
 						ScaleType={Enum.ScaleType.Fit}
 						AnchorPoint={vec2Middle}

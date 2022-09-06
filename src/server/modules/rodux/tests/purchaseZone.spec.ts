@@ -20,7 +20,7 @@ export = (): void => {
 			// give us enough currency to purchase zone
 			const { store, dispatchedActions, cleanup } = createDummyStore(player, {
 				currencies: {
-					gold: zoneData.cost?.amount,
+					coins: zoneData.cost?.amount,
 				},
 			});
 
@@ -81,7 +81,7 @@ export = (): void => {
 
 			const player = useMockPlayer();
 
-			const { store, dispatchedActions, cleanup } = createDummyStore(player, { currencies: { gold: 500 } });
+			const { store, dispatchedActions, cleanup } = createDummyStore(player, { currencies: { coins: 500 } });
 			purchaseZone(store, worldName, zoneName);
 			assertDeepEqual(dispatchedActions, []);
 
