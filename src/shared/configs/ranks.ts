@@ -1,177 +1,235 @@
-import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
-
 import { Currency } from "./currencies";
 
 interface Rank {
-	currencyMultiplier: number;
-	cost: {
-		amount: number;
-		currency: Currency;
-		requiredLevel: number;
+	amount: number;
+	currency: Currency;
+	gradient: {
+		beginningColor: Color3;
+		endingColor: Color3;
 	};
+	name: string;
+	requiredExperience: number;
 }
 
 export const RANKS: Array<Rank> = [
 	{
 		// rank 1
-		currencyMultiplier: 1.05,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("1k"),
-			currency: "coins",
-			requiredLevel: 2,
+		amount: 1_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(92, 51, 32),
+			endingColor: Color3.fromRGB(161, 108, 78),
 		},
+		name: "Bronze I",
+		requiredExperience: 0,
 	},
 	{
 		// rank 2
-		currencyMultiplier: 1.075,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("2.5k"),
-			currency: "coins",
-			requiredLevel: 4,
+		amount: 2_500,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(92, 51, 32),
+			endingColor: Color3.fromRGB(161, 108, 78),
 		},
+		name: "Bronze II",
+		requiredExperience: 350,
 	},
 	{
 		// rank 3
-		currencyMultiplier: 1.1,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("7.5k"),
-			currency: "coins",
-			requiredLevel: 8,
+		amount: 7_500,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(92, 51, 32),
+			endingColor: Color3.fromRGB(161, 108, 78),
 		},
+		name: "Bronze III",
+		requiredExperience: 750,
 	},
 	{
 		// rank 4
-		currencyMultiplier: 1.125,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("12.5k"),
-			currency: "coins",
-			requiredLevel: 12,
+		amount: 12_500,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(92, 51, 32),
+			endingColor: Color3.fromRGB(161, 108, 78),
 		},
+		name: "Bronze IV",
+		requiredExperience: 1_100,
 	},
 	{
 		// rank 5
-		currencyMultiplier: 1.15,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("20k"),
-			currency: "coins",
-			requiredLevel: 16,
+		amount: 20_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(86, 100, 107),
+			endingColor: Color3.fromRGB(151, 161, 167),
 		},
+		name: "Silver I",
+		requiredExperience: 1_800,
 	},
 	{
 		// rank 6
-		currencyMultiplier: 1.175,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("30k"),
-			currency: "coins",
-			requiredLevel: 20,
+		amount: 30_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(86, 100, 107),
+			endingColor: Color3.fromRGB(151, 161, 167),
 		},
+		name: "Silver II",
+		requiredExperience: 2_250,
 	},
 	{
 		// rank 7
-		currencyMultiplier: 1.2,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("75k"),
-			currency: "coins",
-			requiredLevel: 25,
+		amount: 75_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(86, 100, 107),
+			endingColor: Color3.fromRGB(151, 161, 167),
 		},
+		name: "Silver III",
+		requiredExperience: 2_900,
 	},
 	{
 		// rank 8
-		currencyMultiplier: 1.25,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("150k"),
-			currency: "coins",
-			requiredLevel: 30,
+		amount: 150_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(86, 100, 107),
+			endingColor: Color3.fromRGB(151, 161, 167),
 		},
+		name: "Silver IV",
+		requiredExperience: 3_750,
 	},
 	{
 		// rank 9
-		currencyMultiplier: 1.3,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("375k"),
-			currency: "coins",
-			requiredLevel: 35,
+		amount: 375_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(124, 70, 21),
+			endingColor: Color3.fromRGB(179, 134, 61),
 		},
+		name: "Gold I",
+		requiredExperience: 7_000,
 	},
 	{
 		// rank 10
-		currencyMultiplier: 1.35,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("750k"),
-			currency: "coins",
-			requiredLevel: 40,
+		amount: 750_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(124, 70, 21),
+			endingColor: Color3.fromRGB(179, 134, 61),
 		},
+		name: "Gold II",
+		requiredExperience: 9_000,
 	},
 	{
 		// rank 11
-		currencyMultiplier: 1.4,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("1.875M"),
-			currency: "coins",
-			requiredLevel: 45,
+		amount: 1_875_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(124, 70, 21),
+			endingColor: Color3.fromRGB(179, 134, 61),
 		},
+		name: "Gold III",
+		requiredExperience: 21_000,
 	},
 	{
 		// rank 12
-		currencyMultiplier: 1.45,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("3.75M"),
-			currency: "coins",
-			requiredLevel: 50,
+		amount: 3_750_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(124, 70, 21),
+			endingColor: Color3.fromRGB(179, 134, 61),
 		},
+		name: "Gold IV",
+		requiredExperience: 37_500,
 	},
 	{
 		// rank 13
-		currencyMultiplier: 1.5,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("11.25M"),
-			currency: "coins",
-			requiredLevel: 55,
+		amount: 11_250_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(52, 94, 205),
+			endingColor: Color3.fromRGB(131, 161, 232),
 		},
+		name: "Diamond I",
+		requiredExperience: 125_000,
 	},
 	{
 		// rank 14
-		currencyMultiplier: 1.6,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("22.5M"),
-			currency: "coins",
-			requiredLevel: 60,
+		amount: 22_500_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(52, 94, 205),
+			endingColor: Color3.fromRGB(131, 161, 232),
 		},
+		name: "Diamond II",
+		requiredExperience: 262_500,
 	},
 	{
 		// rank 15
-		currencyMultiplier: 1.7,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("135M"),
-			currency: "coins",
-			requiredLevel: 70,
+		amount: 135_000_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(52, 94, 205),
+			endingColor: Color3.fromRGB(131, 161, 232),
 		},
+		name: "Diamond III",
+		requiredExperience: 1_237_500,
 	},
 	{
 		// rank 16
-		currencyMultiplier: 1.8,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("750M"),
-			currency: "coins",
-			requiredLevel: 80,
+		amount: 750_000_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(52, 94, 205),
+			endingColor: Color3.fromRGB(131, 161, 232),
 		},
+		name: "Diamond IV",
+		requiredExperience: 7_350_000,
 	},
 	{
 		// rank 17
-		currencyMultiplier: 1.9,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("1.5B"),
-			currency: "coins",
-			requiredLevel: 90,
+		amount: 1_500_000_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(116, 24, 25),
+			endingColor: Color3.fromRGB(175, 65, 65),
 		},
+		name: "Ruby I",
+		requiredExperience: 37_500_000,
 	},
 	{
 		// rank 18
-		currencyMultiplier: 2,
-		cost: {
-			amount: twoDpAbbreviator.stringToNumber("5B"),
-			currency: "coins",
-			requiredLevel: 100,
+		amount: 5_000_000_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(116, 24, 25),
+			endingColor: Color3.fromRGB(175, 65, 65),
 		},
+		name: "Ruby II",
+		requiredExperience: 185_625_000,
+	},
+	{
+		// rank 19
+		amount: 10_000_000_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(116, 24, 25),
+			endingColor: Color3.fromRGB(175, 65, 65),
+		},
+		name: "Ruby III",
+		requiredExperience: 965_250_000,
+	},
+	{
+		// rank 20
+		amount: 25_000_000_000,
+		currency: "coins",
+		gradient: {
+			beginningColor: Color3.fromRGB(116, 24, 25),
+			endingColor: Color3.fromRGB(175, 65, 65),
+		},
+		name: "Ruby IV",
+		requiredExperience: 6_000_000_000,
 	},
 ];

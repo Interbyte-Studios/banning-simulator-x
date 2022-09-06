@@ -12,7 +12,7 @@ export const HUDHeader = hooks(() => {
 			BackgroundTransparency={1}
 			AnchorPoint={new Vector2(0, 0.5)}
 			Size={UDim2.fromScale(0.9, 0.15)}
-			Position={UDim2.fromScale(0.03, 0.25)}
+			Position={UDim2.fromScale(0.03, 0.15)}
 		>
 			<uilistlayout
 				Padding={new UDim(0.05, 0)}

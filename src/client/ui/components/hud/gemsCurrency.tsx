@@ -33,7 +33,7 @@ export const GemsCurrency = RoactRodux.connect(mapStateToProps)(
 				Image={assetIds.images.ui.hud["viewer background"]}
 				ScaleType={Enum.ScaleType.Fit}
 				Size={UDim2.fromScale(0.95, 0.155)}
-				Position={UDim2.fromScale(0.03, 0.6)}
+				Position={UDim2.fromScale(0.03, 0.675)}
 			>
 				<uiaspectratioconstraint AspectRatio={4.8} />
 				<OpenShop minimizedSize={0.8} maximizedSize={0.9} position={UDim2.fromScale(0.95, 0.5)} />
