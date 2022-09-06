@@ -73,6 +73,41 @@ hash = "76fe48a80428880c2d847a8488e230aa23a896107b501ef57e03a3b29dc2bb55"
 id = 10832815008
 packable = false
 
+[inputs."images/ui/hud/icons/codes.png"]
+hash = "152a0ab211c35a9592bec4482bd835f5b1d6c14fc2043a64cb76222a2b8c206f"
+id = 10835150571
+packable = false
+
+[inputs."images/ui/hud/icons/items.png"]
+hash = "492a58eae26e2dc9fa78d869bc81bbaa410db8f4de6039b28dd5490a3876075b"
+id = 10835150655
+packable = false
+
+[inputs."images/ui/hud/icons/options.png"]
+hash = "a08a8dd115b1733475e66ad6fe7af9398dc26ab392d2a2cd5f0e2e6898b939e4"
+id = 10835150718
+packable = false
+
+[inputs."images/ui/hud/icons/rewards.png"]
+hash = "f347874a10d67efee20cedf73627bba87c2bc4f6926a0d57eed392785fe32bff"
+id = 10835150803
+packable = false
+
+[inputs."images/ui/hud/icons/teleport.png"]
+hash = "7b45e0bdd637777ea205d7c464bb1bb1d067f2acc06cbab24d9c5816406b5de5"
+id = 10835150845
+packable = false
+
+[inputs."images/ui/hud/icons/trading.png"]
+hash = "2f9d2da07b15b7e80e86c1e57929fb2e420f28b2f9582c5663a39e611bccc428"
+id = 10835150926
+packable = false
+
+[inputs."images/ui/hud/icons/wheel.png"]
+hash = "10d30a9eee1661a1fe49bc1c77c2255118b11b8cee068dcdbc052a686c144757"
+id = 10835151009
+packable = false
+
 [inputs."images/ui/hud/interface button.png"]
 hash = "62c9f7e4f5e5fa0fa98c488c2866b287458e28b8994f0dd60fc88e7c9076129e"
 id = 10832815096

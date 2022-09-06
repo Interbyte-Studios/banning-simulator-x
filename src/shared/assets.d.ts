@@ -18,8 +18,8 @@ declare namespace assetIds {
 			"purple button": string;
 		};
 		currencies: {
-			coins: string;
 			gems: string;
+			coins: string;
 		};
 		ui: {
 			egg: {
@@ -30,6 +30,15 @@ declare namespace assetIds {
 				"interface button": string;
 				shop: string;
 				"viewer background": string;
+				icons: {
+					items: string;
+					options: string;
+					codes: string;
+					wheel: string;
+					rewards: string;
+					teleport: string;
+					trading: string;
+				};
 				"rank fill": string;
 			};
 			quests: {

@@ -28,6 +28,15 @@ return {
 				["pet frame"] = "rbxassetid://10832815008",
 			},
 			hud = {
+				icons = {
+					codes = "rbxassetid://10835150571",
+					items = "rbxassetid://10835150655",
+					options = "rbxassetid://10835150718",
+					rewards = "rbxassetid://10835150803",
+					teleport = "rbxassetid://10835150845",
+					trading = "rbxassetid://10835150926",
+					wheel = "rbxassetid://10835151009",
+				},
 				["interface button"] = "rbxassetid://10832815096",
 				["rank fill"] = "rbxassetid://10832815201",
 				shop = "rbxassetid://10832809320",

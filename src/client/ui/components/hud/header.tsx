@@ -1,0 +1,29 @@
+import Roact from "@rbxts/roact";
+import { hooks } from "client/ui/hooks";
+
+import { CodesIcon } from "./codesIcon";
+import { ItemsIcon } from "./itemsIcon";
+import { OptionsIcon } from "./optionsIcon";
+import { RewardsIcon } from "./rewardsIcon";
+
+export const HUDHeader = hooks(() => {
+	return (
+		<frame
+			BackgroundTransparency={1}
+			AnchorPoint={new Vector2(0, 0.5)}
+			Size={UDim2.fromScale(0.9, 0.15)}
+			Position={UDim2.fromScale(0.03, 0.25)}
+		>
+			<uilistlayout
+				Padding={new UDim(0.05, 0)}
+				FillDirection={Enum.FillDirection.Horizontal}
+				HorizontalAlignment={Enum.HorizontalAlignment.Center}
+				VerticalAlignment={Enum.VerticalAlignment.Center}
+			/>
+			<OptionsIcon />
+			<CodesIcon />
+			<ItemsIcon />
+			<RewardsIcon />
+		</frame>
+	);
+});
