@@ -32,7 +32,8 @@ function mapStateToProps(state: StoreState): RankMappedProps {
 const RanksFill = hooks((props: { progress: 1 | 2 | 3 | 4 | 5 }) => {
 	const elements: Array<Roact.Element> = [];
 
-	for (let i = 1; i <= props.progress; i++) {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	for (const _ of $range(1, props.progress)) {
 		elements.push(
 			<imagelabel
 				BackgroundTransparency={1}
