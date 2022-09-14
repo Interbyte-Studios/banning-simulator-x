@@ -4,6 +4,8 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService } from "@rbxts/services";
 import { tryPurchaseEgg } from "client/modules/eggs/purchaseEgg";
+import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { useMotor } from "client/ui/customHooks/useMotor";
 import { BaseImageLabel } from "client/ui/elements/baseImageLabel";
 import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
@@ -76,25 +78,11 @@ const activeSpring = new Flipper.Spring(1, { frequency: 5 });
  * @returns A roact element.
  */
 export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
-	hooks((props: EggHudProps, { useEffect, useContext }) => {
-		// motor
-		const motor = new Flipper.GroupMotor({
-			X: 0,
-			Y: 0,
-		});
+	hooks((props: EggHudProps, hooks) => {
+		const { useEffect, useContext } = hooks;
 
+		const { motor, binding } = useBindingMotor(hooks, { X: 0, Y: 0 });
 		const { toggleAuto } = useContext(remoteContext);
-
-		// bindings
-		const [binding, setBinding] = Roact.createBinding(motor.getValue());
-
-		// bind motor to update on step && cleanup
-		motor.onStep(setBinding);
-		useEffect(() => {
-			return (): void => {
-				motor.destroy();
-			};
-		}, []);
 
 		useEffect(() => {
 			// todo: not use Players.LocalPlayer!

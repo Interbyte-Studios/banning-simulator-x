@@ -3,6 +3,7 @@ import Roact from "@rbxts/roact";
 import assetIds from "shared/assets";
 
 import { vec2Middle } from "../../commonValues";
+import { useBindingMotor } from "../../customHooks/useBindingMotor";
 import { hooks } from "../../hooks";
 
 interface IncreaseButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
@@ -19,20 +20,11 @@ interface IncreaseButtonProps extends Partial<WritableInstanceProperties<ImageBu
  * @param props.maximizedSize The maximum size of the component.
  * @param props.onPressed A function used to increase the value.
  */
-export const IncreaseButton = hooks((props: IncreaseButtonProps, { useEffect }) => {
-	const minizmizedSpring = new Flipper.Spring(props.minimizedSize, { frequency: 5 });
+export const IncreaseButton = hooks((props: IncreaseButtonProps, hooks) => {
+	const minimizedSpring = new Flipper.Spring(props.minimizedSize, { frequency: 5 });
 	const maximizedSpring = new Flipper.Spring(props.maximizedSize, { frequency: 5 });
 
-	const motor = new Flipper.SingleMotor(props.maximizedSize);
-	const [binding, setBinding] = Roact.createBinding(motor.getValue());
-
-	motor.onStep(setBinding);
-
-	useEffect(() => {
-		return (): void => {
-			motor.destroy();
-		};
-	}, []);
+	const { motor, binding } = useBindingMotor(hooks, props.maximizedSize);
 
 	return (
 		<imagebutton
@@ -57,7 +49,7 @@ export const IncreaseButton = hooks((props: IncreaseButtonProps, { useEffect }) 
 				 *
 				 * @returns Nothing.
 				 */
-				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
+				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 
 				/**
 				 * Event that connects to the motors `setGoal` method.
