@@ -2,8 +2,8 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import assetIds from "shared/assets";
 
-import { font, vec2Middle } from "../commonValues";
-import { hooks } from "../hooks";
+import { font, vec2Middle } from "../../commonValues";
+import { hooks } from "../../hooks";
 
 interface EnabledButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
 	minimizedSize: { x: number; y: number };

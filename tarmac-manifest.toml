@@ -253,9 +253,29 @@ hash = "93ce09d6f4dbb80a1c8c8d8d03e7faf7a5fe0f46a904a993836703e14bbe14b0"
 id = 10832810250
 packable = false
 
+[inputs."images/ui/settings/back arrow.png"]
+hash = "efe1a991856aadd20e9f69c1bc56a08404f9dc559568578d4313ea23c163859a"
+id = 10908190941
+packable = false
+
 [inputs."images/ui/settings/background.png"]
-hash = "24b2d26d506332150dd522e0b004337910233501ef492bec4414d8480b14c6ec"
+hash = "d28ab6dd74dfdb73c526df0ce4e0ae8d0dea86ad6689fd8b069cd1c4fb8d01a9"
 id = 10832810485
+packable = false
+
+[inputs."images/ui/settings/forward arrow.png"]
+hash = "2783141502a47a8f3a3dee1f8ccbf2524a7c3b7748af1c0981144dd134be674e"
+id = 10908191030
+packable = false
+
+[inputs."images/ui/settings/green button.png"]
+hash = "f021896403cad985c2acbebef80f50bd198a4d1e8fe6bc97fe7051e24ad22420"
+id = 10908191083
+packable = false
+
+[inputs."images/ui/settings/red button.png"]
+hash = "7ad6019868cba8cb09903f6cd1f668aa8b2015c3eafce467903285f1cdef5081"
+id = 10908188874
 packable = false
 
 [inputs."images/ui/settings/setting background.png"]

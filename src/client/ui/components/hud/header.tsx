@@ -6,7 +6,11 @@ import { ItemsIcon } from "./itemsIcon";
 import { OptionsIcon } from "./optionsIcon";
 import { RewardsIcon } from "./rewardsIcon";
 
-export const HUDHeader = hooks(() => {
+interface HUDHeaderProps {
+	displaySettingsMenu: () => void;
+}
+
+export const HUDHeader = hooks((props: HUDHeaderProps) => {
 	return (
 		<frame
 			BackgroundTransparency={1}
@@ -20,7 +24,7 @@ export const HUDHeader = hooks(() => {
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>
-			<OptionsIcon />
+			<OptionsIcon displaySettingsMenu={props.displaySettingsMenu} />
 			<CodesIcon />
 			<ItemsIcon />
 			<RewardsIcon />

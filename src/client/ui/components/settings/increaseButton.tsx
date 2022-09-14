@@ -2,8 +2,8 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import assetIds from "shared/assets";
 
-import { vec2Middle } from "../commonValues";
-import { hooks } from "../hooks";
+import { vec2Middle } from "../../commonValues";
+import { hooks } from "../../hooks";
 
 interface IncreaseButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
 	onPressed: () => void;

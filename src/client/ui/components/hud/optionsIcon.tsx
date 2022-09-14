@@ -7,8 +7,12 @@ import assetIds from "shared/assets";
 const minimizedSize = 0.8;
 const maximizedSize = 0.9;
 
+interface OptionsIconProps {
+	displaySettingsMenu: () => void;
+}
+
 /* eslint-disable jsdoc/require-jsdoc */
-export const OptionsIcon = hooks((_, { useEffect }) => {
+export const OptionsIcon = hooks((props: OptionsIconProps, { useEffect }) => {
 	const minizmizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
 	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 
@@ -33,6 +37,7 @@ export const OptionsIcon = hooks((_, { useEffect }) => {
 			Image={assetIds.images.ui.hud.icons.options}
 			LayoutOrder={1}
 			Event={{
+				Activated: (): void => props.displaySettingsMenu(),
 				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}

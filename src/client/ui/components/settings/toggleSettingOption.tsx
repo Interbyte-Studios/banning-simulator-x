@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { EnabledButton } from "client/ui/components/settings/enabledButton";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { EnabledButton } from "client/ui/elements/enabledButton";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 

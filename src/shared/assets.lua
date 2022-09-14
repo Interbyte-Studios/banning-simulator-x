@@ -72,7 +72,11 @@ return {
 				["world entry background"] = "rbxassetid://10832810250",
 			},
 			settings = {
+				["back arrow"] = "rbxassetid://10908190941",
 				background = "rbxassetid://10832810485",
+				["forward arrow"] = "rbxassetid://10908191030",
+				["green button"] = "rbxassetid://10908191083",
+				["red button"] = "rbxassetid://10908188874",
 				["setting background"] = "rbxassetid://10832810658",
 			},
 		},
