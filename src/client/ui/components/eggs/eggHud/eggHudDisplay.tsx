@@ -189,6 +189,18 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 											return;
 										}
 
+										const character = player.Character;
+										if (character === undefined) {
+											RunService.UnbindFromRenderStep("autoHatch");
+											return;
+										}
+
+										const humanoid = character.FindFirstChildOfClass("Humanoid");
+										if (humanoid === undefined) {
+											RunService.UnbindFromRenderStep("autoHatch");
+											return;
+										}
+
 										const canPurchase = tryPurchaseEgg(
 											props.currenciesState,
 											props.gamepassesState,
@@ -210,9 +222,14 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 										}
 									});
 
-									const connection = humanoid.GetPropertyChangedSignal("MoveDirection").Connect(() => {
+									const movementConnection = humanoid.GetPropertyChangedSignal("MoveDirection").Connect(() => {
 										RunService.UnbindFromRenderStep("autoHatch");
-										connection.Disconnect();
+										movementConnection.Disconnect();
+									});
+
+									const diedConnection = humanoid.Died.Connect(() => {
+										RunService.UnbindFromRenderStep("autoHatch");
+										diedConnection.Disconnect();
 									});
 								} else {
 									if (!AnimateEggs.canHatchEgg()) {

@@ -22,6 +22,12 @@ export const WORLDS = preserveWithConstraint<Record<string, World>>()({
 	"Ban Land": {
 		zones: BAN_LAND_ZONES,
 		reward: "coins",
+		music: {
+			Paradise: 1837879082,
+			Leisure: 1836057733,
+			Arcade: 1842976958,
+			SonicSunrise: 1838587765,
+		},
 	},
 });
 
