@@ -33,6 +33,11 @@ hash = "c590bd53d5eb1e4ab61535acfe79f0db569590da69cf3f5a7f24f2a674179289"
 id = 10705304739
 packable = false
 
+[inputs."images/buttons/long green button.png"]
+hash = "f16907d8a055b9ca3ab6fa10762f523652e05c0ffab560b57a5151aa0d2d245a"
+id = 10913578307
+packable = false
+
 [inputs."images/buttons/purple button.png"]
 hash = "1a9199e3033ba1dc11b3e019a354ee8be992d4df7421092ccf7f30fe56029d85"
 id = 10705288573

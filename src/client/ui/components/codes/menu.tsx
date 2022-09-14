@@ -5,10 +5,14 @@ import { ExitButton } from "client/ui/elements/exitButton";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
+import { DiscordHandle } from "./discordHandle";
+import { TwitterHandle } from "./twitterHandle";
+
 interface CodesMenuProps {
 	visible: boolean;
 	hideMenu: () => void;
 }
+
 
 export const CodesMenu = hooks((props: CodesMenuProps) => {
 	if (!props.visible) {
@@ -36,6 +40,32 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 			>
 				<BaseUIStroke Thickness={3} />
 			</textlabel>
+			<textlabel
+				AnchorPoint={vec2Middle}
+				Position={UDim2.fromScale(0.5, 0.275)}
+				Size={UDim2.fromScale(0.9, 0.25)}
+				BackgroundTransparency={1}
+				TextScaled={true}
+				TextColor3={Color3.fromRGB(255, 255, 255)}
+				Text={"Follow @TenrousR, @RealNotNert, and @InterbyteRBLX on Twitter for exclusive codes!"}
+				Font={font}
+			>
+				<BaseUIStroke Thickness={2} />
+			</textlabel>
+			<TwitterHandle />
+			<textlabel
+				AnchorPoint={vec2Middle}
+				Position={UDim2.fromScale(0.5, 0.7)}
+				Size={UDim2.fromScale(0.9, 0.25)}
+				BackgroundTransparency={1}
+				TextScaled={true}
+				TextColor3={Color3.fromRGB(255, 255, 255)}
+				Text={"Join our Discord server [https://discord.gg/interbyte] for a permanent 50% experience boost!"}
+				Font={font}
+			>
+				<BaseUIStroke Thickness={2} />
+			</textlabel>
+			<DiscordHandle />
 			<ExitButton
 				Position={UDim2.fromScale(0.95, 0.075)}
 				minimizedSize={0.1}

@@ -9,6 +9,7 @@ return {
 			["forward arrow"] = "rbxassetid://10705132723",
 			["green button"] = "rbxassetid://10705288438",
 			["green toggle button"] = "rbxassetid://10705304739",
+			["long green button"] = "rbxassetid://10913578307",
 			["purple button"] = "rbxassetid://10705288573",
 			["red toggle button"] = "rbxassetid://10705304953",
 			["teal button"] = "rbxassetid://10705288749",
