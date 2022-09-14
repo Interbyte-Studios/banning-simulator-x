@@ -27,7 +27,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Basic Blade": {
 		id: 2,
 		cost: {
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("1.1k"),
 		},
 		damage: 35,
@@ -37,7 +37,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 3,
 		cost: {
 			requiredRank: 2,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("2.2k"),
 		},
 		damage: 90,
@@ -47,7 +47,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 4,
 		cost: {
 			requiredRank: 2,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("3.4k"),
 		},
 		damage: 200,
@@ -57,7 +57,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 4,
 		cost: {
 			requiredRank: 4,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("8.3k"),
 		},
 		damage: 450,
@@ -67,7 +67,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 5,
 		cost: {
 			requiredRank: 4,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("10.2k"),
 		},
 		damage: 800,
@@ -77,7 +77,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 6,
 		cost: {
 			requiredRank: 6,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("20k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("2.2k"),
@@ -87,7 +87,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 7,
 		cost: {
 			requiredRank: 6,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("30.4k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("3.8k"),
@@ -97,7 +97,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 8,
 		cost: {
 			requiredRank: 8,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("81k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("9k"),
@@ -107,7 +107,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 9,
 		cost: {
 			requiredRank: 8,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("122k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("16.5k"),
@@ -117,7 +117,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 10,
 		cost: {
 			requiredRank: 10,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("305k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("55k"),
@@ -127,7 +127,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 11,
 		cost: {
 			requiredRank: 10,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("455k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("102k"),
@@ -137,7 +137,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 12,
 		cost: {
 			requiredRank: 12,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("920k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("155k"),
@@ -147,7 +147,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 13,
 		cost: {
 			requiredRank: 12,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("1.3M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("210k"),
@@ -157,7 +157,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 14,
 		cost: {
 			requiredRank: 12,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("2M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("475k"),
@@ -167,7 +167,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 15,
 		cost: {
 			requiredRank: 14,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("3.9M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("600k"),
@@ -177,7 +177,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 16,
 		cost: {
 			requiredRank: 14,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("4.7M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("1.1M"),
@@ -187,7 +187,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 17,
 		cost: {
 			requiredRank: 14,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("5.9M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("1.8M"),
@@ -197,7 +197,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 18,
 		cost: {
 			requiredRank: 16,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("11.6M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("2.4M"),
@@ -207,7 +207,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 19,
 		cost: {
 			requiredRank: 16,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("25M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("3M"),
@@ -217,7 +217,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 20,
 		cost: {
 			requiredRank: 16,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("37.5M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("3.7M"),
@@ -227,7 +227,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 21,
 		cost: {
 			requiredRank: 17,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("75M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("8M"),
@@ -237,7 +237,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 22,
 		cost: {
 			requiredRank: 17,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("150M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("14M"),
@@ -247,7 +247,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 23,
 		cost: {
 			requiredRank: 18,
-			currency: "gold",
+			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("350M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("20M"),

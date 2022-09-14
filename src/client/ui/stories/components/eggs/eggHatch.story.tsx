@@ -8,7 +8,7 @@ export = (target: GuiBase): (() => void) => {
 	const { cleanup } = createMockStory(
 		{
 			currencies: {
-				gold: 50000000,
+				coins: 50000000,
 			},
 		},
 		target,

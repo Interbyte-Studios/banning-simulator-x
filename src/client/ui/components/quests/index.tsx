@@ -13,7 +13,12 @@ import { QuestDisplayer } from "./questDisplayer";
 import { WorldSelector } from "./worldSelector";
 import { ZoneSelector } from "./zoneSelector";
 
-interface QuestProps {
+interface QuestProps extends QuestMappedProps {
+	visible: boolean;
+	hideMenu: () => void;
+}
+
+interface QuestMappedProps {
 	state: StoreState;
 }
 
@@ -21,7 +26,7 @@ interface QuestProps {
  * @param state The current state of the store.
  * @returns The mapped props.
  */
-function mapStateToProps(state: StoreState): QuestProps {
+function mapStateToProps(state: StoreState): QuestMappedProps {
 	return {
 		state,
 	};
@@ -31,43 +36,19 @@ function mapStateToProps(state: StoreState): QuestProps {
  * Renders the quests UI.
  */
 export const Quests = RoactRodux.connect(mapStateToProps)(
-	hooks((props: QuestProps, { useState, useEffect, useContext }) => {
-		const [isVisible, setVisible] = useState(false);
+	hooks((props: QuestProps, { useState, useContext }) => {
 		const [world, setWorld] = useState<WorldName | undefined>(undefined);
 		const [zone, setZone] = useState<ZoneNames | "none" | undefined>(undefined);
 		const { redeemQuest } = useContext(remoteContext);
 
-		useEffect(() => {
-			ContextActionService.BindAction(
-				"quests",
-				(_, state) => {
-					if (state !== Enum.UserInputState.Begin) {
-						return;
-					}
-
-					setVisible(!isVisible);
-				},
-				false,
-				Enum.KeyCode.Q,
-			);
-
-			return (): void => {
-				ContextActionService.UnbindAction("quests");
-			};
-		}, [isVisible]);
-
-		if (!isVisible) {
+		if (!props.visible) {
 			return <></>;
 		}
 
 		if (world === undefined) {
 			// display world selector
 			return (
-				<WorldSelector
-					worlds={Object.keys(WORLDS)}
-					onWorldSelected={setWorld}
-					onClose={(): void => setVisible(false)}
-				/>
+				<WorldSelector worlds={Object.keys(WORLDS)} onWorldSelected={setWorld} onClose={(): void => props.hideMenu()} />
 			);
 		}
 

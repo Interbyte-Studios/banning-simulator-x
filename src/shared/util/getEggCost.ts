@@ -20,7 +20,7 @@ export function getEggCost(egg: EggName, isVoid: boolean): EggCost {
 
 	const eggCost: EggCost = {
 		amount: 0,
-		currencyType: "gold",
+		currencyType: "coins",
 	};
 
 	if (zoneData.cost === undefined) {
@@ -30,7 +30,7 @@ export function getEggCost(egg: EggName, isVoid: boolean): EggCost {
 				const cost = 500;
 
 				eggCost.amount = isVoid ? cost * 5 : cost;
-				eggCost.currencyType = "gold";
+				eggCost.currencyType = "coins";
 				break;
 			}
 			default: {

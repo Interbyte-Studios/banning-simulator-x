@@ -2,76 +2,82 @@
 return {
 	images = {
 		Exit = "rbxassetid://10220935323",
-		backgrounds = {
-			dark = {
-				AutoHatchBG = "rbxassetid://9724451796",
-				EggPetDisplay = "rbxassetid://9724447208",
-				PetBackground = "rbxassetid://9724447393",
-				Settings = "rbxassetid://10220867439",
-				SettingsOption = "rbxassetid://10220867594",
-			},
-			light = {
-				AutoHatchBG = "rbxassetid://9724447550",
-				EggPetDisplay = "rbxassetid://9724447751",
-				PetBackground = "rbxassetid://9724447903",
-			},
-		},
 		buttons = {
-			LeftArrow = "rbxassetid://10227395307",
-			Off = "rbxassetid://10221118714",
-			On = "rbxassetid://10231063722",
-			RightArrow = "rbxassetid://10227395746",
-			dark = {
-				specialized = {
-					openEgg = {
-						OpenEgg = "rbxassetid://9724448089",
-						OpenEggSelected = "rbxassetid://9724448183",
-					},
-					settings = {
-						Settings = "rbxassetid://10185230092",
-						["Settings Selected"] = "rbxassetid://10185228992",
-					},
-				},
-				templates = {
-					rectangular = {
-						RectangularButton = "rbxassetid://9724448326",
-						RectangularButtonConfirmation = "rbxassetid://9724448476",
-						RectangularButtonWarning = "rbxassetid://9724448606",
-					},
-					square = {
-						SquareButton = "rbxassetid://9724448744",
-						SquareButtonConfirmation = "rbxassetid://9724448873",
-						SquareButtonWarning = "rbxassetid://9724449051",
-					},
-				},
-			},
-			light = {
-				specialized = {
-					openEgg = {
-						OpenEgg = "rbxassetid://9724449208",
-						OpenEggSelected = "rbxassetid://9724449370",
-					},
-				},
-				templates = {
-					rectangular = {
-						RectangularButton = "rbxassetid://9724449577",
-						RectangularButtonConfirmation = "rbxassetid://9724449681",
-						RectangularButtonWarning = "rbxassetid://9724449836",
-					},
-					square = {
-						SquareButton = "rbxassetid://9724449946",
-						SquareButtonConfirmation = "rbxassetid://9724450043",
-						SquareButtonWarning = "rbxassetid://9724450192",
-					},
-				},
-			},
+			["back arrow"] = "rbxassetid://10705131644",
+			["down button"] = "rbxassetid://10705221247",
+			exit = "rbxassetid://10705132600",
+			["forward arrow"] = "rbxassetid://10705132723",
+			["green button"] = "rbxassetid://10705288438",
+			["green toggle button"] = "rbxassetid://10705304739",
+			["purple button"] = "rbxassetid://10705288573",
+			["red toggle button"] = "rbxassetid://10705304953",
+			["teal button"] = "rbxassetid://10705288749",
 		},
 		currencies = {
-			gold = "rbxassetid://9591269212",
+			coins = "rbxassetid://9591269212",
+			gems = "rbxassetid://10833933846",
 		},
 		maps = {
 			["Ban Land"] = {
-				world = "rbxassetid://10266321808",
+				world = "rbxassetid://10509318265",
+			},
+		},
+		ranks = {
+			["1"] = "rbxassetid://10835560038",
+			["10"] = "rbxassetid://10835560092",
+			["11"] = "rbxassetid://10835560133",
+			["12"] = "rbxassetid://10835560188",
+			["13"] = "rbxassetid://10835560242",
+			["14"] = "rbxassetid://10835560302",
+			["15"] = "rbxassetid://10835560351",
+			["16"] = "rbxassetid://10835560407",
+			["17"] = "rbxassetid://10835560441",
+			["18"] = "rbxassetid://10835560493",
+			["19"] = "rbxassetid://10835560533",
+			["2"] = "rbxassetid://10835560578",
+			["20"] = "rbxassetid://10835560611",
+			["3"] = "rbxassetid://10835560676",
+			["4"] = "rbxassetid://10835560715",
+			["5"] = "rbxassetid://10835560770",
+			["6"] = "rbxassetid://10835560839",
+			["7"] = "rbxassetid://10835560907",
+			["8"] = "rbxassetid://10835560990",
+			["9"] = "rbxassetid://10835561050",
+		},
+		ui = {
+			codes = {
+				background = "rbxassetid://10908456122",
+				input = "rbxassetid://10908456187",
+			},
+			egg = {
+				background = "rbxassetid://10832814885",
+				["pet frame"] = "rbxassetid://10832815008",
+			},
+			hud = {
+				icons = {
+					codes = "rbxassetid://10835150571",
+					items = "rbxassetid://10835150655",
+					options = "rbxassetid://10835150718",
+					rewards = "rbxassetid://10835150803",
+					teleport = "rbxassetid://10835150845",
+					trading = "rbxassetid://10835150926",
+					wheel = "rbxassetid://10835151009",
+				},
+				["interface button"] = "rbxassetid://10832815096",
+				["rank fill"] = "rbxassetid://10832815201",
+				shop = "rbxassetid://10832809320",
+				upgrade = "rbxassetid://10836017074",
+				["viewer background"] = "rbxassetid://10832809474",
+			},
+			quests = {
+				["entry background"] = "rbxassetid://10832809634",
+				["quests background"] = "rbxassetid://10832809841",
+				["world background"] = "rbxassetid://10832810080",
+				["world entry background"] = "rbxassetid://10832810250",
+			},
+			settings = {
+				background = "rbxassetid://10832810485",
+				["setting background"] = "rbxassetid://10832810658",
 			},
 		},
 	},

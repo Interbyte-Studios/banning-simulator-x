@@ -19,7 +19,7 @@ export = (): void => {
 				id: weaponId,
 				cost: {
 					amount: 1000,
-					currency: "gold",
+					currency: "coins",
 				},
 			});
 
@@ -30,13 +30,13 @@ export = (): void => {
 			const cost = 100;
 
 			const state = Object.fromEntries(Object.values(currencies).map((currency) => [currency, cost] as const));
-			const newState = { ...state, ["gold"]: 0 };
+			const newState = { ...state, ["coins"]: 0 };
 
 			const action = purchaseWeapon({
 				id: 1,
 				cost: {
 					amount: cost,
-					currency: "gold",
+					currency: "coins",
 				},
 			});
 
@@ -49,7 +49,7 @@ export = (): void => {
 			const state: WeaponsState = new Map([[weaponId, { bans: 0 }]]);
 			const newState: WeaponsState = new Map([[weaponId, { bans: 1 }]]);
 
-			const action = killNpc(0, "gold", 1, weaponId);
+			const action = killNpc(0, "coins", 1, weaponId);
 			assertDeepEqual(weaponsReducer(state, action), newState);
 		});
 	});

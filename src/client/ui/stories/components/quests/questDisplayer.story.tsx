@@ -15,7 +15,7 @@ export = (target: GuiBase): (() => void) => {
 					specialReward: {
 						kind: "currency",
 						amount: 300,
-						currency: "gold",
+						currency: "coins",
 					},
 					hasPreviouslyClaimed: false,
 				},
@@ -50,7 +50,7 @@ export = (target: GuiBase): (() => void) => {
 					specialReward: {
 						kind: "currency",
 						amount: 200,
-						currency: "gold",
+						currency: "coins",
 					},
 					hasPreviouslyClaimed: true,
 				},
