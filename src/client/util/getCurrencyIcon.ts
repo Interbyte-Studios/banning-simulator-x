@@ -7,8 +7,11 @@ import { Currency } from "shared/configs/currencies";
  */
 export function getCurrencyIcon(currency: Currency): string {
 	switch (currency) {
-		case "gold": {
-			return assetIds.images.currencies.gold;
+		case "coins": {
+			return assetIds.images.currencies.coins;
+		}
+		case "gems": {
+			return assetIds.images.currencies.gems;
 		}
 	}
 }

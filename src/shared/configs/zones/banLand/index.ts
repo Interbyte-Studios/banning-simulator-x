@@ -16,7 +16,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		id: 2,
 		npcs: [BAN_LAND_NPCS.nyxun, BAN_LAND_NPCS.sonsofFun_YT],
 		cost: {
-			currency: "gold",
+			currency: "coins",
 			amount: 10_000,
 			requiredRank: 3,
 		},
@@ -27,7 +27,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		id: 3,
 		npcs: [BAN_LAND_NPCS.onett, BAN_LAND_NPCS.carbonMeister],
 		cost: {
-			currency: "gold",
+			currency: "coins",
 			amount: 40_000,
 			requiredRank: 6,
 		},
@@ -38,7 +38,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		id: 4,
 		npcs: [BAN_LAND_NPCS.rellhub, BAN_LAND_NPCS.sabrinaBrite],
 		cost: {
-			currency: "gold",
+			currency: "coins",
 			amount: 200_000,
 			requiredRank: 8,
 		},
@@ -49,7 +49,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		id: 5,
 		npcs: [BAN_LAND_NPCS.buildIntoGames, BAN_LAND_NPCS.djMonopoli],
 		cost: {
-			currency: "gold",
+			currency: "coins",
 			amount: 1_000_000,
 			requiredRank: 10,
 		},
@@ -60,7 +60,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		id: 6,
 		npcs: [BAN_LAND_NPCS.foreverDev, BAN_LAND_NPCS.merely],
 		cost: {
-			currency: "gold",
+			currency: "coins",
 			amount: 5_000_000,
 			requiredRank: 12,
 		},
@@ -71,7 +71,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		id: 7,
 		npcs: [BAN_LAND_NPCS.snickTrix, BAN_LAND_NPCS.alvin_Blox],
 		cost: {
-			currency: "gold",
+			currency: "coins",
 			amount: 30_000_000,
 			requiredRank: 14,
 		},
@@ -82,7 +82,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		id: 8,
 		npcs: [BAN_LAND_NPCS.mygame43, BAN_LAND_NPCS.deeterPlays],
 		cost: {
-			currency: "gold",
+			currency: "coins",
 			amount: 180_000_000,
 			requiredRank: 15,
 		},
@@ -93,7 +93,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		id: 9,
 		npcs: [BAN_LAND_NPCS.gamesReborn, BAN_LAND_NPCS.beeism],
 		cost: {
-			currency: "gold",
+			currency: "coins",
 			amount: 1_000_000_000,
 			requiredRank: 16,
 		},

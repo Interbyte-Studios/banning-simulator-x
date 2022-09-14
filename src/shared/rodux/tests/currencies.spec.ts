@@ -10,10 +10,10 @@ export = (): void => {
 		it("should increase currency for npc kill", () => {
 			const currencyAmount = 100;
 
-			const state: CurrenciesState = { gold: 10 };
-			const newState: CurrenciesState = { gold: state.gold + currencyAmount };
+			const state: CurrenciesState = { coins: 10, gems: 10 };
+			const newState: CurrenciesState = { coins: state.coins + currencyAmount, gems: 10 };
 
-			const action = killNpc(currencyAmount, "gold", 0, 1);
+			const action = killNpc(currencyAmount, "coins", 0, 1);
 
 			assertDeepEqual(currenciesReducer(state, action), newState);
 		});
@@ -24,7 +24,7 @@ export = (): void => {
 			const state: ExperienceState = 250;
 			const newState: ExperienceState = state + experienceAmount;
 
-			const action = killNpc(50, "gold", experienceAmount, 1);
+			const action = killNpc(50, "coins", experienceAmount, 1);
 			expect(experienceReducer(state, action)).to.equal(newState);
 		});
 	});

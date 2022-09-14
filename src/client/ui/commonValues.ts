@@ -12,8 +12,3 @@ export const color3White = Color3.fromRGB(255, 255, 255);
 export const strokeColor3 = Color3.fromRGB(20, 46, 47);
 
 export const font = Enum.Font.FredokaOne;
-
-export const uiTheme: "light" | "dark" = "dark";
-export const autoEnabled: "On" | "Off" = "On";
-
-export const userOwnsTripleEggs = true;

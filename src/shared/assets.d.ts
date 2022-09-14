@@ -1,76 +1,82 @@
 declare namespace assetIds {
 	const images: {
 		Exit: string;
-		backgrounds: {
-			light: {
-				AutoHatchBG: string;
-				PetBackground: string;
-				EggPetDisplay: string;
+		maps: {
+			"Ban Land": {
+				world: string;
 			};
-			dark: {
-				Settings: string;
-				AutoHatchBG: string;
-				SettingsOption: string;
-				PetBackground: string;
-				EggPetDisplay: string;
-			};
-		};
-		currencies: {
-			gold: string;
 		};
 		buttons: {
-			RightArrow: string;
-			LeftArrow: string;
-			Off: string;
-			On: string;
-			light: {
-				specialized: {
-					openEgg: {
-						OpenEggSelected: string;
-						OpenEgg: string;
-					};
-				};
-				templates: {
-					rectangular: {
-						RectangularButton: string;
-						RectangularButtonConfirmation: string;
-						RectangularButtonWarning: string;
-					};
-					square: {
-						SquareButton: string;
-						SquareButtonConfirmation: string;
-						SquareButtonWarning: string;
-					};
-				};
-			};
-			dark: {
-				specialized: {
-					settings: {
-						Settings: string;
-						"Settings Selected": string;
-					};
-					openEgg: {
-						OpenEggSelected: string;
-						OpenEgg: string;
-					};
-				};
-				templates: {
-					rectangular: {
-						RectangularButton: string;
-						RectangularButtonConfirmation: string;
-						RectangularButtonWarning: string;
-					};
-					square: {
-						SquareButton: string;
-						SquareButtonConfirmation: string;
-						SquareButtonWarning: string;
-					};
-				};
-			};
+			"back arrow": string;
+			"red toggle button": string;
+			"down button": string;
+			"green button": string;
+			"green toggle button": string;
+			"teal button": string;
+			exit: string;
+			"forward arrow": string;
+			"purple button": string;
 		};
-		maps: {
-			["Ban Land"]: {
-				world: string;
+		currencies: {
+			gems: string;
+			coins: string;
+		};
+		ranks: {
+			"1": string;
+			"10": string;
+			"11": string;
+			"12": string;
+			"13": string;
+			"14": string;
+			"15": string;
+			"16": string;
+			"17": string;
+			"18": string;
+			"19": string;
+			"2": string;
+			"20": string;
+			"3": string;
+			"4": string;
+			"5": string;
+			"6": string;
+			"7": string;
+			"8": string;
+			"9": string;
+		};
+		ui: {
+			egg: {
+				"pet frame": string;
+				background: string;
+			};
+			hud: {
+				"interface button": string;
+				shop: string;
+				"viewer background": string;
+				upgrade: string;
+				icons: {
+					items: string;
+					options: string;
+					codes: string;
+					wheel: string;
+					rewards: string;
+					teleport: string;
+					trading: string;
+				};
+				"rank fill": string;
+			};
+			quests: {
+				"world background": string;
+				"world entry background": string;
+				"quests background": string;
+				"entry background": string;
+			};
+			settings: {
+				"setting background": string;
+				background: string;
+			};
+			codes: {
+				background: string;
+				input: string;
 			};
 		};
 	};

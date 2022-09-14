@@ -14,10 +14,10 @@ export = (): void => {
 			const weaponId = 2;
 
 			const player = useMockPlayer();
-			// give us enough gold to purchase the weapon
+			// give us enough coins to purchase the weapon
 			const { store, dispatchedActions, cleanup } = createDummyStore(player, {
 				currencies: {
-					gold: getWeaponInfo(weaponId).data.cost?.amount,
+					coins: getWeaponInfo(weaponId).data.cost?.amount,
 				},
 			});
 
@@ -67,7 +67,7 @@ export = (): void => {
 			const weaponId = 2;
 
 			const player = useMockPlayer();
-			const { store, dispatchedActions, cleanup } = createDummyStore(player, { currencies: { gold: 500 } });
+			const { store, dispatchedActions, cleanup } = createDummyStore(player, { currencies: { coins: 500 } });
 			purchaseWeapon(store, weaponId);
 			assertDeepEqual(dispatchedActions, []);
 

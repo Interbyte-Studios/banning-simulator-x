@@ -62,16 +62,17 @@ export = (): void => {
 		});
 
 		it("should add currency when redeeming quest", () => {
-			const state: CurrenciesState = { gold: 100 };
+			const state: CurrenciesState = { coins: 100, gems: 10 };
 
 			const action = redeemWorldQuest("Ban Land", "Kill 30 mobs", 50, {
 				kind: "currency",
 				amount: 100,
-				currency: "gold",
+				currency: "coins",
 			});
 
 			assertDeepEqual(currenciesReducer(state, action), {
-				gold: 200,
+				coins: 200,
+				gems: 10,
 			});
 		});
 
