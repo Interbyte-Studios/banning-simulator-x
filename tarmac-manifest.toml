@@ -164,8 +164,8 @@ id = 10835561050
 packable = false
 
 [inputs."images/ui/codes/background.png"]
-hash = "527b5ae304bccc0e4b276684f6c6ad5fb824cdf2f9cd29e83a21306a97842c42"
-id = 10908456122
+hash = "6587e982836cdf78e3ccaa8a8a81bf8178a97fd012610efc2cca0a9637c6aaac"
+id = 10913446755
 packable = false
 
 [inputs."images/ui/codes/input.png"]

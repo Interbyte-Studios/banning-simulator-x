@@ -4,11 +4,15 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
+interface CodesIconProps {
+	displayCodesMenu: () => void;
+}
+
 const minimizedSize = 0.8;
 const maximizedSize = 0.9;
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const CodesIcon = hooks((_, { useEffect }) => {
+export const CodesIcon = hooks((props: CodesIconProps, { useEffect }) => {
 	const minizmizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
 	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 
@@ -33,6 +37,7 @@ export const CodesIcon = hooks((_, { useEffect }) => {
 			Image={assetIds.images.ui.hud.icons.codes}
 			LayoutOrder={2}
 			Event={{
+				Activated: (): void => props.displayCodesMenu(),
 				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}

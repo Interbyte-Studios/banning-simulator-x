@@ -2,10 +2,11 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Store } from "shared/rodux";
 
+import { CodesMenu } from "./components/codes/menu";
 import { EggsUI } from "./components/eggs";
 import { Hud } from "./components/hud";
 import { Quests } from "./components/quests";
-import { SettingsUI } from "./components/settings";
+import { SettingsMenu } from "./components/settings/menu";
 import { ZonesUI } from "./components/zones";
 import { hooks } from "./hooks";
 
@@ -23,6 +24,7 @@ interface AppProps {
  * @returns The Roact app to mount.
  */
 export const app = hooks((props: AppProps, { useState }) => {
+	const [codesMenuVisible, setCodesVisible] = useState(false);
 	const [questsMenuVisible, setQuestsVisibility] = useState(false);
 	const [settingsMenuVisible, setSettingsVisibility] = useState(false);
 
@@ -30,11 +32,13 @@ export const app = hooks((props: AppProps, { useState }) => {
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
 				<EggsUI />
-				<SettingsUI visible={settingsMenuVisible} hideMenu={(): void => setSettingsVisibility(false)} />
+				<CodesMenu visible={codesMenuVisible} hideMenu={(): void => setCodesVisible(false)} />
+				<SettingsMenu visible={settingsMenuVisible} hideMenu={(): void => setSettingsVisibility(false)} />
 				<Quests visible={questsMenuVisible} hideMenu={(): void => setQuestsVisibility(false)} />
 				<ZonesUI />
 				<Hud
-					visible={!settingsMenuVisible}
+					visible={!codesMenuVisible && !settingsMenuVisible}
+					displayCodesMenu={(): void => setCodesVisible(true)}
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
 				/>
