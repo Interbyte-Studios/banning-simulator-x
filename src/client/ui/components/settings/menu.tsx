@@ -68,22 +68,22 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 				<uiaspectratioconstraint AspectRatio={0.8} />
 				<textlabel
 					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.5, 0.02)}
-					Size={UDim2.fromScale(0.75, 0.35)}
+					Position={UDim2.fromScale(0.495, 0.115)}
+					Size={UDim2.fromScale(0.4, 0.125)}
 					BackgroundTransparency={1}
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					Text={"Settings"}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={4} />
+					<BaseUIStroke Thickness={3} />
 				</textlabel>
 				<scrollingframe
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
 					BorderSizePixel={0}
-					Size={UDim2.fromScale(0.9, 0.8)}
-					Position={udim2Middle}
+					Size={UDim2.fromScale(0.95, 0.735)}
+					Position={UDim2.fromScale(0.5, 0.56)}
 					ScrollBarThickness={6}
 				>
 					<textlabel
@@ -100,14 +100,14 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					</textlabel>
 					<ToggleSettingOption
 						position={UDim2.fromScale(0.5, 0.09)}
-						size={UDim2.fromScale(0.98, 0.045)}
+						size={UDim2.fromScale(0.95, 0.045)}
 						settingName={"Button Click SFX"}
 						isEnabled={props.settings.sound.buttonClick}
 						onClicked={(): void => toggleButtonClickSFX.SendToServer(!props.settings.sound.buttonClick)}
 					/>
 					<ModifySettingOption
 						position={UDim2.fromScale(0.5, 0.145)}
-						size={UDim2.fromScale(0.98, 0.045)}
+						size={UDim2.fromScale(0.95, 0.045)}
 						settingName={"Music Volume"}
 						displayValue={`${props.settings.sound.music * 10}%`}
 						displayPercentage={true}
@@ -116,7 +116,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					/>
 					<ModifySettingOption
 						position={UDim2.fromScale(0.5, 0.2)}
-						size={UDim2.fromScale(0.98, 0.045)}
+						size={UDim2.fromScale(0.95, 0.045)}
 						settingName={"SFX Volume"}
 						displayValue={`${props.settings.sound.soundEffects * 10}%`}
 						displayPercentage={true}
@@ -137,14 +137,14 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					</textlabel>
 					<ToggleSettingOption
 						position={UDim2.fromScale(0.5, 0.31)}
-						size={UDim2.fromScale(0.98, 0.045)}
+						size={UDim2.fromScale(0.95, 0.045)}
 						settingName={"Auto Hatch"}
 						isEnabled={props.settings.gameplay.autoHatch}
 						onClicked={(): void => toggleAuto.SendToServer()}
 					/>
 					<ModifySettingOption
 						position={UDim2.fromScale(0.5, 0.365)}
-						size={UDim2.fromScale(0.98, 0.045)}
+						size={UDim2.fromScale(0.95, 0.045)}
 						settingName={"Walk Speed"}
 						displayValue={`${props.settings.gameplay.walkSpeed}`}
 						displayPercentage={false}
@@ -165,7 +165,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					</textlabel>
 					<ToggleSettingOption
 						position={UDim2.fromScale(0.5, 0.485)}
-						size={UDim2.fromScale(0.98, 0.045)}
+						size={UDim2.fromScale(0.95, 0.045)}
 						settingName={"Low Graphics"}
 						isEnabled={props.settings.visual.graphicsQuality === "Low"}
 						onClicked={(): void =>
@@ -174,14 +174,14 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					/>
 					<ToggleSettingOption
 						position={UDim2.fromScale(0.5, 0.54)}
-						size={UDim2.fromScale(0.98, 0.045)}
+						size={UDim2.fromScale(0.95, 0.045)}
 						settingName={"Pets Hidden"}
 						isEnabled={!props.settings.visual.petsDisplayed}
 						onClicked={(): void => togglePetsDisplayed.SendToServer(!props.settings.visual.petsDisplayed)}
 					/>
 					<ModifySettingOption
 						position={UDim2.fromScale(0.5, 0.595)}
-						size={UDim2.fromScale(0.98, 0.045)}
+						size={UDim2.fromScale(0.95, 0.045)}
 						settingName={"Pet Animation"}
 						displayValue={props.settings.visual.petAnimationType === "Following" ? "1" : "2"}
 						displayPercentage={false}
@@ -198,7 +198,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					/>
 					<ModifySettingOption
 						position={UDim2.fromScale(0.5, 0.65)}
-						size={UDim2.fromScale(0.98, 0.045)}
+						size={UDim2.fromScale(0.95, 0.045)}
 						settingName={"Pet Distance"}
 						displayValue={`${props.settings.visual.petsStudsOfDistance}`}
 						displayPercentage={false}
@@ -211,7 +211,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					/>
 					<ModifySettingOption
 						position={UDim2.fromScale(0.5, 0.705)}
-						size={UDim2.fromScale(0.98, 0.045)}
+						size={UDim2.fromScale(0.95, 0.045)}
 						settingName={"Time of Day"}
 						displayValue={`${props.settings.visual.timeOfDay}`}
 						displayPercentage={false}
@@ -220,7 +220,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					/>
 				</scrollingframe>
 				<ExitButton
-					Position={UDim2.fromScale(0.975, 0.065)}
+					Position={UDim2.fromScale(0.975, 0.125)}
 					minimizedSize={0.125}
 					maximizedSize={0.15}
 					onClosed={(): void => props.hideMenu()}

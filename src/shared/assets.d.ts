@@ -74,6 +74,10 @@ declare namespace assetIds {
 				"setting background": string;
 				background: string;
 			};
+			codes: {
+				background: string;
+				input: string;
+			};
 		};
 	};
 }

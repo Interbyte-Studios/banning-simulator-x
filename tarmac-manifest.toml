@@ -163,6 +163,16 @@ hash = "818a009d089f0e0becf31c04786831ecfdbaeeeefa55f74c62fe836900c897f1"
 id = 10835561050
 packable = false
 
+[inputs."images/ui/codes/background.png"]
+hash = "527b5ae304bccc0e4b276684f6c6ad5fb824cdf2f9cd29e83a21306a97842c42"
+id = 10908456122
+packable = false
+
+[inputs."images/ui/codes/input.png"]
+hash = "81885ebb6188ec514040ec8d3e76a0418ce3dc83335852b2fb9a0557092ac4b2"
+id = 10908456187
+packable = false
+
 [inputs."images/ui/egg/background.png"]
 hash = "a7a6769791c6d2bbbeced0ae62342f1525a5288bac5a677ba6ff37d28bc08a3c"
 id = 10832814885
@@ -253,29 +263,9 @@ hash = "93ce09d6f4dbb80a1c8c8d8d03e7faf7a5fe0f46a904a993836703e14bbe14b0"
 id = 10832810250
 packable = false
 
-[inputs."images/ui/settings/back arrow.png"]
-hash = "efe1a991856aadd20e9f69c1bc56a08404f9dc559568578d4313ea23c163859a"
-id = 10908190941
-packable = false
-
 [inputs."images/ui/settings/background.png"]
 hash = "d28ab6dd74dfdb73c526df0ce4e0ae8d0dea86ad6689fd8b069cd1c4fb8d01a9"
 id = 10832810485
-packable = false
-
-[inputs."images/ui/settings/forward arrow.png"]
-hash = "2783141502a47a8f3a3dee1f8ccbf2524a7c3b7748af1c0981144dd134be674e"
-id = 10908191030
-packable = false
-
-[inputs."images/ui/settings/green button.png"]
-hash = "f021896403cad985c2acbebef80f50bd198a4d1e8fe6bc97fe7051e24ad22420"
-id = 10908191083
-packable = false
-
-[inputs."images/ui/settings/red button.png"]
-hash = "7ad6019868cba8cb09903f6cd1f668aa8b2015c3eafce467903285f1cdef5081"
-id = 10908188874
 packable = false
 
 [inputs."images/ui/settings/setting background.png"]

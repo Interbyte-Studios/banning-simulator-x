@@ -47,7 +47,7 @@ export const EnabledButton = hooks((props: EnabledButtonProps, { useEffect }) =>
 			})}
 			BackgroundTransparency={1}
 			Image={
-				'props.isEnabled ? assetIds.images.buttons["green toggle button"] : assetIds.images.buttons["red toggle button"]'
+				props.isEnabled ? assetIds.images.buttons["green toggle button"] : assetIds.images.buttons["red toggle button"]
 			}
 			Event={{
 				/**
