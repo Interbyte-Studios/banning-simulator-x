@@ -60,7 +60,7 @@ for (const crystal of gateCrystals) {
 RunService.RenderStepped.Connect(() => {
 	for (const crystalData of cframeValues) {
 		if (crystalData.crystal.PrimaryPart === undefined) {
-			return;
+			continue;
 		}
 
 		crystalData.crystal.SetPrimaryPartCFrame(crystalData.cframeValue.Value);
