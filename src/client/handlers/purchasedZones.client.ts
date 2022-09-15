@@ -3,8 +3,6 @@ import { onStoreCreated } from "client/clientStores";
 import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
 import { WorldsState } from "shared/rodux/worlds";
-import { getZoneData } from "shared/util/getZoneData";
-import { getZoneDataById } from "shared/util/getZoneDataById";
 
 const player = Players.LocalPlayer;
 
@@ -15,17 +13,16 @@ const player = Players.LocalPlayer;
  * @param zone The zone to grant entry to.
  */
 function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
-	const barrierFolder = Workspace.decoration[world][zone].door;
+	const zoneDecoration = Workspace.decoration[world][zone];
+	const door = zoneDecoration.door;
 
-	const locksFolder = barrierFolder.FindFirstChild("locks");
-	if (locksFolder) {
-		locksFolder.Destroy();
+	if (zone === "Forest") {
+		door.Destroy();
+		return;
 	}
 
-	const passage = barrierFolder.FindFirstChild("passage");
-	if (passage) {
-		passage.Destroy();
-	}
+	door.lock.Destroy();
+	door.passage.Destroy();
 }
 
 /**
@@ -36,14 +33,6 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 function unlockZones(worldState: WorldsState): void {
 	for (const unlockedWorld of worldState) {
 		for (const unlockedZone of unlockedWorld.zones) {
-			const zoneInfo = getZoneData(unlockedWorld.name, unlockedZone);
-			const nextZone = getZoneDataById(unlockedWorld.name, zoneInfo.id + 1);
-
-			const ownsNextZone = unlockedWorld.zones.find((zone) => zone === nextZone.name);
-			if (ownsNextZone === undefined) {
-				continue;
-			}
-
 			grantZoneEntry(unlockedWorld.name, unlockedZone);
 		}
 	}

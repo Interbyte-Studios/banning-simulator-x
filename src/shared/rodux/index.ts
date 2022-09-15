@@ -8,6 +8,7 @@ import { experienceReducer, ExperienceState } from "./experience";
 import { GamepassActions, gamepassesReducer, GamepassesState } from "./gamepasses";
 import { PetsActions, petsReducer, PetsState } from "./pets";
 import { QuestsAction, questsReducer, QuestsState } from "./quests";
+import { RankActions, rankReducer, RankState } from "./rank";
 import { SettingsActions, settingsReducer, SettingsState } from "./settings";
 import { TalismanActions, talismanReducer, TalismansState } from "./talismans";
 import { TitleActions, titleReducer, TitleState } from "./title";
@@ -22,6 +23,7 @@ export type StoreState = {
 	gamepasses: GamepassesState;
 	pets: PetsState;
 	quests: QuestsState;
+	rank: RankState;
 	settings: SettingsState;
 	title: TitleState;
 	weapons: WeaponsState;
@@ -36,6 +38,7 @@ export type StoreActions = (
 	| GamepassActions
 	| PetsActions
 	| QuestsAction
+	| RankActions
 	| SettingsActions
 	| TitleActions
 	| WeaponsActions
@@ -54,6 +57,7 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	pets: petsReducer,
 	quests: questsReducer,
 	settings: settingsReducer,
+	rank: rankReducer,
 	title: titleReducer,
 	weapons: weaponsReducer,
 	worlds: worldsReducer,

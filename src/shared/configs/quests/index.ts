@@ -60,7 +60,7 @@ export const QUESTS: {
 					specialReward: {
 						kind: "currency",
 						amount: 5_000,
-						currency: "gold",
+						currency: "coins",
 					},
 				},
 			],

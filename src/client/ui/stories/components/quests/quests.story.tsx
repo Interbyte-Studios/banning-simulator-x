@@ -7,7 +7,7 @@ import { createMockStory } from "../../createMockStory";
 export = (target: GuiBase): (() => void) => {
 	const { cleanup } = createMockStory({}, target, (_, store) => (
 		<StoreProvider store={store}>
-			<Quests />
+			<Quests visible={true} hideMenu={(): void => {}} />
 		</StoreProvider>
 	));
 

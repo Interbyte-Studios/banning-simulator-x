@@ -1,11 +1,11 @@
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 
-export interface Rarity {
+export interface RarityGradient {
 	BeginningColor: Color3;
 	EndingColor: Color3;
 }
 
-export const RARITIES = preserveWithConstraint<Record<string, Rarity>>()({
+export const RARITIES = preserveWithConstraint<Record<string, RarityGradient>>()({
 	Basic: {
 		BeginningColor: Color3.fromRGB(210, 255, 212),
 		EndingColor: Color3.fromRGB(12, 255, 0),

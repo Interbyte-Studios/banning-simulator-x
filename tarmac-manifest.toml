@@ -3,162 +3,272 @@ hash = "7b356995c62e5e9521afd90de0ba26219bce7be562a37f05547ef8a60da4073d"
 id = 10220935323
 packable = false
 
-[inputs."images/backgrounds/dark/AutoHatchBG.png"]
-hash = "59671121f265167c3fc6346ea75d881d13445d09d4bccbeac1c39fb73a8b5b24"
-id = 9724451796
+[inputs."images/buttons/back arrow.png"]
+hash = "5e918a5bcee020cb3e460eae1bcfab1c0f37ead30ccb97b59e23e06f1c87a35a"
+id = 10705131644
 packable = false
 
-[inputs."images/backgrounds/dark/EggPetDisplay.png"]
-hash = "e5a1e521ccd48b5c97531cb8a2fe7e5d3defd5bbed6e36f7e992f3f4a0175d29"
-id = 9724447208
+[inputs."images/buttons/down button.png"]
+hash = "f48850d6f8de5dd3dac8b38fb2fc3b4d633c19af2800df0305b9d928eb304b17"
+id = 10705221247
 packable = false
 
-[inputs."images/backgrounds/dark/PetBackground.png"]
-hash = "e7898bae6804666b1f2bb869c493d72006d148522128a29bafc250da65572bef"
-id = 9724447393
+[inputs."images/buttons/exit.png"]
+hash = "c80057777fc42c24129c77b55a27f6225263c93a492358428d152ead52264ddf"
+id = 10705132600
 packable = false
 
-[inputs."images/backgrounds/dark/Settings.png"]
-hash = "887d5c0b4567129b433271867e9323f9db4a14438ec7c5b0d4d278222f3b4453"
-id = 10220867439
+[inputs."images/buttons/forward arrow.png"]
+hash = "34c1d7e959ced15d935272cecd51e761ff0a1aaea71b4805821eb6d52e7fc472"
+id = 10705132723
 packable = false
 
-[inputs."images/backgrounds/dark/SettingsOption.png"]
-hash = "04c16a3ea1a6e087be567729f48ec3092c2719b269a4cdeba86bef6944ee003a"
-id = 10220867594
+[inputs."images/buttons/green button.png"]
+hash = "60d4707ca43936c31e179c0f93d1eb1b7d9c492464ca2eae97cb9808be17c269"
+id = 10705288438
 packable = false
 
-[inputs."images/backgrounds/light/AutoHatchBG.png"]
-hash = "cb2e3efbc8955f37fcd71f49e9d88fa26db948c3f1a4bea5e514de78323cf8bc"
-id = 9724447550
+[inputs."images/buttons/green toggle button.png"]
+hash = "c590bd53d5eb1e4ab61535acfe79f0db569590da69cf3f5a7f24f2a674179289"
+id = 10705304739
 packable = false
 
-[inputs."images/backgrounds/light/EggPetDisplay.png"]
-hash = "5fb37770da8362ada4c6da0889ff2e2f3d6007942382cff4787a3f64b614b1fb"
-id = 9724447751
+[inputs."images/buttons/purple button.png"]
+hash = "1a9199e3033ba1dc11b3e019a354ee8be992d4df7421092ccf7f30fe56029d85"
+id = 10705288573
 packable = false
 
-[inputs."images/backgrounds/light/PetBackground.png"]
-hash = "8d86bc479b63984146f3ea047e41696fd69d792f8eb1d7da623262d692544106"
-id = 9724447903
+[inputs."images/buttons/red toggle button.png"]
+hash = "1d509295e1715921ab77b3dab8cd58dea28371b14c524530b8d841840b56ebf4"
+id = 10705304953
 packable = false
 
-[inputs."images/buttons/LeftArrow.png"]
-hash = "aba6bb405c196ef80927a0aa60b706aa6ca9e6ff8915d9812ed335fc49eeb975"
-id = 10227395307
+[inputs."images/buttons/teal button.png"]
+hash = "0c9dcc4ad1148352abdec79609dfde379dc1d044bc01c9ceebe160f60453a603"
+id = 10705288749
 packable = false
 
-[inputs."images/buttons/Off.png"]
-hash = "3311d38a4d5a0ca427571ab1ce469f5f4dcd526e41614322d8773e4d77fd6388"
-id = 10221118714
-packable = false
-
-[inputs."images/buttons/On.png"]
-hash = "0c45d37feeedbd9fb40c37242a5ecb4373297289d47e8c20f0eb9d7e1ec42642"
-id = 10231063722
-packable = false
-
-[inputs."images/buttons/RightArrow.png"]
-hash = "94436a9a1fa4acfcb4ad3404f713853644d99240091e194726a43051723a6843"
-id = 10227395746
-packable = false
-
-[inputs."images/buttons/dark/specialized/openEgg/OpenEgg.png"]
-hash = "b51684095e40d0fa88ffbdc6b5b5b1122334c75c0a57e335c5a44b1eea17a556"
-id = 9724448089
-packable = false
-
-[inputs."images/buttons/dark/specialized/openEgg/OpenEggSelected.png"]
-hash = "7d36b3a3c81d4ce47f130f7f4ac2c7e480b55e0f5b0fe8d69336ff72711d9e70"
-id = 9724448183
-packable = false
-
-[inputs."images/buttons/dark/specialized/settings/Settings Selected.png"]
-hash = "6bce5a917c145c18f5cc4e15a5b8c74cd548c7247c75a41692eb672c547a6b64"
-id = 10185228992
-packable = false
-
-[inputs."images/buttons/dark/specialized/settings/Settings.png"]
-hash = "bbda4c4c3f5ce6a8f36d04bff5c51882d3f68aca317c45c6dab8414a62cd49a4"
-id = 10185230092
-packable = false
-
-[inputs."images/buttons/dark/templates/rectangular/RectangularButton.png"]
-hash = "8c968b48b477e59a47f15cd3c45f72e2cd335caeb6c7603d69ba33d4f0aacfd4"
-id = 9724448326
-packable = false
-
-[inputs."images/buttons/dark/templates/rectangular/RectangularButtonConfirmation.png"]
-hash = "40a81cebc535d07701945f76a8d3a5d1da0f56fccfb63e829aceda5a207ce0cb"
-id = 9724448476
-packable = false
-
-[inputs."images/buttons/dark/templates/rectangular/RectangularButtonWarning.png"]
-hash = "d1d0df47da44ebd038658950ad176bbd72880f45c767a3fe58a6b50273b4b483"
-id = 9724448606
-packable = false
-
-[inputs."images/buttons/dark/templates/square/SquareButton.png"]
-hash = "5ddbab1e289969aaa957022e9e310c0390832c5f3c7cbf02e62de687bcecf4d5"
-id = 9724448744
-packable = false
-
-[inputs."images/buttons/dark/templates/square/SquareButtonConfirmation.png"]
-hash = "678bff337c6863a54f2bd4b97ca75803ccc517032d97de97121866941186490c"
-id = 9724448873
-packable = false
-
-[inputs."images/buttons/dark/templates/square/SquareButtonWarning.png"]
-hash = "0827c4e9fdb6ed332322bcc5d4e453d8159fa1196fb1ae9cd3e8dfca2bdd11a0"
-id = 9724449051
-packable = false
-
-[inputs."images/buttons/light/specialized/openEgg/OpenEgg.png"]
-hash = "f2cb8bf854fca1bfa85a8d1fd3b94e8bb8707b217695dbf3922b0056af411a16"
-id = 9724449208
-packable = false
-
-[inputs."images/buttons/light/specialized/openEgg/OpenEggSelected.png"]
-hash = "590ab9466736e3c08726036d09e18d416b4d4bca7eaa22471423e37c0e1809e7"
-id = 9724449370
-packable = false
-
-[inputs."images/buttons/light/templates/rectangular/RectangularButton.png"]
-hash = "c653ed9eea1f530c7df2c3424d0edf30ba177cf83d161ed6dce9b66b4bfdb298"
-id = 9724449577
-packable = false
-
-[inputs."images/buttons/light/templates/rectangular/RectangularButtonConfirmation.png"]
-hash = "9dba83049027cecb9f24334f52414b00d60741e5b5141d69d5b372f37adb400a"
-id = 9724449681
-packable = false
-
-[inputs."images/buttons/light/templates/rectangular/RectangularButtonWarning.png"]
-hash = "ee3d76fa5cce9d7b91c484ea6ccc3adb200edb443f485c3b8cbcf142f5d61d04"
-id = 9724449836
-packable = false
-
-[inputs."images/buttons/light/templates/square/SquareButton.png"]
-hash = "aa5f17517ba9b60d3814f27b9c1efdf52451453651a3cea42be603c0a833a6f6"
-id = 9724449946
-packable = false
-
-[inputs."images/buttons/light/templates/square/SquareButtonConfirmation.png"]
-hash = "4d094943a8c15be35fb452384852af9c272fa3090d5a1874bdde18086e982c1b"
-id = 9724450043
-packable = false
-
-[inputs."images/buttons/light/templates/square/SquareButtonWarning.png"]
-hash = "34f5f328af9f676194662ea90ca486d56b99072439a5c557ebed031027dc0bee"
-id = 9724450192
-packable = false
-
-[inputs."images/currencies/gold.png"]
+[inputs."images/currencies/coins.png"]
 hash = "9aa6e2ab58a50dd5fbf70a95d57caa20c58e62d99487ea285c0a0df5ed3f3725"
 id = 9591269212
 packable = false
 
-[inputs."images/maps/Ban Land.jpg"]
+[inputs."images/currencies/gems.png"]
+hash = "9aa6e2ab58a50dd5fbf70a95d57caa20c58e62d99487ea285c0a0df5ed3f3725"
+id = 10833933846
+packable = false
+
+[inputs."images/maps/Ban Land/world.jpg"]
 hash = "ca1e87c9948257fed7ac980ef92c8398b411f49a7e6d0b7b598646e8fd832b3a"
-id = 10266321808
+id = 10509318265
+packable = false
+
+[inputs."images/ranks/1.png"]
+hash = "25e67c949a0f669d1d582fe00280d8aa33b7cddfa40f95a790611158f2e82504"
+id = 10835560038
+packable = false
+
+[inputs."images/ranks/10.png"]
+hash = "4a3e3766afbf7a17eda7fafbc06aee48098872403e3d9b84637b4f1826959e41"
+id = 10835560092
+packable = false
+
+[inputs."images/ranks/11.png"]
+hash = "85bc2ff74342444a8e15b7e1f87319d64349fc2ed2a254952add968b38b433ea"
+id = 10835560133
+packable = false
+
+[inputs."images/ranks/12.png"]
+hash = "ea86bb91ad0c982883247ca0d1bec0ecdb76819eb518390482fe1bb914d1a8bf"
+id = 10835560188
+packable = false
+
+[inputs."images/ranks/13.png"]
+hash = "16e385ee5da3092845cade8e184ca6948b0b3314421600b47e498a0386adb1c3"
+id = 10835560242
+packable = false
+
+[inputs."images/ranks/14.png"]
+hash = "3d41459b599f2a423af52c4562d97a809792a4b21c5c428c4a1f78c1fa222309"
+id = 10835560302
+packable = false
+
+[inputs."images/ranks/15.png"]
+hash = "01dfa1d4b81e0c48bf57375fccc49fb1cbcfc5d2e05641d9cd494ec233515792"
+id = 10835560351
+packable = false
+
+[inputs."images/ranks/16.png"]
+hash = "22eccb62ad84080fa744579cdbb89cb772f04a7e4038d8a4c26e686cfa297939"
+id = 10835560407
+packable = false
+
+[inputs."images/ranks/17.png"]
+hash = "86cb8272359aa5a13471c739d6c21b99d6b5ab71c45b02a7405000e90f43ee74"
+id = 10835560441
+packable = false
+
+[inputs."images/ranks/18.png"]
+hash = "69d06ce4ac0e7896afb14925b5a4e47c78d3dca8ae852fd191d339a6f3442442"
+id = 10835560493
+packable = false
+
+[inputs."images/ranks/19.png"]
+hash = "22d4bb88e0eabd90efda00ee059f2de5ae629e8e9da253cca743b47eaec90235"
+id = 10835560533
+packable = false
+
+[inputs."images/ranks/2.png"]
+hash = "741d0446b02d9b60b0935bbb654b2383db8e65b5aa97441695a113873737f5c5"
+id = 10835560578
+packable = false
+
+[inputs."images/ranks/20.png"]
+hash = "541f1e3fb2adc0362859dbe230d0b73719f9e3672ff32b13b9515210c902d6da"
+id = 10835560611
+packable = false
+
+[inputs."images/ranks/3.png"]
+hash = "ef67bd053a27734fdc153552bbd54f26987ae132fa4363947aad82214e7a2952"
+id = 10835560676
+packable = false
+
+[inputs."images/ranks/4.png"]
+hash = "e3f7c7fa44996fc184bb2fba86cc65b45d6bae5bd30f7fac18758afe8154ac4c"
+id = 10835560715
+packable = false
+
+[inputs."images/ranks/5.png"]
+hash = "b0089538074b8876af0841b6c4cf8b749015d0b90a9ca543ab25d3aae3456cbc"
+id = 10835560770
+packable = false
+
+[inputs."images/ranks/6.png"]
+hash = "ce61192e7456e103dfb692536c4783d60d26697792cf30dd2b4239613a14fc88"
+id = 10835560839
+packable = false
+
+[inputs."images/ranks/7.png"]
+hash = "993f68f8e56e424ef27b28a6ed9c24929cc446be907d0a36a9896a6b2982ff50"
+id = 10835560907
+packable = false
+
+[inputs."images/ranks/8.png"]
+hash = "883e28caed0396fa5d7ae5759d27919f6de93ae7ac6b1199e2e7a02f5ed31289"
+id = 10835560990
+packable = false
+
+[inputs."images/ranks/9.png"]
+hash = "818a009d089f0e0becf31c04786831ecfdbaeeeefa55f74c62fe836900c897f1"
+id = 10835561050
+packable = false
+
+[inputs."images/ui/codes/background.png"]
+hash = "527b5ae304bccc0e4b276684f6c6ad5fb824cdf2f9cd29e83a21306a97842c42"
+id = 10908456122
+packable = false
+
+[inputs."images/ui/codes/input.png"]
+hash = "81885ebb6188ec514040ec8d3e76a0418ce3dc83335852b2fb9a0557092ac4b2"
+id = 10908456187
+packable = false
+
+[inputs."images/ui/egg/background.png"]
+hash = "a7a6769791c6d2bbbeced0ae62342f1525a5288bac5a677ba6ff37d28bc08a3c"
+id = 10832814885
+packable = false
+
+[inputs."images/ui/egg/pet frame.png"]
+hash = "76fe48a80428880c2d847a8488e230aa23a896107b501ef57e03a3b29dc2bb55"
+id = 10832815008
+packable = false
+
+[inputs."images/ui/hud/icons/codes.png"]
+hash = "152a0ab211c35a9592bec4482bd835f5b1d6c14fc2043a64cb76222a2b8c206f"
+id = 10835150571
+packable = false
+
+[inputs."images/ui/hud/icons/items.png"]
+hash = "492a58eae26e2dc9fa78d869bc81bbaa410db8f4de6039b28dd5490a3876075b"
+id = 10835150655
+packable = false
+
+[inputs."images/ui/hud/icons/options.png"]
+hash = "a08a8dd115b1733475e66ad6fe7af9398dc26ab392d2a2cd5f0e2e6898b939e4"
+id = 10835150718
+packable = false
+
+[inputs."images/ui/hud/icons/rewards.png"]
+hash = "f347874a10d67efee20cedf73627bba87c2bc4f6926a0d57eed392785fe32bff"
+id = 10835150803
+packable = false
+
+[inputs."images/ui/hud/icons/teleport.png"]
+hash = "7b45e0bdd637777ea205d7c464bb1bb1d067f2acc06cbab24d9c5816406b5de5"
+id = 10835150845
+packable = false
+
+[inputs."images/ui/hud/icons/trading.png"]
+hash = "2f9d2da07b15b7e80e86c1e57929fb2e420f28b2f9582c5663a39e611bccc428"
+id = 10835150926
+packable = false
+
+[inputs."images/ui/hud/icons/wheel.png"]
+hash = "10d30a9eee1661a1fe49bc1c77c2255118b11b8cee068dcdbc052a686c144757"
+id = 10835151009
+packable = false
+
+[inputs."images/ui/hud/interface button.png"]
+hash = "62c9f7e4f5e5fa0fa98c488c2866b287458e28b8994f0dd60fc88e7c9076129e"
+id = 10832815096
+packable = false
+
+[inputs."images/ui/hud/rank fill.png"]
+hash = "c7c5ffa5a5bcef1e8eb26eb21bb177db0b67762f755c752846f1d65de83b495c"
+id = 10832815201
+packable = false
+
+[inputs."images/ui/hud/shop.png"]
+hash = "15b89801b08c29dfb6d95382801444e7298693b373492175efc9550f0f5c7065"
+id = 10832809320
+packable = false
+
+[inputs."images/ui/hud/upgrade.png"]
+hash = "079dee897eeea7f763198d4ed5d2aad54e7d243b3e7a2cc15e50529fa4938d37"
+id = 10836017074
+packable = false
+
+[inputs."images/ui/hud/viewer background.png"]
+hash = "14ef5182d4586b96cf692024624ba232eacb2b80f744889df2f6b7b50d3049d7"
+id = 10832809474
+packable = false
+
+[inputs."images/ui/quests/entry background.png"]
+hash = "ddd4ef03eacfb8d19f73252017992e29551d978e7358917f14ea899f73d36283"
+id = 10832809634
+packable = false
+
+[inputs."images/ui/quests/quests background.png"]
+hash = "be81f942b194c846b461ea4432c6f7d3de4f345d9aa080ba26a84f5be2109170"
+id = 10832809841
+packable = false
+
+[inputs."images/ui/quests/world background.png"]
+hash = "58a7d8af6c181853fc167f9fce377da6ef3b81132ea91e78e791438ae095cce0"
+id = 10832810080
+packable = false
+
+[inputs."images/ui/quests/world entry background.png"]
+hash = "93ce09d6f4dbb80a1c8c8d8d03e7faf7a5fe0f46a904a993836703e14bbe14b0"
+id = 10832810250
+packable = false
+
+[inputs."images/ui/settings/background.png"]
+hash = "d28ab6dd74dfdb73c526df0ce4e0ae8d0dea86ad6689fd8b069cd1c4fb8d01a9"
+id = 10832810485
+packable = false
+
+[inputs."images/ui/settings/setting background.png"]
+hash = "df18ddecccb0bed5855584f33d755bbf0fbf7661d543195d253f4c57a8a23d8b"
+id = 10832810658
 packable = false

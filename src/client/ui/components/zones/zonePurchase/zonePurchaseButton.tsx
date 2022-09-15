@@ -1,6 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { color3White, font, vec2Middle } from "client/ui/commonValues";
+import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { hooks } from "client/ui/hooks";
 
 const maximizedSize = { x: 0.238, y: 0.147 };
@@ -22,14 +23,12 @@ interface ZonePurchaseButtonProps {
  * @param props.onClicked A function which prompts the user with a purchase interface component.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const ZonePurchaseButton = hooks((props: ZonePurchaseButtonProps) => {
-	const motor = new Flipper.GroupMotor({
+export const ZonePurchaseButton = hooks((props: ZonePurchaseButtonProps, hooks) => {
+	const { motor, binding } = useBindingMotor(hooks, {
 		x: maximizedSize.x,
 		y: maximizedSize.y,
 	});
-	const [binding, setBinding] = Roact.createBinding(motor.getValue());
 
-	motor.onStep(setBinding);
 	return (
 		<textbutton
 			AnchorPoint={vec2Middle}
