@@ -5,7 +5,7 @@ const gateCrystals = CollectionService.GetTagged(GATE_CRYSTALS_TAG);
 
 interface crystalAnimationData {
 	cframeValue: CFrameValue;
-	crystalPart: BasePart;
+	crystal: Model;
 }
 
 const cframeValues: Array<crystalAnimationData> = [];
@@ -26,7 +26,7 @@ for (const crystal of gateCrystals) {
 
 			const crystalAnimationData = {
 				cframeValue,
-				crystalPart: crystal.PrimaryPart,
+				crystal,
 			};
 
 			cframeValues.push(crystalAnimationData);
@@ -50,7 +50,7 @@ for (const crystal of gateCrystals) {
 					crystalAnimation_up.Completed.Wait();
 
 					crystalAnimation_down.Play();
-                    crystalAnimation_down.Completed.Wait();
+					crystalAnimation_down.Completed.Wait();
 				}
 			});
 		}
@@ -59,6 +59,10 @@ for (const crystal of gateCrystals) {
 
 RunService.RenderStepped.Connect(() => {
 	for (const crystalData of cframeValues) {
-		crystalData.crystalPart.CFrame = crystalData.cframeValue.Value;
+		if (crystalData.crystal.PrimaryPart === undefined) {
+			return;
+		}
+
+		crystalData.crystal.SetPrimaryPartCFrame(crystalData.cframeValue.Value);
 	}
 });
