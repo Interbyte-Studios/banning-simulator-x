@@ -10,7 +10,7 @@ const maximizedSize = 0.1;
 const minimizedSize = 0.075;
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const DiscordVerify = hooks((_, hooks) => {
+export const TwitterVerify = hooks((_, hooks) => {
 	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
 
@@ -20,7 +20,7 @@ export const DiscordVerify = hooks((_, hooks) => {
 		<imagebutton
 			AnchorPoint={vec2Middle}
 			BackgroundTransparency={1}
-			Position={UDim2.fromScale(0.84, 0.875)}
+			Position={UDim2.fromScale(0.84, 0.45)}
 			Size={binding.map((value) => {
 				return UDim2.fromScale(0.25, value);
 			})}
@@ -38,7 +38,7 @@ export const DiscordVerify = hooks((_, hooks) => {
 				BackgroundTransparency={1}
 				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
-				Text={"Verify"}
+				Text={"Redeem"}
 				Font={font}
 			>
 				<BaseUIStroke Thickness={1.2} />

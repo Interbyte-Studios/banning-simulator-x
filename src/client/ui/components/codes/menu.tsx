@@ -13,7 +13,6 @@ interface CodesMenuProps {
 	hideMenu: () => void;
 }
 
-
 export const CodesMenu = hooks((props: CodesMenuProps) => {
 	if (!props.visible) {
 		return <></>;
@@ -28,6 +27,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 			Image={assetIds.images.ui.codes.background}
 			ScaleType={Enum.ScaleType.Fit}
 		>
+			<uiaspectratioconstraint AspectRatio={1.1} />
 			<textlabel
 				AnchorPoint={vec2Middle}
 				Position={UDim2.fromScale(0.5, 0.06)}
