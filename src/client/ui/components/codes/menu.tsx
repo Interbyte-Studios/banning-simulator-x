@@ -11,6 +11,7 @@ import { TwitterHandle } from "./twitterHandle";
 interface CodesMenuProps {
 	visible: boolean;
 	hideMenu: () => void;
+	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
 }
 
 export const CodesMenu = hooks((props: CodesMenuProps) => {
@@ -52,7 +53,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 			>
 				<BaseUIStroke Thickness={2} />
 			</textlabel>
-			<TwitterHandle />
+			<TwitterHandle displayAnnouncement={props.displayAnnouncement} />
 			<textlabel
 				AnchorPoint={vec2Middle}
 				Position={UDim2.fromScale(0.5, 0.7)}

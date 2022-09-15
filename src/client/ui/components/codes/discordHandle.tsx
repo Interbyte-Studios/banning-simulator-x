@@ -21,7 +21,7 @@ interface DiscordHandleMappedProps {
  */
 function mapStateToProps(state: StoreState): DiscordHandleMappedProps {
 	return {
-		enabled: state.media.discord,
+		enabled: state.media.discordVerified,
 	};
 }
 
