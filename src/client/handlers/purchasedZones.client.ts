@@ -13,20 +13,16 @@ const player = Players.LocalPlayer;
  * @param zone The zone to grant entry to.
  */
 function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
-	const barrierFolder = Workspace.decoration[world][zone].FindFirstChild("door");
-	if (barrierFolder === undefined) {
+	const zoneDecoration = Workspace.decoration[world][zone];
+	const door = zoneDecoration.door;
+
+	if (zone === "Forest") {
+		door.Destroy();
 		return;
 	}
 
-	const locksFolder = barrierFolder.FindFirstChild("locks");
-	if (locksFolder) {
-		locksFolder.Destroy();
-	}
-
-	const passage = barrierFolder.FindFirstChild("passage");
-	if (passage) {
-		passage.Destroy();
-	}
+	door.lock.Destroy();
+	door.passage.Destroy();
 }
 
 /**
