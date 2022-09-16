@@ -1,5 +1,6 @@
 import { createContext } from "@rbxts/roact";
 import { RedeemCodeDefinition } from "shared/remotes/media/redeemCode";
+import { VerifyDiscordDefinition } from "shared/remotes/media/verifyDiscord";
 import { PurchaseZoneDefinition } from "shared/remotes/purchaseZone";
 import { RedeemQuestDefinition } from "shared/remotes/redeemQuest";
 import { ToggleAutoHatchDefinition } from "shared/remotes/settings/gameplay/toggleAuto";
@@ -42,6 +43,11 @@ export const fakeRemoteContext = {
 	togglePetsDisplayed: fakeRemoteCall<TogglePetsDisplayedDefinition>("togglePetsDisplayed"),
 	togglePetsStudsOfDistance: fakeRemoteCall<TogglePetsStudsOfDistanceDefinition>("togglePetsStudsOfDistance"),
 	toggleTimeOfDay: fakeRemoteCall<ToggleTimeOfDayDefinition>("toggleTimeOfDay"),
+	verifyDiscord: fakeFunctionCall<VerifyDiscordDefinition>("verifyDiscord", () => {
+		return {
+			success: true,
+		};
+	}),
 
 	hatchEgg: fakeHatchEgg,
 };

@@ -66,7 +66,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 			>
 				<BaseUIStroke Thickness={2} />
 			</textlabel>
-			<DiscordHandle />
+			<DiscordHandle displayAnnouncement={props.displayAnnouncement} />
 			<ExitButton
 				Position={UDim2.fromScale(0.95, 0.075)}
 				minimizedSize={0.1}

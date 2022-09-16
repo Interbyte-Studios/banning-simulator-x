@@ -41,6 +41,7 @@ onStoreCreated(player)
 						.GetNamespace("visual")
 						.Get("togglePetsStudsOfDistance"),
 					toggleTimeOfDay: remotes.Client.GetNamespace("settings").GetNamespace("visual").Get("toggleTimeOfDay"),
+					verifyDiscord: remotes.Client.GetNamespace("media").Get("verifyDiscord"),
 				}}
 			>
 				<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
