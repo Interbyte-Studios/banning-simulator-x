@@ -2,7 +2,7 @@ import Net from "@rbxts/net";
 import { createTypeChecker } from "@rbxts/net/out/middleware";
 import { t } from "@rbxts/t";
 import { Rarities } from "shared/configs/rarities";
-import { ImmuneRarities } from "shared/rodux/autoDelete";
+import { ImmuneRarities } from "shared/rodux/settings";
 
 export const toggleAutoDeleteDefinition = Net.Definitions.ClientToServerEvent<
 	[rarity: Exclude<Rarities, ImmuneRarities>]

@@ -8,10 +8,10 @@ import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
-import { AutoDeleteState } from "shared/rodux/autoDelete";
+import { SettingsState } from "shared/rodux/settings";
 
 interface OrdinaryRarityAutoDeleteButtonMappedProps {
-	autoDelete: AutoDeleteState;
+	settings: SettingsState;
 }
 
 /**
@@ -23,7 +23,7 @@ interface OrdinaryRarityAutoDeleteButtonMappedProps {
 /* eslint-disable jsdoc/require-jsdoc */
 function mapStateToProps(state: StoreState): OrdinaryRarityAutoDeleteButtonMappedProps {
 	return {
-		autoDelete: state.autoDelete,
+		settings: state.settings,
 	};
 }
 
@@ -49,7 +49,7 @@ export const OrdinaryRarityAutoDeleteButton = RoactRodux.connect(mapStateToProps
 					return UDim2.fromScale(0.275, value);
 				})}
 				Image={
-					props.autoDelete.rarities.Ordinary
+					props.settings.autoDelete.rarities.Ordinary
 						? assetIds.images.buttons["green toggle button"]
 						: assetIds.images.buttons["red toggle button"]
 				}

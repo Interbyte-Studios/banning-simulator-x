@@ -1,5 +1,5 @@
 import { remotes } from "shared/remotes";
-import { toggleRarityDelete } from "shared/rodux/autoDelete";
+import { toggleRarityDelete } from "shared/rodux/settings";
 
 import { withPlayerStore } from "../../modules/net/withPlayerStore";
 

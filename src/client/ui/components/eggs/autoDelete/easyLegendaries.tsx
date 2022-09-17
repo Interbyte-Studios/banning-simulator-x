@@ -8,10 +8,10 @@ import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
-import { AutoDeleteState } from "shared/rodux/autoDelete";
+import { SettingsState } from "shared/rodux/settings";
 
 interface EasyLegendariesAutoDeleteButtonMappedProps {
-	autoDelete: AutoDeleteState;
+	settings: SettingsState;
 }
 
 /**
@@ -23,7 +23,7 @@ interface EasyLegendariesAutoDeleteButtonMappedProps {
 /* eslint-disable jsdoc/require-jsdoc */
 function mapStateToProps(state: StoreState): EasyLegendariesAutoDeleteButtonMappedProps {
 	return {
-		autoDelete: state.autoDelete,
+		settings: state.settings,
 	};
 }
 
@@ -49,7 +49,7 @@ export const EasyLegendariesAutoDeleteButton = RoactRodux.connect(mapStateToProp
 					return UDim2.fromScale(0.75, value);
 				})}
 				Image={
-					props.autoDelete.rarities.Ordinary
+					props.settings.autoDelete.rarities.Ordinary
 						? assetIds.images.ui.autoDelete["long green button"]
 						: assetIds.images.ui.autoDelete["long red button"]
 				}

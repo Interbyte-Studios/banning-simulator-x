@@ -1,5 +1,5 @@
 import { remotes } from "shared/remotes";
-import { toggleEasyLegendariesDelete } from "shared/rodux/autoDelete";
+import { toggleEasyLegendariesDelete } from "shared/rodux/settings";
 
 import { withPlayerStore } from "../../modules/net/withPlayerStore";
 
