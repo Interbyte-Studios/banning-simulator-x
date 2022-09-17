@@ -56,6 +56,7 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 					}}
 					eggName={props.eggName}
 					petId={props.pet}
+					isVoid={props.isVoid}
 				/>
 				<BaseUIStroke Thickness={2.4} />
 			</BaseTextLabel>

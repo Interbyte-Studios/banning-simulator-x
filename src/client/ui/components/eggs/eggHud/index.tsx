@@ -3,12 +3,14 @@ import Roact from "@rbxts/roact";
 import { RunService, Workspace } from "@rbxts/services";
 import { hooks } from "client/ui/hooks";
 import { EggName, EGGS } from "shared/configs/eggs";
+import { Pet } from "shared/configs/pets";
 
 import { AnimateEggs } from "../eggHatch/animateEggs";
 import { EggHudDisplay } from "./eggHudDisplay";
 
 interface EggHudProps {
 	initiateHatch: (amount: 1 | 3, egg: EggName, isVoid: boolean) => Promise<void>;
+	displayAutoHatchMenu: () => void;
 }
 
 /**
@@ -60,21 +62,28 @@ export const EggHud = hooks((props: EggHudProps, { useState, useEffect }) => {
 				const voidEgg = eggFolder.void.egg.PrimaryPart;
 				assert(voidEgg, `Expected PrimaryPart for void ${eggName} egg`);
 
+				const pets: Array<Pet> = [];
+				for (const [, petData] of pairs(eggData.pets)) {
+					pets.push(petData);
+				}
+
 				return (
 					<frame Visible={false}>
 						<EggHudDisplay
 							adornee={regularEgg}
 							eggName={eggName}
 							isVoid={false}
-							pets={eggData.pets}
+							pets={pets}
 							initiateHatch={props.initiateHatch}
+							displayAutoDeleteMenu={props.displayAutoHatchMenu}
 						/>
 						<EggHudDisplay
 							adornee={voidEgg}
 							eggName={eggName}
 							isVoid={true}
-							pets={eggData.pets}
+							pets={pets}
 							initiateHatch={props.initiateHatch}
+							displayAutoDeleteMenu={props.displayAutoHatchMenu}
 						/>
 					</frame>
 				);

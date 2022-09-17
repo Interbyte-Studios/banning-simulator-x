@@ -4,6 +4,7 @@ export type Gamepasses = keyof typeof GAMEPASSES;
 export const GAMEPASSES = {
 	["x2 Luck"]: 1,
 	["Fast Hatch"]: 1,
+	["Triple Hatch"]: 1,
 	["x3 Eggs Hatched"]: 1,
 	["x2 Currency"]: 1,
 	["x2 Experience"]: 1,

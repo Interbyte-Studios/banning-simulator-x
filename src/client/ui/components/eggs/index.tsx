@@ -10,6 +10,11 @@ import { EggHatch } from "./eggHatch";
 import { AnimateEggs } from "./eggHatch/animateEggs";
 import { EggHud } from "./eggHud";
 
+interface EggsUIProps {
+	displayAutoHatchMenu: () => void;
+	setHatchingStatus: (isHatching: boolean) => void;
+}
+
 interface HatchData {
 	eggName: EggName;
 	pets: Array<ConfirmedPet>;
@@ -19,7 +24,7 @@ interface HatchData {
 /**
  * A higher ordered component that displays both information for all the eggs in the game and functionality to hatch those eggs.
  */
-export const EggsUI = hooks((_, { useState, useContext }) => {
+export const EggsUI = hooks((props: EggsUIProps, { useState, useContext }) => {
 	const [currentHatchData, setCurrentHatchData] = useState<HatchData | undefined>(undefined);
 
 	const { hatchEgg } = useContext(remoteContext);
@@ -31,6 +36,7 @@ export const EggsUI = hooks((_, { useState, useContext }) => {
 				const requestEggHatch = await hatchEgg.CallServerAsync(amount, egg, isVoid);
 
 				if (requestEggHatch.success) {
+					props.setHatchingStatus(true);
 					AnimateEggs.handleAnimation();
 					AnimateEggs.initiateEggHatch({
 						amount,
@@ -52,10 +58,12 @@ export const EggsUI = hooks((_, { useState, useContext }) => {
 					});
 
 					setCurrentHatchData(undefined);
+					props.setHatchingStatus(false);
 				} else {
 					setCurrentHatchData(undefined);
 				}
 			}}
+			displayAutoHatchMenu={props.displayAutoHatchMenu}
 		/>,
 	];
 

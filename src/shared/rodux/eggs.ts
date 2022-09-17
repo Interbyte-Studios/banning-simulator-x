@@ -14,6 +14,7 @@ const defaultEggs: EggsState = {
 		Basic: 0,
 		Ordinary: 0,
 		Rare: 0,
+		Epic: 0,
 		Legendary: 0,
 		Primordial: 0,
 		Prismatic: 0,

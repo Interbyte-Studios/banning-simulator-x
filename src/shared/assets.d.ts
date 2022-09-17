@@ -11,6 +11,7 @@ declare namespace assetIds {
 			"red toggle button": string;
 			"down button": string;
 			"green button": string;
+			"red button": string;
 			"green toggle button": string;
 			"teal button": string;
 			exit: string;
@@ -44,9 +45,15 @@ declare namespace assetIds {
 			"9": string;
 		};
 		ui: {
+			autoDelete: {
+				background: string;
+				"long red button": string;
+				"long green button": string;
+			};
 			egg: {
 				"pet frame": string;
 				background: string;
+				delete: string;
 			};
 			hud: {
 				"interface button": string;

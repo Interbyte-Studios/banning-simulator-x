@@ -7,6 +7,7 @@ import { vec2Middle } from "../commonValues";
 import { hooks } from "../hooks";
 
 interface CurrencyIconProps {
+	anchorPoint?: Vector2;
 	position: UDim2;
 	size:
 		| {
@@ -52,7 +53,7 @@ export const CurrencyIcon = hooks((props: CurrencyIconProps, { useEffect }) => {
 		return (
 			<imagelabel
 				BackgroundTransparency={1}
-				AnchorPoint={vec2Middle}
+				AnchorPoint={props.anchorPoint ?? vec2Middle}
 				Size={binding.map((value) => {
 					return UDim2.fromScale(value, value);
 				})}

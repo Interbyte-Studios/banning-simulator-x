@@ -1,5 +1,6 @@
 import Rodux from "@rbxts/rodux";
 
+import { AutoDeleteActions, autoDeleteReducer, AutoDeleteState } from "./autoDelete";
 import { BoostActions, boostsReducer, BoostsState } from "./boosts";
 import { CurrenciesActions, currenciesReducer, CurrenciesState } from "./currencies";
 import { CurrentWeaponActions, currentWeaponReducer, CurrentWeaponState } from "./currentWeapon";
@@ -14,6 +15,7 @@ import { WeaponsActions, weaponsReducer, WeaponsState } from "./weapons";
 import { WorldActions, worldsReducer, WorldsState } from "./worlds";
 
 export type StoreState = {
+	autoDelete: AutoDeleteState;
 	boosts: BoostsState;
 	currencies: CurrenciesState;
 	currentWeapon: CurrentWeaponState;
@@ -28,6 +30,7 @@ export type StoreState = {
 	worlds: WorldsState;
 };
 export type StoreActions = (
+	| AutoDeleteActions
 	| BoostActions
 	| CurrenciesActions
 	| CurrentWeaponActions
@@ -43,6 +46,7 @@ export type StoreActions = (
 	Rodux.AnyAction;
 
 export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
+	autoDelete: autoDeleteReducer,
 	boosts: boostsReducer,
 	currencies: currenciesReducer,
 	currentWeapon: currentWeaponReducer,

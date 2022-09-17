@@ -14,7 +14,7 @@ export = (target: GuiBase): (() => void) => {
 		target,
 		(_, store) => (
 			<RoactRodux.StoreProvider store={store}>
-				<EggsUI />
+				<EggsUI displayAutoHatchMenu={(): void => {}} setHatchingStatus={(): void => {}} />
 			</RoactRodux.StoreProvider>
 		),
 	);
