@@ -32,8 +32,8 @@ export const PetDistanceSetting = RoactRodux.connect(mapStateToProps)(
 
 		return (
 			<ModifySettingOption
-				position={UDim2.fromScale(0.5, 0.65)}
-				size={UDim2.fromScale(0.95, 0.045)}
+				position={UDim2.fromScale(0.5, 0.5)}
+				size={UDim2.fromScale(0.95, 0.04)}
 				settingName={"Pet Distance"}
 				displayValue={`${props.distance}`}
 				displayPercentage={false}

@@ -8,6 +8,11 @@ import { StoreState } from "shared/rodux";
 import { Settings } from "shared/rodux/settings";
 
 import { SectionHeader } from "./elements/sectionHeader";
+import { BasicRarityAutoDeleteSetting } from "./interactions/autoDelete/basic";
+import { EpicRarityAutoDeleteSetting } from "./interactions/autoDelete/epic";
+import { EasyLegendariesRarityAutoDeleteSetting } from "./interactions/autoDelete/epic copy";
+import { OrdinaryRarityAutoDeleteSetting } from "./interactions/autoDelete/ordinary";
+import { RareRarityAutoDeleteSetting } from "./interactions/autoDelete/rare";
 import { AutoHatchSetting } from "./interactions/gameplay/autoHatch";
 import { WalkSpeedSetting } from "./interactions/gameplay/walkSpeed";
 import { ToggleButtonSFXSetting } from "./interactions/sound/buttonSFX";
@@ -67,21 +72,32 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					BorderSizePixel={0}
 					Size={UDim2.fromScale(0.95, 0.735)}
 					Position={UDim2.fromScale(0.5, 0.56)}
+					CanvasSize={UDim2.fromScale(0, 2.5)}
 					ScrollBarThickness={6}
 				>
-					<SectionHeader position={UDim2.fromScale(0.5, 0.04)} size={UDim2.fromScale(0.4, 0.04)} text={"Sound"} />
+					<SectionHeader position={UDim2.fromScale(0.5, 0.03)} size={UDim2.fromScale(0.4, 0.03)} text={"Sound"} />
 					<ToggleButtonSFXSetting />
 					<ToggleMusicFXSetting />
 					<GeneralSFXSetting />
-					<SectionHeader position={UDim2.fromScale(0.5, 0.265)} size={UDim2.fromScale(0.4, 0.04)} text={"Gameplay"} />
+					<SectionHeader position={UDim2.fromScale(0.5, 0.21)} size={UDim2.fromScale(0.4, 0.03)} text={"Gameplay"} />
 					<AutoHatchSetting />
 					<WalkSpeedSetting />
-					<SectionHeader position={UDim2.fromScale(0.5, 0.43)} size={UDim2.fromScale(0.4, 0.04)} text={"Visual"} />
+					<SectionHeader position={UDim2.fromScale(0.5, 0.345)} size={UDim2.fromScale(0.4, 0.03)} text={"Visual"} />
 					<GraphicsSetting />
 					<PetsDisplayedSetting />
 					<PetAnimationSetting />
 					<PetDistanceSetting />
 					<TimeOfDaySetting />
+					<SectionHeader
+						position={UDim2.fromScale(0.5, 0.6)}
+						size={UDim2.fromScale(0.7, 0.05)}
+						text={"Auto Delete (Hatch)"}
+					/>
+					<BasicRarityAutoDeleteSetting />
+					<OrdinaryRarityAutoDeleteSetting />
+					<RareRarityAutoDeleteSetting />
+					<EpicRarityAutoDeleteSetting />
+					<EasyLegendariesRarityAutoDeleteSetting />
 				</scrollingframe>
 				<ExitButton
 					Position={UDim2.fromScale(0.975, 0.125)}

@@ -31,8 +31,8 @@ export const PetsDisplayedSetting = RoactRodux.connect(mapStateToProps)(
 
 		return (
 			<ToggleSettingOption
-				position={UDim2.fromScale(0.5, 0.54)}
-				size={UDim2.fromScale(0.95, 0.045)}
+				position={UDim2.fromScale(0.5, 0.42)}
+				size={UDim2.fromScale(0.95, 0.04)}
 				settingName={"Pets Hidden"}
 				isEnabled={!props.displayed}
 				onClicked={(): void => togglePetsDisplayed.SendToServer(!props.displayed)}

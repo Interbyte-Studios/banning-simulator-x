@@ -6,7 +6,7 @@ import { StoreState } from "shared/rodux";
 
 import { ToggleSettingOption } from "../../elements/toggleSettingOption";
 
-interface AutoHatchMappedProps {
+interface OrdinaryRarityAutoDeleteMappedProps {
 	enabled: boolean;
 }
 
@@ -14,28 +14,28 @@ interface AutoHatchMappedProps {
  * @param state The current state of the store.
  * @returns The mapped props.
  */
-function mapStateToProps(state: StoreState): AutoHatchMappedProps {
+function mapStateToProps(state: StoreState): OrdinaryRarityAutoDeleteMappedProps {
 	return {
-		enabled: state.settings.gameplay.autoHatch,
+		enabled: state.settings.autoDelete.rarities.Ordinary,
 	};
 }
 
 /**
- * Roact imagebutton component to toggle the auto hatch setting.
+ * Roact imagebutton component to toggle the Ordinary rarity auto delete setting.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const AutoHatchSetting = RoactRodux.connect(mapStateToProps)(
-	hooks((props: AutoHatchMappedProps, hooks) => {
+export const OrdinaryRarityAutoDeleteSetting = RoactRodux.connect(mapStateToProps)(
+	hooks((props: OrdinaryRarityAutoDeleteMappedProps, hooks) => {
 		const { useContext } = hooks;
-		const { toggleAuto } = useContext(remoteContext);
+		const { toggleAutoDelete } = useContext(remoteContext);
 
 		return (
 			<ToggleSettingOption
-				position={UDim2.fromScale(0.5, 0.25)}
+				position={UDim2.fromScale(0.5, 0.685)}
 				size={UDim2.fromScale(0.95, 0.04)}
-				settingName={"Auto Hatch"}
+				settingName={"Ordinary Rarity"}
 				isEnabled={props.enabled}
-				onClicked={(): void => toggleAuto.SendToServer()}
+				onClicked={(): void => toggleAutoDelete.SendToServer("Ordinary")}
 			/>
 		);
 	}),
