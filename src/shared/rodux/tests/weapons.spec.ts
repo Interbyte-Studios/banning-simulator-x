@@ -49,7 +49,7 @@ export = (): void => {
 			const state: WeaponsState = new Map([[weaponId, { bans: 0 }]]);
 			const newState: WeaponsState = new Map([[weaponId, { bans: 1 }]]);
 
-			const action = killNpc(0, "gold", 1, weaponId, 1);
+			const action = killNpc(0, "coins", 1, weaponId, 1);
 			assertDeepEqual(weaponsReducer(state, action), newState);
 		});
 	});
