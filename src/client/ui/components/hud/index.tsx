@@ -9,6 +9,7 @@ import { RanksViewer } from "./rankViewer";
 
 interface HudProps {
 	visible: boolean;
+	displayCodesMenu: () => void;
 	displayQuestsMenu: () => void;
 	displaySettingsMenu: () => void;
 }
@@ -26,7 +27,7 @@ export const Hud = hooks((props: HudProps) => {
 			Size={UDim2.fromScale(0.25, 0.5)}
 		>
 			<uiaspectratioconstraint AspectRatio={0.8} />
-			<HUDHeader displaySettingsMenu={props.displaySettingsMenu} />
+			<HUDHeader displayCodesMenu={props.displayCodesMenu} displaySettingsMenu={props.displaySettingsMenu} />
 			<RanksViewer />
 			<CoinsCurrency />
 			<GemsCurrency />

@@ -5,7 +5,7 @@ import { setPetsStudsOfDistance } from "client/modules/settings/petStudsOfDistan
 import { setSoundEffects } from "client/modules/settings/soundEffects";
 import { setTimeOfDay } from "client/modules/settings/timeOfDay";
 import { setWalkSpeed } from "client/modules/settings/walkSpeed";
-import { font, udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
+import { font, udim2Middle, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { hooks } from "client/ui/hooks";
@@ -18,6 +18,7 @@ import { ModifySettingOption } from "./modifySettingOption";
 import { ToggleSettingOption } from "./toggleSettingOption";
 
 interface SettingsMenuProps extends SettingsMenuMappedProps {
+	visible: boolean;
 	hideMenu: () => void;
 }
 
@@ -43,6 +44,10 @@ function mapStateToProps(state: StoreState): SettingsMenuMappedProps {
  */
 export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 	hooks((props: SettingsMenuProps, { useContext }) => {
+		if (!props.visible) {
+			return <></>;
+		}
+
 		const {
 			toggleAuto,
 			toggleWalkSpeed,
@@ -59,7 +64,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 		return (
 			<imagelabel
 				AnchorPoint={vec2Middle}
-				Size={udim2BottomRight}
+				Size={UDim2.fromScale(0.3, 0.5)}
 				Position={udim2Middle}
 				BackgroundTransparency={1}
 				Image={assetIds.images.ui.settings.background}

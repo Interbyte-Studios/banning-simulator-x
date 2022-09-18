@@ -7,6 +7,7 @@ declare namespace assetIds {
 			};
 		};
 		buttons: {
+			"long green button": string;
 			"back arrow": string;
 			"red toggle button": string;
 			"down button": string;

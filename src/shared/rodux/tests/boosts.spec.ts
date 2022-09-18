@@ -3,7 +3,7 @@
 import { BoostProduct } from "shared/configs/game";
 import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 
-import { boostsReducer, BoostsState, claimBoost, useBoosts } from "../boosts";
+import { boostsReducer, claimBoost, useBoosts } from "../boosts";
 
 export = (): void => {
 	describe("rodux/boosts", () => {
@@ -11,18 +11,74 @@ export = (): void => {
 			const defaultBoost = 0;
 			const claimedBoostTime = 6 * 60;
 
-			const state: BoostsState = {
-				["x2 Boss Drop Luck"]: defaultBoost,
-				["x2 Currency"]: defaultBoost,
-				["x2 Experience"]: defaultBoost,
-				["x2 Pet Experience"]: defaultBoost,
+			const state = {
+				storage: {
+					["x2 Boss Drop Luck"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Currency"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Experience"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Pet Experience"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+				},
+				active: {
+					["x2 Boss Drop Luck"]: defaultBoost,
+					["x2 Currency"]: defaultBoost,
+					["x2 Experience"]: defaultBoost,
+					["x2 Pet Experience"]: defaultBoost,
+				},
 			};
 
-			const newState: BoostsState = {
-				["x2 Boss Drop Luck"]: claimedBoostTime,
-				["x2 Currency"]: defaultBoost,
-				["x2 Experience"]: defaultBoost,
-				["x2 Pet Experience"]: defaultBoost,
+			const newState = {
+				storage: {
+					["x2 Boss Drop Luck"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Currency"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Experience"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Pet Experience"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+				},
+				active: {
+					["x2 Boss Drop Luck"]: claimedBoostTime,
+					["x2 Currency"]: defaultBoost,
+					["x2 Experience"]: defaultBoost,
+					["x2 Pet Experience"]: defaultBoost,
+				},
 			};
 
 			const action = claimBoost("x2 Boss Drop Luck", claimedBoostTime);
@@ -39,16 +95,44 @@ export = (): void => {
 				"x2 Pet Experience",
 			];
 
-			const state: BoostsState = {
-				["x2 Boss Drop Luck"]: boostTime,
-				["x2 Currency"]: boostTime,
-				["x2 Experience"]: boostTime,
-				["x2 Pet Experience"]: boostTime,
+			const state = {
+				storage: {
+					["x2 Boss Drop Luck"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Currency"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Experience"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Pet Experience"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+				},
+				active: {
+					["x2 Boss Drop Luck"]: boostTime,
+					["x2 Currency"]: boostTime,
+					["x2 Experience"]: boostTime,
+					["x2 Pet Experience"]: boostTime,
+				},
 			};
 
 			const newState = { ...state };
 			for (const boost of boostsToUse) {
-				newState[boost] -= 1;
+				newState.active[boost] -= 1;
 			}
 
 			const action = useBoosts(boostsToUse);
