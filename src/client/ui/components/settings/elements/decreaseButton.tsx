@@ -2,9 +2,9 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import assetIds from "shared/assets";
 
-import { vec2Middle } from "../../commonValues";
-import { useBindingMotor } from "../../customHooks/useBindingMotor";
-import { hooks } from "../../hooks";
+import { vec2Middle } from "../../../commonValues";
+import { useBindingMotor } from "../../../customHooks/useBindingMotor";
+import { hooks } from "../../../hooks";
 
 interface DecreaseButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
 	minimizedSize: number;
@@ -20,6 +20,7 @@ interface DecreaseButtonProps extends Partial<WritableInstanceProperties<ImageBu
  * @param props.maximizedSize The maximum size of the component.
  * @param props.onPressed A function used to decrease the value.
  */
+/* eslint-disable jsdoc/require-jsdoc */
 export const DecreaseButton = hooks((props: DecreaseButtonProps, hooks) => {
 	const minimizedSpring = new Flipper.Spring(props.minimizedSize, { frequency: 5 });
 	const maximizedSpring = new Flipper.Spring(props.maximizedSize, { frequency: 5 });
@@ -37,25 +38,8 @@ export const DecreaseButton = hooks((props: DecreaseButtonProps, hooks) => {
 			Image={assetIds.images.buttons["back arrow"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
-				/**
-				 * Event that connects to the `onPressed` function prop.
-				 *
-				 * @returns Nothing.
-				 */
 				Activated: (): void => props.onPressed(),
-
-				/**
-				 * Event that connects to the motors `setGoal` method.
-				 *
-				 * @returns Nothing.
-				 */
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
-
-				/**
-				 * Event that connects to the motors `setGoal` method.
-				 *
-				 * @returns Nothing.
-				 */
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
 		>
@@ -63,3 +47,4 @@ export const DecreaseButton = hooks((props: DecreaseButtonProps, hooks) => {
 		</imagebutton>
 	);
 });
+/* eslint-enable jsdoc/require-jsdoc */

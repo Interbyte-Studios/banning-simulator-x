@@ -20,7 +20,6 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 import { font, vec2Middle } from "../../../commonValues";
 import { PetFrame } from "../../../elements/petFrame";
 import { HatchEggButton } from "./hatchEgg";
-import { ToggleAutoDeleteButton } from "./toggleAutoDelete";
 import { ToggleAutoHatchButton } from "./toggleAutoHatch";
 import { TripleHatchEggButton } from "./tripleHatchEgg";
 
@@ -30,7 +29,6 @@ interface EggHudProps extends MappedEggHudProps {
 	isVoid: boolean;
 	pets: Array<Pet>;
 	initiateHatch: (amount: 1 | 3, egg: EggName, isVoid: boolean) => Promise<void>;
-	displayAutoDeleteMenu: () => void;
 }
 
 interface MappedEggHudProps {
@@ -125,7 +123,6 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 				<HatchEggButton eggName={props.eggName} isVoid={props.isVoid} initiateHatch={props.initiateHatch} />
 				<TripleHatchEggButton eggName={props.eggName} isVoid={props.isVoid} initiateHatch={props.initiateHatch} />
 				<ToggleAutoHatchButton petsSize={props.pets.size()} />
-				<ToggleAutoDeleteButton petsSize={props.pets.size()} displayAutoDeleteMenu={props.displayAutoDeleteMenu} />
 				<imagelabel
 					BackgroundTransparency={1}
 					AnchorPoint={vec2Middle}

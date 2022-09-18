@@ -10,7 +10,6 @@ import { EggHudDisplay } from "./eggHudDisplay";
 
 interface EggHudProps {
 	initiateHatch: (amount: 1 | 3, egg: EggName, isVoid: boolean) => Promise<void>;
-	displayAutoHatchMenu: () => void;
 }
 
 /**
@@ -75,7 +74,6 @@ export const EggHud = hooks((props: EggHudProps, { useState, useEffect }) => {
 							isVoid={false}
 							pets={pets}
 							initiateHatch={props.initiateHatch}
-							displayAutoDeleteMenu={props.displayAutoHatchMenu}
 						/>
 						<EggHudDisplay
 							adornee={voidEgg}
@@ -83,7 +81,6 @@ export const EggHud = hooks((props: EggHudProps, { useState, useEffect }) => {
 							isVoid={true}
 							pets={pets}
 							initiateHatch={props.initiateHatch}
-							displayAutoDeleteMenu={props.displayAutoHatchMenu}
 						/>
 					</frame>
 				);

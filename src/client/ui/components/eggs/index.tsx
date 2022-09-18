@@ -11,7 +11,6 @@ import { AnimateEggs } from "./eggHatch/animateEggs";
 import { EggHud } from "./eggHud";
 
 interface EggsUIProps {
-	displayAutoHatchMenu: () => void;
 	setHatchingStatus: (isHatching: boolean) => void;
 }
 
@@ -63,7 +62,6 @@ export const EggsUI = hooks((props: EggsUIProps, { useState, useContext }) => {
 					setCurrentHatchData(undefined);
 				}
 			}}
-			displayAutoHatchMenu={props.displayAutoHatchMenu}
 		/>,
 	];
 
