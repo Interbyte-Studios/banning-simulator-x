@@ -26,6 +26,8 @@ declare global {
 					};
 				};
 			};
+			["talisman tower"]: Folder;
+			talismans: Folder;
 		};
 		decoration: Folder & {
 			[P in keyof Worlds]: Folder & {

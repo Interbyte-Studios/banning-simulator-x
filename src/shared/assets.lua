@@ -18,6 +18,11 @@ return {
 			coins = "rbxassetid://9591269212",
 			gems = "rbxassetid://10833933846",
 		},
+		statIcons = {
+			health = "rbxassetid://10497648518",
+			damage = "rbxassetid://10497685527",
+			experience = "rbxassetid://10525545320",
+		},
 		maps = {
 			["Ban Land"] = {
 				world = "rbxassetid://10509318265",

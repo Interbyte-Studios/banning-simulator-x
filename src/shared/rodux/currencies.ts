@@ -5,6 +5,7 @@ import { currencies, Currency } from "shared/configs/currencies";
 import { RedeemCode } from "./media";
 import { AddPet } from "./pets";
 import { RedeemQuest } from "./quests";
+import { PurchaseTalisman } from "./talismans";
 import { PurchaseWeapon } from "./weapons";
 import { UnlockWorld, UnlockZone } from "./worlds";
 
@@ -16,6 +17,7 @@ export interface KillNpc extends Rodux.Action<"killNpc"> {
 	currencyType: Currency;
 	experience: number;
 	weaponId: number;
+	talismanId: number | undefined;
 }
 
 /**
@@ -23,6 +25,7 @@ export interface KillNpc extends Rodux.Action<"killNpc"> {
  * @param currencyType The type of currency to reward the player with.
  * @param experience The amount of experience to give them.
  * @param weaponId The id of the weapon the player has equipped.
+ * @param talismanId The id of the talisman the player has equipped.
  * @returns The Rodux action to dispatch.
  */
 export function killNpc(
@@ -30,6 +33,7 @@ export function killNpc(
 	currencyType: Currency,
 	experience: number,
 	weaponId: number,
+	talismanId: number | undefined,
 ): KillNpc & Rodux.AnyAction {
 	return {
 		type: "killNpc",
@@ -37,6 +41,7 @@ export function killNpc(
 		currencyType,
 		experience,
 		weaponId,
+		talismanId,
 	};
 }
 
@@ -49,7 +54,7 @@ const defaultCurrencies = Object.fromEntries(
 /* eslint-disable jsdoc/require-jsdoc */
 export const currenciesReducer = Rodux.createReducer<
 	CurrenciesState,
-	CurrenciesActions | PurchaseWeapon | UnlockWorld | UnlockZone | AddPet | RedeemQuest | RedeemCode
+	CurrenciesActions | PurchaseWeapon | UnlockWorld | UnlockZone | AddPet | RedeemQuest | PurchaseTalisman | RedeemCode
 >(defaultCurrencies, {
 	purchaseWeapon: (state, action) => {
 		const purchasedCurrency = state[action.cost.currency] - action.cost.amount;
@@ -89,6 +94,11 @@ export const currenciesReducer = Rodux.createReducer<
 		const redeemedCurrency = state[action.rewardType.currency] + action.rewardType.amount;
 
 		return { ...state, [action.rewardType.currency]: redeemedCurrency };
+	},
+	purchaseTalisman: (state, action) => {
+		const purchasedCurrency = state[action.cost.currency] - action.cost.amount;
+
+		return { ...state, [action.cost.currency]: purchasedCurrency };
 	},
 	redeemCode: (state, action) => {
 		if (action.currency === undefined) {

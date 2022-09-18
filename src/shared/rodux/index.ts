@@ -2,6 +2,7 @@ import Rodux from "@rbxts/rodux";
 
 import { BoostActions, boostsReducer, BoostsState } from "./boosts";
 import { CurrenciesActions, currenciesReducer, CurrenciesState } from "./currencies";
+import { CurrentTalismanActions, currentTalismanReducer, CurrentTalismanState } from "./currentTalisman";
 import { CurrentWeaponActions, currentWeaponReducer, CurrentWeaponState } from "./currentWeapon";
 import { experienceReducer, ExperienceState } from "./experience";
 import { GamepassActions, gamepassesReducer, GamepassesState } from "./gamepasses";
@@ -10,6 +11,7 @@ import { PetsActions, petsReducer, PetsState } from "./pets";
 import { QuestsAction, questsReducer, QuestsState } from "./quests";
 import { RankActions, rankReducer, RankState } from "./rank";
 import { SettingsActions, settingsReducer, SettingsState } from "./settings";
+import { TalismanActions, talismanReducer, TalismansState } from "./talismans";
 import { TitleActions, titleReducer, TitleState } from "./title";
 import { WeaponsActions, weaponsReducer, WeaponsState } from "./weapons";
 import { WorldActions, worldsReducer, WorldsState } from "./worlds";
@@ -28,6 +30,8 @@ export type StoreState = {
 	title: TitleState;
 	weapons: WeaponsState;
 	worlds: WorldsState;
+	talismans: TalismansState;
+	currentTalisman: CurrentTalismanState;
 };
 export type StoreActions = (
 	| BoostActions
@@ -42,6 +46,8 @@ export type StoreActions = (
 	| TitleActions
 	| WeaponsActions
 	| WorldActions
+	| TalismanActions
+	| CurrentTalismanActions
 ) &
 	Rodux.AnyAction;
 
@@ -59,6 +65,8 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	title: titleReducer,
 	weapons: weaponsReducer,
 	worlds: worldsReducer,
+	talismans: talismanReducer,
+	currentTalisman: currentTalismanReducer,
 });
 
 export type Store = Rodux.Store<StoreState, StoreActions>;

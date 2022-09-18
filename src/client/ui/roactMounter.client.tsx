@@ -41,6 +41,8 @@ onStoreCreated(player)
 						.GetNamespace("visual")
 						.Get("togglePetsStudsOfDistance"),
 					toggleTimeOfDay: remotes.Client.GetNamespace("settings").GetNamespace("visual").Get("toggleTimeOfDay"),
+					purchaseTalisman: remotes.Client.GetNamespace("talismans").Get("purchaseTalisman"),
+					equipTalisman: remotes.Client.GetNamespace("talismans").Get("equipTalisman"),
 					verifyDiscord: remotes.Client.GetNamespace("media").Get("verifyDiscord"),
 				}}
 			>

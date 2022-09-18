@@ -7,6 +7,7 @@ import { CodesMenu } from "./components/codes/menu";
 import { EggsUI } from "./components/eggs";
 import { Hud } from "./components/hud";
 import { Quests } from "./components/quests";
+import { TalismanShop } from "./components/talismans/talismanShop";
 import { SettingsMenu } from "./components/settings/menu";
 import { ZonesUI } from "./components/zones";
 import { hooks } from "./hooks";
@@ -50,6 +51,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
+				<TalismanShop store={props.store} />
 				<EggsUI />
 				<CodesMenu
 					visible={codesMenuVisible}
