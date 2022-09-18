@@ -29,9 +29,7 @@ export function EggHatch(props: EggHatchProps): Roact.Element {
 		const id = infoFrames.size() + 1;
 		if (!isValidPetSlotId(id)) throw `Expected pet slot id to be 1, 2, or 3, but got ${id}`;
 
-		infoFrames.push(
-			<InfoFrame eggName={props.eggName} id={props.pets.size() === 1 ? 3 : id} isVoid={props.isVoid} pet={pet.id} />,
-		);
+		infoFrames.push(<InfoFrame eggName={props.eggName} id={id} isVoid={props.isVoid} pet={pet.id} />);
 	}
 
 	return (

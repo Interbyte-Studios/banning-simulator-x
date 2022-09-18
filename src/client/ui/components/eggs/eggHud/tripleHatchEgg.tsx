@@ -75,6 +75,7 @@ export const TripleHatchEggButton = RoactRodux.connect(mapStateToProps)(
 				ScaleType={Enum.ScaleType.Fit}
 				Event={{
 					Activated: async (): Promise<void> => {
+						// eslint-disable-next-line roblox-ts/lua-truthiness
 						if (!props.gamepassesState["Triple Hatch"]) {
 							MarketplaceService.PromptGamePassPurchase(player, GAMEPASSES["Triple Hatch"]);
 							return;
