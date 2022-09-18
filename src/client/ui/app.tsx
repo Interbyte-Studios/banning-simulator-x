@@ -3,10 +3,9 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { Store } from "shared/rodux";
 
 import { EggsUI } from "./components/eggs";
-import { AutoDelete } from "./components/eggs/autoDelete";
 import { Hud } from "./components/hud";
 import { Quests } from "./components/quests";
-import { SettingsUI } from "./components/settings";
+import { SettingsMenu } from "./components/settings/menu";
 import { ZonesUI } from "./components/zones";
 import { hooks } from "./hooks";
 
@@ -26,19 +25,14 @@ interface AppProps {
 export const app = hooks((props: AppProps, { useState }) => {
 	const [questsMenuVisible, setQuestsVisibility] = useState(false);
 	const [settingsMenuVisible, setSettingsVisibility] = useState(false);
-	const [autoDeleteMenuVisible, setAutoDeleteVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
-				<AutoDelete visible={autoDeleteMenuVisible} hideMenu={(): void => setAutoDeleteVisibility(false)} />
-				<EggsUI
-					displayAutoHatchMenu={(): void => setAutoDeleteVisibility(true)}
-					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
-				/>
-				<SettingsUI visible={settingsMenuVisible} hideMenu={(): void => setSettingsVisibility(false)} />
+				<EggsUI setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)} />
+				<SettingsMenu visible={settingsMenuVisible} hideMenu={(): void => setSettingsVisibility(false)} />
 				<Quests visible={questsMenuVisible} hideMenu={(): void => setQuestsVisibility(false)} />
 				<ZonesUI />
 				<Hud

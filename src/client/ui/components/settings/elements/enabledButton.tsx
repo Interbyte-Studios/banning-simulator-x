@@ -1,10 +1,9 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
+import { font, vec2Middle } from "client/ui/commonValues";
+import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
-
-import { font, vec2Middle } from "../../commonValues";
-import { useBindingMotor } from "../../customHooks/useBindingMotor";
-import { hooks } from "../../hooks";
 
 interface EnabledButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
 	minimizedSize: { x: number; y: number };
@@ -27,6 +26,7 @@ const springProps = {
  * @param props.isEnabled The value of the boolean.
  * @param props.onPressed A function to change the value of the boolean.
  */
+/* eslint-disable jsdoc/require-jsdoc */
 export const EnabledButton = hooks((props: EnabledButtonProps, hooks) => {
 	const { motor, binding } = useBindingMotor(hooks, { x: props.maximizedSize.x, y: props.maximizedSize.y });
 
@@ -42,29 +42,12 @@ export const EnabledButton = hooks((props: EnabledButtonProps, hooks) => {
 				props.isEnabled ? assetIds.images.buttons["green toggle button"] : assetIds.images.buttons["red toggle button"]
 			}
 			Event={{
-				/**
-				 * Event that connects to the `onClicked` function prop.
-				 *
-				 * @returns Nothing.
-				 */
 				Activated: (): void => props.onClicked(),
-
-				/**
-				 * Event that connects to the motors `setGoal` method.
-				 *
-				 * @returns Nothing.
-				 */
 				MouseEnter: (): void =>
 					motor.setGoal({
 						x: new Flipper.Spring(props.minimizedSize.x, springProps),
 						y: new Flipper.Spring(props.minimizedSize.y, springProps),
 					}),
-
-				/**
-				 * Event that connects to the motors `setGoal` method.
-				 *
-				 * @returns Nothing.
-				 */
 				MouseLeave: (): void =>
 					motor.setGoal({
 						x: new Flipper.Spring(props.maximizedSize.x, springProps),
@@ -90,3 +73,4 @@ export const EnabledButton = hooks((props: EnabledButtonProps, hooks) => {
 		</imagebutton>
 	);
 });
+/* eslint-enable jsdoc/require-jsdoc */
