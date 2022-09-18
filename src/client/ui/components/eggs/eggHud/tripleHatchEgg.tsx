@@ -2,7 +2,6 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { MarketplaceService, Players, RunService } from "@rbxts/services";
-import { tryPurchaseEgg } from "client/modules/eggs/purchaseEgg";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { hooks } from "client/ui/hooks";
@@ -109,21 +108,7 @@ export const TripleHatchEggButton = RoactRodux.connect(mapStateToProps)(
 									return;
 								}
 
-								const canPurchase = tryPurchaseEgg(
-									props.currenciesState,
-									props.gamepassesState,
-									props.petsState,
-									props.worldsState,
-									3,
-									props.eggName,
-									props.isVoid,
-								);
-
-								if (canPurchase) {
-									await props.initiateHatch(3, props.eggName, props.isVoid);
-								} else {
-									RunService.UnbindFromRenderStep("autoHatch");
-								}
+								await props.initiateHatch(3, props.eggName, props.isVoid);
 							});
 
 							const movementConnection = humanoid.GetPropertyChangedSignal("MoveDirection").Connect(() => {
@@ -140,19 +125,7 @@ export const TripleHatchEggButton = RoactRodux.connect(mapStateToProps)(
 								return;
 							}
 
-							const canPurchase = tryPurchaseEgg(
-								props.currenciesState,
-								props.gamepassesState,
-								props.petsState,
-								props.worldsState,
-								3,
-								props.eggName,
-								props.isVoid,
-							);
-
-							if (canPurchase) {
-								await props.initiateHatch(3, props.eggName, props.isVoid);
-							}
+							await props.initiateHatch(3, props.eggName, props.isVoid);
 						}
 					},
 					MouseEnter: (): void => motor.setGoal(minimizedSpring),

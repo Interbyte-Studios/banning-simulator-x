@@ -31,12 +31,12 @@ export const app = hooks((props: AppProps, { useState }) => {
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
-				<EggsUI setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)} />
+				<EggsUI store={props.store} setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)} />
 				<SettingsMenu visible={settingsMenuVisible} hideMenu={(): void => setSettingsVisibility(false)} />
 				<Quests visible={questsMenuVisible} hideMenu={(): void => setQuestsVisibility(false)} />
 				<ZonesUI />
 				<Hud
-					visible={!settingsMenuVisible || !isHatching}
+					visible={!settingsMenuVisible && !isHatching}
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
 				/>

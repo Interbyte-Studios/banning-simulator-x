@@ -42,7 +42,7 @@ export const ToggleAutoHatchButton = RoactRodux.connect(mapStateToProps)(
 
 		const { motor, binding } = useBindingMotor(hooks, maxButtonSize);
 
-		const { useContext } = hooks;
+		const { useContext, useEffect } = hooks;
 		const { toggleAuto } = useContext(remoteContext);
 
 		return (

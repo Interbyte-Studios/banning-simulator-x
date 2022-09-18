@@ -9,6 +9,7 @@ import { isImmuneRarity } from "shared/rodux/settings";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
+import { withinDistanceToHatch } from "shared/util/withinDistanceToHatch";
 
 const hatchEgg = remotes.Server.GetNamespace("eggs").Create("hatchEgg");
 const hatchTimeCache: Map<Player, number> = new Map();
@@ -43,6 +44,28 @@ hatchEgg.SetCallback(
 		// check that user owns zone
 		const ownsZone = ownsWorld.zones.find((x) => x === eggData.zone);
 		if (ownsZone === undefined) {
+			return {
+				success: false,
+			};
+		}
+
+		// check inventory space
+		if (currentState.pets.size() >= getPetInventorySize(currentState.gamepasses) + amount) {
+			return {
+				success: false,
+			};
+		}
+
+		// check that user is within distance
+		const character = player.Character;
+		if (character === undefined) {
+			return {
+				success: false,
+			};
+		}
+
+		const isWithinDistance = withinDistanceToHatch(character, eggName, isVoid);
+		if (!isWithinDistance) {
 			return {
 				success: false,
 			};

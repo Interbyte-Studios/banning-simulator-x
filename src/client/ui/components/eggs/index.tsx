@@ -1,8 +1,14 @@
 import Roact from "@rbxts/roact";
+import { Players } from "@rbxts/services";
 import { udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
 import { remoteContext } from "client/ui/mocks/remoteContext";
-import { EggName } from "shared/configs/eggs";
+import { EggName, hatchDebounce } from "shared/configs/eggs";
+import { Store } from "shared/rodux";
 import { ConfirmedPet } from "shared/rodux/pets";
+import { getEggCost } from "shared/util/getEggCost";
+import { getEggData } from "shared/util/getEggData";
+import { getPetInventorySize } from "shared/util/getPetInventorySize";
+import { withinDistanceToHatch } from "shared/util/withinDistanceToHatch";
 
 import { hooks } from "../../hooks";
 import { EggCost } from "./eggCosts";
@@ -11,6 +17,7 @@ import { AnimateEggs } from "./eggHatch/animateEggs";
 import { EggHud } from "./eggHud";
 
 interface EggsUIProps {
+	store: Store;
 	setHatchingStatus: (isHatching: boolean) => void;
 }
 
@@ -19,6 +26,9 @@ interface HatchData {
 	pets: Array<ConfirmedPet>;
 	isVoid: boolean;
 }
+
+const player = Players.LocalPlayer;
+const hatchTimeCache: Map<Player, number> = new Map();
 
 /**
  * A higher ordered component that displays both information for all the eggs in the game and functionality to hatch those eggs.
@@ -32,6 +42,54 @@ export const EggsUI = hooks((props: EggsUIProps, { useState, useContext }) => {
 		<EggCost />,
 		<EggHud
 			initiateHatch={async (amount: 1 | 2 | 3, egg: EggName, isVoid: boolean): Promise<void> => {
+				// verify that player has waited long enough to hatch
+				const lastHatchTime = hatchTimeCache.get(player) ?? 0;
+
+				const now = time();
+				const canHatch = now - lastHatchTime > hatchDebounce;
+				if (!canHatch) {
+					return;
+				}
+
+				// verify that the user can hatch the eggs
+				const currentState = props.store.getState();
+				const eggData = getEggData(egg);
+				const eggCost = getEggCost(egg, isVoid);
+
+				// check that user owns world
+				const ownsWorld = currentState.worlds.find((x) => x.name === eggData.world);
+				if (ownsWorld === undefined) {
+					return;
+				}
+
+				// check that user owns zone
+				const ownsZone = ownsWorld.zones.find((x) => x === eggData.zone);
+				if (ownsZone === undefined) {
+					return;
+				}
+
+				// check for currency
+				if (eggCost.amount * amount > currentState.currencies[eggCost.currencyType]) {
+					return;
+				}
+
+				// check inventory space
+				if (currentState.pets.size() >= getPetInventorySize(currentState.gamepasses) + amount) {
+					return;
+				}
+
+				// check that user is within distance
+				const character = player.Character;
+				if (character === undefined) {
+					return;
+				}
+
+				const isWithinDistance = withinDistanceToHatch(character, egg, isVoid);
+				// eslint-disable-next-line roblox-ts/lua-truthiness
+				if (!isWithinDistance) {
+					return;
+				}
+
 				const requestEggHatch = await hatchEgg.CallServerAsync(amount, egg, isVoid);
 
 				if (requestEggHatch.success) {
