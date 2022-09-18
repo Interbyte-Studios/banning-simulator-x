@@ -99,6 +99,7 @@ export const EggsUI = hooks((props: EggsUIProps, { useState, useContext }) => {
 						amount,
 						eggName: egg,
 						isVoid,
+						fastEnabled: currentState.gamepasses["Fast Hatch"],
 					});
 
 					setCurrentHatchData({
@@ -112,6 +113,7 @@ export const EggsUI = hooks((props: EggsUIProps, { useState, useContext }) => {
 						eggName: egg,
 						pets: requestEggHatch.pets,
 						isVoid,
+						fastEnabled: currentState.gamepasses["Fast Hatch"],
 					});
 
 					setCurrentHatchData(undefined);
