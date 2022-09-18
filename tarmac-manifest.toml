@@ -43,6 +43,11 @@ hash = "1a9199e3033ba1dc11b3e019a354ee8be992d4df7421092ccf7f30fe56029d85"
 id = 10705288573
 packable = false
 
+[inputs."images/buttons/red button.png"]
+hash = "319c2858a8c5aba883dc98de1b8a617b257a13fe4bebb286f697e72edc5a442e"
+id = 10928492791
+packable = false
+
 [inputs."images/buttons/red toggle button.png"]
 hash = "1d509295e1715921ab77b3dab8cd58dea28371b14c524530b8d841840b56ebf4"
 id = 10705304953
@@ -168,6 +173,21 @@ hash = "818a009d089f0e0becf31c04786831ecfdbaeeeefa55f74c62fe836900c897f1"
 id = 10835561050
 packable = false
 
+[inputs."images/ui/autoDelete/background.png"]
+hash = "4cec0116037d210fb6a5b3737cfe182fa8d784a20e909a66baab948b931e3504"
+id = 10931005537
+packable = false
+
+[inputs."images/ui/autoDelete/long green button.png"]
+hash = "b1f0d31130a92aabbdf20880bd1b0f5665108c54bb77675ccb6280800f97bf4a"
+id = 10931066791
+packable = false
+
+[inputs."images/ui/autoDelete/long red button.png"]
+hash = "3b891b00fd9c232e7ec1aaae25b330da98d6162bd3b2782cb2bee144c16830b7"
+id = 10931058710
+packable = false
+
 [inputs."images/ui/codes/background.png"]
 hash = "6587e982836cdf78e3ccaa8a8a81bf8178a97fd012610efc2cca0a9637c6aaac"
 id = 10913446755
@@ -181,6 +201,11 @@ packable = false
 [inputs."images/ui/egg/background.png"]
 hash = "a7a6769791c6d2bbbeced0ae62342f1525a5288bac5a677ba6ff37d28bc08a3c"
 id = 10832814885
+packable = false
+
+[inputs."images/ui/egg/delete.png"]
+hash = "ad26a55ca80b882c60f3939e11942c8b263f00499a28888ba950631d1b52e2a2"
+id = 10928548925
 packable = false
 
 [inputs."images/ui/egg/pet frame.png"]

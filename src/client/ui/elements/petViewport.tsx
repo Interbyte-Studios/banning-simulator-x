@@ -10,6 +10,7 @@ interface PetViewportProps {
 	native: Partial<WritableInstanceProperties<ViewportFrame>>;
 	eggName: EggName;
 	petId: number;
+	isVoid: boolean;
 }
 
 /**
@@ -42,6 +43,8 @@ export const PetViewport = hooks((props: PetViewportProps, { useValue, useEffect
 		setAssetProperties("pet", pet, false);
 
 		assert(pet.PrimaryPart, `Failed to get Primary Part for pet ${pet.Name} of id ${props.petId}`);
+
+		setAssetProperties("pet", pet, props.isVoid);
 
 		pet.Parent = viewport;
 

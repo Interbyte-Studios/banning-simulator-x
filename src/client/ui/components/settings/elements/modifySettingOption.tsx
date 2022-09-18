@@ -1,10 +1,11 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { DecreaseButton } from "client/ui/components/settings/decreaseButton";
-import { IncreaseButton } from "client/ui/components/settings/increaseButton";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
+
+import { DecreaseButton } from "./decreaseButton";
+import { IncreaseButton } from "./increaseButton";
 
 interface ModifySettingOptionProps {
 	position: UDim2;

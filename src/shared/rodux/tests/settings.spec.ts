@@ -18,6 +18,15 @@ import {
 } from "../settings";
 
 const defaultSettings: SettingsState = {
+	autoDelete: {
+		rarities: {
+			Basic: false,
+			Ordinary: false,
+			Rare: false,
+			Epic: false,
+		},
+		easyLegendaries: false,
+	},
 	sound: {
 		buttonClick: true,
 		music: 10,

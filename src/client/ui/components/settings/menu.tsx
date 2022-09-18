@@ -1,21 +1,28 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { setMusicVolume } from "client/modules/settings/musicVolume";
-import { setPetsStudsOfDistance } from "client/modules/settings/petStudsOfDistance";
-import { setSoundEffects } from "client/modules/settings/soundEffects";
-import { setTimeOfDay } from "client/modules/settings/timeOfDay";
-import { setWalkSpeed } from "client/modules/settings/walkSpeed";
-import { font, udim2Middle, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { vec2Middle } from "client/ui/commonValues";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { hooks } from "client/ui/hooks";
-import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { Settings } from "shared/rodux/settings";
 
-import { ModifySettingOption } from "./modifySettingOption";
-import { ToggleSettingOption } from "./toggleSettingOption";
+import { SectionHeader } from "./elements/sectionHeader";
+import { BasicRarityAutoDeleteSetting } from "./interactions/autoDelete/basic";
+import { EpicRarityAutoDeleteSetting } from "./interactions/autoDelete/epic";
+import { EasyLegendariesRarityAutoDeleteSetting } from "./interactions/autoDelete/epic copy";
+import { OrdinaryRarityAutoDeleteSetting } from "./interactions/autoDelete/ordinary";
+import { RareRarityAutoDeleteSetting } from "./interactions/autoDelete/rare";
+import { AutoHatchSetting } from "./interactions/gameplay/autoHatch";
+import { WalkSpeedSetting } from "./interactions/gameplay/walkSpeed";
+import { ToggleButtonSFXSetting } from "./interactions/sound/buttonSFX";
+import { GeneralSFXSetting } from "./interactions/sound/generalSFX";
+import { ToggleMusicFXSetting } from "./interactions/sound/musicFX";
+import { GraphicsSetting } from "./interactions/visual/graphics";
+import { PetAnimationSetting } from "./interactions/visual/petAnimation";
+import { PetDistanceSetting } from "./interactions/visual/petDistance";
+import { PetsDisplayedSetting } from "./interactions/visual/petsDisplayed";
+import { TimeOfDaySetting } from "./interactions/visual/timeOfDay";
 
 interface SettingsMenuProps extends SettingsMenuMappedProps {
 	visible: boolean;
@@ -43,186 +50,54 @@ function mapStateToProps(state: StoreState): SettingsMenuMappedProps {
  * @param props.hideMenu A function used to hide the settings menu ui.
  */
 export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
-	hooks((props: SettingsMenuProps, { useContext }) => {
+	hooks((props: SettingsMenuProps) => {
 		if (!props.visible) {
 			return <></>;
 		}
-
-		const {
-			toggleAuto,
-			toggleWalkSpeed,
-			toggleButtonClickSFX,
-			toggleMusicVolume,
-			toggleSoundEffectsVolume,
-			toggleGraphics,
-			togglePetAnimationType,
-			togglePetsDisplayed,
-			togglePetsStudsOfDistance,
-			toggleTimeOfDay,
-		} = useContext(remoteContext);
 
 		return (
 			<imagelabel
 				AnchorPoint={vec2Middle}
 				Size={UDim2.fromScale(0.3, 0.5)}
-				Position={udim2Middle}
+				Position={UDim2.fromScale(0.5, 0.5)}
 				BackgroundTransparency={1}
 				Image={assetIds.images.ui.settings.background}
 				ScaleType={Enum.ScaleType.Fit}
 			>
 				<uiaspectratioconstraint AspectRatio={0.8} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.495, 0.115)}
-					Size={UDim2.fromScale(0.4, 0.125)}
-					BackgroundTransparency={1}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Text={"Settings"}
-					Font={font}
-				>
-					<BaseUIStroke Thickness={3} />
-				</textlabel>
+				<SectionHeader position={UDim2.fromScale(0.495, 0.115)} size={UDim2.fromScale(0.4, 0.125)} text={"Settings"} />
 				<scrollingframe
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
 					BorderSizePixel={0}
 					Size={UDim2.fromScale(0.95, 0.735)}
 					Position={UDim2.fromScale(0.5, 0.56)}
+					CanvasSize={UDim2.fromScale(0, 2.5)}
 					ScrollBarThickness={6}
 				>
-					<textlabel
-						AnchorPoint={vec2Middle}
-						Position={UDim2.fromScale(0.5, 0.04)}
-						Size={UDim2.fromScale(0.4, 0.04)}
-						BackgroundTransparency={1}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						Text={"Sound"}
-						Font={font}
-					>
-						<BaseUIStroke Thickness={2} />
-					</textlabel>
-					<ToggleSettingOption
-						position={UDim2.fromScale(0.5, 0.09)}
-						size={UDim2.fromScale(0.95, 0.045)}
-						settingName={"Button Click SFX"}
-						isEnabled={props.settings.sound.buttonClick}
-						onClicked={(): void => toggleButtonClickSFX.SendToServer(!props.settings.sound.buttonClick)}
+					<SectionHeader position={UDim2.fromScale(0.5, 0.03)} size={UDim2.fromScale(0.4, 0.03)} text={"Sound"} />
+					<ToggleButtonSFXSetting />
+					<ToggleMusicFXSetting />
+					<GeneralSFXSetting />
+					<SectionHeader position={UDim2.fromScale(0.5, 0.21)} size={UDim2.fromScale(0.4, 0.03)} text={"Gameplay"} />
+					<AutoHatchSetting />
+					<WalkSpeedSetting />
+					<SectionHeader position={UDim2.fromScale(0.5, 0.345)} size={UDim2.fromScale(0.4, 0.03)} text={"Visual"} />
+					<GraphicsSetting />
+					<PetsDisplayedSetting />
+					<PetAnimationSetting />
+					<PetDistanceSetting />
+					<TimeOfDaySetting />
+					<SectionHeader
+						position={UDim2.fromScale(0.5, 0.6)}
+						size={UDim2.fromScale(0.7, 0.05)}
+						text={"Auto Delete (Hatch)"}
 					/>
-					<ModifySettingOption
-						position={UDim2.fromScale(0.5, 0.145)}
-						size={UDim2.fromScale(0.95, 0.045)}
-						settingName={"Music Volume"}
-						displayValue={`${props.settings.sound.music * 10}%`}
-						displayPercentage={true}
-						onIncrease={(): void => setMusicVolume(props.settings.sound.music + 1, toggleMusicVolume)}
-						onDecrease={(): void => setMusicVolume(props.settings.sound.music - 1, toggleMusicVolume)}
-					/>
-					<ModifySettingOption
-						position={UDim2.fromScale(0.5, 0.2)}
-						size={UDim2.fromScale(0.95, 0.045)}
-						settingName={"SFX Volume"}
-						displayValue={`${props.settings.sound.soundEffects * 10}%`}
-						displayPercentage={true}
-						onIncrease={(): void => setSoundEffects(props.settings.sound.soundEffects + 1, toggleSoundEffectsVolume)}
-						onDecrease={(): void => setSoundEffects(props.settings.sound.soundEffects - 1, toggleSoundEffectsVolume)}
-					/>
-					<textlabel
-						AnchorPoint={vec2Middle}
-						Position={UDim2.fromScale(0.5, 0.265)}
-						Size={UDim2.fromScale(0.4, 0.04)}
-						BackgroundTransparency={1}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						Text={"Gameplay"}
-						Font={font}
-					>
-						<BaseUIStroke Thickness={2} />
-					</textlabel>
-					<ToggleSettingOption
-						position={UDim2.fromScale(0.5, 0.31)}
-						size={UDim2.fromScale(0.95, 0.045)}
-						settingName={"Auto Hatch"}
-						isEnabled={props.settings.gameplay.autoHatch}
-						onClicked={(): void => toggleAuto.SendToServer()}
-					/>
-					<ModifySettingOption
-						position={UDim2.fromScale(0.5, 0.365)}
-						size={UDim2.fromScale(0.95, 0.045)}
-						settingName={"Walk Speed"}
-						displayValue={`${props.settings.gameplay.walkSpeed}`}
-						displayPercentage={false}
-						onIncrease={(): void => setWalkSpeed(props.settings.gameplay.walkSpeed + 1, toggleWalkSpeed)}
-						onDecrease={(): void => setWalkSpeed(props.settings.gameplay.walkSpeed - 1, toggleWalkSpeed)}
-					/>
-					<textlabel
-						AnchorPoint={vec2Middle}
-						Position={UDim2.fromScale(0.5, 0.43)}
-						Size={UDim2.fromScale(0.4, 0.04)}
-						BackgroundTransparency={1}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						Text={"Visual"}
-						Font={font}
-					>
-						<BaseUIStroke Thickness={2} />
-					</textlabel>
-					<ToggleSettingOption
-						position={UDim2.fromScale(0.5, 0.485)}
-						size={UDim2.fromScale(0.95, 0.045)}
-						settingName={"Low Graphics"}
-						isEnabled={props.settings.visual.graphicsQuality === "Low"}
-						onClicked={(): void =>
-							toggleGraphics.SendToServer(props.settings.visual.graphicsQuality === "High" ? "Low" : "High")
-						}
-					/>
-					<ToggleSettingOption
-						position={UDim2.fromScale(0.5, 0.54)}
-						size={UDim2.fromScale(0.95, 0.045)}
-						settingName={"Pets Hidden"}
-						isEnabled={!props.settings.visual.petsDisplayed}
-						onClicked={(): void => togglePetsDisplayed.SendToServer(!props.settings.visual.petsDisplayed)}
-					/>
-					<ModifySettingOption
-						position={UDim2.fromScale(0.5, 0.595)}
-						size={UDim2.fromScale(0.95, 0.045)}
-						settingName={"Pet Animation"}
-						displayValue={props.settings.visual.petAnimationType === "Following" ? "1" : "2"}
-						displayPercentage={false}
-						onIncrease={(): void =>
-							togglePetAnimationType.SendToServer(
-								props.settings.visual.petAnimationType === "Following" ? "Surrounding" : "Following",
-							)
-						}
-						onDecrease={(): void =>
-							togglePetAnimationType.SendToServer(
-								props.settings.visual.petAnimationType === "Surrounding" ? "Following" : "Surrounding",
-							)
-						}
-					/>
-					<ModifySettingOption
-						position={UDim2.fromScale(0.5, 0.65)}
-						size={UDim2.fromScale(0.95, 0.045)}
-						settingName={"Pet Distance"}
-						displayValue={`${props.settings.visual.petsStudsOfDistance}`}
-						displayPercentage={false}
-						onIncrease={(): void =>
-							setPetsStudsOfDistance(props.settings.visual.petsStudsOfDistance + 1, togglePetsStudsOfDistance)
-						}
-						onDecrease={(): void =>
-							setPetsStudsOfDistance(props.settings.visual.petsStudsOfDistance - 1, togglePetsStudsOfDistance)
-						}
-					/>
-					<ModifySettingOption
-						position={UDim2.fromScale(0.5, 0.705)}
-						size={UDim2.fromScale(0.95, 0.045)}
-						settingName={"Time of Day"}
-						displayValue={`${props.settings.visual.timeOfDay}`}
-						displayPercentage={false}
-						onIncrease={(): void => setTimeOfDay(props.settings.visual.timeOfDay + 1, toggleTimeOfDay)}
-						onDecrease={(): void => setTimeOfDay(props.settings.visual.timeOfDay - 1, toggleTimeOfDay)}
-					/>
+					<BasicRarityAutoDeleteSetting />
+					<OrdinaryRarityAutoDeleteSetting />
+					<RareRarityAutoDeleteSetting />
+					<EpicRarityAutoDeleteSetting />
+					<EasyLegendariesRarityAutoDeleteSetting />
 				</scrollingframe>
 				<ExitButton
 					Position={UDim2.fromScale(0.975, 0.125)}

@@ -3,6 +3,8 @@ import { RedeemCodeDefinition } from "shared/remotes/media/redeemCode";
 import { VerifyDiscordDefinition } from "shared/remotes/media/verifyDiscord";
 import { PurchaseZoneDefinition } from "shared/remotes/purchaseZone";
 import { RedeemQuestDefinition } from "shared/remotes/redeemQuest";
+import { ToggleAutoDeleteDefinition } from "shared/remotes/settings/autoDelete/toggleAutoDelete";
+import { ToggleEasyLegendariesAutoDeleteDefinition } from "shared/remotes/settings/autoDelete/toggleEasyLegendariesAutoDelete";
 import { ToggleAutoHatchDefinition } from "shared/remotes/settings/gameplay/toggleAuto";
 import { ToggleWalkSpeedDefinition } from "shared/remotes/settings/gameplay/toggleWalkSpeed";
 import { ToggleButtonClickDefinition } from "shared/remotes/settings/sound/toggleButtonClick";
@@ -29,6 +31,10 @@ export const fakeRemoteContext = {
 	purchaseZone: fakeRemoteCall<PurchaseZoneDefinition>("purchaseZone"),
 
 	toggleAuto: fakeRemoteCall<ToggleAutoHatchDefinition>("toggleAuto"),
+	toggleAutoDelete: fakeRemoteCall<ToggleAutoDeleteDefinition>("toggleAutoDelete"),
+	toggleEasyLegendariesAutoDelete: fakeRemoteCall<ToggleEasyLegendariesAutoDeleteDefinition>(
+		"toggleEasyLegendariesAutoDelete",
+	),
 
 	redeemCode: fakeFunctionCall<RedeemCodeDefinition>("redeemCode", () => {
 		return {

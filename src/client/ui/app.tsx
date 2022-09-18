@@ -30,6 +30,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	const [questsMenuVisible, setQuestsVisibility] = useState(false);
 	const [settingsMenuVisible, setSettingsVisibility] = useState(false);
 
+	const [isHatching, setHatchingStatus] = useState(false);
 	const [displayAnnouncement, setDisplayAnnouncement] = useState<
 		{ message: string; announcementType: "errors" | "announcements" } | undefined
 	>(undefined);
@@ -51,8 +52,8 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
+				<EggsUI store={props.store} setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)} />
 				<TalismanShop store={props.store} />
-				<EggsUI />
 				<CodesMenu
 					visible={codesMenuVisible}
 					hideMenu={(): void => setCodesVisible(false)}
@@ -62,7 +63,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 				<Quests visible={questsMenuVisible} hideMenu={(): void => setQuestsVisibility(false)} />
 				<ZonesUI />
 				<Hud
-					visible={!codesMenuVisible && !settingsMenuVisible}
+					visible={!codesMenuVisible && !settingsMenuVisible && !isHatching}
 					displayCodesMenu={(): void => setCodesVisible(true)}
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}

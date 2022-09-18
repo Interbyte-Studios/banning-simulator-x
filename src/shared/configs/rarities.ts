@@ -18,6 +18,10 @@ export const RARITIES = preserveWithConstraint<Record<string, RarityGradient>>()
 		BeginningColor: Color3.fromRGB(255, 250, 184),
 		EndingColor: Color3.fromRGB(255, 238, 55),
 	},
+	Epic: {
+		BeginningColor: Color3.fromRGB(255, 184, 184),
+		EndingColor: Color3.fromRGB(255, 0, 0),
+	},
 	Legendary: {
 		BeginningColor: Color3.fromRGB(200, 198, 255),
 		EndingColor: Color3.fromRGB(21, 0, 255),

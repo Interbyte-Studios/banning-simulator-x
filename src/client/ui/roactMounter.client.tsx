@@ -29,6 +29,10 @@ onStoreCreated(player)
 						.GetNamespace("sound")
 						.Get("toggleSoundEffectsVolume"),
 					toggleAuto: remotes.Client.GetNamespace("settings").GetNamespace("gameplay").Get("toggleAuto"),
+					toggleAutoDelete: remotes.Client.GetNamespace("settings").GetNamespace("autoDelete").Get("toggleAutoDelete"),
+					toggleEasyLegendariesAutoDelete: remotes.Client.GetNamespace("settings")
+						.GetNamespace("autoDelete")
+						.Get("toggleEasyLegendariesAutoDelete"),
 					toggleWalkSpeed: remotes.Client.GetNamespace("settings").GetNamespace("gameplay").Get("toggleWalkSpeed"),
 					toggleGraphics: remotes.Client.GetNamespace("settings").GetNamespace("visual").Get("toggleGraphics"),
 					togglePetAnimationType: remotes.Client.GetNamespace("settings")
