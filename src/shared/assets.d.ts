@@ -6,7 +6,13 @@ declare namespace assetIds {
 				world: string;
 			};
 		};
+		statIcons: {
+			health: string;
+			damage: string;
+			experience: string;
+		};
 		buttons: {
+			"long green button": string;
 			"back arrow": string;
 			"red toggle button": string;
 			"down button": string;

@@ -33,6 +33,11 @@ hash = "c590bd53d5eb1e4ab61535acfe79f0db569590da69cf3f5a7f24f2a674179289"
 id = 10705304739
 packable = false
 
+[inputs."images/buttons/long green button.png"]
+hash = "f16907d8a055b9ca3ab6fa10762f523652e05c0ffab560b57a5151aa0d2d245a"
+id = 10913578307
+packable = false
+
 [inputs."images/buttons/purple button.png"]
 hash = "1a9199e3033ba1dc11b3e019a354ee8be992d4df7421092ccf7f30fe56029d85"
 id = 10705288573
@@ -184,8 +189,8 @@ id = 10931058710
 packable = false
 
 [inputs."images/ui/codes/background.png"]
-hash = "527b5ae304bccc0e4b276684f6c6ad5fb824cdf2f9cd29e83a21306a97842c42"
-id = 10908456122
+hash = "6587e982836cdf78e3ccaa8a8a81bf8178a97fd012610efc2cca0a9637c6aaac"
+id = 10913446755
 packable = false
 
 [inputs."images/ui/codes/input.png"]

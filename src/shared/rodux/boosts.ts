@@ -1,8 +1,23 @@
 import Rodux from "@rbxts/rodux";
+import { t } from "@rbxts/t";
 import { BoostProduct } from "shared/configs/game";
 
-export type BoostsState = { [P in BoostProduct]: number };
+import { RedeemCode } from "./media";
+
+export interface BoostsState {
+	storage: {
+		[boost in BoostProduct]: {
+			[time in ValidBoostTime]: number;
+		};
+	};
+	active: {
+		[boost in BoostProduct]: number;
+	};
+}
 export type BoostActions = ClaimBoost | UseBoosts;
+
+export const validBoostTime = t.union(t.literal(15), t.literal(30), t.literal(60), t.literal(120));
+export type ValidBoostTime = t.static<typeof validBoostTime>;
 
 interface ClaimBoost extends Rodux.Action<"claimBoost"> {
 	name: BoostProduct;
@@ -40,25 +55,70 @@ export function useBoosts(boosts: ValidBoostUseRecord): UseBoosts & Rodux.AnyAct
 }
 
 const defaultBoosts: BoostsState = {
-	["x2 Boss Drop Luck"]: 0,
-	["x2 Currency"]: 0,
-	["x2 Experience"]: 0,
-	["x2 Pet Experience"]: 0,
+	storage: {
+		["x2 Currency"]: {
+			15: 0,
+			30: 0,
+			60: 0,
+			120: 0,
+		},
+		["x2 Rank Experience"]: {
+			15: 0,
+			30: 0,
+			60: 0,
+			120: 0,
+		},
+		["x2 Talisman Experience"]: {
+			15: 0,
+			30: 0,
+			60: 0,
+			120: 0,
+		},
+		["x2 Pet Experience"]: {
+			15: 0,
+			30: 0,
+			60: 0,
+			120: 0,
+		},
+		["x2 Hatching Luck"]: {
+			15: 0,
+			30: 0,
+			60: 0,
+			120: 0,
+		},
+	},
+	active: {
+		["x2 Currency"]: 0,
+		["x2 Rank Experience"]: 0,
+		["x2 Talisman Experience"]: 0,
+		["x2 Pet Experience"]: 0,
+		["x2 Hatching Luck"]: 0,
+	},
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions>(defaultBoosts, {
+export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions | RedeemCode>(defaultBoosts, {
 	claimBoost: (state, action) => {
 		const newState = { ...state };
-		newState[action.name] += action.boostTime;
+		newState.active[action.name] += action.boostTime;
 
 		return newState;
 	},
 	useBoosts: (state, action) => {
 		const newState = { ...state };
 		for (const boost of action.boosts) {
-			newState[boost] -= 1;
+			newState.active[boost] -= 1;
 		}
+
+		return newState;
+	},
+	redeemCode: (state, action) => {
+		if (action.boosts === undefined) {
+			return state;
+		}
+
+		const newState = { ...state };
+		newState.storage[action.boosts.name][action.boosts.time] += 1;
 
 		return newState;
 	},

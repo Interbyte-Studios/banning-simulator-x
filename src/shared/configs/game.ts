@@ -21,10 +21,11 @@ export const GAMEPASSES = {
 
 export type BoostProduct = keyof typeof BOOST_PRODUCTS;
 export const BOOST_PRODUCTS = {
-	["x2 Boss Drop Luck"]: 1,
 	["x2 Currency"]: 1,
-	["x2 Experience"]: 1,
+	["x2 Rank Experience"]: 1,
+	["x2 Talisman Experience"]: 1,
 	["x2 Pet Experience"]: 1,
+	["x2 Hatching Luck"]: 1,
 };
 
 export type TaskProduct = keyof typeof TASK_PRODUCTS;
