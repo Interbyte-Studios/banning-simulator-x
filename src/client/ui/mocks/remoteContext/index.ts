@@ -1,4 +1,6 @@
 import { createContext } from "@rbxts/roact";
+import { RedeemCodeDefinition } from "shared/remotes/media/redeemCode";
+import { VerifyDiscordDefinition } from "shared/remotes/media/verifyDiscord";
 import { PurchaseZoneDefinition } from "shared/remotes/purchaseZone";
 import { RedeemQuestDefinition } from "shared/remotes/redeemQuest";
 import { ToggleAutoHatchDefinition } from "shared/remotes/settings/gameplay/toggleAuto";
@@ -17,6 +19,7 @@ import { EquipWeaponDefinition } from "shared/remotes/weapons/equipWeapon";
 import { PurchaseWeaponDefinition } from "shared/remotes/weapons/purchaseWeapon";
 
 import { fakeHatchEgg } from "../hatchEgg";
+import { fakeFunctionCall } from "./fakeFunctionCall";
 import { fakeRemoteCall } from "./fakeRemoteCall";
 
 export const fakeRemoteContext = {
@@ -27,6 +30,11 @@ export const fakeRemoteContext = {
 
 	toggleAuto: fakeRemoteCall<ToggleAutoHatchDefinition>("toggleAuto"),
 
+	redeemCode: fakeFunctionCall<RedeemCodeDefinition>("redeemCode", () => {
+		return {
+			success: true,
+		};
+	}),
 	redeemQuest: fakeRemoteCall<RedeemQuestDefinition>("redeemQuest"),
 	toggleWalkSpeed: fakeRemoteCall<ToggleWalkSpeedDefinition>("toggleWalkSpeed"),
 	toggleButtonClickSFX: fakeRemoteCall<ToggleButtonClickDefinition>("toggleButtonClickSFX"),
@@ -37,6 +45,11 @@ export const fakeRemoteContext = {
 	togglePetsDisplayed: fakeRemoteCall<TogglePetsDisplayedDefinition>("togglePetsDisplayed"),
 	togglePetsStudsOfDistance: fakeRemoteCall<TogglePetsStudsOfDistanceDefinition>("togglePetsStudsOfDistance"),
 	toggleTimeOfDay: fakeRemoteCall<ToggleTimeOfDayDefinition>("toggleTimeOfDay"),
+	verifyDiscord: fakeFunctionCall<VerifyDiscordDefinition>("verifyDiscord", () => {
+		return {
+			success: true,
+		};
+	}),
 
 	purchaseTalisman: fakeRemoteCall<PurchaseTalismanDefinition>("purchaseTalisman"),
 	equipTalisman: fakeRemoteCall<EquipTalismanDefinition>("equipTalisman"),

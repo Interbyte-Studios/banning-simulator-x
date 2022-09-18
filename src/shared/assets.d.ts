@@ -12,6 +12,7 @@ declare namespace assetIds {
 			experience: string;
 		};
 		buttons: {
+			"long green button": string;
 			"back arrow": string;
 			"red toggle button": string;
 			"down button": string;
