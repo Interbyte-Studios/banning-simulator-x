@@ -18,6 +18,10 @@ export interface Pet {
 export type PetsState = Array<Pet>;
 export type PetsActions = AddPet;
 
+export interface ConfirmedPet extends PetData {
+	autoDeleted: boolean;
+}
+
 export interface PetData {
 	id: number;
 	rarity: Rarities;
@@ -27,7 +31,7 @@ export interface PetData {
 export interface AddPet extends Rodux.Action<"addPet"> {
 	cost: number;
 	currencyType: Currency;
-	pets: Array<PetData>;
+	pets: Array<ConfirmedPet>;
 }
 
 /**
@@ -36,7 +40,7 @@ export interface AddPet extends Rodux.Action<"addPet"> {
  * @param pets The pets to add.
  * @returns The Rodux action to dispatch.
  */
-export function addPets(cost: number, currencyType: Currency, pets: Array<PetData>): AddPet & Rodux.AnyAction {
+export function addPets(cost: number, currencyType: Currency, pets: Array<ConfirmedPet>): AddPet & Rodux.AnyAction {
 	return {
 		type: "addPet",
 		cost: cost,
@@ -53,6 +57,10 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 		const newState: PetsState = [...state];
 
 		for (const pet of action.pets) {
+			if (pet.autoDeleted) {
+				continue;
+			}
+
 			const petGuid = HttpService.GenerateGUID(false);
 			const newPet: Pet = {
 				id: pet.id,

@@ -2,7 +2,7 @@ import Roact from "@rbxts/roact";
 import { t } from "@rbxts/t";
 import { udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
 import { EggName } from "shared/configs/eggs";
-import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
+import { ConfirmedPet } from "shared/rodux/pets";
 
 import { InfoFrame } from "./infoFrame";
 
@@ -29,7 +29,9 @@ export function EggHatch(props: EggHatchProps): Roact.Element {
 		const id = infoFrames.size() + 1;
 		if (!isValidPetSlotId(id)) throw `Expected pet slot id to be 1, 2, or 3, but got ${id}`;
 
-		infoFrames.push(<InfoFrame eggName={props.eggName} id={id} isVoid={props.isVoid} pet={pet.id} />);
+		infoFrames.push(
+			<InfoFrame eggName={props.eggName} id={id} isVoid={props.isVoid} pet={pet.id} autoDeleted={pet.autoDeleted} />,
+		);
 	}
 
 	return (

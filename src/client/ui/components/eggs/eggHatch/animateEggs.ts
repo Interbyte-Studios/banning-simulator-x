@@ -1,7 +1,8 @@
 import { HttpService, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
 import { playEffect, SoundEffect } from "client/util/playSound";
 import { EggName, hatchDebounce } from "shared/configs/eggs";
-import { ConfirmedPet, ValidEggAmount } from "shared/remotes/eggs/hatchEgg";
+import { ValidEggAmount } from "shared/remotes/eggs/hatchEgg";
+import { ConfirmedPet } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 

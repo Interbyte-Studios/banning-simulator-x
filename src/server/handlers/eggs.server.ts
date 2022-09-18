@@ -4,8 +4,8 @@ import { getPetPercentages } from "server/util/getPetPercentages";
 import { hatchDebounce } from "shared/configs/eggs";
 import { Rarities } from "shared/configs/rarities";
 import { remotes } from "shared/remotes";
-import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
-import { addPets } from "shared/rodux/pets";
+import { addPets, ConfirmedPet } from "shared/rodux/pets";
+import { isImmuneRarity } from "shared/rodux/settings";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
@@ -98,21 +98,25 @@ hatchEgg.SetCallback(
 				continue;
 			}
 
-			// todo: check if it should be auto deleted
 			// check if it should be auto deleted
+			let autoDeleted = false;
+
+			if (!isImmuneRarity(pet.rarity)) {
+				autoDeleted = currentState.settings.autoDelete.rarities[pet.rarity];
+			}
 
 			// todo: check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 
 			selectedPets.push({
-				autoDeleted: false,
+				autoDeleted,
 				id: pet.id,
 				rarity: pet.rarity,
 				variant: isVoid ? "void" : "regular",
 			});
 		}
 
-		if (selectedPets.size() <= 0 || selectedPets.size() > 3) {
+		if (selectedPets.size() > 3) {
 			throw `Issue on the server confirming how many pets should be hatched. Player: ${player.Name} | Amount: ${amount} | Egg: ${eggName} | Void: ${isVoid}`;
 		}
 
