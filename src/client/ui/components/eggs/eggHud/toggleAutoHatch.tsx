@@ -1,11 +1,13 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { ContextActionService, Players, Workspace } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
+import { EGGS } from "shared/configs/eggs";
 import { StoreState } from "shared/rodux";
 
 interface ToggleAutoHatchButtonProps extends ToggleAutoHatchButtonMappedProps {
@@ -28,6 +30,8 @@ function mapStateToProps(state: StoreState): ToggleAutoHatchButtonMappedProps {
 	};
 }
 
+const player = Players.LocalPlayer;
+
 /**
  * Roact imagebutton component to enable/disable auto hatch feature.
  */
@@ -44,6 +48,54 @@ export const ToggleAutoHatchButton = RoactRodux.connect(mapStateToProps)(
 
 		const { useContext, useEffect } = hooks;
 		const { toggleAuto } = useContext(remoteContext);
+
+		useEffect(() => {
+			ContextActionService.BindAction(
+				"toggleAuto",
+				async (_, state) => {
+					if (state !== Enum.UserInputState.Begin) {
+						return;
+					}
+
+					const character = player.Character;
+					if (character === undefined) {
+						return;
+					}
+
+					const humanoid = character.FindFirstChildOfClass("Humanoid");
+					if (humanoid === undefined) {
+						return;
+					}
+
+					const humanoidRootPart = humanoid.RootPart;
+					if (humanoidRootPart === undefined) {
+						return;
+					}
+
+					for (const [name] of pairs(EGGS)) {
+						const eggFolder = Workspace.interactions.eggs[name];
+
+						const regularEgg = eggFolder.regular.egg.PrimaryPart;
+						assert(regularEgg, `Expected PrimaryPart on egg ${name}`);
+
+						const voidEgg = eggFolder.void.egg.PrimaryPart;
+						assert(voidEgg, `Expected PrimaryPart on void egg ${name}`);
+
+						if (humanoidRootPart.Position.sub(regularEgg.Position).Magnitude < 15) {
+							toggleAuto.SendToServer();
+							break;
+						}
+
+						if (humanoidRootPart.Position.sub(voidEgg.Position).Magnitude < 15) {
+							toggleAuto.SendToServer();
+							break;
+						}
+					}
+				},
+				false,
+				Enum.KeyCode.R,
+			);
+		});
 
 		return (
 			<imagebutton
