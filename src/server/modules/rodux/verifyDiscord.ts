@@ -2,6 +2,7 @@ import { HttpService } from "@rbxts/services";
 import { VerifyDiscordFailKind } from "shared/remotes/media/verifyDiscord";
 import { Store } from "shared/rodux";
 import { verifyDiscord } from "shared/rodux/media";
+import { verifyDiscordTag } from "shared/util/verifyDiscordTag";
 
 const debounceCache: Map<number, number> = new Map();
 
@@ -25,40 +26,65 @@ export function checkDiscordVerification(
 		if (now - playerDebounceCache < 5) {
 			return { success: false, reason: VerifyDiscordFailKind.RateLimit };
 		}
+		debounceCache.set(player.UserId, now);
 	} else {
 		debounceCache.set(player.UserId, now);
 	}
 
 	// verify that the discord tag is valid
-	if (tag.size() < 2 || tag.size() > 32) {
+	const checkTagValidity = verifyDiscordTag(tag);
+	if (!checkTagValidity.success) {
 		return {
 			success: false,
-			reason: VerifyDiscordFailKind.NotInDiscord,
+			reason: checkTagValidity.reason,
 		};
 	}
 
-	if (tag.match("#")[0] === undefined) {
-		return {
-			success: false,
-			reason: VerifyDiscordFailKind.NotInDiscord,
-		};
-	}
-
+	// make request to server
 	const verificationStatus = opcall(() =>
 		HttpService.RequestAsync({
 			Url: `http://78.108.218.96:25980`,
 			Method: "POST",
-			Body: tag,
+			Headers: {
+				["Content-Type"]: "application/json",
+			},
+			Body: HttpService.JSONEncode({
+				DiscordTag: tag,
+			}),
 		}),
 	);
 
-	print(verificationStatus);
+	if (verificationStatus.success) {
+		switch (verificationStatus.value.Body) {
+			case "Internal Error": {
+				return {
+					success: false,
+					reason: VerifyDiscordFailKind.InternalError,
+				};
+			}
+			case "User found!": {
+				store.dispatch(verifyDiscord());
 
-	// dispatch to store
-	store.dispatch(verifyDiscord());
+				return {
+					success: true,
+				};
+			}
+			case "User not found!": {
+				return {
+					success: false,
+					reason: VerifyDiscordFailKind.NotInDiscord,
+				};
+			}
+		}
+	} else {
+		return {
+			success: false,
+			reason: VerifyDiscordFailKind.InternalError,
+		};
+	}
 
-	// return to client
 	return {
-		success: true,
+		success: false,
+		reason: VerifyDiscordFailKind.InternalError,
 	};
 }
