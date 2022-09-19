@@ -12,7 +12,7 @@ const debounceCache: Map<number, number> = new Map();
  * @param player The player to verify.
  * @param store The player store.
  * @param tag The tag to verify.
- * @returns Whether or not the user was in our ddiscord.
+ * @returns Whether or not the user was in our discord.
  */
 export function checkDiscordVerification(
 	player: Player,
@@ -41,7 +41,7 @@ export function checkDiscordVerification(
 	}
 
 	// make request to server
-	const verificationStatus = opcall(() =>
+	const [verificationSuccess, verificationResponse] = pcall(() =>
 		HttpService.RequestAsync({
 			Url: `http://78.108.218.96:25980`,
 			Method: "POST",
@@ -54,37 +54,32 @@ export function checkDiscordVerification(
 		}),
 	);
 
-	if (verificationStatus.success) {
-		switch (verificationStatus.value.Body) {
-			case "Internal Error": {
-				return {
-					success: false,
-					reason: VerifyDiscordFailKind.InternalError,
-				};
-			}
-			case "User found!": {
-				store.dispatch(verifyDiscord());
-
-				return {
-					success: true,
-				};
-			}
-			case "User not found!": {
-				return {
-					success: false,
-					reason: VerifyDiscordFailKind.NotInDiscord,
-				};
-			}
-		}
-	} else {
+	if (!(verificationSuccess && verificationResponse.Body !== "Internal Error")) {
 		return {
 			success: false,
 			reason: VerifyDiscordFailKind.InternalError,
 		};
 	}
 
-	return {
-		success: false,
-		reason: VerifyDiscordFailKind.InternalError,
-	};
+	switch (verificationResponse.Body) {
+		case "User found!": {
+			store.dispatch(verifyDiscord());
+
+			return {
+				success: true,
+			};
+		}
+		case "User not found!": {
+			return {
+				success: false,
+				reason: VerifyDiscordFailKind.NotInDiscord,
+			};
+		}
+		default: {
+			return {
+				success: false,
+				reason: VerifyDiscordFailKind.InternalError,
+			};
+		}
+	}
 }
