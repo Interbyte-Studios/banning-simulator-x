@@ -3,8 +3,6 @@ import { RANKS } from "shared/configs/ranks";
 import { remotes } from "shared/remotes";
 import { unlockRank } from "shared/rodux/rank";
 
-export {};
-
 remotes.Server.Create("unlockRank").Connect(
 	withPlayerStore((_, store, rank) => {
 		const rankData = RANKS[rank];

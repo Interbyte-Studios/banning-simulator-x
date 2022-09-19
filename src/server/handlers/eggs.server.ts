@@ -82,7 +82,8 @@ hatchEgg.SetCallback(
 
 		const truePetPercentages = getPetPercentages(eggName);
 
-		for (let i = 1; i <= amount; i++) {
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		for (const _ of $range(1, amount)) {
 			const randomNumber = randomGenerator.NextNumber(0, 100);
 
 			for (const registeredPet of truePetPercentages) {

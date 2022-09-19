@@ -5,7 +5,6 @@ interface TalismanData extends Talisman {
 }
 
 /**
- *
  * Fetches the metadata of the talisman.
  *
  * @param id The id of the talisman.

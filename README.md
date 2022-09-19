@@ -4,7 +4,7 @@ A Roblox simulator game
 
 ### Building
 
-To build the project, install [Foreman](https://github.com/Roblox/foreman) and [roblox-ts](https://github.com/roblox-ts/roblox-ts/blob/master/CONTRIBUTING.md), then run
+To build the project, install [Foreman](https://github.com/Roblox/foreman) and [roblox-ts](https://github.com/roblox-ts/roblox-ts/blob/master/CONTRIBUTING.md) (using version 2.0.2), then run
 
 ```sh
 npm run build
