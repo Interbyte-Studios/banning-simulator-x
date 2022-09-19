@@ -3,6 +3,8 @@ import { CoreHooks } from "@rbxts/roact-hooks";
 
 import { Motor, MotorInitialValue, useMotor } from "./useMotor";
 
+const assignedMotorKey = {} as symbol;
+
 /**
  * @param hooks The Roact hooks object.
  * @param initialValue The initial value of the motor.
@@ -12,14 +14,18 @@ export function useBindingMotor<T extends MotorInitialValue>(
 	hooks: CoreHooks,
 	initialValue: T,
 ): { motor: Motor<T>; binding: Binding<T> } {
-	const isFirstUse = hooks.useValue(false);
 	const motor = useMotor(hooks, initialValue);
 	const [value, setValue] = hooks.useBinding(motor.getValue());
 
-	if (!isFirstUse.value) {
-		isFirstUse.value = true;
-		motor.onStep(setValue);
+	if (motor[assignedMotorKey as keyof typeof motor] !== undefined) {
+		return {
+			motor,
+			binding: motor[assignedMotorKey as keyof typeof motor] as Binding<T>,
+		};
 	}
+
+	motor.onStep(setValue);
+	(motor as unknown as { [index: typeof assignedMotorKey]: Binding<T> })[assignedMotorKey] = value as Binding<T>;
 
 	return {
 		motor,
