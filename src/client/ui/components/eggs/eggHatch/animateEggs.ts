@@ -422,7 +422,7 @@ export class AnimateEggs {
 
 		const eggFolder = ReplicatedStorage.assetObjects.eggs[params.eggName][params.isVoid ? "void" : "regular"];
 
-		for (let i = 1; i <= params.amount; i++) {
+		for (const i of $range(1, params.amount)) {
 			const eggData: AnimatedEgg = {
 				id: i as ValidEggAmount,
 				currentCFrame: new Instance("CFrameValue"),

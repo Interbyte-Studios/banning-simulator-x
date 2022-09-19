@@ -4,7 +4,7 @@
   "description": "A game produced on Roblox",
   "main": "",
   "scripts": {
-    "build": "rbxtsc-dev --verbose",
+    "build": "rbxtsc-dev --optimizedLoops --verbose",
     "eslint": "eslint \"src/**/*.ts\" --max-warnings 0"
   },
   "repository": {
@@ -15,19 +15,19 @@
   "author": "Interbyte Studios",
   "license": "ISC",
   "devDependencies": {
-    "@rbxts/compiler-types": "^1.2.9-types.0",
-    "@rbxts/types": "^1.0.592",
-    "@typescript-eslint/eslint-plugin": "^5.10.1",
-    "@typescript-eslint/parser": "^5.10.1",
-    "eslint": "^8.7.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-jsdoc": "^37.9.1",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-roblox-ts": "^0.0.32",
-    "eslint-plugin-simple-import-sort": "^7.0.0",
-    "prettier": "^2.5.1",
-    "typescript": "^4.5.5"
+    "@rbxts/compiler-types": "^2.0.1-types.0",
+    "@rbxts/types": "^1.0.642",
+    "@typescript-eslint/eslint-plugin": "^5.37.0",
+    "@typescript-eslint/parser": "^5.37.0",
+    "eslint": "^8.23.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-jsdoc": "^39.3.6",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.1",
+    "eslint-plugin-roblox-ts": "^0.0.34",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.3"
   },
   "dependencies": {
     "@rbxts/abbreviate": "^3.0.4",

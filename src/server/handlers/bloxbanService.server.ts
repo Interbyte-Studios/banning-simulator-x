@@ -40,25 +40,25 @@ function getUsersArray(): string {
  * Updates the cached ban list on the server.
  */
 function updateBanList(): void {
-	const getBanResult = opcall(() => HttpService.GetAsync(`${BAN_URL}${getUsersArray()}`));
-	if (!getBanResult.success) {
+	const [getBanSuccess, serializedBanList] = pcall(() => HttpService.GetAsync(`${BAN_URL}${getUsersArray()}`));
+	if (!getBanSuccess) {
 		warn("Failed to get ban list from BloxBan");
 		return;
 	}
 
-	const newBanListResult = opcall(() => HttpService.JSONDecode(getBanResult.value));
-	if (newBanListResult.success) {
-		print(newBanListResult.value);
+	const [newBanListSuccess, newDeserializedBanList] = pcall(() => HttpService.JSONDecode(serializedBanList));
+	if (newBanListSuccess) {
+		print(newDeserializedBanList);
 	}
 
-	if (!(newBanListResult.success && isBanList(newBanListResult.value))) {
+	if (!(newBanListSuccess && isBanList(newDeserializedBanList))) {
 		warn(`Failed to decode ban list to JSON format`);
 		return;
 	}
 
 	const newBanList = [];
 
-	for (const [key, value] of pairs(newBanListResult.value)) {
+	for (const [key, value] of pairs(newDeserializedBanList)) {
 		if (key === "Settings") {
 			if (isSettingsValue(value)) {
 				BAN_MESSAGE = value.Default_Message;

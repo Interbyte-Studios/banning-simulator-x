@@ -5,7 +5,7 @@ import { setAssetProperties } from "shared/util/setAssetProperties";
 
 const talismansFolder = ReplicatedStorage.assetObjects.talismans;
 
-/**.
+/**
  * Equips a talisman to the player that follows them.
  *
  * @param player The local player.
