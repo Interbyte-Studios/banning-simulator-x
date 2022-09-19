@@ -1,7 +1,8 @@
 import { HttpService, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
 import { playEffect, SoundEffect } from "client/util/playSound";
 import { EggName, hatchDebounce } from "shared/configs/eggs";
-import { ConfirmedPet, ValidEggAmount } from "shared/remotes/eggs/hatchEgg";
+import { ValidEggAmount } from "shared/remotes/eggs/hatchEgg";
+import { ConfirmedPet } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
@@ -10,6 +11,7 @@ type ValidEggId = 1 | 2 | 3 | 4;
 export interface HatchEggParams {
 	amount: ValidEggAmount;
 	eggName: EggName;
+	fastEnabled: boolean;
 	pets?: Array<ConfirmedPet>;
 	isVoid: boolean;
 }
@@ -36,10 +38,18 @@ interface AnimatedPet {
 
 interface TweenDataDoc {
 	tweenInfo: {
-		segment1: TweenInfo;
-		segment2: TweenInfo;
-		segment3: TweenInfo;
-		pets: TweenInfo;
+		regular: {
+			segment1: TweenInfo;
+			segment2: TweenInfo;
+			segment3: TweenInfo;
+			pets: TweenInfo;
+		};
+		fast: {
+			segment1: TweenInfo;
+			segment2: TweenInfo;
+			segment3: TweenInfo;
+			pets: TweenInfo;
+		};
 	};
 	tweenData: {
 		middle: {
@@ -72,10 +82,18 @@ export class AnimateEggs {
 	 */
 	private static tweenData: TweenDataDoc = {
 		tweenInfo: {
-			segment1: new TweenInfo(1, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
-			segment2: new TweenInfo(0.3, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
-			segment3: new TweenInfo(0.3, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
-			pets: new TweenInfo(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+			regular: {
+				segment1: new TweenInfo(1, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				segment2: new TweenInfo(0.3, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				segment3: new TweenInfo(0.3, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				pets: new TweenInfo(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+			},
+			fast: {
+				segment1: new TweenInfo(0.75, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				segment2: new TweenInfo(0.2, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				segment3: new TweenInfo(0.2, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				pets: new TweenInfo(0.35, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+			},
 		},
 		tweenData: {
 			middle: {
@@ -210,8 +228,9 @@ export class AnimateEggs {
 	 * Handles the animation for egg hatching.
 	 *
 	 * @param amount The amount of eggs being hatched.
+	 * @param fastEnabled Whether or not the animation is fast.
 	 */
-	private static animateEggHatches(amount: ValidEggAmount): void {
+	private static animateEggHatches(amount: ValidEggAmount, fastEnabled: boolean): void {
 		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
 
 		/**
@@ -228,9 +247,15 @@ export class AnimateEggs {
 		): void {
 			const segment = AnimateEggs.getSegment(amount, eggData.id);
 
-			const animation = TweenService.Create(eggData.currentCFrame, AnimateEggs.tweenData.tweenInfo[_segment], {
-				Value: segment[_segment],
-			});
+			const animation = TweenService.Create(
+				eggData.currentCFrame,
+				fastEnabled
+					? AnimateEggs.tweenData.tweenInfo.fast[_segment]
+					: AnimateEggs.tweenData.tweenInfo.regular[_segment],
+				{
+					Value: segment[_segment],
+				},
+			);
 
 			animation.Play();
 			animation.Completed.Wait();
@@ -296,8 +321,9 @@ export class AnimateEggs {
 	 * Handles the animation for pet display.
 	 *
 	 * @param amount The amount of pets being displayed.
+	 * @param fastEnabled Whether or not the animation is fast.
 	 */
-	private static animatePetHatches(amount: ValidEggAmount): void {
+	private static animatePetHatches(amount: ValidEggAmount, fastEnabled: boolean): void {
 		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
 
 		let amountComplete = 0;
@@ -358,9 +384,13 @@ export class AnimateEggs {
 					}
 				}
 
-				const animation = TweenService.Create(petData.currentCFrame, this.tweenData.tweenInfo.pets, {
-					Value: segment.segment1.mul(CFrame.Angles(0, math.rad(180), math.rad(rotationDegrees))),
-				});
+				const animation = TweenService.Create(
+					petData.currentCFrame,
+					fastEnabled ? this.tweenData.tweenInfo.fast.pets : this.tweenData.tweenInfo.regular.pets,
+					{
+						Value: segment.segment1.mul(CFrame.Angles(0, math.rad(180), math.rad(rotationDegrees))),
+					},
+				);
 
 				animation.Play();
 				animation.Completed.Wait();
@@ -416,7 +446,7 @@ export class AnimateEggs {
 			this.animatedEggs.push(eggData);
 		}
 
-		this.animateEggHatches(params.amount);
+		this.animateEggHatches(params.amount, params.fastEnabled);
 	}
 
 	/**
@@ -457,7 +487,7 @@ export class AnimateEggs {
 			this.animatedPets.push(petData);
 		}
 
-		this.animatePetHatches(params.amount);
+		this.animatePetHatches(params.amount, params.fastEnabled);
 	}
 
 	/**

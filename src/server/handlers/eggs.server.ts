@@ -4,11 +4,12 @@ import { getPetPercentages } from "server/util/getPetPercentages";
 import { hatchDebounce } from "shared/configs/eggs";
 import { Rarities } from "shared/configs/rarities";
 import { remotes } from "shared/remotes";
-import { ConfirmedPet } from "shared/remotes/eggs/hatchEgg";
-import { addPets } from "shared/rodux/pets";
+import { addPets, ConfirmedPet } from "shared/rodux/pets";
+import { isImmuneRarity } from "shared/rodux/settings";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
+import { withinDistanceToHatch } from "shared/util/withinDistanceToHatch";
 
 const hatchEgg = remotes.Server.GetNamespace("eggs").Create("hatchEgg");
 const hatchTimeCache: Map<Player, number> = new Map();
@@ -43,6 +44,28 @@ hatchEgg.SetCallback(
 		// check that user owns zone
 		const ownsZone = ownsWorld.zones.find((x) => x === eggData.zone);
 		if (ownsZone === undefined) {
+			return {
+				success: false,
+			};
+		}
+
+		// check inventory space
+		if (currentState.pets.size() >= getPetInventorySize(currentState.gamepasses) + amount) {
+			return {
+				success: false,
+			};
+		}
+
+		// check that user is within distance
+		const character = player.Character;
+		if (character === undefined) {
+			return {
+				success: false,
+			};
+		}
+
+		const isWithinDistance = withinDistanceToHatch(character, eggName, isVoid);
+		if (!isWithinDistance) {
 			return {
 				success: false,
 			};
@@ -99,21 +122,25 @@ hatchEgg.SetCallback(
 				continue;
 			}
 
-			// todo: check if it should be auto deleted
 			// check if it should be auto deleted
+			let autoDeleted = false;
+
+			if (!isImmuneRarity(pet.rarity)) {
+				autoDeleted = currentState.settings.autoDelete.rarities[pet.rarity];
+			}
 
 			// todo: check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 
 			selectedPets.push({
-				autoDeleted: false,
+				autoDeleted,
 				id: pet.id,
 				rarity: pet.rarity,
 				variant: isVoid ? "void" : "regular",
 			});
 		}
 
-		if (selectedPets.size() <= 0 || selectedPets.size() > 3) {
+		if (selectedPets.size() > 3) {
 			throw `Issue on the server confirming how many pets should be hatched. Player: ${player.Name} | Amount: ${amount} | Egg: ${eggName} | Void: ${isVoid}`;
 		}
 

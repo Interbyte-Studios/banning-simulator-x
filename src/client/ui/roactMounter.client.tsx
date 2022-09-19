@@ -21,6 +21,7 @@ onStoreCreated(player)
 					purchaseWeapon: remotes.Client.GetNamespace("weapons").Get("purchaseWeapon"),
 					hatchEgg: remotes.Client.GetNamespace("eggs").Get("hatchEgg"),
 					purchaseZone: remotes.Client.Get("purchaseZone"),
+					redeemCode: remotes.Client.GetNamespace("media").Get("redeemCode"),
 					redeemQuest: remotes.Client.Get("redeemQuest"),
 					toggleButtonClickSFX: remotes.Client.GetNamespace("settings").GetNamespace("sound").Get("toggleButtonClick"),
 					toggleMusicVolume: remotes.Client.GetNamespace("settings").GetNamespace("sound").Get("toggleMusicVolume"),
@@ -28,6 +29,10 @@ onStoreCreated(player)
 						.GetNamespace("sound")
 						.Get("toggleSoundEffectsVolume"),
 					toggleAuto: remotes.Client.GetNamespace("settings").GetNamespace("gameplay").Get("toggleAuto"),
+					toggleAutoDelete: remotes.Client.GetNamespace("settings").GetNamespace("autoDelete").Get("toggleAutoDelete"),
+					toggleEasyLegendariesAutoDelete: remotes.Client.GetNamespace("settings")
+						.GetNamespace("autoDelete")
+						.Get("toggleEasyLegendariesAutoDelete"),
 					toggleWalkSpeed: remotes.Client.GetNamespace("settings").GetNamespace("gameplay").Get("toggleWalkSpeed"),
 					toggleGraphics: remotes.Client.GetNamespace("settings").GetNamespace("visual").Get("toggleGraphics"),
 					togglePetAnimationType: remotes.Client.GetNamespace("settings")
@@ -40,6 +45,9 @@ onStoreCreated(player)
 						.GetNamespace("visual")
 						.Get("togglePetsStudsOfDistance"),
 					toggleTimeOfDay: remotes.Client.GetNamespace("settings").GetNamespace("visual").Get("toggleTimeOfDay"),
+					purchaseTalisman: remotes.Client.GetNamespace("talismans").Get("purchaseTalisman"),
+					equipTalisman: remotes.Client.GetNamespace("talismans").Get("equipTalisman"),
+					verifyDiscord: remotes.Client.GetNamespace("media").Get("verifyDiscord"),
 				}}
 			>
 				<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>

@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { udim2TopMiddle, vec2Middle } from "client/ui/commonValues";
+import { font, udim2TopMiddle, vec2Middle } from "client/ui/commonValues";
 import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { PetViewport } from "client/ui/elements/petViewport";
@@ -13,6 +13,7 @@ interface InfoFrameProps {
 	eggName: EggName;
 	pet: number;
 	isVoid: boolean;
+	autoDeleted: boolean;
 }
 
 /**
@@ -33,6 +34,24 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 	});
 
 	const petInfo = getPetData(props.eggName, props.pet);
+
+	const autoDelete: Array<Roact.Element> = [];
+	if (props.autoDeleted) {
+		autoDelete.push(
+			<textlabel
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Position={UDim2.fromScale(0.5, 1.25)}
+				Size={UDim2.fromScale(0.65, 0.4)}
+				Text={"(Auto Deleted)"}
+				TextColor3={Color3.fromRGB(230, 112, 112)}
+				TextScaled={true}
+				Font={font}
+			>
+				<BaseUIStroke Thickness={2} />
+			</textlabel>,
+		);
+	}
 
 	return (
 		<frame
@@ -56,6 +75,7 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 					}}
 					eggName={props.eggName}
 					petId={props.pet}
+					isVoid={props.isVoid}
 				/>
 				<BaseUIStroke Thickness={2.4} />
 			</BaseTextLabel>
@@ -67,6 +87,7 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 				<RarityGradient Rarity={petInfo.rarity} />
 				<BaseUIStroke Thickness={2.4} />
 			</BaseTextLabel>
+			{autoDelete}
 		</frame>
 	);
 }

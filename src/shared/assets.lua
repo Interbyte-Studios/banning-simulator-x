@@ -9,13 +9,20 @@ return {
 			["forward arrow"] = "rbxassetid://10705132723",
 			["green button"] = "rbxassetid://10705288438",
 			["green toggle button"] = "rbxassetid://10705304739",
+			["long green button"] = "rbxassetid://10913578307",
 			["purple button"] = "rbxassetid://10705288573",
+			["red button"] = "rbxassetid://10928492791",
 			["red toggle button"] = "rbxassetid://10705304953",
 			["teal button"] = "rbxassetid://10705288749",
 		},
 		currencies = {
 			coins = "rbxassetid://9591269212",
 			gems = "rbxassetid://10833933846",
+		},
+		statIcons = {
+			health = "rbxassetid://10497648518",
+			damage = "rbxassetid://10497685527",
+			experience = "rbxassetid://10525545320",
 		},
 		maps = {
 			["Ban Land"] = {
@@ -45,12 +52,18 @@ return {
 			["9"] = "rbxassetid://10835561050",
 		},
 		ui = {
+			autoDelete = {
+				background = "rbxassetid://10931005537",
+				["long green button"] = "rbxassetid://10931066791",
+				["long red button"] = "rbxassetid://10931058710",
+			},
 			codes = {
-				background = "rbxassetid://10908456122",
+				background = "rbxassetid://10913446755",
 				input = "rbxassetid://10908456187",
 			},
 			egg = {
 				background = "rbxassetid://10832814885",
+				delete = "rbxassetid://10928548925",
 				["pet frame"] = "rbxassetid://10832815008",
 			},
 			hud = {

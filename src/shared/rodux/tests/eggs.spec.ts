@@ -19,6 +19,7 @@ export = (): void => {
 					Basic: 0,
 					Ordinary: 0,
 					Rare: 0,
+					Epic: 0,
 					Legendary: 0,
 					Primordial: 0,
 					Prismatic: 0,
@@ -29,7 +30,7 @@ export = (): void => {
 			newState.eggs += 1;
 
 			const action = addPets(eggCost.amount, eggCost.currencyType, [
-				{ id: petId, rarity: "Basic", variant: "regular" },
+				{ autoDeleted: false, id: petId, rarity: "Basic", variant: "regular" },
 			]);
 
 			assertDeepEqual(eggsReducer(state, action), newState);
@@ -46,6 +47,7 @@ export = (): void => {
 					Basic: 0,
 					Ordinary: 0,
 					Rare: 0,
+					Epic: 0,
 					Legendary: 0,
 					Primordial: 0,
 					Prismatic: 0,
@@ -57,7 +59,7 @@ export = (): void => {
 			newState.rarities.Basic += 1;
 
 			const action = addPets(eggCost.amount, eggCost.currencyType, [
-				{ id: petId, rarity: "Basic", variant: "regular" },
+				{ autoDeleted: false, id: petId, rarity: "Basic", variant: "regular" },
 			]);
 
 			assertDeepEqual(eggsReducer(state, action), newState);

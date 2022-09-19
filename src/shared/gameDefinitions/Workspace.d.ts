@@ -26,6 +26,8 @@ declare global {
 					};
 				};
 			};
+			["talisman tower"]: Folder;
+			talismans: Folder;
 		};
 		decoration: Folder & {
 			[P in keyof Worlds]: Folder & {
@@ -36,8 +38,12 @@ declare global {
 						};
 					};
 					door: Folder & {
-						door: Folder;
-						locks: Folder;
+						"tower crystals": Model;
+						"gate meshes": Model;
+						"left crystal": Model;
+						lock: Model;
+						"middle crystal": Model;
+						"right crystal": Model;
 						passage: BasePart;
 					};
 				};

@@ -22,6 +22,7 @@ export function claimGamepass(gamepassName: Gamepasses): ClaimGamepass & Rodux.A
 
 const defaultGamepasses: GamepassesState = {
 	["x2 Luck"]: false,
+	["Triple Hatch"]: false,
 	["Fast Hatch"]: false,
 	["x3 Eggs Hatched"]: false,
 	["x2 Currency"]: false,
