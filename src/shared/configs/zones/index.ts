@@ -25,6 +25,9 @@ export interface Zone {
 		requiredRank: number;
 	};
 
+	// The color associated with the zone.
+	color: Color3;
+
 	// The id of the zone.
 	id: number;
 
@@ -42,5 +45,8 @@ export function isValidZone(x: unknown): x is keyof typeof BAN_LAND_ZONES {
 
 export type ZoneNames = t.static<typeof isValidZone>;
 export type Zones = typeof BAN_LAND_ZONES;
+
+export const isStarterZone = t.literal("Forest");
+export type StarterZone = t.static<typeof isStarterZone>;
 
 export type NPCs = keyof typeof BAN_LAND_NPCS;

@@ -7,9 +7,8 @@ import { CodesMenu } from "./components/codes/menu";
 import { EggsUI } from "./components/eggs";
 import { Hud } from "./components/hud";
 import { Quests } from "./components/quests";
-import { TalismanShop } from "./components/talismans/talismanShop";
 import { SettingsMenu } from "./components/settings/menu";
-import { ZonesUI } from "./components/zones";
+import { TalismanShop } from "./components/talismans/talismanShop";
 import { hooks } from "./hooks";
 
 interface AppProps {
@@ -61,7 +60,6 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 				/>
 				<SettingsMenu visible={settingsMenuVisible} hideMenu={(): void => setSettingsVisibility(false)} />
 				<Quests visible={questsMenuVisible} hideMenu={(): void => setQuestsVisibility(false)} />
-				<ZonesUI />
 				<Hud
 					visible={!codesMenuVisible && !settingsMenuVisible && !isHatching}
 					displayCodesMenu={(): void => setCodesVisible(true)}
