@@ -20,6 +20,7 @@ interface PurchaseZoneButtonProps extends PurchaseZoneButtonMappedProps {
 	world: WorldName;
 	zone: ZoneNames;
 	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+	hideMenu: () => void;
 }
 
 interface PurchaseZoneButtonMappedProps {
@@ -81,10 +82,12 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 							switch (checkZonePurchaseRequirements.reason) {
 								case PurchaseZoneFailKind.InternalError: {
 									props.displayAnnouncement("errors", `There was an error while purchasing "${props.zone}" zone.`);
+									props.hideMenu();
 									return;
 								}
 								case PurchaseZoneFailKind.NotEnoughCurrency: {
 									props.displayAnnouncement("errors", `You don't have enough to purchase the "${props.zone}" zone.`);
+									props.hideMenu();
 									return;
 								}
 								case PurchaseZoneFailKind.NotRequiredRank: {
@@ -92,6 +95,7 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 										"errors",
 										`You aren't a high enough rank to purchase the "${props.zone}" zone.`,
 									);
+									props.hideMenu();
 									return;
 								}
 								case PurchaseZoneFailKind.NonlinearProgression: {
@@ -99,6 +103,7 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 										"errors",
 										`You don't meet the requirements to purchase the "${props.zone}" zone.`,
 									);
+									props.hideMenu();
 									return;
 								}
 							}
@@ -106,15 +111,18 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 							const requestZonePurchase = await purchaseZone.CallServerAsync(props.world, props.zone);
 							if (requestZonePurchase.success === true) {
 								props.displayAnnouncement("announcements", `You have purchased the "${props.zone}" zone.`);
+								props.hideMenu();
 								return;
 							} else {
 								switch (requestZonePurchase.reason) {
 									case PurchaseZoneFailKind.InternalError: {
 										props.displayAnnouncement("errors", `There was an error while purchasing "${props.zone}" zone.`);
+										props.hideMenu();
 										return;
 									}
 									case PurchaseZoneFailKind.NotEnoughCurrency: {
 										props.displayAnnouncement("errors", `You don't have enough to purchase the "${props.zone}" zone.`);
+										props.hideMenu();
 										return;
 									}
 									case PurchaseZoneFailKind.NotRequiredRank: {
@@ -122,6 +130,7 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 											"errors",
 											`You aren't a high enough rank to purchase the "${props.zone}" zone.`,
 										);
+										props.hideMenu();
 										return;
 									}
 									case PurchaseZoneFailKind.NonlinearProgression: {
@@ -129,6 +138,7 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 											"errors",
 											`You don't meet the requirements to purchase the "${props.zone}" zone.`,
 										);
+										props.hideMenu();
 										return;
 									}
 								}

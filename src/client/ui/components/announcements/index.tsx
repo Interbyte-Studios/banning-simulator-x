@@ -27,7 +27,7 @@ export const LocalMessages = hooks((props: LocalMessagesProps) => {
 				Text={props.currentMessage.message}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={1.2} />
+				<BaseUIStroke Thickness={1.5} />
 			</textlabel>
 		);
 

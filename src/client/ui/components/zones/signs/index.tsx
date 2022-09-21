@@ -1,12 +1,9 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { CurrencyIcon } from "client/ui/elements/currencyIcon";
 import { RankIcon } from "client/ui/elements/rankIcon";
 import { hooks } from "client/ui/hooks";
-import assetIds from "shared/assets";
 import { WorldName } from "shared/configs/worlds";
 import { Zone, ZoneNames } from "shared/configs/zones";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
@@ -83,6 +80,7 @@ export const ZoneSign = hooks((props: ZoneSignProps, hooks) => {
 				</textlabel>
 				<DisplayZonePurchasePrompt
 					worldName={props.worldName}
+					zoneName={props.zoneName}
 					zoneData={props.zoneData}
 					setViewedZone={props.setViewedZone}
 				/>

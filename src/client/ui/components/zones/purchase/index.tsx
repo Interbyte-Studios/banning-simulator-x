@@ -104,7 +104,12 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 					/>
 					<BaseUIStroke Thickness={3} />
 				</textlabel>
-				<PurchaseZoneButton world={props.world} zone={zoneData.name} displayAnnouncement={props.displayAnnouncement} />
+				<PurchaseZoneButton
+					world={props.world}
+					zone={zoneData.name}
+					displayAnnouncement={props.displayAnnouncement}
+					hideMenu={props.hideMenu}
+				/>
 				<CancelZonePurchase hideMenu={props.hideMenu} />
 			</imagelabel>
 		);
