@@ -9,6 +9,7 @@ import { Hud } from "./components/hud";
 import { Quests } from "./components/quests";
 import { SettingsMenu } from "./components/settings/menu";
 import { TalismanShop } from "./components/talismans/talismanShop";
+import { ZonesUI } from "./components/zones";
 import { hooks } from "./hooks";
 
 interface AppProps {
@@ -67,6 +68,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
 				/>
 				<LocalMessages currentMessage={displayAnnouncement} />
+				<ZonesUI displayAnnouncement={applyAnnouncement} />
 			</>
 		</RoactRodux.StoreProvider>
 	);

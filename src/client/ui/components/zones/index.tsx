@@ -6,11 +6,24 @@ import { CurrencyIcon } from "client/ui/elements/currencyIcon";
 import { RankIcon } from "client/ui/elements/rankIcon";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
-import { WORLDS } from "shared/configs/worlds";
-import { isStarterZone } from "shared/configs/zones";
+import { WorldName, WORLDS } from "shared/configs/worlds";
+import { isStarterZone, ZoneNames } from "shared/configs/zones";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
-export const ZonesUI = hooks(() => {
+import { PurchaseZoneUI } from "./purchase";
+import { ZoneSign } from "./signs";
+
+interface ZoneUIProps {
+	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+}
+
+/**
+ * Generates ui's that display information for each zone.
+ */
+/* eslint-disable jsdoc/require-jsdoc */
+export const ZonesUI = hooks((props: ZoneUIProps, { useState }) => {
+	const [viewingZone, setViewedZone] = useState<{ world: WorldName; zone: number } | undefined>(undefined);
+
 	const elements: Array<Roact.Element> = [];
 
 	for (const [worldName, worldData] of pairs(WORLDS)) {
@@ -30,90 +43,35 @@ export const ZonesUI = hooks(() => {
 			const adorneePart = sign.description.infoPart;
 
 			const elementToDisplay = (
-				<surfacegui Adornee={adorneePart} LightInfluence={0}>
-					<frame
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.95, 0.95)}
-					>
-						<textlabel
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.5, 0.15)}
-							Size={UDim2.fromScale(1, 0.25)}
-							Text={zoneName}
-							TextColor3={zoneData.color}
-							TextScaled={true}
-							Font={font}
-						>
-							<BaseUIStroke Thickness={5} />
-						</textlabel>
-						<textlabel
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.5, 0.325)}
-							Size={UDim2.fromScale(1, 0.15)}
-							Text={`(${worldName})`}
-							TextColor3={Color3.fromRGB(255, 255, 255)}
-							TextScaled={true}
-							Font={font}
-						>
-							<BaseUIStroke Thickness={5} />
-						</textlabel>
-						<textlabel
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.66, 0.575)}
-							Size={UDim2.fromScale(0.5, 0.2)}
-							Text={twoDpAbbreviator.numberToString(zoneData.cost.amount)}
-							TextColor3={Color3.fromRGB(255, 255, 255)}
-							TextScaled={true}
-							TextXAlignment={Enum.TextXAlignment.Left}
-							Font={font}
-						>
-							<CurrencyIcon
-								anchorPoint={new Vector2(0, 0.5)}
-								position={UDim2.fromScale(-0.35, 0.5)}
-								size={{ maximizedSize: 1, minimizedSize: 0.9 }}
-								currency={zoneData.cost.currency}
-							/>
-							<BaseUIStroke Thickness={5} />
-						</textlabel>
-						<imagebutton
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.5, 0.85)}
-							Size={UDim2.fromScale(0.4, 0.25)}
-							Image={assetIds.images.buttons["green toggle button"]}
-							ScaleType={Enum.ScaleType.Fit}
-						>
-							<textlabel
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.5, 0.5)}
-								Size={UDim2.fromScale(0.8, 0.7)}
-								Text={"Purchase"}
-								TextColor3={Color3.fromRGB(255, 255, 255)}
-								TextScaled={true}
-								TextXAlignment={Enum.TextXAlignment.Left}
-								Font={font}
-							>
-								<BaseUIStroke Thickness={4} />
-							</textlabel>
-						</imagebutton>
-						<RankIcon
-							position={UDim2.fromScale(0.1, 0.5)}
-							size={{ maximizedSize: 0.35, minimizedSize: 0.25 }}
-							rank={zoneData.cost.requiredRank}
-						/>
-					</frame>
-				</surfacegui>
+				<ZoneSign
+					adornee={adorneePart}
+					zoneName={zoneName}
+					zoneData={zoneData}
+					worldName={worldName}
+					setViewedZone={(world: WorldName, zone: number): void =>
+						setViewedZone({
+							world,
+							zone,
+						})
+					}
+				/>
 			);
 
 			elements.push(elementToDisplay);
 		}
 	}
 
+	if (viewingZone !== undefined) {
+		elements.push(
+			<PurchaseZoneUI
+				world={viewingZone.world}
+				zone={viewingZone.zone}
+				displayAnnouncement={props.displayAnnouncement}
+				hideMenu={(): void => setViewedZone(undefined)}
+			/>,
+		);
+	}
+
 	return <>{elements}</>;
 });
+/* eslint-enable jsdoc/require-jsdoc */

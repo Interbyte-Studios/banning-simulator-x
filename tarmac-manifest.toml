@@ -302,3 +302,18 @@ packable = false
 hash = "df18ddecccb0bed5855584f33d755bbf0fbf7661d543195d253f4c57a8a23d8b"
 id = 10832810658
 packable = false
+
+[inputs."images/ui/zones/background.png"]
+hash = "9cb7030f1173a526ef99b502481a4b84d83b389e9621ac373a4ac92f3b38addb"
+id = 10970620708
+packable = false
+
+[inputs."images/ui/zones/cancel.png"]
+hash = "723e9cbe707c731eae3f8080d90bf358236623308f8fa9ca6ed918397cb89095"
+id = 10970620778
+packable = false
+
+[inputs."images/ui/zones/purchase.png"]
+hash = "11e682e65b34a8a8f07f63af4b9f18653047085ef54509aede741d9716ac7f6a"
+id = 10970620840
+packable = false

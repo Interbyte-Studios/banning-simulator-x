@@ -51,6 +51,11 @@ declare namespace assetIds {
 			"9": string;
 		};
 		ui: {
+			zones: {
+				background: string;
+				cancel: string;
+				purchase: string;
+			};
 			autoDelete: {
 				background: string;
 				"long red button": string;

@@ -1,11 +1,19 @@
 import Net from "@rbxts/net";
 import { createTypeChecker } from "@rbxts/net/out/middleware";
 import { WorldName } from "shared/configs/worlds";
-import { ZoneNames } from "shared/configs/zones";
+import { isValidZone, ZoneNames } from "shared/configs/zones";
 import { isValidWorld } from "shared/util/isValidWorld";
-import { isValidZone } from "shared/util/isValidZone";
 
-export const purchaseZoneDefinition = Net.Definitions.ClientToServerEvent<[world: WorldName, zone: ZoneNames]>([
-	createTypeChecker(isValidWorld, isValidZone),
-]);
+export type PurchaseZoneReturnType = { success: true } | { success: false; reason: PurchaseZoneFailKind };
+
+export enum PurchaseZoneFailKind {
+	NotEnoughCurrency,
+	NotRequiredRank,
+	NonlinearProgression,
+	InternalError,
+}
+
+export const purchaseZoneDefinition = Net.Definitions.ServerAsyncFunction<
+	(world: WorldName, zone: ZoneNames) => PurchaseZoneReturnType
+>([createTypeChecker(isValidWorld, isValidZone)]);
 export type PurchaseZoneDefinition = typeof purchaseZoneDefinition;

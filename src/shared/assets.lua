@@ -87,6 +87,11 @@ return {
 				background = "rbxassetid://10832810485",
 				["setting background"] = "rbxassetid://10832810658",
 			},
+			zones = {
+				background = "rbxassetid://10970620708",
+				cancel = "rbxassetid://10970620778",
+				purchase = "rbxassetid://10970620840",
+			},
 		},
 	},
 }
