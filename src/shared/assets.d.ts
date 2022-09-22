@@ -66,6 +66,9 @@ declare namespace assetIds {
 				background: string;
 				delete: string;
 			};
+			equip: {
+				background: string;
+			};
 			hud: {
 				"interface button": string;
 				shop: string;

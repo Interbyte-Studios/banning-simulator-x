@@ -5,6 +5,7 @@ import { Store } from "shared/rodux";
 import { LocalMessages } from "./components/announcements";
 import { CodesMenu } from "./components/codes/menu";
 import { EggsUI } from "./components/eggs";
+import { WeaponEquip } from "./components/equip/weaponEquip";
 import { Hud } from "./components/hud";
 import { Quests } from "./components/quests";
 import { SettingsMenu } from "./components/settings/menu";
@@ -69,6 +70,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 				/>
 				<LocalMessages currentMessage={displayAnnouncement} />
 				<ZonesUI displayAnnouncement={applyAnnouncement} />
+				<WeaponEquip />
 			</>
 		</RoactRodux.StoreProvider>
 	);

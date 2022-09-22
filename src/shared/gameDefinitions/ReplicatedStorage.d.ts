@@ -28,7 +28,10 @@ declare global {
 				};
 			};
 			weapons: Folder & {
-				[P in keyof Weapons]: Tool;
+				[P in keyof Weapons]: Tool & {
+					MeshPart: BasePart;
+					Handle: BasePart;
+				};
 			};
 			npcs: Folder & {
 				[P in keyof NPCs]: Model;

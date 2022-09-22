@@ -61,6 +61,9 @@ return {
 				delete = "rbxassetid://10928548925",
 				["pet frame"] = "rbxassetid://10832815008",
 			},
+			equip = {
+				background = "rbxassetid://10977600380",
+			},
 			hud = {
 				icons = {
 					codes = "rbxassetid://10835150571",
