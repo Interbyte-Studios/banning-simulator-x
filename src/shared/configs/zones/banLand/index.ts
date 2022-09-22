@@ -9,6 +9,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		id: 1,
 		npcs: [BAN_LAND_NPCS.bronzePiece, BAN_LAND_NPCS.russoTalks],
 		cost: undefined,
+		color: Color3.fromRGB(37, 135, 43),
 	},
 
 	// zone 2
@@ -20,6 +21,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 			amount: 10_000,
 			requiredRank: 3,
 		},
+		color: Color3.fromRGB(154, 106, 79),
 	},
 
 	// zone 3
@@ -31,6 +33,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 			amount: 40_000,
 			requiredRank: 6,
 		},
+		color: Color3.fromRGB(61, 163, 90),
 	},
 
 	// zone 4
@@ -42,6 +45,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 			amount: 200_000,
 			requiredRank: 8,
 		},
+		color: Color3.fromRGB(175, 128, 99),
 	},
 
 	// zone 5
@@ -53,6 +57,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 			amount: 1_000_000,
 			requiredRank: 10,
 		},
+		color: Color3.fromRGB(152, 166, 175),
 	},
 
 	// zone 6
@@ -64,6 +69,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 			amount: 5_000_000,
 			requiredRank: 12,
 		},
+		color: Color3.fromRGB(7, 113, 170),
 	},
 
 	// zone 7
@@ -75,6 +81,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 			amount: 30_000_000,
 			requiredRank: 14,
 		},
+		color: Color3.fromRGB(206, 130, 160),
 	},
 
 	// zone 8
@@ -86,6 +93,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 			amount: 180_000_000,
 			requiredRank: 15,
 		},
+		color: Color3.fromRGB(98, 37, 209),
 	},
 
 	// zone 9
@@ -97,5 +105,6 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 			amount: 1_000_000_000,
 			requiredRank: 16,
 		},
+		color: Color3.fromRGB(213, 115, 61),
 	},
 });

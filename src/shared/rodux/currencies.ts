@@ -74,7 +74,7 @@ export const currenciesReducer = Rodux.createReducer<
 	unlockZone: (state, action) => {
 		const purchasedCurrency = state[action.currency.type] - action.currency.amount;
 
-		return { ...state, [action.currency.amount]: purchasedCurrency };
+		return { ...state, [action.currency.type]: purchasedCurrency };
 	},
 	addPet: (state, action) => {
 		let purchasedCurrency = state[action.currencyType];

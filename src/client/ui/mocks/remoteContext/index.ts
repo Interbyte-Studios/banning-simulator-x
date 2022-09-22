@@ -28,7 +28,11 @@ export const fakeRemoteContext = {
 	equipWeapon: fakeRemoteCall<EquipWeaponDefinition>("equipWeapon"),
 	purchaseWeapon: fakeRemoteCall<PurchaseWeaponDefinition>("purchaseWeapon"),
 
-	purchaseZone: fakeRemoteCall<PurchaseZoneDefinition>("purchaseZone"),
+	purchaseZone: fakeFunctionCall<PurchaseZoneDefinition>("purchaseZone", () => {
+		return {
+			success: true,
+		};
+	}),
 
 	toggleAuto: fakeRemoteCall<ToggleAutoHatchDefinition>("toggleAuto"),
 	toggleAutoDelete: fakeRemoteCall<ToggleAutoDeleteDefinition>("toggleAutoDelete"),
