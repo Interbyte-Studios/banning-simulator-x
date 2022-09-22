@@ -1,7 +1,7 @@
 import { Players, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { WorldName } from "shared/configs/worlds";
-import { ZoneNames } from "shared/configs/zones";
+import { isStarterZone, ZoneNames } from "shared/configs/zones";
 import { WorldsState } from "shared/rodux/worlds";
 
 const player = Players.LocalPlayer;
@@ -16,13 +16,15 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 	const zoneDecoration = Workspace.decoration[world][zone];
 	const door = zoneDecoration.door;
 
-	if (zone === "Forest") {
-		door.Destroy();
-		return;
+	const lock = door.FindFirstChild("lock");
+	if (lock !== undefined) {
+		lock.Destroy();
 	}
 
-	door.lock.Destroy();
-	door.passage.Destroy();
+	const passage = door.FindFirstChild("passage");
+	if (passage !== undefined) {
+		passage.Destroy();
+	}
 }
 
 /**
@@ -33,6 +35,10 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 function unlockZones(worldState: WorldsState): void {
 	for (const unlockedWorld of worldState) {
 		for (const unlockedZone of unlockedWorld.zones) {
+			if (isStarterZone(unlockedZone)) {
+				continue;
+			}
+
 			grantZoneEntry(unlockedWorld.name, unlockedZone);
 		}
 	}
