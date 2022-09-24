@@ -31,7 +31,6 @@ export function useMotor<T extends MotorInitialValue>(hooks: CoreHooks, initialV
 	// handle motor cleanup
 	hooks.useEffect(() => {
 		return () => {
-			print("cleanup");
 			motor.destroy();
 		};
 	}, []);
