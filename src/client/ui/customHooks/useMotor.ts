@@ -26,18 +26,15 @@ function createMotor<T extends MotorInitialValue>(initialValue: T): Motor<T> {
  * @returns The created motor, which is cached.
  */
 export function useMotor<T extends MotorInitialValue>(hooks: CoreHooks, initialValue: T): Motor<T> {
-	const isFirstUse = hooks.useValue(true);
 	const motor = hooks.useValue(createMotor(initialValue)).value;
 
 	// handle motor cleanup
-	if (isFirstUse.value) {
-		isFirstUse.value = false;
-		hooks.useEffect(() => {
-			return () => {
-				motor.destroy();
-			};
-		}, []);
-	}
+	hooks.useEffect(() => {
+		return () => {
+			print("cleanup");
+			motor.destroy();
+		};
+	}, []);
 
 	return motor;
 }
