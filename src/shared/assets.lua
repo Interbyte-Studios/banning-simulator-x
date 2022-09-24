@@ -63,6 +63,7 @@ return {
 			},
 			equip = {
 				background = "rbxassetid://10977600380",
+				toolTp = "rbxassetid://10988616532",
 			},
 			hud = {
 				icons = {

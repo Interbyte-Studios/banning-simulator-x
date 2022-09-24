@@ -218,6 +218,11 @@ hash = "88b0f7f6f73a320021a124bfbc177dfa1a29045d099fa4a34e2c0cc34f801e54"
 id = 10977600380
 packable = false
 
+[inputs."images/ui/equip/toolTp.png"]
+hash = "8c5173fe41761f232243f0148db72f60f78a1c2a880e1b058df38137d670ef98"
+id = 10988616532
+packable = false
+
 [inputs."images/ui/hud/icons/codes.png"]
 hash = "152a0ab211c35a9592bec4482bd835f5b1d6c14fc2043a64cb76222a2b8c206f"
 id = 10835150571

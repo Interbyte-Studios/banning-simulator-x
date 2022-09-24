@@ -3,6 +3,7 @@ import { ReplicatedStorage } from "@rbxts/services";
 import { WeaponIndex } from "shared/configs/weapons";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
+import { PetDistanceSetting } from "../components/settings/interactions/visual/petDistance";
 import { hooks } from "../hooks";
 
 interface WeaponViewportProps {
@@ -25,29 +26,34 @@ export const WeaponViewport = hooks((props: WeaponViewportProps, { useValue, use
 		const viewport = viewportRef.value.getValue();
 		assert(viewport, `Failed to get Viewport Frame`);
 
+		viewport.Ambient = Color3.fromRGB(130, 130, 130);
+		viewport.LightColor = Color3.fromRGB(255, 255, 255);
+
 		const camera = cameraRef.value.getValue();
-		assert(camera, `Failed to get camera.`);
+		assert(camera, `Failed to get camera`);
 
 		viewport.CurrentCamera = camera;
 
-		const weaponFolder = ReplicatedStorage.assetObjects.weapons;
-		const weaponTool = weaponFolder[props.weaponName].Clone();
-
-		const weaponClone = weaponTool.Clone();
-		setAssetProperties("weapon", weaponClone);
+		const weaponsFolder = ReplicatedStorage.assetObjects.weapons;
+		const weaponTool = weaponsFolder[props.weaponName].Clone();
+		setAssetProperties("weapon", weaponTool);
 
 		const weaponModel = new Instance("Model");
-		weaponModel.Name = weaponClone.Name;
+		weaponTool.Parent = weaponModel;
+		weaponModel.PrimaryPart = weaponTool.Handle;
 
-		weaponClone.Parent = weaponModel;
-		weaponModel.PrimaryPart = weaponClone.Handle;
-
-		const [, weaponSize] = weaponModel.GetBoundingBox();
-		//weaponModel.SetPrimaryPartCFrame(new CFrame(new Vector3(0, -1.5, 0)));
 		weaponModel.Parent = viewport;
 
 		camera.CameraType = Enum.CameraType.Scriptable;
 		camera.FieldOfView = 10;
+
+		weaponModel.PivotTo(
+			camera.CFrame.ToWorldSpace(
+				new CFrame(0, -weaponModel.GetExtentsSize().Y / 2.5, -weaponModel.GetExtentsSize().Z * 10).mul(
+					CFrame.Angles(0, math.rad(90), 0),
+				),
+			),
+		);
 	}, []);
 
 	return (
