@@ -34,14 +34,17 @@ export = (): void => {
 		});
 
 		it("should not purchase a weapon already owned", () => {
-			const weaponId = 2;
+			const weaponData = {
+				id: 1,
+				bans: 0,
+			};
 
 			const player = useMockPlayer();
 			const { store, dispatchedActions, cleanup } = createDummyStore(player, {
-				weapons: new Set([weaponId]),
+				weapons: [weaponData],
 			});
 
-			purchaseWeapon(store, weaponId);
+			purchaseWeapon(store, weaponData.id);
 			assertDeepEqual(dispatchedActions, []);
 
 			cleanup();

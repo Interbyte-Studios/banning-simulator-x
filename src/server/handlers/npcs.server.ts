@@ -1,8 +1,39 @@
 import { Workspace } from "@rbxts/services";
+import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { WORLDS } from "shared/configs/worlds";
+import { remotes } from "shared/remotes";
+import { NpcCharacter } from "shared/remotes/damageNPC";
+import { Store } from "shared/rodux";
 
 import { runStep } from "../modules/npcs/runStep";
 import { NpcWorldState } from "../modules/npcs/worldState";
+
+// log npc attacks
+const _lastAttack: Map<number, number> = new Map();
+const attackDownTime = 0.5;
+
+let npcAttacks: Array<{ player: Player; store: Store; character: NpcCharacter }> = [];
+remotes.Server.Create("damageNPC").Connect(
+	withPlayerStore((player, store, character) => {
+		const now = time();
+		const lastAttack = _lastAttack.get(player.UserId);
+		if (lastAttack === undefined) {
+			_lastAttack.set(player.UserId, now);
+		} else {
+			if (now - lastAttack < attackDownTime) {
+				return;
+			}
+			_lastAttack.set(player.UserId, now);
+		}
+
+		const npcAttack = {
+			player,
+			store,
+			character,
+		};
+		npcAttacks.push(npcAttack);
+	}),
+);
 
 // generate world state
 const npcState = [];
@@ -48,7 +79,8 @@ for (const [worldName, worldInfo] of pairs(WORLDS)) {
 // eslint-disable-next-line no-constant-condition
 while (true) {
 	// run step
-	runStep(npcState, [], time());
+	runStep(npcState, npcAttacks, time());
+	npcAttacks = [];
 
 	task.wait();
 }

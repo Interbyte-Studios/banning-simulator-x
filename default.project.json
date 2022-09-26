@@ -19,7 +19,10 @@
           }
         }
       },
-      "$path": "out/shared",
+      "bsx_shared": {
+        "$className": "Folder",
+        "$path": "out/shared"
+      },
       "$ignoreUnknownInstances": true
     },
     "StarterPlayer": {

@@ -1,7 +1,6 @@
 import { WorldName } from "shared/configs/worlds";
 import { Npc, ZoneNames } from "shared/configs/zones";
-
-import { NpcCharacter } from "./isNpcCharacter";
+import { NpcCharacter } from "shared/remotes/damageNPC";
 
 type NpcState = { state: "FOLLOWING"; lastAttackTime: number } | { state: "WANDERING"; nextWanderTime: number };
 

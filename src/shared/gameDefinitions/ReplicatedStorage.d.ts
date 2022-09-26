@@ -9,6 +9,8 @@ declare global {
 			weapons: Folder & {
 				[P in WeaponType]: Folder & {
 					Attack: Animation;
+					Attack2: Animation;
+					Attack3: Animation;
 					Idle: Animation;
 					Equip: Animation;
 				};

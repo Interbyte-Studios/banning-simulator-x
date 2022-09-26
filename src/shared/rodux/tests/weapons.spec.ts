@@ -10,13 +10,16 @@ import { purchaseWeapon, weaponsReducer, WeaponsState } from "../weapons";
 export = (): void => {
 	describe("rodux/weapons", () => {
 		it("should allow purchasing a weapon", () => {
-			const weaponId = 1;
+			const weaponData = {
+				id: 1,
+				bans: 0,
+			};
 
-			const state: WeaponsState = new Map();
-			const newState: WeaponsState = new Map([[weaponId, { bans: 0 }]]);
+			const state: WeaponsState = [];
+			const newState: WeaponsState = [weaponData];
 
 			const action = purchaseWeapon({
-				id: weaponId,
+				id: weaponData.id,
 				cost: {
 					amount: 1000,
 					currency: "coins",
@@ -44,12 +47,20 @@ export = (): void => {
 		});
 
 		it("should add experience to the equipped weapon", () => {
-			const weaponId = 1;
+			const weaponData = {
+				id: 1,
+				bans: 0,
+			};
 
-			const state: WeaponsState = new Map([[weaponId, { bans: 0 }]]);
-			const newState: WeaponsState = new Map([[weaponId, { bans: 1 }]]);
+			const updatedWeaponData = {
+				id: 1,
+				bans: 1,
+			};
 
-			const action = killNpc(0, "coins", 1, weaponId, 1);
+			const state: WeaponsState = [weaponData];
+			const newState: WeaponsState = [updatedWeaponData];
+
+			const action = killNpc(0, "coins", 1, weaponData.id, 1);
 			assertDeepEqual(weaponsReducer(state, action), newState);
 		});
 	});

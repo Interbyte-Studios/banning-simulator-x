@@ -8,22 +8,25 @@ import { equipWeapon } from "shared/rodux/currentWeapon";
 export = (): void => {
 	describe("equipWeapon", () => {
 		it("should allow equipping a weapon", () => {
-			const weaponId = 2;
+			const weaponData = {
+				id: 1,
+				bans: 0,
+			};
 
 			const player = useMockPlayer();
 			const { dispatchedActions, cleanup } = createDummyStore(player, {
 				currentWeapon: {
-					id: 2,
+					id: 1,
 					equipped: false,
 				},
-				weapons: new Set([weaponId]),
+				weapons: [weaponData],
 			});
 
 			equipWeapon();
 			assertDeepEqual(dispatchedActions, [
 				{
 					type: "equipWeapon",
-					id: weaponId,
+					id: weaponData.id,
 				},
 			]);
 

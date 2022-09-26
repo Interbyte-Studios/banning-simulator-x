@@ -1,6 +1,5 @@
 import { ReplicatedStorage } from "@rbxts/services";
-
-import { isNpcCharacter, NpcCharacter } from "./isNpcCharacter";
+import { isNpcCharacter, NpcCharacter } from "shared/remotes/damageNPC";
 
 /**
  * Retrieves the character of an NPC.

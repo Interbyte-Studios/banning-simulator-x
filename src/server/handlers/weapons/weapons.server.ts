@@ -11,7 +11,7 @@ remotes.Server.GetNamespace("weapons")
 	.Create("changeWeapon")
 	.Connect(
 		withPlayerStore((_, store, weaponId) => {
-			if (!store.getState().weapons.has(weaponId)) {
+			if (!store.getState().weapons.find((weapon) => weapon.id === weaponId)) {
 				return;
 			}
 
