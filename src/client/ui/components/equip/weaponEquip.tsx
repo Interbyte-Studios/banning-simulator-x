@@ -1,22 +1,22 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { ReplicatedStorage } from "@rbxts/services";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { vec2Middle } from "client/ui/commonValues";
 import { WeaponViewport } from "client/ui/elements/weaponViewport";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { WeaponIndex } from "shared/configs/weapons";
 import { StoreState } from "shared/rodux";
-import { CurrentWeaponState } from "shared/rodux/currentWeapon";
 import { getItemById } from "shared/util/getItemById";
 
 import { FakeWeaponEquip } from "./fakeWeaponEquip";
 
+interface WeaponEquipProps extends WeaponEquipMappedProps {
+	visible: boolean;
+}
+
 interface WeaponEquipMappedProps {
-	currentWeapon: CurrentWeaponState;
+	weaponId: number;
 }
 
 /**
@@ -27,7 +27,7 @@ interface WeaponEquipMappedProps {
  */
 function mapStateToProps(state: StoreState): WeaponEquipMappedProps {
 	return {
-		currentWeapon: state.currentWeapon,
+		weaponId: state.currentWeapon.id,
 	};
 }
 
@@ -36,9 +36,13 @@ function mapStateToProps(state: StoreState): WeaponEquipMappedProps {
  */
 /* eslint-disable jsdoc/require-jsdoc */
 export const WeaponEquip = RoactRodux.connect(mapStateToProps)(
-	hooks((props: WeaponEquipMappedProps) => {
-		const weapon = getItemById(ReplicatedStorage.assetObjects.weapons, props.currentWeapon);
-		assert(weapon, `Expected to find weapon with id: "${props.currentWeapon}"`);
+	hooks((props: WeaponEquipProps) => {
+		if (!props.visible) {
+			return <></>;
+		}
+
+		const weapon = getItemById(ReplicatedStorage.assetObjects.weapons, props.weaponId);
+		assert(weapon, `Expected to find weapon with id: "${props.weaponId}"`);
 
 		return (
 			<imagebutton

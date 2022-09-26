@@ -218,9 +218,24 @@ hash = "88b0f7f6f73a320021a124bfbc177dfa1a29045d099fa4a34e2c0cc34f801e54"
 id = 10977600380
 packable = false
 
+[inputs."images/ui/equip/equipped.png"]
+hash = "dfdaf79e4637474040925c0518f3727c6e97bea47ac2d5dfcd2949d4e470ec3f"
+id = 11016579167
+packable = false
+
+[inputs."images/ui/equip/keybind.png"]
+hash = "68f745300cc82eb82dd3696d6203f2dbc6fb70785c9e2cdd3bbc9b5ebe6d3720"
+id = 11016579506
+packable = false
+
 [inputs."images/ui/equip/toolTp.png"]
 hash = "8c5173fe41761f232243f0148db72f60f78a1c2a880e1b058df38137d670ef98"
 id = 10988616532
+packable = false
+
+[inputs."images/ui/equip/unequipped.png"]
+hash = "49e4e31dc73a66de85fbeb9ed19f9901cdf49204ab0460d082cf32a1055641ae"
+id = 11016579897
 packable = false
 
 [inputs."images/ui/hud/icons/codes.png"]

@@ -63,7 +63,10 @@ return {
 			},
 			equip = {
 				background = "rbxassetid://10977600380",
+				equipped = "rbxassetid://11016579167",
+				keybind = "rbxassetid://11016579506",
 				toolTp = "rbxassetid://10988616532",
+				unequipped = "rbxassetid://11016579897",
 			},
 			hud = {
 				icons = {

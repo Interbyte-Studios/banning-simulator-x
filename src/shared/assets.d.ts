@@ -69,6 +69,9 @@ declare namespace assetIds {
 			equip: {
 				background: string;
 				toolTp: string;
+				keybind: string;
+				equipped: string;
+				unequipped: string;
 			};
 			hud: {
 				"interface button": string;

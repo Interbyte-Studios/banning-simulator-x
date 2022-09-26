@@ -1,10 +1,19 @@
 import { Eggs } from "shared/configs/eggs";
 import { Talismans } from "shared/configs/talismans";
-import { Weapons } from "shared/configs/weapons";
+import { Weapons, WeaponType } from "shared/configs/weapons";
 import { NPCs } from "shared/configs/zones";
 
 declare global {
 	interface ReplicatedStorage extends Instance {
+		animations: Folder & {
+			weapons: Folder & {
+				[P in WeaponType]: Folder & {
+					Attack: Animation;
+					Idle: Animation;
+					Equip: Animation;
+				};
+			};
+		};
 		assetObjects: Folder & {
 			eggs: Folder & {
 				[P in keyof Eggs]: Folder & {

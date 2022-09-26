@@ -3,8 +3,7 @@
 import { createDummyStore } from "server/playerStore";
 import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 import { useMockPlayer } from "shared/mocks/player";
-
-import { equipWeapon } from "../equipWeapon";
+import { equipWeapon } from "shared/rodux/currentWeapon";
 
 export = (): void => {
 	describe("equipWeapon", () => {
@@ -12,30 +11,21 @@ export = (): void => {
 			const weaponId = 2;
 
 			const player = useMockPlayer();
-			const { store, dispatchedActions, cleanup } = createDummyStore(player, {
+			const { dispatchedActions, cleanup } = createDummyStore(player, {
+				currentWeapon: {
+					id: 2,
+					equipped: false,
+				},
 				weapons: new Set([weaponId]),
 			});
 
-			equipWeapon(store, weaponId);
+			equipWeapon();
 			assertDeepEqual(dispatchedActions, [
 				{
 					type: "equipWeapon",
 					id: weaponId,
 				},
 			]);
-
-			cleanup();
-		});
-
-		it("should not equip a weapon not owned", () => {
-			const weaponId = 2;
-
-			const player = useMockPlayer();
-			const { store, dispatchedActions, cleanup } = createDummyStore(player, {});
-
-			// should throw an error when equipping
-			expect(() => equipWeapon(store, weaponId)).to.throw();
-			assertDeepEqual(dispatchedActions, []);
 
 			cleanup();
 		});

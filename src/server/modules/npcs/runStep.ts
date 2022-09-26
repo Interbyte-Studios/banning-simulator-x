@@ -94,12 +94,12 @@ export function runStep(
 		// apply weapon damage to npc
 		const storeState = store.getState();
 
-		const currentWeaponData = storeState.weapons.get(storeState.currentWeapon);
+		const currentWeaponData = storeState.weapons.get(storeState.currentWeapon.id);
 		if (currentWeaponData === undefined) {
 			throw `Player ${player.Name} does not own the weapon they're attacking with.`;
 		}
 
-		const weapon = getWeaponInfo(storeState.currentWeapon);
+		const weapon = getWeaponInfo(storeState.currentWeapon.id);
 		const weaponLevelBonus = getWeaponLevel(currentWeaponData.bans);
 		npc.npc.health -= weapon.data.damage + weapon.data.damage * 0.25 * weaponLevelBonus.level;
 
@@ -116,7 +116,7 @@ export function runStep(
 					reward.currency,
 					WORLDS[npc.world.name].reward,
 					reward.experience,
-					storeState.currentWeapon,
+					storeState.currentWeapon.id,
 					storeState.currentTalisman,
 				),
 			);

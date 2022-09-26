@@ -17,15 +17,19 @@ import { TogglePetsStudsOfDistanceDefinition } from "shared/remotes/settings/vis
 import { ToggleTimeOfDayDefinition } from "shared/remotes/settings/visual/toggleTimeOfDay";
 import { EquipTalismanDefinition } from "shared/remotes/talismans/equipTalisman";
 import { PurchaseTalismanDefinition } from "shared/remotes/talismans/purchaseTalisman";
+import { ChangeWeaponDefinition } from "shared/remotes/weapons/changeWeapon";
 import { EquipWeaponDefinition } from "shared/remotes/weapons/equipWeapon";
 import { PurchaseWeaponDefinition } from "shared/remotes/weapons/purchaseWeapon";
+import { UnequipWeaponDefinition } from "shared/remotes/weapons/unequipWeapon";
 
 import { fakeHatchEgg } from "../hatchEgg";
 import { fakeFunctionCall } from "./fakeFunctionCall";
 import { fakeRemoteCall } from "./fakeRemoteCall";
 
 export const fakeRemoteContext = {
+	changeWeapon: fakeRemoteCall<ChangeWeaponDefinition>("changeWeapon"),
 	equipWeapon: fakeRemoteCall<EquipWeaponDefinition>("equipWeapon"),
+	unequipWeapon: fakeRemoteCall<UnequipWeaponDefinition>("unequipWeapon"),
 	purchaseWeapon: fakeRemoteCall<PurchaseWeaponDefinition>("purchaseWeapon"),
 
 	purchaseZone: fakeFunctionCall<PurchaseZoneDefinition>("purchaseZone", () => {

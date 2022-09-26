@@ -70,7 +70,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 				/>
 				<LocalMessages currentMessage={displayAnnouncement} />
 				<ZonesUI displayAnnouncement={applyAnnouncement} />
-				<WeaponEquip />
+				<WeaponEquip visible={!codesMenuVisible && !settingsMenuVisible && !isHatching} />
 			</>
 		</RoactRodux.StoreProvider>
 	);
