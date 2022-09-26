@@ -17,12 +17,32 @@ import { HatchEggButton } from "./hatchEgg";
 import { ToggleAutoHatchButton } from "./toggleAutoHatch";
 import { TripleHatchEggButton } from "./tripleHatchEgg";
 
+/**
+ * The distance in studs that the player must be near the egg adornee to activate the HUD.
+ */
+const HUD_ACTIVATION_DISTANCE = 15;
+
 interface EggHudProps {
 	adornee: BasePart;
 	eggName: EggName;
 	isVoid: boolean;
 	pets: Array<Pet>;
 	initiateHatch: (amount: 1 | 3, egg: EggName, isVoid: boolean) => Promise<void>;
+}
+
+/**
+ * Checks if the egg hud should display for a given `character` and `adornee`.
+ *
+ * @param character The character to check the magnitude for.
+ * @param adornee The adornee to determine the distance from.
+ * @returns If the egg hud should display.
+ */
+function shouldDisplayHud(character: Model | undefined, adornee: BasePart): boolean {
+	if (!character) {
+		return false;
+	}
+
+	return (getMagnitudeBetweenPlayerAndObject(character, adornee) ?? math.huge) <= HUD_ACTIVATION_DISTANCE;
 }
 
 /**
@@ -36,31 +56,17 @@ interface EggHudProps {
  * @param props.initiateHatch A function that allows the player to hatch the egg.
  * @returns A roact element.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 export const EggHudDisplay = hooks((props: EggHudProps, hooks) => {
 	const { useEffect, useState } = hooks;
-	const [isVisible, setVisibility] = useState(true);
+	const [isVisible, setVisibility] = useState(shouldDisplayHud(Players.LocalPlayer.Character, props.adornee));
 
 	const eggCost = getEggCost(props.eggName, props.isVoid);
-
-	const activationDistance = 15;
 
 	useEffect(() => {
 		const player = Players.LocalPlayer;
 
 		const connection = RunService.RenderStepped.Connect(() => {
-			const character = player.Character;
-			if (!character) {
-				return;
-			}
-
-			const magnitudeToBasePart = getMagnitudeBetweenPlayerAndObject(character, props.adornee);
-			if (magnitudeToBasePart === undefined) {
-				// character did not exist
-				return;
-			}
-
-			if (magnitudeToBasePart <= activationDistance) {
+			if (shouldDisplayHud(player.Character, props.adornee)) {
 				if (!isVisible) {
 					setVisibility(true);
 				}
