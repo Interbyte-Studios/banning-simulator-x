@@ -34,3 +34,43 @@ export const TASK_PRODUCTS = {
 	Void: 1,
 	Radiant: 1,
 };
+
+export const GROUP_ID = 5126818;
+export const GROUP_ROLES: Record<number, { tag: string; color: Color3 }> = {
+	255: {
+		tag: "Holder",
+		color: Color3.fromRGB(255, 138, 138),
+	},
+	254: {
+		tag: "Lead Developer",
+		color: Color3.fromRGB(255, 138, 138),
+	},
+	253: {
+		tag: "Developer",
+		color: Color3.fromRGB(255, 138, 138),
+	},
+	252: {
+		tag: "Contributor",
+		color: Color3.fromRGB(0, 181, 237),
+	},
+	251: {
+		tag: "Tester",
+		color: Color3.fromRGB(166, 247, 135),
+	},
+	250: {
+		tag: "Moderator",
+		color: Color3.fromRGB(196, 94, 242),
+	},
+	249: {
+		tag: "Partner",
+		color: Color3.fromRGB(255, 191, 120),
+	},
+	248: {
+		tag: "Legendary Fan",
+		color: Color3.fromRGB(5, 209, 179),
+	},
+	247: {
+		tag: "Fan",
+		color: Color3.fromRGB(5, 209, 179),
+	},
+};

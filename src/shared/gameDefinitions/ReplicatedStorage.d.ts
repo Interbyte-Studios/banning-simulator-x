@@ -17,6 +17,46 @@ declare global {
 			};
 		};
 		assetObjects: Folder & {
+			playerTag: BillboardGui & {
+				hold: Frame & {
+					UIListLayout: UIListLayout;
+					name: TextLabel & {
+						UIStroke: UIStroke;
+						rank: ImageLabel & {
+							UIAspectRatioConstraint: UIAspectRatioConstraint;
+						};
+					};
+					staff: TextLabel & {
+						UIStroke: UIStroke;
+					};
+					title: TextLabel & {
+						UIStroke: UIStroke;
+					};
+				};
+			};
+			enemyTag: BillboardGui & {
+				hold: Frame & {
+					UIListLayout: UIListLayout;
+					fillBackground: ImageLabel & {
+						UICorner: UICorner;
+						fill: ImageLabel & {
+							UICorner: UICorner;
+						};
+						health: TextLabel & {
+							UIStroke: UIStroke;
+						};
+					};
+					name: TextLabel & {
+						UIStroke: UIStroke;
+						rank: ImageLabel & {
+							UIAspectRatioConstraint: UIAspectRatioConstraint;
+						};
+					};
+					title: TextLabel & {
+						UIStroke: UIStroke;
+					};
+				};
+			};
 			eggs: Folder & {
 				[P in keyof Eggs]: Folder & {
 					regular: Folder & {

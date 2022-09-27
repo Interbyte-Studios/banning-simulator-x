@@ -73,104 +73,154 @@ hash = "ca1e87c9948257fed7ac980ef92c8398b411f49a7e6d0b7b598646e8fd832b3a"
 id = 10509318265
 packable = false
 
-[inputs."images/ranks/1.png"]
+[inputs."images/ranks/enemy/boss/Bronze.png"]
+hash = "633e0523334d54884e2511b425e9b9a6d016f732673a745e0209bf1109be5e87"
+id = 11090708263
+packable = false
+
+[inputs."images/ranks/enemy/boss/Diamond.png"]
+hash = "c0509a49eb58add265d7632e58dfa7bfbcbd22cdd59a8356b0194006272edd42"
+id = 11090708380
+packable = false
+
+[inputs."images/ranks/enemy/boss/Gold.png"]
+hash = "71cc341a679bf515f665dffbb3a2e8ccc5d5ccf84f3c747b6143eea24db63ed4"
+id = 11090708492
+packable = false
+
+[inputs."images/ranks/enemy/boss/Ruby.png"]
+hash = "8363628ca2e4def57ccf57d877d0f81f923bc187211255aebeb788abcaa9a961"
+id = 11090708586
+packable = false
+
+[inputs."images/ranks/enemy/boss/Silver.png"]
+hash = "1ac32c01c5e58a13870fafd8d0e1070914ba5b56d8f4f05c2e86f423e575418a"
+id = 11090695009
+packable = false
+
+[inputs."images/ranks/enemy/regular/Bronze.png"]
+hash = "53fcadf17b2829d25ba9e8b8294a45d0006a0b83011908644ef2750b2a3f36fe"
+id = 11090695088
+packable = false
+
+[inputs."images/ranks/enemy/regular/Diamond.png"]
+hash = "dbfe7ca6f5e9d4ac8a60e6108152f37bd25a2f5741847648ea9713bc0d7ea7de"
+id = 11090695164
+packable = false
+
+[inputs."images/ranks/enemy/regular/Gold.png"]
+hash = "b46358ab078613f25da2cbba191f633a2cf1e907224ca0db9fe55e603634e5b1"
+id = 11090695295
+packable = false
+
+[inputs."images/ranks/enemy/regular/Ruby.png"]
+hash = "9a79e7a9bd0220a95a21746365aa64d4a4b6358a69f2e2618a293df6c25d0859"
+id = 11090695398
+packable = false
+
+[inputs."images/ranks/enemy/regular/Silver.png"]
+hash = "355231d051253820347bf1e411ff1fe9fe14c622a21dad834195641614e457a1"
+id = 11090695552
+packable = false
+
+[inputs."images/ranks/friendly/1.png"]
 hash = "387e2dbf76db5a302849077ba8e6552b5c1d29d27dadeed53c596bf9f4166e8b"
-id = 10835560038
+id = 11090695634
 packable = false
 
-[inputs."images/ranks/10.png"]
+[inputs."images/ranks/friendly/10.png"]
 hash = "1fb9cc2d5a62feffdf822232535b7bd3844bdfb7fcc308ab8053470a17bec5d1"
-id = 10835560092
+id = 11090695721
 packable = false
 
-[inputs."images/ranks/11.png"]
+[inputs."images/ranks/friendly/11.png"]
 hash = "5aa48dcf21918feb2118a5e31a9324233082e1e7392a35f1b141a98e1c31e036"
-id = 10835560133
+id = 11090695820
 packable = false
 
-[inputs."images/ranks/12.png"]
+[inputs."images/ranks/friendly/12.png"]
 hash = "e839779ab577d960a1b27a2e1464be1dbe2bc97ed2e8dd95f5bb88db44b1c1fd"
-id = 10835560188
+id = 11090695946
 packable = false
 
-[inputs."images/ranks/13.png"]
+[inputs."images/ranks/friendly/13.png"]
 hash = "37289e77f30b9c2c4f9fb34ba9c2bf669b584ba3442eef8ec8f117c03d820623"
-id = 10961708467
+id = 11090696055
 packable = false
 
-[inputs."images/ranks/14.png"]
+[inputs."images/ranks/friendly/14.png"]
 hash = "ecedc40081404273304acaa3c0d38b471116be808b2a48aeccbcbc52aafb3f01"
-id = 10961708524
+id = 11090696196
 packable = false
 
-[inputs."images/ranks/15.png"]
+[inputs."images/ranks/friendly/15.png"]
 hash = "92f6afdc7ed1979386d4a775296b0958a560bc9834ae3a9e354a75a7d5665cab"
-id = 10961708617
+id = 11090696358
 packable = false
 
-[inputs."images/ranks/16.png"]
+[inputs."images/ranks/friendly/16.png"]
 hash = "e59aa2e2137d907b4bf0ce7fd64b8d0f4fae07fbfcb06c35792f749092d8ca30"
-id = 10961708775
+id = 11090696473
 packable = false
 
-[inputs."images/ranks/17.png"]
+[inputs."images/ranks/friendly/17.png"]
 hash = "aa24051e37f3d34b47ce564a4675e7a8e086ffdb5d8d0cec3be22d335778391d"
-id = 10961708870
+id = 11090696592
 packable = false
 
-[inputs."images/ranks/18.png"]
+[inputs."images/ranks/friendly/18.png"]
 hash = "9ab459e3e3f38b5f8ba76c4ddd1e18da754ff4284cd3ad35307febe290191db5"
-id = 10961708943
+id = 11090696702
 packable = false
 
-[inputs."images/ranks/19.png"]
+[inputs."images/ranks/friendly/19.png"]
 hash = "bc1be47923e8e9d74ea12da24cc54e07f75dd6dd15158f454d795741536e15e5"
-id = 10961709146
+id = 11090696902
 packable = false
 
-[inputs."images/ranks/2.png"]
+[inputs."images/ranks/friendly/2.png"]
 hash = "e5a09ce8d12c7913cd2643f44b7bcd7877e281dfea8a0fb471da6a5d710c72fd"
-id = 10961709261
+id = 11090697037
 packable = false
 
-[inputs."images/ranks/20.png"]
+[inputs."images/ranks/friendly/20.png"]
 hash = "ae7a83bdb36bba06a85c7f809b6876067964567e0dc8c22c989300353e502a18"
-id = 10961709364
+id = 11090697238
 packable = false
 
-[inputs."images/ranks/3.png"]
+[inputs."images/ranks/friendly/3.png"]
 hash = "f2431c3293f2fcba6e97e880ea6fb39075f56b2dee1b2db63b01208051f8344b"
-id = 10961709501
+id = 11090697390
 packable = false
 
-[inputs."images/ranks/4.png"]
+[inputs."images/ranks/friendly/4.png"]
 hash = "bfb3e909f3743a3cd3018848357059f91e196ce15102bdd0f4b6213d9ee720ee"
-id = 10961709632
+id = 11090697513
 packable = false
 
-[inputs."images/ranks/5.png"]
+[inputs."images/ranks/friendly/5.png"]
 hash = "66715508efbf45536e5ff15153cb265906b54f7647a2f7a54325beeb0ba0cf5d"
-id = 10961709743
+id = 11090697649
 packable = false
 
-[inputs."images/ranks/6.png"]
+[inputs."images/ranks/friendly/6.png"]
 hash = "bb0291f83f55acfe27697385e6794a5742236e07c3cee9e8cab158f5209996cd"
-id = 10961709816
+id = 11090697763
 packable = false
 
-[inputs."images/ranks/7.png"]
+[inputs."images/ranks/friendly/7.png"]
 hash = "4d52a36ed020b948c8e34a46b3745911ba15e5ce9be047e89ba4885ce9ff6106"
-id = 10961709894
+id = 11090697899
 packable = false
 
-[inputs."images/ranks/8.png"]
+[inputs."images/ranks/friendly/8.png"]
 hash = "3d022ec7757f373c29163201436d97be3596310f10086d1797c883b0c6468c03"
-id = 10961710003
+id = 11090698106
 packable = false
 
-[inputs."images/ranks/9.png"]
+[inputs."images/ranks/friendly/9.png"]
 hash = "ef801fb8430aaee8b29f2c458a0c04f0fd7e08421cebe10ed46c85389fe60d6c"
-id = 10961710084
+id = 11090698226
 packable = false
 
 [inputs."images/ui/autoDelete/background.png"]

@@ -57,7 +57,7 @@ export function runStep(
 					zoneInfo.npcs.find((npc) => npc.isBoss) ?? zoneInfo.npcs[random.NextInteger(0, zoneInfo.npcs.size() - 1)];
 
 				// spawn npc which will immediately start wandering
-				const npcCharacter = getNpcCharacter(selectedNpc.name).Clone();
+				const npcCharacter = getNpcCharacter(world.name, zone.name, selectedNpc.name).Clone();
 				npcCharacter.Humanoid.MaxHealth = selectedNpc.health;
 				npcCharacter.Humanoid.Health = selectedNpc.health;
 				npcCharacter.PivotTo(getRandomCFrame(zone.spawn.min, zone.spawn.max, random));

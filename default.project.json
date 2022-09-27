@@ -29,7 +29,10 @@
       "$className": "StarterPlayer",
       "StarterPlayerScripts": {
         "$className": "StarterPlayerScripts",
-        "$path": "out/client"
+        "bsx_client": {
+          "$className": "Folder",
+          "$path": "out/client"
+        }
       }
     },
     "HttpService": {

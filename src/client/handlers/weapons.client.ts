@@ -111,16 +111,27 @@ function equipWeapon(weaponName: WeaponIndex): void {
 		}
 
 		canSwing = false;
-		hitbox.HitStart();
 
 		const randomNumber = math.ceil(math.random(1, 3)) - 1;
 		const animationToPlay = attackAnimations[randomNumber];
+
+		if (weaponData.weaponType === "Hammer" && randomNumber === 1) {
+			hitbox.HitStart();
+			task.delay(1, () => {
+				hitbox.HitStop();
+				hitbox.HitStart();
+			});
+		} else {
+			hitbox.HitStart();
+		}
 
 		animationToPlay.Play();
 		animationToPlay.Stopped.Wait();
 
 		canSwing = true;
-		hitbox.HitStop();
+		if (hitbox !== undefined) {
+			hitbox.HitStop();
+		}
 	});
 
 	weapon.Unequipped.Connect(() => {
