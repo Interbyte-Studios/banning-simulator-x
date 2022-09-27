@@ -19,7 +19,7 @@ const enemyTags = new Instance("ScreenGui");
 enemyTags.Name = "EnemyTags";
 enemyTags.Parent = playerGui;
 
-const healthbarTween = new TweenInfo(0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out);
+const healthbarTween = new TweenInfo(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.In);
 
 /**
  * Creates a player tag that's displayed above the player's head.
@@ -105,8 +105,10 @@ function createEnemyTag(enemy: Model): void {
 
 	const tag = enemyTag.Clone();
 	tag.hold.name.Text = enemy.Name;
-	tag.hold.name.rank.Image = getEnemyRankIcon(npcData.rank);
-	tag.hold.title.Visible = false;
+	tag.hold.name.rank.Image = getEnemyRankIcon(npcData.rank, npcData.isBoss);
+	tag.hold.title.Visible = npcData.isBoss;
+	tag.hold.title.Text = npcData.isBoss ? `Boss` : `NPC`;
+	tag.hold.title.TextColor3 = npcData.isBoss ? Color3.fromRGB(250, 112, 112) : Color3.fromRGB(255, 255, 255);
 
 	tag.hold.fillBackground.fill.Size = UDim2.fromScale(1, 1);
 	tag.hold.fillBackground.health.Text = `[${humanoid.Health} / ${humanoid.MaxHealth}]`;
@@ -129,8 +131,8 @@ function createEnemyTag(enemy: Model): void {
 			Size: UDim2.fromScale(healthPercentage, 1),
 		});
 		healthTween.Play();
+		healthTween.Completed.Wait();
 
-		tag.hold.fillBackground.fill.Size = UDim2.fromScale(1, 1);
 		tag.hold.fillBackground.health.Text = `[${humanoid.Health} / ${humanoid.MaxHealth}]`;
 	});
 

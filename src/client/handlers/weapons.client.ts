@@ -44,19 +44,27 @@ function equipWeapon(weaponName: WeaponIndex): void {
 	assert(presetIdleAnimation, `Failed to get preset idle animation for ${player.Name}`);
 
 	// animations
-	const defaultIdleAnimation = "http://www.roblox.com/asset/?id=507766388";
-
 	const weaponData = WEAPONS[weapon.Name as WeaponIndex];
 	const animations = ReplicatedStorage.animations.weapons[weaponData.weaponType];
+
+	const defaultIdleAnimation = "http://www.roblox.com/asset/?id=507766388";
 
 	const attackAnimation = animator.LoadAnimation(animations.Attack);
 	const attack2Animation = animator.LoadAnimation(animations.Attack2);
 	const attack3Animation = animator.LoadAnimation(animations.Attack3);
 
 	const attackAnimations: Array<AnimationTrack> = [];
-	attackAnimations.push(attackAnimation, attack2Animation, attack3Animation);
+	attackAnimations.push(attackAnimation, attack3Animation);
+	if (weaponData.weaponType !== "Hammer") {
+		attackAnimations.push(attack2Animation);
+	}
 
 	const equipAnimation = animator.LoadAnimation(animations.Equip);
+
+	const toolnone = animateScript.FindFirstChild("toolnone");
+	if (toolnone) {
+		toolnone.Destroy();
+	}
 
 	for (const animation of presetIdleAnimation.GetChildren()) {
 		if (!animation.IsA("Animation")) {
@@ -112,26 +120,16 @@ function equipWeapon(weaponName: WeaponIndex): void {
 
 		canSwing = false;
 
-		const randomNumber = math.ceil(math.random(1, 3)) - 1;
+		const randomNumber = math.ceil(math.random(1, attackAnimations.size())) - 1;
 		const animationToPlay = attackAnimations[randomNumber];
 
-		if (weaponData.weaponType === "Hammer" && randomNumber === 1) {
-			hitbox.HitStart();
-			task.delay(1, () => {
-				hitbox.HitStop();
-				hitbox.HitStart();
-			});
-		} else {
-			hitbox.HitStart();
-		}
+		hitbox.HitStart();
 
 		animationToPlay.Play();
 		animationToPlay.Stopped.Wait();
 
 		canSwing = true;
-		if (hitbox !== undefined) {
-			hitbox.HitStop();
-		}
+		hitbox.HitStop();
 	});
 
 	weapon.Unequipped.Connect(() => {

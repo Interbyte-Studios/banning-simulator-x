@@ -5,6 +5,8 @@ import { NPCs } from "shared/configs/zones";
 
 declare global {
 	interface ReplicatedStorage extends Instance {
+		AnimateR15: Script;
+		AnimateR6: Script;
 		animations: Folder & {
 			weapons: Folder & {
 				[P in WeaponType]: Folder & {

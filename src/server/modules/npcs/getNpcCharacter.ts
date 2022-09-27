@@ -1,4 +1,4 @@
-import { Players } from "@rbxts/services";
+import { Players, ReplicatedStorage } from "@rbxts/services";
 import { WorldName } from "shared/configs/worlds";
 import { UniversalWorldData, ZoneNames } from "shared/configs/zones";
 import { isNpcCharacter, NpcCharacter } from "shared/remotes/damageNPC";
@@ -18,6 +18,21 @@ export function getNpcCharacter(worldName: WorldName, zoneName: ZoneNames, npcNa
 	const character = Players.CreateHumanoidModelFromUserId(npcData.userId);
 	assert(character, `Could not load character appearance of ${npcName}`);
 	assert(isNpcCharacter(character), `Npc "${npcName}" is not an Npc character`);
+
+	if (character.Humanoid.RigType === Enum.HumanoidRigType.R15) {
+		const animateScript = ReplicatedStorage.AnimateR15.Clone();
+		animateScript.Parent = character;
+		animateScript.Enabled = true;
+	} else {
+		const animateScript = ReplicatedStorage.AnimateR6.Clone();
+		animateScript.Parent = character;
+		animateScript.Enabled = true;
+	}
+
+	const oldAnimateScript = character.FindFirstChildOfClass("LocalScript");
+	if (oldAnimateScript !== undefined && oldAnimateScript.Name === "Animate") {
+		oldAnimateScript.Destroy();
+	}
 
 	character.Name = npcName;
 

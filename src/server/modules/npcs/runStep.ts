@@ -1,6 +1,6 @@
-import { ReplicatedStorage } from "@rbxts/services";
 import { stores } from "server/playerStore";
 import { WORLDS } from "shared/configs/worlds";
+import { Npc } from "shared/configs/zones";
 import { NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 import { killNpc } from "shared/rodux/currencies";
@@ -18,7 +18,8 @@ const NPC_SPAWN_SURROUNDING = 25;
 const NPC_WANDER_COOLDOWN_MIN = 7;
 const NPC_WANDER_COOLDOWN_MAX = 15;
 // amount of NPCs in a zone
-const ZONE_NPC_AMOUNT = 4;
+const ZONE_NPC_AMOUNT = 8;
+const ZONE_NPC_BOSS_AMOUNT = 2;
 
 /*
 // distance units for following a player
@@ -53,9 +54,18 @@ export function runStep(
 				const zoneInfo = WORLDS[world.name].zones[zone.name];
 				assert(zoneInfo, `Failed to find zone "${zone.name}" in world "${world.name}"`);
 
+				const amountOfBosses = zone.npcs.filter((npc) => npc.npc.isBoss === true).size();
+
 				// if it's a boss zone, use the boss npc, otherwise, randomly choose an npc
 				const selectedNpc =
-					zoneInfo.npcs.find((npc) => npc.isBoss) ?? zoneInfo.npcs[random.NextInteger(0, zoneInfo.npcs.size() - 1)];
+					amountOfBosses < ZONE_NPC_BOSS_AMOUNT
+						? zoneInfo.npcs.find((npc) => npc.isBoss)
+						: zoneInfo.npcs.find((npc) => !npc.isBoss);
+
+				if (selectedNpc === undefined) {
+					warn(`Failed to spawn npc for zone ${zone.name}`);
+					continue;
+				}
 
 				// spawn npc which will immediately start wandering
 				const npcCharacter = getNpcCharacter(world.name, zone.name, selectedNpc.name).Clone();
