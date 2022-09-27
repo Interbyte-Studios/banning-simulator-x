@@ -1,6 +1,4 @@
-import { Players, ReplicatedStorage } from "@rbxts/services";
-import { WorldName } from "shared/configs/worlds";
-import { UniversalWorldData, ZoneNames } from "shared/configs/zones";
+import { ReplicatedStorage } from "@rbxts/services";
 import { isNpcCharacter, NpcCharacter } from "shared/remotes/damageNPC";
 
 /**
@@ -11,30 +9,10 @@ import { isNpcCharacter, NpcCharacter } from "shared/remotes/damageNPC";
  * @param npcName The name of the NPC.
  * @returns The NPC character.
  */
-export function getNpcCharacter(worldName: WorldName, zoneName: ZoneNames, npcName: string): NpcCharacter {
-	const npcData = UniversalWorldData[worldName][zoneName].npcs.find((npc) => npc.name === npcName);
-	assert(npcData, `Failed to get npc data and generate appearance for ${npcName}`);
-
-	const character = Players.CreateHumanoidModelFromUserId(npcData.userId);
+export function getNpcCharacter(npcName: string): NpcCharacter {
+	const character = ReplicatedStorage.assetObjects.npcs.FindFirstChild(npcName);
 	assert(character, `Could not load character appearance of ${npcName}`);
 	assert(isNpcCharacter(character), `Npc "${npcName}" is not an Npc character`);
-
-	if (character.Humanoid.RigType === Enum.HumanoidRigType.R15) {
-		const animateScript = ReplicatedStorage.AnimateR15.Clone();
-		animateScript.Parent = character;
-		animateScript.Enabled = true;
-	} else {
-		const animateScript = ReplicatedStorage.AnimateR6.Clone();
-		animateScript.Parent = character;
-		animateScript.Enabled = true;
-	}
-
-	const oldAnimateScript = character.FindFirstChildOfClass("LocalScript");
-	if (oldAnimateScript !== undefined && oldAnimateScript.Name === "Animate") {
-		oldAnimateScript.Destroy();
-	}
-
-	character.Name = npcName;
 
 	return character;
 }

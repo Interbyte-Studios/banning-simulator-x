@@ -1,7 +1,6 @@
 import { t } from "@rbxts/t";
 
 import { Currency } from "../currencies";
-import { WorldName } from "../worlds";
 import { BAN_LAND_ZONES } from "./banLand";
 import { BAN_LAND_NPCS } from "./banLand/npcs";
 
@@ -11,7 +10,6 @@ export type NPCRank = t.static<typeof isValidNPCRank>;
 export interface Npc {
 	name: string;
 	health: number;
-	userId: number;
 	reward: {
 		currency: number;
 		experience: number;

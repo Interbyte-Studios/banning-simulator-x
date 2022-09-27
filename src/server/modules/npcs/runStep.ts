@@ -68,7 +68,7 @@ export function runStep(
 				}
 
 				// spawn npc which will immediately start wandering
-				const npcCharacter = getNpcCharacter(world.name, zone.name, selectedNpc.name).Clone();
+				const npcCharacter = getNpcCharacter(selectedNpc.name).Clone();
 				npcCharacter.Humanoid.MaxHealth = selectedNpc.health;
 				npcCharacter.Humanoid.Health = selectedNpc.health;
 				npcCharacter.PivotTo(getRandomCFrame(zone.spawn.min, zone.spawn.max, random));
@@ -146,6 +146,26 @@ export function runStep(
 			// get rid of npc instance
 			npc.instance.Parent = undefined;
 			npcCharacterToNpc.delete(character);
+		} else {
+			const humanoidRootPart = npc.instance.Humanoid.RootPart;
+			if (humanoidRootPart === undefined) {
+				warn(`Failed to get HumanoidRootPart for npc ${npc.instance.Name}`);
+				continue;
+			}
+
+			const emitter = humanoidRootPart.FindFirstChild("ImpactEmitter") as Attachment;
+			if (emitter === undefined) {
+				warn(`Failed to get impact emitter for npc ${npc.instance.Name}`);
+				continue;
+			}
+
+			for (const particleEmitter of emitter.GetChildren()) {
+				if (!particleEmitter.IsA("ParticleEmitter")) {
+					continue;
+				}
+
+				particleEmitter.Emit(1);
+			}
 		}
 	}
 

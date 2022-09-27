@@ -5,8 +5,6 @@ import { NPCs } from "shared/configs/zones";
 
 declare global {
 	interface ReplicatedStorage extends Instance {
-		AnimateR15: Script;
-		AnimateR6: Script;
 		animations: Folder & {
 			weapons: Folder & {
 				[P in WeaponType]: Folder & {
@@ -61,11 +59,18 @@ declare global {
 					};
 				};
 			};
-			npcParticles: Folder & {
-				Impact: BasePart & {
-					Attachment: Attachment & {
-						Sparkle: ParticleEmitter;
-					};
+			emitters: Folder & {
+				"ban emitters": Folder & {
+					Banned: BasePart;
+					Banned1: BasePart;
+					Banned2: BasePart;
+					Banned3: BasePart;
+				};
+				"crit ban emitters": Folder & {
+					Banned: BasePart;
+					Banned1: BasePart;
+					Banned2: BasePart;
+					Banned3: BasePart;
 				};
 			};
 			eggs: Folder & {
