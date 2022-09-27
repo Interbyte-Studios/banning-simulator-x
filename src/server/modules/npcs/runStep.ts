@@ -1,3 +1,4 @@
+import { ReplicatedStorage } from "@rbxts/services";
 import { stores } from "server/playerStore";
 import { WORLDS } from "shared/configs/worlds";
 import { NpcCharacter } from "shared/remotes/damageNPC";

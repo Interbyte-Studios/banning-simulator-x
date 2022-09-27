@@ -17,43 +17,52 @@ declare global {
 			};
 		};
 		assetObjects: Folder & {
-			playerTag: BillboardGui & {
-				hold: Frame & {
-					UIListLayout: UIListLayout;
-					name: TextLabel & {
-						UIStroke: UIStroke;
-						rank: ImageLabel & {
-							UIAspectRatioConstraint: UIAspectRatioConstraint;
+			tags: Folder & {
+				playerTag: BillboardGui & {
+					hold: Frame & {
+						UIListLayout: UIListLayout;
+						name: TextLabel & {
+							UIStroke: UIStroke;
+							rank: ImageLabel & {
+								UIAspectRatioConstraint: UIAspectRatioConstraint;
+							};
 						};
-					};
-					staff: TextLabel & {
-						UIStroke: UIStroke;
-					};
-					title: TextLabel & {
-						UIStroke: UIStroke;
-					};
-				};
-			};
-			enemyTag: BillboardGui & {
-				hold: Frame & {
-					UIListLayout: UIListLayout;
-					fillBackground: ImageLabel & {
-						UICorner: UICorner;
-						fill: ImageLabel & {
-							UICorner: UICorner;
+						staff: TextLabel & {
+							UIStroke: UIStroke;
 						};
-						health: TextLabel & {
+						title: TextLabel & {
 							UIStroke: UIStroke;
 						};
 					};
-					name: TextLabel & {
-						UIStroke: UIStroke;
-						rank: ImageLabel & {
-							UIAspectRatioConstraint: UIAspectRatioConstraint;
+				};
+				enemyTag: BillboardGui & {
+					hold: Frame & {
+						UIListLayout: UIListLayout;
+						fillBackground: ImageLabel & {
+							UICorner: UICorner;
+							fill: ImageLabel & {
+								UICorner: UICorner;
+							};
+							health: TextLabel & {
+								UIStroke: UIStroke;
+							};
+						};
+						name: TextLabel & {
+							UIStroke: UIStroke;
+							rank: ImageLabel & {
+								UIAspectRatioConstraint: UIAspectRatioConstraint;
+							};
+						};
+						title: TextLabel & {
+							UIStroke: UIStroke;
 						};
 					};
-					title: TextLabel & {
-						UIStroke: UIStroke;
+				};
+			};
+			npcParticles: Folder & {
+				Impact: BasePart & {
+					Attachment: Attachment & {
+						Sparkle: ParticleEmitter;
 					};
 				};
 			};

@@ -28,7 +28,7 @@ const healthbarTween = new TweenInfo(0.3, Enum.EasingStyle.Linear, Enum.EasingDi
  * @param store The player's store.
  */
 function createPlayerTag(player: Player, store: Store): void {
-	const playerTag = ReplicatedStorage.assetObjects.playerTag;
+	const playerTag = ReplicatedStorage.assetObjects.tags.playerTag;
 	assert(playerTag, `Failed to get player tag from rep storage`);
 
 	const character = player.Character;
@@ -82,7 +82,7 @@ function createPlayerTag(player: Player, store: Store): void {
  * @param enemy The enemy.
  */
 function createEnemyTag(enemy: Model): void {
-	const enemyTag = ReplicatedStorage.assetObjects.enemyTag;
+	const enemyTag = ReplicatedStorage.assetObjects.tags.enemyTag;
 	assert(enemyTag, `Failed to get enemy tag from rep storage`);
 
 	const humanoid = enemy.WaitForChild("Humanoid") as Humanoid;
