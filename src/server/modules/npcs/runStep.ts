@@ -1,6 +1,6 @@
+import { ReplicatedStorage, Workspace } from "@rbxts/services";
 import { stores } from "server/playerStore";
 import { WORLDS } from "shared/configs/worlds";
-import { Npc } from "shared/configs/zones";
 import { NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 import { killNpc } from "shared/rodux/currencies";
@@ -31,6 +31,8 @@ const NPC_ATTACK_COOLDOWN = 2;
 */
 
 const random = new Random();
+
+const emitters = ReplicatedStorage.assetObjects.emitters;
 
 /**
  * Runs a simulation step for NPCs.
@@ -106,6 +108,13 @@ export function runStep(
 			throw `Player ${player.Name} attempted to attack ${character.Name}, but the NPC was dead`;
 		}
 
+		// check that npc has a root part
+		const humanoidRootPart = npc.instance.Humanoid.RootPart;
+		if (humanoidRootPart === undefined) {
+			warn(`Failed to get HumanoidRootPart for npc ${npc.instance.Name}`);
+			continue;
+		}
+
 		// apply weapon damage to npc
 		const storeState = store.getState();
 
@@ -116,6 +125,11 @@ export function runStep(
 
 		const weapon = getWeaponInfo(storeState.currentWeapon.id);
 		const weaponLevelBonus = getWeaponLevel(currentWeaponData.bans);
+		const damage = weapon.data.damage + weapon.data.damage * 0.25 * weaponLevelBonus.level;
+
+		const oldHealth = npc.instance.Humanoid.Health;
+		const newHealth = oldHealth - damage;
+
 		npc.instance.Humanoid.TakeDamage(weapon.data.damage + weapon.data.damage * 0.25 * weaponLevelBonus.level);
 
 		// check if npc is dead
@@ -136,6 +150,28 @@ export function runStep(
 				),
 			);
 
+			// display ban emitter
+			const banEmitters =
+				oldHealth === npc.instance.Humanoid.MaxHealth && newHealth <= 0
+					? emitters["crit ban emitters"]
+					: emitters["ban emitters"];
+
+			const randomBanEmitterIndex = math.ceil(math.random(1, banEmitters.GetChildren().size())) - 1;
+			const randomBanEmitter = banEmitters.GetChildren()[randomBanEmitterIndex] as BasePart;
+			if (randomBanEmitter === undefined) {
+				warn(`Failed to get ban emitter for index ${randomBanEmitterIndex}`);
+				continue;
+			}
+
+			const banEmitter = randomBanEmitter.Clone();
+			banEmitter.CFrame = humanoidRootPart.CFrame;
+			banEmitter.Parent = Workspace;
+
+			const emitter = banEmitter.FindFirstChild("Attachment")?.FindFirstChild("Banned") as ParticleEmitter;
+			if (emitter !== undefined) {
+				emitter.Emit(1);
+			} else warn("emitter is undefined");
+
 			// kill npc
 			npcs.delete(npc);
 
@@ -146,13 +182,12 @@ export function runStep(
 			// get rid of npc instance
 			npc.instance.Parent = undefined;
 			npcCharacterToNpc.delete(character);
-		} else {
-			const humanoidRootPart = npc.instance.Humanoid.RootPart;
-			if (humanoidRootPart === undefined) {
-				warn(`Failed to get HumanoidRootPart for npc ${npc.instance.Name}`);
-				continue;
-			}
 
+			task.delay(emitter.Lifetime.Max, () => {
+				emitter.Clear();
+				banEmitter.Destroy();
+			});
+		} else {
 			const emitter = humanoidRootPart.FindFirstChild("ImpactEmitter") as Attachment;
 			if (emitter === undefined) {
 				warn(`Failed to get impact emitter for npc ${npc.instance.Name}`);
@@ -165,6 +200,9 @@ export function runStep(
 				}
 
 				particleEmitter.Emit(1);
+				task.delay(particleEmitter.Lifetime.Max, () => {
+					particleEmitter.Clear();
+				});
 			}
 		}
 	}
