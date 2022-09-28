@@ -4,8 +4,6 @@ import { isNpcCharacter, NpcCharacter } from "shared/remotes/damageNPC";
 /**
  * Retrieves the character of an NPC.
  *
- * @param worldName The name of the world the NPC is from.
- * @param zoneName The name of the zone the NPC belongs to.
  * @param npcName The name of the NPC.
  * @returns The NPC character.
  */

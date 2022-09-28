@@ -1,4 +1,4 @@
-import { Players, ReplicatedStorage, RunService, SoundService, StarterGui, Workspace } from "@rbxts/services";
+import { Players, ReplicatedStorage, RunService, StarterGui, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { playSFX, WeaponSlash } from "client/util/playSound";
 import { WeaponIndex, WEAPONS } from "shared/configs/weapons";
