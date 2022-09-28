@@ -1,11 +1,81 @@
 import { Eggs } from "shared/configs/eggs";
 import { Talismans } from "shared/configs/talismans";
-import { Weapons } from "shared/configs/weapons";
+import { Weapons, WeaponType } from "shared/configs/weapons";
 import { NPCs } from "shared/configs/zones";
 
 declare global {
 	interface ReplicatedStorage extends Instance {
+		animations: Folder & {
+			weapons: Folder & {
+				[P in WeaponType]: Folder & {
+					Attack: Animation;
+					Attack2: Animation;
+					Attack3: Animation;
+					Idle: Animation;
+					Equip: Animation;
+				};
+			};
+			npcs: Folder & {
+				runAnimation: Animation;
+			};
+		};
 		assetObjects: Folder & {
+			tags: Folder & {
+				playerTag: BillboardGui & {
+					hold: Frame & {
+						UIListLayout: UIListLayout;
+						name: TextLabel & {
+							UIStroke: UIStroke;
+							rank: ImageLabel & {
+								UIAspectRatioConstraint: UIAspectRatioConstraint;
+							};
+						};
+						staff: TextLabel & {
+							UIStroke: UIStroke;
+						};
+						title: TextLabel & {
+							UIStroke: UIStroke;
+						};
+					};
+				};
+				enemyTag: BillboardGui & {
+					hold: Frame & {
+						UIListLayout: UIListLayout;
+						fillBackground: ImageLabel & {
+							UICorner: UICorner;
+							fill: ImageLabel & {
+								UICorner: UICorner;
+							};
+							health: TextLabel & {
+								UIStroke: UIStroke;
+							};
+						};
+						name: TextLabel & {
+							UIStroke: UIStroke;
+							rank: ImageLabel & {
+								UIAspectRatioConstraint: UIAspectRatioConstraint;
+							};
+						};
+						title: TextLabel & {
+							UIStroke: UIStroke;
+						};
+					};
+				};
+			};
+			emitters: Folder & {
+				"ban emitters": Folder & {
+					Banned: BasePart;
+					Banned1: BasePart;
+					Banned2: BasePart;
+					Banned3: BasePart;
+				};
+				"crit ban emitters": Folder & {
+					Banned: BasePart;
+					Banned1: BasePart;
+					Banned2: BasePart;
+					Banned3: BasePart;
+				};
+			};
 			eggs: Folder & {
 				[P in keyof Eggs]: Folder & {
 					regular: Folder & {
@@ -28,7 +98,10 @@ declare global {
 				};
 			};
 			weapons: Folder & {
-				[P in keyof Weapons]: Tool;
+				[P in keyof Weapons]: Tool & {
+					MeshPart: BasePart;
+					Handle: BasePart;
+				};
 			};
 			npcs: Folder & {
 				[P in keyof NPCs]: Model;

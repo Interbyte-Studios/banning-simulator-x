@@ -29,26 +29,44 @@ declare namespace assetIds {
 			coins: string;
 		};
 		ranks: {
-			"1": string;
-			"10": string;
-			"11": string;
-			"12": string;
-			"13": string;
-			"14": string;
-			"15": string;
-			"16": string;
-			"17": string;
-			"18": string;
-			"19": string;
-			"2": string;
-			"20": string;
-			"3": string;
-			"4": string;
-			"5": string;
-			"6": string;
-			"7": string;
-			"8": string;
-			"9": string;
+			enemy: {
+				boss: {
+					Bronze: string;
+					Diamond: string;
+					Gold: string;
+					Ruby: string;
+					Silver: string;
+				};
+				regular: {
+					Bronze: string;
+					Diamond: string;
+					Gold: string;
+					Ruby: string;
+					Silver: string;
+				};
+			};
+			friendly: {
+				["1"]: string;
+				["10"]: string;
+				["11"]: string;
+				["12"]: string;
+				["13"]: string;
+				["14"]: string;
+				["15"]: string;
+				["16"]: string;
+				["17"]: string;
+				["18"]: string;
+				["19"]: string;
+				["2"]: string;
+				["20"]: string;
+				["3"]: string;
+				["4"]: string;
+				["5"]: string;
+				["6"]: string;
+				["7"]: string;
+				["8"]: string;
+				["9"]: string;
+			};
 		};
 		ui: {
 			zones: {
@@ -65,6 +83,13 @@ declare namespace assetIds {
 				"pet frame": string;
 				background: string;
 				delete: string;
+			};
+			equip: {
+				background: string;
+				toolTp: string;
+				keybind: string;
+				equipped: string;
+				unequipped: string;
 			};
 			hud: {
 				"interface button": string;

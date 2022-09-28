@@ -11,6 +11,6 @@ export function getRankIcon(rank: number): string {
 		throw `Expected rank to be between 1 and ${RANKS.size()}, got ${rank}`;
 	}
 
-	const rankImage = assetIds.images.ranks[tostring(rank) as keyof typeof assetIds.images.ranks];
+	const rankImage = assetIds.images.ranks.friendly[tostring(rank) as keyof typeof assetIds.images.ranks.friendly];
 	return rankImage;
 }

@@ -52,7 +52,7 @@ function updateBanList(): void {
 	}
 
 	if (!(newBanListSuccess && isBanList(newDeserializedBanList))) {
-		warn(`Failed to decode ban list to JSON format`);
+		//warn(`Failed to decode ban list to JSON format`);
 		return;
 	}
 

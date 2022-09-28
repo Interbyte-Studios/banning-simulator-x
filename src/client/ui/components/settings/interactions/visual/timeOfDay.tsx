@@ -32,7 +32,7 @@ export const TimeOfDaySetting = RoactRodux.connect(mapStateToProps)(
 
 		return (
 			<ModifySettingOption
-				position={UDim2.fromScale(0.5, 0.545)}
+				position={UDim2.fromScale(0.5, 0.555)}
 				size={UDim2.fromScale(0.95, 0.04)}
 				settingName={"Time of Day"}
 				displayValue={`${props.timeOfDay}`}

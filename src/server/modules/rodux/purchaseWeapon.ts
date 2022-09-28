@@ -10,7 +10,7 @@ import { getWeaponInfo } from "shared/util/getWeaponInfo";
  */
 export function purchaseWeapon(store: Store, weaponId: number): void {
 	// check if player owns weapon
-	if (store.getState().weapons.has(weaponId)) {
+	if (store.getState().weapons.find((weapon) => weapon.id === weaponId)) {
 		return;
 	}
 

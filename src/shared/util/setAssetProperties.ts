@@ -1,7 +1,7 @@
 import { CollectionService } from "@rbxts/services";
 import { TAG_CONFIG } from "shared/configs/pets";
 
-export type ValidAssetType = "egg" | "pet" | "talisman";
+export type ValidAssetType = "egg" | "pet" | "talisman" | "weapon";
 
 /**
  * Sets the properties of an asset object<model> depending on the type of asset it is.
@@ -10,9 +10,13 @@ export type ValidAssetType = "egg" | "pet" | "talisman";
  * @param assetObject The object<model>.
  * @param isVoid Whether or not the asset is a void asset.
  */
-export function setAssetProperties(assetType: ValidAssetType, assetObject: Model, isVoid?: boolean): void {
+export function setAssetProperties(assetType: ValidAssetType, assetObject: Model | Tool, isVoid?: boolean): void {
 	switch (assetType) {
 		case "egg": {
+			if (!assetObject.IsA("Model")) {
+				throw `Expected egg: "${assetObject.Name}" to be a Model`;
+			}
+
 			for (const child of assetObject.GetChildren()) {
 				if (!child.IsA("BasePart")) continue;
 
@@ -31,6 +35,10 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 			break;
 		}
 		case "pet": {
+			if (!assetObject.IsA("Model")) {
+				throw `Expected pet: "${assetObject.Name}" to be a Model`;
+			}
+
 			for (const child of assetObject.GetChildren()) {
 				if (!child.IsA("BasePart")) continue;
 
@@ -67,6 +75,10 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 			break;
 		}
 		case "talisman": {
+			if (!assetObject.IsA("Model")) {
+				throw `Expected talisman: "${assetObject.Name}" to be a Model`;
+			}
+
 			for (const child of assetObject.GetChildren()) {
 				if (!child.IsA("BasePart")) continue;
 
@@ -81,6 +93,30 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 
 			assert(assetObject.PrimaryPart, `No PrimaryPart set for ${assetObject.Name}`);
 			assetObject.PrimaryPart.Name = "Primary";
+
+			break;
+		}
+		case "weapon": {
+			if (!assetObject.IsA("Tool")) {
+				throw `Expected weapon: "${assetObject.Name}" to be a Tool`;
+			}
+
+			if (assetObject.FindFirstChild("Handle") === undefined) {
+				throw `Expected to find a Handle in weapon: "${assetObject.Name}"`;
+			}
+
+			assetObject.CanBeDropped = false;
+
+			for (const object of assetObject.GetChildren()) {
+				if (!object.IsA("BasePart")) {
+					continue;
+				}
+
+				object.CanCollide = false;
+				object.Anchored = false;
+			}
+
+			break;
 		}
 	}
 }

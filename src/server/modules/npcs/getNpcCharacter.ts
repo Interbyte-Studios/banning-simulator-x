@@ -1,6 +1,5 @@
 import { ReplicatedStorage } from "@rbxts/services";
-
-import { isNpcCharacter, NpcCharacter } from "./isNpcCharacter";
+import { isNpcCharacter, NpcCharacter } from "shared/remotes/damageNPC";
 
 /**
  * Retrieves the character of an NPC.
@@ -10,7 +9,7 @@ import { isNpcCharacter, NpcCharacter } from "./isNpcCharacter";
  */
 export function getNpcCharacter(npcName: string): NpcCharacter {
 	const character = ReplicatedStorage.assetObjects.npcs.FindFirstChild(npcName);
-	assert(character, `Failed to get npc instance "${npcName}"`);
+	assert(character, `Could not load character appearance of ${npcName}`);
 	assert(isNpcCharacter(character), `Npc "${npcName}" is not an Npc character`);
 
 	return character;

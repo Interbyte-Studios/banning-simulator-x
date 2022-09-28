@@ -4,6 +4,9 @@ import { Currency } from "../currencies";
 import { BAN_LAND_ZONES } from "./banLand";
 import { BAN_LAND_NPCS } from "./banLand/npcs";
 
+export const isValidNPCRank = t.literal("Bronze", "Silver", "Gold", "Diamond", "Ruby");
+export type NPCRank = t.static<typeof isValidNPCRank>;
+
 export interface Npc {
 	name: string;
 	health: number;
@@ -11,8 +14,9 @@ export interface Npc {
 		currency: number;
 		experience: number;
 	};
+	rank: NPCRank;
 	isBoss: boolean;
-	damage: number;
+	damage?: number;
 }
 
 export interface Zone {
@@ -49,4 +53,7 @@ export type Zones = typeof BAN_LAND_ZONES;
 export const isStarterZone = t.literal("Forest");
 export type StarterZone = t.static<typeof isStarterZone>;
 
+export const UniversalWorldData = {
+	"Ban Land": BAN_LAND_ZONES,
+};
 export type NPCs = keyof typeof BAN_LAND_NPCS;

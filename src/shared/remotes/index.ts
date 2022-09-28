@@ -1,5 +1,6 @@
 import Net from "@rbxts/net";
 
+import { damageNPCDefinition } from "./damageNPC";
 import { eggs } from "./eggs";
 import { equipTitleDefinition } from "./equipTitle";
 import { media } from "./media";
@@ -20,6 +21,7 @@ export const remotes = Net.Definitions.Create({
 	talismans: talismans,
 
 	equipTitle: equipTitleDefinition,
+	damageNPC: damageNPCDefinition,
 	purchaseZone: purchaseZoneDefinition,
 	redeemQuest: redeemQuestDefinition,
 	unlockRank: unlockRankDefinition,

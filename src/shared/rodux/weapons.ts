@@ -3,12 +3,7 @@ import { Currency } from "shared/configs/currencies";
 
 import { KillNpc } from "./currencies";
 
-export type WeaponsState = Map<
-	number,
-	{
-		bans: number;
-	}
->;
+export type WeaponsState = Array<{ id: number; bans: number }>;
 export type WeaponsActions = PurchaseWeapon;
 
 export interface PurchaseWeapon extends Rodux.Action<"purchaseWeapon"> {
@@ -33,20 +28,37 @@ export function purchaseWeapon(data: Omit<PurchaseWeapon, "type">): PurchaseWeap
 	};
 }
 
+const defaulWeapon = {
+	id: 11,
+	bans: 0,
+};
+const defaultState: WeaponsState = [defaulWeapon];
+
 /* eslint-disable jsdoc/require-jsdoc */
-export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions | KillNpc>(new Map(), {
+export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions | KillNpc>(defaultState, {
 	purchaseWeapon: (state, action) => {
-		return new Map([...state, [action.id, { bans: 0 }]]);
+		const newWeapon = {
+			id: action.id,
+			bans: 0,
+		};
+
+		const newState = [...state];
+		newState.push(newWeapon);
+
+		return newState;
 	},
 	killNpc: (state, action) => {
-		const currentWeapon = state.get(action.weaponId);
+		const newState = [...state];
+
+		const currentWeapon = newState.find((weapon) => weapon.id === action.weaponId);
 		if (currentWeapon === undefined) {
 			throw `Expected player to own the weapon ${action.weaponId}`;
 		}
 
 		const increasedWeaponBanCounter = currentWeapon.bans + 1;
+		currentWeapon.bans = increasedWeaponBanCounter;
 
-		return new Map([...state, [action.weaponId, { bans: increasedWeaponBanCounter }]]);
+		return newState;
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */

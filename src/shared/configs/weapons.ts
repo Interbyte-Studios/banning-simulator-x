@@ -3,7 +3,11 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { Currency } from "./currencies";
 
+export type WeaponType = "Hammer" | "Lance" | "Sword";
+
 export interface Weapon {
+	id: number;
+
 	cost:
 		| {
 				requiredRank?: number;
@@ -14,6 +18,8 @@ export interface Weapon {
 
 	damage: number;
 
+	weaponType: WeaponType;
+
 	isBossWeapon: boolean;
 }
 
@@ -22,6 +28,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 1,
 		cost: undefined,
 		damage: 18,
+		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
 	"Basic Blade": {
@@ -31,6 +38,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("1.1k"),
 		},
 		damage: 35,
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 	"Flower Blade": {
@@ -41,6 +49,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("2.2k"),
 		},
 		damage: 90,
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 	"Stone Smacker": {
@@ -51,6 +60,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("3.4k"),
 		},
 		damage: 200,
+		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
 	"Bomba Bomber": {
@@ -61,6 +71,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("8.3k"),
 		},
 		damage: 450,
+		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
 	"Honey Whacker": {
@@ -71,6 +82,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("10.2k"),
 		},
 		damage: 800,
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
 	"Spark Plug": {
@@ -81,6 +93,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("20k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("2.2k"),
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
 	"Darkest Desires": {
@@ -91,6 +104,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("30.4k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("3.8k"),
+		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
 	"Gooey Brawler": {
@@ -101,6 +115,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("81k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("9k"),
+		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
 	"Lime Lance": {
@@ -111,6 +126,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("122k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("16.5k"),
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
 	"Carnival Mallet": {
@@ -121,6 +137,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("305k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("55k"),
+		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
 	"Samurai Smasher": {
@@ -131,6 +148,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("455k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("102k"),
+		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
 	"Atlantis Blade": {
@@ -141,6 +159,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("920k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("155k"),
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 	"Sunflower Slammer": {
@@ -151,6 +170,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("1.3M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("210k"),
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 	"Dune Glass": {
@@ -161,6 +181,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("2M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("475k"),
+		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
 	"Forest Slammer": {
@@ -171,6 +192,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("3.9M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("600k"),
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 	"Atlantis Basher": {
@@ -181,6 +203,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("4.7M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("1.1M"),
+		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
 	"Infernal Staff": {
@@ -191,6 +214,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("5.9M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("1.8M"),
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
 	"Galactic Blade": {
@@ -201,6 +225,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("11.6M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("2.4M"),
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 	"Crimson Jewel": {
@@ -211,6 +236,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("25M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("3M"),
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 	"Haunted Blade": {
@@ -221,9 +247,10 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("37.5M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("3.7M"),
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
-	"Pillar Slammer": {
+	"Twilight Blade": {
 		id: 21,
 		cost: {
 			requiredRank: 17,
@@ -231,9 +258,10 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("75M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("8M"),
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
-	"Twilight Blade": {
+	"Hellfire Slasher": {
 		id: 22,
 		cost: {
 			requiredRank: 17,
@@ -241,9 +269,10 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("150M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("14M"),
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
-	"Hellfire Slasher": {
+	"Pillar Slammer": {
 		id: 23,
 		cost: {
 			requiredRank: 18,
@@ -251,6 +280,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("350M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("20M"),
+		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
 });

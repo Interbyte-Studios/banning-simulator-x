@@ -31,7 +31,7 @@ export const EasyLegendariesRarityAutoDeleteSetting = RoactRodux.connect(mapStat
 
 		return (
 			<ToggleSettingOption
-				position={UDim2.fromScale(0.5, 0.82)}
+				position={UDim2.fromScale(0.5, 0.83)}
 				size={UDim2.fromScale(0.95, 0.04)}
 				settingName={"Easy Legendaries"}
 				isEnabled={props.enabled}

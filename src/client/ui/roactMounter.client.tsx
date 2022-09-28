@@ -17,7 +17,9 @@ onStoreCreated(player)
 		Roact.mount(
 			<remoteContext.Provider
 				value={{
+					changeWeapon: remotes.Client.GetNamespace("weapons").Get("changeWeapon"),
 					equipWeapon: remotes.Client.GetNamespace("weapons").Get("equipWeapon"),
+					unequipWeapon: remotes.Client.GetNamespace("weapons").Get("unequipWeapon"),
 					purchaseWeapon: remotes.Client.GetNamespace("weapons").Get("purchaseWeapon"),
 					hatchEgg: remotes.Client.GetNamespace("eggs").Get("hatchEgg"),
 					purchaseZone: remotes.Client.Get("purchaseZone"),

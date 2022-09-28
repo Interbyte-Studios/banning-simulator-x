@@ -19,14 +19,20 @@
           }
         }
       },
-      "$path": "out/shared",
+      "bsx_shared": {
+        "$className": "Folder",
+        "$path": "out/shared"
+      },
       "$ignoreUnknownInstances": true
     },
     "StarterPlayer": {
       "$className": "StarterPlayer",
       "StarterPlayerScripts": {
         "$className": "StarterPlayerScripts",
-        "$path": "out/client"
+        "bsx_client": {
+          "$className": "Folder",
+          "$path": "out/client"
+        }
       }
     },
     "HttpService": {

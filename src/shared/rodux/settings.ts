@@ -252,7 +252,7 @@ const defaultSettings: Settings = {
 	},
 	gameplay: {
 		autoHatch: false,
-		walkSpeed: 16,
+		walkSpeed: 50, // should be 16 but for testing it's 50
 	},
 	visual: {
 		graphicsQuality: "High",

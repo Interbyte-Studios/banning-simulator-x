@@ -1,3 +1,4 @@
+import Net from "@rbxts/net";
 import { t } from "@rbxts/t";
 
 export const isNpcCharacter = t.intersection(
@@ -8,3 +9,6 @@ export const isNpcCharacter = t.intersection(
 	}),
 );
 export type NpcCharacter = t.static<typeof isNpcCharacter>;
+
+export const damageNPCDefinition = Net.Definitions.ClientToServerEvent<[npcCharacter: NpcCharacter]>([]);
+export type DamageNPCDefinition = typeof damageNPCDefinition;

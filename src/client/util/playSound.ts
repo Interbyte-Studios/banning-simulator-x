@@ -7,18 +7,26 @@ export enum SoundEffect {
 	HatchReveal = 9854540368,
 }
 
+export enum WeaponSlash {
+	Slash1 = 11104013859,
+	Slash2 = 11104013822,
+	Slash3 = 11104013752,
+}
+
 /**
  * Plays a specific sound effect.
  *
  * @param soundType The type of sound effect to play.
+ * @param sfxVolume The volume of the player's sound effects settings.
  */
-export function playEffect(soundType: SoundEffect): void {
+export function playSFX(soundType: SoundEffect | WeaponSlash, sfxVolume: number): void {
 	const sound = Make("Sound", {
 		SoundId: `rbxassetid://${soundType}`,
 		Parent: SoundService,
 	});
 
 	sound.Play();
+	sound.Volume = 0.8 * (sfxVolume / 10);
 
 	const connection = sound.Ended.Connect(() => {
 		sound.Parent = undefined;

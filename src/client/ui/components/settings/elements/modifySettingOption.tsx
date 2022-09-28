@@ -42,7 +42,7 @@ export const ModifySettingOption = hooks((props: ModifySettingOptionProps) => {
 				Position={UDim2.fromScale(0.3, 0.5)}
 				Size={UDim2.fromScale(0.5, 1)}
 				BackgroundTransparency={1}
-				TextSize={18.5}
+				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 				TextXAlignment={Enum.TextXAlignment.Left}
 				Font={font}

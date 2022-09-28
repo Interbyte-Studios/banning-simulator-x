@@ -16,7 +16,7 @@ export function purchaseWeapon(
 	purchaseWeaponRemote: InferClientRemote<PurchaseWeaponDefinition>,
 ): void {
 	// check to be sure weapon isn't already owned
-	const isOwned = store.getState().weapons.has(weaponId);
+	const isOwned = store.getState().weapons.find((weapon) => weapon.id === weaponId);
 	assert(!isOwned, `Expected player to not own weapon "${weaponId}"`);
 
 	// get weapon info

@@ -89,7 +89,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					<PetDistanceSetting />
 					<TimeOfDaySetting />
 					<SectionHeader
-						position={UDim2.fromScale(0.5, 0.6)}
+						position={UDim2.fromScale(0.5, 0.61)}
 						size={UDim2.fromScale(0.7, 0.05)}
 						text={"Auto Delete (Hatch)"}
 					/>
