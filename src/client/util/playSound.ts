@@ -26,7 +26,7 @@ export function playSFX(soundType: SoundEffect | WeaponSlash, sfxVolume: number)
 	});
 
 	sound.Play();
-	sound.Volume = sfxVolume / 10;
+	sound.Volume = 0.8 * (sfxVolume / 10);
 
 	const connection = sound.Ended.Connect(() => {
 		sound.Parent = undefined;
