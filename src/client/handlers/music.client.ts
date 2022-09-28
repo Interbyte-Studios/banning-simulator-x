@@ -8,19 +8,19 @@ const musicQueue: Array<number> = [];
 
 let currentWorld: WorldName | undefined;
 let musicEnabled = true;
-let volume = 5;
+let volume = 1;
 
 const player = Players.LocalPlayer;
 onStoreCreated(player)
 	.andThen((store) => {
-		volume = store.getState().settings.sound.music;
+		volume = store.getState().settings.sound.music / 10;
 
 		store.changed.connect((newState, oldState) => {
 			if (newState.settings.sound.music === oldState.settings.sound.music) {
 				return;
 			}
 
-			volume = newState.settings.sound.music;
+			volume = newState.settings.sound.music / 10;
 
 			for (const sound of SoundService.GetChildren()) {
 				if (!sound.IsA("Sound")) {

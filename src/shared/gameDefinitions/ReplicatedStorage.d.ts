@@ -6,9 +6,6 @@ import { NPCs } from "shared/configs/zones";
 declare global {
 	interface ReplicatedStorage extends Instance {
 		animations: Folder & {
-			npcs: Folder & {
-				runAnimation: Animation;
-			};
 			weapons: Folder & {
 				[P in WeaponType]: Folder & {
 					Attack: Animation;
@@ -17,6 +14,9 @@ declare global {
 					Idle: Animation;
 					Equip: Animation;
 				};
+			};
+			npcs: Folder & {
+				runAnimation: Animation;
 			};
 		};
 		assetObjects: Folder & {

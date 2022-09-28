@@ -1,5 +1,6 @@
-import { Players, ReplicatedStorage, RunService, StarterGui, Workspace } from "@rbxts/services";
+import { Players, ReplicatedStorage, RunService, SoundService, StarterGui, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
+import { playSFX, WeaponSlash } from "client/util/playSound";
 import { WeaponIndex, WEAPONS } from "shared/configs/weapons";
 import Hitbox from "shared/modules/raycastModule";
 import { remotes } from "shared/remotes";
@@ -18,8 +19,9 @@ const npcsFolder = Workspace.WaitForChild("npcs") as Folder;
  * Handles equipping the player's weapon.
  *
  * @param weaponName The name of the weapon.
+ * @param sfxVolume The volume of sound effects setting.
  */
-function equipWeapon(weaponName: WeaponIndex): void {
+function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 	// checks
 	const character = player.Character;
 	assert(character, `Failed to get Character for ${player.Name}`);
@@ -109,6 +111,22 @@ function equipWeapon(weaponName: WeaponIndex): void {
 		warn(`Failed to load all points for weapon ${weapon.Name} for player ${player.Name}`);
 	}
 
+	// sounds
+	const slashSounds = [
+		{
+			soundType: WeaponSlash.Slash1,
+			played: false,
+		},
+		{
+			soundType: WeaponSlash.Slash2,
+			played: false,
+		},
+		{
+			soundType: WeaponSlash.Slash3,
+			played: false,
+		},
+	];
+
 	// connections
 	weapon.Equipped.Connect(() => equipAnimation.Play());
 
@@ -124,6 +142,21 @@ function equipWeapon(weaponName: WeaponIndex): void {
 		const animationToPlay = attackAnimations[randomNumber];
 
 		hitbox.HitStart();
+
+		const slashSoundsGroup = slashSounds.filter((metaData) => metaData.played === true);
+		if (slashSoundsGroup.size() === slashSounds.size()) {
+			slashSounds.forEach((metaData) => {
+				metaData.played = false;
+			});
+		}
+
+		const slashSound = slashSounds.filter((metaData) => metaData.played === false);
+		if (slashSound[0] !== undefined) {
+			slashSound[0].played = true;
+			playSFX(slashSound[0].soundType, sfxVolume);
+		} else {
+			warn(`Failed to load and play weapon activation sound.`);
+		}
 
 		animationToPlay.Play();
 		animationToPlay.Stopped.Wait();
@@ -175,7 +208,7 @@ onStoreCreated(player)
 				const weapon = getItemById(weaponsFolder, currentState.currentWeapon.id);
 				assert(weapon, `Failed to get weapon data for ${currentState.currentWeapon.id}`);
 
-				equipWeapon(weapon.Name as WeaponIndex);
+				equipWeapon(weapon.Name as WeaponIndex, store.getState().settings.sound.soundEffects);
 			}
 		}
 
