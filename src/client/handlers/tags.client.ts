@@ -149,6 +149,11 @@ function createPlayerTag(player: Player, store: Store): void {
 		tag.hold.staff.Visible = true;
 	}
 
+	humanoid.Died.Connect(() => {
+		tag.Destroy();
+		return;
+	});
+
 	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
 	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
 
@@ -208,6 +213,11 @@ function createEnemyTag(enemy: Model): void {
 		healthTween.Completed.Wait();
 
 		tag.hold.fillBackground.health.Text = `[${humanoid.Health} / ${humanoid.MaxHealth}]`;
+	});
+
+	humanoid.Died.Connect(() => {
+		tag.Destroy();
+		return;
 	});
 
 	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
