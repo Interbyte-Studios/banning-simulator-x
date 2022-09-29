@@ -22,6 +22,48 @@ enemyTags.Parent = playerGui;
 const healthbarTween = new TweenInfo(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.In);
 
 /**
+ * Updates a player's tag.
+ *
+ * @param player The player.
+ * @param store The player's store.
+ */
+function updatePlayerTag(player: Player, store: Store): void {
+	const character = player.Character;
+	if (character === undefined) {
+		warn(`Failed to create player tag. The character was not found.`);
+		return;
+	}
+
+	const head = character.FindFirstChild("Head") as BasePart;
+	if (head === undefined) {
+		warn("Failed to create player tag. The character head was not found.");
+		return;
+	}
+
+	const storeState = store.getState();
+
+	let tag: BillboardGui | undefined;
+	for (const playerTag of friendlyTags.GetChildren()) {
+		if (!playerTag.IsA("BillboardGui")) {
+			continue;
+		}
+
+		if (playerTag.Adornee !== head) {
+			continue;
+		}
+
+		tag = playerTag;
+		break;
+	}
+	assert(tag, `Failed to find player tag for ${player.Name}`);
+
+	const hold = tag.FindFirstChild("Hold") as Frame;
+	const name = hold?.FindFirstChild("name") as TextLabel;
+	const rank = name?.FindFirstChild("rank") as ImageLabel;
+	rank.Image = getRankIcon(storeState.rank);
+}
+
+/**
  * Creates a player tag that's displayed above the player's head.
  *
  * @param player The player.
@@ -154,6 +196,14 @@ function onPlayerAdded(player: Player): void {
 			}
 
 			player.CharacterAppearanceLoaded.Connect(() => createPlayerTag(player, store));
+
+			store.changed.connect((newState, oldState) => {
+				if (newState.rank === oldState.rank) {
+					return;
+				}
+
+				updatePlayerTag(player, store);
+			});
 		})
 		.catch((e) => {
 			throw `Failed to get store for player ${player.Name} | ${e}`;
@@ -170,6 +220,7 @@ npcsFolder.ChildAdded.Connect((enemy) => {
 
 	createEnemyTag(enemy);
 });
+
 npcsFolder.GetChildren().forEach((enemy) => {
 	if (!enemy.IsA("Model")) {
 		return;
