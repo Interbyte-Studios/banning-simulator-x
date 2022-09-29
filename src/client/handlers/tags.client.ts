@@ -1,4 +1,5 @@
 import { Players, ReplicatedStorage, TweenService, Workspace } from "@rbxts/services";
+import { t } from "@rbxts/t";
 import { onStoreCreated } from "client/clientStores";
 import { getEnemyRankIcon } from "client/util/getEnemyRankIcon";
 import { getRankIcon } from "client/util/getRankIcon";
@@ -20,6 +21,42 @@ enemyTags.Name = "EnemyTags";
 enemyTags.Parent = playerGui;
 
 const healthbarTween = new TweenInfo(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.In);
+
+const isPlayerTag = t.intersection(
+	t.instanceIsA("BillboardGui"),
+	t.children({
+		hold: t.intersection(
+			t.instanceIsA("Frame"),
+			t.children({
+				UIListLayout: t.instanceIsA("UIListLayout"),
+				name: t.intersection(
+					t.instanceIsA("TextLabel"),
+					t.children({
+						UIStroke: t.instanceIsA("UIStroke"),
+						rank: t.intersection(
+							t.instanceIsA("ImageLabel"),
+							t.children({
+								UIAspectRatioConstraint: t.instanceIsA("UIAspectRatioConstraint"),
+							}),
+						),
+					}),
+				),
+				staff: t.intersection(
+					t.instanceIsA("TextLabel"),
+					t.children({
+						UIStroke: t.instanceIsA("UIStroke"),
+					}),
+				),
+				title: t.intersection(
+					t.instanceIsA("TextLabel"),
+					t.children({
+						UIStroke: t.instanceIsA("UIStroke"),
+					}),
+				),
+			}),
+		),
+	}),
+);
 
 /**
  * Updates a player's tag.
@@ -56,11 +93,9 @@ function updatePlayerTag(player: Player, store: Store): void {
 		break;
 	}
 	assert(tag, `Failed to find player tag for ${player.Name}`);
+	assert(isPlayerTag(tag), `Player tag for ${player.Name} was not a valid player tag.`);
 
-	const hold = tag.FindFirstChild("Hold") as Frame;
-	const name = hold?.FindFirstChild("name") as TextLabel;
-	const rank = name?.FindFirstChild("rank") as ImageLabel;
-	rank.Image = getRankIcon(storeState.rank);
+	tag.hold.name.rank.Image = getRankIcon(storeState.rank);
 }
 
 /**
@@ -74,16 +109,13 @@ function createPlayerTag(player: Player, store: Store): void {
 	assert(playerTag, `Failed to get player tag from rep storage`);
 
 	const character = player.Character;
-	if (character === undefined) {
-		warn(`Failed to create player tag. The character was not found.`);
-		return;
-	}
+	assert(character, `Failed to create player tag. The Character for ${player.Name} was not found.`);
+
+	const humanoid = character.FindFirstChildOfClass("Humanoid");
+	assert(humanoid, `Failed to create player tag. The Humanoid for ${player.Name} was not found.`);
 
 	const head = character.FindFirstChild("Head") as BasePart;
-	if (head === undefined) {
-		warn("Failed to create player tag. The character head was not found.");
-		return;
-	}
+	assert(head, `Failed to create player tag. The Head for ${player.Name} was not found.`);
 
 	const storeState = store.getState();
 	const isInGroup = player.IsInGroup(GROUP_ID);
@@ -113,6 +145,9 @@ function createPlayerTag(player: Player, store: Store): void {
 		tag.hold.staff.TextColor3 = groupRankData.color;
 		tag.hold.staff.Visible = true;
 	}
+
+	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
+	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
 
 	tag.Adornee = head;
 	tag.Parent = friendlyTags;
