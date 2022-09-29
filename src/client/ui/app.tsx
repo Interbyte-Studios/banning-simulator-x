@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { RunService, Workspace } from "@rbxts/services";
+import { Workspace } from "@rbxts/services";
 import { Store } from "shared/rodux";
 
 import { LocalMessages } from "./components/announcements";
@@ -53,18 +53,32 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 		});
 	}, [displayAnnouncement]);
 
-	let lastTouch = 0;
 	useEffect(() => {
-		RunService.RenderStepped.Connect(() => {
+		let lastTouched = 0;
+
+		Workspace.interactions.rankUpgrade.interact.Touched.Connect((hit) => {
 			if (rankUpgradeVisibility) {
 				return;
 			}
 
 			const now = time();
-			if (now - lastTouch < 1) {
+			if (now - lastTouched < 1) {
 				return;
 			}
-			lastTouch = now;
+			lastTouched = now;
+
+			const hitInstance = hit.Parent;
+			if (hitInstance === undefined) {
+				return;
+			}
+
+			if (!hitInstance.IsA("Model")) {
+				return;
+			}
+
+			if (hitInstance.Name !== props.player.Name) {
+				return;
+			}
 
 			const character = props.player.Character;
 			if (character === undefined) {
