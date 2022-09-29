@@ -11,8 +11,6 @@ remotes.Server.Create("unlockRank").Connect(
 		const rankData = RANKS[nextRank];
 		if (rankData === undefined) throw `Expected to find rank data for rank with id ${nextRank}`;
 
-		warn(`Unlocking rank ${rankData.name}`);
-
 		// not enough experience to unlock rank
 		if (store.getState().experience < rankData.requiredExperience) {
 			return;
