@@ -17,6 +17,7 @@ import { TogglePetsStudsOfDistanceDefinition } from "shared/remotes/settings/vis
 import { ToggleTimeOfDayDefinition } from "shared/remotes/settings/visual/toggleTimeOfDay";
 import { EquipTalismanDefinition } from "shared/remotes/talismans/equipTalisman";
 import { PurchaseTalismanDefinition } from "shared/remotes/talismans/purchaseTalisman";
+import { UnlockRankDefinition } from "shared/remotes/unlockRank";
 import { ChangeWeaponDefinition } from "shared/remotes/weapons/changeWeapon";
 import { EquipWeaponDefinition } from "shared/remotes/weapons/equipWeapon";
 import { PurchaseWeaponDefinition } from "shared/remotes/weapons/purchaseWeapon";
@@ -67,6 +68,8 @@ export const fakeRemoteContext = {
 
 	purchaseTalisman: fakeRemoteCall<PurchaseTalismanDefinition>("purchaseTalisman"),
 	equipTalisman: fakeRemoteCall<EquipTalismanDefinition>("equipTalisman"),
+
+	unlockRank: fakeRemoteCall<UnlockRankDefinition>("unlockRank"),
 
 	hatchEgg: fakeHatchEgg,
 };

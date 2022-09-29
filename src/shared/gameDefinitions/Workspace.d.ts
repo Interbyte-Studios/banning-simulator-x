@@ -28,6 +28,11 @@ declare global {
 			};
 			["talisman tower"]: Folder;
 			talismans: Folder;
+			rankUpgrade: Folder & {
+				meshPart: BasePart;
+				interact: BasePart;
+				teleport: BasePart;
+			};
 		};
 		decoration: Folder & {
 			[P in keyof Worlds]: Folder & {

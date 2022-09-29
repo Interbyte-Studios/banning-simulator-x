@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { RunService, Workspace } from "@rbxts/services";
 import { Store } from "shared/rodux";
 
 import { LocalMessages } from "./components/announcements";
@@ -8,6 +9,7 @@ import { EggsUI } from "./components/eggs";
 import { WeaponEquip } from "./components/equip/weaponEquip";
 import { Hud } from "./components/hud";
 import { Quests } from "./components/quests";
+import { RankUpgrade } from "./components/ranks/menu";
 import { SettingsMenu } from "./components/settings/menu";
 import { TalismanShop } from "./components/talismans/talismanShop";
 import { ZonesUI } from "./components/zones";
@@ -30,6 +32,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	const [codesMenuVisible, setCodesVisible] = useState(false);
 	const [questsMenuVisible, setQuestsVisibility] = useState(false);
 	const [settingsMenuVisible, setSettingsVisibility] = useState(false);
+	const [rankUpgradeVisibility, setRankUpgradeVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
 	const [displayAnnouncement, setDisplayAnnouncement] = useState<
@@ -49,6 +52,43 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 			setDisplayAnnouncement(undefined);
 		});
 	}, [displayAnnouncement]);
+
+	let lastTouch = 0;
+	useEffect(() => {
+		RunService.RenderStepped.Connect(() => {
+			if (rankUpgradeVisibility) {
+				return;
+			}
+
+			const now = time();
+			if (now - lastTouch < 1) {
+				return;
+			}
+			lastTouch = now;
+
+			const character = props.player.Character;
+			if (character === undefined) {
+				return;
+			}
+
+			const humanoid = character.FindFirstChildOfClass("Humanoid");
+			if (humanoid === undefined) {
+				return;
+			}
+
+			const humanoidRootPart = humanoid.RootPart;
+			if (humanoidRootPart === undefined) {
+				return;
+			}
+
+			const distance = Workspace.interactions.rankUpgrade.teleport.Position.sub(humanoidRootPart.Position);
+			if (distance.Magnitude > 20) {
+				return;
+			}
+
+			setRankUpgradeVisibility(true);
+		});
+	});
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
@@ -71,6 +111,11 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 				<LocalMessages currentMessage={displayAnnouncement} />
 				<ZonesUI displayAnnouncement={applyAnnouncement} />
 				<WeaponEquip visible={!codesMenuVisible && !settingsMenuVisible && !isHatching} />
+				<RankUpgrade
+					visible={rankUpgradeVisibility}
+					hideMenu={(): void => setRankUpgradeVisibility(false)}
+					displayAnnouncement={applyAnnouncement}
+				/>
 			</>
 		</RoactRodux.StoreProvider>
 	);

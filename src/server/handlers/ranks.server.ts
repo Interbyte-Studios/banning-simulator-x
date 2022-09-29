@@ -4,9 +4,14 @@ import { remotes } from "shared/remotes";
 import { unlockRank } from "shared/rodux/rank";
 
 remotes.Server.Create("unlockRank").Connect(
-	withPlayerStore((_, store, rank) => {
-		const rankData = RANKS[rank];
-		if (rankData === undefined) throw `Expected to find rank data for rank with id ${rank}`;
+	withPlayerStore((_, store) => {
+		const currentRank = store.getState().rank - 1;
+		const nextRank = currentRank + 1;
+
+		const rankData = RANKS[nextRank];
+		if (rankData === undefined) throw `Expected to find rank data for rank with id ${nextRank}`;
+
+		warn(`Unlocking rank ${rankData.name}`);
 
 		// not enough experience to unlock rank
 		if (store.getState().experience < rankData.requiredExperience) {
@@ -18,16 +23,6 @@ remotes.Server.Create("unlockRank").Connect(
 			return;
 		}
 
-		// already owns rank
-		if (store.getState().rank >= rank) {
-			return;
-		}
-
-		// no skipping ranks lol
-		if (rank > store.getState().rank + 1) {
-			throw `Cannot unlock rank ${rank} when current rank is ${store.getState().rank}`;
-		}
-
-		store.dispatch(unlockRank(rank));
+		store.dispatch(unlockRank(nextRank + 1));
 	}),
 );

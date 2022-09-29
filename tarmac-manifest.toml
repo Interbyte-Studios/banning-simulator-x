@@ -368,6 +368,21 @@ hash = "93ce09d6f4dbb80a1c8c8d8d03e7faf7a5fe0f46a904a993836703e14bbe14b0"
 id = 10832810250
 packable = false
 
+[inputs."images/ui/rank upgrade/background.png"]
+hash = "2d8222e59136632a3940f9b981c2f569ffa71009b863db23e3275e15491189b3"
+id = 11111317486
+packable = false
+
+[inputs."images/ui/rank upgrade/cancel.png"]
+hash = "6f950ed7955ec02f573f474e0dd6aba30cf120fc4b10625f1c02656a24e0395c"
+id = 11108539666
+packable = false
+
+[inputs."images/ui/rank upgrade/upgrade.png"]
+hash = "e2295693341b34cb9d5bad54564db46fc67fd5c7ad17385eb7337c77699fc1fa"
+id = 11108539728
+packable = false
+
 [inputs."images/ui/settings/background.png"]
 hash = "d28ab6dd74dfdb73c526df0ce4e0ae8d0dea86ad6689fd8b069cd1c4fb8d01a9"
 id = 10832810485

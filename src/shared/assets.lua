@@ -108,6 +108,11 @@ return {
 				["world background"] = "rbxassetid://10832810080",
 				["world entry background"] = "rbxassetid://10832810250",
 			},
+			["rank upgrade"] = {
+				background = "rbxassetid://11111317486",
+				cancel = "rbxassetid://11108539666",
+				upgrade = "rbxassetid://11108539728",
+			},
 			settings = {
 				background = "rbxassetid://10832810485",
 				["setting background"] = "rbxassetid://10832810658",

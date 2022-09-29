@@ -1,7 +1,7 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, udim2BottomLeft, vec2Middle } from "client/ui/commonValues";
+import { font, vec2Middle } from "client/ui/commonValues";
 import { RankGradient } from "client/ui/elements/rankGradient";
 import { RankIcon } from "client/ui/elements/rankIcon";
 import { hooks } from "client/ui/hooks";
@@ -99,7 +99,13 @@ export const RanksViewer = RoactRodux.connect(mapStateToProps)(
 					size={{ minimizedSize: 0.9, maximizedSize: 1.05 }}
 					rank={props.rank}
 				/>
-				<UpgradeRankTeleport minimizedSize={0.8} maximizedSize={0.9} position={UDim2.fromScale(0.95, 0.5)} />
+				<UpgradeRankTeleport
+					minimizedSize={0.8}
+					maximizedSize={0.9}
+					position={UDim2.fromScale(0.95, 0.5)}
+					rank={props.rank}
+					experience={props.experience}
+				/>
 			</imagelabel>
 		);
 	}),

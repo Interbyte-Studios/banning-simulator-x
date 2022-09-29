@@ -69,6 +69,11 @@ declare namespace assetIds {
 			};
 		};
 		ui: {
+			"rank upgrade": {
+				background: string;
+				upgrade: string;
+				cancel: string;
+			};
 			zones: {
 				background: string;
 				cancel: string;
