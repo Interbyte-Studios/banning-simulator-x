@@ -26,7 +26,6 @@ const defaultRank = 1;
 /* eslint-disable jsdoc/require-jsdoc */
 export const rankReducer = Rodux.createReducer<RankState, UnlockRank>(defaultRank, {
 	unlockRank: (_, action) => {
-		warn(action.rankNumber);
 		return action.rankNumber;
 	},
 });
