@@ -20,7 +20,9 @@ function changeWalkSpeed(walkSpeed: number): void {
 
 onStoreCreated(player)
 	.andThen((store) => {
-		changeWalkSpeed(store.getState().settings.gameplay.walkSpeed);
+		if (player.Character) {
+			changeWalkSpeed(store.getState().settings.gameplay.walkSpeed);
+		}
 
 		player.CharacterAdded.Connect(() => {
 			changeWalkSpeed(store.getState().settings.gameplay.walkSpeed);
@@ -31,7 +33,9 @@ onStoreCreated(player)
 				return;
 			}
 
-			changeWalkSpeed(store.getState().settings.gameplay.walkSpeed);
+			if (player.Character) {
+				changeWalkSpeed(store.getState().settings.gameplay.walkSpeed);
+			}
 		});
 	})
 	.catch((e) => {

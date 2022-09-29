@@ -4,6 +4,7 @@ import { onStoreCreated } from "client/clientStores";
 import { getEnemyRankIcon } from "client/util/getEnemyRankIcon";
 import { getRankIcon } from "client/util/getRankIcon";
 import { GROUP_ID, GROUP_ROLES } from "shared/configs/game";
+import { isNpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 import { getNPCByName } from "shared/util/getNpcByName";
 
@@ -13,10 +14,12 @@ const playerGui = player.WaitForChild("PlayerGui") as PlayerGui;
 const npcsFolder = Workspace.WaitForChild("npcs");
 
 const friendlyTags = new Instance("ScreenGui");
+friendlyTags.ResetOnSpawn = false;
 friendlyTags.Name = "FriendlyTags";
 friendlyTags.Parent = playerGui;
 
 const enemyTags = new Instance("ScreenGui");
+enemyTags.ResetOnSpawn = false;
 enemyTags.Name = "EnemyTags";
 enemyTags.Parent = playerGui;
 
@@ -67,13 +70,13 @@ const isPlayerTag = t.intersection(
 function updatePlayerTag(player: Player, store: Store): void {
 	const character = player.Character;
 	if (character === undefined) {
-		warn(`Failed to create player tag. The character was not found.`);
+		warn(`Failed to update player tag for "${player.Name}". The Character was not found.`);
 		return;
 	}
 
 	const head = character.FindFirstChild("Head") as BasePart;
 	if (head === undefined) {
-		warn("Failed to create player tag. The character head was not found.");
+		warn(`Failed to update player tag for "${player.Name}". The Head was not found.`);
 		return;
 	}
 
@@ -111,7 +114,7 @@ function createPlayerTag(player: Player, store: Store): void {
 	const character = player.Character;
 	assert(character, `Failed to create player tag. The Character for ${player.Name} was not found.`);
 
-	const humanoid = character.FindFirstChildOfClass("Humanoid");
+	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
 	assert(humanoid, `Failed to create player tag. The Humanoid for ${player.Name} was not found.`);
 
 	const head = character.FindFirstChild("Head") as BasePart;
@@ -163,16 +166,10 @@ function createEnemyTag(enemy: Model): void {
 	assert(enemyTag, `Failed to get enemy tag from rep storage`);
 
 	const humanoid = enemy.WaitForChild("Humanoid") as Humanoid;
-	if (humanoid === undefined) {
-		warn(`Failed to create enemy tag. Did not find humanoid for "${enemy.Name}"`);
-		return;
-	}
+	assert(humanoid, `Failed to create enemy tag. Infinitely yielded for Humanoid for enemey: ${enemy.Name}`);
 
-	const head = enemy.FindFirstChild("Head") as BasePart;
-	if (head === undefined) {
-		warn(`Failed to create enemy tag. Did not find head for "${enemy.Name}"`);
-		return;
-	}
+	const head = enemy.WaitForChild("Head") as BasePart;
+	assert(head, `Failed to create enemy tag. Infinitely yielded for Head for enemey: ${enemy.Name}`);
 
 	const npcData = getNPCByName(enemy.Name);
 	if (npcData === undefined) {
@@ -230,7 +227,7 @@ function onPlayerAdded(player: Player): void {
 				createPlayerTag(player, store);
 			}
 
-			player.CharacterAppearanceLoaded.Connect(() => createPlayerTag(player, store));
+			player.CharacterAdded.Connect(() => createPlayerTag(player, store));
 
 			store.changed.connect((newState, oldState) => {
 				if (newState.rank === oldState.rank) {
