@@ -56,7 +56,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	useEffect(() => {
 		let lastTouched = 0;
 
-		Workspace.interactions.rankUpgrade.interact.Touched.Connect((hit) => {
+		const connection = Workspace.interactions.rankUpgrade.interact.Touched.Connect((hit) => {
 			if (rankUpgradeVisibility) {
 				return;
 			}
@@ -102,6 +102,10 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 
 			setRankUpgradeVisibility(true);
 		});
+
+		return (): void => {
+			connection.Disconnect();
+		};
 	});
 
 	return (
