@@ -64,7 +64,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Bomba Bomber": {
-		id: 4,
+		id: 5,
 		cost: {
 			requiredRank: 4,
 			currency: "coins",
@@ -75,7 +75,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Honey Whacker": {
-		id: 5,
+		id: 6,
 		cost: {
 			requiredRank: 4,
 			currency: "coins",
@@ -86,7 +86,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Spark Plug": {
-		id: 6,
+		id: 7,
 		cost: {
 			requiredRank: 6,
 			currency: "coins",
@@ -97,7 +97,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Darkest Desires": {
-		id: 7,
+		id: 8,
 		cost: {
 			requiredRank: 6,
 			currency: "coins",
@@ -108,7 +108,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Gooey Brawler": {
-		id: 8,
+		id: 9,
 		cost: {
 			requiredRank: 8,
 			currency: "coins",
@@ -119,7 +119,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Lime Lance": {
-		id: 9,
+		id: 10,
 		cost: {
 			requiredRank: 8,
 			currency: "coins",
@@ -130,7 +130,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Carnival Mallet": {
-		id: 10,
+		id: 11,
 		cost: {
 			requiredRank: 10,
 			currency: "coins",
@@ -141,7 +141,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Samurai Smasher": {
-		id: 11,
+		id: 12,
 		cost: {
 			requiredRank: 10,
 			currency: "coins",
@@ -152,7 +152,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Atlantis Blade": {
-		id: 12,
+		id: 13,
 		cost: {
 			requiredRank: 12,
 			currency: "coins",
@@ -163,7 +163,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Sunflower Slammer": {
-		id: 13,
+		id: 14,
 		cost: {
 			requiredRank: 12,
 			currency: "coins",
@@ -174,7 +174,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Dune Glass": {
-		id: 14,
+		id: 15,
 		cost: {
 			requiredRank: 12,
 			currency: "coins",
@@ -185,7 +185,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Forest Slammer": {
-		id: 15,
+		id: 16,
 		cost: {
 			requiredRank: 14,
 			currency: "coins",
@@ -196,7 +196,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Atlantis Basher": {
-		id: 16,
+		id: 17,
 		cost: {
 			requiredRank: 14,
 			currency: "coins",
@@ -207,7 +207,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Infernal Staff": {
-		id: 17,
+		id: 18,
 		cost: {
 			requiredRank: 14,
 			currency: "coins",
@@ -218,7 +218,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Galactic Blade": {
-		id: 18,
+		id: 19,
 		cost: {
 			requiredRank: 16,
 			currency: "coins",
@@ -229,7 +229,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Crimson Jewel": {
-		id: 19,
+		id: 20,
 		cost: {
 			requiredRank: 16,
 			currency: "coins",
@@ -240,7 +240,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Haunted Blade": {
-		id: 20,
+		id: 21,
 		cost: {
 			requiredRank: 16,
 			currency: "coins",
@@ -251,7 +251,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Twilight Blade": {
-		id: 21,
+		id: 22,
 		cost: {
 			requiredRank: 17,
 			currency: "coins",
@@ -262,7 +262,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Hellfire Slasher": {
-		id: 22,
+		id: 23,
 		cost: {
 			requiredRank: 17,
 			currency: "coins",
@@ -273,7 +273,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 	"Pillar Slammer": {
-		id: 23,
+		id: 24,
 		cost: {
 			requiredRank: 18,
 			currency: "coins",

@@ -29,7 +29,7 @@ export function purchaseWeapon(data: Omit<PurchaseWeapon, "type">): PurchaseWeap
 }
 
 const defaulWeapon = {
-	id: 11,
+	id: 19,
 	bans: 0,
 };
 const defaultState: WeaponsState = [defaulWeapon];

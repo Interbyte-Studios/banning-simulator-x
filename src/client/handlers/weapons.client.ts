@@ -26,7 +26,7 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 	const character = player.Character;
 	assert(character, `Failed to get Character for ${player.Name}`);
 
-	const humanoid = character.FindFirstChildOfClass("Humanoid");
+	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
 	assert(humanoid, `Failed to get Humanoid for ${player.Name}`);
 
 	const backpack = player.FindFirstChildWhichIsA("Backpack");
@@ -36,7 +36,7 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 	assert(weapon, `Failed to get weapon ${weaponName} for ${player.Name}`);
 	assert(weapon.IsA("Tool"), `Weapon ${weaponName} for ${player.Name} is not a Tool`);
 
-	const animator = humanoid.FindFirstChildOfClass("Animator");
+	const animator = humanoid.WaitForChild("Animator") as Animator;
 	assert(animator, `Failed to get Animator for ${player.Name}`);
 
 	const animateScript = character.FindFirstChild("Animate") as LocalScript;
@@ -215,7 +215,7 @@ onStoreCreated(player)
 		if (player.Character) {
 			checkToEquipWeapon();
 		}
-		player.CharacterAppearanceLoaded.Connect(() => checkToEquipWeapon());
+		player.CharacterAdded.Connect(() => checkToEquipWeapon());
 		backpack.ChildAdded.Connect(() => checkToEquipWeapon());
 
 		store.changed.connect((newState, oldState) => {

@@ -19,7 +19,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: 50,
 		reward: {
 			currency: 250,
-			experience: 5,
+			experience: 7.5,
 		},
 		rank: "Bronze",
 		isBoss: false,
@@ -29,7 +29,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: 200,
 		reward: {
 			currency: 750,
-			experience: 15,
+			experience: 26,
 		},
 		rank: "Bronze",
 		isBoss: false,
@@ -39,7 +39,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: 800,
 		reward: {
 			currency: shorten("3k"),
-			experience: 25,
+			experience: 45,
 		},
 		rank: "Bronze",
 		isBoss: false,
@@ -49,7 +49,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("3.2k"),
 		reward: {
 			currency: shorten("12.5k"),
-			experience: 60,
+			experience: 83,
 		},
 		rank: "Bronze",
 		isBoss: false,
@@ -59,7 +59,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("12.8k"),
 		reward: {
 			currency: shorten("50k"),
-			experience: 250,
+			experience: 136,
 		},
 		rank: "Silver",
 		isBoss: false,
@@ -69,7 +69,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("51.2k"),
 		reward: {
 			currency: shorten("250k"),
-			experience: shorten("1.75k"),
+			experience: shorten("1.1k"),
 		},
 		rank: "Silver",
 		isBoss: false,
@@ -79,7 +79,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("204.8k"),
 		reward: {
 			currency: shorten("1.25M"),
-			experience: shorten("8.25k"),
+			experience: shorten("3.7k"),
 		},
 		rank: "Silver",
 		isBoss: false,
@@ -89,7 +89,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("819.2k"),
 		reward: {
 			currency: shorten("7M"),
-			experience: shorten("49k"),
+			experience: shorten("14k"),
 		},
 		rank: "Silver",
 		isBoss: false,
@@ -99,7 +99,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("3.277M"),
 		reward: {
 			currency: shorten("35M"),
-			experience: shorten("250k"),
+			experience: shorten("30k"),
 		},
 		rank: "Gold",
 		isBoss: false,
@@ -110,7 +110,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: 150,
 		reward: {
 			currency: 500,
-			experience: 10,
+			experience: 50,
 		},
 		rank: "Bronze",
 		isBoss: true,
@@ -120,7 +120,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: 600,
 		reward: {
 			currency: shorten("1.5k"),
-			experience: 30,
+			experience: 175,
 		},
 		rank: "Bronze",
 		isBoss: true,
@@ -130,7 +130,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("2.4k"),
 		reward: {
 			currency: shorten("6k"),
-			experience: 50,
+			experience: 300,
 		},
 		rank: "Bronze",
 		isBoss: true,
@@ -140,7 +140,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("9.6k"),
 		reward: {
 			currency: shorten("25k"),
-			experience: 120,
+			experience: 550,
 		},
 		rank: "Bronze",
 		isBoss: true,
@@ -150,7 +150,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("38.4k"),
 		reward: {
 			currency: shorten("100k"),
-			experience: 500,
+			experience: 900,
 		},
 		rank: "Silver",
 		isBoss: true,
@@ -160,7 +160,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("153.6k"),
 		reward: {
 			currency: shorten("500k"),
-			experience: shorten("3.5k"),
+			experience: shorten("7.5k"),
 		},
 		rank: "Silver",
 		isBoss: true,
@@ -170,7 +170,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("614.4k"),
 		reward: {
 			currency: shorten("2.5M"),
-			experience: shorten("16.5k"),
+			experience: shorten("25k"),
 		},
 		rank: "Silver",
 		isBoss: true,
@@ -180,7 +180,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("2.458M"),
 		reward: {
 			currency: shorten("14M"),
-			experience: shorten("98k"),
+			experience: shorten("95k"),
 		},
 		rank: "Silver",
 		isBoss: true,
@@ -190,7 +190,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("9.83M"),
 		reward: {
 			currency: shorten("70M"),
-			experience: shorten("500k"),
+			experience: shorten("200k"),
 		},
 		rank: "Gold",
 		isBoss: true,

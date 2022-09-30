@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { Workspace } from "@rbxts/services";
 import { Store } from "shared/rodux";
 
 import { LocalMessages } from "./components/announcements";
@@ -8,6 +9,7 @@ import { EggsUI } from "./components/eggs";
 import { WeaponEquip } from "./components/equip/weaponEquip";
 import { Hud } from "./components/hud";
 import { Quests } from "./components/quests";
+import { RankUpgrade } from "./components/ranks/menu";
 import { SettingsMenu } from "./components/settings/menu";
 import { TalismanShop } from "./components/talismans/talismanShop";
 import { ZonesUI } from "./components/zones";
@@ -30,6 +32,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	const [codesMenuVisible, setCodesVisible] = useState(false);
 	const [questsMenuVisible, setQuestsVisibility] = useState(false);
 	const [settingsMenuVisible, setSettingsVisibility] = useState(false);
+	const [rankUpgradeVisibility, setRankUpgradeVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
 	const [displayAnnouncement, setDisplayAnnouncement] = useState<
@@ -49,6 +52,61 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 			setDisplayAnnouncement(undefined);
 		});
 	}, [displayAnnouncement]);
+
+	useEffect(() => {
+		let lastTouched = 0;
+
+		const connection = Workspace.interactions.rankUpgrade.interact.Touched.Connect((hit) => {
+			if (rankUpgradeVisibility) {
+				return;
+			}
+
+			const now = time();
+			if (now - lastTouched < 1) {
+				return;
+			}
+			lastTouched = now;
+
+			const hitInstance = hit.Parent;
+			if (hitInstance === undefined) {
+				return;
+			}
+
+			if (!hitInstance.IsA("Model")) {
+				return;
+			}
+
+			if (hitInstance.Name !== props.player.Name) {
+				return;
+			}
+
+			const character = props.player.Character;
+			if (character === undefined) {
+				return;
+			}
+
+			const humanoid = character.FindFirstChildOfClass("Humanoid");
+			if (humanoid === undefined) {
+				return;
+			}
+
+			const humanoidRootPart = humanoid.RootPart;
+			if (humanoidRootPart === undefined) {
+				return;
+			}
+
+			const distance = Workspace.interactions.rankUpgrade.teleport.Position.sub(humanoidRootPart.Position);
+			if (distance.Magnitude > 20) {
+				return;
+			}
+
+			setRankUpgradeVisibility(true);
+		});
+
+		return (): void => {
+			connection.Disconnect();
+		};
+	});
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
@@ -71,6 +129,11 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 				<LocalMessages currentMessage={displayAnnouncement} />
 				<ZonesUI displayAnnouncement={applyAnnouncement} />
 				<WeaponEquip visible={!codesMenuVisible && !settingsMenuVisible && !isHatching} />
+				<RankUpgrade
+					visible={rankUpgradeVisibility}
+					hideMenu={(): void => setRankUpgradeVisibility(false)}
+					displayAnnouncement={applyAnnouncement}
+				/>
 			</>
 		</RoactRodux.StoreProvider>
 	);

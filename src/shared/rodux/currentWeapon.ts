@@ -42,7 +42,7 @@ export function unequipWeapon(): UnequipWeapon & Rodux.AnyAction {
 }
 
 const defaultWeaponState = {
-	id: 11,
+	id: 19,
 	equipped: true,
 };
 

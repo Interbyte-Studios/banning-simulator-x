@@ -1,8 +1,10 @@
 import { Players, ReplicatedStorage, TweenService, Workspace } from "@rbxts/services";
+import { t } from "@rbxts/t";
 import { onStoreCreated } from "client/clientStores";
 import { getEnemyRankIcon } from "client/util/getEnemyRankIcon";
 import { getRankIcon } from "client/util/getRankIcon";
 import { GROUP_ID, GROUP_ROLES } from "shared/configs/game";
+import { isNpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 import { getNPCByName } from "shared/util/getNpcByName";
 
@@ -12,14 +14,92 @@ const playerGui = player.WaitForChild("PlayerGui") as PlayerGui;
 const npcsFolder = Workspace.WaitForChild("npcs");
 
 const friendlyTags = new Instance("ScreenGui");
+friendlyTags.ResetOnSpawn = false;
 friendlyTags.Name = "FriendlyTags";
 friendlyTags.Parent = playerGui;
 
 const enemyTags = new Instance("ScreenGui");
+enemyTags.ResetOnSpawn = false;
 enemyTags.Name = "EnemyTags";
 enemyTags.Parent = playerGui;
 
 const healthbarTween = new TweenInfo(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.In);
+
+const isPlayerTag = t.intersection(
+	t.instanceIsA("BillboardGui"),
+	t.children({
+		hold: t.intersection(
+			t.instanceIsA("Frame"),
+			t.children({
+				UIListLayout: t.instanceIsA("UIListLayout"),
+				name: t.intersection(
+					t.instanceIsA("TextLabel"),
+					t.children({
+						UIStroke: t.instanceIsA("UIStroke"),
+						rank: t.intersection(
+							t.instanceIsA("ImageLabel"),
+							t.children({
+								UIAspectRatioConstraint: t.instanceIsA("UIAspectRatioConstraint"),
+							}),
+						),
+					}),
+				),
+				staff: t.intersection(
+					t.instanceIsA("TextLabel"),
+					t.children({
+						UIStroke: t.instanceIsA("UIStroke"),
+					}),
+				),
+				title: t.intersection(
+					t.instanceIsA("TextLabel"),
+					t.children({
+						UIStroke: t.instanceIsA("UIStroke"),
+					}),
+				),
+			}),
+		),
+	}),
+);
+
+/**
+ * Updates a player's tag.
+ *
+ * @param player The player.
+ * @param store The player's store.
+ */
+function updatePlayerTag(player: Player, store: Store): void {
+	const character = player.Character;
+	if (character === undefined) {
+		warn(`Failed to update player tag for "${player.Name}". The Character was not found.`);
+		return;
+	}
+
+	const head = character.FindFirstChild("Head") as BasePart;
+	if (head === undefined) {
+		warn(`Failed to update player tag for "${player.Name}". The Head was not found.`);
+		return;
+	}
+
+	const storeState = store.getState();
+
+	let tag: BillboardGui | undefined;
+	for (const playerTag of friendlyTags.GetChildren()) {
+		if (!playerTag.IsA("BillboardGui")) {
+			continue;
+		}
+
+		if (playerTag.Adornee !== head) {
+			continue;
+		}
+
+		tag = playerTag;
+		break;
+	}
+	assert(tag, `Failed to find player tag for ${player.Name}`);
+	assert(isPlayerTag(tag), `Player tag for ${player.Name} was not a valid player tag.`);
+
+	tag.hold.name.rank.Image = getRankIcon(storeState.rank);
+}
 
 /**
  * Creates a player tag that's displayed above the player's head.
@@ -32,16 +112,13 @@ function createPlayerTag(player: Player, store: Store): void {
 	assert(playerTag, `Failed to get player tag from rep storage`);
 
 	const character = player.Character;
-	if (character === undefined) {
-		warn(`Failed to create player tag. The character was not found.`);
-		return;
-	}
+	assert(character, `Failed to create player tag. The Character for ${player.Name} was not found.`);
+
+	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
+	assert(humanoid, `Failed to create player tag. The Humanoid for ${player.Name} was not found.`);
 
 	const head = character.FindFirstChild("Head") as BasePart;
-	if (head === undefined) {
-		warn("Failed to create player tag. The character head was not found.");
-		return;
-	}
+	assert(head, `Failed to create player tag. The Head for ${player.Name} was not found.`);
 
 	const storeState = store.getState();
 	const isInGroup = player.IsInGroup(GROUP_ID);
@@ -72,6 +149,14 @@ function createPlayerTag(player: Player, store: Store): void {
 		tag.hold.staff.Visible = true;
 	}
 
+	humanoid.Died.Connect(() => {
+		tag.Destroy();
+		return;
+	});
+
+	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
+	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
+
 	tag.Adornee = head;
 	tag.Parent = friendlyTags;
 }
@@ -86,16 +171,10 @@ function createEnemyTag(enemy: Model): void {
 	assert(enemyTag, `Failed to get enemy tag from rep storage`);
 
 	const humanoid = enemy.WaitForChild("Humanoid") as Humanoid;
-	if (humanoid === undefined) {
-		warn(`Failed to create enemy tag. Did not find humanoid for "${enemy.Name}"`);
-		return;
-	}
+	assert(humanoid, `Failed to create enemy tag. Infinitely yielded for Humanoid for enemey: ${enemy.Name}`);
 
-	const head = enemy.FindFirstChild("Head") as BasePart;
-	if (head === undefined) {
-		warn(`Failed to create enemy tag. Did not find head for "${enemy.Name}"`);
-		return;
-	}
+	const head = enemy.WaitForChild("Head") as BasePart;
+	assert(head, `Failed to create enemy tag. Infinitely yielded for Head for enemey: ${enemy.Name}`);
 
 	const npcData = getNPCByName(enemy.Name);
 	if (npcData === undefined) {
@@ -136,6 +215,11 @@ function createEnemyTag(enemy: Model): void {
 		tag.hold.fillBackground.health.Text = `[${humanoid.Health} / ${humanoid.MaxHealth}]`;
 	});
 
+	humanoid.Died.Connect(() => {
+		tag.Destroy();
+		return;
+	});
+
 	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
 	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
 
@@ -153,7 +237,15 @@ function onPlayerAdded(player: Player): void {
 				createPlayerTag(player, store);
 			}
 
-			player.CharacterAppearanceLoaded.Connect(() => createPlayerTag(player, store));
+			player.CharacterAdded.Connect(() => createPlayerTag(player, store));
+
+			store.changed.connect((newState, oldState) => {
+				if (newState.rank === oldState.rank) {
+					return;
+				}
+
+				updatePlayerTag(player, store);
+			});
 		})
 		.catch((e) => {
 			throw `Failed to get store for player ${player.Name} | ${e}`;
@@ -170,6 +262,7 @@ npcsFolder.ChildAdded.Connect((enemy) => {
 
 	createEnemyTag(enemy);
 });
+
 npcsFolder.GetChildren().forEach((enemy) => {
 	if (!enemy.IsA("Model")) {
 		return;
