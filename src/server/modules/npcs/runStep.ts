@@ -132,6 +132,23 @@ export function runStep(
 
 		npc.instance.Humanoid.TakeDamage(weapon.data.damage + weapon.data.damage * 0.25 * weaponLevelBonus.level);
 
+		const emitter = humanoidRootPart.FindFirstChild("ImpactEmitter") as Attachment;
+		if (emitter === undefined) {
+			warn(`Failed to get impact emitter for npc ${npc.instance.Name}`);
+			continue;
+		}
+
+		for (const particleEmitter of emitter.GetChildren()) {
+			if (!particleEmitter.IsA("ParticleEmitter")) {
+				continue;
+			}
+
+			particleEmitter.Emit(1);
+			task.delay(particleEmitter.Lifetime.Max, () => {
+				particleEmitter.Clear();
+			});
+		}
+
 		// check if npc is dead
 		if (npc.instance.Humanoid.Health <= 0) {
 			// reward player
@@ -187,23 +204,6 @@ export function runStep(
 				emitter.Clear();
 				banEmitter.Destroy();
 			});
-		} else {
-			const emitter = humanoidRootPart.FindFirstChild("ImpactEmitter") as Attachment;
-			if (emitter === undefined) {
-				warn(`Failed to get impact emitter for npc ${npc.instance.Name}`);
-				continue;
-			}
-
-			for (const particleEmitter of emitter.GetChildren()) {
-				if (!particleEmitter.IsA("ParticleEmitter")) {
-					continue;
-				}
-
-				particleEmitter.Emit(1);
-				task.delay(particleEmitter.Lifetime.Max, () => {
-					particleEmitter.Clear();
-				});
-			}
 		}
 	}
 
