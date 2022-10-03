@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { CurrencyIcon } from "client/ui/elements/currencyIcon";
 import { RankIcon } from "client/ui/elements/rankIcon";
 import { hooks } from "client/ui/hooks";
@@ -45,7 +45,7 @@ export const ZoneSign = hooks((props: ZoneSignProps, hooks) => {
 					TextScaled={true}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={5} />
+					<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 5 }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -57,7 +57,7 @@ export const ZoneSign = hooks((props: ZoneSignProps, hooks) => {
 					TextScaled={true}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={5} />
+					<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 5 }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -76,7 +76,7 @@ export const ZoneSign = hooks((props: ZoneSignProps, hooks) => {
 						size={{ maximizedSize: 1, minimizedSize: 0.9 }}
 						currency={props.zoneData.cost.currency}
 					/>
-					<BaseUIStroke Thickness={5} />
+					<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 5 }} />
 				</textlabel>
 				<DisplayZonePurchasePrompt
 					worldName={props.worldName}

@@ -2,6 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
@@ -65,9 +66,12 @@ export const EnabledButton = hooks((props: EnabledButtonProps, hooks) => {
 				Text={props.isEnabled ? `On` : `Off`}
 				Font={font}
 			>
-				<uistroke
-					Color={props.isEnabled ? Color3.fromRGB(111, 158, 113) : Color3.fromRGB(138, 92, 92)}
-					Thickness={2.5}
+				<BSX_UIStroke
+					defaultBlackColor={false}
+					native={{
+						Thickness: 2.5,
+						Color: props.isEnabled ? Color3.fromRGB(111, 158, 113) : Color3.fromRGB(138, 92, 92),
+					}}
 				/>
 			</textlabel>
 		</imagebutton>

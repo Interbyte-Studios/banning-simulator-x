@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
@@ -39,7 +39,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 				Text={"Media"}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={3} />
+				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 3 }} />
 			</textlabel>
 			<textlabel
 				AnchorPoint={vec2Middle}
@@ -51,7 +51,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 				Text={"Follow @TenrousR, @RealNotNert, and @InterbyteRBLX on Twitter for exclusive codes!"}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={2} />
+				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 3 }} />
 			</textlabel>
 			<TwitterHandle displayAnnouncement={props.displayAnnouncement} />
 			<textlabel
@@ -64,7 +64,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 				Text={"Join our Discord server [https://discord.gg/interbyte] for a permanent 50% experience boost!"}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={2} />
+				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 2 }} />
 			</textlabel>
 			<DiscordHandle displayAnnouncement={props.displayAnnouncement} />
 			<ExitButton

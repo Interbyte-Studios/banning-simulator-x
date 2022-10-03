@@ -6,7 +6,7 @@ import { getPetData } from "shared/util/getPetData";
 
 import { udim2BottomRight, udim2Middle, vec2Middle } from "../commonValues";
 import { BaseTextLabel } from "./baseTextLabel";
-import { BaseUIStroke } from "./baseUIStroke";
+import { BSX_UIStroke } from "./baseUIStroke";
 import { PetViewport } from "./petViewport";
 import { RarityGradient } from "./rarityGradient";
 
@@ -15,6 +15,7 @@ interface PetFrameProps {
 	petId: number;
 	variant: Variants;
 	displayBackground: boolean;
+	isBillboard: boolean;
 	size?: UDim2;
 }
 
@@ -66,7 +67,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 				Text={petData.rarity !== "Legendary" ? `${petData.chance}%` : "???"}
 				TextXAlignment={Enum.TextXAlignment.Right}
 			>
-				<BaseUIStroke Thickness={2.5} />
+				<BSX_UIStroke defaultBlackColor={true} isBillboard={props.isBillboard} native={{ Thickness: 2.5 }} />
 			</BaseTextLabel>
 			<BaseTextLabel
 				BackgroundTransparency={1}
@@ -75,7 +76,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 				Text={petData.rarity}
 			>
 				<RarityGradient Rarity={petData.rarity} />
-				<BaseUIStroke Thickness={2.5} />
+				<BSX_UIStroke defaultBlackColor={true} isBillboard={props.isBillboard} native={{ Thickness: 2.5 }} />
 			</BaseTextLabel>
 		</frame>
 	);

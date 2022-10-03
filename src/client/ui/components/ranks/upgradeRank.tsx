@@ -3,6 +3,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
@@ -99,7 +100,7 @@ export const UpgradeRank = RoactRodux.connect(mapStateToProps)(
 					TextScaled={true}
 					Font={font}
 				>
-					<uistroke Thickness={2.5} Color={Color3.fromRGB(5, 115, 28)} />
+					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 2.5, Color: Color3.fromRGB(5, 115, 28) }} />
 				</textlabel>
 			</imagebutton>
 		);

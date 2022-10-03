@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
@@ -48,7 +48,7 @@ export const ModifySettingOption = hooks((props: ModifySettingOptionProps) => {
 				Font={font}
 				Text={props.settingName}
 			>
-				<BaseUIStroke Thickness={2} />
+				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 2 }} />
 			</textlabel>
 			<DecreaseButton
 				Position={UDim2.fromScale(0.625, 0.5)}
@@ -66,7 +66,7 @@ export const ModifySettingOption = hooks((props: ModifySettingOptionProps) => {
 				Text={props.displayValue}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={2} />
+				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 2 }} />
 			</textlabel>
 			<IncreaseButton
 				Position={UDim2.fromScale(0.925, 0.5)}

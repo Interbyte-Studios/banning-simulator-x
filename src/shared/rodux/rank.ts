@@ -21,7 +21,7 @@ export function unlockRank(rankNumber: RankState): UnlockRank & Rodux.AnyAction 
 }
 
 // default rank is rank 1
-const defaultRank = 1;
+const defaultRank = 19;
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const rankReducer = Rodux.createReducer<RankState, UnlockRank>(defaultRank, {

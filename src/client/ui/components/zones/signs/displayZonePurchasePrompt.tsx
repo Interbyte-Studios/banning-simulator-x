@@ -3,7 +3,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { WorldName } from "shared/configs/worlds";
@@ -83,7 +83,7 @@ export const DisplayZonePurchasePrompt = RoactRodux.connect(mapStateToProps)(
 						TextXAlignment={Enum.TextXAlignment.Left}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={4} />
+						<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 4 }} />
 					</textlabel>
 				</imagebutton>
 			);
@@ -114,7 +114,7 @@ export const DisplayZonePurchasePrompt = RoactRodux.connect(mapStateToProps)(
 						TextXAlignment={Enum.TextXAlignment.Left}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={4} />
+						<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 4 }} />
 					</textlabel>
 				</imagebutton>
 			);

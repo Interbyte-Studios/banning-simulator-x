@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 
 import { font, vec2Middle } from "../../../commonValues";
 import { hooks } from "../../../hooks";
@@ -31,7 +31,7 @@ export const SectionHeader = hooks((props: SectionHeaderProps) => {
 			Text={props.text}
 			Font={font}
 		>
-			<BaseUIStroke Thickness={3} />
+			<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 3 }} />
 		</textlabel>
 	);
 });

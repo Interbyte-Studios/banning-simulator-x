@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { CurrencyIcon } from "client/ui/elements/currencyIcon";
 import { RankIcon } from "client/ui/elements/rankIcon";
 import { hooks } from "client/ui/hooks";
@@ -67,7 +67,7 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 					Text={"Zone Advance"}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={2} />
+					<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 2 }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -79,7 +79,7 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 					Text={`Would you like to purchase zone ${zoneData.name}?`}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={3} />
+					<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 3 }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -102,7 +102,7 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 						size={{ maximizedSize: 1, minimizedSize: 0.9 }}
 						rank={zoneData.cost.requiredRank}
 					/>
-					<BaseUIStroke Thickness={3} />
+					<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 3 }} />
 				</textlabel>
 				<PurchaseZoneButton
 					world={props.world}

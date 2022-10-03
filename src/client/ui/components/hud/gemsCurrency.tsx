@@ -1,6 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { CurrencyGradient } from "client/ui/elements/currencyGradient";
 import { CurrencyIcon } from "client/ui/elements/currencyIcon";
 import { hooks } from "client/ui/hooks";
@@ -52,9 +53,11 @@ export const GemsCurrency = RoactRodux.connect(mapStateToProps)(
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextScaled={true}
 				>
-					<uistroke Color={Color3.fromRGB(255, 255, 255)} Thickness={1.5}>
-						<CurrencyGradient Currency={"gems"} />
-					</uistroke>
+					<BSX_UIStroke
+						defaultBlackColor={false}
+						currencyGradient={"gems"}
+						native={{ Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }}
+					/>
 				</textlabel>
 			</imagelabel>
 		);

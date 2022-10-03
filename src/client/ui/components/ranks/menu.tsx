@@ -1,6 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
@@ -63,7 +64,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 					Text={"Rank Upgrade"}
 					Font={font}
 				>
-					<uistroke Thickness={3} Color={Color3.fromRGB(150, 69, 3)} />
+					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 3, Color: Color3.fromRGB(150, 69, 3) }} />
 				</textlabel>
 				<RankDisplay rank={props.currentRank} experience={props.experience} position={UDim2.fromScale(0.165, 0.55)} />
 				<RankDisplay rank={props.currentRank + 1} experience={-1} position={UDim2.fromScale(0.835, 0.55)} />

@@ -1,6 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
@@ -47,7 +48,7 @@ export const TeleportIcon = hooks((_, { useEffect }) => {
 				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 			>
-				<uistroke Color={Color3.fromRGB(0, 108, 176)} />
+				<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 1, Color: Color3.fromRGB(0, 108, 176) }} />
 			</textlabel>
 			<uiaspectratioconstraint AspectRatio={1} />
 		</imagebutton>

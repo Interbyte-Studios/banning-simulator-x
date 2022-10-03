@@ -1,4 +1,4 @@
-import { Players, ReplicatedStorage, TweenService, Workspace } from "@rbxts/services";
+import { CollectionService, Players, ReplicatedStorage, TweenService, Workspace } from "@rbxts/services";
 import { t } from "@rbxts/t";
 import { onStoreCreated } from "client/clientStores";
 import { getEnemyRankIcon } from "client/util/getEnemyRankIcon";
@@ -157,6 +157,14 @@ function createPlayerTag(player: Player, store: Store): void {
 	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
 	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
 
+	for (const uiStroke of tag.GetDescendants()) {
+		if (!uiStroke.IsA("UIStroke")) {
+			continue;
+		}
+
+		CollectionService.AddTag(uiStroke, "Billboard_UIStroke");
+	}
+
 	tag.Adornee = head;
 	tag.Parent = friendlyTags;
 }
@@ -222,6 +230,14 @@ function createEnemyTag(enemy: Model): void {
 
 	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
 	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
+
+	for (const uiStroke of tag.GetDescendants()) {
+		if (!uiStroke.IsA("UIStroke")) {
+			continue;
+		}
+
+		CollectionService.AddTag(uiStroke, "Billboard_UIStroke");
+	}
 
 	tag.Adornee = head;
 	tag.Parent = enemyTags;

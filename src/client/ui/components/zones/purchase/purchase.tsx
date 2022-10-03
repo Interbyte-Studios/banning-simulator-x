@@ -4,7 +4,7 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { tryPurchaseZone } from "client/modules/tryPurchaseZone";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
@@ -159,7 +159,7 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 					Text={"Purchase"}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={2} />
+					<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 2 }} />
 				</textlabel>
 			</imagebutton>
 		);

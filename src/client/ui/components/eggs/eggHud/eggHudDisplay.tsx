@@ -1,7 +1,7 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import { Players, RunService } from "@rbxts/services";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { CurrencyIcon } from "client/ui/elements/currencyIcon";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
@@ -115,7 +115,7 @@ export const EggHudDisplay = hooks((props: EggHudProps, hooks) => {
 					TextScaled={true}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={2.5} />
+					<BSX_UIStroke defaultBlackColor={true} isBillboard={true} native={{ Thickness: 2.5 }} />
 				</textlabel>
 				<frame
 					BackgroundTransparency={1}
@@ -142,6 +142,7 @@ export const EggHudDisplay = hooks((props: EggHudProps, hooks) => {
 								eggName={props.eggName}
 								petId={petInfo.id}
 								variant={props.isVoid ? "void" : "regular"}
+								isBillboard={true}
 								displayBackground={false}
 							/>
 						);
@@ -157,7 +158,7 @@ export const EggHudDisplay = hooks((props: EggHudProps, hooks) => {
 					TextXAlignment={Enum.TextXAlignment.Left}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={2} />
+					<BSX_UIStroke defaultBlackColor={true} isBillboard={true} native={{ Thickness: 2 }} />
 					<CurrencyIcon
 						anchorPoint={new Vector2(1, 0.5)}
 						position={UDim2.fromScale(-0.03, 0.5)}

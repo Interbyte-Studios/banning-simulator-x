@@ -5,6 +5,7 @@ import assetIds from "shared/assets";
 import { font, vec2Middle } from "../commonValues";
 import { useBindingMotor } from "../customHooks/useBindingMotor";
 import { hooks } from "../hooks";
+import { BSX_UIStroke } from "./baseUIStroke";
 
 interface ExitButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
 	minimizedSize: number;
@@ -69,7 +70,7 @@ export const ExitButton = hooks((props: ExitButtonProps, hooks) => {
 				Text={"X"}
 				Font={font}
 			>
-				<uistroke Color={Color3.fromRGB(138, 92, 92)} Thickness={2} />
+				<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 2, Color: Color3.fromRGB(138, 92, 92) }} />
 			</textlabel>
 		</imagebutton>
 	);

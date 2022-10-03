@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
@@ -44,7 +44,7 @@ export const ToggleSettingOption = hooks((props: ToggleSettingOptionProps) => {
 				Font={font}
 				Text={props.settingName}
 			>
-				<BaseUIStroke Thickness={2} />
+				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 2 }} />
 			</textlabel>
 			<EnabledButton
 				AnchorPoint={vec2Middle}

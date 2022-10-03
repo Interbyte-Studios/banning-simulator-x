@@ -2,6 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { Players, Workspace } from "@rbxts/services";
 import { vec2Middle } from "client/ui/commonValues";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { getRankProgress } from "client/util/getRankProgress";
 import assetIds from "shared/assets";
@@ -35,7 +36,7 @@ export const UpgradeNotification = hooks((props: UpgradeNotificationProps) => {
 		>
 			<uiaspectratioconstraint AspectRatio={1} />
 			<uicorner CornerRadius={new UDim(1, 0)} />
-			<uistroke Color={Color3.fromRGB(107, 33, 33)} Thickness={2} />
+			<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 2, Color: Color3.fromRGB(107, 33, 33) }} />
 		</imagelabel>
 	);
 });

@@ -2,7 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
@@ -41,7 +41,7 @@ export const DiscordRewards = hooks((_, hooks) => {
 				Text={"Verified"}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={1.2} />
+				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 1.2 }} />
 			</textlabel>
 		</imagebutton>
 	);

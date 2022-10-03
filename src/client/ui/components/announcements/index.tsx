@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import { font } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 
 interface LocalMessagesProps {
@@ -27,7 +27,7 @@ export const LocalMessages = hooks((props: LocalMessagesProps) => {
 				Text={props.currentMessage.message}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={1.5} />
+				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 1.5 }} />
 			</textlabel>
 		);
 

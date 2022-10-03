@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import { font, udim2TopMiddle, vec2Middle } from "client/ui/commonValues";
 import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { PetViewport } from "client/ui/elements/petViewport";
 import { RarityGradient } from "client/ui/elements/rarityGradient";
 import { EggName } from "shared/configs/eggs";
@@ -48,7 +48,7 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 				TextScaled={true}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={2} />
+				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 2 }} />
 			</textlabel>,
 		);
 	}
@@ -77,7 +77,7 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 					petId={props.pet}
 					isVoid={props.isVoid}
 				/>
-				<BaseUIStroke Thickness={2.4} />
+				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 2.4 }} />
 			</BaseTextLabel>
 			<BaseTextLabel
 				Position={UDim2.fromScale(0.5, 0.875)}
@@ -85,7 +85,7 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 				Text={string.upper(petInfo.rarity)}
 			>
 				<RarityGradient Rarity={petInfo.rarity} />
-				<BaseUIStroke Thickness={2.4} />
+				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 2.4 }} />
 			</BaseTextLabel>
 			{autoDelete}
 		</frame>

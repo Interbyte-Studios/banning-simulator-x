@@ -4,6 +4,7 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { ContextActionService, Lighting, TweenService, Workspace } from "@rbxts/services";
 import { purchaseTalisman } from "client/modules/talismans/purchaseTalisman";
 import { color3White, font, vec2Middle } from "client/ui/commonValues";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
@@ -169,7 +170,7 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 					TextColor3={color3White}
 					BackgroundTransparency={1}
 				>
-					<uistroke Thickness={3} Color={Color3.fromRGB(11, 52, 68)} />
+					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 3, Color: Color3.fromRGB(11, 52, 68) }} />
 				</textlabel>
 				<textlabel
 					Text={twoDpAbbreviator.numberToString(viewedTalismanInfo.talismanInfo.data.cost.amount)}
@@ -182,7 +183,7 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.53, 0.78)}
 					TextColor3={color3White}
 				>
-					<uistroke Thickness={2} Color={Color3.fromRGB(11, 52, 68)} />
+					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 2, Color: Color3.fromRGB(11, 52, 68) }} />
 					<imagelabel
 						Image={"rbxassetid://10498937588"}
 						ScaleType={Enum.ScaleType.Fit}
@@ -203,7 +204,7 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.74, 0.76)}
 					TextColor3={color3White}
 				>
-					<uistroke Thickness={2} Color={Color3.fromRGB(11, 52, 68)} />
+					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 2, Color: Color3.fromRGB(11, 52, 68) }} />
 					<imagelabel
 						Image={assetIds.images.statIcons[viewedTalismanInfo.talismanInfo.data.stats.name]}
 						ScaleType={Enum.ScaleType.Fit}
@@ -224,7 +225,7 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.3, 0.76)}
 					TextColor3={color3White}
 				>
-					<uistroke Thickness={2} Color={Color3.fromRGB(11, 52, 68)} />
+					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 2, Color: Color3.fromRGB(11, 52, 68) }} />
 					<imagelabel
 						Image={"rbxassetid://10189531403"}
 						ScaleType={Enum.ScaleType.Fit}
@@ -269,7 +270,7 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 						},
 					}}
 				>
-					<uistroke Thickness={3} Color={Color3.fromRGB(112, 158, 113)} ApplyStrokeMode={Enum.ApplyStrokeMode.Border} />
+					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 3, Color: Color3.fromRGB(112, 158, 113) }} />
 					<uicorner CornerRadius={new UDim(0.2, 0)} />
 					<textlabel
 						Text={
@@ -287,7 +288,7 @@ export const TalismanShop = RoactRodux.connect(mapStateToProps)(
 						TextScaled={true}
 						Font={font}
 					>
-						<uistroke Thickness={3} Color={Color3.fromRGB(112, 158, 113)} />
+						<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 3, Color: Color3.fromRGB(112, 158, 113) }} />
 					</textlabel>
 				</textbutton>
 				<ExitButton
