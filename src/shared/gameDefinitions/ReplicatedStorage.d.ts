@@ -63,6 +63,9 @@ declare global {
 				};
 			};
 			emitters: Folder & {
+				"impact emitters": Folder & {
+					Impact: BasePart;
+				};
 				"ban emitters": Folder & {
 					Banned: BasePart;
 					Banned1: BasePart;

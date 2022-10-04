@@ -1,7 +1,7 @@
 import Make from "@rbxts/make";
 import { SoundService } from "@rbxts/services";
 
-export enum SoundEffect {
+export enum HatchEffect {
 	HatchImpact_1 = 9854462642,
 	HatchImpact_2 = 9854463496,
 	HatchReveal = 9854540368,
@@ -13,13 +13,17 @@ export enum WeaponSlash {
 	Slash3 = 11104013752,
 }
 
+export enum NPCHit {
+	Hit1 = 11158275165,
+}
+
 /**
  * Plays a specific sound effect.
  *
  * @param soundType The type of sound effect to play.
  * @param sfxVolume The volume of the player's sound effects settings.
  */
-export function playSFX(soundType: SoundEffect | WeaponSlash, sfxVolume: number): void {
+export function playSFX(soundType: HatchEffect | WeaponSlash | NPCHit, sfxVolume: number): void {
 	const sound = Make("Sound", {
 		SoundId: `rbxassetid://${soundType}`,
 		Parent: SoundService,

@@ -1,10 +1,11 @@
 import { Players, ReplicatedStorage, RunService, StarterGui, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
-import { playSFX, WeaponSlash } from "client/util/playSound";
+import { NPCHit, playSFX, WeaponSlash } from "client/util/playSound";
 import { WeaponIndex, WEAPONS } from "shared/configs/weapons";
 import Hitbox from "shared/modules/raycastModule";
 import { remotes } from "shared/remotes";
 import { isNpcCharacter } from "shared/remotes/damageNPC";
+import { Store } from "shared/rodux";
 import { getItemById } from "shared/util/getItemById";
 
 const player = Players.LocalPlayer;
@@ -19,9 +20,9 @@ const npcsFolder = Workspace.WaitForChild("npcs") as Folder;
  * Handles equipping the player's weapon.
  *
  * @param weaponName The name of the weapon.
- * @param sfxVolume The volume of sound effects setting.
+ * @param store The player's store.
  */
-function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
+function equipWeapon(weaponName: WeaponIndex, store: Store): void {
 	// checks
 	const character = player.Character;
 	assert(character, `Failed to get Character for ${player.Name}`);
@@ -153,7 +154,7 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 		const slashSound = slashSounds.filter((metaData) => metaData.played === false);
 		if (slashSound[0] !== undefined) {
 			slashSound[0].played = true;
-			playSFX(slashSound[0].soundType, sfxVolume);
+			playSFX(slashSound[0].soundType, store.getState().settings.sound.soundEffects);
 		} else {
 			warn(`Failed to load and play weapon activation sound.`);
 		}
@@ -185,6 +186,8 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 			return;
 		}
 
+		playSFX(NPCHit.Hit1, store.getState().settings.sound.soundEffects);
+
 		remotes.Client.Get("damageNPC").SendToServer(npcCharacter);
 	});
 
@@ -208,7 +211,7 @@ onStoreCreated(player)
 				const weapon = getItemById(weaponsFolder, currentState.currentWeapon.id);
 				assert(weapon, `Failed to get weapon data for ${currentState.currentWeapon.id}`);
 
-				equipWeapon(weapon.Name as WeaponIndex, store.getState().settings.sound.soundEffects);
+				equipWeapon(weapon.Name as WeaponIndex, store);
 			}
 		}
 
