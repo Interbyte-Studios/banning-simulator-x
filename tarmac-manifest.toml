@@ -348,6 +348,106 @@ hash = "14ef5182d4586b96cf692024624ba232eacb2b80f744889df2f6b7b50d3049d7"
 id = 10832809474
 packable = false
 
+[inputs."images/ui/inventory/background.png"]
+hash = "f5f2b5abc70665c9d5021352cfbb54aee525e61d78793dc498a3bf6085379d6a"
+id = 11165264477
+packable = false
+
+[inputs."images/ui/inventory/icons/boosts.png"]
+hash = "9ec0441ee396aca4f3ecb3b1ed3ad4f5d2081fdeb42c8c4e8b0cbb75fa2c4162"
+id = 11165264676
+packable = false
+
+[inputs."images/ui/inventory/icons/pets.png"]
+hash = "c8f3ab00073646a9bcd5b84f80e36e58ace2f44d9511c43a9f4862540bb14ce9"
+id = 11159449136
+packable = false
+
+[inputs."images/ui/inventory/icons/talismans.png"]
+hash = "376f579a858d04f9d9acf579d08def1e3a559e410c2c0fa8f7031b50e40f99f9"
+id = 11159449190
+packable = false
+
+[inputs."images/ui/inventory/icons/titles.png"]
+hash = "de733bc3e9562dacee9cf567c854a575f475e2baa88d24acbb44e510456dd5d5"
+id = 11165264796
+packable = false
+
+[inputs."images/ui/inventory/icons/weapons.png"]
+hash = "5dd324df4a54137bf597b57190f86dda7d8486160089402bf0851f4798c01c02"
+id = 11159449301
+packable = false
+
+[inputs."images/ui/inventory/info sidebar.png"]
+hash = "f248f68b58d31151215462f792172370eb90d13aed613defb6712b8de70ac161"
+id = 11165265059
+packable = false
+
+[inputs."images/ui/inventory/pets/bottombar.png"]
+hash = "cacd72b76454aaba1fb4fcfbcbb33e8e5b5cf836c525bf9e975addca070cac16"
+id = 11165265367
+packable = false
+
+[inputs."images/ui/inventory/pets/equipped checkmark.png"]
+hash = "3ce546f559858a5590757ed84c210aab208695e2a0f16e6607197ab0aa591093"
+id = 11165265736
+packable = false
+
+[inputs."images/ui/inventory/pets/function button.png"]
+hash = "9c2bf3ff1e753a2a3db328c13b12de0d9e575ceb15c6999ab71b5f442eba7ebd"
+id = 11165265931
+packable = false
+
+[inputs."images/ui/inventory/pets/gamepassPrompt.png"]
+hash = "b3aaa76d083d594325f315e062a5266712fcf871702192b9857b8fa5324284d1"
+id = 11165266123
+packable = false
+
+[inputs."images/ui/inventory/pets/inventory size counter icon.png"]
+hash = "b0149407db3824b240915615249101285385129d1ac8fe0a9269a21c4207daf4"
+id = 11175415119
+packable = false
+
+[inputs."images/ui/inventory/pets/locked.png"]
+hash = "094cdb73da4d2142c5c040a5bd41bb5581e8583f44efbd567b976878f64fee67"
+id = 11165266471
+packable = false
+
+[inputs."images/ui/inventory/pets/multi-delete.png"]
+hash = "c6c73d7bf34225739660beb3ab705466529319d93f30190764696556036b7de7"
+id = 11165266606
+packable = false
+
+[inputs."images/ui/inventory/pets/pet counter icon.png"]
+hash = "fb37f9077bc4f3f4bb0078661baee5cd1de3f46c520b3360d6670911d8b29964"
+id = 11175415196
+packable = false
+
+[inputs."images/ui/inventory/pets/search.png"]
+hash = "82f504491715f7534f8aefe7a1bcf0da48d5f3e526cbdbdbc511e9ba0d962c0e"
+id = 11165266653
+packable = false
+
+[inputs."images/ui/inventory/pets/shrink.png"]
+hash = "683d23af8c78bed5389122984e393bdb82674fe22a170dd861f990a79c86de1f"
+id = 11165266712
+packable = false
+
+[inputs."images/ui/inventory/pets/sort.png"]
+hash = "653a86c1a590e0595c79c28d8881b8b37f04593ebc80b3a06b05d9cee18af597"
+id = 11165266762
+packable = false
+
+[inputs."images/ui/inventory/pets/topbar.png"]
+hash = "bdfdfbf845cef1a60bc6e4b98454346e1d86394e70f380dc5fdff23c1b758cdf"
+id = 11175402283
+packable = false
+
+[inputs."images/ui/inventory/pets/unequip all.png"]
+hash = "0faaeb026500128569610e7d0e4615056a883604382217bbc1aba5ad5240b786"
+id = 11165267191
+packable = false
+
 [inputs."images/ui/quests/entry background.png"]
 hash = "ddd4ef03eacfb8d19f73252017992e29551d978e7358917f14ea899f73d36283"
 id = 10832809634

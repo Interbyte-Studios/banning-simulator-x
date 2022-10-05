@@ -69,6 +69,32 @@ declare namespace assetIds {
 			};
 		};
 		ui: {
+			inventory: {
+				background: string;
+				icons: {
+					boosts: string;
+					pets: string;
+					talismans: string;
+					titles: string;
+					weapons: string;
+				};
+				["info sidebar"]: string;
+				pets: {
+					bottombar: string;
+					"equipped checkmark": string;
+					"function button": string;
+					gamepassPrompt: string;
+					locked: string;
+					["multi-delete"]: string;
+					search: string;
+					shrink: string;
+					sort: string;
+					topbar: string;
+					"unequip all": string;
+					"inventory size counter icon": string;
+					"pet counter icon": string;
+				};
+			};
 			"rank upgrade": {
 				background: string;
 				upgrade: string;

@@ -8,6 +8,7 @@ import { CodesMenu } from "./components/codes/menu";
 import { EggsUI } from "./components/eggs";
 import { WeaponEquip } from "./components/equip/weaponEquip";
 import { Hud } from "./components/hud";
+import { ItemInventory } from "./components/items";
 import { Quests } from "./components/quests";
 import { RankUpgrade } from "./components/ranks/menu";
 import { SettingsMenu } from "./components/settings/menu";
@@ -33,6 +34,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	const [questsMenuVisible, setQuestsVisibility] = useState(false);
 	const [settingsMenuVisible, setSettingsVisibility] = useState(false);
 	const [rankUpgradeVisibility, setRankUpgradeVisibility] = useState(false);
+	const [itemInventoryVisibility, setItemInventoryVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
 	const [displayAnnouncement, setDisplayAnnouncement] = useState<
@@ -121,19 +123,21 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 				<SettingsMenu visible={settingsMenuVisible} hideMenu={(): void => setSettingsVisibility(false)} />
 				<Quests visible={questsMenuVisible} hideMenu={(): void => setQuestsVisibility(false)} />
 				<Hud
-					visible={!codesMenuVisible && !settingsMenuVisible && !isHatching}
+					visible={!codesMenuVisible && !settingsMenuVisible && !isHatching && !itemInventoryVisibility}
 					displayCodesMenu={(): void => setCodesVisible(true)}
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
+					displayItemsMenu={(): void => setItemInventoryVisibility(true)}
 				/>
 				<LocalMessages currentMessage={displayAnnouncement} />
 				<ZonesUI displayAnnouncement={applyAnnouncement} />
-				<WeaponEquip visible={!codesMenuVisible && !settingsMenuVisible && !isHatching} />
+				<WeaponEquip visible={!codesMenuVisible && !settingsMenuVisible && !isHatching && !itemInventoryVisibility} />
 				<RankUpgrade
 					visible={rankUpgradeVisibility}
 					hideMenu={(): void => setRankUpgradeVisibility(false)}
 					displayAnnouncement={applyAnnouncement}
 				/>
+				<ItemInventory visible={itemInventoryVisibility} hideMenu={(): void => setItemInventoryVisibility(false)} />
 			</>
 		</RoactRodux.StoreProvider>
 	);

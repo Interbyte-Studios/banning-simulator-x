@@ -8,8 +8,12 @@ import assetIds from "shared/assets";
 const minimizedSize = 0.8;
 const maximizedSize = 0.9;
 
+interface ItemsIconProps {
+	displayItemsMenu: () => void;
+}
+
 /* eslint-disable jsdoc/require-jsdoc */
-export const ItemsIcon = hooks((_, { useEffect }) => {
+export const ItemsIcon = hooks((props: ItemsIconProps, { useEffect }) => {
 	const minizmizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
 	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 
@@ -34,6 +38,7 @@ export const ItemsIcon = hooks((_, { useEffect }) => {
 			Image={assetIds.images.ui.hud.icons.items}
 			LayoutOrder={3}
 			Event={{
+				Activated: (): void => props.displayItemsMenu(),
 				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
