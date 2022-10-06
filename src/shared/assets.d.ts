@@ -88,6 +88,7 @@ declare namespace assetIds {
 					["multi-delete"]: string;
 					search: string;
 					shrink: string;
+					maximize: string;
 					sort: string;
 					topbar: string;
 					"unequip all": string;

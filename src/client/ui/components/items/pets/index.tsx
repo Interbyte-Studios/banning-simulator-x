@@ -2,7 +2,9 @@ import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
 
+import { PetItems } from "./inventory";
 import { PetInventoryCounterTopBar } from "./inventoryCounter";
+import { PetInventoryBottomControl } from "./petInventoryBottomControl";
 import { PetInventorySearch } from "./search";
 
 /**
@@ -18,6 +20,8 @@ export const PetInventory = hooks(() => {
 		>
 			<PetInventoryCounterTopBar />
 			<PetInventorySearch />
+			<PetItems />
+			<PetInventoryBottomControl />
 		</frame>
 	);
 });

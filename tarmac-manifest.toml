@@ -384,8 +384,8 @@ id = 11165265059
 packable = false
 
 [inputs."images/ui/inventory/pets/bottombar.png"]
-hash = "cacd72b76454aaba1fb4fcfbcbb33e8e5b5cf836c525bf9e975addca070cac16"
-id = 11165265367
+hash = "9e10b7e394b5bbef8ec98ef8f28a40497665fdea15d396dcef9af34ac0ec7487"
+id = 11185064851
 packable = false
 
 [inputs."images/ui/inventory/pets/equipped checkmark.png"]
@@ -413,6 +413,11 @@ hash = "094cdb73da4d2142c5c040a5bd41bb5581e8583f44efbd567b976878f64fee67"
 id = 11165266471
 packable = false
 
+[inputs."images/ui/inventory/pets/maximize.png"]
+hash = "50664b1698e59cd46e4f2ab195a398157d21897f38c45d72b5c9103c1456d476"
+id = 11184846468
+packable = false
+
 [inputs."images/ui/inventory/pets/multi-delete.png"]
 hash = "c6c73d7bf34225739660beb3ab705466529319d93f30190764696556036b7de7"
 id = 11165266606
@@ -429,8 +434,8 @@ id = 11165266653
 packable = false
 
 [inputs."images/ui/inventory/pets/shrink.png"]
-hash = "683d23af8c78bed5389122984e393bdb82674fe22a170dd861f990a79c86de1f"
-id = 11165266712
+hash = "6443472195229c458f75825f2a892588b7efe178364b61223f5833e405a21be6"
+id = 11184846514
 packable = false
 
 [inputs."images/ui/inventory/pets/sort.png"]
