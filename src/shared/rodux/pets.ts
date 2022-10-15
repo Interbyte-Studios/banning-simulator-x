@@ -52,6 +52,39 @@ export function addPets(cost: number, currencyType: Currency, pets: Array<Confir
 
 const defaultPets: PetsState = [];
 
+for (let i = 1; i < 43; i++) {
+	const pet: Pet = {
+		id: i,
+		guid: tostring(i),
+		equipped: false,
+		locked: false,
+		variant: "regular",
+		enhancements: [],
+	};
+
+	const voidPet: Pet = {
+		id: i,
+		guid: tostring(i),
+		equipped: false,
+		locked: false,
+		variant: "void",
+		enhancements: [],
+	};
+
+	const radiantPet: Pet = {
+		id: i,
+		guid: tostring(i),
+		equipped: false,
+		locked: false,
+		variant: "radiant",
+		enhancements: [],
+	};
+
+	defaultPets.push(pet);
+	defaultPets.push(voidPet);
+	defaultPets.push(radiantPet);
+}
+
 /* eslint-disable jsdoc/require-jsdoc */
 export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQuest | RedeemCode>(defaultPets, {
 	addPet: (state, action) => {
