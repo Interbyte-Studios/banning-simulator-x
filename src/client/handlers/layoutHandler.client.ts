@@ -33,30 +33,20 @@ function setOffset(uiGridLayout: UIGridLayout): void {
 		defaultCellSize = uiGridLayout.CellSize;
 	}
 
-	let defaultCellPadding = uiGridLayout.GetAttribute("DefaultCellPadding") as UDim2;
-	if (defaultCellPadding === undefined) {
-		uiGridLayout.SetAttribute("DefaultCellPadding", uiGridLayout.CellPadding);
-		defaultCellPadding = uiGridLayout.CellPadding;
+	const absoluteContentSizeAverage = getAverageSize(scrollingFrame.AbsoluteSize);
+
+	let ratio = 1;
+	if (absoluteContentSizeAverage > defaultAbsoluteContentSizeAverage) {
+		ratio = defaultAbsoluteContentSizeAverage / absoluteContentSizeAverage;
+	} else {
+		ratio = absoluteContentSizeAverage / defaultAbsoluteContentSizeAverage;
 	}
 
-	const absoluteContentSizeAverage = getAverageSize(scrollingFrame.AbsoluteSize);
-	const cellSize = UDim2.fromOffset(
-		(defaultCellSize.X.Offset / defaultAbsoluteContentSizeAverage) * absoluteContentSizeAverage,
-		(defaultCellSize.Y.Offset / defaultAbsoluteContentSizeAverage) * absoluteContentSizeAverage,
-	);
-	const cellPadding = UDim2.fromOffset(
-		(defaultCellPadding.X.Offset / defaultAbsoluteContentSizeAverage) * absoluteContentSizeAverage,
-		(defaultCellPadding.Y.Offset / defaultAbsoluteContentSizeAverage) * absoluteContentSizeAverage,
-	);
+	const cellSize = UDim2.fromOffset(defaultCellSize.X.Offset * ratio, defaultCellSize.Y.Offset * ratio);
 
 	uiGridLayout.CellSize = cellSize;
-	uiGridLayout.CellPadding = cellPadding;
 
-	warn(
-		`SCALED! DefaultAbsoluteContentSizeAverage: ${tostring(
-			defaultAbsoluteContentSizeAverage,
-		)}. AbsoluteContentSizeAverage: ${tostring(absoluteContentSizeAverage)}`,
-	);
+	warn(`SCALED! Ratio: ${tostring(ratio)}`);
 }
 
 CollectionService.GetInstanceAddedSignal(collectionTag).Connect((uiGridLayout) => {
