@@ -107,7 +107,7 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 					CellPadding={UDim2.fromOffset(6, 6)}
 					CellSize={UDim2.fromOffset(110, 110)}
 					SortOrder={Enum.SortOrder.LayoutOrder}
-					FillDirectionMaxCells={6}
+					FillDirectionMaxCells={5}
 					Ref={layoutRef.value}
 				/>
 				{petsToDisplay}
