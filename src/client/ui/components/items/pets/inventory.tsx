@@ -36,7 +36,6 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 			const uiGridLayout = layoutRef.value.getValue();
 			assert(uiGridLayout, "Failed to get UIGridLayout for pet item inventory.");
 
-			uiGridLayout.SetAttribute("DefaultCellSize", uiGridLayout.CellSize);
 			CollectionService.AddTag(uiGridLayout, `ScaledGridLayout`);
 		});
 
@@ -106,7 +105,7 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 			>
 				<uigridlayout
 					CellPadding={UDim2.fromOffset(6, 6)}
-					CellSize={new UDim2(0.158, 0, 0, 110)}
+					CellSize={UDim2.fromOffset(110, 110)}
 					SortOrder={Enum.SortOrder.LayoutOrder}
 					FillDirectionMaxCells={6}
 					Ref={layoutRef.value}
