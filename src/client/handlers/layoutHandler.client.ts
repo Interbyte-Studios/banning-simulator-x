@@ -1,7 +1,7 @@
 import { CollectionService } from "@rbxts/services";
 
 const collectionTag = "ScaledGridLayout";
-const defaultAbsoluteContentSize = new Vector2(696.976, 317.317);
+const defaultAbsoluteContentSize = new Vector2(721.369, 327.482);
 
 /**
  * @param vector The 2d offset.
@@ -42,11 +42,11 @@ function setOffset(uiGridLayout: UIGridLayout): void {
 		ratio = absoluteContentSizeAverage / defaultAbsoluteContentSizeAverage;
 	}
 
-	const cellSize = UDim2.fromOffset(defaultCellSize.X.Offset * ratio, defaultCellSize.Y.Offset * ratio);
-
-	uiGridLayout.CellSize = cellSize;
-
-	warn(`SCALED! Ratio: ${tostring(ratio)}`);
+	const width =
+		(scrollingFrame.AbsoluteSize.X - uiGridLayout.CellPadding.X.Offset * uiGridLayout.FillDirectionMaxCells) /
+		uiGridLayout.FillDirectionMaxCells;
+	const length = defaultCellSize.Y.Offset * ratio;
+	uiGridLayout.CellSize = UDim2.fromOffset(width, length);
 }
 
 CollectionService.GetInstanceAddedSignal(collectionTag).Connect((uiGridLayout) => {
