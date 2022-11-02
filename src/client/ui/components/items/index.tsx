@@ -1,6 +1,7 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
+import { ExitButton } from "client/ui/elements/exitButton";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
@@ -34,7 +35,7 @@ export const ItemInventory = hooks((props: ItemInventoryProps, hooks) => {
 		<imagelabel
 			AnchorPoint={vec2Middle}
 			BackgroundTransparency={1}
-			Size={UDim2.fromScale(0.5, 0.625)}
+			Size={UDim2.fromScale(0.5, 0.6)}
 			Position={UDim2.fromScale(0.5, 0.5)}
 			Image={assetIds.images.ui.inventory.background}
 			ScaleType={Enum.ScaleType.Fit}
@@ -59,6 +60,12 @@ export const ItemInventory = hooks((props: ItemInventoryProps, hooks) => {
 				displayTalismansInventory={(): void => setTypeOfInventoryDisplayed("Talismans")}
 				displayTitlesInventory={(): void => setTypeOfInventoryDisplayed("Titles")}
 				displayBoostsInventory={(): void => setTypeOfInventoryDisplayed("Boosts")}
+			/>
+			<ExitButton
+				Position={UDim2.fromScale(0.985, 0.115)}
+				minimizedSize={0.09}
+				maximizedSize={0.1}
+				onClosed={(): void => props.hideMenu()}
 			/>
 		</imagelabel>
 	);

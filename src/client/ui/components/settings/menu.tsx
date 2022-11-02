@@ -64,8 +64,8 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 				Image={assetIds.images.ui.settings.background}
 				ScaleType={Enum.ScaleType.Fit}
 			>
-				<uiaspectratioconstraint AspectRatio={0.8} />
-				<SectionHeader position={UDim2.fromScale(0.495, 0.115)} size={UDim2.fromScale(0.4, 0.125)} text={"Settings"} />
+				<uiaspectratioconstraint AspectRatio={0.9} />
+				<SectionHeader position={UDim2.fromScale(0.495, 0.0825)} size={UDim2.fromScale(0.4, 0.125)} text={"Settings"} />
 				<scrollingframe
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
@@ -75,14 +75,14 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					CanvasSize={UDim2.fromScale(0, 2.5)}
 					ScrollBarThickness={6}
 				>
-					<SectionHeader position={UDim2.fromScale(0.5, 0.03)} size={UDim2.fromScale(0.4, 0.03)} text={"Sound"} />
+					<SectionHeader position={UDim2.fromScale(0.5, 0.02)} size={UDim2.fromScale(0.4, 0.03)} text={"Sound"} />
 					<ToggleButtonSFXSetting />
 					<ToggleMusicFXSetting />
 					<GeneralSFXSetting />
-					<SectionHeader position={UDim2.fromScale(0.5, 0.21)} size={UDim2.fromScale(0.4, 0.03)} text={"Gameplay"} />
+					<SectionHeader position={UDim2.fromScale(0.5, 0.2)} size={UDim2.fromScale(0.4, 0.03)} text={"Gameplay"} />
 					<AutoHatchSetting />
 					<WalkSpeedSetting />
-					<SectionHeader position={UDim2.fromScale(0.5, 0.345)} size={UDim2.fromScale(0.4, 0.03)} text={"Visual"} />
+					<SectionHeader position={UDim2.fromScale(0.5, 0.335)} size={UDim2.fromScale(0.4, 0.03)} text={"Visual"} />
 					<GraphicsSetting />
 					<PetsDisplayedSetting />
 					<PetAnimationSetting />
@@ -100,7 +100,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					<EasyLegendariesRarityAutoDeleteSetting />
 				</scrollingframe>
 				<ExitButton
-					Position={UDim2.fromScale(0.975, 0.125)}
+					Position={UDim2.fromScale(0.975, 0.1)}
 					minimizedSize={0.125}
 					maximizedSize={0.15}
 					onClosed={(): void => props.hideMenu()}

@@ -17,7 +17,7 @@ export interface Pet {
 }
 
 export type PetsState = Array<Pet>;
-export type PetsActions = AddPet;
+export type PetsActions = AddPet | DeletePet;
 
 export interface ConfirmedPet extends PetData {
 	autoDeleted: boolean;
@@ -35,6 +35,10 @@ export interface AddPet extends Rodux.Action<"addPet"> {
 	pets: Array<ConfirmedPet>;
 }
 
+export interface DeletePet extends Rodux.Action<"deletePet"> {
+	pets: Array<string>;
+}
+
 /**
  * @param cost The cost of the egg hatch.
  * @param currencyType The type of currency the eggs were purchased with.
@@ -50,9 +54,20 @@ export function addPets(cost: number, currencyType: Currency, pets: Array<Confir
 	};
 }
 
+/**
+ * @param pets The pets to remove.
+ * @returns The Rodux action to dispatch.
+ */
+export function deletePets(pets: Array<string>): DeletePet & Rodux.AnyAction {
+	return {
+		type: "deletePet",
+		pets,
+	};
+}
+
 const defaultPets: PetsState = [];
 
-for (let i = 1; i < 43; i++) {
+for (let i = 1; i < 81; i++) {
 	const pet: Pet = {
 		id: i,
 		guid: tostring(i),
@@ -107,6 +122,15 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 
 			newState.push(newPet);
 		}
+		return newState;
+	},
+	deletePet: (state, action) => {
+		const newState = [...state];
+
+		for (const petToDelete of action.pets) {
+			newState.unorderedRemove(newState.findIndex((pet) => pet.guid === petToDelete));
+		}
+
 		return newState;
 	},
 	redeemQuest: (state, action) => {

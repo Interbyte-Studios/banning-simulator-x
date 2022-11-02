@@ -1,5 +1,5 @@
 import { CollectionService } from "@rbxts/services";
-import { TAG_CONFIG } from "shared/configs/pets";
+import { TAG_CONFIG, Variants } from "shared/configs/pets";
 
 export type ValidAssetType = "egg" | "pet" | "talisman" | "weapon";
 
@@ -8,9 +8,9 @@ export type ValidAssetType = "egg" | "pet" | "talisman" | "weapon";
  *
  * @param assetType The type of asset to set properties for.
  * @param assetObject The object<model>.
- * @param isVoid Whether or not the asset is a void asset.
+ * @param variant The variant of the asset.
  */
-export function setAssetProperties(assetType: ValidAssetType, assetObject: Model | Tool, isVoid?: boolean): void {
+export function setAssetProperties(assetType: ValidAssetType, assetObject: Model | Tool, variant?: Variants): void {
 	switch (assetType) {
 		case "egg": {
 			if (!assetObject.IsA("Model")) {
@@ -54,7 +54,7 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 					child.Massless = true;
 				}
 
-				if (isVoid) {
+				if (variant === "void") {
 					const petEyes = child.FindFirstChild("Eyes");
 					if (petEyes !== undefined && petEyes.IsA("Decal")) {
 						petEyes.Color3 = Color3.fromRGB(255, 0, 255);
@@ -63,6 +63,21 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 					const tags = CollectionService.GetTags(child);
 					for (const tag of tags) {
 						for (const [tagIndex, tagPropertyData] of pairs(TAG_CONFIG.Void)) {
+							if (tag !== tagIndex) continue;
+
+							child.Color = tagPropertyData.Color;
+							child.Material = tagPropertyData.Material;
+						}
+					}
+				} else if (variant === "radiant") {
+					const petEyes = child.FindFirstChild("Eyes");
+					if (petEyes !== undefined && petEyes.IsA("Decal")) {
+						petEyes.Color3 = Color3.fromRGB(255, 191, 161);
+					}
+
+					const tags = CollectionService.GetTags(child);
+					for (const tag of tags) {
+						for (const [tagIndex, tagPropertyData] of pairs(TAG_CONFIG.Radiant)) {
 							if (tag !== tagIndex) continue;
 
 							child.Color = tagPropertyData.Color;

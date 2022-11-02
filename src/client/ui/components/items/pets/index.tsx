@@ -1,11 +1,181 @@
+import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
-import { vec2Middle } from "client/ui/commonValues";
+import { setPetItemRowSize } from "client/handlers/item inventory/inventoryLayoutHandler";
+import { toggleMultiDeleteState } from "client/handlers/item inventory/multiDeleteStateHandler";
+import { font, vec2Middle } from "client/ui/commonValues";
+import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import assetIds from "shared/assets";
 
 import { PetItems } from "./inventory";
 import { PetInventoryCounterTopBar } from "./inventoryCounter";
 import { PetInventoryBottomControl } from "./petInventoryBottomControl";
 import { PetInventorySearch } from "./search";
+
+/* eslint-disable jsdoc/require-jsdoc */
+export const ToggleShrink = hooks((_, hooks) => {
+	const { useState, useEffect } = hooks;
+	const [isExpanded, setExpanded] = useState(true);
+
+	useEffect(() => {
+		setPetItemRowSize(isExpanded ? "shrink" : "expand");
+	}, [isExpanded]);
+
+	return (
+		<imagebutton
+			AnchorPoint={vec2Middle}
+			BackgroundTransparency={1}
+			Position={UDim2.fromScale(0.765, 0.05)}
+			Size={UDim2.fromScale(0.09, 0.09)}
+			Image={isExpanded ? assetIds.images.ui.inventory.pets.shrink : assetIds.images.ui.inventory.pets.maximize}
+			ScaleType={Enum.ScaleType.Fit}
+			Event={{
+				Activated: (): void => setExpanded(!isExpanded),
+			}}
+		>
+			<uiaspectratioconstraint AspectRatio={1} />
+		</imagebutton>
+	);
+});
+/* eslint-enable jsdoc/require-jsdoc */
+
+/* eslint-disable jsdoc/require-jsdoc */
+export const CancelMultiDeleteSelection = hooks((props: { completeMultiDelete: () => void }, hooks) => {
+	const minimizedSize = 0.35;
+	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
+
+	const maximizedSize = 0.4;
+	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
+
+	const { motor, binding } = useBindingMotor(hooks, maximizedSize);
+
+	return (
+		<imagebutton
+			AnchorPoint={vec2Middle}
+			BackgroundTransparency={1}
+			Position={UDim2.fromScale(0.25, 0.75)}
+			Size={binding.map((value) => {
+				return UDim2.fromScale(value, 0.35);
+			})}
+			Image={assetIds.images.buttons["red toggle button"]}
+			ScaleType={Enum.ScaleType.Fit}
+			Event={{
+				MouseEnter: (): void => motor.setGoal(minimizedSpring),
+				MouseLeave: (): void => motor.setGoal(maximizedSpring),
+			}}
+		>
+			<textlabel
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Size={UDim2.fromScale(0.7, 0.8)}
+				Position={UDim2.fromScale(0.5, 0.5)}
+				Text={"Cancel"}
+				Font={font}
+				TextScaled={true}
+				TextColor3={Color3.fromRGB(255, 255, 255)}
+			>
+				<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 1.5, Color: Color3.fromRGB(122, 0, 0) }} />
+			</textlabel>
+		</imagebutton>
+	);
+});
+/* eslint-enable jsdoc/require-jsdoc */
+
+/* eslint-disable jsdoc/require-jsdoc */
+export const AcceptMultiDeleteSelection = hooks((props: { completeMultiDelete: () => void }, hooks) => {
+	const minimizedSize = 0.35;
+	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
+
+	const maximizedSize = 0.4;
+	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
+
+	const { motor, binding } = useBindingMotor(hooks, maximizedSize);
+
+	return (
+		<imagebutton
+			AnchorPoint={vec2Middle}
+			BackgroundTransparency={1}
+			Position={UDim2.fromScale(0.75, 0.75)}
+			Size={binding.map((value) => {
+				return UDim2.fromScale(value, 0.35);
+			})}
+			Image={assetIds.images.buttons["green toggle button"]}
+			ScaleType={Enum.ScaleType.Fit}
+			Event={{
+				MouseEnter: (): void => motor.setGoal(minimizedSpring),
+				MouseLeave: (): void => motor.setGoal(maximizedSpring),
+			}}
+		>
+			<textlabel
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Size={UDim2.fromScale(0.7, 0.8)}
+				Position={UDim2.fromScale(0.5, 0.5)}
+				Text={"Accept"}
+				Font={font}
+				TextScaled={true}
+				TextColor3={Color3.fromRGB(255, 255, 255)}
+			>
+				<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 1.5, Color: Color3.fromRGB(5, 89, 0) }} />
+			</textlabel>
+		</imagebutton>
+	);
+});
+/* eslint-enable jsdoc/require-jsdoc */
+
+/* eslint-disable jsdoc/require-jsdoc */
+export const ToggleMultiDelete = hooks((_, hooks) => {
+	const { useState } = hooks;
+	const [isEnabled, setEnabled] = useState(false);
+
+	return (
+		<>
+			<imagebutton
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Position={UDim2.fromScale(0.825, 0.05)}
+				Size={UDim2.fromScale(0.1, 0.1)}
+				Image={
+					isEnabled
+						? assetIds.images.ui.inventory.pets["multi-delete enabled"]
+						: assetIds.images.ui.inventory.pets["multi-delete disabled"]
+				}
+				ScaleType={Enum.ScaleType.Fit}
+				Event={{
+					Activated: (): void => {
+						toggleMultiDeleteState(true);
+						setEnabled(true);
+					},
+				}}
+			>
+				<uiaspectratioconstraint AspectRatio={1} />
+			</imagebutton>
+			<imagelabel
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Position={UDim2.fromScale(1.225, 0.175)}
+				Size={UDim2.fromScale(0.4, 0.35)}
+				Image={assetIds.images.ui.inventory.pets["delete-sidebar"]}
+				ScaleType={Enum.ScaleType.Fit}
+			>
+				<textlabel
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					Size={UDim2.fromScale(1, 0.3)}
+					Position={UDim2.fromScale(0.5, 0.25)}
+					Text={`Delete X pets?`}
+					Font={font}
+					TextScaled={true}
+					TextColor3={Color3.fromRGB(255, 255, 255)}
+				>
+					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 74, 122) }} />
+				</textlabel>
+			</imagelabel>
+		</>
+	);
+});
+/* eslint-enable jsdoc/require-jsdoc */
 
 /**
  * Interface that displays the player's pets.
@@ -20,6 +190,8 @@ export const PetInventory = hooks(() => {
 		>
 			<PetInventoryCounterTopBar />
 			<PetInventorySearch />
+			<ToggleShrink />
+			<ToggleMultiDelete />
 			<PetItems />
 			<PetInventoryBottomControl />
 		</frame>

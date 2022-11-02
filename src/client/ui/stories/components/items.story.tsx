@@ -8,7 +8,7 @@ import { createMockStory } from "../createMockStory";
 export = (target: GuiBase): (() => void) => {
 	const pets: Array<Pet> = [];
 
-	for (let i = 1; i < 43; i++) {
+	for (let i = 1; i < 81; i++) {
 		const pet: Pet = {
 			id: i,
 			guid: tostring(i),

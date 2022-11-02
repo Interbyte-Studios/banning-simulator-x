@@ -11,6 +11,84 @@ declare namespace assetIds {
 			damage: string;
 			experience: string;
 		};
+		decals: {
+			pets: {
+				Coreye: string;
+				DecalTemplate: string;
+				["Desert Angel"]: string;
+				["Desert Demon"]: string;
+				["Desert Dragon"]: string;
+				["Desert Pegasus"]: string;
+				["Desert Ram"]: string;
+				["Desert Scorpilord"]: string;
+				["Desert Spider"]: string;
+				["Desert Wraith"]: string;
+				["Molten Blob"]: string;
+				["Molten Bunny"]: string;
+				["Molten Destroyer"]: string;
+				["Molten Doggy"]: string;
+				["Molten Kitty"]: string;
+				["Molten Leviathan"]: string;
+				["Molten Pegasus"]: string;
+				["Molten Squirrel"]: string;
+				["Molten Wraith"]: string;
+				["Radiant Coreye"]: string;
+				["Radiant Desert Angel"]: string;
+				["Radiant Desert Demon"]: string;
+				["Radiant Desert Dragon"]: string;
+				["Radiant Desert Pegasus"]: string;
+				["Radiant Desert Ram"]: string;
+				["Radiant Desert Scorpilord"]: string;
+				["Radiant Desert Spider"]: string;
+				["Radiant Desert Wraith"]: string;
+				["Radiant Molten Blob"]: string;
+				["Radiant Molten Bunny"]: string;
+				["Radiant Molten Destroyer"]: string;
+				["Radiant Molten Doggy"]: string;
+				["Radiant Molten Kitty"]: string;
+				["Radiant Molten Leviathan"]: string;
+				["Radiant Molten Pegasus"]: string;
+				["Radiant Molten Squirrel"]: string;
+				["Radiant Molten Wraith"]: string;
+				["Void Coreye"]: string;
+				["Void Desert Angel"]: string;
+				["Void Desert Demon"]: string;
+				["Void Desert Dragon"]: string;
+				["Void Desert Pegasus"]: string;
+				["Void Desert Ram"]: string;
+				["Void Desert Scorpilord"]: string;
+				["Void Desert Spider"]: string;
+				["Void Desert Wraith"]: string;
+				["Void Molten Blob"]: string;
+				["Void Molten Bunny"]: string;
+				["Void Molten Destroyer"]: string;
+				["Void Molten Doggy"]: string;
+				["Void Molten Kitty"]: string;
+				["Void Molten Leviathan"]: string;
+			};
+			eggs: {};
+		};
+		vectors: {
+			Codes: string;
+			Clover: string;
+			Coin: string;
+			CyberToken: string;
+			FewGems: string;
+			Gem: string;
+			GemBag: string;
+			GemChest: string;
+			GemVault: string;
+			Inventory: string;
+			Medal: string;
+			PetPaw: string;
+			Rewards: string;
+			Settings: string;
+			Shield: string;
+			SpinWheel: string;
+			Sword: string;
+			Teleport: string;
+			Trading: string;
+		};
 		buttons: {
 			"long green button": string;
 			"back arrow": string;
@@ -23,10 +101,6 @@ declare namespace assetIds {
 			exit: string;
 			"forward arrow": string;
 			"purple button": string;
-		};
-		currencies: {
-			gems: string;
-			coins: string;
 		};
 		ranks: {
 			enemy: {
@@ -80,12 +154,15 @@ declare namespace assetIds {
 				};
 				["info sidebar"]: string;
 				pets: {
+					"delete-sidebar": string;
+					deleteIndicator: string;
 					bottombar: string;
 					"equipped checkmark": string;
 					"function button": string;
 					gamepassPrompt: string;
 					locked: string;
-					["multi-delete"]: string;
+					"multi-delete enabled": string;
+					"multi-delete disabled": string;
 					search: string;
 					shrink: string;
 					maximize: string;

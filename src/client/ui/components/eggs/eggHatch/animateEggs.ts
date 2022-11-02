@@ -482,7 +482,7 @@ export class AnimateEggs {
 				petModel: petModel.Clone(),
 			};
 
-			setAssetProperties("pet", petData.petModel, params.isVoid);
+			setAssetProperties("pet", petData.petModel, params.isVoid ? "void" : "regular");
 			petData.petModel.Parent = Workspace;
 
 			petData.flareLifetime.Value = 0.75;

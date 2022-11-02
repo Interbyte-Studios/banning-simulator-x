@@ -75,7 +75,7 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 					}}
 					eggName={props.eggName}
 					petId={props.pet}
-					isVoid={props.isVoid}
+					variant={props.isVoid ? "void" : "regular"}
 				/>
 				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 2.4 }} />
 			</BaseTextLabel>

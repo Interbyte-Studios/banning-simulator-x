@@ -16,6 +16,20 @@ export interface EggCost {
  */
 export function getEggCost(egg: EggName, isVoid: boolean): EggCost {
 	const eggData = getEggData(egg);
+	if (eggData.world === "Limited") {
+		return {
+			amount: 0,
+			currencyType: "coins",
+		};
+	}
+
+	if (eggData.zone === "Limited") {
+		return {
+			amount: 0,
+			currencyType: "coins",
+		};
+	}
+
 	const zoneData = getZoneData(eggData.world, eggData.zone);
 
 	const eggCost: EggCost = {
