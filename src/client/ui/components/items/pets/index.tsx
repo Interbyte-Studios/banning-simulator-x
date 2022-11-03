@@ -128,7 +128,10 @@ export const AcceptMultiDeleteSelection = hooks((props: { completeMultiDelete: (
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const ToggleMultiDelete = hooks(
-	(props: { isEnabled: boolean; setDeletion: (enabled: boolean) => void; petsToDelete: Array<string> }, hooks) => {
+	(
+		props: { isEnabled: boolean; setDeletion: (enabled: boolean) => void; petsToDelete: ReadonlyArray<string> },
+		hooks,
+	) => {
 		const { useContext } = hooks;
 
 		const { deletePets } = useContext(remoteContext);
