@@ -2,7 +2,12 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
-import { getMultiDeleteState } from "client/handlers/item inventory/multiDeleteStateHandler";
+import {
+	addPetToDeleteCache,
+	getMultiDeleteState,
+	getPetDeleteCache,
+	removePetFromDeleteCache,
+} from "client/handlers/item inventory/multiDeleteStateHandler";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { PetViewport } from "client/ui/elements/petViewport";
@@ -30,8 +35,17 @@ function petItemsMapStateToProps(state: StoreState): PetItemsMappedProps {
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-const PetFrame = hooks((props: { storedPetData: Pet }, { useState }) => {
+const PetFrame = hooks((props: { storedPetData: Pet }, { useState, useValue, useEffect }) => {
 	const [isSelectedForDelete, setSelectedForDelete] = useState(false);
+
+	const selectedForDeleteImage = useValue(Roact.createRef<ImageLabel>());
+	useEffect(() => {
+		const image = selectedForDeleteImage.value.getValue();
+		if (image !== undefined) {
+			image.SetAttribute("guid", props.storedPetData.guid);
+			CollectionService.AddTag(image, "SelectedForDeletionImage");
+		}
+	});
 
 	const eggName = getEggNameFromPetId(props.storedPetData.id);
 	const petData = getPetData(eggName, props.storedPetData.id);
@@ -48,6 +62,7 @@ const PetFrame = hooks((props: { storedPetData: Pet }, { useState }) => {
 				Size={UDim2.fromScale(0.925, 0.925)}
 				Image={assetIds.images.ui.inventory.pets.deleteIndicator}
 				ScaleType={Enum.ScaleType.Fit}
+				Ref={selectedForDeleteImage.value}
 			/>,
 		);
 	}
@@ -65,6 +80,12 @@ const PetFrame = hooks((props: { storedPetData: Pet }, { useState }) => {
 					Activated: (): void => {
 						const multiDeleteEnabled = getMultiDeleteState();
 						if (multiDeleteEnabled) {
+							if (!isSelectedForDelete) {
+								addPetToDeleteCache(props.storedPetData.guid);
+							} else {
+								removePetFromDeleteCache(props.storedPetData.guid);
+							}
+
 							setSelectedForDelete(!isSelectedForDelete);
 							return;
 						}

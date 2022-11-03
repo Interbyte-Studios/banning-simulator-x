@@ -1,11 +1,23 @@
+import { CollectionService } from "@rbxts/services";
+
 let deleteEnabled = false;
 let petsToDelete: Array<string> = [];
+
+const imageTag = "SelectedForDeletionImage";
 
 /**
  * @param value The value to change multi-delete to.
  */
 export function toggleMultiDeleteState(value: boolean): void {
 	deleteEnabled = value;
+
+	if (value === false) {
+		for (const deletionImage of CollectionService.GetTagged(imageTag)) {
+			if (deletionImage !== undefined && deletionImage.IsA("ImageLabel")) {
+				deletionImage.Destroy();
+			}
+		}
+	}
 }
 
 /**
@@ -34,4 +46,17 @@ export function removePetFromDeleteCache(guid: string): void {
  */
 export function clearPetDeleteCache(): void {
 	petsToDelete = [];
+
+	for (const deletionImage of CollectionService.GetTagged(imageTag)) {
+		if (deletionImage !== undefined && deletionImage.IsA("ImageLabel")) {
+			deletionImage.Destroy();
+		}
+	}
+}
+
+/**
+ * @returns A list of pets currently selected for deletion.
+ */
+export function getPetDeleteCache(): Array<string> {
+	return petsToDelete;
 }

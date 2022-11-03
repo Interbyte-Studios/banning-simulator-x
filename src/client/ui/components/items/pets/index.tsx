@@ -1,11 +1,16 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { setPetItemRowSize } from "client/handlers/item inventory/inventoryLayoutHandler";
-import { toggleMultiDeleteState } from "client/handlers/item inventory/multiDeleteStateHandler";
+import {
+	clearPetDeleteCache,
+	getPetDeleteCache,
+	toggleMultiDeleteState,
+} from "client/handlers/item inventory/multiDeleteStateHandler";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
 
 import { PetItems } from "./inventory";
@@ -61,6 +66,7 @@ export const CancelMultiDeleteSelection = hooks((props: { completeMultiDelete: (
 			Image={assetIds.images.buttons["red toggle button"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
+				Activated: (): void => props.completeMultiDelete(),
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
@@ -103,6 +109,7 @@ export const AcceptMultiDeleteSelection = hooks((props: { completeMultiDelete: (
 			Image={assetIds.images.buttons["green toggle button"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
+				Activated: (): void => props.completeMultiDelete(),
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
@@ -126,31 +133,14 @@ export const AcceptMultiDeleteSelection = hooks((props: { completeMultiDelete: (
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const ToggleMultiDelete = hooks((_, hooks) => {
-	const { useState } = hooks;
+	const { useState, useContext } = hooks;
 	const [isEnabled, setEnabled] = useState(false);
 
-	return (
-		<>
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.825, 0.05)}
-				Size={UDim2.fromScale(0.1, 0.1)}
-				Image={
-					isEnabled
-						? assetIds.images.ui.inventory.pets["multi-delete enabled"]
-						: assetIds.images.ui.inventory.pets["multi-delete disabled"]
-				}
-				ScaleType={Enum.ScaleType.Fit}
-				Event={{
-					Activated: (): void => {
-						toggleMultiDeleteState(true);
-						setEnabled(true);
-					},
-				}}
-			>
-				<uiaspectratioconstraint AspectRatio={1} />
-			</imagebutton>
+	const { deletePets } = useContext(remoteContext);
+
+	const additionalElements: Array<Roact.Element> = [];
+	if (isEnabled) {
+		additionalElements.push(
 			<imagelabel
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}
@@ -171,7 +161,54 @@ export const ToggleMultiDelete = hooks((_, hooks) => {
 				>
 					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 74, 122) }} />
 				</textlabel>
-			</imagelabel>
+				<CancelMultiDeleteSelection
+					completeMultiDelete={(): void => {
+						toggleMultiDeleteState(false);
+						setEnabled(false);
+						clearPetDeleteCache();
+					}}
+				/>
+				<AcceptMultiDeleteSelection
+					completeMultiDelete={(): void => {
+						toggleMultiDeleteState(false);
+						setEnabled(false);
+
+						deletePets.SendToServer(getPetDeleteCache());
+
+						clearPetDeleteCache();
+					}}
+				/>
+			</imagelabel>,
+		);
+	}
+
+	return (
+		<>
+			<imagebutton
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Position={UDim2.fromScale(0.825, 0.05)}
+				Size={UDim2.fromScale(0.1, 0.1)}
+				Image={
+					isEnabled
+						? assetIds.images.ui.inventory.pets["multi-delete enabled"]
+						: assetIds.images.ui.inventory.pets["multi-delete disabled"]
+				}
+				ScaleType={Enum.ScaleType.Fit}
+				Event={{
+					Activated: (): void => {
+						if (isEnabled) {
+							return;
+						}
+
+						toggleMultiDeleteState(true);
+						setEnabled(true);
+					},
+				}}
+			>
+				<uiaspectratioconstraint AspectRatio={1} />
+			</imagebutton>
+			{additionalElements}
 		</>
 	);
 });
