@@ -2,12 +2,6 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
-import {
-	addPetToDeleteCache,
-	getMultiDeleteState,
-	getPetDeleteCache,
-	removePetFromDeleteCache,
-} from "client/handlers/item inventory/multiDeleteStateHandler";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { PetViewport } from "client/ui/elements/petViewport";
@@ -19,6 +13,12 @@ import { StoreState } from "shared/rodux";
 import { Pet, PetsState } from "shared/rodux/pets";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetData } from "shared/util/getPetData";
+
+interface PetItemsProps extends PetItemsMappedProps {
+	multiDeleteEnabled: boolean;
+	addPetToDeletionRegistry: (guid: string) => void;
+	removePetFromDeletionRegistry: (guid: string) => void;
+}
 
 interface PetItemsMappedProps {
 	pets: PetsState;
@@ -35,108 +35,122 @@ function petItemsMapStateToProps(state: StoreState): PetItemsMappedProps {
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-const PetFrame = hooks((props: { storedPetData: Pet }, { useState, useValue, useEffect }) => {
-	const [isSelectedForDelete, setSelectedForDelete] = useState(false);
+const PetFrame = hooks(
+	(
+		props: {
+			storedPetData: Pet;
+			multiDeleteEnabled: boolean;
+			addPetToDeletionRegistry: (guid: string) => void;
+			removePetFromDeletionRegistry: (guid: string) => void;
+		},
+		{ useState, useEffect },
+	) => {
+		const [isSelectedForDelete, setSelectedForDelete] = useState(false);
 
-	const selectedForDeleteImage = useValue(Roact.createRef<ImageLabel>());
-	useEffect(() => {
-		const image = selectedForDeleteImage.value.getValue();
-		if (image !== undefined) {
-			image.SetAttribute("guid", props.storedPetData.guid);
-			CollectionService.AddTag(image, "SelectedForDeletionImage");
+		const eggName = getEggNameFromPetId(props.storedPetData.id);
+		const petData = getPetData(eggName, props.storedPetData.id);
+
+		const rarityData = RARITIES[petData.rarity];
+
+		const additionalDisplayedElements: Array<Roact.Element> = [];
+		if (isSelectedForDelete) {
+			if (props.multiDeleteEnabled) {
+				additionalDisplayedElements.push(
+					<imagelabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.5)}
+						Size={UDim2.fromScale(0.925, 0.925)}
+						Image={assetIds.images.ui.inventory.pets.deleteIndicator}
+						ScaleType={Enum.ScaleType.Fit}
+					/>,
+				);
+			}
 		}
-	});
 
-	const eggName = getEggNameFromPetId(props.storedPetData.id);
-	const petData = getPetData(eggName, props.storedPetData.id);
+		useEffect(() => {
+			if (isSelectedForDelete) {
+				if (!props.multiDeleteEnabled) {
+					setSelectedForDelete(false);
+				}
+			}
+		});
 
-	const rarityData = RARITIES[petData.rarity];
+		useEffect(() => {
+			if (props.multiDeleteEnabled) {
+				if (isSelectedForDelete) {
+					props.addPetToDeletionRegistry(props.storedPetData.guid);
+				}
+			}
 
-	const additionalDisplayedElements: Array<Roact.Element> = [];
-	if (isSelectedForDelete) {
-		additionalDisplayedElements.push(
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.925, 0.925)}
-				Image={assetIds.images.ui.inventory.pets.deleteIndicator}
-				ScaleType={Enum.ScaleType.Fit}
-				Ref={selectedForDeleteImage.value}
-			/>,
-		);
-	}
+			if (!isSelectedForDelete) {
+				props.removePetFromDeletionRegistry(props.storedPetData.guid);
+			}
+		}, [isSelectedForDelete]);
 
-	return (
-		<frame BackgroundTransparency={1}>
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={0}
-				BackgroundColor3={Color3.fromRGB(46, 115, 179)}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.925, 0.925)}
-				Image={""}
-				Event={{
-					Activated: (): void => {
-						const multiDeleteEnabled = getMultiDeleteState();
-						if (multiDeleteEnabled) {
-							if (!isSelectedForDelete) {
-								addPetToDeleteCache(props.storedPetData.guid);
-							} else {
-								removePetFromDeleteCache(props.storedPetData.guid);
-							}
-
-							setSelectedForDelete(!isSelectedForDelete);
-							return;
-						}
-					},
-				}}
-			>
-				<uiaspectratioconstraint AspectRatio={1} />
-				<uicorner CornerRadius={new UDim(1, 0)} />
-				<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 3, Transparency: 0.5 }} />
-				<PetViewport
-					native={{
-						AnchorPoint: vec2Middle,
-						Position: UDim2.fromScale(0.5, 0.5),
-						Size: UDim2.fromScale(0.9, 0.9),
-						BackgroundTransparency: 1,
-					}}
-					eggName={eggName}
-					petId={props.storedPetData.id}
-					variant={props.storedPetData.variant}
-				/>
-				{additionalDisplayedElements}
-				<textlabel
+		return (
+			<frame BackgroundTransparency={1}>
+				<imagebutton
 					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(1, 0.2)}
-					Position={UDim2.fromScale(0.5, 0.1)}
-					Text={petData.name}
-					TextScaled={true}
-					Font={font}
-					TextColor3={
-						petData.rarity === "Epic" ||
-						petData.rarity === "Legendary" ||
-						petData.rarity === "Primordial" ||
-						petData.rarity === "Prismatic"
-							? rarityData.BeginningColor
-							: Color3.fromRGB(255, 255, 255)
-					}
+					BackgroundTransparency={0}
+					BackgroundColor3={Color3.fromRGB(46, 115, 179)}
+					Position={UDim2.fromScale(0.5, 0.5)}
+					Size={UDim2.fromScale(0.925, 0.925)}
+					Image={""}
+					Event={{
+						Activated: (): void => {
+							if (props.multiDeleteEnabled) {
+								setSelectedForDelete(!isSelectedForDelete);
+							}
+						},
+					}}
 				>
-					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>
-			</imagebutton>
-		</frame>
-	);
-});
+					<uiaspectratioconstraint AspectRatio={1} />
+					<uicorner CornerRadius={new UDim(1, 0)} />
+					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 3, Transparency: 0.5 }} />
+					<PetViewport
+						native={{
+							AnchorPoint: vec2Middle,
+							Position: UDim2.fromScale(0.5, 0.5),
+							Size: UDim2.fromScale(0.9, 0.9),
+							BackgroundTransparency: 1,
+						}}
+						eggName={eggName}
+						petId={props.storedPetData.id}
+						variant={props.storedPetData.variant}
+					/>
+					{additionalDisplayedElements}
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Size={UDim2.fromScale(1, 0.2)}
+						Position={UDim2.fromScale(0.5, 0.1)}
+						Text={petData.name}
+						TextScaled={true}
+						Font={font}
+						TextColor3={
+							petData.rarity === "Epic" ||
+							petData.rarity === "Legendary" ||
+							petData.rarity === "Primordial" ||
+							petData.rarity === "Prismatic"
+								? rarityData.BeginningColor
+								: Color3.fromRGB(255, 255, 255)
+						}
+					>
+						<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+					</textlabel>
+				</imagebutton>
+			</frame>
+		);
+	},
+);
 /* eslint-enable jsdoc/require-jsdoc */
 
 /**
  * Displays the player's pets.
  */
 export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
-	hooks((props: PetItemsMappedProps, { useEffect, useValue }) => {
+	hooks((props: PetItemsProps, { useEffect, useValue }) => {
 		const layoutRef = useValue(Roact.createRef<UIGridLayout>());
 		useEffect(() => {
 			const uiGridLayout = layoutRef.value.getValue();
@@ -161,7 +175,14 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 					Ref={layoutRef.value}
 				/>
 				{Object.entries(props.pets).map((pet) => {
-					return <PetFrame storedPetData={pet[1]}></PetFrame>;
+					return (
+						<PetFrame
+							storedPetData={pet[1]}
+							multiDeleteEnabled={props.multiDeleteEnabled}
+							addPetToDeletionRegistry={props.addPetToDeletionRegistry}
+							removePetFromDeletionRegistry={props.removePetFromDeletionRegistry}
+						></PetFrame>
+					);
 				})}
 			</RescalingScrollingFrame>
 		);

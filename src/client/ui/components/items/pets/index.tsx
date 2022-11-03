@@ -1,11 +1,6 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { setPetItemRowSize } from "client/handlers/item inventory/inventoryLayoutHandler";
-import {
-	clearPetDeleteCache,
-	getPetDeleteCache,
-	toggleMultiDeleteState,
-} from "client/handlers/item inventory/multiDeleteStateHandler";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
@@ -132,92 +127,108 @@ export const AcceptMultiDeleteSelection = hooks((props: { completeMultiDelete: (
 /* eslint-enable jsdoc/require-jsdoc */
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const ToggleMultiDelete = hooks((_, hooks) => {
-	const { useState, useContext } = hooks;
-	const [isEnabled, setEnabled] = useState(false);
+export const ToggleMultiDelete = hooks(
+	(props: { isEnabled: boolean; setDeletion: (enabled: boolean) => void; petsToDelete: Array<string> }, hooks) => {
+		const { useContext } = hooks;
 
-	const { deletePets } = useContext(remoteContext);
+		const { deletePets } = useContext(remoteContext);
 
-	const additionalElements: Array<Roact.Element> = [];
-	if (isEnabled) {
-		additionalElements.push(
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(1.225, 0.175)}
-				Size={UDim2.fromScale(0.4, 0.35)}
-				Image={assetIds.images.ui.inventory.pets["delete-sidebar"]}
-				ScaleType={Enum.ScaleType.Fit}
-			>
-				<textlabel
+		const additionalElements: Array<Roact.Element> = [];
+		if (props.isEnabled) {
+			additionalElements.push(
+				<imagelabel
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
-					Size={UDim2.fromScale(1, 0.3)}
-					Position={UDim2.fromScale(0.5, 0.25)}
-					Text={`Delete X pets?`}
-					Font={font}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
+					Position={UDim2.fromScale(1.225, 0.175)}
+					Size={UDim2.fromScale(0.4, 0.35)}
+					Image={assetIds.images.ui.inventory.pets["delete-sidebar"]}
+					ScaleType={Enum.ScaleType.Fit}
 				>
-					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>
-				<CancelMultiDeleteSelection
-					completeMultiDelete={(): void => {
-						toggleMultiDeleteState(false);
-						setEnabled(false);
-						clearPetDeleteCache();
-					}}
-				/>
-				<AcceptMultiDeleteSelection
-					completeMultiDelete={(): void => {
-						toggleMultiDeleteState(false);
-						setEnabled(false);
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Size={UDim2.fromScale(1, 0.3)}
+						Position={UDim2.fromScale(0.5, 0.25)}
+						Text={`Delete ${props.petsToDelete.size()} pets?`}
+						Font={font}
+						TextScaled={true}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+					>
+						<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 74, 122) }} />
+					</textlabel>
+					<CancelMultiDeleteSelection
+						completeMultiDelete={(): void => {
+							props.setDeletion(false);
+						}}
+					/>
+					<AcceptMultiDeleteSelection
+						completeMultiDelete={(): void => {
+							props.setDeletion(false);
 
-						deletePets.SendToServer(getPetDeleteCache());
+							deletePets.SendToServer(props.petsToDelete);
+						}}
+					/>
+				</imagelabel>,
+			);
+		}
 
-						clearPetDeleteCache();
+		return (
+			<>
+				<imagebutton
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					Position={UDim2.fromScale(0.825, 0.05)}
+					Size={UDim2.fromScale(0.1, 0.1)}
+					Image={
+						props.isEnabled
+							? assetIds.images.ui.inventory.pets["multi-delete enabled"]
+							: assetIds.images.ui.inventory.pets["multi-delete disabled"]
+					}
+					ScaleType={Enum.ScaleType.Fit}
+					Event={{
+						Activated: (): void => {
+							props.setDeletion(!props.isEnabled);
+						},
 					}}
-				/>
-			</imagelabel>,
+				>
+					<uiaspectratioconstraint AspectRatio={1} />
+				</imagebutton>
+				{additionalElements}
+			</>
 		);
-	}
-
-	return (
-		<>
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.825, 0.05)}
-				Size={UDim2.fromScale(0.1, 0.1)}
-				Image={
-					isEnabled
-						? assetIds.images.ui.inventory.pets["multi-delete enabled"]
-						: assetIds.images.ui.inventory.pets["multi-delete disabled"]
-				}
-				ScaleType={Enum.ScaleType.Fit}
-				Event={{
-					Activated: (): void => {
-						if (isEnabled) {
-							return;
-						}
-
-						toggleMultiDeleteState(true);
-						setEnabled(true);
-					},
-				}}
-			>
-				<uiaspectratioconstraint AspectRatio={1} />
-			</imagebutton>
-			{additionalElements}
-		</>
-	);
-});
+	},
+);
 /* eslint-enable jsdoc/require-jsdoc */
 
 /**
  * Interface that displays the player's pets.
  */
-export const PetInventory = hooks(() => {
+export const PetInventory = hooks((_, { useState }) => {
+	const [deleteEnabled, setDeleteEnabled] = useState(false);
+	const [petsToDelete, setPetsToDelete] = useState<Array<string>>([]);
+
+	const petsSelectedForDeletion: Array<string> = [];
+
+	/**
+	 * Adds a pet guid to the collection of pet guid's currently selected to be deleted.
+	 *
+	 * @param guid The guid of the pet.
+	 */
+	function addPetToDeletionRegistry(guid: string): void {
+		petsSelectedForDeletion.push(guid);
+		setPetsToDelete(petsSelectedForDeletion);
+	}
+
+	/**
+	 * Removes a pet guid from the collection of pet guid's currently selected to be deleted.
+	 *
+	 * @param guid The guid of the pet.
+	 */
+	function removePetFromDeletionRegistry(guid: string): void {
+		petsSelectedForDeletion.unorderedRemove(petsSelectedForDeletion.findIndex((x) => x === guid));
+		setPetsToDelete(petsSelectedForDeletion);
+	}
+
 	return (
 		<frame
 			AnchorPoint={vec2Middle}
@@ -228,8 +239,18 @@ export const PetInventory = hooks(() => {
 			<PetInventoryCounterTopBar />
 			<PetInventorySearch />
 			<ToggleShrink />
-			<ToggleMultiDelete />
-			<PetItems />
+			<ToggleMultiDelete
+				isEnabled={deleteEnabled}
+				setDeletion={(enabled: boolean): void => {
+					setDeleteEnabled(enabled);
+				}}
+				petsToDelete={petsToDelete}
+			/>
+			<PetItems
+				multiDeleteEnabled={deleteEnabled}
+				addPetToDeletionRegistry={addPetToDeletionRegistry}
+				removePetFromDeletionRegistry={removePetFromDeletionRegistry}
+			/>
 			<PetInventoryBottomControl />
 		</frame>
 	);
