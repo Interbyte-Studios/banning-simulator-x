@@ -67,37 +67,39 @@ export function deletePets(pets: Array<string>): DeletePet & Rodux.AnyAction {
 
 const defaultPets: PetsState = [];
 
-for (let i = 1; i < 81; i++) {
-	const pet: Pet = {
-		id: i,
-		guid: tostring(i),
-		equipped: false,
-		locked: false,
-		variant: "regular",
-		enhancements: [],
-	};
+for (let x = 1; x <= 6; x++) {
+	for (let i = 1; i <= 81; i++) {
+		const pet: Pet = {
+			id: i,
+			guid: tostring(i),
+			equipped: false,
+			locked: false,
+			variant: "regular",
+			enhancements: [],
+		};
 
-	const voidPet: Pet = {
-		id: i,
-		guid: tostring(i),
-		equipped: false,
-		locked: false,
-		variant: "void",
-		enhancements: [],
-	};
+		const voidPet: Pet = {
+			id: i,
+			guid: tostring(i),
+			equipped: false,
+			locked: false,
+			variant: "void",
+			enhancements: [],
+		};
 
-	const radiantPet: Pet = {
-		id: i,
-		guid: tostring(i),
-		equipped: false,
-		locked: false,
-		variant: "radiant",
-		enhancements: [],
-	};
+		const radiantPet: Pet = {
+			id: i,
+			guid: tostring(i),
+			equipped: false,
+			locked: false,
+			variant: "radiant",
+			enhancements: [],
+		};
 
-	defaultPets.push(pet);
-	defaultPets.push(voidPet);
-	defaultPets.push(radiantPet);
+		defaultPets.push(pet);
+		defaultPets.push(voidPet);
+		defaultPets.push(radiantPet);
+	}
 }
 
 /* eslint-disable jsdoc/require-jsdoc */

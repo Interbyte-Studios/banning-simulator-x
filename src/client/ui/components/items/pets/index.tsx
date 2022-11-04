@@ -133,6 +133,7 @@ export const ToggleMultiDelete = hooks(
 		hooks,
 	) => {
 		const { useContext } = hooks;
+		warn(props.petsToDelete);
 
 		const { deletePets } = useContext(remoteContext);
 
@@ -210,7 +211,7 @@ export const PetInventory = hooks((_, { useState }) => {
 	const [deleteEnabled, setDeleteEnabled] = useState(false);
 	const [petsToDelete, setPetsToDelete] = useState<Array<string>>([]);
 
-	const petsSelectedForDeletion: Array<string> = [];
+	const petsSelectedForDeletion: Array<string> = [...petsToDelete];
 
 	/**
 	 * Adds a pet guid to the collection of pet guid's currently selected to be deleted.
