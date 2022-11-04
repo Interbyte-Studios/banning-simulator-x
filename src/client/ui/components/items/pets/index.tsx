@@ -206,32 +206,36 @@ export const ToggleMultiDelete = hooks(
 /**
  * Interface that displays the player's pets.
  */
-export const PetInventory = hooks((_, { useState }) => {
+export const PetInventory = hooks((_, { useState, useCallback }) => {
 	const [deleteEnabled, setDeleteEnabled] = useState(false);
 	const [petsToDelete, setPetsToDelete] = useState<Array<string>>([]);
 	const [searchText, setSearchText] = useState<string | undefined>(undefined);
-
-	const petsSelectedForDeletion: Array<string> = [...petsToDelete];
 
 	/**
 	 * Adds a pet guid to the collection of pet guid's currently selected to be deleted.
 	 *
 	 * @param guid The guid of the pet.
 	 */
-	function addPetToDeletionRegistry(guid: string): void {
-		petsSelectedForDeletion.push(guid);
-		setPetsToDelete(petsSelectedForDeletion);
-	}
+	const addPetToDeletionRegistry = useCallback(
+		(guid: string) => {
+			setPetsToDelete([...petsToDelete, guid]);
+		},
+		[setPetsToDelete],
+	);
 
 	/**
 	 * Removes a pet guid from the collection of pet guid's currently selected to be deleted.
 	 *
 	 * @param guid The guid of the pet.
 	 */
-	function removePetFromDeletionRegistry(guid: string): void {
-		petsSelectedForDeletion.unorderedRemove(petsSelectedForDeletion.findIndex((x) => x === guid));
-		setPetsToDelete(petsSelectedForDeletion);
-	}
+	const removePetFromDeletionRegistry = useCallback(
+		(guid: string) => {
+			const deleteIndex = petsToDelete.findIndex((x) => x === guid);
+
+			setPetsToDelete(petsToDelete.filter((_, i) => i !== deleteIndex));
+		},
+		[setPetsToDelete],
+	);
 
 	return (
 		<frame

@@ -1,4 +1,3 @@
-import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
@@ -11,7 +10,6 @@ import assetIds from "shared/assets";
 import { RARITIES } from "shared/configs/rarities";
 import { StoreState } from "shared/rodux";
 import { Pet, PetsState } from "shared/rodux/pets";
-import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetData } from "shared/util/getPetData";
 
 interface PetItemsProps extends PetItemsMappedProps {
@@ -41,7 +39,6 @@ const PetFrame = hooks(
 		props: {
 			storedPetData: Pet;
 			multiDeleteEnabled: boolean;
-			searchText: string | undefined;
 			addPetToDeletionRegistry: (guid: string) => void;
 			removePetFromDeletionRegistry: (guid: string) => void;
 		},
@@ -49,14 +46,7 @@ const PetFrame = hooks(
 	) => {
 		const [isSelectedForDelete, setSelectedForDelete] = useState(false);
 
-		const eggName = getEggNameFromPetId(props.storedPetData.id);
-		const petData = getPetData(eggName, props.storedPetData.id);
-
-		if (props.searchText !== undefined) {
-			if (petData.name.lower().find(props.searchText.lower(), 1, true)[0] === undefined) {
-				return <></>;
-			}
-		}
+		const petData = getPetData(props.storedPetData.id);
 
 		const rarityData = RARITIES[petData.rarity];
 
@@ -97,7 +87,7 @@ const PetFrame = hooks(
 		}, [isSelectedForDelete]);
 
 		return (
-			<frame BackgroundTransparency={1} LayoutOrder={petData.id}>
+			<frame BackgroundTransparency={1} LayoutOrder={petData.id} Key={props.storedPetData.guid}>
 				<imagebutton
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={0}
@@ -123,7 +113,6 @@ const PetFrame = hooks(
 							Size: UDim2.fromScale(0.9, 0.9),
 							BackgroundTransparency: 1,
 						}}
-						eggName={eggName}
 						petId={props.storedPetData.id}
 						variant={props.storedPetData.variant}
 					/>
@@ -151,6 +140,9 @@ const PetFrame = hooks(
 			</frame>
 		);
 	},
+	{
+		componentType: "PureComponent",
+	},
 );
 /* eslint-enable jsdoc/require-jsdoc */
 
@@ -167,6 +159,18 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 			CollectionService.AddTag(uiGridLayout, `InventoryGridLayout`);
 		});
 
+		debug.profilebegin("filterPets");
+		let petsToRender = props.pets;
+		const searchText = props.searchText?.lower();
+		if (searchText !== undefined) {
+			petsToRender = props.pets.filter((pet) => {
+				const petData = getPetData(pet.id);
+
+				return petData.name.lower().find(searchText, 1, true)[0] !== undefined;
+			});
+		}
+		debug.profileend();
+
 		return (
 			<RescalingScrollingFrame
 				AnchorPoint={vec2Middle}
@@ -182,15 +186,14 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 					FillDirectionMaxCells={5}
 					Ref={layoutRef.value}
 				/>
-				{Object.entries(props.pets).map((pet) => {
+				{petsToRender.map((pet) => {
 					return (
 						<PetFrame
-							storedPetData={pet[1]}
+							storedPetData={pet}
 							multiDeleteEnabled={props.multiDeleteEnabled}
-							searchText={props.searchText}
 							addPetToDeletionRegistry={props.addPetToDeletionRegistry}
 							removePetFromDeletionRegistry={props.removePetFromDeletionRegistry}
-						></PetFrame>
+						/>
 					);
 				})}
 			</RescalingScrollingFrame>
