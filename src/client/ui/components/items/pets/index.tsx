@@ -133,7 +133,6 @@ export const ToggleMultiDelete = hooks(
 		hooks,
 	) => {
 		const { useContext } = hooks;
-		warn(props.petsToDelete);
 
 		const { deletePets } = useContext(remoteContext);
 
@@ -210,6 +209,7 @@ export const ToggleMultiDelete = hooks(
 export const PetInventory = hooks((_, { useState }) => {
 	const [deleteEnabled, setDeleteEnabled] = useState(false);
 	const [petsToDelete, setPetsToDelete] = useState<Array<string>>([]);
+	const [searchText, setSearchText] = useState<string | undefined>(undefined);
 
 	const petsSelectedForDeletion: Array<string> = [...petsToDelete];
 
@@ -241,7 +241,15 @@ export const PetInventory = hooks((_, { useState }) => {
 			Position={UDim2.fromScale(0.5, 0.565)}
 		>
 			<PetInventoryCounterTopBar />
-			<PetInventorySearch />
+			<PetInventorySearch
+				setSearch={(text: string): void => {
+					if (text === "") {
+						setSearchText(undefined);
+					} else {
+						setSearchText(text);
+					}
+				}}
+			/>
 			<ToggleShrink />
 			<ToggleMultiDelete
 				isEnabled={deleteEnabled}
@@ -252,6 +260,7 @@ export const PetInventory = hooks((_, { useState }) => {
 			/>
 			<PetItems
 				multiDeleteEnabled={deleteEnabled}
+				searchText={searchText}
 				addPetToDeletionRegistry={addPetToDeletionRegistry}
 				removePetFromDeletionRegistry={removePetFromDeletionRegistry}
 			/>

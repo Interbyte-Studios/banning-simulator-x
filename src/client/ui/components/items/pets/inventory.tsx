@@ -16,6 +16,7 @@ import { getPetData } from "shared/util/getPetData";
 
 interface PetItemsProps extends PetItemsMappedProps {
 	multiDeleteEnabled: boolean;
+	searchText: string | undefined;
 	addPetToDeletionRegistry: (guid: string) => void;
 	removePetFromDeletionRegistry: (guid: string) => void;
 }
@@ -40,6 +41,7 @@ const PetFrame = hooks(
 		props: {
 			storedPetData: Pet;
 			multiDeleteEnabled: boolean;
+			searchText: string | undefined;
 			addPetToDeletionRegistry: (guid: string) => void;
 			removePetFromDeletionRegistry: (guid: string) => void;
 		},
@@ -49,6 +51,12 @@ const PetFrame = hooks(
 
 		const eggName = getEggNameFromPetId(props.storedPetData.id);
 		const petData = getPetData(eggName, props.storedPetData.id);
+
+		if (props.searchText !== undefined) {
+			if (petData.name.lower().find(props.searchText.lower(), 1, true)[0] === undefined) {
+				return <></>;
+			}
+		}
 
 		const rarityData = RARITIES[petData.rarity];
 
@@ -89,7 +97,7 @@ const PetFrame = hooks(
 		}, [isSelectedForDelete]);
 
 		return (
-			<frame BackgroundTransparency={1}>
+			<frame BackgroundTransparency={1} LayoutOrder={petData.id}>
 				<imagebutton
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={0}
@@ -179,6 +187,7 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 						<PetFrame
 							storedPetData={pet[1]}
 							multiDeleteEnabled={props.multiDeleteEnabled}
+							searchText={props.searchText}
 							addPetToDeletionRegistry={props.addPetToDeletionRegistry}
 							removePetFromDeletionRegistry={props.removePetFromDeletionRegistry}
 						></PetFrame>
