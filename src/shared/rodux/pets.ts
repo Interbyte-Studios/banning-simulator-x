@@ -1,6 +1,7 @@
 import Rodux from "@rbxts/rodux";
 import { HttpService } from "@rbxts/services";
 import { Currency } from "shared/configs/currencies";
+import { EnhancePetMetadata } from "shared/configs/enchantments";
 import { Variants } from "shared/configs/pets";
 import { Rarities } from "shared/configs/rarities";
 
@@ -13,11 +14,11 @@ export interface Pet {
 	equipped: boolean;
 	locked: boolean;
 	variant: Variants;
-	enhancements: [];
+	enhancements: { [slot in Variants]?: Omit<EnhancePetMetadata, "variant"> };
 }
 
 export type PetsState = Array<Pet>;
-export type PetsActions = AddPet | DeletePet;
+export type PetsActions = AddPet | DeletePet | EnhancePet | TogglePetEquip | TogglePetLock;
 
 export interface ConfirmedPet extends PetData {
 	autoDeleted: boolean;
@@ -27,6 +28,7 @@ export interface PetData {
 	id: number;
 	rarity: Rarities;
 	variant: Variants;
+	enhancements?: { [slot in Variants]?: Omit<EnhancePetMetadata, "variant"> };
 }
 
 export interface AddPet extends Rodux.Action<"addPet"> {
@@ -39,6 +41,22 @@ export interface DeletePet extends Rodux.Action<"deletePet"> {
 	pets: Array<string>;
 }
 
+export interface TogglePetEquip extends Rodux.Action<"togglePetEquip"> {
+	guid: string;
+	equipped: boolean;
+}
+
+export interface TogglePetLock extends Rodux.Action<"togglePetLock"> {
+	guid: string;
+	locked: boolean;
+}
+
+export interface EnhancePet extends Rodux.Action<"enhancePet"> {
+	guid: string;
+	enhancementData: EnhancePetMetadata;
+	cost: number;
+}
+
 /**
  * @param cost The cost of the egg hatch.
  * @param currencyType The type of currency the eggs were purchased with.
@@ -48,9 +66,9 @@ export interface DeletePet extends Rodux.Action<"deletePet"> {
 export function addPets(cost: number, currencyType: Currency, pets: Array<ConfirmedPet>): AddPet & Rodux.AnyAction {
 	return {
 		type: "addPet",
-		cost: cost,
-		currencyType: currencyType,
-		pets: pets,
+		cost,
+		currencyType,
+		pets,
 	};
 }
 
@@ -65,6 +83,51 @@ export function deletePets(pets: Array<string>): DeletePet & Rodux.AnyAction {
 	};
 }
 
+/**
+ * @param guid The guid of the pet.
+ * @param equipped Whether or not it should be equipped.
+ * @returns The Rodux action to dispatch.
+ */
+export function togglePetEquip(guid: string, equipped: boolean): TogglePetEquip & Rodux.AnyAction {
+	return {
+		type: "togglePetEquip",
+		guid,
+		equipped,
+	};
+}
+
+/**
+ * @param guid The guid of the pet.
+ * @param locked Whether or not it should be locked.
+ * @returns The Rodux action to dispatch.
+ */
+export function togglePetLock(guid: string, locked: boolean): TogglePetLock & Rodux.AnyAction {
+	return {
+		type: "togglePetLock",
+		guid,
+		locked,
+	};
+}
+
+/**
+ * @param guid The guid of the pet.
+ * @param enhancementData The metadata of the enhancement.
+ * @param cost The cost of the enhancement procedure.
+ * @returns The Rodux action to dispatch.
+ */
+export function enhancePet(
+	guid: string,
+	enhancementData: EnhancePetMetadata,
+	cost: number,
+): EnhancePet & Rodux.AnyAction {
+	return {
+		type: "enhancePet",
+		guid,
+		enhancementData,
+		cost,
+	};
+}
+
 const defaultPets: PetsState = [];
 
 for (let x = 1; x <= 6; x++) {
@@ -75,7 +138,7 @@ for (let x = 1; x <= 6; x++) {
 			equipped: false,
 			locked: false,
 			variant: "regular",
-			enhancements: [],
+			enhancements: {},
 		};
 
 		const voidPet: Pet = {
@@ -84,7 +147,7 @@ for (let x = 1; x <= 6; x++) {
 			equipped: false,
 			locked: false,
 			variant: "void",
-			enhancements: [],
+			enhancements: {},
 		};
 
 		const radiantPet: Pet = {
@@ -93,7 +156,7 @@ for (let x = 1; x <= 6; x++) {
 			equipped: false,
 			locked: false,
 			variant: "radiant",
-			enhancements: [],
+			enhancements: {},
 		};
 
 		defaultPets.push(pet);
@@ -119,7 +182,7 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 				equipped: false,
 				locked: false,
 				variant: pet.variant,
-				enhancements: [],
+				enhancements: pet.enhancements ?? {},
 			};
 
 			newState.push(newPet);
@@ -131,6 +194,36 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 
 		for (const petToDelete of action.pets) {
 			newState.unorderedRemove(newState.findIndex((pet) => pet.guid === petToDelete));
+		}
+
+		return newState;
+	},
+	togglePetEquip: (state, action) => {
+		const newState = [...state];
+
+		const pet = newState.find((pet) => pet.guid === action.guid);
+		if (pet !== undefined) {
+			pet.equipped = action.equipped;
+		} else throw `Rodux failed to toggle pet equip; Couldn't find a pet with a matching guid.`;
+
+		return newState;
+	},
+	togglePetLock: (state, action) => {
+		const newState = [...state];
+
+		const pet = newState.find((pet) => pet.guid === action.guid);
+		if (pet !== undefined) {
+			pet.locked = action.locked;
+		} else throw `Rodux failed to toggle pet lock; Couldn't find a pet with a matching guid.`;
+
+		return newState;
+	},
+	enhancePet: (state, action) => {
+		const newState = [...state];
+
+		const pet = newState.find((pet) => pet.guid === action.guid);
+		if (pet !== undefined) {
+			pet.enhancements[action.enhancementData.variant] = action.enhancementData;
 		}
 
 		return newState;
@@ -150,7 +243,7 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 				equipped: false,
 				locked: false,
 				variant,
-				enhancements: [],
+				enhancements: {},
 			},
 		];
 	},
@@ -169,7 +262,7 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 				equipped: false,
 				locked: false,
 				variant,
-				enhancements: [],
+				enhancements: {},
 			},
 		];
 	},
