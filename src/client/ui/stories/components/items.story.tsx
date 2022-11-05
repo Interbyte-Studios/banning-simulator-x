@@ -16,7 +16,7 @@ export = (target: GuiBase): (() => void) => {
 				equipped: false,
 				locked: false,
 				variant: "regular",
-				enhancements: [],
+				enhancements: {},
 			};
 
 			const voidPet: Pet = {
@@ -25,7 +25,7 @@ export = (target: GuiBase): (() => void) => {
 				equipped: false,
 				locked: false,
 				variant: "void",
-				enhancements: [],
+				enhancements: {},
 			};
 
 			const radiantPet: Pet = {
@@ -34,7 +34,7 @@ export = (target: GuiBase): (() => void) => {
 				equipped: false,
 				locked: false,
 				variant: "radiant",
-				enhancements: [],
+				enhancements: {},
 			};
 
 			pets.push(pet);
