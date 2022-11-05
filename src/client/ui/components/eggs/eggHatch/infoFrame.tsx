@@ -33,7 +33,7 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 		2: UDim2.fromScale(0.25, 0.75),
 	});
 
-	const petInfo = getPetData(props.eggName, props.pet);
+	const petInfo = getPetData(props.pet);
 
 	const autoDelete: Array<Roact.Element> = [];
 	if (props.autoDeleted) {
@@ -73,7 +73,6 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 						Size: UDim2.fromScale(0.4, 1.15),
 						BackgroundTransparency: 1,
 					}}
-					eggName={props.eggName}
 					petId={props.pet}
 					variant={props.isVoid ? "void" : "regular"}
 				/>
