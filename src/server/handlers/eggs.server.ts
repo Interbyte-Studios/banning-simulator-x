@@ -136,7 +136,7 @@ hatchEgg.SetCallback(
 
 			const randomNumber = new Random().NextInteger(0, 100);
 			if (randomNumber > 99) {
-				const rolledEnhancement = rollEnhancement(isVoid ? "void" : "regular", pet.id);
+				const rolledEnhancement = rollEnhancement(isVoid ? "void" : "regular");
 				if (rolledEnhancement === undefined) {
 					warn(`Failed to roll a "${isVoid ? "void" : "regular"}" enhancement upon hatching pet with id: "${pet.id}"`);
 				} else {

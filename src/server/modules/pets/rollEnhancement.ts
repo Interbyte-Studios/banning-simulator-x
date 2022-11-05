@@ -5,10 +5,9 @@ import { Variants } from "shared/configs/pets";
  * Rolls a random enhancement for a pet based on RNG.
  *
  * @param variant The requested variant to roll for.
- * @param id The id of the pet.
  * @returns A random enhancement.
  */
-export function rollEnhancement(variant: Variants, id: number): Omit<EnhancePetMetadata, "variant"> | undefined {
+export function rollEnhancement(variant: Variants): Omit<EnhancePetMetadata, "variant"> | undefined {
 	const potentialEnhancements: Array<Omit<EnhancePetMetadata, "variant">> = [];
 	for (const [category, data] of pairs(ENHANCEMENTS.pets)) {
 		for (const [rarity, _enhancementData] of pairs(data)) {

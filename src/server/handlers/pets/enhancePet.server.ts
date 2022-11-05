@@ -1,6 +1,6 @@
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { rollEnhancement } from "server/modules/pets/rollEnhancement";
-import { ENHANCEMENT_BASE_COSTS, ENHANCEMENTS, EnhancePetMetadata } from "shared/configs/enchantments";
+import { ENHANCEMENT_BASE_COSTS, EnhancePetMetadata } from "shared/configs/enchantments";
 import { remotes } from "shared/remotes";
 import { EnhancePetFailKind } from "shared/remotes/pets/enhancePet";
 import { enhancePet } from "shared/rodux/pets";
@@ -66,7 +66,7 @@ remotes.Server.GetNamespace("pets")
 			}
 
 			// roll enhancement
-			const rolledEnhancement = rollEnhancement(variant, id);
+			const rolledEnhancement = rollEnhancement(variant);
 			if (rolledEnhancement === undefined) {
 				warn(`Failed to roll "${variant}" enhancement for pet with id: "${id}"`);
 				return {

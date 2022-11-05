@@ -92,7 +92,7 @@ export = (): void => {
 					guid: "abc123",
 					equipped: false,
 					locked: false,
-					enhancements: [],
+					enhancements: {},
 					variant: "regular",
 				},
 			]);
