@@ -27,7 +27,7 @@ interface PetFrameProps {
  * @returns A roact component.
  */
 export function PetFrame(props: PetFrameProps): Roact.Element {
-	const petData = getPetData(props.eggName, props.petId);
+	const petData = getPetData(props.petId);
 
 	return (
 		<frame BackgroundTransparency={1} LayoutOrder={props.petId}>
@@ -53,7 +53,6 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 						Size: UDim2.fromScale(0.9, 0.9),
 						BackgroundTransparency: 1,
 					}}
-					eggName={props.eggName}
 					petId={props.petId}
 					variant={props.variant}
 				/>
