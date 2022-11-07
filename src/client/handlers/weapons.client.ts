@@ -94,12 +94,12 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 
 		if (hitboxAttachment.Parent === undefined) {
 			loadedAllPoints = false;
-			warn("parent undefiend");
+			warn("hitbox point parent undefiend");
 			continue;
 		}
 
 		if (!hitboxAttachment.Parent.IsA("BasePart")) {
-			warn("not a basepart or bone");
+			warn("hitbox point not a basepart or bone");
 			loadedAllPoints = false;
 			continue;
 		}
@@ -162,7 +162,10 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 		animationToPlay.Stopped.Wait();
 
 		canSwing = true;
-		hitbox.HitStop();
+
+		if (hitbox.HitStop !== undefined) {
+			hitbox.HitStop();
+		}
 	});
 
 	weapon.Unequipped.Connect(() => {
