@@ -1,6 +1,5 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { RunService, Workspace } from "@rbxts/services";
 import { Store } from "shared/rodux";
 
 import { LocalMessages } from "./components/announcements";
@@ -32,7 +31,6 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	const [codesMenuVisible, setCodesVisible] = useState(false);
 	const [questsMenuVisible, setQuestsVisibility] = useState(false);
 	const [settingsMenuVisible, setSettingsVisibility] = useState(false);
-	const [rankUpgradeVisibility, setRankUpgradeVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
 	const [displayAnnouncement, setDisplayAnnouncement] = useState<
@@ -52,42 +50,6 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 			setDisplayAnnouncement(undefined);
 		});
 	}, [displayAnnouncement]);
-
-	useEffect(() => {
-		let lastInteraction = 0;
-		const interactionDebounce = 2;
-		const connection = RunService.Heartbeat.Connect(() => {
-			const now = time();
-			if (now - lastInteraction < interactionDebounce) {
-				return;
-			}
-			lastInteraction = now;
-
-			const character = props.player.Character;
-			if (character === undefined) {
-				return;
-			}
-
-			const humanoid = character.FindFirstChildOfClass("Humanoid");
-			if (humanoid === undefined) {
-				return;
-			}
-
-			const humanoidRootPart = humanoid.RootPart;
-			if (humanoidRootPart === undefined) {
-				return;
-			}
-
-			const magnitude = humanoidRootPart.Position.sub(Workspace.interactions.rankUpgrade.teleport.Position).Magnitude;
-			if (magnitude < 10) {
-				setRankUpgradeVisibility(true);
-			}
-
-			return (): void => {
-				connection.Disconnect();
-			};
-		});
-	});
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
@@ -114,11 +76,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 				<LocalMessages currentMessage={displayAnnouncement} />
 				<ZonesUI displayAnnouncement={applyAnnouncement} />
 				<WeaponEquip visible={!codesMenuVisible && !settingsMenuVisible && !isHatching} />
-				<RankUpgrade
-					visible={rankUpgradeVisibility}
-					hideMenu={(): void => setRankUpgradeVisibility(false)}
-					displayAnnouncement={applyAnnouncement}
-				/>
+				<RankUpgrade enabled={!codesMenuVisible && !settingsMenuVisible} displayAnnouncement={applyAnnouncement} />
 			</>
 		</RoactRodux.StoreProvider>
 	);
