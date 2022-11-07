@@ -1,14 +1,8 @@
 import Roact from "@rbxts/roact";
 import { Workspace } from "@rbxts/services";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { CurrencyIcon } from "client/ui/elements/currencyIcon";
-import { RankIcon } from "client/ui/elements/rankIcon";
 import { hooks } from "client/ui/hooks";
-import assetIds from "shared/assets";
 import { WorldName, WORLDS } from "shared/configs/worlds";
-import { isStarterZone, ZoneNames } from "shared/configs/zones";
-import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
+import { isStarterZone } from "shared/configs/zones";
 
 import { PurchaseZoneUI } from "./purchase";
 import { ZoneSign } from "./signs";

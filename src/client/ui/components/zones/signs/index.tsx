@@ -22,7 +22,7 @@ interface ZoneSignProps {
  * A roact component that displays a sign for a designated zone with all the relevant purchase information.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const ZoneSign = hooks((props: ZoneSignProps, hooks) => {
+export const ZoneSign = hooks((props: ZoneSignProps) => {
 	if (props.zoneData.cost === undefined) {
 		return <></>;
 	}
