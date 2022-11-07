@@ -18,6 +18,7 @@ import { EggHud } from "./eggHud";
 
 interface EggsUIProps {
 	store: Store;
+	visible: boolean;
 	setHatchingStatus: (isHatching: boolean) => void;
 }
 
@@ -34,6 +35,10 @@ const hatchTimeCache: Map<Player, number> = new Map();
  * A higher ordered component that displays both information for all the eggs in the game and functionality to hatch those eggs.
  */
 export const EggsUI = hooks((props: EggsUIProps, { useState, useContext }) => {
+	if (!props.visible) {
+		return <></>;
+	}
+
 	const [currentHatchData, setCurrentHatchData] = useState<HatchData | undefined>(undefined);
 
 	const { hatchEgg } = useContext(remoteContext);
