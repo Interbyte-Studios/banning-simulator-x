@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Workspace } from "@rbxts/services";
+import { RunService, Workspace } from "@rbxts/services";
 import { Store } from "shared/rodux";
 
 import { LocalMessages } from "./components/announcements";
@@ -54,31 +54,14 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	}, [displayAnnouncement]);
 
 	useEffect(() => {
-		let lastTouched = 0;
-
-		const connection = Workspace.interactions.rankUpgrade.interact.Touched.Connect((hit) => {
-			if (rankUpgradeVisibility) {
-				return;
-			}
-
+		let lastInteraction = 0;
+		const interactionDebounce = 2;
+		const connection = RunService.Heartbeat.Connect(() => {
 			const now = time();
-			if (now - lastTouched < 1) {
+			if (now - lastInteraction < interactionDebounce) {
 				return;
 			}
-			lastTouched = now;
-
-			const hitInstance = hit.Parent;
-			if (hitInstance === undefined) {
-				return;
-			}
-
-			if (!hitInstance.IsA("Model")) {
-				return;
-			}
-
-			if (hitInstance.Name !== props.player.Name) {
-				return;
-			}
+			lastInteraction = now;
 
 			const character = props.player.Character;
 			if (character === undefined) {
@@ -95,17 +78,15 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 				return;
 			}
 
-			const distance = Workspace.interactions.rankUpgrade.teleport.Position.sub(humanoidRootPart.Position);
-			if (distance.Magnitude > 20) {
-				return;
+			const magnitude = humanoidRootPart.Position.sub(Workspace.interactions.rankUpgrade.teleport.Position).Magnitude;
+			if (magnitude < 10) {
+				setRankUpgradeVisibility(true);
 			}
 
-			setRankUpgradeVisibility(true);
+			return (): void => {
+				connection.Disconnect();
+			};
 		});
-
-		return (): void => {
-			connection.Disconnect();
-		};
 	});
 
 	return (
