@@ -111,7 +111,11 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
-				<EggsUI store={props.store} setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)} />
+				<EggsUI
+					store={props.store}
+					visible={!codesMenuVisible && !settingsMenuVisible}
+					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
+				/>
 				<TalismanShop store={props.store} />
 				<CodesMenu
 					visible={codesMenuVisible}
