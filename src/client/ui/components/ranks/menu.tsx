@@ -1,10 +1,14 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { CurrencyGradient } from "client/ui/elements/currencyGradient";
+import { CurrencyIcon } from "client/ui/elements/currencyIcon";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
+import { RANKS } from "shared/configs/ranks";
 import { StoreState } from "shared/rodux";
+import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { CancelRankUpgrade } from "./cancel";
 import { RankDisplay } from "./rankDisplay";
@@ -43,6 +47,14 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 			return <></>;
 		}
 
+		const currentRank = props.currentRank - 1;
+		const nextRank = currentRank + 1;
+
+		const nextRankData = RANKS[nextRank];
+		if (nextRankData === undefined) {
+			throw `Expected rank data for rank ${nextRank}`;
+		}
+
 		return (
 			<imagelabel
 				AnchorPoint={vec2Middle}
@@ -72,6 +84,26 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 					experience={props.experience}
 					displayAnnouncement={props.displayAnnouncement}
 				/>
+				<textlabel
+					BackgroundTransparency={1}
+					AnchorPoint={vec2Middle}
+					Size={UDim2.fromScale(0.175, 0.125)}
+					Position={UDim2.fromScale(0.535, 0.65)}
+					Font={font}
+					Text={twoDpAbbreviator.numberToString(nextRankData.amount)}
+					TextColor3={Color3.fromRGB(255, 255, 255)}
+					TextScaled={true}
+					TextXAlignment={Enum.TextXAlignment.Left}
+				>
+					<uistroke Color={Color3.fromRGB(255, 255, 255)} Thickness={1.5}>
+						<CurrencyGradient Currency={nextRankData.currency} />
+					</uistroke>
+					<CurrencyIcon
+						position={UDim2.fromScale(-0.25, 0.5)}
+						size={{ maximizedSize: 0.9, minimizedSize: 0.8 }}
+						currency={nextRankData.currency}
+					/>
+				</textlabel>
 				<CancelRankUpgrade hideMenu={props.hideMenu} />
 				<ExitButton
 					Position={UDim2.fromScale(0.975, 0.1)}
