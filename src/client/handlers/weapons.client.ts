@@ -226,10 +226,6 @@ onStoreCreated(player)
 				return;
 			}
 
-			if (newState.currentWeapon.equipped && newState.currentWeapon.equipped !== oldState.currentWeapon.equipped) {
-				checkToEquipWeapon();
-			}
-
 			if (!newState.currentWeapon.equipped && newState.currentWeapon.equipped !== oldState.currentWeapon.equipped) {
 				const character = player.Character;
 				assert(character, `Failed to get Character for ${player.Name}`);
@@ -239,6 +235,8 @@ onStoreCreated(player)
 
 				humanoid.UnequipTools();
 			}
+
+			checkToEquipWeapon();
 		});
 	})
 	.catch((e) => {
