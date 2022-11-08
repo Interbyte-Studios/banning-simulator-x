@@ -1,5 +1,7 @@
 import Rodux from "@rbxts/rodux";
 
+import { PurchaseWeapon } from "./weapons";
+
 export type CurrentWeaponState = {
 	id: number;
 	equipped: boolean;
@@ -47,24 +49,33 @@ const defaultWeaponState = {
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const currentWeaponReducer = Rodux.createReducer<CurrentWeaponState, CurrentWeaponActions>(defaultWeaponState, {
-	changeWeapon: (state, action) => {
-		return {
-			id: action.id,
-			equipped: true,
-		};
+export const currentWeaponReducer = Rodux.createReducer<CurrentWeaponState, CurrentWeaponActions | PurchaseWeapon>(
+	defaultWeaponState,
+	{
+		changeWeapon: (state, action) => {
+			return {
+				id: action.id,
+				equipped: true,
+			};
+		},
+		equipWeapon: (state) => {
+			return {
+				...state,
+				equipped: true,
+			};
+		},
+		unequipWeapon: (state) => {
+			return {
+				...state,
+				equipped: false,
+			};
+		},
+		purchaseWeapon: (state, action) => {
+			return {
+				id: action.id,
+				equipped: true,
+			};
+		},
 	},
-	equipWeapon: (state) => {
-		return {
-			...state,
-			equipped: true,
-		};
-	},
-	unequipWeapon: (state) => {
-		return {
-			...state,
-			equipped: false,
-		};
-	},
-});
+);
 /* eslint-enable jsdoc/require-jsdoc */

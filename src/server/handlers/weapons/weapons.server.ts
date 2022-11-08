@@ -65,7 +65,6 @@ Players.PlayerAdded.Connect(async (player) => {
 		// remove weapon model from player
 		// first, remove the old weapon
 		const characterWeapon = player.Character?.FindFirstChild(oldWeaponModel.Name);
-		const wasEquipped = characterWeapon !== undefined;
 
 		// remove from character
 		const oldWeapon = backpack.FindFirstChild(oldWeaponModel.Name) ?? characterWeapon;
@@ -85,7 +84,7 @@ Players.PlayerAdded.Connect(async (player) => {
 		const newWeapon = newWeaponModel.Clone();
 		setAssetProperties("weapon", newWeapon as Tool);
 
-		newWeapon.Parent = wasEquipped ? player.Character : backpack;
+		newWeapon.Parent = backpack;
 		newWeapon.Clone().Parent = starterGear;
 	});
 });
