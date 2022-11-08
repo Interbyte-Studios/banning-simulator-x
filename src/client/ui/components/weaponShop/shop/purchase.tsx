@@ -9,6 +9,7 @@ import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
+import { RankState } from "shared/rodux/rank";
 import { WeaponsState } from "shared/rodux/weapons";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
@@ -19,6 +20,7 @@ interface PurchaseWeaponProps extends PurchaseWeaponMappedProps {
 
 interface PurchaseWeaponMappedProps {
 	weapons: WeaponsState;
+	rank: RankState;
 	currencies: CurrenciesState;
 }
 
@@ -31,6 +33,7 @@ interface PurchaseWeaponMappedProps {
 function mapStateToProps(state: StoreState): PurchaseWeaponMappedProps {
 	return {
 		weapons: state.weapons,
+		rank: state.rank,
 		currencies: state.currencies,
 	};
 }
@@ -83,6 +86,14 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 						if (props.currencies[weaponInfo.data.cost.currency] < weaponInfo.data.cost.amount) {
 							props.displayAnnouncement("errors", `You don't have enough currency to purchase the weapon.`);
 							return;
+						}
+
+						// check to be sure player is required rank
+						if (weaponInfo.data.cost.requiredRank !== undefined) {
+							if (props.rank < weaponInfo.data.cost.requiredRank) {
+								props.displayAnnouncement("errors", `You're not a high enough rank to purchase the weapon.`);
+								return;
+							}
 						}
 
 						purchaseWeapon.SendToServer(props.currentWeapon);
