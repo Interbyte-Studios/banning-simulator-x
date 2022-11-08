@@ -7,7 +7,7 @@ import { Currency } from "./currencies";
 export const talismanStats = ["health", "damage", "experience"] as const;
 export const isTalismanStat = t.literal(...talismanStats);
 export type TalismanStats = t.static<typeof isTalismanStat>;
-export type talismanPhases = "normal" | "awakend" | "supreme";
+export type talismanPhases = "normal" | "awakend" | "artifact";
 
 export interface Talisman {
 	id: number;
@@ -134,7 +134,7 @@ export const TALISMAN_PHASES: Array<{ phase: talismanPhases; requiredBans: numbe
 		requiredBans: 5,
 	},
 	{
-		phase: "supreme",
+		phase: "artifact",
 		requiredBans: 10,
 	},
 ];

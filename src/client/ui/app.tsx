@@ -11,7 +11,6 @@ import { Hud } from "./components/hud";
 import { Quests } from "./components/quests";
 import { RankUpgrade } from "./components/ranks/menu";
 import { SettingsMenu } from "./components/settings/menu";
-import { TalismanShop } from "./components/talismans/talismanShop";
 import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
 import { hooks } from "./hooks";
@@ -118,7 +117,6 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 					visible={!codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility}
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
-				<TalismanShop store={props.store} />
 				<CodesMenu
 					visible={codesVisible}
 					hideMenu={(): void => setCodesVisible(false)}

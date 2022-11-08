@@ -31,14 +31,22 @@ declare global {
 					weaponShop: Folder & {
 						InteractPrompt: BasePart;
 					};
+					talismanShop?: Folder & {
+						InteractPrompt: BasePart;
+					};
 				};
 			};
 			itemShop: Folder & {
-				[P in keyof Worlds]: {
+				[P in keyof Worlds]: Folder & {
 					cameraline: BasePart;
 				};
 			};
-			["talisman tower"]: Folder;
+			talismanTowers: Folder & {
+				[P in keyof Worlds]?: Folder & {
+					talismans: Folder;
+					cameraline: BasePart;
+				};
+			};
 			talismans: Folder;
 			rankUpgrade: Folder & {
 				meshPart: BasePart;
