@@ -69,6 +69,10 @@ declare namespace assetIds {
 			};
 		};
 		ui: {
+			"weapon shop": {
+				"purchase button": string;
+				"weapon info background": string;
+			};
 			"rank upgrade": {
 				background: string;
 				upgrade: string;

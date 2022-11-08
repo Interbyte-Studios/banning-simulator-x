@@ -12,6 +12,7 @@ import { Quests } from "./components/quests";
 import { RankUpgrade } from "./components/ranks/menu";
 import { SettingsMenu } from "./components/settings/menu";
 import { TalismanShop } from "./components/talismans/talismanShop";
+import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
 import { hooks } from "./hooks";
 
@@ -29,10 +30,11 @@ interface AppProps {
  * @returns The Roact app to mount.
  */
 export const app = hooks((props: AppProps, { useEffect, useState }) => {
-	const [codesMenuVisible, setCodesVisible] = useState(false);
-	const [questsMenuVisible, setQuestsVisibility] = useState(false);
-	const [settingsMenuVisible, setSettingsVisibility] = useState(false);
+	const [codesVisible, setCodesVisible] = useState(false);
+	const [questsVisible, setQuestsVisibility] = useState(false);
+	const [settingsVisible, setSettingsVisibility] = useState(false);
 	const [rankUpgradeVisibility, setRankUpgradeVisibility] = useState(false);
+	const [weaponShopVisibility, setWeaponShopVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
 	const [displayAnnouncement, setDisplayAnnouncement] = useState<
@@ -113,30 +115,39 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 			<>
 				<EggsUI
 					store={props.store}
-					visible={!codesMenuVisible && !settingsMenuVisible}
+					visible={!codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility}
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
 				<TalismanShop store={props.store} />
 				<CodesMenu
-					visible={codesMenuVisible}
+					visible={codesVisible}
 					hideMenu={(): void => setCodesVisible(false)}
 					displayAnnouncement={applyAnnouncement}
 				/>
-				<SettingsMenu visible={settingsMenuVisible} hideMenu={(): void => setSettingsVisibility(false)} />
-				<Quests visible={questsMenuVisible} hideMenu={(): void => setQuestsVisibility(false)} />
+				<SettingsMenu visible={settingsVisible} hideMenu={(): void => setSettingsVisibility(false)} />
+				<Quests visible={questsVisible} hideMenu={(): void => setQuestsVisibility(false)} />
 				<Hud
-					visible={!codesMenuVisible && !settingsMenuVisible && !isHatching}
+					visible={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility}
 					displayCodesMenu={(): void => setCodesVisible(true)}
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
 				/>
 				<LocalMessages currentMessage={displayAnnouncement} />
 				<ZonesUI displayAnnouncement={applyAnnouncement} />
-				<WeaponEquip visible={!codesMenuVisible && !settingsMenuVisible && !isHatching} />
+				<WeaponEquip
+					visible={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility}
+				/>
 				<RankUpgrade
 					visible={rankUpgradeVisibility}
 					hideMenu={(): void => setRankUpgradeVisibility(false)}
 					displayAnnouncement={applyAnnouncement}
+				/>
+				{/* We want the enabled value to stay as only !isHatching. Loosens the controls perse. */}
+				<WeaponShopHandle
+					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible}
+					weaponShopVisible={weaponShopVisibility}
+					displayAnnouncement={applyAnnouncement}
+					setWeaponShopVisibility={(value: boolean): void => setWeaponShopVisibility(value)}
 				/>
 			</>
 		</RoactRodux.StoreProvider>

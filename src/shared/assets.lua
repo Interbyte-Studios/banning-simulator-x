@@ -117,6 +117,10 @@ return {
 				background = "rbxassetid://10832810485",
 				["setting background"] = "rbxassetid://10832810658",
 			},
+			["weapon shop"] = {
+				["purchase button"] = "rbxassetid://11497595550",
+				["weapon info background"] = "rbxassetid://11497175188",
+			},
 			zones = {
 				background = "rbxassetid://10970620708",
 				cancel = "rbxassetid://10970620778",

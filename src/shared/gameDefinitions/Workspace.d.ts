@@ -26,6 +26,18 @@ declare global {
 					};
 				};
 			};
+			worlds: Folder & {
+				[P in keyof Worlds]: {
+					weaponShop: Folder & {
+						InteractPrompt: BasePart;
+					};
+				};
+			};
+			itemShop: Folder & {
+				[P in keyof Worlds]: {
+					cameraline: BasePart;
+				};
+			};
 			["talisman tower"]: Folder;
 			talismans: Folder;
 			rankUpgrade: Folder & {
