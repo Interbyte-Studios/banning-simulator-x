@@ -78,20 +78,29 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 					Activated: (): void => {
 						// check to be sure weapon can be purchased
 						if (weaponInfo.data.cost === undefined) {
-							props.displayAnnouncement("errors", `There was an internal issue while purchasing the weapon.`);
+							props.displayAnnouncement(
+								"errors",
+								`There was an internal issue while purchasing the "${weaponInfo.name}" weapon.`,
+							);
 							return;
 						}
 
 						// check to be sure player has enough currency to purchase weapon
 						if (props.currencies[weaponInfo.data.cost.currency] < weaponInfo.data.cost.amount) {
-							props.displayAnnouncement("errors", `You don't have enough currency to purchase the weapon.`);
+							props.displayAnnouncement(
+								"errors",
+								`You don't have enough currency to purchase the "${weaponInfo.name}" weapon.`,
+							);
 							return;
 						}
 
 						// check to be sure player is required rank
 						if (weaponInfo.data.cost.requiredRank !== undefined) {
 							if (props.rank < weaponInfo.data.cost.requiredRank) {
-								props.displayAnnouncement("errors", `You're not a high enough rank to purchase the weapon.`);
+								props.displayAnnouncement(
+									"errors",
+									`You're not a high enough rank to purchase the "${weaponInfo.name}" weapon.`,
+								);
 								return;
 							}
 						}
