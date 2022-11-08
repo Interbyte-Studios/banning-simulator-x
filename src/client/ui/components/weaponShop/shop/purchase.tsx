@@ -10,7 +10,7 @@ import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
 import { RankState } from "shared/rodux/rank";
-import { WeaponsState } from "shared/rodux/weapons";
+import { weaponsReducer, WeaponsState } from "shared/rodux/weapons";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 interface PurchaseWeaponProps extends PurchaseWeaponMappedProps {
@@ -97,6 +97,7 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 						}
 
 						purchaseWeapon.SendToServer(props.currentWeapon);
+						props.displayAnnouncement("announcements", `You've purchased the "${weaponInfo.name}" weapon!`);
 					},
 					MouseEnter: (): void => motor.setGoal(minimizedSpring),
 					MouseLeave: (): void => motor.setGoal(maximizedSpring),
