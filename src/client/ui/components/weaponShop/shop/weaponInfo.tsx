@@ -39,26 +39,28 @@ export const WeaponShopWeaponInfo = RoactRodux.connect(mapStateToProps)(
 		const weaponData = getWeaponInfo(props.currentWeapon);
 
 		const rankRequiredWarning: Array<Roact.Element> = [];
-		if (props.rank < props.currentWeapon) {
-			rankRequiredWarning.push(
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.45, -0.15)}
-					Size={UDim2.fromScale(0.5, 0.3)}
-					Text={"REQUIRES"}
-					TextColor3={Color3.fromRGB(237, 61, 61)}
-					TextScaled={true}
-					Font={font}
-				>
-					<BaseUIStroke Thickness={2} />
-					<RankIcon
-						position={UDim2.fromScale(1.15, 0.5)}
-						size={{ maximizedSize: 1, minimizedSize: 0.9 }}
-						rank={weaponData.data.cost ? weaponData.data.cost.requiredRank ?? 1 : 1}
-					/>
-				</textlabel>,
-			);
+		if (weaponData.data.cost !== undefined && weaponData.data.cost.requiredRank !== undefined) {
+			if (props.rank < weaponData.data.cost.requiredRank) {
+				rankRequiredWarning.push(
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.45, -0.15)}
+						Size={UDim2.fromScale(0.5, 0.3)}
+						Text={"REQUIRES"}
+						TextColor3={Color3.fromRGB(237, 61, 61)}
+						TextScaled={true}
+						Font={font}
+					>
+						<BaseUIStroke Thickness={2} />
+						<RankIcon
+							position={UDim2.fromScale(1.15, 0.5)}
+							size={{ maximizedSize: 1, minimizedSize: 0.9 }}
+							rank={weaponData.data.cost ? weaponData.data.cost.requiredRank ?? 1 : 1}
+						/>
+					</textlabel>,
+				);
+			}
 		}
 
 		return (
