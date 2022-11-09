@@ -99,13 +99,15 @@ export function runStep(
 	for (const { player, store, character } of npcAttacks) {
 		const npc = npcCharacterToNpc.get(character);
 		if (npc === undefined) {
-			throw `Player ${player.Name} attempted to attack ${character.Name}, but it didn't exist`;
+			warn(`Player ${player.Name} attempted to attack ${character.Name}, but it didn't exist`);
+			continue;
 		}
 
 		// check that npc is alive
 		if (!(npc.instance.Humanoid.Health > 0)) {
 			// currently this is possible if two players kill and NPC in the same tick
-			throw `Player ${player.Name} attempted to attack ${character.Name}, but the NPC was dead`;
+			warn(`Player ${player.Name} attempted to attack ${character.Name}, but the NPC was dead`);
+			continue;
 		}
 
 		// check that npc has a root part
@@ -120,7 +122,8 @@ export function runStep(
 
 		const currentWeaponData = storeState.weapons.find((weapon) => weapon.id === storeState.currentWeapon.id);
 		if (currentWeaponData === undefined) {
-			throw `Player ${player.Name} does not own the weapon they're attacking with.`;
+			warn(`Player ${player.Name} does not own the weapon they're attacking with.`);
+			continue;
 		}
 
 		const weapon = getWeaponInfo(storeState.currentWeapon.id);
@@ -136,7 +139,10 @@ export function runStep(
 		if (npc.instance.Humanoid.Health <= 0) {
 			// reward player
 			const store = stores.get(player);
-			assert(store, `Could not get store for "${player.GetFullName()}" when rewarding them for killing NPC`);
+			if (store === undefined) {
+				warn(`Could not get store for "${player.GetFullName()}" when rewarding them for killing NPC`);
+				continue;
+			}
 
 			const { reward } = npc.npc;
 
