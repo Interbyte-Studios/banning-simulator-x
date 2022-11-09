@@ -5,6 +5,7 @@ import { currencies, Currency } from "shared/configs/currencies";
 import { RedeemCode } from "./media";
 import { AddPet } from "./pets";
 import { RedeemQuest } from "./quests";
+import { UnlockRank } from "./rank";
 import { PurchaseTalisman } from "./talismans";
 import { PurchaseWeapon } from "./weapons";
 import { UnlockWorld, UnlockZone } from "./worlds";
@@ -54,7 +55,15 @@ const defaultCurrencies = Object.fromEntries(
 /* eslint-disable jsdoc/require-jsdoc */
 export const currenciesReducer = Rodux.createReducer<
 	CurrenciesState,
-	CurrenciesActions | PurchaseWeapon | UnlockWorld | UnlockZone | AddPet | RedeemQuest | PurchaseTalisman | RedeemCode
+	| CurrenciesActions
+	| PurchaseWeapon
+	| UnlockWorld
+	| UnlockZone
+	| AddPet
+	| RedeemQuest
+	| PurchaseTalisman
+	| RedeemCode
+	| UnlockRank
 >(defaultCurrencies, {
 	purchaseWeapon: (state, action) => {
 		const purchasedCurrency = state[action.cost.currency] - action.cost.amount;
@@ -108,6 +117,10 @@ export const currenciesReducer = Rodux.createReducer<
 		const redeemedCurrency = state[action.currency.name] + action.currency.amount;
 
 		return { ...state, [action.currency.name]: redeemedCurrency };
+	},
+	unlockRank: (state, action) => {
+		const purchasedCurency = state[action.currency] - action.cost;
+		return { ...state, [action.currency]: purchasedCurency };
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */
