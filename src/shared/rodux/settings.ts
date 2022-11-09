@@ -247,7 +247,7 @@ const defaultSettings: Settings = {
 	},
 	sound: {
 		buttonClick: true,
-		music: 10,
+		music: 7,
 		soundEffects: 10,
 	},
 	gameplay: {

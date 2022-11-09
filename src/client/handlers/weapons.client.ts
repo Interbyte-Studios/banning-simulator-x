@@ -1,6 +1,6 @@
 import { Players, ReplicatedStorage, RunService, StarterGui, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
-import { playSFX, WeaponSlash } from "client/util/playSound";
+import { NPCImpact, playSFX, WeaponSlash } from "client/util/playSound";
 import { WeaponIndex, WEAPONS } from "shared/configs/weapons";
 import Hitbox from "shared/modules/raycastModule";
 import { remotes } from "shared/remotes";
@@ -136,6 +136,11 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 			return;
 		}
 
+		const playingAnimations = attackAnimations.filter((animation) => animation.IsPlaying === true);
+		if (playingAnimations.size() > 0) {
+			return;
+		}
+
 		canSwing = false;
 
 		const randomNumber = math.ceil(math.random(1, attackAnimations.size())) - 1;
@@ -161,11 +166,11 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 		animationToPlay.Play();
 		animationToPlay.Stopped.Wait();
 
-		canSwing = true;
-
 		if (hitbox.HitStop !== undefined) {
 			hitbox.HitStop();
 		}
+
+		canSwing = true;
 	});
 
 	weapon.Unequipped.Connect(() => {
@@ -188,6 +193,7 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 			return;
 		}
 
+		playSFX(NPCImpact.NPCImpact1, sfxVolume);
 		remotes.Client.Get("damageNPC").SendToServer(npcCharacter);
 	});
 
