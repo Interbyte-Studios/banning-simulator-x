@@ -21,17 +21,11 @@ const DISPLAY_DISTANCE = 25;
  * @returns If the egg hud should display.
  */
 function shouldDisplay(character: Model | undefined, adornee: BasePart): boolean {
-	return true;
-
-	/*
-
 	if (!character) {
 		return false;
 	}
 
 	return (getMagnitudeBetweenPlayerAndObject(character, adornee) ?? math.huge) <= DISPLAY_DISTANCE;
-
-	*/
 }
 
 /**
@@ -44,7 +38,7 @@ export const TalismanTowerInteractPrompt = hooks((props: { visible: boolean; dis
 	}
 
 	const { useState, useEffect } = hooks;
-	const [isDisplayed, setDisplay] = useState(true);
+	const [isDisplayed, setDisplay] = useState(false);
 
 	useEffect(() => {
 		const player = Players.LocalPlayer;
