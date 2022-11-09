@@ -69,6 +69,10 @@ declare namespace assetIds {
 			};
 		};
 		ui: {
+			"talisman tower": {
+				background: string;
+				sidebar: string;
+			};
 			"weapon shop": {
 				"purchase button": string;
 				"weapon info background": string;

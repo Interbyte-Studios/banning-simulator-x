@@ -44,8 +44,9 @@ export function equipTalisman(player: Player, talismanId: number, bans: number):
 	alignOrientation.Attachment0 = talismanAttachment;
 	alignOrientation.Responsiveness = 80;
 
-	if (Workspace.interactions.talismans.FindFirstChild(player.Name)) {
-		Workspace.interactions.talismans.FindFirstChild(player.Name)?.Destroy();
+	const playersTalisman = Workspace["client objects"].talismans.FindFirstChild(player.Name);
+	if (playersTalisman !== undefined) {
+		playersTalisman.Destroy();
 	}
 
 	talisman.Name = player.Name;
@@ -62,6 +63,10 @@ export function equipTalisman(player: Player, talismanId: number, bans: number):
 
 	humanoid.Died.Connect(() => {
 		talismanRender.Disconnect();
-		Workspace.interactions.talismans.FindFirstChild(player.Name)?.Destroy();
+
+		const playersTalisman = Workspace["client objects"].talismans.FindFirstChild(player.Name);
+		if (playersTalisman !== undefined) {
+			playersTalisman.Destroy();
+		}
 	});
 }

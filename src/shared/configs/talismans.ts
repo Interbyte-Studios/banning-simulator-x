@@ -17,11 +17,13 @@ export interface Talisman {
 	cost: {
 		currency: Currency;
 		amount: number;
+		rank: number;
 	};
 
 	stats: {
 		name: TalismanStats;
 		amount: number;
+		maxSpeed: number;
 	};
 }
 
@@ -32,10 +34,12 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("1k"),
+			rank: 6,
 		},
 		stats: {
 			name: "damage",
 			amount: 2,
+			maxSpeed: 5,
 		},
 	},
 	"Jester Talisman": {
@@ -44,10 +48,12 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("3k"),
+			rank: 8,
 		},
 		stats: {
 			name: "damage",
 			amount: 5,
+			maxSpeed: 5,
 		},
 	},
 	"Blade Talisman": {
@@ -56,10 +62,12 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("7k"),
+			rank: 10,
 		},
 		stats: {
 			name: "damage",
 			amount: 10,
+			maxSpeed: 5,
 		},
 	},
 	"Target Talisman": {
@@ -68,10 +76,12 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("10k"),
+			rank: 15,
 		},
 		stats: {
 			name: "damage",
 			amount: 10,
+			maxSpeed: 5,
 		},
 	},
 	"Lunar Talisman": {
@@ -80,10 +90,12 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("14k"),
+			rank: 18,
 		},
 		stats: {
 			name: "damage",
 			amount: 10,
+			maxSpeed: 5,
 		},
 	},
 	"Star Talisman": {
@@ -92,10 +104,12 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("14k"),
+			rank: 20,
 		},
 		stats: {
 			name: "experience",
 			amount: 30,
+			maxSpeed: 5,
 		},
 	},
 	"Skull Talisman": {
@@ -104,10 +118,12 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("14k"),
+			rank: 20,
 		},
 		stats: {
 			name: "damage",
 			amount: 20,
+			maxSpeed: 5,
 		},
 	},
 	"Heart Talisman": {
@@ -116,10 +132,12 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("14k"),
+			rank: 20,
 		},
 		stats: {
 			name: "health",
 			amount: 15,
+			maxSpeed: 5,
 		},
 	},
 });

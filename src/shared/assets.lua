@@ -117,6 +117,10 @@ return {
 				background = "rbxassetid://10832810485",
 				["setting background"] = "rbxassetid://10832810658",
 			},
+			talismanTower = {
+				background = "rbxassetid://11508721514",
+				sidebar = "rbxassetid://11508721630",
+			},
 			["weapon shop"] = {
 				["purchase button"] = "rbxassetid://11497595550",
 				["weapon info background"] = "rbxassetid://11497175188",
