@@ -62,71 +62,106 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 		}
 
 		return (
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.8)}
-				Size={UDim2.fromScale(0.2, 0.16)}
-				Image={assetIds.images.ui["weapon shop"]["weapon info background"]}
-				ScaleType={Enum.ScaleType.Fit}
-			>
-				{rankRequiredWarning}
-				<uiaspectratioconstraint AspectRatio={2.2} />
-				<textlabel
+			<>
+				<imagelabel
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.2)}
-					Size={UDim2.fromScale(0.9, 0.4)}
-					Text={talismanInfo.name}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-					Font={font}
+					Position={UDim2.fromScale(0.5, 0.8)}
+					Size={UDim2.fromScale(0.2, 0.16)}
+					Image={assetIds.images.ui.talismanTower.background}
+					ScaleType={Enum.ScaleType.Fit}
 				>
-					<BaseUIStroke Thickness={2} />
-				</textlabel>
-				<textlabel
-					BackgroundTransparency={1}
+					{rankRequiredWarning}
+					<uiaspectratioconstraint AspectRatio={2.35} />
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.2)}
+						Size={UDim2.fromScale(0.9, 0.4)}
+						Text={talismanInfo.name}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+						TextScaled={true}
+						Font={font}
+					>
+						<BaseUIStroke Thickness={2} />
+					</textlabel>
+					<textlabel
+						BackgroundTransparency={1}
+						AnchorPoint={vec2Middle}
+						Position={UDim2.fromScale(0.7, 0.7)}
+						Size={UDim2.fromScale(0.6, 0.4)}
+						Font={font}
+						Text={twoDpAbbreviator.numberToString(talismanInfo.cost.amount)}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+						TextScaled={true}
+						TextXAlignment={Enum.TextXAlignment.Left}
+					>
+						<BaseUIStroke Color={Color3.fromRGB(255, 255, 255)} Thickness={1.5}>
+							<CurrencyGradient Currency={"coins"} />
+						</BaseUIStroke>
+						<CurrencyIcon
+							anchorPoint={new Vector2(1, 0.5)}
+							position={UDim2.fromScale(-0.03, 0.5)}
+							size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+							currency={talismanInfo.cost.currency}
+						/>
+					</textlabel>
+				</imagelabel>
+				<imagelabel
 					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.325, 0.7)}
-					Size={UDim2.fromScale(0.3, 0.3)}
-					Font={font}
-					Text={twoDpAbbreviator.numberToString(talismanInfo.stats.amount)}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-					TextXAlignment={Enum.TextXAlignment.Left}
-				>
-					<BaseUIStroke Color={Color3.fromRGB(255, 255, 255)} Thickness={1.5}>
-						<CurrencyGradient Currency={"gems"} />
-					</BaseUIStroke>
-					<CurrencyIcon
-						anchorPoint={new Vector2(1, 0.5)}
-						position={UDim2.fromScale(-0.03, 0.5)}
-						size={{ minimizedSize: 0.9, maximizedSize: 1 }}
-						currency={talismanInfo.cost.currency}
-					/>
-				</textlabel>
-				<textlabel
 					BackgroundTransparency={1}
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.84, 0.7)}
-					Size={UDim2.fromScale(0.3, 0.3)}
-					Font={font}
-					Text={twoDpAbbreviator.numberToString(talismanInfo.cost.amount)}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-					TextXAlignment={Enum.TextXAlignment.Left}
+					Size={UDim2.fromScale(0.175, 0.335)}
+					Position={UDim2.fromScale(0.1, 0.5)}
+					Image={assetIds.images.ui.talismanTower.sidebar}
+					ScaleType={Enum.ScaleType.Fit}
 				>
-					<BaseUIStroke Color={Color3.fromRGB(255, 255, 255)} Thickness={1.5}>
-						<CurrencyGradient Currency={"coins"} />
-					</BaseUIStroke>
-					<CurrencyIcon
-						anchorPoint={new Vector2(1, 0.5)}
-						position={UDim2.fromScale(-0.03, 0.5)}
-						size={{ minimizedSize: 0.9, maximizedSize: 1 }}
-						currency={talismanInfo.cost.currency}
-					/>
-				</textlabel>
-			</imagelabel>
+					<uiaspectratioconstraint AspectRatio={0.95} />
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.3)}
+						Size={UDim2.fromScale(0.8, 0.25)}
+						Text={`Tier: ${talismanInfo.tier}`}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+						TextScaled={true}
+						Font={font}
+					>
+						<BaseUIStroke Thickness={2} />
+					</textlabel>
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.525)}
+						Size={UDim2.fromScale(0.8, 0.2)}
+						Text={`${
+							talismanInfo.stats.name === "damage"
+								? "Damage"
+								: talismanInfo.stats.name === "experience"
+								? "Experience"
+								: talismanInfo.stats.name === "health"
+								? "Health"
+								: "Unknown"
+						}: ${twoDpAbbreviator.numberToString(talismanInfo.stats.amount)}`}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+						TextScaled={true}
+						Font={font}
+					>
+						<BaseUIStroke Thickness={2} />
+					</textlabel>
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.7)}
+						Size={UDim2.fromScale(0.8, 0.2)}
+						Text={`Walk Speed: ${talismanInfo.stats.maxSpeed}`}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+						TextScaled={true}
+						Font={font}
+					>
+						<BaseUIStroke Thickness={2} />
+					</textlabel>
+				</imagelabel>
+			</>
 		);
 	}),
 );

@@ -69,7 +69,7 @@ declare namespace assetIds {
 			};
 		};
 		ui: {
-			"talisman tower": {
+			talismanTower: {
 				background: string;
 				sidebar: string;
 			};

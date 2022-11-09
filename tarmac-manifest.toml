@@ -399,8 +399,8 @@ id = 11508721514
 packable = false
 
 [inputs."images/ui/talismanTower/sidebar.png"]
-hash = "ac64c799f7ea77d2514d828bb8224a5d95ad70e56a71ed970e3a56e46c047158"
-id = 11508721630
+hash = "a624d7f968f7cd5dfdb3d2922d0797af165bae02853a6913e95c230294822146"
+id = 11509649010
 packable = false
 
 [inputs."images/ui/weapon shop/purchase button.png"]
