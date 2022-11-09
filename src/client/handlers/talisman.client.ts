@@ -6,22 +6,30 @@ const player = Players.LocalPlayer;
 
 onStoreCreated(player)
 	.andThen((store) => {
-		const talismanEquipped = store.getState().currentTalisman;
+		const initialState = store.getState();
+
+		const talismanEquipped = initialState.currentTalisman;
 		if (talismanEquipped !== undefined) {
-			const ownedTalisman = store.getState().talismans.get(talismanEquipped);
+			const ownedTalisman = initialState.talismans.get(talismanEquipped);
 			if (ownedTalisman !== undefined) {
 				equipTalisman(player, talismanEquipped, ownedTalisman.bans);
 			}
 		}
 
 		player.CharacterAdded.Connect(() => {
-			const talismanEquipped = store.getState().currentTalisman;
-			if (talismanEquipped !== undefined) {
-				const ownedTalisman = store.getState().talismans.get(talismanEquipped);
-				if (ownedTalisman !== undefined) {
-					equipTalisman(player, talismanEquipped, ownedTalisman.bans);
-				}
+			const currentState = store.getState();
+
+			const talismanEquipped = currentState.currentTalisman;
+			if (talismanEquipped === undefined) {
+				return;
 			}
+
+			const ownedTalisman = currentState.talismans.get(talismanEquipped);
+			if (ownedTalisman === undefined) {
+				return;
+			}
+
+			equipTalisman(player, talismanEquipped, ownedTalisman.bans);
 		});
 
 		store.changed.connect((newState) => {
