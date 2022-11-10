@@ -4,6 +4,7 @@ import { WORLDS } from "shared/configs/worlds";
 import { NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 import { killNpc } from "shared/rodux/currencies";
+import { getTalismanData } from "shared/util/getTalismanData";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 import { getWeaponLevel } from "shared/util/getWeaponLevel";
 
@@ -99,13 +100,15 @@ export function runStep(
 	for (const { player, store, character } of npcAttacks) {
 		const npc = npcCharacterToNpc.get(character);
 		if (npc === undefined) {
-			throw `Player ${player.Name} attempted to attack ${character.Name}, but it didn't exist`;
+			warn(`Player ${player.Name} attempted to attack ${character.Name}, but it didn't exist`);
+			continue;
 		}
 
 		// check that npc is alive
 		if (!(npc.instance.Humanoid.Health > 0)) {
 			// currently this is possible if two players kill and NPC in the same tick
-			throw `Player ${player.Name} attempted to attack ${character.Name}, but the NPC was dead`;
+			warn(`Player ${player.Name} attempted to attack ${character.Name}, but the NPC was dead`);
+			continue;
 		}
 
 		// check that npc has a root part
@@ -120,12 +123,28 @@ export function runStep(
 
 		const currentWeaponData = storeState.weapons.find((weapon) => weapon.id === storeState.currentWeapon.id);
 		if (currentWeaponData === undefined) {
-			throw `Player ${player.Name} does not own the weapon they're attacking with.`;
+			warn(`Player ${player.Name} does not own the weapon they're attacking with.`);
+			continue;
+		}
+
+		let talismanDamage = 0;
+		let talismanExperienceMultiplier = 1;
+		const talisman = storeState.currentTalisman;
+		if (talisman !== undefined) {
+			const talismanInfo = getTalismanData(talisman);
+			if (talismanInfo !== undefined) {
+				if (talismanInfo.stats.name === "damage") {
+					talismanDamage = talismanInfo.stats.amount;
+				} else if (talismanInfo.stats.name === "experience") {
+					talismanExperienceMultiplier = talismanInfo.stats.amount;
+				}
+			} else
+				warn(`Couldn't register talisman damage for hit from player ${player.Name}. Failed to fetch talisman data.`);
 		}
 
 		const weapon = getWeaponInfo(storeState.currentWeapon.id);
 		const weaponLevelBonus = getWeaponLevel(currentWeaponData.bans);
-		const damage = weapon.data.damage + weapon.data.damage * 0.25 * weaponLevelBonus.level;
+		const damage = weapon.data.damage + talismanDamage + weapon.data.damage * 0.05 * weaponLevelBonus.level;
 
 		const oldHealth = npc.instance.Humanoid.Health;
 		const newHealth = oldHealth - damage;
@@ -136,7 +155,10 @@ export function runStep(
 		if (npc.instance.Humanoid.Health <= 0) {
 			// reward player
 			const store = stores.get(player);
-			assert(store, `Could not get store for "${player.GetFullName()}" when rewarding them for killing NPC`);
+			if (store === undefined) {
+				warn(`Could not get store for "${player.GetFullName()}" when rewarding them for killing NPC`);
+				continue;
+			}
 
 			const { reward } = npc.npc;
 
@@ -144,7 +166,7 @@ export function runStep(
 				killNpc(
 					reward.currency,
 					WORLDS[npc.world.name].reward,
-					reward.experience,
+					reward.experience * talismanExperienceMultiplier,
 					storeState.currentWeapon.id,
 					storeState.currentTalisman,
 				),

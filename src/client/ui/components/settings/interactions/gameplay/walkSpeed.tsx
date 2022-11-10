@@ -4,10 +4,12 @@ import { setWalkSpeed } from "client/modules/settings/walkSpeed";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { StoreState } from "shared/rodux";
+import { CurrentTalismanState } from "shared/rodux/currentTalisman";
 
 import { ModifySettingOption } from "../../elements/modifySettingOption";
 
 interface WalkSpeedSettingMappedProps {
+	currentTalisman: CurrentTalismanState;
 	walkSpeed: number;
 }
 
@@ -17,6 +19,7 @@ interface WalkSpeedSettingMappedProps {
  */
 function mapStateToProps(state: StoreState): WalkSpeedSettingMappedProps {
 	return {
+		currentTalisman: state.currentTalisman,
 		walkSpeed: state.settings.gameplay.walkSpeed,
 	};
 }
@@ -37,8 +40,8 @@ export const WalkSpeedSetting = RoactRodux.connect(mapStateToProps)(
 				settingName={"Walk Speed"}
 				displayValue={`${props.walkSpeed}`}
 				displayPercentage={false}
-				onIncrease={(): void => setWalkSpeed(props.walkSpeed + 1, toggleWalkSpeed)}
-				onDecrease={(): void => setWalkSpeed(props.walkSpeed - 1, toggleWalkSpeed)}
+				onIncrease={(): void => setWalkSpeed(props.walkSpeed + 1, props.currentTalisman, toggleWalkSpeed)}
+				onDecrease={(): void => setWalkSpeed(props.walkSpeed - 1, props.currentTalisman, toggleWalkSpeed)}
 			/>
 		);
 	}),

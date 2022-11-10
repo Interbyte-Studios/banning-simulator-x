@@ -29,10 +29,10 @@ function shouldDisplay(character: Model | undefined, adornee: BasePart): boolean
 }
 
 /**
- * Displays a custom proximity prompt interface allowing the player to intract with the weapon shop.
+ * Displays a custom proximity prompt interface allowing the player to intract with the talisman tower.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const WeaponShopInteractPrompt = hooks((props: { visible: boolean; displayShop: () => void }, hooks) => {
+export const TalismanTowerInteractPrompt = hooks((props: { visible: boolean; displayShop: () => void }, hooks) => {
 	if (!props.visible) {
 		return <></>;
 	}
@@ -44,7 +44,7 @@ export const WeaponShopInteractPrompt = hooks((props: { visible: boolean; displa
 		const player = Players.LocalPlayer;
 
 		const connection = RunService.RenderStepped.Connect(() => {
-			if (shouldDisplay(player.Character, Workspace.interactions.worlds["Ban Land"].weaponShop.InteractPrompt)) {
+			if (shouldDisplay(player.Character, Workspace.interactions.worlds["Ban Land"].talismanTower.InteractPrompt)) {
 				if (!isDisplayed) {
 					setDisplay(true);
 				}
@@ -78,14 +78,14 @@ export const WeaponShopInteractPrompt = hooks((props: { visible: boolean; displa
 			AlwaysOnTop={true}
 			LightInfluence={0}
 			Size={UDim2.fromScale(5, 5)}
-			Adornee={Workspace.interactions.worlds["Ban Land"].weaponShop.InteractPrompt}
+			Adornee={Workspace.interactions.worlds["Ban Land"].talismanTower.InteractPrompt}
 		>
 			<textlabel
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}
 				Position={UDim2.fromScale(0.5, 0)}
 				Size={UDim2.fromScale(1.5, 0.4)}
-				Text={"Weapon Shop"}
+				Text={"Talisman Tower"}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 				TextScaled={true}
 				Font={font}
@@ -112,7 +112,7 @@ export const WeaponShopInteractPrompt = hooks((props: { visible: boolean; displa
 					BackgroundTransparency={1}
 					Position={UDim2.fromScale(0.5, 0.5)}
 					Size={UDim2.fromScale(0.9, 0.9)}
-					Text={"Q"}
+					Text={"X"}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextScaled={true}
 					Font={font}

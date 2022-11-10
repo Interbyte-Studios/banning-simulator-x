@@ -11,7 +11,7 @@ import { Hud } from "./components/hud";
 import { Quests } from "./components/quests";
 import { RankUpgrade } from "./components/ranks/menu";
 import { SettingsMenu } from "./components/settings/menu";
-import { TalismanShop } from "./components/talismans/talismanShop";
+import { TalismanTowerHandle } from "./components/talismans";
 import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
 import { hooks } from "./hooks";
@@ -35,6 +35,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	const [settingsVisible, setSettingsVisibility] = useState(false);
 	const [rankUpgradeVisibility, setRankUpgradeVisibility] = useState(false);
 	const [weaponShopVisibility, setWeaponShopVisibility] = useState(false);
+	const [talismanTowerVisibility, setTalismanTowerVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
 	const [displayAnnouncement, setDisplayAnnouncement] = useState<
@@ -115,10 +116,11 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 			<>
 				<EggsUI
 					store={props.store}
-					visible={!codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility}
+					visible={
+						!codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility && !talismanTowerVisibility
+					}
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
-				<TalismanShop store={props.store} />
 				<CodesMenu
 					visible={codesVisible}
 					hideMenu={(): void => setCodesVisible(false)}
@@ -127,7 +129,14 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 				<SettingsMenu visible={settingsVisible} hideMenu={(): void => setSettingsVisibility(false)} />
 				<Quests visible={questsVisible} hideMenu={(): void => setQuestsVisibility(false)} />
 				<Hud
-					visible={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility}
+					visible={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
 					displayCodesMenu={(): void => setCodesVisible(true)}
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
@@ -135,19 +144,31 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 				<LocalMessages currentMessage={displayAnnouncement} />
 				<ZonesUI displayAnnouncement={applyAnnouncement} />
 				<WeaponEquip
-					visible={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility}
+					visible={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
 				/>
 				<RankUpgrade
 					visible={rankUpgradeVisibility}
 					hideMenu={(): void => setRankUpgradeVisibility(false)}
 					displayAnnouncement={applyAnnouncement}
 				/>
-				{/* We want the enabled value to stay as only !isHatching. Loosens the controls perse. */}
 				<WeaponShopHandle
-					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible}
+					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !talismanTowerVisibility}
 					weaponShopVisible={weaponShopVisibility}
 					displayAnnouncement={applyAnnouncement}
 					setWeaponShopVisibility={(value: boolean): void => setWeaponShopVisibility(value)}
+				/>
+				<TalismanTowerHandle
+					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility}
+					talismanTowerVisible={talismanTowerVisibility}
+					displayAnnouncement={applyAnnouncement}
+					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
 				/>
 			</>
 		</RoactRodux.StoreProvider>

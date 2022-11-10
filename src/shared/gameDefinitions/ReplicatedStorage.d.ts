@@ -106,9 +106,7 @@ declare global {
 			npcs: Folder & {
 				[P in keyof NPCs]: Model;
 			};
-			talismans: Folder & {
-				[P in keyof Talismans]: Model;
-			};
+			talismans: Folder;
 			hatch: Part & {
 				attachment: Attachment & {
 					flare: ParticleEmitter;

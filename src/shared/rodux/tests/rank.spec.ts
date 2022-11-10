@@ -10,7 +10,7 @@ export = (): void => {
 
 			const state: RankState = oldRankId;
 
-			const action = unlockRank(newRankId);
+			const action = unlockRank(newRankId, "coins", 0);
 
 			expect(rankReducer(state, action)).to.equal(newRankId);
 		});

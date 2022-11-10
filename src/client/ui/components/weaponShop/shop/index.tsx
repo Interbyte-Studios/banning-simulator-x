@@ -13,6 +13,9 @@ interface WeaponShopProps {
 	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
 }
 
+/**
+ * A "camera scrolling" component that allows the player to browse through purchaseable weapons.
+ */
 export const WeaponShop = hooks((props: WeaponShopProps, { useState, useEffect }) => {
 	/* Whether or not the interface has been interacted with or not. Used to determine whether or not to tween camera pos.*/
 	const [justOpened, interactedWith] = useState(true);
