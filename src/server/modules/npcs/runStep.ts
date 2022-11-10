@@ -4,6 +4,7 @@ import { WORLDS } from "shared/configs/worlds";
 import { NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 import { killNpc } from "shared/rodux/currencies";
+import { getTalismanData } from "shared/util/getTalismanData";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 import { getWeaponLevel } from "shared/util/getWeaponLevel";
 
@@ -126,9 +127,24 @@ export function runStep(
 			continue;
 		}
 
+		let talismanDamage = 0;
+		let talismanExperienceMultiplier = 1;
+		const talisman = storeState.currentTalisman;
+		if (talisman !== undefined) {
+			const talismanInfo = getTalismanData(talisman);
+			if (talismanInfo !== undefined) {
+				if (talismanInfo.stats.name === "damage") {
+					talismanDamage = talismanInfo.stats.amount;
+				} else if (talismanInfo.stats.name === "experience") {
+					talismanExperienceMultiplier = talismanInfo.stats.amount;
+				}
+			} else
+				warn(`Couldn't register talisman damage for hit from player ${player.Name}. Failed to fetch talisman data.`);
+		}
+
 		const weapon = getWeaponInfo(storeState.currentWeapon.id);
 		const weaponLevelBonus = getWeaponLevel(currentWeaponData.bans);
-		const damage = weapon.data.damage + weapon.data.damage * 0.05 * weaponLevelBonus.level;
+		const damage = weapon.data.damage + talismanDamage + weapon.data.damage * 0.05 * weaponLevelBonus.level;
 
 		const oldHealth = npc.instance.Humanoid.Health;
 		const newHealth = oldHealth - damage;
@@ -150,7 +166,7 @@ export function runStep(
 				killNpc(
 					reward.currency,
 					WORLDS[npc.world.name].reward,
-					reward.experience,
+					reward.experience * talismanExperienceMultiplier,
 					storeState.currentWeapon.id,
 					storeState.currentTalisman,
 				),

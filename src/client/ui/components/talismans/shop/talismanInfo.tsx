@@ -141,7 +141,15 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 								: talismanInfo.stats.name === "health"
 								? "Health"
 								: "Unknown"
-						}: ${twoDpAbbreviator.numberToString(talismanInfo.stats.amount)}`}
+						}: ${
+							talismanInfo.stats.name === "damage"
+								? "+"
+								: talismanInfo.stats.name === "experience"
+								? "x"
+								: talismanInfo.stats.name === "health"
+								? "+"
+								: "Unknown"
+						}${twoDpAbbreviator.numberToString(talismanInfo.stats.amount)}`}
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 						TextScaled={true}
 						Font={font}
