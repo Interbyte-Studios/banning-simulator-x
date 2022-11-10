@@ -128,7 +128,7 @@ export function runStep(
 
 		const weapon = getWeaponInfo(storeState.currentWeapon.id);
 		const weaponLevelBonus = getWeaponLevel(currentWeaponData.bans);
-		const damage = weapon.data.damage + weapon.data.damage * 0.25 * weaponLevelBonus.level;
+		const damage = weapon.data.damage + weapon.data.damage * 0.05 * weaponLevelBonus.level;
 
 		const oldHealth = npc.instance.Humanoid.Health;
 		const newHealth = oldHealth - damage;
