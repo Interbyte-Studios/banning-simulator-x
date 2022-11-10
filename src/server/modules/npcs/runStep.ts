@@ -146,10 +146,7 @@ export function runStep(
 		const weaponLevelBonus = getWeaponLevel(currentWeaponData.bans);
 		const damage = weapon.data.damage + talismanDamage + weapon.data.damage * 0.05 * weaponLevelBonus.level;
 
-		const oldHealth = npc.instance.Humanoid.Health;
-		const newHealth = oldHealth - damage;
-
-		npc.instance.Humanoid.TakeDamage(weapon.data.damage + weapon.data.damage * 0.25 * weaponLevelBonus.level);
+		npc.instance.Humanoid.TakeDamage(damage);
 
 		// check if npc is dead
 		if (npc.instance.Humanoid.Health <= 0) {
@@ -174,9 +171,7 @@ export function runStep(
 
 			// display ban emitter
 			const banEmitters =
-				oldHealth === npc.instance.Humanoid.MaxHealth && newHealth <= 0
-					? emitters["crit ban emitters"]
-					: emitters["ban emitters"];
+				damage >= npc.instance.Humanoid.MaxHealth ? emitters["crit ban emitters"] : emitters["ban emitters"];
 
 			const randomBanEmitterIndex = math.ceil(math.random(1, banEmitters.GetChildren().size())) - 1;
 			const randomBanEmitter = banEmitters.GetChildren()[randomBanEmitterIndex] as BasePart;
@@ -188,6 +183,22 @@ export function runStep(
 			const banEmitter = randomBanEmitter.Clone();
 			banEmitter.CFrame = humanoidRootPart.CFrame;
 			banEmitter.Parent = Workspace;
+
+			const impactEmitter = humanoidRootPart.FindFirstChild("ImpactEmitter") as Attachment;
+			if (impactEmitter !== undefined) {
+				impactEmitter.Parent = banEmitter;
+
+				for (const particleEmitter of impactEmitter.GetChildren()) {
+					if (!particleEmitter.IsA("ParticleEmitter")) {
+						continue;
+					}
+
+					particleEmitter.Emit(1);
+					task.delay(particleEmitter.Lifetime.Max, () => {
+						particleEmitter.Clear();
+					});
+				}
+			}
 
 			const emitter = banEmitter.FindFirstChild("Attachment")?.FindFirstChild("Banned") as ParticleEmitter;
 			if (emitter !== undefined) {
