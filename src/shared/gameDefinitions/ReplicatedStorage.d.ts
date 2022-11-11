@@ -1,5 +1,4 @@
 import { Eggs } from "shared/configs/eggs";
-import { Talismans } from "shared/configs/talismans";
 import { Weapons, WeaponType } from "shared/configs/weapons";
 import { NPCs } from "shared/configs/zones";
 
