@@ -32,7 +32,6 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	const [codesVisible, setCodesVisible] = useState(false);
 	const [questsVisible, setQuestsVisibility] = useState(false);
 	const [settingsVisible, setSettingsVisibility] = useState(false);
-	const [rankUpgradeVisibility, setRankUpgradeVisibility] = useState(false);
 	const [weaponShopVisibility, setWeaponShopVisibility] = useState(false);
 	const [talismanTowerVisibility, setTalismanTowerVisibility] = useState(false);
 
@@ -98,8 +97,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 					}
 				/>
 				<RankUpgrade
-					visible={rankUpgradeVisibility}
-					hideMenu={(): void => setRankUpgradeVisibility(false)}
+					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !talismanTowerVisibility}
 					displayAnnouncement={applyAnnouncement}
 				/>
 				<WeaponShopHandle
