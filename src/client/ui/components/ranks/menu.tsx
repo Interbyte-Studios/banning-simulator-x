@@ -61,6 +61,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 					Image={assetIds.images.ui["rank upgrade"].maxRank}
 					ScaleType={Enum.ScaleType.Fit}
 				>
+					<uiaspectratioconstraint AspectRatio={1.31} />
 					<RankIcon
 						position={UDim2.fromScale(0.5, 0.285)}
 						size={{ maximizedSize: 0.5, minimizedSize: 0.4 }}
