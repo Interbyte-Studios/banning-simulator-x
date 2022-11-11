@@ -10,12 +10,9 @@ onStoreCreated(player)
 
 		const talismanEquipped = initialState.currentTalisman;
 		if (talismanEquipped !== undefined) {
-			print(initialState.currentTalisman);
 			const ownedTalisman = initialState.talismans.get(talismanEquipped);
-			print(initialState.talismans);
 			if (ownedTalisman !== undefined) {
 				equipTalisman(player, talismanEquipped, ownedTalisman.bans);
-				warn("attempting to equip");
 			}
 		}
 
