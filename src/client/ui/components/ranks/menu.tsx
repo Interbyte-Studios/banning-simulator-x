@@ -61,6 +61,10 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 			let lastInteraction = 0;
 			const interactionDebounce = 2;
 			const connection = RunService.Heartbeat.Connect(() => {
+				if (isVisible) {
+					return;
+				}
+
 				const now = time();
 				if (now - lastInteraction < interactionDebounce) {
 					return;
@@ -83,14 +87,16 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 				}
 
 				const magnitude = humanoidRootPart.Position.sub(Workspace.interactions.rankUpgrade.teleport.Position).Magnitude;
-				if (magnitude < 40) {
-					setVisibility(true);
+				if (magnitude > 40) {
+					return;
 				}
 
-				return (): void => {
-					connection.Disconnect();
-				};
+				setVisibility(true);
 			});
+
+			return (): void => {
+				connection.Disconnect();
+			};
 		});
 
 		if (!isVisible) {
@@ -130,7 +136,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 					<ExitButton
 						minimizedSize={0.15}
 						maximizedSize={0.175}
-						onClosed={(): void => props.hideMenu()}
+						onClosed={(): void => setVisibility(false)}
 						Position={UDim2.fromScale(0.975, 0.02)}
 					/>
 				</imagelabel>

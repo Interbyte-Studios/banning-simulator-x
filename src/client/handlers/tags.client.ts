@@ -4,7 +4,6 @@ import { onStoreCreated } from "client/clientStores";
 import { getEnemyRankIcon } from "client/util/getEnemyRankIcon";
 import { getRankIcon } from "client/util/getRankIcon";
 import { GROUP_ID, GROUP_ROLES } from "shared/configs/game";
-import { isNpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 import { getNPCByName } from "shared/util/getNpcByName";
 
