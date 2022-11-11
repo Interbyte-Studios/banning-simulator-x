@@ -378,6 +378,11 @@ hash = "6f950ed7955ec02f573f474e0dd6aba30cf120fc4b10625f1c02656a24e0395c"
 id = 11108539666
 packable = false
 
+[inputs."images/ui/rank upgrade/maxRank.png"]
+hash = "0cee9785b06188a2b865d55feadc50a2c848d89208bec1500b2290d3b06da05c"
+id = 11527733801
+packable = false
+
 [inputs."images/ui/rank upgrade/upgrade.png"]
 hash = "e2295693341b34cb9d5bad54564db46fc67fd5c7ad17385eb7337c77699fc1fa"
 id = 11108539728
