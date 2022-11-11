@@ -1,5 +1,7 @@
 import { Store } from "shared/rodux";
 import { equipTalisman as dispatchEquipTalisman } from "shared/rodux/currentTalisman";
+import { toggleWalkSpeed } from "shared/rodux/settings";
+import { getTalismanData } from "shared/util/getTalismanData";
 
 /**
  * Equips a talisman for a player.
@@ -10,9 +12,21 @@ import { equipTalisman as dispatchEquipTalisman } from "shared/rodux/currentTali
  * @param talismanId The id of the talisman being equipped.
  */
 export function equipTalisman(store: Store, talismanId: number): void {
-	if (!store.getState().talismans.has(talismanId)) {
-		throw `Expected ${store} to own talisman of id ${talismanId}`;
+	const currentState = store.getState();
+	if (!currentState.talismans.has(talismanId)) {
+		return;
+	}
+
+	const talismanData = getTalismanData(talismanId);
+	if (talismanData === undefined) {
+		warn(`Failed to fetch talisman data for talisman with id: "${talismanId}"`);
+		return;
 	}
 
 	store.dispatch(dispatchEquipTalisman(talismanId));
+
+	const currentTalisman = store.getState().currentTalisman;
+	if (currentTalisman !== undefined) {
+		store.dispatch(toggleWalkSpeed(24 + talismanData.stats.maxSpeed));
+	}
 }
