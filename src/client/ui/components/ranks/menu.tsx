@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { Players, RunService, Workspace } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { CurrencyGradient } from "client/ui/elements/currencyGradient";
@@ -16,9 +17,10 @@ import { CancelRankUpgrade } from "./cancel";
 import { RankDisplay } from "./rankDisplay";
 import { UpgradeRank } from "./upgradeRank";
 
+const player = Players.LocalPlayer;
+
 interface RankUpgradeProps extends RankUpgradeMappedProps {
-	visible: boolean;
-	hideMenu: () => void;
+	enabled: boolean;
 	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
 }
 
@@ -44,8 +46,54 @@ function mapStateToProps(state: StoreState): RankUpgradeMappedProps {
  * A UI to upgrade a player's rank.
  */
 export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
-	hooks((props: RankUpgradeProps) => {
-		if (!props.visible) {
+	hooks((props: RankUpgradeProps, { useState, useEffect }) => {
+		if (!props.enabled) {
+			return <></>;
+		}
+
+		const [isVisible, setVisibility] = useState(false);
+
+		useEffect(() => {
+			if (isVisible) {
+				return;
+			}
+
+			let lastInteraction = 0;
+			const interactionDebounce = 2;
+			const connection = RunService.Heartbeat.Connect(() => {
+				const now = time();
+				if (now - lastInteraction < interactionDebounce) {
+					return;
+				}
+				lastInteraction = now;
+
+				const character = player.Character;
+				if (character === undefined) {
+					return;
+				}
+
+				const humanoid = character.FindFirstChildOfClass("Humanoid");
+				if (humanoid === undefined) {
+					return;
+				}
+
+				const humanoidRootPart = humanoid.RootPart;
+				if (humanoidRootPart === undefined) {
+					return;
+				}
+
+				const magnitude = humanoidRootPart.Position.sub(Workspace.interactions.rankUpgrade.teleport.Position).Magnitude;
+				if (magnitude < 40) {
+					setVisibility(true);
+				}
+
+				return (): void => {
+					connection.Disconnect();
+				};
+			});
+		});
+
+		if (!isVisible) {
 			return <></>;
 		}
 
@@ -146,12 +194,12 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 						currency={nextRankData.currency}
 					/>
 				</textlabel>
-				<CancelRankUpgrade hideMenu={props.hideMenu} />
+				<CancelRankUpgrade hideMenu={(): void => setVisibility(false)} />
 				<ExitButton
 					Position={UDim2.fromScale(0.975, 0.1)}
 					minimizedSize={0.1}
 					maximizedSize={0.125}
-					onClosed={(): void => props.hideMenu()}
+					onClosed={(): void => setVisibility(false)}
 				/>
 			</imagelabel>
 		);
