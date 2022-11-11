@@ -111,6 +111,7 @@ return {
 			["rank upgrade"] = {
 				background = "rbxassetid://11111317486",
 				cancel = "rbxassetid://11108539666",
+				maxRank = "rbxassetid://11527733801",
 				upgrade = "rbxassetid://11108539728",
 			},
 			settings = {

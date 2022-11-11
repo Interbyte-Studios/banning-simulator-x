@@ -78,6 +78,7 @@ declare namespace assetIds {
 				"weapon info background": string;
 			};
 			"rank upgrade": {
+				maxRank: string;
 				background: string;
 				upgrade: string;
 				cancel: string;
