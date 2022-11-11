@@ -247,12 +247,12 @@ const defaultSettings: Settings = {
 	},
 	sound: {
 		buttonClick: true,
-		music: 10,
+		music: 7,
 		soundEffects: 10,
 	},
 	gameplay: {
 		autoHatch: false,
-		walkSpeed: 50, // should be 16 but for testing it's 50
+		walkSpeed: 24,
 	},
 	visual: {
 		graphicsQuality: "High",

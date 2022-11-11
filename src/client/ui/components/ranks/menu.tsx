@@ -2,9 +2,11 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService, Workspace } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { CurrencyGradient } from "client/ui/elements/currencyGradient";
 import { CurrencyIcon } from "client/ui/elements/currencyIcon";
 import { ExitButton } from "client/ui/elements/exitButton";
+import { RankIcon } from "client/ui/elements/rankIcon";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { RANKS } from "shared/configs/ranks";
@@ -93,6 +95,46 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 
 		if (!isVisible) {
 			return <></>;
+		}
+
+		if (props.currentRank === 20) {
+			const rankData = RANKS[props.currentRank - 1];
+
+			return (
+				<imagelabel
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					Position={UDim2.fromScale(0.5, 0.5)}
+					Size={UDim2.fromScale(0.35, 0.4)}
+					Image={assetIds.images.ui["rank upgrade"].maxRank}
+					ScaleType={Enum.ScaleType.Fit}
+				>
+					<uiaspectratioconstraint AspectRatio={1.31} />
+					<RankIcon
+						position={UDim2.fromScale(0.5, 0.285)}
+						size={{ maximizedSize: 0.5, minimizedSize: 0.4 }}
+						rank={props.currentRank}
+					/>
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.75)}
+						Size={UDim2.fromScale(0.9, 0.3)}
+						Text={`Congratulations! You made it to the final rank, ${rankData.name}!`}
+						TextScaled={true}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+						Font={font}
+					>
+						<BaseUIStroke Thickness={1.5} />
+					</textlabel>
+					<ExitButton
+						minimizedSize={0.15}
+						maximizedSize={0.175}
+						onClosed={(): void => props.hideMenu()}
+						Position={UDim2.fromScale(0.975, 0.02)}
+					/>
+				</imagelabel>
+			);
 		}
 
 		const currentRank = props.currentRank - 1;

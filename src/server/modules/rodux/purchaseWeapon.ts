@@ -27,6 +27,11 @@ export function purchaseWeapon(store: Store, weaponId: number): void {
 		return;
 	}
 
+	// check to be sure they're the proper rank
+	if (weaponInfo.data.cost.requiredRank !== undefined && store.getState().rank < weaponInfo.data.cost.requiredRank) {
+		return;
+	}
+
 	// purchase weapon
 	store.dispatch(
 		dispatchPurchaseWeapon({

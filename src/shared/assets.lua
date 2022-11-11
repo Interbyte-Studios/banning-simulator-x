@@ -111,11 +111,20 @@ return {
 			["rank upgrade"] = {
 				background = "rbxassetid://11111317486",
 				cancel = "rbxassetid://11108539666",
+				maxRank = "rbxassetid://11527733801",
 				upgrade = "rbxassetid://11108539728",
 			},
 			settings = {
 				background = "rbxassetid://10832810485",
 				["setting background"] = "rbxassetid://10832810658",
+			},
+			talismanTower = {
+				background = "rbxassetid://11508721514",
+				sidebar = "rbxassetid://11509649010",
+			},
+			["weapon shop"] = {
+				["purchase button"] = "rbxassetid://11497595550",
+				["weapon info background"] = "rbxassetid://11497175188",
 			},
 			zones = {
 				background = "rbxassetid://10970620708",

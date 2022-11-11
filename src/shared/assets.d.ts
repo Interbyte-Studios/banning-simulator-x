@@ -69,7 +69,16 @@ declare namespace assetIds {
 			};
 		};
 		ui: {
+			talismanTower: {
+				background: string;
+				sidebar: string;
+			};
+			"weapon shop": {
+				"purchase button": string;
+				"weapon info background": string;
+			};
 			"rank upgrade": {
+				maxRank: string;
 				background: string;
 				upgrade: string;
 				cancel: string;

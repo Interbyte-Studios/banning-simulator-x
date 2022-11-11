@@ -378,6 +378,11 @@ hash = "6f950ed7955ec02f573f474e0dd6aba30cf120fc4b10625f1c02656a24e0395c"
 id = 11108539666
 packable = false
 
+[inputs."images/ui/rank upgrade/maxRank.png"]
+hash = "0cee9785b06188a2b865d55feadc50a2c848d89208bec1500b2290d3b06da05c"
+id = 11527733801
+packable = false
+
 [inputs."images/ui/rank upgrade/upgrade.png"]
 hash = "e2295693341b34cb9d5bad54564db46fc67fd5c7ad17385eb7337c77699fc1fa"
 id = 11108539728
@@ -391,6 +396,26 @@ packable = false
 [inputs."images/ui/settings/setting background.png"]
 hash = "df18ddecccb0bed5855584f33d755bbf0fbf7661d543195d253f4c57a8a23d8b"
 id = 10832810658
+packable = false
+
+[inputs."images/ui/talismanTower/background.png"]
+hash = "ccf23fad28bbf49220ed72aba28a00cdd2cc5d18a9c6d638f32e6c6c1dc5e742"
+id = 11508721514
+packable = false
+
+[inputs."images/ui/talismanTower/sidebar.png"]
+hash = "a624d7f968f7cd5dfdb3d2922d0797af165bae02853a6913e95c230294822146"
+id = 11509649010
+packable = false
+
+[inputs."images/ui/weapon shop/purchase button.png"]
+hash = "6204eee9751ace0a143a3a7c1019c1b004614f7e8774bb22b56b45293ce32683"
+id = 11497595550
+packable = false
+
+[inputs."images/ui/weapon shop/weapon info background.png"]
+hash = "06cabf02b7e027994aecbb388cbda5234cfeaa2f28a6fc5de7dfcf96055abe73"
+id = 11497175188
 packable = false
 
 [inputs."images/ui/zones/background.png"]

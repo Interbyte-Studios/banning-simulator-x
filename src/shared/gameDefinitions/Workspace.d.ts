@@ -4,6 +4,10 @@ import { Zones } from "shared/configs/zones";
 
 declare global {
 	interface Workspace extends WorldRoot {
+		"client objects": Folder & {
+			pets: Folder;
+			talismans: Folder;
+		};
 		worlds: Folder & {
 			[P in keyof Worlds]: Folder & {
 				zones: Folder;
@@ -26,8 +30,27 @@ declare global {
 					};
 				};
 			};
-			["talisman tower"]: Folder;
-			talismans: Folder;
+			worlds: Folder & {
+				[P in keyof Worlds]: {
+					weaponShop: Folder & {
+						InteractPrompt: BasePart;
+					};
+					talismanTower: Folder & {
+						InteractPrompt: BasePart;
+					};
+				};
+			};
+			itemShop: Folder & {
+				[P in keyof Worlds]: Folder & {
+					cameraline: BasePart;
+				};
+			};
+			talismanTowers: Folder & {
+				[P in keyof Worlds]: Folder & {
+					talismans: Folder;
+					cameraline: BasePart;
+				};
+			};
 			rankUpgrade: Folder & {
 				meshPart: BasePart;
 				interact: BasePart;

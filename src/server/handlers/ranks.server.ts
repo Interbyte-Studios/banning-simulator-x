@@ -21,6 +21,6 @@ remotes.Server.Create("unlockRank").Connect(
 			return;
 		}
 
-		store.dispatch(unlockRank(nextRank + 1));
+		store.dispatch(unlockRank(nextRank + 1, rankData.currency, rankData.amount));
 	}),
 );
