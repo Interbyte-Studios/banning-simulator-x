@@ -52,6 +52,10 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 		const [isVisible, setVisibility] = useState(false);
 
 		useEffect(() => {
+			if (isVisible) {
+				return;
+			}
+
 			let lastInteraction = 0;
 			const interactionDebounce = 2;
 			const connection = RunService.Heartbeat.Connect(() => {
@@ -77,7 +81,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 				}
 
 				const magnitude = humanoidRootPart.Position.sub(Workspace.interactions.rankUpgrade.teleport.Position).Magnitude;
-				if (magnitude < 25) {
+				if (magnitude < 40) {
 					setVisibility(true);
 				}
 
