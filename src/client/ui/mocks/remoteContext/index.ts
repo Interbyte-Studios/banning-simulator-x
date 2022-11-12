@@ -1,6 +1,7 @@
 import { createContext } from "@rbxts/roact";
 import { RedeemCodeDefinition } from "shared/remotes/media/redeemCode";
 import { VerifyDiscordDefinition } from "shared/remotes/media/verifyDiscord";
+import { DeletePetsDefinition } from "shared/remotes/pets/deletePets";
 import { PurchaseZoneDefinition } from "shared/remotes/purchaseZone";
 import { RedeemQuestDefinition } from "shared/remotes/redeemQuest";
 import { ToggleAutoDeleteDefinition } from "shared/remotes/settings/autoDelete/toggleAutoDelete";
@@ -32,6 +33,8 @@ export const fakeRemoteContext = {
 	equipWeapon: fakeRemoteCall<EquipWeaponDefinition>("equipWeapon"),
 	unequipWeapon: fakeRemoteCall<UnequipWeaponDefinition>("unequipWeapon"),
 	purchaseWeapon: fakeRemoteCall<PurchaseWeaponDefinition>("purchaseWeapon"),
+
+	deletePets: fakeRemoteCall<DeletePetsDefinition>("deletePets"),
 
 	purchaseZone: fakeFunctionCall<PurchaseZoneDefinition>("purchaseZone", () => {
 		return {

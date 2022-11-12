@@ -1,8 +1,6 @@
-import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
-import { getMultiDeleteState } from "client/handlers/item inventory/multiDeleteStateHandler";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { PetViewport } from "client/ui/elements/petViewport";
@@ -13,8 +11,14 @@ import assetIds from "shared/assets";
 import { RARITIES } from "shared/configs/rarities";
 import { StoreState } from "shared/rodux";
 import { Pet, PetsState } from "shared/rodux/pets";
-import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetData } from "shared/util/getPetData";
+
+interface PetItemsProps extends PetItemsMappedProps {
+	multiDeleteEnabled: boolean;
+	searchText: string | undefined;
+	addPetToDeletionRegistry: (guid: string) => void;
+	removePetFromDeletionRegistry: (guid: string) => void;
+}
 
 interface PetItemsMappedProps {
 	pets: PetsState;
@@ -31,93 +35,124 @@ function petItemsMapStateToProps(state: StoreState): PetItemsMappedProps {
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-const PetFrame = hooks((props: { storedPetData: Pet }, { useState }) => {
-	const [isSelectedForDelete, setSelectedForDelete] = useState(false);
+const PetFrame = hooks(
+	(
+		props: {
+			storedPetData: Pet;
+			multiDeleteEnabled: boolean;
+			addPetToDeletionRegistry: (guid: string) => void;
+			removePetFromDeletionRegistry: (guid: string) => void;
+		},
+		{ useState, useEffect },
+	) => {
+		const [isSelectedForDelete, setSelectedForDelete] = useState(false);
 
-	const eggName = getEggNameFromPetId(props.storedPetData.id);
-	const petData = getPetData(eggName, props.storedPetData.id);
+		const petData = getPetData(props.storedPetData.id);
 
-	const rarityData = RARITIES[petData.rarity];
+		const rarityData = RARITIES[petData.rarity];
 
-	const additionalDisplayedElements: Array<Roact.Element> = [];
-	if (isSelectedForDelete) {
-		additionalDisplayedElements.push(
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.925, 0.925)}
-				Image={assetIds.images.ui.inventory.pets.deleteIndicator}
-				ScaleType={Enum.ScaleType.Fit}
-			/>,
-		);
-	}
+		const additionalDisplayedElements: Array<Roact.Element> = [];
+		if (isSelectedForDelete) {
+			if (props.multiDeleteEnabled) {
+				additionalDisplayedElements.push(
+					<imagelabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.5)}
+						Size={UDim2.fromScale(0.925, 0.925)}
+						Image={assetIds.images.ui.inventory.pets.deleteIndicator}
+						ScaleType={Enum.ScaleType.Fit}
+					/>,
+				);
+			}
+		}
 
-	return (
-		<frame BackgroundTransparency={1}>
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={0}
-				BackgroundColor3={Color3.fromRGB(46, 115, 179)}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.925, 0.925)}
-				Image={""}
-				Event={{
-					Activated: (): void => {
-						const multiDeleteEnabled = getMultiDeleteState();
-						if (multiDeleteEnabled) {
-							setSelectedForDelete(!isSelectedForDelete);
-							return;
-						}
-					},
-				}}
-			>
-				<uiaspectratioconstraint AspectRatio={1} />
-				<uicorner CornerRadius={new UDim(1, 0)} />
-				<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 3, Transparency: 0.5 }} />
-				<PetViewport
-					native={{
-						AnchorPoint: vec2Middle,
-						Position: UDim2.fromScale(0.5, 0.5),
-						Size: UDim2.fromScale(0.9, 0.9),
-						BackgroundTransparency: 1,
-					}}
-					eggName={eggName}
-					petId={props.storedPetData.id}
-					variant={props.storedPetData.variant}
-				/>
-				{additionalDisplayedElements}
-				<textlabel
+		useEffect(() => {
+			if (isSelectedForDelete) {
+				if (!props.multiDeleteEnabled) {
+					setSelectedForDelete(false);
+				}
+			}
+		});
+
+		useEffect(() => {
+			if (props.multiDeleteEnabled) {
+				if (isSelectedForDelete) {
+					props.addPetToDeletionRegistry(props.storedPetData.guid);
+				}
+			}
+
+			if (!isSelectedForDelete) {
+				props.removePetFromDeletionRegistry(props.storedPetData.guid);
+			}
+		}, [isSelectedForDelete]);
+
+		return (
+			<frame BackgroundTransparency={1} LayoutOrder={petData.id} Key={props.storedPetData.guid}>
+				<imagebutton
 					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(1, 0.2)}
-					Position={UDim2.fromScale(0.5, 0.1)}
-					Text={petData.name}
-					TextScaled={true}
-					Font={font}
-					TextColor3={
-						petData.rarity === "Epic" ||
-						petData.rarity === "Legendary" ||
-						petData.rarity === "Primordial" ||
-						petData.rarity === "Prismatic"
-							? rarityData.BeginningColor
-							: Color3.fromRGB(255, 255, 255)
-					}
+					BackgroundTransparency={0}
+					BackgroundColor3={Color3.fromRGB(46, 115, 179)}
+					Position={UDim2.fromScale(0.5, 0.5)}
+					Size={UDim2.fromScale(0.925, 0.925)}
+					Image={""}
+					Event={{
+						Activated: (): void => {
+							if (props.multiDeleteEnabled) {
+								setSelectedForDelete(!isSelectedForDelete);
+							}
+						},
+					}}
 				>
-					<RarityGradient Rarity={petData.rarity} />
-					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>
-			</imagebutton>
-		</frame>
-	);
-});
+					<uiaspectratioconstraint AspectRatio={1} />
+					<uicorner CornerRadius={new UDim(1, 0)} />
+					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 3, Transparency: 0.5 }} />
+					<PetViewport
+						native={{
+							AnchorPoint: vec2Middle,
+							Position: UDim2.fromScale(0.5, 0.5),
+							Size: UDim2.fromScale(0.9, 0.9),
+							BackgroundTransparency: 1,
+						}}
+						petId={props.storedPetData.id}
+						variant={props.storedPetData.variant}
+					/>
+					{additionalDisplayedElements}
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Size={UDim2.fromScale(1, 0.2)}
+						Position={UDim2.fromScale(0.5, 0.1)}
+						Text={petData.name}
+						TextScaled={true}
+						Font={font}
+						TextColor3={
+							petData.rarity === "Epic" ||
+							petData.rarity === "Legendary" ||
+							petData.rarity === "Primordial" ||
+							petData.rarity === "Prismatic"
+								? rarityData.BeginningColor
+								: Color3.fromRGB(255, 255, 255)
+						}
+					>
+					  <RarityGradient Rarity={petData.rarity} />
+						<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+					</textlabel>
+				</imagebutton>
+			</frame>
+		);
+	},
+	{
+		componentType: "PureComponent",
+	},
+);
 /* eslint-enable jsdoc/require-jsdoc */
 
 /**
  * Displays the player's pets.
  */
 export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
-	hooks((props: PetItemsMappedProps, { useEffect, useValue }) => {
+	hooks((props: PetItemsProps, { useEffect, useValue }) => {
 		const layoutRef = useValue(Roact.createRef<UIGridLayout>());
 		useEffect(() => {
 			const uiGridLayout = layoutRef.value.getValue();
@@ -125,6 +160,18 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 
 			CollectionService.AddTag(uiGridLayout, `InventoryGridLayout`);
 		});
+
+		debug.profilebegin("filterPets");
+		let petsToRender = props.pets;
+		const searchText = props.searchText?.lower();
+		if (searchText !== undefined) {
+			petsToRender = props.pets.filter((pet) => {
+				const petData = getPetData(pet.id);
+
+				return petData.name.lower().find(searchText, 1, true)[0] !== undefined;
+			});
+		}
+		debug.profileend();
 
 		return (
 			<RescalingScrollingFrame
@@ -141,8 +188,15 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 					FillDirectionMaxCells={5}
 					Ref={layoutRef.value}
 				/>
-				{Object.entries(props.pets).map((pet) => {
-					return <PetFrame storedPetData={pet[1]}></PetFrame>;
+				{petsToRender.map((pet) => {
+					return (
+						<PetFrame
+							storedPetData={pet}
+							multiDeleteEnabled={props.multiDeleteEnabled}
+							addPetToDeletionRegistry={props.addPetToDeletionRegistry}
+							removePetFromDeletionRegistry={props.removePetFromDeletionRegistry}
+						/>
+					);
 				})}
 			</RescalingScrollingFrame>
 		);

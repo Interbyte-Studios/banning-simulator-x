@@ -7,7 +7,8 @@ import assetIds from "shared/assets";
 /**
  * Displays the counters of equipped pets and inventory size.
  */
-export const PetInventorySearch = hooks(() => {
+/* eslint-disable jsdoc/require-jsdoc */
+export const PetInventorySearch = hooks((props: { setSearch: (text: string) => void }) => {
 	return (
 		<imagelabel
 			AnchorPoint={vec2Middle}
@@ -28,9 +29,15 @@ export const PetInventorySearch = hooks(() => {
 				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 				PlaceholderColor3={Color3.fromRGB(255, 255, 255)}
+				Change={{
+					Text: (textbox): void => {
+						props.setSearch(textbox.Text);
+					},
+				}}
 			>
 				<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 108, 176) }} />
 			</textbox>
 		</imagelabel>
 	);
 });
+/* eslint-enable jsdoc/require-jsdoc */
