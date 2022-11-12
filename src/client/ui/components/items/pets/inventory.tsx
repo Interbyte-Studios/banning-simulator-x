@@ -4,6 +4,7 @@ import { CollectionService } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { PetViewport } from "client/ui/elements/petViewport";
+import { RarityGradient } from "client/ui/elements/rarityGradient";
 import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
@@ -134,6 +135,7 @@ const PetFrame = hooks(
 								: Color3.fromRGB(255, 255, 255)
 						}
 					>
+					  <RarityGradient Rarity={petData.rarity} />
 						<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
 					</textlabel>
 				</imagebutton>
