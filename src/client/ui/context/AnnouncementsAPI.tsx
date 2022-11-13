@@ -59,15 +59,7 @@ export const AnnouncementAPI = hooks((props: Roact.PropsWithChildren<{}>, { useS
 
 	const contextValue = {
 		errors: _errors,
-
-		/**
-		 * Adds an error to the API's state.
-		 *
-		 * @param message The message to display.
-		 * @param displayTime The time the error is displayed (defaults to 5 seconds).
-		 * @returns The callback to add the error to the API's state.
-		 */
-		addError: (message: string, displayTime?: number): void => addError(message, displayTime),
+		addError,
 	};
 
 	return <AnnouncementContext.Provider value={contextValue}>{props[Roact.Children]}</AnnouncementContext.Provider>;
