@@ -10,7 +10,6 @@ import { WeaponShopWeaponInfo } from "./weaponInfo";
 
 interface WeaponShopProps {
 	setWeaponShopVisibility: (value: boolean) => void;
-	displayAnnouncement: (message: string, displayTime?: number) => void;
 }
 
 /**
@@ -72,7 +71,7 @@ export const WeaponShop = hooks((props: WeaponShopProps, { useState, useEffect }
 				}}
 			/>
 			<WeaponShopWeaponInfo currentWeapon={viewedWeapon} />
-			<PurchaseWeapon currentWeapon={viewedWeapon} displayAnnouncement={props.displayAnnouncement} />
+			<PurchaseWeapon currentWeapon={viewedWeapon} />
 			<ExitButton
 				Position={UDim2.fromScale(0.65, 0.9)}
 				minimizedSize={0.06}

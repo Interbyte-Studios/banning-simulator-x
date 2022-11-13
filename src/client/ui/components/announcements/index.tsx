@@ -1,17 +1,13 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 
-export enum LocalMessageType {
-	Error,
-	Announcement,
-}
-
 interface LocalMessageProps {
-	messageType: LocalMessageType;
+	messageType: AnnouncementType;
 	message: string;
+	id: number;
 }
 
 const LocalMessage = hooks((props: LocalMessageProps, { useBinding, useEffect }) => {
@@ -23,34 +19,41 @@ const LocalMessage = hooks((props: LocalMessageProps, { useBinding, useEffect })
 	useEffect(() => {
 		task.wait(3);
 
-		for (let i = 0; i < 1; i++) {
-			task.wait(0.1);
+		while (transparency.getValue() < 1) {
+			task.wait(0.03);
 			setTransparency(transparency.getValue() + 0.1);
 		}
 	});
 
 	return (
-		<imagelabel
+		<canvasgroup
 			AnchorPoint={vec2Middle}
-			BackgroundColor3={Color3.fromRGB(44, 44, 44)}
+			BackgroundTransparency={1}
 			Size={UDim2.fromScale(1, 0.048)}
-			Image={""}
-			BackgroundTransparency={transparency.getValue()}
+			GroupTransparency={transparency}
 		>
-			<textlabel
+			<imagelabel
 				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
+				BackgroundColor3={Color3.fromRGB(44, 44, 44)}
 				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.95, 0.95)}
-				Text={props.message}
-				TextColor3={props.messageType === LocalMessageType.Announcement ? announcementColor : errorColor}
-				TextScaled={true}
-				Font={font}
-				Transparency={transparency.getValue()}
+				Size={UDim2.fromScale(1, 1)}
+				Image={""}
 			>
-				<BaseUIStroke Thickness={1} Color={Color3.fromRGB(50, 50, 50)} />
-			</textlabel>
-		</imagelabel>
+				<uicorner CornerRadius={new UDim(0.15, 0)} />
+				<textlabel
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					Position={UDim2.fromScale(0.5, 0.5)}
+					Size={UDim2.fromScale(0.95, 0.95)}
+					Text={props.message}
+					TextColor3={props.messageType === AnnouncementType.Announcement ? announcementColor : errorColor}
+					TextScaled={true}
+					Font={font}
+				>
+					<BaseUIStroke Thickness={1} Color={Color3.fromRGB(50, 50, 50)} />
+				</textlabel>
+			</imagelabel>
+		</canvasgroup>
 	);
 });
 
@@ -59,7 +62,6 @@ const LocalMessage = hooks((props: LocalMessageProps, { useBinding, useEffect })
  */
 export const LocalMessages = hooks((_, { useContext }) => {
 	const { errors } = useContext(AnnouncementContext);
-	print(errors);
 
 	return (
 		<frame
@@ -74,6 +76,9 @@ export const LocalMessages = hooks((_, { useContext }) => {
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				VerticalAlignment={Enum.VerticalAlignment.Bottom}
 			/>
+			{errors.map((errorData) => {
+				return <LocalMessage message={errorData.message} messageType={AnnouncementType.Error} id={errorData.id} />;
+			})}
 		</frame>
 	);
 });

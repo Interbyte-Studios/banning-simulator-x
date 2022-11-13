@@ -7,15 +7,11 @@ import { isStarterZone } from "shared/configs/zones";
 import { PurchaseZoneUI } from "./purchase";
 import { ZoneSign } from "./signs";
 
-interface ZoneUIProps {
-	displayAnnouncement: (message: string, displayTime?: number) => void;
-}
-
 /**
  * Generates ui's that display information for each zone.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const ZonesUI = hooks((props: ZoneUIProps, { useState }) => {
+export const ZonesUI = hooks((_, { useState }) => {
 	const [viewingZone, setViewedZone] = useState<{ world: WorldName; zone: number } | undefined>(undefined);
 
 	const elements: Array<Roact.Element> = [];
@@ -60,7 +56,6 @@ export const ZonesUI = hooks((props: ZoneUIProps, { useState }) => {
 			<PurchaseZoneUI
 				world={viewingZone.world}
 				zone={viewingZone.zone}
-				displayAnnouncement={props.displayAnnouncement}
 				hideMenu={(): void => setViewedZone(undefined)}
 			/>,
 		);

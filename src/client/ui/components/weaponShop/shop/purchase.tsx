@@ -2,6 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
@@ -10,12 +11,11 @@ import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
 import { RankState } from "shared/rodux/rank";
-import { weaponsReducer, WeaponsState } from "shared/rodux/weapons";
+import { WeaponsState } from "shared/rodux/weapons";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 interface PurchaseWeaponProps extends PurchaseWeaponMappedProps {
 	currentWeapon: number;
-	displayAnnouncement: (message: string, displayTime?: number) => void;
 }
 
 interface PurchaseWeaponMappedProps {
@@ -55,6 +55,7 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 
 		const { useContext } = hooks;
 		const { purchaseWeapon } = useContext(remoteContext);
+		const { addError } = useContext(AnnouncementContext);
 
 		const maximizedSize = 0.08;
 		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
@@ -78,28 +79,26 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 					Activated: (): void => {
 						// check to be sure weapon can be purchased
 						if (weaponInfo.data.cost === undefined) {
-							props.displayAnnouncement(
-								`There was an internal issue while purchasing the "${weaponInfo.name}" weapon.`,
-							);
+							addError(`There was an internal issue while purchasing "${weaponInfo.name}" (105).`);
 							return;
 						}
 
 						// check to be sure player has enough currency to purchase weapon
 						if (props.currencies[weaponInfo.data.cost.currency] < weaponInfo.data.cost.amount) {
-							props.displayAnnouncement(`You don't have enough currency to purchase the "${weaponInfo.name}" weapon.`);
+							addError(`You don't have enough currency to purchase "${weaponInfo.name}".`);
 							return;
 						}
 
 						// check to be sure player is required rank
 						if (weaponInfo.data.cost.requiredRank !== undefined) {
 							if (props.rank < weaponInfo.data.cost.requiredRank) {
-								props.displayAnnouncement(`You're not a high enough rank to purchase the "${weaponInfo.name}" weapon.`);
+								addError(`You're not a high enough rank to purchase "${weaponInfo.name}".`);
 								return;
 							}
 						}
 
 						purchaseWeapon.SendToServer(props.currentWeapon);
-						props.displayAnnouncement(`You've purchased the "${weaponInfo.name}" weapon!`);
+						addError(`You've purchased the "${weaponInfo.name}" weapon!`);
 					},
 					MouseEnter: (): void => motor.setGoal(minimizedSpring),
 					MouseLeave: (): void => motor.setGoal(maximizedSpring),

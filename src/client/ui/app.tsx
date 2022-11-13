@@ -41,8 +41,6 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 
 	const [isHatching, setHatchingStatus] = useState(false);
 
-	const { addError } = useContext(AnnouncementContext);
-
 	useEffect(() => {
 		let lastTouched = 0;
 
@@ -108,11 +106,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 					}
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
-				<CodesMenu
-					visible={codesVisible}
-					hideMenu={(): void => setCodesVisible(false)}
-					displayAnnouncement={addError}
-				/>
+				<CodesMenu visible={codesVisible} hideMenu={(): void => setCodesVisible(false)} />
 				<SettingsMenu visible={settingsVisible} hideMenu={(): void => setSettingsVisibility(false)} />
 				<Quests visible={questsVisible} hideMenu={(): void => setQuestsVisibility(false)} />
 				<Hud
@@ -128,10 +122,8 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
 				/>
-				<AnnouncementAPI>
-					<LocalMessages />
-				</AnnouncementAPI>
-				<ZonesUI displayAnnouncement={addError} />
+				<LocalMessages />
+				<ZonesUI />
 				<WeaponEquip
 					visible={
 						!isHatching &&
@@ -142,21 +134,15 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 						!talismanTowerVisibility
 					}
 				/>
-				<RankUpgrade
-					visible={rankUpgradeVisibility}
-					hideMenu={(): void => setRankUpgradeVisibility(false)}
-					displayAnnouncement={addError}
-				/>
+				<RankUpgrade visible={rankUpgradeVisibility} hideMenu={(): void => setRankUpgradeVisibility(false)} />
 				<WeaponShopHandle
 					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !talismanTowerVisibility}
 					weaponShopVisible={weaponShopVisibility}
-					displayAnnouncement={addError}
 					setWeaponShopVisibility={(value: boolean): void => setWeaponShopVisibility(value)}
 				/>
 				<TalismanTowerHandle
 					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility}
 					talismanTowerVisible={talismanTowerVisibility}
-					displayAnnouncement={addError}
 					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
 				/>
 			</>

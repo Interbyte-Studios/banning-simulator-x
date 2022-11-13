@@ -11,7 +11,6 @@ interface WeaponShopHandleProps {
 	enabled: boolean;
 	weaponShopVisible: boolean;
 	setWeaponShopVisibility: (value: boolean) => void;
-	displayAnnouncement: (message: string, displayTime?: number) => void;
 }
 
 /**
@@ -73,12 +72,7 @@ export const WeaponShopHandle = hooks((props: WeaponShopHandleProps, { useEffect
 	});
 
 	if (props.weaponShopVisible) {
-		return (
-			<WeaponShop
-				setWeaponShopVisibility={props.setWeaponShopVisibility}
-				displayAnnouncement={props.displayAnnouncement}
-			/>
-		);
+		return <WeaponShop setWeaponShopVisibility={props.setWeaponShopVisibility} />;
 	} else {
 		return <WeaponShopInteractPrompt visible={true} displayShop={(): void => props.setWeaponShopVisibility(true)} />;
 	}

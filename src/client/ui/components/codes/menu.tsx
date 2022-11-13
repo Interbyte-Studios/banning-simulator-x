@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { hooks } from "client/ui/hooks";
@@ -11,7 +12,6 @@ import { TwitterHandle } from "./twitterHandle";
 interface CodesMenuProps {
 	visible: boolean;
 	hideMenu: () => void;
-	displayAnnouncement: (message: string, displayTime?: number) => void;
 }
 
 export const CodesMenu = hooks((props: CodesMenuProps) => {
@@ -53,7 +53,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 			>
 				<BaseUIStroke Thickness={2} />
 			</textlabel>
-			<TwitterHandle displayAnnouncement={props.displayAnnouncement} />
+			<TwitterHandle />
 			<textlabel
 				AnchorPoint={vec2Middle}
 				Position={UDim2.fromScale(0.5, 0.7)}
@@ -66,7 +66,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 			>
 				<BaseUIStroke Thickness={2} />
 			</textlabel>
-			<DiscordHandle displayAnnouncement={props.displayAnnouncement} />
+			<DiscordHandle />
 			<ExitButton
 				Position={UDim2.fromScale(0.95, 0.075)}
 				minimizedSize={0.1}
