@@ -1,4 +1,5 @@
-import Roact from "@rbxts/roact";
+import Roact, { createContext } from "@rbxts/roact";
+import { useContext } from "@rbxts/roact-hooked";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Workspace } from "@rbxts/services";
 import { Store } from "shared/rodux";
@@ -14,6 +15,7 @@ import { SettingsMenu } from "./components/settings/menu";
 import { TalismanTowerHandle } from "./components/talismans";
 import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
+import { AnnouncementAPI, AnnouncementContext } from "./context/AnnouncementsAPI";
 import { hooks } from "./hooks";
 
 interface AppProps {
@@ -38,23 +40,8 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	const [talismanTowerVisibility, setTalismanTowerVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
-	const [displayAnnouncement, setDisplayAnnouncement] = useState<
-		{ message: string; announcementType: "errors" | "announcements" } | undefined
-	>(undefined);
 
-	/**
-	 * @param announcementType The type of message to display.
-	 * @param message The message to display.
-	 * @returns A function to display the message.
-	 */
-	const applyAnnouncement = (announcementType: "errors" | "announcements", message: string): void =>
-		setDisplayAnnouncement({ message, announcementType });
-
-	useEffect(() => {
-		task.delay(5, () => {
-			setDisplayAnnouncement(undefined);
-		});
-	}, [displayAnnouncement]);
+	const { addError } = useContext(AnnouncementContext);
 
 	useEffect(() => {
 		let lastTouched = 0;
@@ -124,7 +111,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 				<CodesMenu
 					visible={codesVisible}
 					hideMenu={(): void => setCodesVisible(false)}
-					displayAnnouncement={applyAnnouncement}
+					displayAnnouncement={addError}
 				/>
 				<SettingsMenu visible={settingsVisible} hideMenu={(): void => setSettingsVisibility(false)} />
 				<Quests visible={questsVisible} hideMenu={(): void => setQuestsVisibility(false)} />
@@ -141,8 +128,10 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
 				/>
-				<LocalMessages currentMessage={displayAnnouncement} />
-				<ZonesUI displayAnnouncement={applyAnnouncement} />
+				<AnnouncementAPI>
+					<LocalMessages />
+				</AnnouncementAPI>
+				<ZonesUI displayAnnouncement={addError} />
 				<WeaponEquip
 					visible={
 						!isHatching &&
@@ -156,18 +145,18 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 				<RankUpgrade
 					visible={rankUpgradeVisibility}
 					hideMenu={(): void => setRankUpgradeVisibility(false)}
-					displayAnnouncement={applyAnnouncement}
+					displayAnnouncement={addError}
 				/>
 				<WeaponShopHandle
 					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !talismanTowerVisibility}
 					weaponShopVisible={weaponShopVisibility}
-					displayAnnouncement={applyAnnouncement}
+					displayAnnouncement={addError}
 					setWeaponShopVisibility={(value: boolean): void => setWeaponShopVisibility(value)}
 				/>
 				<TalismanTowerHandle
 					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility}
 					talismanTowerVisible={talismanTowerVisibility}
-					displayAnnouncement={applyAnnouncement}
+					displayAnnouncement={addError}
 					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
 				/>
 			</>

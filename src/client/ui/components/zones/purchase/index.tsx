@@ -18,7 +18,7 @@ import { PurchaseZoneButton } from "./purchase";
 interface PurchaseZoneUIProps extends PurchaseZoneUIMappedProps {
 	world: WorldName;
 	zone: number;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+	displayAnnouncement: (message: string, displayTime?: number) => void;
 	hideMenu: () => void;
 }
 

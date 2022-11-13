@@ -10,7 +10,7 @@ import { WeaponShopWeaponInfo } from "./weaponInfo";
 
 interface WeaponShopProps {
 	setWeaponShopVisibility: (value: boolean) => void;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+	displayAnnouncement: (message: string, displayTime?: number) => void;
 }
 
 /**

@@ -13,7 +13,7 @@ import { StoreState } from "shared/rodux";
 import { DiscordRewards } from "./discordRewards";
 
 interface DiscordHandleProps extends DiscordHandleMappedProps {
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+	displayAnnouncement: (message: string, displayTime?: number) => void;
 }
 
 interface DiscordHandleMappedProps {
@@ -92,7 +92,6 @@ export const DiscordHandle = RoactRodux.connect(mapStateToProps)(
 							const textBox = textBoxRef.value.getValue();
 							if (textBox === undefined) {
 								props.displayAnnouncement(
-									"errors",
 									"An internal error occurred while verifying your information. Please try again later.",
 								);
 								return;
@@ -101,7 +100,6 @@ export const DiscordHandle = RoactRodux.connect(mapStateToProps)(
 							const verifyDiscordPresence = await verifyDiscord.CallServerAsync(textBox.Text);
 							if (verifyDiscordPresence.success) {
 								props.displayAnnouncement(
-									"announcements",
 									"Congratulations! You have been verified! Enjoy your 50% experience boost :)",
 								);
 								return;
@@ -109,20 +107,18 @@ export const DiscordHandle = RoactRodux.connect(mapStateToProps)(
 								switch (verifyDiscordPresence.reason) {
 									case VerifyDiscordFailKind.InternalError: {
 										props.displayAnnouncement(
-											"errors",
 											"An internal error occurred while verifying your information. Please try again later.",
 										);
 										return;
 									}
 									case VerifyDiscordFailKind.NotInDiscord: {
 										props.displayAnnouncement(
-											"errors",
 											"You are not in the Interbyte Discord server. Please join and try again.",
 										);
 										return;
 									}
 									case VerifyDiscordFailKind.RateLimit: {
-										props.displayAnnouncement("errors", "You have been rate limited. Please try again later.");
+										props.displayAnnouncement("You have been rate limited. Please try again later.");
 										return;
 									}
 								}

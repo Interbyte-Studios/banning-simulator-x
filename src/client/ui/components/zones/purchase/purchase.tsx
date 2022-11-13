@@ -19,7 +19,7 @@ import { WorldsState } from "shared/rodux/worlds";
 interface PurchaseZoneButtonProps extends PurchaseZoneButtonMappedProps {
 	world: WorldName;
 	zone: ZoneNames;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+	displayAnnouncement: (message: string, displayTime?: number) => void;
 	hideMenu: () => void;
 }
 
@@ -81,28 +81,22 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 						if (checkZonePurchaseRequirements.success === false) {
 							switch (checkZonePurchaseRequirements.reason) {
 								case PurchaseZoneFailKind.InternalError: {
-									props.displayAnnouncement("errors", `There was an error while purchasing "${props.zone}" zone.`);
+									props.displayAnnouncement(`There was an error while purchasing "${props.zone}" zone.`);
 									props.hideMenu();
 									return;
 								}
 								case PurchaseZoneFailKind.NotEnoughCurrency: {
-									props.displayAnnouncement("errors", `You don't have enough to purchase the "${props.zone}" zone.`);
+									props.displayAnnouncement(`You don't have enough to purchase the "${props.zone}" zone.`);
 									props.hideMenu();
 									return;
 								}
 								case PurchaseZoneFailKind.NotRequiredRank: {
-									props.displayAnnouncement(
-										"errors",
-										`You aren't a high enough rank to purchase the "${props.zone}" zone.`,
-									);
+									props.displayAnnouncement(`You aren't a high enough rank to purchase the "${props.zone}" zone.`);
 									props.hideMenu();
 									return;
 								}
 								case PurchaseZoneFailKind.NonlinearProgression: {
-									props.displayAnnouncement(
-										"errors",
-										`You don't meet the requirements to purchase the "${props.zone}" zone.`,
-									);
+									props.displayAnnouncement(`You don't meet the requirements to purchase the "${props.zone}" zone.`);
 									props.hideMenu();
 									return;
 								}
@@ -110,34 +104,28 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 						} else {
 							const requestZonePurchase = await purchaseZone.CallServerAsync(props.world, props.zone);
 							if (requestZonePurchase.success === true) {
-								props.displayAnnouncement("announcements", `You have purchased the "${props.zone}" zone.`);
+								props.displayAnnouncement(`You have purchased the "${props.zone}" zone.`);
 								props.hideMenu();
 								return;
 							} else {
 								switch (requestZonePurchase.reason) {
 									case PurchaseZoneFailKind.InternalError: {
-										props.displayAnnouncement("errors", `There was an error while purchasing "${props.zone}" zone.`);
+										props.displayAnnouncement(`There was an error while purchasing "${props.zone}" zone.`);
 										props.hideMenu();
 										return;
 									}
 									case PurchaseZoneFailKind.NotEnoughCurrency: {
-										props.displayAnnouncement("errors", `You don't have enough to purchase the "${props.zone}" zone.`);
+										props.displayAnnouncement(`You don't have enough to purchase the "${props.zone}" zone.`);
 										props.hideMenu();
 										return;
 									}
 									case PurchaseZoneFailKind.NotRequiredRank: {
-										props.displayAnnouncement(
-											"errors",
-											`You aren't a high enough rank to purchase the "${props.zone}" zone.`,
-										);
+										props.displayAnnouncement(`You aren't a high enough rank to purchase the "${props.zone}" zone.`);
 										props.hideMenu();
 										return;
 									}
 									case PurchaseZoneFailKind.NonlinearProgression: {
-										props.displayAnnouncement(
-											"errors",
-											`You don't meet the requirements to purchase the "${props.zone}" zone.`,
-										);
+										props.displayAnnouncement(`You don't meet the requirements to purchase the "${props.zone}" zone.`);
 										props.hideMenu();
 										return;
 									}

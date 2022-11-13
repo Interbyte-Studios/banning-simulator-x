@@ -15,7 +15,7 @@ import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 interface PurchaseWeaponProps extends PurchaseWeaponMappedProps {
 	currentWeapon: number;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+	displayAnnouncement: (message: string, displayTime?: number) => void;
 }
 
 interface PurchaseWeaponMappedProps {
@@ -79,7 +79,6 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 						// check to be sure weapon can be purchased
 						if (weaponInfo.data.cost === undefined) {
 							props.displayAnnouncement(
-								"errors",
 								`There was an internal issue while purchasing the "${weaponInfo.name}" weapon.`,
 							);
 							return;
@@ -87,26 +86,20 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 
 						// check to be sure player has enough currency to purchase weapon
 						if (props.currencies[weaponInfo.data.cost.currency] < weaponInfo.data.cost.amount) {
-							props.displayAnnouncement(
-								"errors",
-								`You don't have enough currency to purchase the "${weaponInfo.name}" weapon.`,
-							);
+							props.displayAnnouncement(`You don't have enough currency to purchase the "${weaponInfo.name}" weapon.`);
 							return;
 						}
 
 						// check to be sure player is required rank
 						if (weaponInfo.data.cost.requiredRank !== undefined) {
 							if (props.rank < weaponInfo.data.cost.requiredRank) {
-								props.displayAnnouncement(
-									"errors",
-									`You're not a high enough rank to purchase the "${weaponInfo.name}" weapon.`,
-								);
+								props.displayAnnouncement(`You're not a high enough rank to purchase the "${weaponInfo.name}" weapon.`);
 								return;
 							}
 						}
 
 						purchaseWeapon.SendToServer(props.currentWeapon);
-						props.displayAnnouncement("announcements", `You've purchased the "${weaponInfo.name}" weapon!`);
+						props.displayAnnouncement(`You've purchased the "${weaponInfo.name}" weapon!`);
 					},
 					MouseEnter: (): void => motor.setGoal(minimizedSpring),
 					MouseLeave: (): void => motor.setGoal(maximizedSpring),

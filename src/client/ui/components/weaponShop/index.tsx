@@ -11,7 +11,7 @@ interface WeaponShopHandleProps {
 	enabled: boolean;
 	weaponShopVisible: boolean;
 	setWeaponShopVisibility: (value: boolean) => void;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+	displayAnnouncement: (message: string, displayTime?: number) => void;
 }
 
 /**

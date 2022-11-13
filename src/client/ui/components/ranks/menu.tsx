@@ -17,7 +17,7 @@ import { UpgradeRank } from "./upgradeRank";
 interface RankUpgradeProps extends RankUpgradeMappedProps {
 	visible: boolean;
 	hideMenu: () => void;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+	displayAnnouncement: (message: string, displayTime?: number) => void;
 }
 
 interface RankUpgradeMappedProps {

@@ -13,7 +13,7 @@ import { CurrenciesState } from "shared/rodux/currencies";
 interface UpgradeRankProps extends UpgradeRankMappedProps {
 	rank: number;
 	experience: number;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+	displayAnnouncement: (message: string, displayTime?: number) => void;
 }
 
 interface UpgradeRankMappedProps {
@@ -67,23 +67,17 @@ export const UpgradeRank = RoactRodux.connect(mapStateToProps)(
 				Event={{
 					Activated: (): void => {
 						if (props.experience < nextRankData.requiredExperience) {
-							props.displayAnnouncement("errors", `You don't have enough experience to upgrade your rank.`);
+							props.displayAnnouncement(`You don't have enough experience to upgrade your rank.`);
 							return;
 						}
 
 						if (props.currencies[nextRankData.currency] < nextRankData.amount) {
-							props.displayAnnouncement(
-								"errors",
-								`You don't have enough "${nextRankData.currency}" to upgrade your rank.`,
-							);
+							props.displayAnnouncement(`You don't have enough "${nextRankData.currency}" to upgrade your rank.`);
 							return;
 						}
 
 						unlockRank.SendToServer();
-						props.displayAnnouncement(
-							"announcements",
-							`You've upgraded to the rank "${nextRankData.name}". Congratulations!`,
-						);
+						props.displayAnnouncement(`You've upgraded to the rank "${nextRankData.name}". Congratulations!`);
 					},
 					MouseEnter: (): void => motor.setGoal(minimizedSpring),
 					MouseLeave: (): void => motor.setGoal(maximizedSpring),

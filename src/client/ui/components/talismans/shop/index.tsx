@@ -10,7 +10,7 @@ import { ViewPreviousTalisman } from "./viewPrevious";
 
 interface TalismanTowerProps {
 	setTalismanTowerVisibility: (value: boolean) => void;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+	displayAnnouncement: (message: string, displayTime?: number) => void;
 }
 
 /**

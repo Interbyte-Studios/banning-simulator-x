@@ -1,11 +1,8 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
-
-interface LocalMessagesProps {
-	messages: Array<LocalMessageProps>;
-}
 
 export enum LocalMessageType {
 	Error,
@@ -60,7 +57,10 @@ const LocalMessage = hooks((props: LocalMessageProps, { useBinding, useEffect })
 /**
  * Displays messages of specific types to players in the form of an game announcement.
  */
-export const LocalMessages = hooks((props: LocalMessagesProps) => {
+export const LocalMessages = hooks((_, { useContext }) => {
+	const { errors } = useContext(AnnouncementContext);
+	print(errors);
+
 	return (
 		<frame
 			AnchorPoint={vec2Middle}

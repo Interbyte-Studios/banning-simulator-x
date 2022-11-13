@@ -11,7 +11,7 @@ interface TalismanTowerHandleProps {
 	enabled: boolean;
 	talismanTowerVisible: boolean;
 	setTalismanTowerVisibility: (value: boolean) => void;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+	displayAnnouncement: (message: string, displayTime?: number) => void;
 }
 
 /**

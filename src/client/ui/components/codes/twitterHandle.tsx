@@ -12,7 +12,7 @@ const maximizedSize = 0.1;
 const minimizedSize = 0.075;
 
 interface TwitterHandleProps {
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+	displayAnnouncement: (message: string, displayTime?: number) => void;
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
@@ -66,25 +66,22 @@ export const TwitterHandle = hooks((props: TwitterHandleProps, hooks) => {
 					Activated: async (): Promise<void> => {
 						const textBox = textBoxRef.value.getValue();
 						if (textBox === undefined) {
-							props.displayAnnouncement("errors", "Internal issue while redeemind code. Please try again later.");
+							props.displayAnnouncement("Internal issue while redeemind code. Please try again later.");
 							return warn("No textbox ref found.");
 						}
 
 						const codeRedeemed = await redeemCode.CallServerAsync(textBox.Text);
 						if (codeRedeemed.success) {
-							props.displayAnnouncement(
-								"announcements",
-								`Congratulations! You've redeemed the code "${textBox.Text}."`,
-							);
+							props.displayAnnouncement(`Congratulations! You've redeemed the code "${textBox.Text}."`);
 							return;
 						} else {
 							switch (codeRedeemed.reason) {
 								case RedeemCodeFailKind.AlreadyRedeemed: {
-									props.displayAnnouncement("errors", "You have already redeemed that code.");
+									props.displayAnnouncement("You have already redeemed that code.");
 									return;
 								}
 								case RedeemCodeFailKind.InvalidCode: {
-									props.displayAnnouncement("errors", `The code you entered "${textBox.Text}" is invalid.`);
+									props.displayAnnouncement(`The code you entered "${textBox.Text}" is invalid.`);
 									return;
 								}
 							}

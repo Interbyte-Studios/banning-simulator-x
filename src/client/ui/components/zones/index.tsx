@@ -8,7 +8,7 @@ import { PurchaseZoneUI } from "./purchase";
 import { ZoneSign } from "./signs";
 
 interface ZoneUIProps {
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+	displayAnnouncement: (message: string, displayTime?: number) => void;
 }
 
 /**
