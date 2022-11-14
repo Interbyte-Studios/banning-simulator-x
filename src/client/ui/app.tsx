@@ -14,7 +14,6 @@ import { SettingsMenu } from "./components/settings/menu";
 import { TalismanTowerHandle } from "./components/talismans";
 import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
-import { AnnouncementAPI } from "./context/AnnouncementsAPI";
 import { hooks } from "./hooks";
 
 interface AppProps {
@@ -31,6 +30,7 @@ interface AppProps {
  * @returns The Roact app to mount.
  */
 export const app = hooks((props: AppProps, { useEffect, useState }) => {
+	print("Rendering app");
 	const [codesVisible, setCodesVisible] = useState(false);
 	const [questsVisible, setQuestsVisibility] = useState(false);
 	const [settingsVisible, setSettingsVisibility] = useState(false);
@@ -97,7 +97,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
-			<AnnouncementAPI>
+			<>
 				<EggsUI
 					store={props.store}
 					visible={
@@ -144,7 +144,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 					talismanTowerVisible={talismanTowerVisibility}
 					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
 				/>
-			</AnnouncementAPI>
+			</>
 		</RoactRodux.StoreProvider>
 	);
 });
