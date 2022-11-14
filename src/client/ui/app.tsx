@@ -1,5 +1,4 @@
-import Roact, { createContext } from "@rbxts/roact";
-import { useContext } from "@rbxts/roact-hooked";
+import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Workspace } from "@rbxts/services";
 import { Store } from "shared/rodux";
@@ -15,7 +14,7 @@ import { SettingsMenu } from "./components/settings/menu";
 import { TalismanTowerHandle } from "./components/talismans";
 import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
-import { AnnouncementAPI, AnnouncementContext } from "./context/AnnouncementsAPI";
+import { AnnouncementAPI } from "./context/AnnouncementsAPI";
 import { hooks } from "./hooks";
 
 interface AppProps {
