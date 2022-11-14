@@ -17,13 +17,13 @@ const LocalMessage = hooks((props: LocalMessageProps, { useBinding, useEffect })
 	const errorColor = Color3.fromRGB(255, 119, 155);
 
 	useEffect(() => {
-		task.wait(3);
-
-		while (transparency.getValue() < 1) {
-			task.wait(0.03);
-			setTransparency(transparency.getValue() + 0.1);
-		}
-	});
+		task.delay(3, () => {
+			while (transparency.getValue() < 1) {
+				task.wait(0.03);
+				setTransparency(transparency.getValue() + 0.1);
+			}
+		});
+	}, []);
 
 	return (
 		<canvasgroup
@@ -77,7 +77,14 @@ export const LocalMessages = hooks((_, { useContext }) => {
 				VerticalAlignment={Enum.VerticalAlignment.Bottom}
 			/>
 			{errors.map((errorData) => {
-				return <LocalMessage message={errorData.message} messageType={AnnouncementType.Error} id={errorData.id} />;
+				return (
+					<LocalMessage
+						message={errorData.message}
+						messageType={AnnouncementType.Error}
+						id={errorData.id}
+						Key={errorData.id}
+					/>
+				);
 			})}
 		</frame>
 	);
