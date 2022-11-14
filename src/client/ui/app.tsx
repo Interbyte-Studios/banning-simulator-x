@@ -98,7 +98,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
-			<>
+			<AnnouncementAPI>
 				<EggsUI
 					store={props.store}
 					visible={
@@ -145,7 +145,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 					talismanTowerVisible={talismanTowerVisibility}
 					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
 				/>
-			</>
+			</AnnouncementAPI>
 		</RoactRodux.StoreProvider>
 	);
 });

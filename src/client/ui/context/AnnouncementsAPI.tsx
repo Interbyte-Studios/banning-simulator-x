@@ -8,12 +8,10 @@ export enum AnnouncementType {
 }
 
 export const AnnouncementContext = Roact.createContext({
-	errors: identity<Array<{ message: string; messageType: AnnouncementType; id: number }>>([]),
+	errors: identity<ReadonlyArray<{ message: string; messageType: AnnouncementType; id: number }>>([]),
 	// eslint-disable-next-line jsdoc/require-jsdoc, @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
 	addError: (message: string, displayTime?: number) => {},
 });
-
-let numberOfAnnouncements = 0;
 
 /**
  * A context API that handles announcements.
@@ -21,7 +19,7 @@ let numberOfAnnouncements = 0;
  * @param props The Roact children to display.
  * @returns A roact component.
  */
-export const AnnouncementAPI = hooks((props: Roact.PropsWithChildren<{}>, { useState }) => {
+export const AnnouncementAPI = hooks((props: Roact.PropsWithChildren<{}>, { useState, useCallback }) => {
 	const [errors, setErrors] = useState<Array<{ message: string; messageType: AnnouncementType; id: number }>>([]);
 	warn(errors);
 
@@ -31,21 +29,21 @@ export const AnnouncementAPI = hooks((props: Roact.PropsWithChildren<{}>, { useS
 	 * @param message The message to display.
 	 * @param displayTime The time the error is displayed (defaults to 5 seconds).
 	 */
-	const addError = (message: string, displayTime?: number): void => {
-		const newErrors = [
-			...errors,
-			{
-				message,
-				messageType: AnnouncementType.Error,
-				id: numberOfAnnouncements,
-			},
-		];
+	const addError = useCallback(
+		(message: string, displayTime?: number): void => {
+			const newErrors = [
+				...errors,
+				{
+					message,
+					messageType: AnnouncementType.Error,
+					id: errors.size(),
+				},
+			];
 
-		warn("called");
-		numberOfAnnouncements += 1;
-		setErrors(newErrors);
+			warn("new error added");
+			setErrors(newErrors);
 
-		/*
+			/*
 		task.delay(displayTime ?? 5, () => {
 			const errorIndex = errors.findIndex((e) => e.id === numberOfAnnouncements);
 			const newErrors = [...errors];
@@ -53,12 +51,12 @@ export const AnnouncementAPI = hooks((props: Roact.PropsWithChildren<{}>, { useS
 			setErrors(newErrors);
 		});
 		*/
-	};
-
-	const _errors = [...errors];
+		},
+		[errors, setErrors],
+	);
 
 	const contextValue = {
-		errors: _errors,
+		errors,
 		addError,
 	};
 
