@@ -1,6 +1,5 @@
 import Roact from "@rbxts/roact";
 import { Players, PolicyService } from "@rbxts/services";
-import { t } from "@rbxts/t";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { ExitButton } from "client/ui/elements/exitButton";
@@ -40,7 +39,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 			>
 				<BaseUIStroke Thickness={2} />
 			</textlabel>
-			<TwitterHandle displayAnnouncement={props.displayAnnouncement} />
+			<TwitterHandle />
 		</>,
 	);
 
@@ -59,7 +58,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 				>
 					<BaseUIStroke Thickness={2} />
 				</textlabel>
-				<DiscordHandle displayAnnouncement={props.displayAnnouncement} />
+				<DiscordHandle />
 			</>,
 		);
 	} else {

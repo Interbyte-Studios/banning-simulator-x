@@ -28,8 +28,7 @@ interface AppProps {
  * @param props.store The store to create the app with.
  * @returns The Roact app to mount.
  */
-export const app = hooks((props: AppProps, { useEffect, useState }) => {
-	print("Rendering app");
+export const app = hooks((props: AppProps, { useState }) => {
 	const [codesVisible, setCodesVisible] = useState(false);
 	const [questsVisible, setQuestsVisibility] = useState(false);
 	const [settingsVisible, setSettingsVisibility] = useState(false);
@@ -76,7 +75,16 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 						!talismanTowerVisibility
 					}
 				/>
-				<RankUpgrade visible={rankUpgradeVisibility} hideMenu={(): void => setRankUpgradeVisibility(false)} />
+				<RankUpgrade
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
+				/>
 				<WeaponShopHandle
 					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !talismanTowerVisibility}
 					weaponShopVisible={weaponShopVisibility}

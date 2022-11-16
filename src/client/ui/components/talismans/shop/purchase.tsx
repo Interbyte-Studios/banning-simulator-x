@@ -79,7 +79,7 @@ export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 						if (previousTalismanId > 0) {
 							const ownsPreviousTalisman = props.talismans.has(previousTalismanId);
 							if (!ownsPreviousTalisman) {
-								props.displayAnnouncement("errors", `You don't own the previous talisman!`);
+								addError(`You don't own the previous talisman!`);
 								return;
 							}
 						}

@@ -20,8 +20,7 @@ import { UpgradeRank } from "./upgradeRank";
 const player = Players.LocalPlayer;
 
 interface RankUpgradeProps extends RankUpgradeMappedProps {
-	visible: boolean;
-	hideMenu: () => void;
+	enabled: boolean;
 }
 
 interface RankUpgradeMappedProps {
