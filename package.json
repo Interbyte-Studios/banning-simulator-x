@@ -37,7 +37,6 @@
     "@rbxts/net": "^2.1.5",
     "@rbxts/object-utils": "^1.0.4",
     "@rbxts/roact": "^1.4.2-ts.2",
-    "@rbxts/roact-hooked": "^2.1.2",
     "@rbxts/roact-hooks": "^0.4.1-ts.0",
     "@rbxts/roact-rodux": "^0.2.2-ts.5",
     "@rbxts/rodux": "^3.0.0-ts.3",
