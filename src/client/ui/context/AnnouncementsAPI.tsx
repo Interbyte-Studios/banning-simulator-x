@@ -17,6 +17,7 @@ export const AnnouncementContext = Roact.createContext({
 });
 
 let numberOfAnnouncements = 0;
+let lastCheck = 0;
 
 /**
  * A context API that handles announcements.
@@ -30,7 +31,6 @@ export const AnnouncementAPI = hooks((props: Roact.PropsWithChildren<{}>, { useS
 	>([]);
 
 	useEffect(() => {
-		let lastCheck = 0;
 		const connection = RunService.Heartbeat.Connect(() => {
 			const now = time();
 			if (now - lastCheck < 1) {
@@ -38,21 +38,17 @@ export const AnnouncementAPI = hooks((props: Roact.PropsWithChildren<{}>, { useS
 			}
 			lastCheck = now;
 
-			const filteredErrors: Array<number> = [];
-			for (const errorData of errors) {
+			const newErrors = [...errors];
+			for (const errorData of newErrors) {
 				const now = time();
 				if (now - errorData.displayedTime < 5) {
 					continue;
 				}
 
-				filteredErrors.push(errorData.id);
+				const errorIndex = newErrors.findIndex((eData) => eData.id === errorData.id);
+				newErrors.remove(errorIndex);
 			}
 
-			const newErrors = [...errors];
-			filteredErrors.forEach((id) => {
-				const errorIndex = newErrors.findIndex((errorData) => errorData.id === id);
-				newErrors.remove(errorIndex);
-			});
 			setErrors(newErrors);
 		});
 

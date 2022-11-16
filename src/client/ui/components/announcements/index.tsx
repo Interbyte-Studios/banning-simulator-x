@@ -10,7 +10,10 @@ interface LocalMessageProps {
 	id: number;
 }
 
+const cachedAnnouncements: Array<number> = [];
+
 const LocalMessage = hooks((props: LocalMessageProps, { useBinding, useEffect }) => {
+	warn("calling component");
 	const [transparency, setTransparency] = useBinding(0);
 
 	const announcementColor = Color3.fromRGB(255, 255, 127);
@@ -22,13 +25,15 @@ const LocalMessage = hooks((props: LocalMessageProps, { useBinding, useEffect })
 				task.wait(0.03);
 				setTransparency(transparency.getValue() + 0.1);
 			}
+
+			cachedAnnouncements.push(props.id);
 		});
 	}, []);
 
 	return (
 		<canvasgroup
 			AnchorPoint={vec2Middle}
-			BackgroundTransparency={0}
+			BackgroundTransparency={1}
 			Size={UDim2.fromScale(1, 0.048)}
 			GroupTransparency={transparency}
 		>
@@ -66,7 +71,7 @@ export const LocalMessages = hooks((_, { useContext }) => {
 	return (
 		<frame
 			AnchorPoint={vec2Middle}
-			BackgroundTransparency={0}
+			BackgroundTransparency={1}
 			Position={UDim2.fromScale(0.905, 0.495)}
 			Size={UDim2.fromScale(0.17, 0.99)}
 		>
@@ -77,6 +82,11 @@ export const LocalMessages = hooks((_, { useContext }) => {
 				VerticalAlignment={Enum.VerticalAlignment.Bottom}
 			/>
 			{errors.map((errorData) => {
+				const cachedAnnouncement = cachedAnnouncements.find((id) => id === errorData.id);
+				if (cachedAnnouncement !== undefined) {
+					return <></>;
+				}
+
 				return (
 					<LocalMessage
 						message={errorData.message}
