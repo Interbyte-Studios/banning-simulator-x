@@ -74,6 +74,16 @@ export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 				ScaleType={Enum.ScaleType.Fit}
 				Event={{
 					Activated: (): void => {
+						// check to be sure they've bought the previous talisman
+						const previousTalismanId = props.currentTalisman - 1;
+						if (previousTalismanId > 0) {
+							const ownsPreviousTalisman = props.talismans.has(previousTalismanId);
+							if (!ownsPreviousTalisman) {
+								props.displayAnnouncement("errors", `You don't own the previous talisman!`);
+								return;
+							}
+						}
+
 						// check to be sure player has enough currency to purchase talisman
 						if (props.currencies[talismanInfo.cost.currency] < talismanInfo.cost.amount) {
 							addError(`You don't have enough currency to purchase "${talismanInfo.name}".`);

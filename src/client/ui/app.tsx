@@ -1,6 +1,5 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Workspace } from "@rbxts/services";
 import { Store } from "shared/rodux";
 
 import { LocalMessages } from "./components/announcements";
@@ -34,66 +33,10 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	const [codesVisible, setCodesVisible] = useState(false);
 	const [questsVisible, setQuestsVisibility] = useState(false);
 	const [settingsVisible, setSettingsVisibility] = useState(false);
-	const [rankUpgradeVisibility, setRankUpgradeVisibility] = useState(false);
 	const [weaponShopVisibility, setWeaponShopVisibility] = useState(false);
 	const [talismanTowerVisibility, setTalismanTowerVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
-
-	useEffect(() => {
-		let lastTouched = 0;
-
-		const connection = Workspace.interactions.rankUpgrade.interact.Touched.Connect((hit) => {
-			if (rankUpgradeVisibility) {
-				return;
-			}
-
-			const now = time();
-			if (now - lastTouched < 1) {
-				return;
-			}
-			lastTouched = now;
-
-			const hitInstance = hit.Parent;
-			if (hitInstance === undefined) {
-				return;
-			}
-
-			if (!hitInstance.IsA("Model")) {
-				return;
-			}
-
-			if (hitInstance.Name !== props.player.Name) {
-				return;
-			}
-
-			const character = props.player.Character;
-			if (character === undefined) {
-				return;
-			}
-
-			const humanoid = character.FindFirstChildOfClass("Humanoid");
-			if (humanoid === undefined) {
-				return;
-			}
-
-			const humanoidRootPart = humanoid.RootPart;
-			if (humanoidRootPart === undefined) {
-				return;
-			}
-
-			const distance = Workspace.interactions.rankUpgrade.teleport.Position.sub(humanoidRootPart.Position);
-			if (distance.Magnitude > 20) {
-				return;
-			}
-
-			setRankUpgradeVisibility(true);
-		});
-
-		return (): void => {
-			connection.Disconnect();
-		};
-	});
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
