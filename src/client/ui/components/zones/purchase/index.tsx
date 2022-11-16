@@ -18,7 +18,6 @@ import { PurchaseZoneButton } from "./purchase";
 interface PurchaseZoneUIProps extends PurchaseZoneUIMappedProps {
 	world: WorldName;
 	zone: number;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
 	hideMenu: () => void;
 }
 
@@ -104,12 +103,7 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 					/>
 					<BaseUIStroke Thickness={3} />
 				</textlabel>
-				<PurchaseZoneButton
-					world={props.world}
-					zone={zoneData.name}
-					displayAnnouncement={props.displayAnnouncement}
-					hideMenu={props.hideMenu}
-				/>
+				<PurchaseZoneButton world={props.world} zone={zoneData.name} hideMenu={props.hideMenu} />
 				<CancelZonePurchase hideMenu={props.hideMenu} />
 			</imagelabel>
 		);

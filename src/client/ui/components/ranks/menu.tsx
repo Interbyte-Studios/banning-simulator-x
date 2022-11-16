@@ -20,8 +20,8 @@ import { UpgradeRank } from "./upgradeRank";
 const player = Players.LocalPlayer;
 
 interface RankUpgradeProps extends RankUpgradeMappedProps {
-	enabled: boolean;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
+	visible: boolean;
+	hideMenu: () => void;
 }
 
 interface RankUpgradeMappedProps {
@@ -175,11 +175,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 				</textlabel>
 				<RankDisplay rank={props.currentRank} experience={props.experience} position={UDim2.fromScale(0.165, 0.55)} />
 				<RankDisplay rank={props.currentRank + 1} experience={-1} position={UDim2.fromScale(0.835, 0.55)} />
-				<UpgradeRank
-					rank={props.currentRank}
-					experience={props.experience}
-					displayAnnouncement={props.displayAnnouncement}
-				/>
+				<UpgradeRank rank={props.currentRank} experience={props.experience} />
 				<textlabel
 					BackgroundTransparency={1}
 					AnchorPoint={vec2Middle}
