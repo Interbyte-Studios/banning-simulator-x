@@ -13,7 +13,6 @@ import { TwitterHandle } from "./twitterHandle";
 interface CodesMenuProps {
 	visible: boolean;
 	hideMenu: () => void;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
 }
 
 export const CodesMenu = hooks((props: CodesMenuProps) => {

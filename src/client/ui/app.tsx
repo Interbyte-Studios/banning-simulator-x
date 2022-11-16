@@ -29,6 +29,7 @@ interface AppProps {
  * @returns The Roact app to mount.
  */
 export const app = hooks((props: AppProps, { useEffect, useState }) => {
+	print("Rendering app");
 	const [codesVisible, setCodesVisible] = useState(false);
 	const [questsVisible, setQuestsVisibility] = useState(false);
 	const [settingsVisible, setSettingsVisibility] = useState(false);
@@ -36,23 +37,6 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 	const [talismanTowerVisibility, setTalismanTowerVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
-	const [displayAnnouncement, setDisplayAnnouncement] = useState<
-		{ message: string; announcementType: "errors" | "announcements" } | undefined
-	>(undefined);
-
-	/**
-	 * @param announcementType The type of message to display.
-	 * @param message The message to display.
-	 * @returns A function to display the message.
-	 */
-	const applyAnnouncement = (announcementType: "errors" | "announcements", message: string): void =>
-		setDisplayAnnouncement({ message, announcementType });
-
-	useEffect(() => {
-		task.delay(5, () => {
-			setDisplayAnnouncement(undefined);
-		});
-	}, [displayAnnouncement]);
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
@@ -64,11 +48,7 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 					}
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
-				<CodesMenu
-					visible={codesVisible}
-					hideMenu={(): void => setCodesVisible(false)}
-					displayAnnouncement={applyAnnouncement}
-				/>
+				<CodesMenu visible={codesVisible} hideMenu={(): void => setCodesVisible(false)} />
 				<SettingsMenu visible={settingsVisible} hideMenu={(): void => setSettingsVisibility(false)} />
 				<Quests visible={questsVisible} hideMenu={(): void => setQuestsVisibility(false)} />
 				<Hud
@@ -84,8 +64,8 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
 				/>
-				<LocalMessages currentMessage={displayAnnouncement} />
-				<ZonesUI displayAnnouncement={applyAnnouncement} />
+				<LocalMessages />
+				<ZonesUI />
 				<WeaponEquip
 					visible={
 						!isHatching &&
@@ -96,20 +76,15 @@ export const app = hooks((props: AppProps, { useEffect, useState }) => {
 						!talismanTowerVisibility
 					}
 				/>
-				<RankUpgrade
-					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !talismanTowerVisibility}
-					displayAnnouncement={applyAnnouncement}
-				/>
+				<RankUpgrade visible={rankUpgradeVisibility} hideMenu={(): void => setRankUpgradeVisibility(false)} />
 				<WeaponShopHandle
 					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !talismanTowerVisibility}
 					weaponShopVisible={weaponShopVisibility}
-					displayAnnouncement={applyAnnouncement}
 					setWeaponShopVisibility={(value: boolean): void => setWeaponShopVisibility(value)}
 				/>
 				<TalismanTowerHandle
 					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility}
 					talismanTowerVisible={talismanTowerVisibility}
-					displayAnnouncement={applyAnnouncement}
 					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
 				/>
 			</>

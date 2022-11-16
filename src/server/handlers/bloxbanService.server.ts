@@ -47,9 +47,6 @@ function updateBanList(): void {
 	}
 
 	const [newBanListSuccess, newDeserializedBanList] = pcall(() => HttpService.JSONDecode(serializedBanList));
-	if (newBanListSuccess) {
-		print(newDeserializedBanList);
-	}
 
 	if (!(newBanListSuccess && isBanList(newDeserializedBanList))) {
 		//warn(`Failed to decode ban list to JSON format`);

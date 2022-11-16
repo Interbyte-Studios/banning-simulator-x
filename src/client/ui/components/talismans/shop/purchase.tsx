@@ -2,6 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
@@ -15,7 +16,6 @@ import { getTalismanData } from "shared/util/getTalismanData";
 
 interface PurchaseTalismanProps extends PurchaseTalismanMappedProps {
 	currentTalisman: number;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
 }
 
 interface PurchaseTalismanMappedProps {
@@ -50,6 +50,7 @@ export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 
 		const { useContext } = hooks;
 		const { purchaseTalisman } = useContext(remoteContext);
+		const { addError } = useContext(AnnouncementContext);
 
 		const maximizedSize = 0.08;
 		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
@@ -85,24 +86,18 @@ export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 
 						// check to be sure player has enough currency to purchase talisman
 						if (props.currencies[talismanInfo.cost.currency] < talismanInfo.cost.amount) {
-							props.displayAnnouncement(
-								"errors",
-								`You don't have enough currency to purchase the "${talismanInfo.name}" talisman.`,
-							);
+							addError(`You don't have enough currency to purchase "${talismanInfo.name}".`);
 							return;
 						}
 
 						// check to be sure player is required rank
 						if (props.rank < talismanInfo.cost.rank) {
-							props.displayAnnouncement(
-								"errors",
-								`You're not a high enough rank to purchase the "${talismanInfo.name}" talisman.`,
-							);
+							addError(`You're not a high enough rank to purchase "${talismanInfo.name}".`);
 							return;
 						}
 
 						purchaseTalisman.SendToServer(props.currentTalisman);
-						props.displayAnnouncement("announcements", `You've purchased the "${talismanInfo.name}" talisman!`);
+						addError(`You've purchased the "${talismanInfo.name}" talisman!`);
 					},
 					MouseEnter: (): void => motor.setGoal(minimizedSpring),
 					MouseLeave: (): void => motor.setGoal(maximizedSpring),

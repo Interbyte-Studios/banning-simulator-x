@@ -11,7 +11,6 @@ interface TalismanTowerHandleProps {
 	enabled: boolean;
 	talismanTowerVisible: boolean;
 	setTalismanTowerVisibility: (value: boolean) => void;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
 }
 
 /**
@@ -73,12 +72,7 @@ export const TalismanTowerHandle = hooks((props: TalismanTowerHandleProps, { use
 	});
 
 	if (props.talismanTowerVisible) {
-		return (
-			<TalismanTower
-				setTalismanTowerVisibility={props.setTalismanTowerVisibility}
-				displayAnnouncement={props.displayAnnouncement}
-			/>
-		);
+		return <TalismanTower setTalismanTowerVisibility={props.setTalismanTowerVisibility} />;
 	} else {
 		return (
 			<TalismanTowerInteractPrompt visible={true} displayShop={(): void => props.setTalismanTowerVisibility(true)} />
