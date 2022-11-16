@@ -28,7 +28,7 @@ const LocalMessage = hooks((props: LocalMessageProps, { useBinding, useEffect })
 	return (
 		<canvasgroup
 			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
+			BackgroundTransparency={0}
 			Size={UDim2.fromScale(1, 0.048)}
 			GroupTransparency={transparency}
 		>
@@ -66,7 +66,7 @@ export const LocalMessages = hooks((_, { useContext }) => {
 	return (
 		<frame
 			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
+			BackgroundTransparency={0}
 			Position={UDim2.fromScale(0.905, 0.495)}
 			Size={UDim2.fromScale(0.17, 0.99)}
 		>
