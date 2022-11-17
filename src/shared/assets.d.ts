@@ -69,6 +69,10 @@ declare namespace assetIds {
 			};
 		};
 		ui: {
+			"update log": {
+				background: string;
+				"update log": string;
+			};
 			talismanTower: {
 				background: string;
 				sidebar: string;

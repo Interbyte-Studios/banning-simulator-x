@@ -408,6 +408,16 @@ hash = "a624d7f968f7cd5dfdb3d2922d0797af165bae02853a6913e95c230294822146"
 id = 11509649010
 packable = false
 
+[inputs."images/ui/update log/background.png"]
+hash = "83918558c9d3e5e60b1b8905cb9a545684fd35c17913a89e6d5b69b32ba64e4e"
+id = 11585613205
+packable = false
+
+[inputs."images/ui/update log/update log.png"]
+hash = "d908f521e031f06a87cae5b94f2ed56655c08730047de8ef0265c0274be808bd"
+id = 11585642192
+packable = false
+
 [inputs."images/ui/weapon shop/purchase button.png"]
 hash = "6204eee9751ace0a143a3a7c1019c1b004614f7e8774bb22b56b45293ce32683"
 id = 11497595550
