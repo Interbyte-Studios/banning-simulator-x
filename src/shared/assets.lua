@@ -122,6 +122,10 @@ return {
 				background = "rbxassetid://11508721514",
 				sidebar = "rbxassetid://11509649010",
 			},
+			["update log"] = {
+				background = "rbxassetid://11585613205",
+				["update log"] = "rbxassetid://11585642192",
+			},
 			["weapon shop"] = {
 				["purchase button"] = "rbxassetid://11497595550",
 				["weapon info background"] = "rbxassetid://11497175188",
