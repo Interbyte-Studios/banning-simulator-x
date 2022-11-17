@@ -1,11 +1,15 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
+import { ReplicatedStorage } from "@rbxts/services";
 import assetIds from "shared/assets";
 
 import { font, vec2Middle } from "../commonValues";
 import { useBindingMotor } from "../customHooks/useBindingMotor";
 import { BaseUIStroke } from "../elements/baseUIStroke";
+import { ExitButton } from "../elements/exitButton";
 import { hooks } from "../hooks";
+
+const gameVersion = ReplicatedStorage.FindFirstChild("GameVersion") as StringValue;
 
 /**
  * Documents content released in the most recent update.
@@ -48,7 +52,7 @@ export const UpdateLog = hooks((props: { enabled: boolean }, hooks) => {
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
 					Position={UDim2.fromScale(0.575, 0.5)}
-					Size={UDim2.fromScale(0.75, 0.85)}
+					Size={UDim2.fromScale(0.75, 0.6)}
 					Text={`Update Log`}
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
@@ -71,9 +75,9 @@ export const UpdateLog = hooks((props: { enabled: boolean }, hooks) => {
 				<uiaspectratioconstraint AspectRatio={1.235} />
 				<textlabel
 					AnchorPoint={vec2Middle}
-					BackgroundTransparency={0}
+					BackgroundTransparency={1}
 					Position={UDim2.fromScale(0.5, 0.1)}
-					Size={UDim2.fromScale(0.5, 0.2)}
+					Size={UDim2.fromScale(0.5, 0.15)}
 					Text={`📋Update Log`}
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
@@ -81,6 +85,96 @@ export const UpdateLog = hooks((props: { enabled: boolean }, hooks) => {
 				>
 					<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
 				</textlabel>
+				<textlabel
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					Position={UDim2.fromScale(0.5, 0.2)}
+					Size={UDim2.fromScale(0.5, 0.075)}
+					Text={gameVersion.Value}
+					TextScaled={true}
+					TextColor3={Color3.fromRGB(255, 255, 255)}
+					Font={font}
+				>
+					<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
+				</textlabel>
+				<frame
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					Size={UDim2.fromScale(0.9, 0.7)}
+					Position={UDim2.fromScale(0.5, 0.6)}
+				>
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.1)}
+						Size={UDim2.fromScale(0.5, 0.15)}
+						Text={`- Test`}
+						TextScaled={true}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+						Font={font}
+					>
+						<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
+					</textlabel>
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.1)}
+						Size={UDim2.fromScale(0.5, 0.15)}
+						Text={`- Test`}
+						TextScaled={true}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+						Font={font}
+					>
+						<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
+					</textlabel>
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.1)}
+						Size={UDim2.fromScale(0.5, 0.15)}
+						Text={`- Test`}
+						TextScaled={true}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+						Font={font}
+					>
+						<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
+					</textlabel>
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.1)}
+						Size={UDim2.fromScale(0.5, 0.15)}
+						Text={`- Test`}
+						TextScaled={true}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+						Font={font}
+					>
+						<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
+					</textlabel>
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.1)}
+						Size={UDim2.fromScale(0.5, 0.15)}
+						Text={`- Test`}
+						TextScaled={true}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+						Font={font}
+					>
+						<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
+					</textlabel>
+					<uilistlayout
+						Padding={new UDim(0.03, 0)}
+						FillDirection={Enum.FillDirection.Vertical}
+						HorizontalAlignment={Enum.HorizontalAlignment.Center}
+					></uilistlayout>
+				</frame>
+				<ExitButton
+					minimizedSize={0.11}
+					maximizedSize={0.125}
+					Position={UDim2.fromScale(0.975, 0.05)}
+					onClosed={(): void => setVisibility(false)}
+				/>
 			</imagelabel>
 		);
 	}
