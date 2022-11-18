@@ -9,6 +9,9 @@ interface CancelRankUpgradeProps {
 	hideMenu: () => void;
 }
 
+/**
+ * A button allowing the player to exit the rank upgrade prompt.
+ */
 /* eslint-disable jsdoc/require-jsdoc */
 export const CancelRankUpgrade = hooks((props: CancelRankUpgradeProps, hooks) => {
 	const maximizedSize = 0.15;
