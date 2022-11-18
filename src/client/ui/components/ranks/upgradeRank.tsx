@@ -32,6 +32,9 @@ function mapStateToProps(state: StoreState): UpgradeRankMappedProps {
 	};
 }
 
+/**
+ * A button that allows the player to upgrade their rank, given they meet the requirements.
+ */
 /* eslint-disable jsdoc/require-jsdoc */
 export const UpgradeRank = RoactRodux.connect(mapStateToProps)(
 	hooks((props: UpgradeRankProps, hooks) => {

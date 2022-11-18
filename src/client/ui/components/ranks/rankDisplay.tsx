@@ -13,6 +13,9 @@ interface RankDisplayProps {
 	position: UDim2;
 }
 
+/**
+ * An image label of a specified rank. Also displays a progress bar towards the next rank.
+ */
 export const RankDisplay = hooks((props: RankDisplayProps) => {
 	const rankData = RANKS[props.rank - 1];
 	if (rankData === undefined) {
