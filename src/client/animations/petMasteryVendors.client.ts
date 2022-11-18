@@ -13,12 +13,18 @@ function animateVendor(petMasteryVendor: Model): void {
 	const originalCFrame = primary.CFrame;
 
 	/// Hover
-	const hoverSpeed = 30;
-	const hoverAmount = 1.2;
+	const hoverSpeed = 2;
+	const hoverAmount = 2.5;
+
+	/// Facing
+	const faceSpeed = 2.2;
+	const faceAmount = 15;
 
 	RunService.RenderStepped.Connect(() => {
 		const hover = math.sin(os.clock() * hoverSpeed) * hoverAmount;
-		petMasteryVendor.PivotTo(originalCFrame.mul(new CFrame(0, hover, 0)));
+		const face = math.sin(os.clock() * faceSpeed) * faceAmount;
+
+		petMasteryVendor.PivotTo(originalCFrame.mul(new CFrame(0, hover, 0).mul(CFrame.Angles(math.rad(face), 0, 0))));
 	});
 }
 
