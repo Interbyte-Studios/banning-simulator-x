@@ -140,6 +140,27 @@ declare namespace assetIds {
 				input: string;
 			};
 		};
+		vectors: {
+			Clover: string;
+			Codes: string;
+			Coin: string;
+			CyberToken: string;
+			FewGems: string;
+			Gem: string;
+			GemBag: string;
+			GemChest: string;
+			GemVault: string;
+			Inventory: string;
+			Medal: string;
+			PetPaw: string;
+			Rewards: string;
+			Settings: string;
+			Shield: string;
+			SpinWheel: string;
+			Sword: string;
+			Teleport: string;
+			Trading: string;
+		};
 	};
 }
 
