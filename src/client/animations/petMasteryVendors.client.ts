@@ -11,7 +11,15 @@ function animateVendor(petMasteryVendor: Model): void {
 	assert(primary, `Expected pet mastery vendor to have a primary part.`);
 
 	const originalCFrame = primary.CFrame;
-	RunService.RenderStepped.Connect(() => {});
+
+	/// Hover
+	const hoverSpeed = 30;
+	const hoverAmount = 1.2;
+
+	RunService.RenderStepped.Connect(() => {
+		const hover = math.sin(os.clock() * hoverSpeed) * hoverAmount;
+		petMasteryVendor.PivotTo(originalCFrame.mul(new CFrame(0, hover, 0)));
+	});
 }
 
 const petMasteryVendors = CollectionService.GetTagged(AssetAnimation.PetMasteryVendor);
