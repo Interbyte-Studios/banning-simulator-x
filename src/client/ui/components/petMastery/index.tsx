@@ -98,7 +98,7 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 	} else {
 		return (
 			<>
-				{CollectionService.GetTagged("petMasteryVendor").forEach((petVendor) => {
+				{CollectionService.GetTagged("petMasteryVendor").map((petVendor) => {
 					assert(petVendor.IsA("Model"), `Expected pet mastery vendor "${petVendor.Name}" to be a model.`);
 
 					const primaryPart = petVendor.PrimaryPart;
