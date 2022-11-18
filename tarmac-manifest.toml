@@ -289,38 +289,38 @@ id = 11016579897
 packable = false
 
 [inputs."images/ui/hud/icons/codes.png"]
-hash = "152a0ab211c35a9592bec4482bd835f5b1d6c14fc2043a64cb76222a2b8c206f"
-id = 10835150571
+hash = "4d894e85da7b21a65ef1e8f3a405a044b05bce8408fa266a47b1e66bea790951"
+id = 11591957031
 packable = false
 
 [inputs."images/ui/hud/icons/items.png"]
-hash = "492a58eae26e2dc9fa78d869bc81bbaa410db8f4de6039b28dd5490a3876075b"
-id = 10835150655
+hash = "973a211da306149f5105dcb3b6f2b53402852ed85cc9cbfa9b2f895b11dbf6b0"
+id = 11591957067
 packable = false
 
 [inputs."images/ui/hud/icons/options.png"]
-hash = "a08a8dd115b1733475e66ad6fe7af9398dc26ab392d2a2cd5f0e2e6898b939e4"
-id = 10835150718
+hash = "2c48a93c4dcd6d0df38781245675ebb613f1c6c7c8c54429d17f62d22187261c"
+id = 11591957114
 packable = false
 
 [inputs."images/ui/hud/icons/rewards.png"]
-hash = "f347874a10d67efee20cedf73627bba87c2bc4f6926a0d57eed392785fe32bff"
-id = 10835150803
+hash = "542b0a435c17c54ed6020829e46ce40b81537e11e2a169a13ca2f9970eceb37b"
+id = 11591957156
 packable = false
 
 [inputs."images/ui/hud/icons/teleport.png"]
-hash = "7b45e0bdd637777ea205d7c464bb1bb1d067f2acc06cbab24d9c5816406b5de5"
-id = 10835150845
+hash = "6d3c8f1eb9ba13b5067ef7b23de2fb556cbe927a2a89ca7bd38ef87adf30881d"
+id = 11591957239
 packable = false
 
 [inputs."images/ui/hud/icons/trading.png"]
-hash = "2f9d2da07b15b7e80e86c1e57929fb2e420f28b2f9582c5663a39e611bccc428"
-id = 10835150926
+hash = "9993bccf2d47db00a3a159521fa4b5ba1d5ce98bf5a8651554468b281154cea9"
+id = 11591957300
 packable = false
 
 [inputs."images/ui/hud/icons/wheel.png"]
-hash = "10d30a9eee1661a1fe49bc1c77c2255118b11b8cee068dcdbc052a686c144757"
-id = 10835151009
+hash = "20860f7ea66963c9e1250a9708ea8212db61547198498dc52b569a88bec016e6"
+id = 11591957375
 packable = false
 
 [inputs."images/ui/hud/interface button.png"]
@@ -441,4 +441,99 @@ packable = false
 [inputs."images/ui/zones/purchase.png"]
 hash = "11e682e65b34a8a8f07f63af4b9f18653047085ef54509aede741d9716ac7f6a"
 id = 10970620840
+packable = false
+
+[inputs."images/vectors/Clover.png"]
+hash = "cda77f0813456bf8d79fd4c8893d3b23c551ee5e4d04e5612aca058f7263d224"
+id = 11591957467
+packable = false
+
+[inputs."images/vectors/Codes.png"]
+hash = "f9fce8aff6119b703e3eabb4d17d3932f0b65833fcac2714fdbc6f833c9e35d1"
+id = 11591957528
+packable = false
+
+[inputs."images/vectors/Coin.png"]
+hash = "6d35444ed7a0b3274d8bd2b9a9fe0e25abd5034a5245221e6ff2c404fc023170"
+id = 11591957630
+packable = false
+
+[inputs."images/vectors/CyberToken.png"]
+hash = "e59cd418515186b5f21e1e9754bacd7fefb9c051e740f725f5fa2e757a5bce58"
+id = 11591957709
+packable = false
+
+[inputs."images/vectors/FewGems.png"]
+hash = "15093d77c171183ef9994a24660863f159ea8688bfda6984e2a78acabfe6ebfa"
+id = 11591957751
+packable = false
+
+[inputs."images/vectors/Gem.png"]
+hash = "db6ea11523413280d91b1d5ee292e33cda8e7b55cdc01f6f4447562db489e810"
+id = 11591957802
+packable = false
+
+[inputs."images/vectors/GemBag.png"]
+hash = "3acac8476af3950f6e59b084067ce6db52909b344a05720aff5792efd113c082"
+id = 11591957880
+packable = false
+
+[inputs."images/vectors/GemChest.png"]
+hash = "31480ad80624e05050a6384b73f2a21ffaf4fe158a2e13b8a8a8feb6b9b8aff2"
+id = 11591958036
+packable = false
+
+[inputs."images/vectors/GemVault.png"]
+hash = "a8f91c2988c7017f8c3ab06752e259be0f316371f95a02e95ba994dc491e2840"
+id = 11591958127
+packable = false
+
+[inputs."images/vectors/Inventory.png"]
+hash = "a0bb7854c6e3d8cc8d64741f8d23584dabdaa3297a163ac7d019b198da24835a"
+id = 11591958191
+packable = false
+
+[inputs."images/vectors/Medal.png"]
+hash = "f750ac2499508342ab567602f1b1631117f8857b6f27ffbe4e96e3f1b18fc2d1"
+id = 11591958260
+packable = false
+
+[inputs."images/vectors/PetPaw.png"]
+hash = "482ce011902a10a7fbd1ac2d31a5086734fa71ee4e31f252902ff25c3cb9f960"
+id = 11591958324
+packable = false
+
+[inputs."images/vectors/Rewards.png"]
+hash = "749a3adfbc06d6b71209bd1d37526faf3fc2eefabdfd4baaed6fb741d3ce8e20"
+id = 11591958429
+packable = false
+
+[inputs."images/vectors/Settings.png"]
+hash = "15dedb201e79cc97c02644de2fdffb99163012091f1d55177177ed439b4a5774"
+id = 11591958476
+packable = false
+
+[inputs."images/vectors/Shield.png"]
+hash = "e0f152f0346e03659d200de0bfe0889af288cc1c13c38fcd3abeea856737ca9e"
+id = 11591958516
+packable = false
+
+[inputs."images/vectors/SpinWheel.png"]
+hash = "4a903d4105b2e766917b906060fb5b22cdc48853d20926d9017ab3572acf3045"
+id = 11591958579
+packable = false
+
+[inputs."images/vectors/Sword.png"]
+hash = "15767b36a9ddcf41a49d0de3b608a17fcf9c58e766b6a7b3428232b5b8d41f22"
+id = 11591958646
+packable = false
+
+[inputs."images/vectors/Teleport.png"]
+hash = "64ac8670bb6e5649e5ea18f15121c21d0e4d2f0e22507392acd5a47baa3d3bf4"
+id = 11591958708
+packable = false
+
+[inputs."images/vectors/Trading.png"]
+hash = "c3a7a39491477789ad905857c99e521040ea151c009df43c0615e8e0d32a7b04"
+id = 11591958836
 packable = false
