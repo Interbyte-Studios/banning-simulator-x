@@ -102,6 +102,10 @@ return {
 				upgrade = "rbxassetid://10836017074",
 				["viewer background"] = "rbxassetid://10832809474",
 			},
+			index = {
+				background = "rbxassetid://11609958651",
+				eggBackground = "rbxassetid://11610048861",
+			},
 			quests = {
 				["entry background"] = "rbxassetid://10832809634",
 				["quests background"] = "rbxassetid://10832809841",

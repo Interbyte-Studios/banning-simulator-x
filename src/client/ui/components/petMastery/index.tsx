@@ -5,6 +5,7 @@ import { WorldName } from "shared/configs/worlds";
 import { isValidWorld } from "shared/util/isValidWorld";
 
 import { PetMasteryInteractPrompt } from "./interactPrompt";
+import { PetMasteryMenu } from "./masteryMenu";
 
 const player = Players.LocalPlayer;
 
@@ -94,7 +95,7 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 	});
 
 	if (interfaceVisible) {
-		return <></>;
+		return <PetMasteryMenu world={worldViewing} hideMenu={(): void => setInterfaceVisibility(false)} />;
 	} else {
 		return (
 			<>
@@ -118,6 +119,8 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 						isValidWorld(worldName),
 						`Expected the world folder parent to the pet mastery vendor "${petVendor.Name}" to be named after a valid world.`,
 					);
+
+					warn("returning the component");
 
 					return (
 						<PetMasteryInteractPrompt

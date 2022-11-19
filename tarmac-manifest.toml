@@ -348,6 +348,16 @@ hash = "14ef5182d4586b96cf692024624ba232eacb2b80f744889df2f6b7b50d3049d7"
 id = 10832809474
 packable = false
 
+[inputs."images/ui/index/background.png"]
+hash = "ff0844df20fc351d2e390fca1fd646e7c98e2bde90841bf9f5ca0415712e7994"
+id = 11609958651
+packable = false
+
+[inputs."images/ui/index/eggBackground.png"]
+hash = "583c171fca9facc0cf3791912010a9600e0068d7b953de9b387d1d131ab1f39b"
+id = 11610048861
+packable = false
+
 [inputs."images/ui/quests/entry background.png"]
 hash = "ddd4ef03eacfb8d19f73252017992e29551d978e7358917f14ea899f73d36283"
 id = 10832809634

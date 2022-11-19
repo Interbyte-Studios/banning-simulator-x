@@ -7,6 +7,7 @@ import { CodesMenu } from "./components/codes/menu";
 import { EggsUI } from "./components/eggs";
 import { WeaponEquip } from "./components/equip/weaponEquip";
 import { Hud } from "./components/hud";
+import { PetMastery } from "./components/petMastery";
 import { Quests } from "./components/quests";
 import { RankUpgrade } from "./components/ranks/menu";
 import { SettingsMenu } from "./components/settings/menu";
@@ -97,6 +98,16 @@ export const app = hooks((props: AppProps, { useState }) => {
 					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
 				/>
 				<UpdateLog
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
+				/>
+				<PetMastery
 					enabled={
 						!isHatching &&
 						!codesVisible &&

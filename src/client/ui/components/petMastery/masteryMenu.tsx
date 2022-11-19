@@ -1,24 +1,83 @@
+import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
+import { ExitButton } from "client/ui/elements/exitButton";
+import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
+import assetIds from "shared/assets";
+import { EGGS } from "shared/configs/eggs";
 import { WorldName } from "shared/configs/worlds";
 
 interface PetMasteryMenuProps {
 	world: WorldName;
+	hideMenu: () => void;
 }
 
 /**
  * Displays all the pets of a given world, and accolades for each one that give rewards.
  */
-export const PetMasteryMenu = hooks((props: PetMasteryMenuProps) => {
+export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useValue, useEffect }) => {
+	const eggs = Object.entries(EGGS).filter((egg) => egg[1].world === props.world);
+
+	const uiListLayoutRef = useValue(Roact.createRef<UIListLayout>());
+	useEffect(() => {
+		const uiListLayout = uiListLayoutRef.value.getValue();
+		assert(uiListLayout, `Did not find UIListLayout Roact Ref from PetMastery Component.`);
+
+		const scrollingFrame = uiListLayout.Parent;
+		assert(scrollingFrame, `Failed to get scrolling frame for Pet Mastery Component.`);
+		assert(scrollingFrame.IsA("ScrollingFrame"), `Expected Pet Mastery Component Parent to be a ScrollingFrame.`);
+
+		const amountOfEggIndexs = scrollingFrame.GetChildren().filter((x) => x.IsA("ImageLabel"));
+		for (const eggIndex of scrollingFrame.GetChildren()) {
+			if (!eggIndex.IsA("ImageLabel")) {
+				continue;
+			}
+
+			eggIndex.Size = UDim2.fromOffset(
+				scrollingFrame.AbsoluteSize.X,
+				(scrollingFrame.AbsoluteSize.Y * 1.5) / amountOfEggIndexs.size(),
+			);
+		}
+	});
+
 	return (
 		<imagelabel
 			AnchorPoint={vec2Middle}
-			BackgroundTransparency={0}
+			BackgroundTransparency={1}
 			Position={UDim2.fromScale(0.5, 0.5)}
-			Size={UDim2.fromScale(0.5, 0.5)}
-			Image={""}
+			Size={UDim2.fromScale(0.5, 0.61)}
+			Image={assetIds.images.ui.index.background}
 			ScaleType={Enum.ScaleType.Fit}
-		></imagelabel>
+		>
+			<uiaspectratioconstraint AspectRatio={1.075} />
+			<RescalingScrollingFrame
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Position={UDim2.fromScale(0.5, 0.55)}
+				Size={UDim2.fromScale(0.95, 0.85)}
+				ScrollBarThickness={0}
+			>
+				<uilistlayout Padding={new UDim(0.01, 0)} Ref={uiListLayoutRef.value} />
+				{eggs.map((egg) => {
+					return (
+						<imagelabel
+							AnchorPoint={vec2Middle}
+							BackgroundTransparency={1}
+							Position={UDim2.fromScale(0.5, 0.5)}
+							Size={UDim2.fromOffset(545, 133)}
+							Image={assetIds.images.ui.index.eggBackground}
+							ScaleType={Enum.ScaleType.Fit}
+						></imagelabel>
+					);
+				})}
+			</RescalingScrollingFrame>
+			<ExitButton
+				Position={UDim2.fromScale(0.975, 0.075)}
+				minimizedSize={0.075}
+				maximizedSize={0.1}
+				onClosed={(): void => props.hideMenu()}
+			/>
+		</imagelabel>
 	);
 });

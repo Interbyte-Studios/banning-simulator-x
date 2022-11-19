@@ -139,6 +139,10 @@ declare namespace assetIds {
 				background: string;
 				input: string;
 			};
+			index: {
+				background: string;
+				eggBackground: string;
+			};
 		};
 		vectors: {
 			Clover: string;
