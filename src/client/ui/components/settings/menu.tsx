@@ -74,6 +74,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.5, 0.56)}
 					CanvasSize={UDim2.fromScale(0, 2.5)}
 					ScrollBarThickness={6}
+					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<SectionHeader position={UDim2.fromScale(0.5, 0.03)} size={UDim2.fromScale(0.4, 0.03)} text={"Sound"} />
 					<ToggleButtonSFXSetting />

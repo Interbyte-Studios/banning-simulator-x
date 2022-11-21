@@ -57,6 +57,7 @@ export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useValue, use
 				Position={UDim2.fromScale(0.5, 0.55)}
 				Size={UDim2.fromScale(0.95, 0.85)}
 				ScrollBarThickness={0}
+				ScrollingDirection={Enum.ScrollingDirection.Y}
 			>
 				<uilistlayout Padding={new UDim(0.01, 0)} Ref={uiListLayoutRef.value} />
 				{eggs.map((egg) => {
