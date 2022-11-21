@@ -15,7 +15,18 @@ return {
 			["red toggle button"] = "rbxassetid://10705304953",
 			["teal button"] = "rbxassetid://10705288749",
 		},
+		currencies = {
+			coins = "rbxassetid://9591269212",
+			gems = "rbxassetid://10833933846",
+		},
 		decals = {
+			eggs = {
+				Candy = "rbxassetid://11627644446",
+				Desert = "rbxassetid://11627644517",
+				Honeycomb = "rbxassetid://11627644589",
+				Molten = "rbxassetid://11627644653",
+				Starter = "rbxassetid://11627644803",
+			},
 			pets = {
 				["Armored Angel"] = "rbxassetid://11440086828",
 				["Armored Bunny"] = "rbxassetid://11440086906",
@@ -269,17 +280,6 @@ return {
 				["Void Royal Dragon"] = "rbxassetid://11440122615",
 				["Void Royal Pegasus"] = "rbxassetid://11440122751",
 			},
-			eggs = {
-				Starter = "rbxassetid://11624951130",
-				Desert = "rbxassetid://11624950927",
-				Honeycomb = "rbxassetid://11625012652",
-				Candy = "rbxassetid://11624950862",
-				Molten = "rbxassetid://11624951076",
-			},
-		},
-		currencies = {
-			coins = "rbxassetid://9591269212",
-			gems = "rbxassetid://10833933846",
 		},
 		maps = {
 			["Ban Land"] = {
@@ -367,6 +367,7 @@ return {
 			index = {
 				background = "rbxassetid://11609958651",
 				eggBackground = "rbxassetid://11610048861",
+				sidebar = "rbxassetid://11627644894",
 			},
 			quests = {
 				["entry background"] = "rbxassetid://10832809634",
