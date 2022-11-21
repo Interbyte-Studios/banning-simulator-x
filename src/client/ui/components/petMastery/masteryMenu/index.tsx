@@ -1,12 +1,15 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
-import { vec2Middle } from "client/ui/commonValues";
+import { font, vec2Middle } from "client/ui/commonValues";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { EGGS } from "shared/configs/eggs";
 import { WorldName } from "shared/configs/worlds";
+
+import { PetMasteryEggCard } from "./eggCard";
 
 interface PetMasteryMenuProps {
 	world: WorldName;
@@ -51,6 +54,18 @@ export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useValue, use
 			ScaleType={Enum.ScaleType.Fit}
 		>
 			<uiaspectratioconstraint AspectRatio={1.075} />
+			<textlabel
+				AnchorPoint={vec2Middle}
+				Position={UDim2.fromScale(0.5, 0.06)}
+				Size={UDim2.fromScale(0.375, 0.1)}
+				BackgroundTransparency={1}
+				TextScaled={true}
+				TextColor3={Color3.fromRGB(255, 255, 255)}
+				Text={"Pet Mastery"}
+				Font={font}
+			>
+				<BaseUIStroke Thickness={3} />
+			</textlabel>
 			<RescalingScrollingFrame
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}
@@ -59,18 +74,9 @@ export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useValue, use
 				ScrollBarThickness={0}
 				ScrollingDirection={Enum.ScrollingDirection.Y}
 			>
-				<uilistlayout Padding={new UDim(0.01, 0)} Ref={uiListLayoutRef.value} />
+				<uilistlayout Padding={new UDim(0.01, 0)} Ref={uiListLayoutRef.value} SortOrder={Enum.SortOrder.LayoutOrder} />
 				{eggs.map((egg) => {
-					return (
-						<imagelabel
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.5, 0.5)}
-							Size={UDim2.fromOffset(545, 133)}
-							Image={assetIds.images.ui.index.eggBackground}
-							ScaleType={Enum.ScaleType.Fit}
-						></imagelabel>
-					);
+					return <PetMasteryEggCard eggName={egg[0]} eggData={egg[1]} />;
 				})}
 			</RescalingScrollingFrame>
 			<ExitButton
