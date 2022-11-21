@@ -1,6 +1,7 @@
 import Rodux from "@rbxts/rodux";
 import { HttpService } from "@rbxts/services";
 import { Currency } from "shared/configs/currencies";
+import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
 import { Rarities } from "shared/configs/rarities";
 
@@ -23,10 +24,13 @@ export interface ConfirmedPet extends PetData {
 	autoDeleted: boolean;
 }
 
+export type PetAttainMethod = "trade" | "fuse" | "hatch";
 export interface PetData {
 	id: number;
 	rarity: Rarities;
 	variant: Variants;
+	egg: EggName;
+	method: PetAttainMethod;
 }
 
 export interface AddPet extends Rodux.Action<"addPet"> {

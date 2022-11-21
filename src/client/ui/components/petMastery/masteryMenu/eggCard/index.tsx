@@ -1,11 +1,13 @@
 import Roact from "@rbxts/roact";
-import { vec2Middle } from "client/ui/commonValues";
+import { font, vec2Middle } from "client/ui/commonValues";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { Egg, EggName } from "shared/configs/eggs";
 
 import { EggDecal } from "./eggDecal";
 import { EggTitle } from "./title";
+import { ViewEgg } from "./viewEgg";
 
 /**
  * An index card of a specified egg.
@@ -23,6 +25,7 @@ export const PetMasteryEggCard = hooks((props: { eggName: EggName; eggData: Egg 
 		>
 			<EggDecal eggName={props.eggName} />
 			<EggTitle eggName={props.eggName} />
+			<ViewEgg eggName={props.eggName} />
 		</imagelabel>
 	);
 });

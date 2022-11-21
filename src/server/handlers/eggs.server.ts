@@ -137,6 +137,8 @@ hatchEgg.SetCallback(
 				id: pet.id,
 				rarity: pet.rarity,
 				variant: isVoid ? "void" : "regular",
+				method: "hatch",
+				egg: eggName,
 			});
 		}
 
