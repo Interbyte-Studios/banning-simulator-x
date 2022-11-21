@@ -1,7 +1,6 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { vec2Middle } from "client/ui/commonValues";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
@@ -10,6 +9,7 @@ import { EGGS } from "shared/configs/eggs";
 import { WorldName } from "shared/configs/worlds";
 
 import { PetMasteryEggCard } from "./eggCard";
+import { PetMasteryIndexHeader } from "./indexUtil/header";
 
 interface PetMasteryMenuProps {
 	world: WorldName;
@@ -31,17 +31,36 @@ export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useValue, use
 		assert(scrollingFrame, `Failed to get scrolling frame for Pet Mastery Component.`);
 		assert(scrollingFrame.IsA("ScrollingFrame"), `Expected Pet Mastery Component Parent to be a ScrollingFrame.`);
 
-		const amountOfEggIndexs = scrollingFrame.GetChildren().filter((x) => x.IsA("ImageLabel"));
-		for (const eggIndex of scrollingFrame.GetChildren()) {
-			if (!eggIndex.IsA("ImageLabel")) {
-				continue;
-			}
+		/**
+		 * Sets the size in offset of every egg card in the scrolling frame based on it's absolute size.
+		 */
+		function setEggCardSize(): void {
+			const uiListLayout = uiListLayoutRef.value.getValue();
+			assert(uiListLayout, `Did not find UIListLayout Roact Ref from PetMastery Component.`);
 
-			eggIndex.Size = UDim2.fromOffset(
-				scrollingFrame.AbsoluteSize.X,
-				(scrollingFrame.AbsoluteSize.Y * 1.5) / amountOfEggIndexs.size(),
-			);
+			const scrollingFrame = uiListLayout.Parent;
+			assert(scrollingFrame, `Failed to get scrolling frame for Pet Mastery Component.`);
+			assert(scrollingFrame.IsA("ScrollingFrame"), `Expected Pet Mastery Component Parent to be a ScrollingFrame.`);
+
+			const amountOfEggIndexs = scrollingFrame.GetChildren().filter((x) => x.IsA("ImageLabel"));
+			for (const eggIndex of scrollingFrame.GetChildren()) {
+				if (!eggIndex.IsA("ImageLabel")) {
+					continue;
+				}
+
+				eggIndex.Size = UDim2.fromOffset(
+					scrollingFrame.AbsoluteSize.X,
+					(scrollingFrame.AbsoluteSize.Y * 1.5) / amountOfEggIndexs.size(),
+				);
+			}
 		}
+
+		setEggCardSize();
+
+		const connection = scrollingFrame.GetPropertyChangedSignal("AbsoluteSize").Connect(() => setEggCardSize());
+		return (): void => {
+			connection.Disconnect();
+		};
 	});
 
 	return (
@@ -54,18 +73,7 @@ export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useValue, use
 			ScaleType={Enum.ScaleType.Fit}
 		>
 			<uiaspectratioconstraint AspectRatio={1.075} />
-			<textlabel
-				AnchorPoint={vec2Middle}
-				Position={UDim2.fromScale(0.5, 0.06)}
-				Size={UDim2.fromScale(0.375, 0.1)}
-				BackgroundTransparency={1}
-				TextScaled={true}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-				Text={"Pet Mastery"}
-				Font={font}
-			>
-				<BaseUIStroke Thickness={3} />
-			</textlabel>
+			<PetMasteryIndexHeader />
 			<RescalingScrollingFrame
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}
