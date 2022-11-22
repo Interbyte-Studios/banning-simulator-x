@@ -1,6 +1,7 @@
 import Rodux from "@rbxts/rodux";
 import { t } from "@rbxts/t";
 import { EggName } from "shared/configs/eggs";
+import { UnreachableCaseError } from "shared/util/unreachableCaseError";
 
 import { AddPet } from "./pets";
 
@@ -90,8 +91,8 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet>(
 					break;
 				}
 				case "maxLevel": {
-					pet.maxLevel[petToIndex.variant] += 1;
-					break;
+					warn(`Attempting to add pet with method "maxLevel"? This is unallowed.`);
+					continue;
 				}
 			}
 		}

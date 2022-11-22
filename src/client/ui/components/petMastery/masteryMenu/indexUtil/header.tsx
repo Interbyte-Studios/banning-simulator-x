@@ -11,7 +11,7 @@ export function PetMasteryIndexHeader(): Roact.Element {
 	return (
 		<textlabel
 			AnchorPoint={vec2Middle}
-			Position={UDim2.fromScale(0.5, 0.06)}
+			Position={UDim2.fromScale(0.51, 0.06)}
 			Size={UDim2.fromScale(0.375, 0.1)}
 			BackgroundTransparency={1}
 			TextScaled={true}

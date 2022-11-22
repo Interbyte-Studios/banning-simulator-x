@@ -6,17 +6,18 @@ import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
+import { Variants } from "shared/configs/pets";
 
 /**
- * Allows the player to view information about a specific egg.
+ * A button that allows the player to view the pets of a specified variant of a specified egg.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const ViewEgg = hooks((props: { eggName: EggName }, hooks) => {
-	const maximizedSize = 0.225;
-	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-	const minimizedSize = 0.2;
+export const ViewPets = hooks((props: { egg: EggName; variant: Variants; position: UDim2 }, hooks) => {
+	const minimizedSize = 0.09;
 	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
+
+	const maximizedSize = 0.1;
+	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 
 	const { motor, binding } = useBindingMotor(hooks, maximizedSize);
 
@@ -25,10 +26,10 @@ export const ViewEgg = hooks((props: { eggName: EggName }, hooks) => {
 			AnchorPoint={vec2Middle}
 			BackgroundTransparency={1}
 			Size={binding.map((value) => {
-				return UDim2.fromScale(0.2, value);
+				return UDim2.fromScale(0.3, value);
 			})}
-			Position={UDim2.fromScale(0.12, 0.9)}
-			Image={assetIds.images.ui["weapon shop"]["purchase button"]}
+			Position={props.position}
+			Image={assetIds.images.ui.index.view}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
 				Activated: (): void => {},
@@ -36,19 +37,19 @@ export const ViewEgg = hooks((props: { eggName: EggName }, hooks) => {
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
 		>
-			<uiaspectratioconstraint AspectRatio={3.3} />
 			<textlabel
-				AnchorPoint={vec2Middle}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.9, 0.9)}
 				BackgroundTransparency={1}
-				TextScaled={true}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-				Text={`View`}
+				AnchorPoint={vec2Middle}
+				Size={UDim2.fromScale(1, 1)}
+				Position={UDim2.fromScale(0.5, 0.5)}
 				Font={font}
+				Text={"Pets"}
+				TextColor3={Color3.fromRGB(255, 255, 255)}
+				TextScaled={true}
 			>
 				<BaseUIStroke Thickness={2} />
 			</textlabel>
 		</imagebutton>
 	);
 });
+/* eslint-enable jsdoc/require-jsdoc */

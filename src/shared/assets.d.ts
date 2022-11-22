@@ -58,6 +58,7 @@ declare namespace assetIds {
 				background: string;
 				sidebar: string;
 				eggBackground: string;
+				view: string;
 			};
 			"rank upgrade": {
 				cancel: string;

@@ -1629,8 +1629,8 @@ id = 10832809474
 packable = false
 
 [inputs."images/ui/index/background.png"]
-hash = "ff0844df20fc351d2e390fca1fd646e7c98e2bde90841bf9f5ca0415712e7994"
-id = 11609958651
+hash = "8909c87ade0693bf996cbbc0acbed159f037207616b2db7fe3e31597bd3976d7"
+id = 11632194795
 packable = false
 
 [inputs."images/ui/index/eggBackground.png"]
@@ -1641,6 +1641,11 @@ packable = false
 [inputs."images/ui/index/sidebar.png"]
 hash = "4c381ba80ebd08a4d53ca738f37ee1b710c4de8a449961e576470614d4caeaee"
 id = 11627644894
+packable = false
+
+[inputs."images/ui/index/view.png"]
+hash = "08cff85864c4e2c4787f4062027d8743bbca78defe285483504883dcea0433e9"
+id = 11632928741
 packable = false
 
 [inputs."images/ui/quests/entry background.png"]

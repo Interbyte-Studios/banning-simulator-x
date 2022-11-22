@@ -1,6 +1,6 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
-import { Players, RunService, Workspace } from "@rbxts/services";
+import { Players, RunService } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
