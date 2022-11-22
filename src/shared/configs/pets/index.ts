@@ -1,3 +1,5 @@
+import { t } from "@rbxts/t";
+
 import { Rarities } from "../rarities";
 
 export interface Pet {
@@ -77,4 +79,5 @@ export const DEFAULT_EQUIP_AMOUNT = 4;
 /**
  * The different types of pet variants in the game.
  */
-export type Variants = "regular" | "void" | "radiant";
+export const isVariant = t.literal("regular", "void", "radiant");
+export type Variants = t.static<typeof isVariant>;

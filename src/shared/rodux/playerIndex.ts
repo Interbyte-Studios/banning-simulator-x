@@ -19,7 +19,7 @@ export interface PlayerIndexState {
 				void: number;
 				radiant: number;
 			};
-			traded: {
+			maxLevel: {
 				regular: number;
 				void: number;
 				radiant: number;
@@ -51,7 +51,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet>(
 						void: 0,
 						radiant: 0,
 					},
-					traded: {
+					maxLevel: {
 						regular: 0,
 						void: 0,
 						radiant: 0,
@@ -89,8 +89,8 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet>(
 					pet.fused[petToIndex.variant] += 1;
 					break;
 				}
-				case "trade": {
-					pet.traded[petToIndex.variant] += 1;
+				case "maxLevel": {
+					pet.maxLevel[petToIndex.variant] += 1;
 					break;
 				}
 			}

@@ -24,7 +24,7 @@ export interface ConfirmedPet extends PetData {
 	autoDeleted: boolean;
 }
 
-export type PetAttainMethod = "trade" | "fuse" | "hatch";
+export type PetAttainMethod = "maxLevel" | "fuse" | "hatch";
 export interface PetData {
 	id: number;
 	rarity: Rarities;

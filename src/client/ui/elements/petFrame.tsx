@@ -28,7 +28,7 @@ interface PetFrameProps {
  * @returns A roact component.
  */
 export function PetFrame(props: PetFrameProps): Roact.Element {
-	const petData = getPetData(props.eggName, props.petId);
+	const petData = getPetData(props.petId);
 
 	return (
 		<frame
