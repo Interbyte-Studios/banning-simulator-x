@@ -34,7 +34,7 @@ export function IndexEggView(props: IndexEggViewProps): Roact.Element {
 				Size={UDim2.fromScale(0.5, 0.775)}
 			>
 				<uicorner CornerRadius={new UDim(0.1, 0)} />
-				<BaseUIStroke Thickness={2} Color={Color3.fromRGB(0, 100, 163)} />
+				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 			</frame>
 		);
 	}
@@ -48,7 +48,7 @@ export function IndexEggView(props: IndexEggViewProps): Roact.Element {
 			Size={UDim2.fromScale(0.5, 0.775)}
 		>
 			<uicorner CornerRadius={new UDim(0.1, 0)} />
-			<BaseUIStroke Thickness={2} Color={Color3.fromRGB(0, 100, 163)} />
+			<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
 			<EggView egg={props.egg} hideInfo={props.hideInfo} />
 			<EggNameView egg={props.egg} />

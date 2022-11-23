@@ -51,7 +51,7 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 					TextScaled={true}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={2} />
+					<BaseUIStroke native={{ Thickness: 2 }} />
 					<RankIcon
 						position={UDim2.fromScale(1.15, 0.5)}
 						size={{ maximizedSize: 1, minimizedSize: 0.9 }}
@@ -83,7 +83,7 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 						TextScaled={true}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={2} />
+						<BaseUIStroke native={{ Thickness: 2 }} />
 					</textlabel>
 					<textlabel
 						BackgroundTransparency={1}
@@ -96,9 +96,10 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 						TextScaled={true}
 						TextXAlignment={Enum.TextXAlignment.Left}
 					>
-						<BaseUIStroke Color={Color3.fromRGB(255, 255, 255)} Thickness={1.5}>
-							<CurrencyGradient Currency={"coins"} />
-						</BaseUIStroke>
+						<BaseUIStroke
+							native={{ Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }}
+							currencyGradient={"coins"}
+						/>
 						<CurrencyIcon
 							anchorPoint={new Vector2(1, 0.5)}
 							position={UDim2.fromScale(-0.03, 0.5)}
@@ -126,7 +127,7 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 						TextScaled={true}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={2} />
+						<BaseUIStroke native={{ Thickness: 2 }} />
 					</textlabel>
 					<textlabel
 						AnchorPoint={vec2Middle}
@@ -154,7 +155,7 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 						TextScaled={true}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={2} />
+						<BaseUIStroke native={{ Thickness: 2 }} />
 					</textlabel>
 					<textlabel
 						AnchorPoint={vec2Middle}
@@ -166,7 +167,7 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 						TextScaled={true}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={2} />
+						<BaseUIStroke native={{ Thickness: 2 }} />
 					</textlabel>
 				</imagelabel>
 			</>

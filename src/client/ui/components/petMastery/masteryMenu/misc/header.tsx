@@ -19,7 +19,7 @@ export function PetMasteryIndexHeader(): Roact.Element {
 			Text={"Pet Mastery"}
 			Font={font}
 		>
-			<BaseUIStroke Thickness={3} />
+				<BaseUIStroke native={{ Thickness: 3 }} />
 		</textlabel>
 	);
 }

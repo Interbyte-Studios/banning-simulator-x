@@ -2,6 +2,7 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
 import { EggName } from "shared/configs/eggs";
+import { Variants } from "shared/configs/pets";
 import { getEggData } from "shared/util/getEggData";
 
 import { IndexPetCard } from "./petCard";
@@ -13,11 +14,13 @@ import { IndexPetCard } from "./petCard";
  * @param props.displayPet A function to display the pets info in the view area of the component.
  * @param props.currentPet The pet currently being displayed, if any.
  * @param props.egg The egg the player is currently viewing.
+ * @param props.currentVariant The variant the player is currently viewing.
  * @returns A Roact component.
  */
 export function IndexPetScroll(props: {
 	egg: EggName;
 	currentPet: number | undefined;
+	currentVariant: Variants | undefined;
 	displayPet: (petName: number | undefined) => void;
 }): Roact.Element {
 	const eggData = getEggData(props.egg);
@@ -36,7 +39,14 @@ export function IndexPetScroll(props: {
 				Padding={new UDim(0.05, 0)}
 			/>
 			{pets.map((petData) => {
-				return <IndexPetCard pet={petData.id} displayPet={props.displayPet} currentPet={props.currentPet} />;
+				return (
+					<IndexPetCard
+						pet={petData.id}
+						displayPet={props.displayPet}
+						currentVariant={props.currentVariant}
+						currentPet={props.currentPet}
+					/>
+				);
 			})}
 		</frame>
 	);

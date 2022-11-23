@@ -26,7 +26,7 @@ export function ProgressHeader(props: ProgressHeaderProps): Roact.Element {
 			TextScaled={true}
 			TextXAlignment={Enum.TextXAlignment.Left}
 		>
-			<BaseUIStroke Thickness={2} />
+			<BaseUIStroke native={{ Thickness: 2 }} />
 		</textlabel>
 	);
 }

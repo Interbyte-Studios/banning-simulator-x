@@ -1,7 +1,6 @@
 import Rodux from "@rbxts/rodux";
 import { t } from "@rbxts/t";
 import { EggName } from "shared/configs/eggs";
-import { UnreachableCaseError } from "shared/util/unreachableCaseError";
 
 import { AddPet } from "./pets";
 

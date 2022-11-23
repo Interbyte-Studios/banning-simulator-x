@@ -86,7 +86,7 @@ export const PetMasteryInteractPrompt = hooks((props: { adornee: BasePart; displ
 				TextScaled={true}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={2} />
+				<BaseUIStroke native={{ Thickness: 2 }} />
 			</textlabel>
 			<imagebutton
 				AnchorPoint={vec2Middle}
@@ -113,7 +113,7 @@ export const PetMasteryInteractPrompt = hooks((props: { adornee: BasePart; displ
 					TextScaled={true}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={2} />
+					<BaseUIStroke native={{ Thickness: 2 }} />
 				</textlabel>
 			</imagebutton>
 		</billboardgui>

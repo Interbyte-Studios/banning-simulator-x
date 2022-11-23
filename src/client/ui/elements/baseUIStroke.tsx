@@ -8,7 +8,6 @@ import { RankGradient } from "./rankGradient";
 
 interface BaseUIStrokeProps {
 	native: Partial<UIStroke>;
-	defaultBlackColor: boolean;
 	isBillboard?: boolean;
 	rankGradient?: number;
 	currencyGradient?: Currency;
@@ -19,7 +18,7 @@ const blackColor = Color3.fromRGB(20, 46, 47);
 /**
  * A UIStroke that is tagged so that it can be scaled.
  */
-export const BSX_UIStroke = hooks((props: BaseUIStrokeProps, hooks) => {
+export const BaseUIStroke = hooks((props: BaseUIStrokeProps, hooks) => {
 	const { useEffect, useValue } = hooks;
 
 	const uiStrokeRef = useValue(Roact.createRef<UIStroke>());
@@ -36,31 +35,17 @@ export const BSX_UIStroke = hooks((props: BaseUIStrokeProps, hooks) => {
 
 	if (props.rankGradient !== undefined) {
 		return (
-			<uistroke
-				Color={props.defaultBlackColor ? blackColor : props.native.Color}
-				{...props.native}
-				Ref={uiStrokeRef.value}
-			>
+			<uistroke Color={props.native.Color ?? blackColor} {...props.native} Ref={uiStrokeRef.value}>
 				<RankGradient Rank={props.rankGradient} />
 			</uistroke>
 		);
 	} else if (props.currencyGradient !== undefined) {
 		return (
-			<uistroke
-				Color={props.defaultBlackColor ? blackColor : props.native.Color}
-				{...props.native}
-				Ref={uiStrokeRef.value}
-			>
+			<uistroke Color={props.native.Color ?? blackColor} {...props.native} Ref={uiStrokeRef.value}>
 				<CurrencyGradient Currency={props.currencyGradient} />
 			</uistroke>
 		);
 	}
 
-	return (
-		<uistroke
-			Color={props.defaultBlackColor ? blackColor : props.native.Color}
-			{...props.native}
-			Ref={uiStrokeRef.value}
-		/>
-	);
+	return <uistroke Color={props.native.Color ?? blackColor} {...props.native} Ref={uiStrokeRef.value} />;
 });

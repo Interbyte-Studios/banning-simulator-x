@@ -48,7 +48,7 @@ export const ViewPets = hooks(
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextScaled={true}
 				>
-					<BaseUIStroke Thickness={2} />
+					<BaseUIStroke native={{ Thickness: 2 }} />
 				</textlabel>
 			</imagebutton>
 		);

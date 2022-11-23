@@ -46,7 +46,7 @@ export const ViewPreviousWeapon = hooks((props: { onActivated: () => void }, hoo
 				TextScaled={true}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={2} />
+				<BaseUIStroke native={{ Thickness: 2 }} />
 			</textlabel>
 		</imagebutton>
 	);

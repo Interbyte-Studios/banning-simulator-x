@@ -11,14 +11,14 @@ remotes.Server.GetNamespace("petMastery")
 	.SetCallback(
 		withPlayerStore((_, store, id, variant) => {
 			const state = store.getState();
-			
+
 			// check to be sure they've not already claimed it
 			const petMastery = state.petMastery.get(id);
 			if (petMastery !== undefined) {
 				return {
 					success: false,
 					reason: ClaimPetMasteryFailKind.InternalError,
-				}
+				};
 			}
 
 			// Check to be sure they've discovered the pet.
@@ -29,10 +29,10 @@ remotes.Server.GetNamespace("petMastery")
 					reason: ClaimPetMasteryFailKind.UndiscoveredPet,
 				};
 			}
-            
-            const petData = getPetData(id);
+
+			const petData = getPetData(id);
 			const variantMasteryRequirements = PET_MASTERY_REQUIREMENTS[petData.rarity][variant];
-			
+
 			// check requirements
 			switch (variant) {
 				case "regular": {
@@ -40,14 +40,14 @@ remotes.Server.GetNamespace("petMastery")
 						return {
 							success: false,
 							reason: ClaimPetMasteryFailKind.NotEnoughHatches,
-						}
+						};
 					}
 
 					if (petsIndex.maxLevel[variant] < variantMasteryRequirements.maxLevel) {
 						return {
 							success: false,
 							reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
-						}
+						};
 					}
 
 					break;
@@ -57,45 +57,45 @@ remotes.Server.GetNamespace("petMastery")
 						return {
 							success: false,
 							reason: ClaimPetMasteryFailKind.NotEnoughHatches,
-						}
+						};
 					}
 
 					if (petsIndex.maxLevel[variant] < variantMasteryRequirements.maxLevel) {
 						return {
 							success: false,
 							reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
-						}
+						};
 					}
 
 					if (petsIndex.fused[variant] < variantMasteryRequirements.fuse) {
 						return {
 							success: false,
 							reason: ClaimPetMasteryFailKind.NotEnoughFusions,
-						}
+						};
 					}
 
-					break;					
+					break;
 				}
 				case "radiant": {
 					if (petsIndex.maxLevel[variant] < variantMasteryRequirements.maxLevel) {
 						return {
 							success: false,
 							reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
-						}
+						};
 					}
-				
+
 					if (petsIndex.fused[variant] < variantMasteryRequirements.fuse) {
 						return {
 							success: false,
 							reason: ClaimPetMasteryFailKind.NotEnoughFusions,
-						}
+						};
 					}
 
 					break;
 				}
 			}
 
-			store.dispatch(claimMastery(id, variant))
+			store.dispatch(claimMastery(id, variant));
 
 			return {
 				success: true,

@@ -66,7 +66,7 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 					Text={"Zone Advance"}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={2} />
+					<BaseUIStroke native={{ Thickness: 2 }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -78,7 +78,7 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 					Text={`Would you like to purchase zone ${zoneData.name}?`}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={3} />
+					<BaseUIStroke native={{ Thickness: 2 }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -101,7 +101,7 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 						size={{ maximizedSize: 1, minimizedSize: 0.9 }}
 						rank={zoneData.cost.requiredRank}
 					/>
-					<BaseUIStroke Thickness={3} />
+					<BaseUIStroke native={{ Thickness: 2 }} />
 				</textlabel>
 				<PurchaseZoneButton world={props.world} zone={zoneData.name} hideMenu={props.hideMenu} />
 				<CancelZonePurchase hideMenu={props.hideMenu} />

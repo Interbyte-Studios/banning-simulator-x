@@ -73,7 +73,7 @@ export const DiscordHandle = RoactRodux.connect(mapStateToProps)(
 						TextScaled={true}
 						Ref={textBoxRef.value}
 					>
-						<BaseUIStroke Thickness={1.2} />
+						<BaseUIStroke native={{ Thickness: 1.2 }} />
 					</textbox>
 				</imagelabel>
 				<imagebutton
@@ -128,7 +128,7 @@ export const DiscordHandle = RoactRodux.connect(mapStateToProps)(
 						Text={"Verify"}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={1.2} />
+						<BaseUIStroke native={{ Thickness: 1.2 }} />
 					</textlabel>
 				</imagebutton>
 			</>

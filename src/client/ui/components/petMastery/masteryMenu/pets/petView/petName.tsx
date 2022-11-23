@@ -22,7 +22,7 @@ export function PetNameView(props: { pet: number }): Roact.Element {
 			Text={petData.name}
 			Font={font}
 		>
-			<BaseUIStroke Thickness={3} />
+			<BaseUIStroke native={{ Thickness: 3 }} />
 		</textlabel>
 	);
 }

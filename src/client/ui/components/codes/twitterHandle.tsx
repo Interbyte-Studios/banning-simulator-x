@@ -48,7 +48,7 @@ export const TwitterHandle = hooks((_, hooks) => {
 					TextScaled={true}
 					Ref={textBoxRef.value}
 				>
-					<BaseUIStroke Thickness={1.2} />
+					<BaseUIStroke native={{ Thickness: 1.2 }} />
 				</textbox>
 			</imagelabel>
 			<imagebutton
@@ -99,7 +99,7 @@ export const TwitterHandle = hooks((_, hooks) => {
 					Text={"Redeem"}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={1.2} />
+					<BaseUIStroke native={{ Thickness: 1.2 }} />
 				</textlabel>
 			</imagebutton>
 		</>

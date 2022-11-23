@@ -1,18 +1,21 @@
 import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { Variants } from "shared/configs/pets";
 
 import { PetNameView } from "./petName";
 import { PetView } from "./petView";
 
 interface IndexEggViewProps {
 	pet: number | undefined;
+	currentVariant: Variants | undefined;
 	hideInfo: () => void;
 }
 
 /**
  * @param props The properties of the roact component.
- * @param props.pet The id of the pet..
+ * @param props.pet The id of the pet.
+ * @param props.currentVariant The variant of the pet.
  * @param props.hideInfo A function to hide the info being displayed.
  * @returns A Roact component.
  */
@@ -27,7 +30,7 @@ export function IndexPetView(props: IndexEggViewProps): Roact.Element {
 				Size={UDim2.fromScale(0.5, 0.775)}
 			>
 				<uicorner CornerRadius={new UDim(0.1, 0)} />
-				<BaseUIStroke Thickness={2} Color={Color3.fromRGB(0, 100, 163)} />
+				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 			</frame>
 		);
 	}
@@ -41,9 +44,9 @@ export function IndexPetView(props: IndexEggViewProps): Roact.Element {
 			Size={UDim2.fromScale(0.5, 0.775)}
 		>
 			<uicorner CornerRadius={new UDim(0.1, 0)} />
-			<BaseUIStroke Thickness={2} Color={Color3.fromRGB(0, 100, 163)} />
+			<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
-			<PetView pet={props.pet} hideInfo={props.hideInfo} />
+			<PetView pet={props.pet} currentVariant={props.currentVariant} hideInfo={props.hideInfo} />
 			<PetNameView pet={props.pet} />
 		</frame>
 	);

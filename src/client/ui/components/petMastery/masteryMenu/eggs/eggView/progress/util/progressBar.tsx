@@ -82,7 +82,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 				Position={props.position}
 			>
 				<uicorner CornerRadius={new UDim(0.4, 0)} />
-				<BaseUIStroke Thickness={2} />
+				<BaseUIStroke native={{ Thickness: 2 }} />
 
 				{completionBarComponent}
 
@@ -96,7 +96,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextScaled={true}
 				>
-					<BaseUIStroke Thickness={2} />
+					<BaseUIStroke native={{ Thickness: 2 }} />
 				</textlabel>
 			</frame>
 		);

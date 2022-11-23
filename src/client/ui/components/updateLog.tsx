@@ -58,7 +58,7 @@ export const UpdateLog = hooks((props: { enabled: boolean }, hooks) => {
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(69, 69, 69) }} />
 				</textlabel>
 			</imagebutton>
 		);
@@ -83,7 +83,7 @@ export const UpdateLog = hooks((props: { enabled: boolean }, hooks) => {
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(69, 69, 69) }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -95,7 +95,7 @@ export const UpdateLog = hooks((props: { enabled: boolean }, hooks) => {
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(69, 69, 69) }} />
 				</textlabel>
 				<frame
 					AnchorPoint={vec2Middle}
@@ -113,7 +113,7 @@ export const UpdateLog = hooks((props: { enabled: boolean }, hooks) => {
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(69, 69, 69) }} />
 					</textlabel>
 					<textlabel
 						AnchorPoint={vec2Middle}
@@ -125,7 +125,7 @@ export const UpdateLog = hooks((props: { enabled: boolean }, hooks) => {
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(69, 69, 69) }} />
 					</textlabel>
 					<textlabel
 						AnchorPoint={vec2Middle}
@@ -137,7 +137,7 @@ export const UpdateLog = hooks((props: { enabled: boolean }, hooks) => {
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(69, 69, 69) }} />
 					</textlabel>
 					<textlabel
 						AnchorPoint={vec2Middle}
@@ -149,7 +149,7 @@ export const UpdateLog = hooks((props: { enabled: boolean }, hooks) => {
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(69, 69, 69) }} />
 					</textlabel>
 					<textlabel
 						AnchorPoint={vec2Middle}
@@ -161,7 +161,7 @@ export const UpdateLog = hooks((props: { enabled: boolean }, hooks) => {
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={2} Color={Color3.fromRGB(69, 69, 69)} />
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(69, 69, 69) }} />
 					</textlabel>
 					<uilistlayout
 						Padding={new UDim(0.03, 0)}

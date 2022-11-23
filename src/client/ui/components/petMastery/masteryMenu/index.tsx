@@ -24,12 +24,14 @@ interface PetMasteryMenuProps {
 export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useState, useEffect }) => {
 	const [eggToView, setEggToView] = useState<EggName | undefined>("Starter"); // default should be undefined.
 	const [petToView, setPetToView] = useState<number | undefined>(1); // default should be undefined.
+	const [variantToView, setVariantToView] = useState<Variants | undefined>("regular");
 	const [petViewType, setPetViewType] = useState<Variants | undefined>(undefined);
 
 	useEffect(() => {
 		if (eggToView === undefined) {
 			setPetToView(undefined);
 			setPetViewType(undefined);
+			setVariantToView(undefined);
 		}
 	}, [eggToView]);
 
@@ -50,9 +52,10 @@ export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useState, use
 				<IndexPetScroll
 					egg={eggToView}
 					currentPet={petToView}
+					currentVariant={variantToView}
 					displayPet={(pet: number | undefined): void => setPetToView(pet)}
 				/>
-				<IndexPetView pet={petToView} hideInfo={(): void => setPetToView(undefined)} />
+				<IndexPetView pet={petToView} currentVariant={variantToView} hideInfo={(): void => setPetToView(undefined)} />
 				<ExitButton
 					Position={UDim2.fromScale(0.975, 0.075)}
 					minimizedSize={0.075}

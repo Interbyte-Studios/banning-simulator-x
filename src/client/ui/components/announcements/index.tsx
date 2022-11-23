@@ -55,7 +55,7 @@ const LocalMessage = hooks((props: LocalMessageProps, { useBinding, useEffect })
 					TextScaled={true}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={1} Color={Color3.fromRGB(50, 50, 50)} />
+					<BaseUIStroke native={{ Thickness: 1, Color: Color3.fromRGB(50, 50, 50) }} />
 				</textlabel>
 			</imagelabel>
 		</canvasgroup>

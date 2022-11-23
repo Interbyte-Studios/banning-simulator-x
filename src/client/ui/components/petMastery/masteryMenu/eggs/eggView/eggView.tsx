@@ -36,7 +36,7 @@ export const EggView = hooks((props: { egg: EggName; hideInfo: () => void }, hoo
 		>
 			<uiaspectratioconstraint AspectRatio={1} />
 			<uicorner CornerRadius={new UDim(1, 0)} />
-			<BaseUIStroke Thickness={2} Color={Color3.fromRGB(0, 100, 163)} />
+			<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
 			<imagelabel
 				AnchorPoint={vec2Middle}

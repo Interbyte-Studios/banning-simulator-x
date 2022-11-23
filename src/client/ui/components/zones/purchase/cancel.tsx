@@ -49,7 +49,7 @@ export const CancelZonePurchase = hooks((props: CancelZonePurchaseProps, hooks) 
 				Text={"Cancel"}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={2} />
+				<BaseUIStroke native={{ Thickness: 2 }} />
 			</textlabel>
 		</imagebutton>
 	);

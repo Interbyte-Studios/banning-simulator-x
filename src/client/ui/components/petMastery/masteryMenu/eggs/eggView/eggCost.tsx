@@ -1,7 +1,6 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { CurrencyGradient } from "client/ui/elements/currencyGradient";
 import { CurrencyIcon } from "client/ui/elements/currencyIcon";
 import { EggName } from "shared/configs/eggs";
 import { getEggCost } from "shared/util/getEggCost";
@@ -27,9 +26,10 @@ export function EggCostView(props: { egg: EggName }): Roact.Element {
 			TextScaled={true}
 			TextXAlignment={Enum.TextXAlignment.Left}
 		>
-			<BaseUIStroke Color={Color3.fromRGB(255, 255, 255)} Thickness={1.5}>
-				<CurrencyGradient Currency={eggCost.currencyType} />
-			</BaseUIStroke>
+			<BaseUIStroke
+				native={{ Color: Color3.fromRGB(255, 255, 255), Thickness: 1.5 }}
+				currencyGradient={eggCost.currencyType}
+			/>
 			<CurrencyIcon
 				anchorPoint={new Vector2(0.5, 0.5)}
 				position={UDim2.fromScale(-0.175, 0.5)}

@@ -148,7 +148,7 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 					Text={"Purchase"}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={2} />
+					<BaseUIStroke native={{ Thickness: 2 }} />
 				</textlabel>
 			</imagebutton>
 		);

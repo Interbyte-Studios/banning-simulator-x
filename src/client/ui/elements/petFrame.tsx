@@ -4,7 +4,7 @@ import { Variants } from "shared/configs/pets";
 import { getPetData } from "shared/util/getPetData";
 
 import { font, vec2Middle } from "../commonValues";
-import { BSX_UIStroke } from "./baseUIStroke";
+import { BaseUIStroke } from "./baseUIStroke";
 import { PetViewport } from "./petViewport";
 import { RarityGradient } from "./rarityGradient";
 
@@ -41,11 +41,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
 				<uicorner CornerRadius={new UDim(1, 0)} />
-				<BSX_UIStroke
-					defaultBlackColor={false}
-					isBillboard={props.isBillboard}
-					native={{ Thickness: 3, Transparency: 0.5 }}
-				/>
+				<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} isBillboard={props.isBillboard} />
 				<PetViewport
 					native={{
 						AnchorPoint: vec2Middle,
@@ -68,11 +64,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 				>
 					<RarityGradient Rarity={petData.rarity} />
-					<BSX_UIStroke
-						defaultBlackColor={false}
-						isBillboard={props.isBillboard}
-						native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }}
-					/>
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} isBillboard={props.isBillboard} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -85,11 +77,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 				>
 					<RarityGradient Rarity={petData.rarity} />
-					<BSX_UIStroke
-						defaultBlackColor={false}
-						isBillboard={props.isBillboard}
-						native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }}
-					/>
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} isBillboard={props.isBillboard} />
 				</textlabel>
 			</imagelabel>
 		</frame>

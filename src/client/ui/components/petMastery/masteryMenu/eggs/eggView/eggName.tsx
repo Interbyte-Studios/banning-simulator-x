@@ -20,7 +20,7 @@ export function EggNameView(props: { egg: EggName }): Roact.Element {
 			Text={props.egg}
 			Font={font}
 		>
-			<BaseUIStroke Thickness={3} />
+			<BaseUIStroke native={{ Thickness: 3 }} />
 		</textlabel>
 	);
 }

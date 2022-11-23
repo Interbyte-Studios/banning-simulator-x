@@ -4,7 +4,8 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
-import { getPetDecal } from "client/util/getPetImage";
+import { getPetImage } from "client/util/getPetImage";
+import { Variants } from "shared/configs/pets";
 import { getPetData } from "shared/util/getPetData";
 
 /**
@@ -16,6 +17,7 @@ export const IndexPetCard = hooks(
 		props: {
 			pet: number;
 			currentPet: number | undefined;
+			currentVariant: Variants | undefined;
 			displayPet: (pet: number | undefined) => void;
 		},
 		hooks,
@@ -52,7 +54,7 @@ export const IndexPetCard = hooks(
 				}}
 			>
 				<uicorner CornerRadius={new UDim(1, 0)} />
-				<BaseUIStroke Thickness={2} Color={Color3.fromRGB(0, 100, 163)} />
+				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -64,7 +66,7 @@ export const IndexPetCard = hooks(
 					Text={petData.name}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={3} />
+					<BaseUIStroke native={{ Thickness: 3 }} />
 				</textlabel>
 
 				<frame
@@ -76,7 +78,7 @@ export const IndexPetCard = hooks(
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 					<uicorner CornerRadius={new UDim(1, 0)} />
-					<BaseUIStroke Thickness={2} Color={Color3.fromRGB(0, 100, 163)} />
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
 					<imagelabel
 						AnchorPoint={vec2Middle}
@@ -85,7 +87,7 @@ export const IndexPetCard = hooks(
 						Position={binding.map((value) => {
 							return UDim2.fromScale(0.5, value);
 						})}
-						Image={getPetDecal(props.pet)}
+						Image={getPetImage(props.pet, props.currentVariant ?? "regular")}
 						ScaleType={Enum.ScaleType.Fit}
 					/>
 				</frame>
