@@ -1,12 +1,10 @@
 import Roact from "@rbxts/roact";
-import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
 import { getPetData } from "shared/util/getPetData";
 
-import { udim2BottomRight, udim2Middle, vec2Middle } from "../commonValues";
-import { BaseTextLabel } from "./baseTextLabel";
-import { BaseUIStroke } from "./baseUIStroke";
+import { font, vec2Middle } from "../commonValues";
+import { BSX_UIStroke } from "./baseUIStroke";
 import { PetViewport } from "./petViewport";
 import { RarityGradient } from "./rarityGradient";
 
@@ -15,6 +13,7 @@ interface PetFrameProps {
 	petId: number;
 	variant: Variants;
 	displayBackground: boolean;
+	isBillboard: boolean;
 	size?: UDim2;
 }
 
@@ -31,52 +30,68 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 	const petData = getPetData(props.petId);
 
 	return (
-		<frame
-			BackgroundTransparency={1}
-			AnchorPoint={vec2Middle}
-			Position={udim2Middle}
-			Size={props.size ? props.size : udim2Middle}
-			LayoutOrder={props.petId}
-		>
-			<uiaspectratioconstraint AspectRatio={1.4} />
+		<frame BackgroundTransparency={1} LayoutOrder={props.petId}>
 			<imagelabel
-				BackgroundTransparency={1}
 				AnchorPoint={vec2Middle}
+				BackgroundTransparency={0}
+				BackgroundColor3={Color3.fromRGB(46, 115, 179)}
 				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={udim2BottomRight}
-				Image={props.displayBackground ? assetIds.images.ui.egg["pet frame"] : ""}
+				Size={UDim2.fromScale(0.925, 0.925)}
+				Image={""}
 			>
+				<uiaspectratioconstraint AspectRatio={1} />
+				<uicorner CornerRadius={new UDim(1, 0)} />
+				<BSX_UIStroke
+					defaultBlackColor={false}
+					isBillboard={props.isBillboard}
+					native={{ Thickness: 3, Transparency: 0.5 }}
+				/>
 				<PetViewport
 					native={{
 						AnchorPoint: vec2Middle,
 						Position: UDim2.fromScale(0.5, 0.5),
 						Size: UDim2.fromScale(0.9, 0.9),
-						BackgroundColor3: Color3.fromRGB(0, 0, 0),
 						BackgroundTransparency: 1,
 					}}
-					eggName={props.eggName}
 					petId={props.petId}
-					isVoid={props.variant === "void"}
+					variant={props.variant}
 				/>
+				<textlabel
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					Position={UDim2.fromScale(0.5, 0.9)}
+					Size={UDim2.fromScale(0.9, 0.3)}
+					Text={petData.rarity !== "Legendary" ? `${petData.chance}%` : "???"}
+					TextXAlignment={Enum.TextXAlignment.Right}
+					TextScaled={true}
+					Font={font}
+					TextColor3={Color3.fromRGB(255, 255, 255)}
+				>
+					<RarityGradient Rarity={petData.rarity} />
+					<BSX_UIStroke
+						defaultBlackColor={false}
+						isBillboard={props.isBillboard}
+						native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }}
+					/>
+				</textlabel>
+				<textlabel
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					Position={UDim2.fromScale(0.5, 0)}
+					Size={UDim2.fromScale(0.9, 0.3)}
+					Text={petData.rarity}
+					TextScaled={true}
+					Font={font}
+					TextColor3={Color3.fromRGB(255, 255, 255)}
+				>
+					<RarityGradient Rarity={petData.rarity} />
+					<BSX_UIStroke
+						defaultBlackColor={false}
+						isBillboard={props.isBillboard}
+						native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }}
+					/>
+				</textlabel>
 			</imagelabel>
-			<BaseTextLabel
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.9)}
-				Size={UDim2.fromScale(0.9, 0.3)}
-				Text={petData.rarity !== "Legendary" ? `${petData.chance}%` : "???"}
-				TextXAlignment={Enum.TextXAlignment.Right}
-			>
-				<BaseUIStroke Thickness={2.5} />
-			</BaseTextLabel>
-			<BaseTextLabel
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0)}
-				Size={UDim2.fromScale(0.9, 0.3)}
-				Text={petData.rarity}
-			>
-				<RarityGradient Rarity={petData.rarity} />
-				<BaseUIStroke Thickness={2.5} />
-			</BaseTextLabel>
 		</frame>
 	);
 }

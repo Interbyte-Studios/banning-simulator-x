@@ -1,11 +1,66 @@
 import Roact from "@rbxts/roact";
+import { CollectionService } from "@rbxts/services";
+import { Currency } from "shared/configs/currencies";
 
-interface BaseUIStrokeProps extends Partial<UIStroke> {}
+import { hooks } from "../hooks";
+import { CurrencyGradient } from "./currencyGradient";
+import { RankGradient } from "./rankGradient";
+
+interface BaseUIStrokeProps {
+	native: Partial<UIStroke>;
+	defaultBlackColor: boolean;
+	isBillboard?: boolean;
+	rankGradient?: number;
+	currencyGradient?: Currency;
+}
+
+const blackColor = Color3.fromRGB(20, 46, 47);
 
 /**
- * @param props The properties of the ui stroke.
- * @returns A ui stroke roact component with preset properties.
+ * A UIStroke that is tagged so that it can be scaled.
  */
-export function BaseUIStroke(props: BaseUIStrokeProps): Roact.Element {
-	return <uistroke Color={Color3.fromRGB(20, 46, 47)} {...props} />;
-}
+export const BSX_UIStroke = hooks((props: BaseUIStrokeProps, hooks) => {
+	const { useEffect, useValue } = hooks;
+
+	const uiStrokeRef = useValue(Roact.createRef<UIStroke>());
+
+	useEffect(() => {
+		const uiStroke = uiStrokeRef.value.getValue();
+		assert(uiStroke, `Failed to get UIStroke roact ref`);
+
+		CollectionService.AddTag(
+			uiStroke,
+			props.isBillboard !== undefined && props.isBillboard === true ? "Billboard_UIStroke" : "Normal_UIStroke",
+		);
+	});
+
+	if (props.rankGradient !== undefined) {
+		return (
+			<uistroke
+				Color={props.defaultBlackColor ? blackColor : props.native.Color}
+				{...props.native}
+				Ref={uiStrokeRef.value}
+			>
+				<RankGradient Rank={props.rankGradient} />
+			</uistroke>
+		);
+	} else if (props.currencyGradient !== undefined) {
+		return (
+			<uistroke
+				Color={props.defaultBlackColor ? blackColor : props.native.Color}
+				{...props.native}
+				Ref={uiStrokeRef.value}
+			>
+				<CurrencyGradient Currency={props.currencyGradient} />
+			</uistroke>
+		);
+	}
+
+	return (
+		<uistroke
+			Color={props.defaultBlackColor ? blackColor : props.native.Color}
+			{...props.native}
+			Ref={uiStrokeRef.value}
+		/>
+	);
+});

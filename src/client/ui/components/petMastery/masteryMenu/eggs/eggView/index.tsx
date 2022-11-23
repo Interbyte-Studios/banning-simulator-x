@@ -2,6 +2,7 @@ import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { EggName } from "shared/configs/eggs";
+import { Variants } from "shared/configs/pets";
 
 import { EggCostView } from "./eggCost";
 import { EggNameView } from "./eggName";
@@ -10,13 +11,19 @@ import { RadiantEggProgress } from "./progress/radiant";
 import { RegularEggProgress } from "./progress/regular";
 import { VoidEggProgress } from "./progress/void";
 
+interface IndexEggViewProps {
+	egg: EggName | undefined;
+	displayPets: (variant: Variants) => void;
+	hideInfo: () => void;
+}
+
 /**
  * @param props The properties of the roact component.
  * @param props.egg The name of the egg.
  * @param props.hideInfo A function to hide the info being displayed.
  * @returns A Roact component.
  */
-export function IndexEggView(props: { egg: EggName | undefined; hideInfo: () => void }): Roact.Element {
+export function IndexEggView(props: IndexEggViewProps): Roact.Element {
 	if (props.egg === undefined) {
 		return (
 			<frame
@@ -46,9 +53,9 @@ export function IndexEggView(props: { egg: EggName | undefined; hideInfo: () => 
 			<EggView egg={props.egg} hideInfo={props.hideInfo} />
 			<EggNameView egg={props.egg} />
 			<EggCostView egg={props.egg} />
-			<RegularEggProgress egg={props.egg} />
-			<VoidEggProgress egg={props.egg} />
-			<RadiantEggProgress egg={props.egg} />
+			<RegularEggProgress egg={props.egg} displayPets={props.displayPets} />
+			<VoidEggProgress egg={props.egg} displayPets={props.displayPets} />
+			<RadiantEggProgress egg={props.egg} displayPets={props.displayPets} />
 		</frame>
 	);
 }
