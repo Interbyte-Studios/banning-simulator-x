@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { CollectionService, ContextActionService, Players, Workspace } from "@rbxts/services";
+import { CollectionService, ContextActionService, Players } from "@rbxts/services";
 import { hooks } from "client/ui/hooks";
 import { WorldName } from "shared/configs/worlds";
 import { isValidWorld } from "shared/util/isValidWorld";

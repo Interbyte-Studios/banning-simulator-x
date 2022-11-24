@@ -1,26 +1,46 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
+import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { getEggImage } from "client/util/getEggImage";
 import { EggName } from "shared/configs/eggs";
+import { StoreState } from "shared/rodux";
+import { PlayerIndexState } from "shared/rodux/playerIndex";
+
+interface IndexEggCardProps extends IndexEggCardMappedProps {
+	egg: EggName;
+	layoutOrder: number;
+	currentEgg: EggName | undefined;
+	displayEgg: (eggName: EggName | undefined) => void;
+}
+
+interface IndexEggCardMappedProps {
+	index: PlayerIndexState;
+}
+
+/**
+ * Maps the Rodux store's state to the props.
+ *
+ * @param state The current store state.
+ * @returns The mapped props to render with.
+ */
+function mapStateToProps(state: StoreState): IndexEggCardMappedProps {
+	return {
+		index: state.index,
+	};
+}
 
 /**
  * A button allowing the player to view information about a specific egg.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const IndexEggCard = hooks(
-	(
-		props: {
-			egg: EggName;
-			layoutOrder: number;
-			currentEgg: EggName | undefined;
-			displayEgg: (eggName: EggName | undefined) => void;
-		},
-		hooks,
-	) => {
+export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
+	hooks((props: IndexEggCardProps, hooks) => {
+		const isDiscovered = props.index.eggs.get(props.egg) !== undefined;
+
 		const raisedPosition = 0.4;
 		const raisedSpring = new Flipper.Spring(raisedPosition, { frequency: 5 });
 
@@ -60,7 +80,7 @@ export const IndexEggCard = hooks(
 					BackgroundTransparency={1}
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Text={props.egg}
+					Text={isDiscovered ? props.egg : "???"}
 					Font={font}
 				>
 					<BaseUIStroke native={{ Thickness: 3 }} />
@@ -85,11 +105,12 @@ export const IndexEggCard = hooks(
 							return UDim2.fromScale(0.5, value);
 						})}
 						Image={getEggImage(props.egg)}
+						ImageColor3={isDiscovered ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0)}
 						ScaleType={Enum.ScaleType.Fit}
 					/>
 				</frame>
 			</imagebutton>
 		);
-	},
+	}),
 );
 /* eslint-enable jsdoc/require-jsdoc */

@@ -25,7 +25,7 @@ export const PetView = hooks(
 			<imagebutton
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={0}
-				Position={UDim2.fromScale(0.225, 0.2)}
+				Position={UDim2.fromScale(0.225, 0.185)}
 				Size={UDim2.fromScale(0.4, 1.2)}
 				BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 				Image={""}

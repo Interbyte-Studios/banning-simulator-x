@@ -3,7 +3,7 @@ import { vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { Variants } from "shared/configs/pets";
 
-import { PetNameView } from "./petName";
+import { PetInfoView } from "./petInfo";
 import { PetView } from "./petView";
 
 interface IndexEggViewProps {
@@ -47,7 +47,7 @@ export function IndexPetView(props: IndexEggViewProps): Roact.Element {
 			<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
 			<PetView pet={props.pet} currentVariant={props.currentVariant} hideInfo={props.hideInfo} />
-			<PetNameView pet={props.pet} />
+			<PetInfoView pet={props.pet} variant={props.currentVariant ?? "regular"} />
 		</frame>
 	);
 }

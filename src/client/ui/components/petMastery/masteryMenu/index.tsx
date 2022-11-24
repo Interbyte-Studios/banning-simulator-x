@@ -12,6 +12,7 @@ import { IndexEggView } from "./eggs/eggView";
 import { PetMasteryIndexHeader } from "./misc/header";
 import { IndexPetScroll } from "./pets/petScroll";
 import { IndexPetView } from "./pets/petView";
+import { ReturnToEggScroll } from "./pets/returnToEggScroll";
 
 interface PetMasteryMenuProps {
 	world: WorldName;
@@ -21,19 +22,10 @@ interface PetMasteryMenuProps {
 /**
  * Displays all the pets of a given world, and accolades for each one that give rewards.
  */
-export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useState, useEffect }) => {
+export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useState }) => {
 	const [eggToView, setEggToView] = useState<EggName | undefined>("Starter"); // default should be undefined.
 	const [petToView, setPetToView] = useState<number | undefined>(1); // default should be undefined.
-	const [variantToView, setVariantToView] = useState<Variants | undefined>("regular");
-	const [petViewType, setPetViewType] = useState<Variants | undefined>(undefined);
-
-	useEffect(() => {
-		if (eggToView === undefined) {
-			setPetToView(undefined);
-			setPetViewType(undefined);
-			setVariantToView(undefined);
-		}
-	}, [eggToView]);
+	const [petViewType, setPetViewType] = useState<Variants | undefined>("regular");
 
 	if (petViewType !== undefined) {
 		assert(eggToView, `Expected PetMasteryMenu "eggToView" stateful value to be defined.`);
@@ -49,13 +41,14 @@ export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useState, use
 			>
 				<uiaspectratioconstraint AspectRatio={1.3} />
 				<PetMasteryIndexHeader />
+				<ReturnToEggScroll returnToSelection={(): void => setPetViewType(undefined)} />
 				<IndexPetScroll
 					egg={eggToView}
 					currentPet={petToView}
-					currentVariant={variantToView}
+					currentVariant={petViewType}
 					displayPet={(pet: number | undefined): void => setPetToView(pet)}
 				/>
-				<IndexPetView pet={petToView} currentVariant={variantToView} hideInfo={(): void => setPetToView(undefined)} />
+				<IndexPetView pet={petToView} currentVariant={petViewType} hideInfo={(): void => setPetToView(undefined)} />
 				<ExitButton
 					Position={UDim2.fromScale(0.975, 0.075)}
 					minimizedSize={0.075}

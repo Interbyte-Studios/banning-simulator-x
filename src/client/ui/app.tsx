@@ -12,7 +12,6 @@ import { Quests } from "./components/quests";
 import { RankUpgrade } from "./components/ranks/menu";
 import { SettingsMenu } from "./components/settings/menu";
 import { TalismanTowerHandle } from "./components/talismans";
-import { UpdateLog } from "./components/updateLog";
 import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
 import { hooks } from "./hooks";
@@ -96,16 +95,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility}
 					talismanTowerVisible={talismanTowerVisibility}
 					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
-				/>
-				<UpdateLog
-					enabled={
-						!isHatching &&
-						!codesVisible &&
-						!settingsVisible &&
-						!questsVisible &&
-						!weaponShopVisibility &&
-						!talismanTowerVisibility
-					}
 				/>
 				<PetMastery
 					enabled={
