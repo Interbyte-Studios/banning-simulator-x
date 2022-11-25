@@ -3,7 +3,6 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
-import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
 import {
@@ -12,12 +11,10 @@ import {
 	regularVariantMasteryData,
 	voidVariantMasteryData,
 } from "shared/rodux/petMastery";
-import { getEggData } from "shared/util/getEggData";
 
 interface ProgressBarProps extends RegularEggProgressMappedProps {
-	egg: EggName;
+	pet: number;
 	variant: Variants;
-	position: UDim2;
 }
 
 interface RegularEggProgressMappedProps {
@@ -44,11 +41,11 @@ function mapStateToProps(state: StoreState): RegularEggProgressMappedProps {
  */
 export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 	hooks((props: ProgressBarProps) => {
-		const eggData = getEggData(props.egg);
+		const petMastery = props.petMastery.get(props.pet);
 
 		let totalChallenges = 0;
 		let completedChallenges = 0;
-		for (const [, data] of pairs(eggData.pets)) {
+		if (petMastery !== undefined) {
 			if (props.variant === "regular") {
 				totalChallenges += 2;
 			} else if (props.variant === "void") {
@@ -57,12 +54,8 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 				totalChallenges += 2;
 			}
 
-			const petsMasteryIndex = props.petMastery.get(data.id);
-			if (petsMasteryIndex === undefined) {
-				continue;
-			}
+			const masteryData = petMastery[props.variant];
 
-			const masteryData = petsMasteryIndex[props.variant];
 			switch (props.variant) {
 				case "regular": {
 					assert(
@@ -141,7 +134,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 				BackgroundTransparency={0}
 				BackgroundColor3={Color3.fromRGB(250, 158, 158)}
 				Size={UDim2.fromScale(0.9, 0.06)}
-				Position={props.position}
+				Position={UDim2.fromScale(0.5, 0.8)}
 			>
 				<uicorner CornerRadius={new UDim(0.4, 0)} />
 				<BaseUIStroke native={{ Thickness: 2 }} />

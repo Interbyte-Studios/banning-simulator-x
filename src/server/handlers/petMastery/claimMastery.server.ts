@@ -9,7 +9,7 @@ import { withPlayerStore } from "../../modules/net/withPlayerStore";
 remotes.Server.GetNamespace("petMastery")
 	.Create("claimMastery")
 	.SetCallback(
-		withPlayerStore((_, store, id, variant) => {
+		withPlayerStore((_, store, id, variant, method) => {
 			const state = store.getState();
 
 			// check to be sure they've not already claimed it
@@ -36,66 +36,82 @@ remotes.Server.GetNamespace("petMastery")
 			// check requirements
 			switch (variant) {
 				case "regular": {
-					if (petsIndex.hatched[variant] < variantMasteryRequirements.hatch) {
+					if (method === "maxLevel") {
+						if (petsIndex.maxLevel[variant] < variantMasteryRequirements.maxLevel) {
+							return {
+								success: false,
+								reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
+							};
+						}
+					} else if (method === "hatch") {
+						if (petsIndex.hatched[variant] < variantMasteryRequirements.hatch) {
+							return {
+								success: false,
+								reason: ClaimPetMasteryFailKind.NotEnoughHatches,
+							};
+						}
+					} else if (method === "fuse") {
 						return {
 							success: false,
-							reason: ClaimPetMasteryFailKind.NotEnoughHatches,
-						};
-					}
-
-					if (petsIndex.maxLevel[variant] < variantMasteryRequirements.maxLevel) {
-						return {
-							success: false,
-							reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
+							reason: ClaimPetMasteryFailKind.InvalidMastery,
 						};
 					}
 
 					break;
 				}
 				case "void": {
-					if (petsIndex.hatched[variant] < variantMasteryRequirements.hatch) {
-						return {
-							success: false,
-							reason: ClaimPetMasteryFailKind.NotEnoughHatches,
-						};
-					}
-
-					if (petsIndex.maxLevel[variant] < variantMasteryRequirements.maxLevel) {
-						return {
-							success: false,
-							reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
-						};
-					}
-
-					if (petsIndex.fused[variant] < variantMasteryRequirements.fuse) {
-						return {
-							success: false,
-							reason: ClaimPetMasteryFailKind.NotEnoughFusions,
-						};
+					if (method === "maxLevel") {
+						if (petsIndex.maxLevel[variant] < variantMasteryRequirements.maxLevel) {
+							return {
+								success: false,
+								reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
+							};
+						}
+					} else if (method === "hatch") {
+						if (petsIndex.hatched[variant] < variantMasteryRequirements.hatch) {
+							return {
+								success: false,
+								reason: ClaimPetMasteryFailKind.NotEnoughHatches,
+							};
+						}
+					} else if (method === "fuse") {
+						if (petsIndex.fused[variant] < variantMasteryRequirements.fuse) {
+							return {
+								success: false,
+								reason: ClaimPetMasteryFailKind.NotEnoughFusions,
+							};
+						}
 					}
 
 					break;
 				}
 				case "radiant": {
-					if (petsIndex.maxLevel[variant] < variantMasteryRequirements.maxLevel) {
+					if (method === "maxLevel") {
+						if (petsIndex.maxLevel[variant] < variantMasteryRequirements.maxLevel) {
+							return {
+								success: false,
+								reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
+							};
+						}
+					} else if (method === "hatch") {
 						return {
 							success: false,
-							reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
+							reason: ClaimPetMasteryFailKind.InvalidMastery,
 						};
-					}
-
-					if (petsIndex.fused[variant] < variantMasteryRequirements.fuse) {
-						return {
-							success: false,
-							reason: ClaimPetMasteryFailKind.NotEnoughFusions,
-						};
+					} else if (method === "fuse") {
+						if (petsIndex.fused[variant] < variantMasteryRequirements.fuse) {
+							return {
+								success: false,
+								reason: ClaimPetMasteryFailKind.NotEnoughFusions,
+							};
+						}
 					}
 
 					break;
 				}
 			}
 
-			store.dispatch(claimMastery(id, variant));
+			store.dispatch(claimMastery(id, variant, method));
 
 			return {
 				success: true,

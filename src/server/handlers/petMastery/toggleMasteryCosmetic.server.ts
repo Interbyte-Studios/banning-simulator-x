@@ -16,7 +16,7 @@ remotes.Server.GetNamespace("petMastery")
 			}
 
 			// check to be sure they've claimed mastery of the specified variant
-			if (petMasteryIndex[variant].claimed === false) {
+			if (petMasteryIndex[variant].cosmeticEnabled === false) {
 				return;
 			}
 

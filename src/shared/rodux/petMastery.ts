@@ -1,10 +1,47 @@
 import Rodux from "@rbxts/rodux";
+import { t } from "@rbxts/t";
 import { Variants } from "shared/configs/pets";
+
+import { PetAttainMethod } from "./pets";
+
+export const regularVariantMasteryData = t.strictInterface({
+	hatchClaimed: t.boolean,
+	maxLevelClaimed: t.boolean,
+	cosmeticEnabled: t.boolean,
+});
+
+export const voidVariantMasteryData = t.strictInterface({
+	hatchClaimed: t.boolean,
+	maxLevelClaimed: t.boolean,
+	fuseClaimed: t.boolean,
+	cosmeticEnabled: t.boolean,
+});
+
+export const radiantVariantMasteryData = t.strictInterface({
+	maxLevelClaimed: t.boolean,
+	fuseClaimed: t.boolean,
+	cosmeticEnabled: t.boolean,
+});
 
 export type PetMasteryState = Map<
 	number,
 	{
-		[variant in Variants]: { claimed: boolean; cosmeticEnabled: boolean };
+		regular: {
+			hatchClaimed: boolean;
+			maxLevelClaimed: boolean;
+			cosmeticEnabled: boolean;
+		};
+		void: {
+			hatchClaimed: boolean;
+			maxLevelClaimed: boolean;
+			fuseClaimed: boolean;
+			cosmeticEnabled: boolean;
+		};
+		radiant: {
+			maxLevelClaimed: boolean;
+			fuseClaimed: boolean;
+			cosmeticEnabled: boolean;
+		};
 	}
 >;
 export type PetMasteryActions = ClaimMastery | ToggleMasteryCosmetic;
@@ -14,18 +51,21 @@ const defaultPlayerIndex: PetMasteryState = new Map();
 interface ClaimMastery extends Rodux.Action<"claimMastery"> {
 	petId: number;
 	variant: Variants;
+	kind: PetAttainMethod;
 }
 
 /**
  * @param petId The id of the pet.
  * @param variant The variant of the pet.
+ * @param kind The kind of mastery challenge to check.
  * @returns The Rodux action to dispatch.
  */
-export function claimMastery(petId: number, variant: Variants): ClaimMastery & Rodux.AnyAction {
+export function claimMastery(petId: number, variant: Variants, kind: PetAttainMethod): ClaimMastery & Rodux.AnyAction {
 	return {
 		type: "claimMastery",
 		petId,
 		variant,
+		kind,
 	};
 }
 
@@ -55,9 +95,9 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 		let petMasteryData = newState.get(action.petId);
 		if (petMasteryData === undefined) {
 			newState.set(action.petId, {
-				regular: { claimed: false, cosmeticEnabled: false },
-				void: { claimed: false, cosmeticEnabled: false },
-				radiant: { claimed: false, cosmeticEnabled: false },
+				regular: { hatchClaimed: false, maxLevelClaimed: false, cosmeticEnabled: false },
+				void: { hatchClaimed: false, maxLevelClaimed: false, fuseClaimed: false, cosmeticEnabled: false },
+				radiant: { maxLevelClaimed: false, fuseClaimed: false, cosmeticEnabled: false },
 			});
 
 			petMasteryData = newState.get(action.petId);
@@ -67,7 +107,57 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 			);
 		}
 
-		petMasteryData[action.variant].claimed = true;
+		const masteryData = petMasteryData[action.variant];
+		switch (action.kind) {
+			case "fuse": {
+				assert(
+					voidVariantMasteryData(masteryData) || radiantVariantMasteryData(masteryData),
+					`Mastery data didn't meet strict interface expectations.`,
+				);
+
+				masteryData.fuseClaimed = true;
+				break;
+			}
+			case "hatch": {
+				assert(
+					regularVariantMasteryData(masteryData) || voidVariantMasteryData(masteryData),
+					`Mastery data didn't meet strict interface expectations.`,
+				);
+
+				masteryData.hatchClaimed = true;
+				break;
+			}
+			case "maxLevel": {
+				assert(
+					regularVariantMasteryData(masteryData) ||
+						voidVariantMasteryData(masteryData) ||
+						radiantVariantMasteryData(masteryData),
+					`Mastery data didn't meet strict interface expectations.`,
+				);
+
+				masteryData.maxLevelClaimed = true;
+				break;
+			}
+		}
+
+		switch (action.variant) {
+			case "regular": {
+				assert(regularVariantMasteryData(masteryData), `Mastery data didn't meet strict interface expectations.`);
+
+				if (masteryData.hatchClaimed && masteryData.maxLevelClaimed) {
+					masteryData.cosmeticEnabled = true;
+				}
+
+				if (masteryData.hatchClaimed && masteryData.maxLevelClaimed) {
+					masteryData.cosmeticEnabled = true;
+				}
+
+				if (masteryData.hatchClaimed && masteryData.maxLevelClaimed) {
+					masteryData.cosmeticEnabled = true;
+				}
+			}
+		}
+
 		return newState;
 	},
 	toggleMasteryCosmetic: (state, action) => {
@@ -76,9 +166,9 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 		let petMasteryData = newState.get(action.petId);
 		if (petMasteryData === undefined) {
 			newState.set(action.petId, {
-				regular: { claimed: false, cosmeticEnabled: false },
-				void: { claimed: false, cosmeticEnabled: false },
-				radiant: { claimed: false, cosmeticEnabled: false },
+				regular: { hatchClaimed: false, maxLevelClaimed: false, cosmeticEnabled: false },
+				void: { hatchClaimed: false, maxLevelClaimed: false, fuseClaimed: false, cosmeticEnabled: false },
+				radiant: { maxLevelClaimed: false, fuseClaimed: false, cosmeticEnabled: false },
 			});
 
 			petMasteryData = newState.get(action.petId);
@@ -88,7 +178,9 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 			);
 		}
 
-		petMasteryData[action.variant].cosmeticEnabled = !petMasteryData[action.variant].cosmeticEnabled;
+		const masteryData = petMasteryData[action.variant];
+		masteryData.cosmeticEnabled = !masteryData.cosmeticEnabled;
+
 		return newState;
 	},
 });

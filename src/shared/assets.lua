@@ -367,9 +367,10 @@ return {
 			index = {
 				background = "rbxassetid://11632194795",
 				eggBackground = "rbxassetid://11610048861",
-				returnToSelection = "rbxassetid://11649363926",
+				returnToSelection = "rbxassetid://11655952403",
 				sidebar = "rbxassetid://11627644894",
 				view = "rbxassetid://11632928741",
+				["view challenges"] = "rbxassetid://11656006779",
 			},
 			quests = {
 				["entry background"] = "rbxassetid://10832809634",

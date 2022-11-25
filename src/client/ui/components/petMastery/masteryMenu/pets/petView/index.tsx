@@ -5,10 +5,12 @@ import { Variants } from "shared/configs/pets";
 
 import { PetInfoView } from "./petInfo";
 import { PetView } from "./petView";
+import { PetChallengeProgress } from "./progress";
 
 interface IndexEggViewProps {
 	pet: number | undefined;
 	currentVariant: Variants | undefined;
+	displayChallenges: () => void;
 	hideInfo: () => void;
 }
 
@@ -48,6 +50,11 @@ export function IndexPetView(props: IndexEggViewProps): Roact.Element {
 
 			<PetView pet={props.pet} currentVariant={props.currentVariant} hideInfo={props.hideInfo} />
 			<PetInfoView pet={props.pet} variant={props.currentVariant ?? "regular"} />
+			<PetChallengeProgress
+				pet={props.pet}
+				variant={props.currentVariant ?? "regular"}
+				displayChallenges={props.displayChallenges}
+			/>
 		</frame>
 	);
 }

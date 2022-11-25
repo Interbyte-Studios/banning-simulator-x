@@ -14,7 +14,7 @@ export const RegularEggProgress = hooks((props: { egg: EggName; displayPets: (va
 	return (
 		<>
 			<ProgressHeader text={"Regular Pets"} position={UDim2.fromScale(0.35, 0.425)} />
-			<ProgressBar egg={props.egg} position={UDim2.fromScale(0.5, 0.525)} />
+			<ProgressBar egg={props.egg} variant={"regular"} position={UDim2.fromScale(0.5, 0.525)} />
 			<ViewPets
 				egg={props.egg}
 				variant={"regular"}

@@ -1638,14 +1638,19 @@ hash = "583c171fca9facc0cf3791912010a9600e0068d7b953de9b387d1d131ab1f39b"
 id = 11610048861
 packable = false
 
-[inputs."images/ui/index/return.png"]
+[inputs."images/ui/index/returnToSelection.png"]
 hash = "7057e753bc785dbb23033fad2f0211910ca08ad7d6d4ccc985cf131be11b5a2f"
-id = 11649363926
+id = 11655952403
 packable = false
 
 [inputs."images/ui/index/sidebar.png"]
 hash = "4c381ba80ebd08a4d53ca738f37ee1b710c4de8a449961e576470614d4caeaee"
 id = 11627644894
+packable = false
+
+[inputs."images/ui/index/view challenges.png"]
+hash = "fb88689ac2035343df1a45b3557bd18450494761aad3afcd126b89a53093a6c5"
+id = 11656006779
 packable = false
 
 [inputs."images/ui/index/view.png"]

@@ -26,6 +26,7 @@ export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useState }) =
 	const [eggToView, setEggToView] = useState<EggName | undefined>("Starter"); // default should be undefined.
 	const [petToView, setPetToView] = useState<number | undefined>(1); // default should be undefined.
 	const [petViewType, setPetViewType] = useState<Variants | undefined>("regular");
+	const [viewingChallenges, setViewingChallenges] = useState(false);
 
 	if (petViewType !== undefined) {
 		assert(eggToView, `Expected PetMasteryMenu "eggToView" stateful value to be defined.`);
@@ -48,7 +49,12 @@ export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useState }) =
 					currentVariant={petViewType}
 					displayPet={(pet: number | undefined): void => setPetToView(pet)}
 				/>
-				<IndexPetView pet={petToView} currentVariant={petViewType} hideInfo={(): void => setPetToView(undefined)} />
+				<IndexPetView
+					pet={petToView}
+					currentVariant={petViewType}
+					displayChallenges={(): void => setViewingChallenges(true)}
+					hideInfo={(): void => setPetToView(undefined)}
+				/>
 				<ExitButton
 					Position={UDim2.fromScale(0.975, 0.075)}
 					minimizedSize={0.075}
