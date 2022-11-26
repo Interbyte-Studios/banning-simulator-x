@@ -7,6 +7,22 @@ import { AddPet } from "./pets";
 export const isValidIndexHatch = t.literal("regular", "void");
 export const isValidIndexFusion = t.literal("void", "radiant");
 
+export const validHatchedIndex = t.strictInterface({
+	regular: t.number,
+	void: t.number,
+});
+
+export const validFusedIndex = t.strictInterface({
+	void: t.number,
+	radiant: t.number,
+});
+
+export const validMaxLevelIndex = t.strictInterface({
+	regular: t.number,
+	void: t.number,
+	radiant: t.number,
+});
+
 export interface PlayerIndexState {
 	pets: Map<
 		number,

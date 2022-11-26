@@ -4,7 +4,7 @@ import { Variants } from "shared/configs/pets";
 
 import { ProgressHeader } from "./util/header";
 import { ProgressBar } from "./util/progressBar";
-import { ViewPetChallenges } from "./util/viewPets";
+import { ViewPetChallenges } from "./util/viewChallenges";
 
 /**
  * Displays the completion percentage of the challenged of the specified pet.

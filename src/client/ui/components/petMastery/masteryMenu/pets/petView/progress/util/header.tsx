@@ -18,7 +18,7 @@ export function ProgressHeader(props: ProgressHeaderProps): Roact.Element {
 			BackgroundTransparency={1}
 			AnchorPoint={vec2Middle}
 			Size={UDim2.fromScale(0.9, 0.1)}
-			Position={UDim2.fromScale(0.5, 0.7)}
+			Position={UDim2.fromScale(0.5, 0.725)}
 			Font={font}
 			Text={props.text}
 			TextColor3={Color3.fromRGB(255, 255, 255)}

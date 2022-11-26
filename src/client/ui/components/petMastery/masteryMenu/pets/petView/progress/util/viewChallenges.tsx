@@ -38,7 +38,7 @@ export const ViewPetChallenges = hooks((props: { displayChallenges: () => void }
 			<textlabel
 				BackgroundTransparency={1}
 				AnchorPoint={vec2Middle}
-				Size={UDim2.fromScale(1, 1)}
+				Size={UDim2.fromScale(0.9, 0.9)}
 				Position={UDim2.fromScale(0.5, 0.5)}
 				Font={font}
 				Text={"Challenges"}

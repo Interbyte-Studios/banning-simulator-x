@@ -367,7 +367,9 @@ return {
 			index = {
 				background = "rbxassetid://11632194795",
 				eggBackground = "rbxassetid://11610048861",
+				extra = "rbxassetid://11657307092",
 				returnToSelection = "rbxassetid://11655952403",
+				showExtraStats = "rbxassetid://11657307273",
 				sidebar = "rbxassetid://11627644894",
 				view = "rbxassetid://11632928741",
 				["view challenges"] = "rbxassetid://11656006779",

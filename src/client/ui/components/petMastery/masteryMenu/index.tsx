@@ -23,9 +23,9 @@ interface PetMasteryMenuProps {
  * Displays all the pets of a given world, and accolades for each one that give rewards.
  */
 export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useState }) => {
-	const [eggToView, setEggToView] = useState<EggName | undefined>("Starter"); // default should be undefined.
-	const [petToView, setPetToView] = useState<number | undefined>(1); // default should be undefined.
-	const [petViewType, setPetViewType] = useState<Variants | undefined>("regular");
+	const [eggToView, setEggToView] = useState<EggName | undefined>(undefined); // default should be undefined.
+	const [petToView, setPetToView] = useState<number | undefined>(undefined); // default should be undefined.
+	const [petViewType, setPetViewType] = useState<Variants | undefined>(undefined);
 	const [viewingChallenges, setViewingChallenges] = useState(false);
 
 	if (petViewType !== undefined) {

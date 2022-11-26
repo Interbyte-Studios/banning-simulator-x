@@ -55,6 +55,8 @@ declare namespace assetIds {
 				"weapon info background": string;
 			};
 			index: {
+				extra: string;
+				showExtraStats: string;
 				"view challenges": string;
 				returnToSelection: string;
 				background: string;

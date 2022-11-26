@@ -134,7 +134,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 				BackgroundTransparency={0}
 				BackgroundColor3={Color3.fromRGB(250, 158, 158)}
 				Size={UDim2.fromScale(0.9, 0.06)}
-				Position={UDim2.fromScale(0.5, 0.8)}
+				Position={UDim2.fromScale(0.5, 0.825)}
 			>
 				<uicorner CornerRadius={new UDim(0.4, 0)} />
 				<BaseUIStroke native={{ Thickness: 2 }} />

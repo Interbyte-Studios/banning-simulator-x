@@ -1638,9 +1638,19 @@ hash = "583c171fca9facc0cf3791912010a9600e0068d7b953de9b387d1d131ab1f39b"
 id = 11610048861
 packable = false
 
+[inputs."images/ui/index/extra.png"]
+hash = "081f966775da3057ba15c3fb4b780994f0561ae0ea09a87672af0e6b400ca513"
+id = 11657307092
+packable = false
+
 [inputs."images/ui/index/returnToSelection.png"]
 hash = "7057e753bc785dbb23033fad2f0211910ca08ad7d6d4ccc985cf131be11b5a2f"
 id = 11655952403
+packable = false
+
+[inputs."images/ui/index/showExtraStats.png"]
+hash = "18843715d5d7f3b636ec60f54ed6e4bfd90a4b80c0c1ef693592e7a9213266a0"
+id = 11657307273
 packable = false
 
 [inputs."images/ui/index/sidebar.png"]

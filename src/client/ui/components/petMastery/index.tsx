@@ -120,8 +120,6 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 						`Expected the world folder parent to the pet mastery vendor "${petVendor.Name}" to be named after a valid world.`,
 					);
 
-					warn("returning the component");
-
 					return (
 						<PetMasteryInteractPrompt
 							adornee={primaryPart}
