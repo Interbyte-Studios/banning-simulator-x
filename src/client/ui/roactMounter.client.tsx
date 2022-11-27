@@ -4,6 +4,7 @@ import { onStoreCreated } from "client/clientStores";
 import { remotes } from "shared/remotes";
 
 import { app as App } from "./app";
+import { AnnouncementAPI } from "./context/AnnouncementsAPI";
 import { remoteContext } from "./mocks/remoteContext";
 
 const player = Players.LocalPlayer;
@@ -17,6 +18,9 @@ onStoreCreated(player)
 		Roact.mount(
 			<remoteContext.Provider
 				value={{
+					claimPetMastery: remotes.Client.GetNamespace("petMastery").Get("claimMastery"),
+					togglePetMasteryCosmetic: remotes.Client.GetNamespace("petMastery").Get("toggleCosmetic"),
+
 					changeWeapon: remotes.Client.GetNamespace("weapons").Get("changeWeapon"),
 					equipWeapon: remotes.Client.GetNamespace("weapons").Get("equipWeapon"),
 					unequipWeapon: remotes.Client.GetNamespace("weapons").Get("unequipWeapon"),
@@ -53,9 +57,11 @@ onStoreCreated(player)
 					verifyDiscord: remotes.Client.GetNamespace("media").Get("verifyDiscord"),
 				}}
 			>
-				<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
-					{<App player={player} store={store} />}
-				</screengui>
+				<AnnouncementAPI>
+					<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
+						{<App player={player} store={store} />}
+					</screengui>
+				</AnnouncementAPI>
 			</remoteContext.Provider>,
 			playerGui,
 			"tree",

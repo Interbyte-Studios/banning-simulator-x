@@ -7,7 +7,9 @@ import { CurrentWeaponActions, currentWeaponReducer, CurrentWeaponState } from "
 import { experienceReducer, ExperienceState } from "./experience";
 import { GamepassActions, gamepassesReducer, GamepassesState } from "./gamepasses";
 import { MediaActions, mediaReducer, MediaState } from "./media";
+import { PetMasteryActions, petMasteryReducer, PetMasteryState } from "./petMastery";
 import { PetsActions, petsReducer, PetsState } from "./pets";
+import { playerIndexReducer, PlayerIndexState } from "./playerIndex";
 import { QuestsAction, questsReducer, QuestsState } from "./quests";
 import { RankActions, rankReducer, RankState } from "./rank";
 import { SettingsActions, settingsReducer, SettingsState } from "./settings";
@@ -32,6 +34,8 @@ export type StoreState = {
 	worlds: WorldsState;
 	talismans: TalismansState;
 	currentTalisman: CurrentTalismanState;
+	index: PlayerIndexState;
+	petMastery: PetMasteryState;
 };
 export type StoreActions = (
 	| BoostActions
@@ -48,6 +52,7 @@ export type StoreActions = (
 	| WorldActions
 	| TalismanActions
 	| CurrentTalismanActions
+	| PetMasteryActions
 ) &
 	Rodux.AnyAction;
 
@@ -67,6 +72,8 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	worlds: worldsReducer,
 	talismans: talismanReducer,
 	currentTalisman: currentTalismanReducer,
+	index: playerIndexReducer,
+	petMastery: petMasteryReducer,
 });
 
 export type Store = Rodux.Store<StoreState, StoreActions>;

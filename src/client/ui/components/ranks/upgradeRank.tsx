@@ -2,6 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
@@ -13,7 +14,6 @@ import { CurrenciesState } from "shared/rodux/currencies";
 interface UpgradeRankProps extends UpgradeRankMappedProps {
 	rank: number;
 	experience: number;
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
 }
 
 interface UpgradeRankMappedProps {
@@ -32,6 +32,9 @@ function mapStateToProps(state: StoreState): UpgradeRankMappedProps {
 	};
 }
 
+/**
+ * A button that allows the player to upgrade their rank, given they meet the requirements.
+ */
 /* eslint-disable jsdoc/require-jsdoc */
 export const UpgradeRank = RoactRodux.connect(mapStateToProps)(
 	hooks((props: UpgradeRankProps, hooks) => {
@@ -45,6 +48,7 @@ export const UpgradeRank = RoactRodux.connect(mapStateToProps)(
 
 		const { useContext } = hooks;
 		const { unlockRank } = useContext(remoteContext);
+		const { addError } = useContext(AnnouncementContext);
 
 		const maximizedSize = 0.15;
 		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
@@ -67,23 +71,17 @@ export const UpgradeRank = RoactRodux.connect(mapStateToProps)(
 				Event={{
 					Activated: (): void => {
 						if (props.experience < nextRankData.requiredExperience) {
-							props.displayAnnouncement("errors", `You don't have enough experience to upgrade your rank.`);
+							addError(`You don't have enough experience to upgrade your rank.`);
 							return;
 						}
 
 						if (props.currencies[nextRankData.currency] < nextRankData.amount) {
-							props.displayAnnouncement(
-								"errors",
-								`You don't have enough "${nextRankData.currency}" to upgrade your rank.`,
-							);
+							addError(`You don't have enough "${nextRankData.currency}" to upgrade your rank.`);
 							return;
 						}
 
 						unlockRank.SendToServer();
-						props.displayAnnouncement(
-							"announcements",
-							`You've upgraded to the rank "${nextRankData.name}". Congratulations!`,
-						);
+						addError(`You've upgraded to the rank "${nextRankData.name}".`);
 					},
 					MouseEnter: (): void => motor.setGoal(minimizedSpring),
 					MouseLeave: (): void => motor.setGoal(maximizedSpring),

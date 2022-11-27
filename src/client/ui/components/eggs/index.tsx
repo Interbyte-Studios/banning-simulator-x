@@ -1,6 +1,7 @@
 import Roact from "@rbxts/roact";
-import { Players } from "@rbxts/services";
+import { Players, PolicyService } from "@rbxts/services";
 import { udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
+import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { EggName, hatchDebounce } from "shared/configs/eggs";
 import { Store } from "shared/rodux";
@@ -42,11 +43,20 @@ export const EggsUI = hooks((props: EggsUIProps, { useState, useContext }) => {
 	const [currentHatchData, setCurrentHatchData] = useState<HatchData | undefined>(undefined);
 
 	const { hatchEgg } = useContext(remoteContext);
+	const { addError } = useContext(AnnouncementContext);
+
+	const playerRegionalRegulations = PolicyService.GetPolicyInfoForPlayerAsync(player);
+	const regulationsProhibit = playerRegionalRegulations.ArePaidRandomItemsRestricted;
 
 	const children = [
 		<EggCost />,
 		<EggHud
 			initiateHatch={async (amount: 1 | 2 | 3, egg: EggName, isVoid: boolean): Promise<void> => {
+				if (regulationsProhibit) {
+					addError(`Hatching pets is regulated by your country. Sorry!`);
+					return;
+				}
+
 				// verify that player has waited long enough to hatch
 				const lastHatchTime = hatchTimeCache.get(player) ?? 0;
 

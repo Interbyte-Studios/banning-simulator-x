@@ -8,10 +8,10 @@ import { Currency } from "shared/configs/currencies";
 export function getCurrencyIcon(currency: Currency): string {
 	switch (currency) {
 		case "coins": {
-			return assetIds.images.currencies.coins;
+			return assetIds.images.vectors.Coin;
 		}
 		case "gems": {
-			return assetIds.images.currencies.gems;
+			return assetIds.images.vectors.Gem;
 		}
 	}
 }

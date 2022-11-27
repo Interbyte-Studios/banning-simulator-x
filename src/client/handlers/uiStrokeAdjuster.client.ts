@@ -1,7 +1,8 @@
-import { Players, RunService, Workspace } from "@rbxts/services";
+import { CollectionService, Players, RunService, Workspace } from "@rbxts/services";
 
 const player = Players.LocalPlayer;
-const playerGui = player.WaitForChild("PlayerGui");
+const normalTag = "Normal_UIStroke";
+const billboardTag = "Billboard_UIStroke";
 
 const camera = Workspace.CurrentCamera;
 
@@ -47,8 +48,9 @@ const studioAverage = getAverageSize(screenSize);
  * Sets the thickness of a ui stroke object based on a general resolution.
  *
  * @param uiStroke The ui stroke object.
+ * @param isBillboardStroke Whether or not the stroke is descendant of a billboard gui.
  */
-function setThickness(uiStroke: UIStroke): void {
+function setThickness(uiStroke: UIStroke, isBillboardStroke: boolean): void {
 	if (!uiStroke.IsA("UIStroke")) {
 		return;
 	}
@@ -66,62 +68,82 @@ function setThickness(uiStroke: UIStroke): void {
 	const screenAverage = getAverageSize(camera.ViewportSize);
 	const ratio = defaultThickness / studioAverage;
 
-	const billboardGui = uiStroke.FindFirstAncestorWhichIsA("BillboardGui");
-	if (billboardGui !== undefined) {
-		const adornee = billboardGui.Adornee;
-		if (adornee === undefined) {
+	if (isBillboardStroke) {
+		const billboardGui = uiStroke.FindFirstAncestorWhichIsA("BillboardGui");
+		if (billboardGui !== undefined) {
+			const adornee = billboardGui.Adornee;
+			if (adornee === undefined) {
+				return;
+			}
+
+			const origin = getInstancePosition(adornee);
+			const magnitude = camera.CFrame.Position.sub(origin).Magnitude;
+			const distanceRatio = 10 / magnitude;
+
+			uiStroke.Thickness = defaultThickness * distanceRatio * getScreenRatio();
+
 			return;
 		}
-
-		const origin = getInstancePosition(adornee);
-		const magnitude = camera.CFrame.Position.sub(origin).Magnitude;
-		const distanceRatio = 10 / magnitude;
-
-		uiStroke.Thickness = defaultThickness * distanceRatio * getScreenRatio();
-
-		return;
 	}
 
 	uiStroke.Thickness = screenAverage * ratio;
 }
 
 /**
- * Iterates through all ui strokes and set's their properties.
- *
- * @param onlyBillboards Determines whether or not only ui strokes descendant of a billboard gui should be updated.
+ * Updates the thickness of UIStrokes not descendant of BillboardGuis.
  */
-function updateStrokes(onlyBillboards: boolean): void {
-	for (const uiStroke of playerGui.GetDescendants()) {
-		if (onlyBillboards) {
-			if (uiStroke.FindFirstAncestorWhichIsA("BillboardGui") === undefined) {
-				continue;
-			}
-		}
-
-		if (!uiStroke.IsA("UIStroke")) {
+function updateNormalStrokes(): void {
+	const normalStrokes = CollectionService.GetTagged(normalTag);
+	for (const uistroke of normalStrokes) {
+		if (!uistroke.IsA("UIStroke")) {
 			continue;
 		}
 
-		setThickness(uiStroke);
+		setThickness(uistroke, false);
 	}
 }
 
-updateStrokes(false);
+/**
+ * Updates the thickness of UIStrokes that are descendant of BillboardGuis.
+ */
+function updateBillboardStrokes(): void {
+	const billboardStrokes = CollectionService.GetTagged(billboardTag);
+	for (const uistroke of billboardStrokes) {
+		if (!uistroke.IsA("UIStroke")) {
+			continue;
+		}
 
-playerGui.DescendantAdded.Connect((uiStroke) => {
+		setThickness(uistroke, true);
+	}
+}
+
+CollectionService.GetInstanceAddedSignal(normalTag).Connect((uiStroke) => {
 	if (!uiStroke.IsA("UIStroke")) {
 		return;
 	}
 
-	setThickness(uiStroke);
+	setThickness(uiStroke, false);
 });
 
-camera?.GetPropertyChangedSignal("ViewportSize").Connect(() => {
-	updateStrokes(false);
+CollectionService.GetInstanceAddedSignal(billboardTag).Connect((uiStroke) => {
+	if (!uiStroke.IsA("UIStroke")) {
+		return;
+	}
+
+	setThickness(uiStroke, true);
 });
 
-let lastCheck: number;
+camera?.GetPropertyChangedSignal("ViewportSize").Connect(() => updateNormalStrokes());
+
+let lastMagnitudeCheck: number;
+let lastTimeCheck = 0;
 RunService.RenderStepped.Connect(() => {
+	const now = time();
+	if (now - lastTimeCheck < 0.2) {
+		return;
+	}
+	lastTimeCheck = now;
+
 	if (camera === undefined) {
 		return;
 	}
@@ -137,10 +159,10 @@ RunService.RenderStepped.Connect(() => {
 	}
 
 	const magnitude = head.CFrame.Position.sub(camera.CFrame.Position).Magnitude;
-	if (magnitude === lastCheck) {
+	if (magnitude === lastMagnitudeCheck) {
 		return;
 	}
-	lastCheck = magnitude;
+	lastMagnitudeCheck = magnitude;
 
-	updateStrokes(true);
+	updateBillboardStrokes();
 });

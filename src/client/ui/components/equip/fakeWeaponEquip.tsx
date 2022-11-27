@@ -110,7 +110,7 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 						Text={props.weaponName}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={1.5} />
+						<BaseUIStroke native={{ Thickness: 1.5 }} />
 					</textlabel>
 				</imagelabel>
 				<imagelabel
@@ -133,7 +133,7 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 						Text={"Z"}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={1.5} />
+						<BaseUIStroke native={{ Thickness: 1.5 }} />
 					</textlabel>
 				</imagelabel>
 				<imagelabel

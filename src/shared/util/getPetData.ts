@@ -1,28 +1,27 @@
-import { EggName } from "shared/configs/eggs";
+import { EGGS } from "shared/configs/eggs";
 import { Pet } from "shared/configs/pets";
-
-import { getEggData } from "./getEggData";
 
 interface PetData extends Pet {
 	name: string;
 }
 
+const petIdToData: Map<number, PetData> = new Map();
+for (const [, eggData] of pairs(EGGS)) {
+	for (const [name, metadata] of pairs(eggData.pets)) {
+		const petData = { ...metadata, name };
+		petIdToData.set(metadata.id, petData);
+	}
+}
+
 /**
  * Fetches the metadata of a specified pet.
  *
- * @param egg The metadata of the egg.
  * @param petId The id of the pet.
  * @returns Pet data of specified pet.
  */
-export function getPetData(egg: EggName, petId: number): PetData {
-	const eggData = getEggData(egg);
+export function getPetData(petId: number): PetData {
+	const petData = petIdToData.get(petId);
+	assert(petData, `Expected to find pet data for pet with id: "${petId}"`);
 
-	for (const [name, metadata] of pairs(eggData.pets)) {
-		if (metadata.id !== petId) continue;
-
-		const _petData = { ...metadata, name };
-
-		return _petData;
-	}
-	throw `Expected to find pet data for pet with id: "${petId}"`;
+	return petData;
 }

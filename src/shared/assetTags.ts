@@ -1,2 +1,5 @@
-export const GATE_CRYSTALS_TAG = "gate_crystal";
-export const SMALL_CRYSTALS_TAG = "small_crystal";
+export enum AssetAnimation {
+	GateCrystal = "gate_crystal",
+	SmallCrystal = "small_crystal",
+	PetMasteryVendor = "petMasteryVendor",
+}
