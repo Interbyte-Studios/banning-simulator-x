@@ -18,6 +18,9 @@ onStoreCreated(player)
 		Roact.mount(
 			<remoteContext.Provider
 				value={{
+					claimPetMastery: remotes.Client.GetNamespace("petMastery").Get("claimMastery"),
+					togglePetMasteryCosmetic: remotes.Client.GetNamespace("petMastery").Get("toggleCosmetic"),
+
 					changeWeapon: remotes.Client.GetNamespace("weapons").Get("changeWeapon"),
 					equipWeapon: remotes.Client.GetNamespace("weapons").Get("equipWeapon"),
 					unequipWeapon: remotes.Client.GetNamespace("weapons").Get("unequipWeapon"),

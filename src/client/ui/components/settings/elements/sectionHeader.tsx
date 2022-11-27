@@ -31,7 +31,7 @@ export const SectionHeader = hooks((props: SectionHeaderProps) => {
 			Text={props.text}
 			Font={font}
 		>
-			<BaseUIStroke Thickness={3} />
+			<BaseUIStroke native={{ Thickness: 3 }} />
 		</textlabel>
 	);
 });

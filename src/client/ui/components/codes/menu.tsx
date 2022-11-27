@@ -37,7 +37,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 				Text={"Follow @TenrousR, @RealNotNert, and @InterbyteRBLX on Twitter for exclusive codes!"}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={2} />
+				<BaseUIStroke native={{ Thickness: 2 }} />
 			</textlabel>
 			<TwitterHandle />
 		</>,
@@ -56,7 +56,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 					Text={"Join our Discord server [https://discord.gg/interbyte] for a permanent 50% experience boost!"}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={2} />
+					<BaseUIStroke native={{ Thickness: 2 }} />
 				</textlabel>
 				<DiscordHandle />
 			</>,
@@ -73,7 +73,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 				Text={"Not all media features are displayed, as some are not allowed in your region."}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={2} />
+				<BaseUIStroke native={{ Thickness: 2 }} />
 			</textlabel>,
 		);
 	}
@@ -98,7 +98,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 				Text={"Media"}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={3} />
+				<BaseUIStroke native={{ Thickness: 3 }} />
 			</textlabel>
 			{mediaComponents}
 			<ExitButton

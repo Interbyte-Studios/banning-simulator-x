@@ -14,18 +14,24 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 				id: 1,
 				rarity: "Basic",
 				variant: "regular",
+				method: "hatch",
+				egg: "Starter",
 			},
 			{
 				autoDeleted: false,
 				id: 2,
 				rarity: "Basic",
 				variant: "regular",
+				method: "hatch",
+				egg: "Starter",
 			},
 			{
 				autoDeleted: false,
 				id: 3,
 				rarity: "Basic",
 				variant: "regular",
+				method: "hatch",
+				egg: "Starter",
 			},
 		],
 	},
@@ -36,23 +42,23 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 	// single hatch
 	{
 		success: true,
-		pets: [{ id: 1, autoDeleted: false, rarity: "Legendary", variant: "radiant" }],
+		pets: [{ id: 1, autoDeleted: false, rarity: "Legendary", variant: "radiant", method: "hatch", egg: "Starter" }],
 	},
 	// double hatch
 	{
 		success: true,
 		pets: [
-			{ id: 2, autoDeleted: false, rarity: "Primordial", variant: "void" },
-			{ id: 3, autoDeleted: false, rarity: "Prismatic", variant: "regular" },
+			{ id: 2, autoDeleted: false, rarity: "Primordial", variant: "void", method: "hatch", egg: "Starter" },
+			{ id: 3, autoDeleted: false, rarity: "Prismatic", variant: "regular", method: "hatch", egg: "Starter" },
 		],
 	},
 	// triple hatch with auto deleted
 	{
 		success: true,
 		pets: [
-			{ id: 1, autoDeleted: false, rarity: "Legendary", variant: "radiant" },
-			{ id: 2, autoDeleted: false, rarity: "Primordial", variant: "void" },
-			{ id: 3, autoDeleted: true, rarity: "Prismatic", variant: "regular" },
+			{ id: 1, autoDeleted: false, rarity: "Legendary", variant: "radiant", method: "hatch", egg: "Starter" },
+			{ id: 2, autoDeleted: false, rarity: "Primordial", variant: "void", method: "hatch", egg: "Starter" },
+			{ id: 3, autoDeleted: true, rarity: "Prismatic", variant: "regular", method: "hatch", egg: "Starter" },
 		],
 	},
 ];

@@ -130,7 +130,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 						Font={font}
 					>
-						<BaseUIStroke Thickness={1.5} />
+						<BaseUIStroke native={{ Thickness: 1.5 }} />
 					</textlabel>
 					<ExitButton
 						minimizedSize={0.15}

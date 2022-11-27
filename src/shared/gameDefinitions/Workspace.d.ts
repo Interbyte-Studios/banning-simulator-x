@@ -38,6 +38,9 @@ declare global {
 					talismanTower: Folder & {
 						InteractPrompt: BasePart;
 					};
+					petMastery: Folder & {
+						petMasteryVendor: Model;
+					};
 				};
 			};
 			itemShop: Folder & {

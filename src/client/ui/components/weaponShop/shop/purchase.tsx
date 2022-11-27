@@ -114,7 +114,7 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 					TextScaled={true}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={2} />
+					<BaseUIStroke native={{ Thickness: 2 }} />
 				</textlabel>
 			</imagebutton>
 		);

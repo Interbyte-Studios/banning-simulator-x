@@ -45,7 +45,7 @@ export const ZoneSign = hooks((props: ZoneSignProps) => {
 					TextScaled={true}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={5} />
+					<BaseUIStroke native={{ Thickness: 5 }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -57,7 +57,7 @@ export const ZoneSign = hooks((props: ZoneSignProps) => {
 					TextScaled={true}
 					Font={font}
 				>
-					<BaseUIStroke Thickness={5} />
+					<BaseUIStroke native={{ Thickness: 5 }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -76,7 +76,7 @@ export const ZoneSign = hooks((props: ZoneSignProps) => {
 						size={{ maximizedSize: 1, minimizedSize: 0.9 }}
 						currency={props.zoneData.cost.currency}
 					/>
-					<BaseUIStroke Thickness={5} />
+					<BaseUIStroke native={{ Thickness: 5 }} />
 				</textlabel>
 				<DisplayZonePurchasePrompt
 					worldName={props.worldName}

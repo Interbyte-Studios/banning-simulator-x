@@ -30,7 +30,7 @@ export = (): void => {
 			newState.eggs += 1;
 
 			const action = addPets(eggCost.amount, eggCost.currencyType, [
-				{ autoDeleted: false, id: petId, rarity: "Basic", variant: "regular" },
+				{ autoDeleted: false, id: petId, rarity: "Basic", variant: "regular", method: "hatch", egg: "Starter" },
 			]);
 
 			assertDeepEqual(eggsReducer(state, action), newState);
@@ -59,7 +59,7 @@ export = (): void => {
 			newState.rarities.Basic += 1;
 
 			const action = addPets(eggCost.amount, eggCost.currencyType, [
-				{ autoDeleted: false, id: petId, rarity: "Basic", variant: "regular" },
+				{ autoDeleted: false, id: petId, rarity: "Basic", variant: "regular", method: "hatch", egg: "Starter" },
 			]);
 
 			assertDeepEqual(eggsReducer(state, action), newState);

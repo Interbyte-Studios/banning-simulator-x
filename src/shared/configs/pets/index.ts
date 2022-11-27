@@ -1,4 +1,7 @@
-import { Rarities } from "../rarities";
+import { t } from "@rbxts/t";
+import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
+
+import { Rarities, RarityGradient } from "../rarities";
 
 export interface Pet {
 	/**
@@ -77,4 +80,21 @@ export const DEFAULT_EQUIP_AMOUNT = 4;
 /**
  * The different types of pet variants in the game.
  */
-export type Variants = "regular" | "void" | "radiant";
+export const isVariant = t.literal("regular", "void", "radiant");
+export type Variants = t.static<typeof isVariant>;
+
+export const VARIANT_GRADIENTS = preserveWithConstraint<Record<Variants, RarityGradient>>()({
+	regular: {
+		BeginningColor: Color3.fromRGB(255, 255, 255),
+		EndingColor: Color3.fromRGB(148, 148, 148),
+	},
+	void: {
+		BeginningColor: Color3.fromRGB(98, 37, 209),
+		EndingColor: Color3.fromRGB(57, 0, 86),
+	},
+	radiant: {
+		BeginningColor: Color3.fromRGB(255, 255, 255),
+		EndingColor: Color3.fromRGB(250, 196, 61),
+	},
+});
+export type VariantGradients = keyof typeof VARIANT_GRADIENTS;

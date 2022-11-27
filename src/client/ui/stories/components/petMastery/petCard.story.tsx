@@ -1,13 +1,13 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { UpdateLog } from "client/ui/components/updateLog";
+import { IndexPetCard } from "client/ui/components/petMastery/masteryMenu/pets/petScroll/petCard";
 
-import { createMockStory } from "../createMockStory";
+import { createMockStory } from "../../createMockStory";
 
 export = (target: GuiBase): (() => void) => {
 	const { cleanup } = createMockStory({}, target, (_, store) => (
 		<RoactRodux.StoreProvider store={store}>
-			<UpdateLog enabled={true} />
+			<IndexPetCard pet={1} currentPet={1} currentVariant={"regular"} displayPet={(): void => {}} />
 		</RoactRodux.StoreProvider>
 	));
 	return () => {

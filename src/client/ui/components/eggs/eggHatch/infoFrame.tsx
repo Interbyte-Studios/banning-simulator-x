@@ -33,7 +33,7 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 		2: UDim2.fromScale(0.25, 0.75),
 	});
 
-	const petInfo = getPetData(props.eggName, props.pet);
+	const petInfo = getPetData(props.pet);
 
 	const autoDelete: Array<Roact.Element> = [];
 	if (props.autoDeleted) {
@@ -48,7 +48,7 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 				TextScaled={true}
 				Font={font}
 			>
-				<BaseUIStroke Thickness={2} />
+				<BaseUIStroke native={{ Thickness: 2 }} />
 			</textlabel>,
 		);
 	}
@@ -73,11 +73,10 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 						Size: UDim2.fromScale(0.4, 1.15),
 						BackgroundTransparency: 1,
 					}}
-					eggName={props.eggName}
 					petId={props.pet}
-					isVoid={props.isVoid}
+					variant={props.isVoid ? "void" : "regular"}
 				/>
-				<BaseUIStroke Thickness={2.4} />
+				<BaseUIStroke native={{ Thickness: 2.4 }} />
 			</BaseTextLabel>
 			<BaseTextLabel
 				Position={UDim2.fromScale(0.5, 0.875)}
@@ -85,7 +84,7 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 				Text={string.upper(petInfo.rarity)}
 			>
 				<RarityGradient Rarity={petInfo.rarity} />
-				<BaseUIStroke Thickness={2.4} />
+				<BaseUIStroke native={{ Thickness: 2.4 }} />
 			</BaseTextLabel>
 			{autoDelete}
 		</frame>

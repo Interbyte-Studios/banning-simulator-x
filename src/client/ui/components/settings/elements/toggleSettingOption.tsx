@@ -44,7 +44,7 @@ export const ToggleSettingOption = hooks((props: ToggleSettingOptionProps) => {
 				Font={font}
 				Text={props.settingName}
 			>
-				<BaseUIStroke Thickness={2} />
+				<BaseUIStroke native={{ Thickness: 2 }} />
 			</textlabel>
 			<EnabledButton
 				AnchorPoint={vec2Middle}

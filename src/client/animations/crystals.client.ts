@@ -1,5 +1,5 @@
 import { CollectionService, RunService, TweenService } from "@rbxts/services";
-import { GATE_CRYSTALS_TAG, SMALL_CRYSTALS_TAG } from "shared/assetTags";
+import { AssetAnimation } from "shared/assetTags";
 
 interface crystalAnimationData {
 	cframeValue: CFrameValue;
@@ -57,7 +57,7 @@ function animateCrystal(crystal: Model, floatDistance: number): void {
 	});
 }
 
-const gateCrystals = CollectionService.GetTagged(GATE_CRYSTALS_TAG);
+const gateCrystals = CollectionService.GetTagged(AssetAnimation.GateCrystal);
 for (const crystal of gateCrystals) {
 	task.spawn(() => {
 		if (crystal.IsA("Model")) {
@@ -66,7 +66,7 @@ for (const crystal of gateCrystals) {
 	});
 }
 
-const smallCrystals = CollectionService.GetTagged(SMALL_CRYSTALS_TAG);
+const smallCrystals = CollectionService.GetTagged(AssetAnimation.SmallCrystal);
 for (const crystal of smallCrystals) {
 	task.spawn(() => {
 		if (crystal.IsA("Model")) {
