@@ -38,11 +38,14 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 
 		const frameBindingMotor = useBindingMotor(hooks, minimizedSize);
 
-		task.defer(() => {
-			task.wait(0.2);
-			frameBindingMotor.motor.setGoal(maximizedSpring);
-			task.wait(2);
-			frameBindingMotor.motor.setGoal(minimizedSpring);
+		const { useEffect } = hooks;
+		useEffect(() => {
+			task.defer(() => {
+				task.wait(0.2);
+				frameBindingMotor.motor.setGoal(maximizedSpring);
+				task.wait(2);
+				frameBindingMotor.motor.setGoal(minimizedSpring);
+			});
 		});
 
 		return (
@@ -75,7 +78,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					TextScaled={true}
 					TextColor3={color3White}
 				>
-					<BaseUIStroke Thickness={4} Color={Color3.fromRGB(27, 42, 53)} />
+					<BaseUIStroke native={{ Thickness: 4 }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -87,7 +90,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					BackgroundTransparency={1}
 					Text={tostring(props.weaponLevel)}
 				>
-					<BaseUIStroke Thickness={4} Color={Color3.fromRGB(27, 42, 53)} />
+					<BaseUIStroke native={{ Thickness: 4 }} />
 					<textlabel
 						AnchorPoint={vec2Middle}
 						Position={UDim2.fromScale(0.5, 0.48)}
@@ -98,7 +101,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 						BackgroundTransparency={1}
 						Text={tostring(props.weaponLevel)}
 					>
-						<BaseUIStroke Thickness={4} Color={Color3.fromRGB(27, 42, 53)} />
+						<BaseUIStroke native={{ Thickness: 4 }} />
 					</textlabel>
 				</textlabel>
 			</frame>

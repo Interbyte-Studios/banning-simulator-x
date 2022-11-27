@@ -58,15 +58,19 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 
 		const frameBindingMotor = useBindingMotor(hooks, minimizedSize);
+
+		const { useEffect } = hooks;
+		useEffect(() => {
+			task.defer(() => {
+				task.wait(0.2);
+				frameBindingMotor.motor.setGoal(maximizedSpring);
+				task.wait(2);
+				frameBindingMotor.motor.setGoal(minimizedSpring);
+			});
+		});
+
 		const talismanName =
 			string.upper(string.sub(talismanPhaseData.phase, 1, 1)) + string.sub(talismanPhaseData.phase, 2);
-
-		task.defer(() => {
-			task.wait(0.2);
-			frameBindingMotor.motor.setGoal(maximizedSpring);
-			task.wait(2);
-			frameBindingMotor.motor.setGoal(minimizedSpring);
-		});
 
 		return (
 			<frame
@@ -99,7 +103,7 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					TextScaled={true}
 					TextColor3={color3White}
 				>
-					<BaseUIStroke Thickness={4} Color={Color3.fromRGB(27, 42, 53)} />
+					<BaseUIStroke native={{ Thickness: 4 }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -111,7 +115,7 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					BackgroundTransparency={1}
 					Text={talismanName}
 				>
-					<BaseUIStroke Thickness={4} Color={Color3.fromRGB(27, 42, 53)} />
+					<BaseUIStroke native={{ Thickness: 4 }} />
 					<textlabel
 						AnchorPoint={vec2Middle}
 						Position={UDim2.fromScale(0.5, 0.48)}
@@ -122,7 +126,7 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 						BackgroundTransparency={1}
 						Text={talismanName}
 					>
-						<BaseUIStroke Thickness={4} Color={Color3.fromRGB(27, 42, 53)} />
+						<BaseUIStroke native={{ Thickness: 4 }} />
 					</textlabel>
 				</textlabel>
 			</frame>
