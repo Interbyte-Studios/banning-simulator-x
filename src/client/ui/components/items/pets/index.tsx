@@ -220,7 +220,7 @@ export const PetInventory = hooks((_, { useState, useCallback }) => {
 		(guid: string) => {
 			setPetsToDelete([...petsToDelete, guid]);
 		},
-		[setPetsToDelete],
+		[setPetsToDelete, petsToDelete],
 	);
 
 	/**
@@ -234,7 +234,7 @@ export const PetInventory = hooks((_, { useState, useCallback }) => {
 
 			setPetsToDelete(petsToDelete.filter((_, i) => i !== deleteIndex));
 		},
-		[setPetsToDelete],
+		[setPetsToDelete, petsToDelete],
 	);
 
 	return (

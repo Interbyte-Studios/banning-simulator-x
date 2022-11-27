@@ -88,7 +88,7 @@ const PetFrame = hooks(
 		}, [isSelectedForDelete]);
 
 		return (
-			<frame BackgroundTransparency={1} LayoutOrder={petData.id} Key={props.storedPetData.guid}>
+			<frame BackgroundTransparency={1} LayoutOrder={petData.id}>
 				<imagebutton
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={0}
@@ -161,7 +161,6 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 			CollectionService.AddTag(uiGridLayout, `InventoryGridLayout`);
 		});
 
-		debug.profilebegin("filterPets");
 		let petsToRender = props.pets;
 		const searchText = props.searchText?.lower();
 		if (searchText !== undefined) {
@@ -171,7 +170,6 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 				return petData.name.lower().find(searchText, 1, true)[0] !== undefined;
 			});
 		}
-		debug.profileend();
 
 		return (
 			<RescalingScrollingFrame
@@ -191,6 +189,7 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 				{petsToRender.map((pet) => {
 					return (
 						<PetFrame
+							Key={pet.guid}
 							storedPetData={pet}
 							multiDeleteEnabled={props.multiDeleteEnabled}
 							addPetToDeletionRegistry={props.addPetToDeletionRegistry}
