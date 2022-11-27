@@ -94,7 +94,7 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					ScaleType={Enum.ScaleType.Slice}
 				/>
 				<textlabel
-					Text={"Talisman Leveled UP!!"}
+					Text={"Talisman Level Up!"}
 					BackgroundTransparency={1}
 					AnchorPoint={vec2Middle}
 					Position={UDim2.fromScale(0.5, 1.2)}

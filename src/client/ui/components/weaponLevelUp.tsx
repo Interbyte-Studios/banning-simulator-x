@@ -69,7 +69,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					ScaleType={Enum.ScaleType.Fit}
 				/>
 				<textlabel
-					Text={"Weapon Leveled UP!!"}
+					Text={"Weapon Level Up!"}
 					BackgroundTransparency={1}
 					AnchorPoint={vec2Middle}
 					Position={UDim2.fromScale(0.5, 1)}
