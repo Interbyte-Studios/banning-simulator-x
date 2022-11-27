@@ -68,6 +68,11 @@ hash = "9aa6e2ab58a50dd5fbf70a95d57caa20c58e62d99487ea285c0a0df5ed3f3725"
 id = 10833933846
 packable = false
 
+[inputs."images/decals/boosts/luck.png"]
+hash = "3ade169784bccee8b79fe4648df19def3d288411b44545593f48d7c5fbc84c3b"
+id = 11676506054
+packable = false
+
 [inputs."images/decals/eggs/Candy.png"]
 hash = "f1ea9b24a95160d30a19ada4300f9ee0e71da10d6dfde2a120a8282c4793466f"
 id = 11627644446
@@ -1628,6 +1633,16 @@ hash = "14ef5182d4586b96cf692024624ba232eacb2b80f744889df2f6b7b50d3049d7"
 id = 10832809474
 packable = false
 
+[inputs."images/ui/index/Claim.png"]
+hash = "24ea617e75869e0c063b14c4778bcdd41ff8b04a2f01004cda8ec2324979c03a"
+id = 11666234138
+packable = false
+
+[inputs."images/ui/index/Off.png"]
+hash = "9ccb22cbc64db8110346692a1becbc11516c20289b66a2c0ae5b14bccad520b4"
+id = 11675277997
+packable = false
+
 [inputs."images/ui/index/background.png"]
 hash = "8909c87ade0693bf996cbbc0acbed159f037207616b2db7fe3e31597bd3976d7"
 id = 11632194795
@@ -1641,6 +1656,11 @@ packable = false
 [inputs."images/ui/index/extra.png"]
 hash = "081f966775da3057ba15c3fb4b780994f0561ae0ea09a87672af0e6b400ca513"
 id = 11657307092
+packable = false
+
+[inputs."images/ui/index/footerNotice.png"]
+hash = "0543ad76347f2ff17bf6c89127d4375259beca67cb027d305abd4389c5ec7fa9"
+id = 11668337135
 packable = false
 
 [inputs."images/ui/index/returnToSelection.png"]

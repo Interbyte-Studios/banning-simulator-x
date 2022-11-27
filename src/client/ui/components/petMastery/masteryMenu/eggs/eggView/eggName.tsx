@@ -6,9 +6,10 @@ import { EggName } from "shared/configs/eggs";
 /**
  * @param props The properties of the roact component.
  * @param props.egg The egg name to display.
+ * @param props.isDiscovered Whether or not the egg's been discovered.
  * @returns A Roact component.
  */
-export function EggNameView(props: { egg: EggName }): Roact.Element {
+export function EggNameView(props: { egg: EggName; isDiscovered: boolean }): Roact.Element {
 	return (
 		<textlabel
 			AnchorPoint={vec2Middle}
@@ -17,7 +18,7 @@ export function EggNameView(props: { egg: EggName }): Roact.Element {
 			BackgroundTransparency={1}
 			TextScaled={true}
 			TextColor3={Color3.fromRGB(255, 255, 255)}
-			Text={props.egg}
+			Text={props.isDiscovered ? props.egg : "???"}
 			Font={font}
 		>
 			<BaseUIStroke native={{ Thickness: 3 }} />

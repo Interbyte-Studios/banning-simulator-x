@@ -1,10 +1,13 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { VariantGradient } from "client/ui/elements/variantGradient";
+import { Variants } from "shared/configs/pets";
 
 interface ProgressHeaderProps {
 	text: string;
 	position: UDim2;
+	variant: Variants;
 }
 
 /**
@@ -26,6 +29,7 @@ export function ProgressHeader(props: ProgressHeaderProps): Roact.Element {
 			TextScaled={true}
 			TextXAlignment={Enum.TextXAlignment.Left}
 		>
+			<VariantGradient variant={props.variant} />
 			<BaseUIStroke native={{ Thickness: 2 }} />
 		</textlabel>
 	);

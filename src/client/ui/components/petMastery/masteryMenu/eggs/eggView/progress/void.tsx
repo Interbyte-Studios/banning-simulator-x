@@ -13,7 +13,7 @@ import { ViewPets } from "./util/viewPets";
 export const VoidEggProgress = hooks((props: { egg: EggName; displayPets: (variant: Variants) => void }) => {
 	return (
 		<>
-			<ProgressHeader text={"Void Pets"} position={UDim2.fromScale(0.35, 0.635)} />
+			<ProgressHeader text={"Void Pets"} position={UDim2.fromScale(0.35, 0.635)} variant={"void"} />
 			<ProgressBar egg={props.egg} variant={"void"} position={UDim2.fromScale(0.5, 0.735)} />
 			<ViewPets
 				egg={props.egg}

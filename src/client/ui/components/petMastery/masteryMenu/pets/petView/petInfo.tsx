@@ -21,9 +21,10 @@ interface PetData extends Pet {
 /**
  * @param props The properties of the Roact component.
  * @param props.pet The metadata of the pet.
+ * @param props.isDiscovered Whether or not the pets been discovered.
  * @returns A Roact component.
  */
-function PetName(props: { pet: PetData }): Roact.Element {
+function PetName(props: { pet: PetData; isDiscovered: boolean }): Roact.Element {
 	return (
 		<textlabel
 			AnchorPoint={vec2Middle}
@@ -32,7 +33,7 @@ function PetName(props: { pet: PetData }): Roact.Element {
 			BackgroundTransparency={1}
 			TextScaled={true}
 			TextColor3={Color3.fromRGB(255, 255, 255)}
-			Text={props.pet.name}
+			Text={props.isDiscovered ? props.pet.name : "???"}
 			Font={font}
 		>
 			<RarityGradient Rarity={props.pet.rarity} />
@@ -44,9 +45,10 @@ function PetName(props: { pet: PetData }): Roact.Element {
 /**
  * @param props The properties of the Roact component.
  * @param props.pet The metadata of the pet.
+ * @param props.isDiscovered Whether or not the pets been discovered.
  * @returns A Roact component.
  */
-function PetRarity(props: { pet: PetData }): Roact.Element {
+function PetRarity(props: { pet: PetData; isDiscovered: boolean }): Roact.Element {
 	return (
 		<textlabel
 			AnchorPoint={vec2Middle}
@@ -55,7 +57,7 @@ function PetRarity(props: { pet: PetData }): Roact.Element {
 			BackgroundTransparency={1}
 			TextScaled={true}
 			TextColor3={Color3.fromRGB(255, 255, 255)}
-			Text={props.pet.rarity}
+			Text={props.isDiscovered ? props.pet.rarity : "???"}
 			Font={font}
 		>
 			<RarityGradient Rarity={props.pet.rarity} />
@@ -382,15 +384,16 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
  * @param props The properties of the roact component.
  * @param props.pet The id of the pet.
  * @param props.variant The variant of the pet.
+ * @param props.isDiscovered Whether or not the pet is discovered.
  * @returns A Roact component.
  */
-export function PetInfoView(props: { pet: number; variant: Variants }): Roact.Element {
+export function PetInfoView(props: { pet: number; variant: Variants; isDiscovered: boolean }): Roact.Element {
 	const petData = getPetData(props.pet);
 
 	return (
 		<>
-			<PetName pet={petData} />
-			<PetRarity pet={petData} />
+			<PetName pet={petData} isDiscovered={props.isDiscovered} />
+			<PetRarity pet={petData} isDiscovered={props.isDiscovered} />
 			<HatchChance pet={petData} variant={props.variant} />
 			<ExtraStats pet={props.pet} variant={props.variant} />
 			<MinAndMaxStats pet={petData} variant={props.variant} />

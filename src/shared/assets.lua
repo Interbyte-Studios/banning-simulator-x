@@ -20,6 +20,9 @@ return {
 			gems = "rbxassetid://10833933846",
 		},
 		decals = {
+			boosts = {
+				luck = "rbxassetid://11676506054",
+			},
 			eggs = {
 				Candy = "rbxassetid://11627644446",
 				Desert = "rbxassetid://11627644517",
@@ -365,9 +368,12 @@ return {
 				["viewer background"] = "rbxassetid://10832809474",
 			},
 			index = {
+				Claim = "rbxassetid://11666234138",
+				Off = "rbxassetid://11675277997",
 				background = "rbxassetid://11632194795",
 				eggBackground = "rbxassetid://11610048861",
 				extra = "rbxassetid://11657307092",
+				footerNotice = "rbxassetid://11668337135",
 				returnToSelection = "rbxassetid://11655952403",
 				showExtraStats = "rbxassetid://11657307273",
 				sidebar = "rbxassetid://11627644894",

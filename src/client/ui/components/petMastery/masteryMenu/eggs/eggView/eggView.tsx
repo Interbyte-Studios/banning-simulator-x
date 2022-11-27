@@ -11,7 +11,7 @@ import { EggName } from "shared/configs/eggs";
  * A decal of the egg being viewed in the pet mastery component.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const EggView = hooks((props: { egg: EggName; hideInfo: () => void }, hooks) => {
+export const EggView = hooks((props: { egg: EggName; hideInfo: () => void; isDiscovered: boolean }, hooks) => {
 	const raisedPosition = 0.4;
 	const raisedSpring = new Flipper.Spring(raisedPosition, { frequency: 5 });
 
@@ -47,6 +47,7 @@ export const EggView = hooks((props: { egg: EggName; hideInfo: () => void }, hoo
 				})}
 				Image={getEggImage(props.egg)}
 				ScaleType={Enum.ScaleType.Fit}
+				ImageColor3={props.isDiscovered ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0)}
 			/>
 		</imagebutton>
 	);

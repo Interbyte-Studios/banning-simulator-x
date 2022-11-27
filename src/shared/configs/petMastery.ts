@@ -119,3 +119,125 @@ export const PET_MASTERY_REQUIREMENTS = {
 		},
 	},
 };
+
+export const PET_MASTERY_REWARDS = {
+	Basic: {
+		regular: {
+			hatch: 15, // 15 min x2 luck boost
+			maxLevel: 15, // 15 min x2 pet experience boost
+			fuse: 0, // no fuse requirement
+		},
+		void: {
+			hatch: 15, // 15 min x2 luck boost
+			maxLevel: 15, // 15 min x2 pet experience boost
+			fuse: 15, // 15 min x2 rank upgrade boost
+		},
+		radiant: {
+			hatch: 0, // no hatch requirement
+			maxLevel: 30, // 30 min x2 pet experience boost
+			fuse: 30, // 30 min x2 rank upgrade boost
+		},
+	},
+	Ordinary: {
+		regular: {
+			hatch: 15, // 15 min x2 luck boost
+			maxLevel: 15, // 15 min x2 pet experience boost
+			fuse: 0, // no fuse requirement
+		},
+		void: {
+			hatch: 15, // 15 min x2 luck boost
+			maxLevel: 15, // 15 min x2 pet experience boost
+			fuse: 15, // 15 min x2 rank upgrade boost
+		},
+		radiant: {
+			hatch: 0, // no hatch requirement
+			maxLevel: 30, // 30 min x2 pet experience boost
+			fuse: 30, // 30 min x2 rank upgrade boost
+		},
+	},
+	Rare: {
+		regular: {
+			hatch: 15, // 15 min x2 luck boost
+			maxLevel: 15, // 15 min x2 pet experience boost
+			fuse: 0, // no fuse requirement
+		},
+		void: {
+			hatch: 15, // 15 min x2 luck boost
+			maxLevel: 15, // 15 min x2 pet experience boost
+			fuse: 15, // 15 min x2 rank upgrade boost
+		},
+		radiant: {
+			hatch: 0, // no hatch requirement
+			maxLevel: 30, // 30 min x2 pet experience boost
+			fuse: 30, // 30 min x2 rank upgrade boost
+		},
+	},
+	Epic: {
+		regular: {
+			hatch: 30, // 30 min x2 luck boost
+			maxLevel: 30, // 30 min x2 pet experience boost
+			fuse: 0, // no fuse requirement
+		},
+		void: {
+			hatch: 30, // 30 min x2 luck boost
+			maxLevel: 30, // 30 min x2 pet experience boost
+			fuse: 30, // 30 min x2 rank upgrade boost
+		},
+		radiant: {
+			hatch: 0, // no hatch requirement
+			maxLevel: 60, // 60 min x2 pet experience boost
+			fuse: 60, // 60 min x2 rank upgrade boost
+		},
+	},
+	Legendary: {
+		regular: {
+			hatch: 60, // 60 min x2 luck boost
+			maxLevel: 60, // 60 min x2 pet experience boost
+			fuse: 0, // no fuse requirement
+		},
+		void: {
+			hatch: 60, // 60 min x2 luck boost
+			maxLevel: 60, // 60 min x2 pet experience boost
+			fuse: 60, // 60 min x2 rank upgrade boost
+		},
+		radiant: {
+			hatch: 0, // no hatch requirement
+			maxLevel: 60, // 60 min x2 pet experience boost
+			fuse: 60, // 60 min x2 rank upgrade boost
+		},
+	},
+	Primordial: {
+		regular: {
+			hatch: 120, // 120 min x2 luck boost
+			maxLevel: 120, // 120 min x2 pet experience boost
+			fuse: 0, // no fuse requirement
+		},
+		void: {
+			hatch: 120, // 120 min x2 luck boost
+			maxLevel: 120, // 120 min x2 pet experience boost
+			fuse: 120, // 120 min x2 rank upgrade boost
+		},
+		radiant: {
+			hatch: 0, // no hatch requirement
+			maxLevel: 120, // 120 min x2 pet experience boost
+			fuse: 120, // 120 min x2 rank upgrade boost
+		},
+	},
+	Prismatic: {
+		regular: {
+			hatch: 120, // 120 min x2 luck boost
+			maxLevel: 120, // 120 min x2 pet experience boost
+			fuse: 0, // no fuse requirement
+		},
+		void: {
+			hatch: 120, // 120 min x2 luck boost
+			maxLevel: 120, // 120 min x2 pet experience boost
+			fuse: 120, // 120 min x2 rank upgrade boost
+		},
+		radiant: {
+			hatch: 0, // no hatch requirement
+			maxLevel: 120, // 120 min x2 pet experience boost
+			fuse: 120, // 120 min x2 rank upgrade boost
+		},
+	},
+};

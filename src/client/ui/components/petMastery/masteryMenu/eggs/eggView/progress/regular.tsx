@@ -13,7 +13,7 @@ import { ViewPets } from "./util/viewPets";
 export const RegularEggProgress = hooks((props: { egg: EggName; displayPets: (variant: Variants) => void }) => {
 	return (
 		<>
-			<ProgressHeader text={"Regular Pets"} position={UDim2.fromScale(0.35, 0.425)} />
+			<ProgressHeader text={"Regular Pets"} position={UDim2.fromScale(0.35, 0.425)} variant={"regular"} />
 			<ProgressBar egg={props.egg} variant={"regular"} position={UDim2.fromScale(0.5, 0.525)} />
 			<ViewPets
 				egg={props.egg}

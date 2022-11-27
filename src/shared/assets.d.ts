@@ -55,6 +55,9 @@ declare namespace assetIds {
 				"weapon info background": string;
 			};
 			index: {
+				Off: string;
+				footerNotice: string;
+				Claim: string;
 				extra: string;
 				showExtraStats: string;
 				"view challenges": string;
@@ -127,6 +130,9 @@ declare namespace assetIds {
 			};
 		};
 		decals: {
+			boosts: {
+				luck: string;
+			};
 			pets: {
 				"Void Desert Scorpilord": string;
 				"Desert Pegasus": string;

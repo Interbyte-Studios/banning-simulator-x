@@ -3,14 +3,11 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import { PET_MASTERY_REQUIREMENTS } from "shared/configs/petMastery";
 import { Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
-import {
-	PetMasteryState,
-	radiantVariantMasteryData,
-	regularVariantMasteryData,
-	voidVariantMasteryData,
-} from "shared/rodux/petMastery";
+import { PlayerIndexState } from "shared/rodux/playerIndex";
+import { getPetData } from "shared/util/getPetData";
 
 interface ProgressBarProps extends RegularEggProgressMappedProps {
 	pet: number;
@@ -18,7 +15,7 @@ interface ProgressBarProps extends RegularEggProgressMappedProps {
 }
 
 interface RegularEggProgressMappedProps {
-	petMastery: PetMasteryState;
+	index: PlayerIndexState;
 }
 
 /**
@@ -29,7 +26,7 @@ interface RegularEggProgressMappedProps {
  */
 function mapStateToProps(state: StoreState): RegularEggProgressMappedProps {
 	return {
-		petMastery: state.petMastery,
+		index: state.index,
 	};
 }
 
@@ -41,87 +38,54 @@ function mapStateToProps(state: StoreState): RegularEggProgressMappedProps {
  */
 export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 	hooks((props: ProgressBarProps) => {
-		const petMastery = props.petMastery.get(props.pet);
+		const petsIndex = props.index.pets.get(props.pet);
 
-		let totalChallenges = 0;
-		let completedChallenges = 0;
-		if (petMastery !== undefined) {
+		const petData = getPetData(props.pet);
+		const masteryRequirements = PET_MASTERY_REQUIREMENTS[petData.rarity][props.variant];
+
+		const completionBarComponent: Array<Roact.Element> = [];
+
+		let potentiallyFinishedChallenges = 0;
+		const totalChallenges = props.variant === "radiant" || props.variant === "regular" ? 2 : 3;
+		if (petsIndex !== undefined) {
 			if (props.variant === "regular") {
-				totalChallenges += 2;
+				if (petsIndex.hatched.regular >= masteryRequirements.hatch) {
+					potentiallyFinishedChallenges += 1;
+				}
+
+				if (petsIndex.maxLevel.regular >= masteryRequirements.maxLevel) {
+					potentiallyFinishedChallenges += 1;
+				}
 			} else if (props.variant === "void") {
-				totalChallenges += 3;
+				if (petsIndex.hatched.void >= masteryRequirements.hatch) {
+					potentiallyFinishedChallenges += 1;
+				}
+
+				if (petsIndex.maxLevel.void >= masteryRequirements.maxLevel) {
+					potentiallyFinishedChallenges += 1;
+				}
+
+				if (petsIndex.fused.void >= masteryRequirements.fuse) {
+					potentiallyFinishedChallenges += 1;
+				}
 			} else if (props.variant === "radiant") {
-				totalChallenges += 2;
-			}
-
-			const masteryData = petMastery[props.variant];
-
-			switch (props.variant) {
-				case "regular": {
-					assert(
-						regularVariantMasteryData(masteryData),
-						`Mastery data didn't meet strict interface type expectations.`,
-					);
-
-					if (masteryData.hatchClaimed) {
-						completedChallenges += 1;
-					}
-
-					if (masteryData.maxLevelClaimed) {
-						completedChallenges += 1;
-					}
-					break;
+				if (petsIndex.maxLevel.radiant >= masteryRequirements.maxLevel) {
+					potentiallyFinishedChallenges += 1;
 				}
-				case "void": {
-					assert(voidVariantMasteryData(masteryData), `Mastery data didn't meet strict interface type expectations.`);
 
-					if (masteryData.hatchClaimed) {
-						completedChallenges += 1;
-					}
-
-					if (masteryData.maxLevelClaimed) {
-						completedChallenges += 1;
-					}
-
-					if (masteryData.fuseClaimed) {
-						completedChallenges += 1;
-					}
-
-					break;
-				}
-				case "radiant": {
-					assert(
-						radiantVariantMasteryData(masteryData),
-						`Mastery data didn't meet strict interface type expectations.`,
-					);
-
-					if (masteryData.maxLevelClaimed) {
-						completedChallenges += 1;
-					}
-
-					if (masteryData.fuseClaimed) {
-						completedChallenges += 1;
-					}
-					break;
+				if (petsIndex.fused.radiant >= masteryRequirements.fuse) {
+					potentiallyFinishedChallenges += 1;
 				}
 			}
 		}
 
-		let completionPercentage = completedChallenges / totalChallenges;
-		const completionBarComponent: Array<Roact.Element> = [];
-
+		const completionPercentage = potentiallyFinishedChallenges / totalChallenges ?? 0;
 		if (completionPercentage > 0) {
-			if (completionPercentage < 1) {
-				completionPercentage = 1;
-			}
-
 			completionBarComponent.push(
 				<frame
-					AnchorPoint={vec2Middle}
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(130, 245, 166)}
 					Size={UDim2.fromScale(completionPercentage, 1)}
-					Position={UDim2.fromScale(0, 0.5)}
 				>
 					<uicorner CornerRadius={new UDim(0.4, 0)} />
 				</frame>,

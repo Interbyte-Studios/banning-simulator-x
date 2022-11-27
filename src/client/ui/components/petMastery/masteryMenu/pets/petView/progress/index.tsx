@@ -10,7 +10,7 @@ import { ViewPetChallenges } from "./util/viewChallenges";
  * Displays the completion percentage of the challenged of the specified pet.
  */
 export const PetChallengeProgress = hooks(
-	(props: { pet: number; variant: Variants; displayChallenges: () => void }) => {
+	(props: { pet: number; variant: Variants; displayChallenges: () => void; isDiscovered: boolean }) => {
 		return (
 			<>
 				<ProgressHeader text={"Mastery Challenges"} />
