@@ -6,6 +6,7 @@ import { hooks } from "client/ui/hooks";
 interface SlotProps {
 	animatedTo: UDim2;
 	icon: string;
+	removeSlot: () => void;
 }
 
 export const Slot = hooks((props: SlotProps, hooks) => {
@@ -39,6 +40,7 @@ export const Slot = hooks((props: SlotProps, hooks) => {
 			sizeMotor.motor.setGoal(new Flipper.Spring(0));
 			task.wait(1);
 			positionMotor.motor.setGoal({ x: new Flipper.Spring(0.5), y: new Flipper.Spring(0.5) });
+			props.removeSlot();
 		});
 	});
 

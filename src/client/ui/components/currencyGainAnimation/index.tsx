@@ -23,12 +23,38 @@ function mapStateToProps(state: StoreState): CurrencyGainAnimationProps {
 	};
 }
 
+const cachedCurrencyImages: Array<{ id: number; component: Roact.Element }> = [];
+
 export const CurrencyGainAnimation = RoactRodux.connect(mapStateToProps)(
 	hooks(() => {
-		const slots: Array<Roact.Element> = [];
 		for (let i = 0; i < 4; i++) {
-			slots.push(<Slot animatedTo={UDim2.fromScale(0.1, 0.5)} icon={assetIds.images.vectors.Coin} />);
+			const elementId = cachedCurrencyImages.size() + 1;
+
+			const element = {
+				id: cachedCurrencyImages.size() + 1,
+				component: (
+					<Slot
+						animatedTo={UDim2.fromScale(0.1, 0.5)}
+						icon={assetIds.images.vectors.Coin}
+						removeSlot={(): void => {
+							const slot = cachedCurrencyImages.findIndex((slot) => slot.id === elementId);
+							if (slot === undefined) {
+								return warn(`Couldn't find slot for id ${elementId}`);
+							}
+
+							cachedCurrencyImages.unorderedRemove(slot);
+						}}
+					/>
+				),
+			};
+
+			cachedCurrencyImages.push(element);
 		}
+
+		const unpackedCurrencyIcons: Array<Roact.Element> = [];
+		cachedCurrencyImages.forEach((slot) => {
+			unpackedCurrencyIcons.push(slot.component);
+		});
 
 		return (
 			<frame
@@ -37,7 +63,7 @@ export const CurrencyGainAnimation = RoactRodux.connect(mapStateToProps)(
 				AnchorPoint={vec2Middle}
 				Position={UDim2.fromScale(0.5, 0.5)}
 			>
-				{slots}
+				{unpackedCurrencyIcons}
 			</frame>
 		);
 	}),
