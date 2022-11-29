@@ -2,10 +2,12 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { hooks } from "client/ui/hooks";
+import { getCurrencyIcon } from "client/util/getCurrencyIcon";
+import { Currency } from "shared/configs/currencies";
 
 interface SlotProps {
 	animatedTo: UDim2;
-	icon: string;
+	currency: Currency;
 	removeSlot: () => void;
 }
 
@@ -56,7 +58,7 @@ export const Slot = hooks((props: SlotProps, hooks) => {
 			BackgroundTransparency={1}
 		>
 			<imagelabel
-				Image={props.icon}
+				Image={getCurrencyIcon(props.currency)}
 				Size={UDim2.fromScale(1, 1)}
 				BackgroundTransparency={1}
 				Position={UDim2.fromScale(0.5, 0.5)}

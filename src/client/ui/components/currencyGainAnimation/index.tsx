@@ -3,7 +3,7 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
-import { Currency } from "shared/configs/currencies";
+import { currencies, Currency } from "shared/configs/currencies";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
 
@@ -26,9 +26,7 @@ function mapStateToProps(state: StoreState): CurrencyGainAnimationProps {
 
 const cachedCurrencyImages: Array<{ id: number; component: Roact.Element }> = [];
 const cachedCurrency: Array<{ name: Currency; amount: number }> = [];
-
-cachedCurrency.push({ name: "coins", amount: 0 });
-cachedCurrency.push({ name: "gems", amount: 0 });
+currencies.forEach((currency) => cachedCurrency.push({ name: currency, amount: 0 }));
 
 export const CurrencyGainAnimation = RoactRodux.connect(mapStateToProps)(
 	hooks((props: CurrencyGainAnimationProps) => {
@@ -45,7 +43,7 @@ export const CurrencyGainAnimation = RoactRodux.connect(mapStateToProps)(
 						component: (
 							<Slot
 								animatedTo={UDim2.fromScale(0.1, 0.5)}
-								icon={assetIds.images.currencies[currencyData.name]}
+								currency={currencyData.name}
 								removeSlot={(): void => {
 									const slot = cachedCurrencyImages.findIndex((slot) => slot.id === elementId);
 									if (slot === undefined) {
