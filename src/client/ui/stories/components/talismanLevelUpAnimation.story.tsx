@@ -14,7 +14,7 @@ export = (target: GuiBase): (() => void) => {
 		target,
 		(_, store) => (
 			<RoactRodux.StoreProvider store={store}>
-				<TalismanLevelUpAnimation />
+				<TalismanLevelUpAnimation enabled={true} />
 			</RoactRodux.StoreProvider>
 		),
 	);

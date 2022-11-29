@@ -66,8 +66,26 @@ export const app = hooks((props: AppProps, { useState }) => {
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
 				/>
-				<WeaponLevelUpAnimation />
-				<TalismanLevelUpAnimation />
+				<WeaponLevelUpAnimation
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
+				/>
+				<TalismanLevelUpAnimation
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
+				/>
 				<LocalMessages />
 				<ZonesUI />
 				<WeaponEquip
