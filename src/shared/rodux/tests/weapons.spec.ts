@@ -13,6 +13,7 @@ export = (): void => {
 			const weaponData = {
 				id: 1,
 				bans: 0,
+				level: 1,
 			};
 
 			const state: WeaponsState = [];
@@ -50,11 +51,13 @@ export = (): void => {
 			const weaponData = {
 				id: 1,
 				bans: 0,
+				level: 1,
 			};
 
 			const updatedWeaponData = {
 				id: 1,
 				bans: 1,
+				level: 1,
 			};
 
 			const state: WeaponsState = [weaponData];

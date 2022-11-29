@@ -380,6 +380,9 @@ return {
 				view = "rbxassetid://11632928741",
 				["view challenges"] = "rbxassetid://11656006779",
 			},
+			levelup = {
+				LevelUp = "rbxassetid://11698018648",
+			},
 			quests = {
 				["entry background"] = "rbxassetid://10832809634",
 				["quests background"] = "rbxassetid://10832809841",

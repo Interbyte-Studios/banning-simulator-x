@@ -11,7 +11,9 @@ import { PetMastery } from "./components/petMastery";
 import { Quests } from "./components/quests";
 import { RankUpgrade } from "./components/ranks/menu";
 import { SettingsMenu } from "./components/settings/menu";
+import { TalismanLevelUpAnimation } from "./components/talismanLevelUp";
 import { TalismanTowerHandle } from "./components/talismans";
+import { WeaponLevelUpAnimation } from "./components/weaponLevelUp";
 import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
 import { hooks } from "./hooks";
@@ -64,6 +66,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
 				/>
+				<WeaponLevelUpAnimation />
+				<TalismanLevelUpAnimation />
 				<LocalMessages />
 				<ZonesUI />
 				<WeaponEquip
