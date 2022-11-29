@@ -22,7 +22,6 @@ const LocalMessage = hooks((props: LocalMessageProps, { useBinding, useEffect })
 		task.spawn(() =>
 			task.delay(3, () => {
 				while (transparency.getValue() < 1) {
-					warn(transparency.getValue());
 					task.wait(0.03);
 					setTransparency(transparency.getValue() + 0.1);
 				}

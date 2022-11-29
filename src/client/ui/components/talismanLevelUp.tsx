@@ -67,6 +67,8 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 			cachedTalisman.phase = talismanPhase;
 		}
 
+		warn(`Displaying animation for ${talismanPhase}`);
+
 		/// Level up frame.
 		const minimizedSize = 0;
 		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
@@ -81,7 +83,7 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 			task.defer(() => {
 				task.wait(0.2);
 				frameBindingMotor.motor.setGoal(maximizedSpring);
-				task.wait(2);
+				task.wait(5);
 				frameBindingMotor.motor.setGoal(minimizedSpring);
 			});
 		});
@@ -151,11 +153,7 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					Size={UDim2.fromScale(0.685, 0.2)}
 					Font={font}
 					Text={`${
-						storedTalisman.phase === "artifact"
-							? "Artifact"
-							: storedTalisman.phase === "awakend"
-							? "Awakened"
-							: "Normal"
+						storedTalisman.phase === "artifact" ? "Artifact" : storedTalisman.phase === "awakend" ? "Awakend" : "Normal"
 					} Phase`}
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(255, 255, 255)}

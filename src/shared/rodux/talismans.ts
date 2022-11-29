@@ -53,6 +53,9 @@ export const talismanReducer = Rodux.createReducer<TalismansState, TalismanActio
 		for (const talismanPhase of TALISMAN_PHASES) {
 			if (currentTalisman.bans >= talismanPhase.requiredBans) {
 				phase = talismanPhase.phase;
+				warn(
+					`Current Talisman Bans: ${currentTalisman.bans} | Phase Name: ${phase} | Required Bans: ${talismanPhase.requiredBans}`,
+				);
 			}
 		}
 		assert(phase, `Expected to find a phase for the currently equipped talisman with id: ${action.talismanId}`);
@@ -60,6 +63,7 @@ export const talismanReducer = Rodux.createReducer<TalismansState, TalismanActio
 		let upgradePhase = false;
 		if (phase !== currentTalisman.phase) {
 			upgradePhase = true;
+			warn(`Upgrading to ${phase}`);
 		}
 
 		return new Map([

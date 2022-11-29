@@ -27,7 +27,7 @@ export function equipTalisman(player: Player, talismanId: number, phase: Talisma
 	const talismanFolder = talismansFolder.FindFirstChild(`Tier ${talismanData.id}`);
 	assert(talismanFolder, `Failed to get talisman folder for talisman tier ${talismanData.id}`);
 
-	const phaseName = phase === "awakend" ? "Awakened" : phase === "artifact" ? "Artifact" : "normal";
+	const phaseName = phase === "awakend" ? "Awakend" : phase === "artifact" ? "Artifact" : "normal";
 	const talismanModel = talismanFolder.FindFirstChild(
 		phaseName === "normal" ? talismanData.name : `${phaseName} ${talismanData.name}`,
 	);

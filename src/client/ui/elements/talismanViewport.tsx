@@ -38,33 +38,15 @@ export const TalismanViewport = hooks((props: TalismanViewportProps, { useValue,
 		const talismansFolder = ReplicatedStorage.assetObjects.talismans;
 
 		const talismanData = getTalismanData(props.talismanId);
-		const talismanModelName =
-			props.phase === "normal"
-				? talismanData.name
-				: props.phase === "artifact"
-				? `Artifact ${talismanData.name}`
-				: props.phase === "awakend"
-				? `Awakend ${talismanData.name}`
-				: "";
 
-		let talismanModel: Model | undefined;
-		for (const talisman of talismansFolder.GetDescendants()) {
-			if (!talisman.IsA("Model")) {
-				continue;
-			}
+		const talismanFolder = talismansFolder.FindFirstChild(`Tier ${talismanData.id}`);
+		assert(talismanFolder, `Failed to get talisman folder for talisman tier ${talismanData.id}`);
 
-			const talismanId = talisman.GetAttribute("id") as number;
-			if (talismanId !== props.talismanId) {
-				continue;
-			}
-
-			if (talisman.Name !== talismanModelName) {
-				continue;
-			}
-
-			talismanModel = talisman;
-		}
-		assert(talismanModel, `Did not find talisman model for talisman with id ${props.talismanId}`);
+		const phaseName = props.phase === "awakend" ? "Awakend" : props.phase === "artifact" ? "Artifact" : "normal";
+		const talismanModel = talismanFolder.FindFirstChild(
+			phaseName === "normal" ? talismanData.name : `${phaseName} ${talismanData.name}`,
+		);
+		assert(talismanModel, `Failed to get talisman named: "${phaseName} ${talismanData.name}"`);
 
 		const talisman = talismanModel.Clone() as Model;
 		setAssetProperties("talisman", talisman, undefined);
