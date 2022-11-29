@@ -13,7 +13,6 @@ interface LocalMessageProps {
 const cachedAnnouncements: Array<number> = [];
 
 const LocalMessage = hooks((props: LocalMessageProps, { useBinding, useEffect }) => {
-	warn("calling component");
 	const [transparency, setTransparency] = useBinding(0);
 
 	const announcementColor = Color3.fromRGB(255, 255, 127);

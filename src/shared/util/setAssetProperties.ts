@@ -88,12 +88,11 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 
 			for (const child of assetObject.GetChildren()) {
 				if (!child.IsA("BasePart")) continue;
-				if (child === assetObject.PrimaryPart) continue;
 
 				child.CanCollide = false;
 				child.Anchored = false;
 				child.Massless = true;
-				child.Name = "meshPart";
+				child.Name = child === assetObject.PrimaryPart ? "Primary" : "meshPart";
 			}
 
 			assert(assetObject.PrimaryPart, `No PrimaryPart set for ${assetObject.Name}`);

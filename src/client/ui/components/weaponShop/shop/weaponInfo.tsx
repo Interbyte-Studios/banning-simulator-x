@@ -4,6 +4,7 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { CurrencyGradient } from "client/ui/elements/currencyGradient";
 import { CurrencyIcon } from "client/ui/elements/currencyIcon";
+import { DamageIcon } from "client/ui/elements/damageIcon";
 import { RankIcon } from "client/ui/elements/rankIcon";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
@@ -98,11 +99,10 @@ export const WeaponShopWeaponInfo = RoactRodux.connect(mapStateToProps)(
 					TextXAlignment={Enum.TextXAlignment.Left}
 				>
 					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }} currencyGradient={"gems"} />
-					<CurrencyIcon
+					<DamageIcon
 						anchorPoint={new Vector2(1, 0.5)}
 						position={UDim2.fromScale(-0.03, 0.5)}
 						size={{ minimizedSize: 0.9, maximizedSize: 1 }}
-						currency={weaponData.data.cost ? weaponData.data.cost.currency : "gems"}
 					/>
 				</textlabel>
 				<textlabel

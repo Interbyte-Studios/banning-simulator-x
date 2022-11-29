@@ -7,7 +7,7 @@ import { Currency } from "./currencies";
 export const talismanStats = ["health", "damage", "experience"] as const;
 export const isTalismanStat = t.literal(...talismanStats);
 export type TalismanStats = t.static<typeof isTalismanStat>;
-export type talismanPhases = "normal" | "awakend" | "artifact";
+export type TalismanPhases = "normal" | "awakend" | "artifact";
 
 export interface Talisman {
 	id: number;
@@ -142,7 +142,11 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 	},
 });
 
-export const TALISMAN_PHASES: Array<{ phase: talismanPhases; requiredBans: number }> = [
+export const TALISMAN_PHASES: Array<{
+	phase: TalismanPhases;
+	requiredBans: number;
+	gradient?: { beginningColor: Color3; endingColor: Color3 };
+}> = [
 	{
 		phase: "normal",
 		requiredBans: 0,
@@ -150,10 +154,18 @@ export const TALISMAN_PHASES: Array<{ phase: talismanPhases; requiredBans: numbe
 	{
 		phase: "awakend",
 		requiredBans: 5,
+		gradient: {
+			beginningColor: Color3.fromRGB(241, 138, 169),
+			endingColor: Color3.fromRGB(239, 175, 176),
+		},
 	},
 	{
 		phase: "artifact",
 		requiredBans: 10,
+		gradient: {
+			beginningColor: Color3.fromRGB(255, 93, 96),
+			endingColor: Color3.fromRGB(255, 159, 247),
+		},
 	},
 ];
 
