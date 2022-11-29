@@ -19,14 +19,17 @@ const LocalMessage = hooks((props: LocalMessageProps, { useBinding, useEffect })
 	const errorColor = Color3.fromRGB(255, 119, 155);
 
 	useEffect(() => {
-		task.delay(3, () => {
-			while (transparency.getValue() < 1) {
-				task.wait(0.03);
-				setTransparency(transparency.getValue() + 0.1);
-			}
+		task.spawn(() =>
+			task.delay(3, () => {
+				while (transparency.getValue() < 1) {
+					warn(transparency.getValue());
+					task.wait(0.03);
+					setTransparency(transparency.getValue() + 0.1);
+				}
 
-			cachedAnnouncements.push(props.id);
-		});
+				cachedAnnouncements.push(props.id);
+			}),
+		);
 	}, []);
 
 	return (
