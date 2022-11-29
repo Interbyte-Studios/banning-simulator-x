@@ -53,7 +53,6 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 			`Expected player to own talisman of id: "${props.currentTalisman}" since they have it equipped.`,
 		);
 
-		/*
 		const talismanPhase = storedTalisman.phase;
 		if (cachedTalisman.id !== props.currentTalisman) {
 			cachedTalisman.id = props.currentTalisman;
@@ -67,7 +66,6 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 		} else {
 			cachedTalisman.phase = talismanPhase;
 		}
-		*/
 
 		/// Level up frame.
 		const minimizedSize = 0;

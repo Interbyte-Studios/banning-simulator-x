@@ -1,7 +1,6 @@
 import Roact from "@rbxts/roact";
 import { ReplicatedStorage } from "@rbxts/services";
 import { TalismanPhases } from "shared/configs/talismans";
-import { getItemById } from "shared/util/getItemById";
 import { getTalismanData } from "shared/util/getTalismanData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
