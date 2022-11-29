@@ -16,8 +16,8 @@ return {
 			["teal button"] = "rbxassetid://10705288749",
 		},
 		currencies = {
-			coins = "rbxassetid://9591269212",
-			gems = "rbxassetid://10833933846",
+			coins = "rbxassetid://11591957630",
+			gems = "rbxassetid://11591957802",
 		},
 		maps = {
 			["Ban Land"] = {
