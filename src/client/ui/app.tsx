@@ -4,6 +4,7 @@ import { Store } from "shared/rodux";
 
 import { LocalMessages } from "./components/announcements";
 import { CodesMenu } from "./components/codes/menu";
+import { CurrencyGainAnimation } from "./components/currencyGainAnimation";
 import { EggsUI } from "./components/eggs";
 import { WeaponEquip } from "./components/equip/weaponEquip";
 import { Hud } from "./components/hud";
@@ -110,6 +111,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!talismanTowerVisibility
 					}
 				/>
+				<CurrencyGainAnimation />
 			</>
 		</RoactRodux.StoreProvider>
 	);
