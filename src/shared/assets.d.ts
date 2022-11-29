@@ -128,6 +128,9 @@ declare namespace assetIds {
 				"setting background": string;
 				background: string;
 			};
+			levelup: {
+				LevelUp: string;
+			};
 		};
 		decals: {
 			boosts: {

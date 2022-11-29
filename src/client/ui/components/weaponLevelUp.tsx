@@ -5,9 +5,13 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { CurrentWeaponState } from "shared/rodux/currentWeapon";
 import { WeaponsState } from "shared/rodux/weapons";
+import { getWeaponInfo } from "shared/util/getWeaponInfo";
+
+import { WeaponViewport } from "../elements/weaponViewport";
 
 interface WeaponLevelUpAnimationProps {
 	currentWeapon: CurrentWeaponState;
@@ -31,71 +35,6 @@ const cachedWeapon = {
 	id: 0,
 	level: 0,
 };
-
-/**
- * @param props The properties of the Roact component.
- * @param props.level The level of the weapon.
- * @returns A Roact component.
- */
-function WeaponLevel(props: { level: number }): Roact.Element {
-	return (
-		<imagelabel
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Position={UDim2.fromScale(0.5, 0.5)}
-			Size={UDim2.fromScale(0.8, 0.8)}
-			Image={"rbxassetid://11549206357"}
-			ScaleType={Enum.ScaleType.Fit}
-		>
-			<textlabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.45)}
-				Size={UDim2.fromScale(0.5, 0.5)}
-				Font={font}
-				Text={tostring(props.level)}
-				TextScaled={true}
-				TextColor3={Color3.fromRGB(27, 42, 53)}
-			>
-				<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(20, 46, 47) }} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(1, 1)}
-					Font={font}
-					Text={tostring(props.level)}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(20, 46, 47) }} />
-				</textlabel>
-			</textlabel>
-		</imagelabel>
-	);
-}
-
-/**
- * A text label notifying the player they're weapon has leveled up.
- *
- * @returns A Roact component.
- */
-function LevelUpNotification(): Roact.Element {
-	return (
-		<textlabel
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Position={UDim2.fromScale(0.5, 0.975)}
-			Size={UDim2.fromScale(1.2, 0.2)}
-			Font={font}
-			Text={"Weapon Level Up!"}
-			TextScaled={true}
-			TextColor3={Color3.fromRGB(255, 255, 255)}
-		>
-			<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(20, 46, 47) }} />
-		</textlabel>
-	);
-}
 
 /**
  * An animation that plays when a player levels up their weapon.
@@ -123,7 +62,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 		const minimizedSize = 0;
 		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
 
-		const maximizedSize = 0.25;
+		const maximizedSize = 0.2;
 		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 
 		const frameBindingMotor = useBindingMotor(hooks, minimizedSize);
@@ -133,28 +72,87 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 			task.defer(() => {
 				task.wait(0.2);
 				frameBindingMotor.motor.setGoal(maximizedSpring);
-				task.wait(2);
+				task.wait(5);
 				frameBindingMotor.motor.setGoal(minimizedSpring);
 			});
 		});
 
+		const weaponData = getWeaponInfo(props.currentWeapon.id);
+
 		return (
-			<frame
+			<imagelabel
 				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
 				Position={UDim2.fromScale(0.5, 0.125)}
 				Size={frameBindingMotor.binding.map((value) => {
-					return UDim2.fromScale(0.15, value);
+					return UDim2.fromScale(0.4, value);
 				})}
+				Image={assetIds.images.ui.levelup.LevelUp}
+				ScaleType={Enum.ScaleType.Fit}
 				Visible={frameBindingMotor.binding.map((value) => {
 					return value > 0;
 				})}
-				BackgroundTransparency={1}
 			>
-				<uiaspectratioconstraint AspectRatio={1} />
+				<uiaspectratioconstraint AspectRatio={2.2} />
 
-				<WeaponLevel level={weaponLevel} />
-				<LevelUpNotification />
-			</frame>
+				<frame
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={0}
+					Position={UDim2.fromScale(0.15, 0.675)}
+					Size={UDim2.fromScale(0.25, 0.6)}
+					BackgroundColor3={Color3.fromRGB(0, 131, 213)}
+				>
+					<uiaspectratioconstraint AspectRatio={1} />
+					<uicorner CornerRadius={new UDim(0.175, 0)} />
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
+
+					<WeaponViewport
+						native={{
+							AnchorPoint: vec2Middle,
+							BackgroundTransparency: 1,
+							Size: UDim2.fromScale(0.9, 0.9),
+							Position: UDim2.fromScale(0.5, 0.5),
+						}}
+						weaponName={weaponData.name}
+					/>
+				</frame>
+				<textlabel
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					Position={UDim2.fromScale(0.5, 0.185)}
+					Size={UDim2.fromScale(0.6, 0.3)}
+					Font={font}
+					Text={"Congratulations"}
+					TextScaled={true}
+					TextColor3={Color3.fromRGB(255, 255, 255)}
+				>
+					<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(185, 81, 1) }} />
+				</textlabel>
+				<textlabel
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					Position={UDim2.fromScale(0.635, 0.55)}
+					Size={UDim2.fromScale(0.685, 0.25)}
+					Font={font}
+					Text={"Weapon Level Up!"}
+					TextScaled={true}
+					TextColor3={Color3.fromRGB(255, 255, 255)}
+				>
+					<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(0, 100, 163) }} />
+				</textlabel>
+				<textlabel
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					Position={UDim2.fromScale(0.635, 0.775)}
+					Size={UDim2.fromScale(0.685, 0.2)}
+					Font={font}
+					Text={`Level ${storedWeapon.level}`}
+					TextScaled={true}
+					TextColor3={Color3.fromRGB(255, 255, 255)}
+				>
+					<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(0, 100, 163) }} />
+				</textlabel>
+			</imagelabel>
 		);
 	}),
 );

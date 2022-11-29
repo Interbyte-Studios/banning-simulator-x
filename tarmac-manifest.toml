@@ -1688,6 +1688,11 @@ hash = "08cff85864c4e2c4787f4062027d8743bbca78defe285483504883dcea0433e9"
 id = 11632928741
 packable = false
 
+[inputs."images/ui/levelup/LevelUp.png"]
+hash = "890be68e5dd2d161d6c515806b306fd8c4035644ae35fd165ec57c4090e89c44"
+id = 11698018648
+packable = false
+
 [inputs."images/ui/quests/entry background.png"]
 hash = "ddd4ef03eacfb8d19f73252017992e29551d978e7358917f14ea899f73d36283"
 id = 10832809634

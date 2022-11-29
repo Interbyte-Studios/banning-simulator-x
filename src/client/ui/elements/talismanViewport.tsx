@@ -1,6 +1,8 @@
 import Roact from "@rbxts/roact";
 import { ReplicatedStorage } from "@rbxts/services";
+import { TalismanPhases } from "shared/configs/talismans";
 import { getItemById } from "shared/util/getItemById";
+import { getTalismanData } from "shared/util/getTalismanData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
 import { hooks } from "../hooks";
@@ -8,6 +10,7 @@ import { hooks } from "../hooks";
 interface TalismanViewportProps {
 	native: Partial<WritableInstanceProperties<ViewportFrame>>;
 	talismanId: number;
+	phase: TalismanPhases;
 }
 
 /**
@@ -35,7 +38,33 @@ export const TalismanViewport = hooks((props: TalismanViewportProps, { useValue,
 
 		const talismansFolder = ReplicatedStorage.assetObjects.talismans;
 
-		const talismanModel = getItemById(talismansFolder, props.talismanId);
+		const talismanData = getTalismanData(props.talismanId);
+		const talismanModelName =
+			props.phase === "normal"
+				? talismanData.name
+				: props.phase === "artifact"
+				? `Artifact ${talismanData.name}`
+				: props.phase === "awakend"
+				? `Awakend ${talismanData.name}`
+				: "";
+
+		let talismanModel: Model | undefined;
+		for (const talisman of talismansFolder.GetDescendants()) {
+			if (!talisman.IsA("Model")) {
+				continue;
+			}
+
+			const talismanId = talisman.GetAttribute("id") as number;
+			if (talismanId !== props.talismanId) {
+				continue;
+			}
+
+			if (talisman.Name !== talismanModelName) {
+				continue;
+			}
+
+			talismanModel = talisman;
+		}
 		assert(talismanModel, `Did not find talisman model for talisman with id ${props.talismanId}`);
 
 		const talisman = talismanModel.Clone() as Model;
@@ -53,7 +82,7 @@ export const TalismanViewport = hooks((props: TalismanViewportProps, { useValue,
 		camera.FieldOfView = 10;
 
 		const [, talismanSize] = talisman.GetBoundingBox();
-		talisman.SetPrimaryPartCFrame(
+		talisman.PivotTo(
 			camera.CFrame.ToWorldSpace(new CFrame(0, 0, -talismanSize.Z * talismanSize.Y * 1.6)).mul(
 				CFrame.Angles(0, math.rad(270), 0),
 			),
