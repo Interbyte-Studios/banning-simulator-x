@@ -10,12 +10,15 @@ import { TalismanPhases } from "shared/configs/talismans";
 import { StoreState } from "shared/rodux";
 import { CurrentTalismanState } from "shared/rodux/currentTalisman";
 import { TalismansState } from "shared/rodux/talismans";
-import { getTalismanData } from "shared/util/getTalismanData";
 
 import { TalismanGradient } from "../elements/talismanGradient";
 import { TalismanViewport } from "../elements/talismanViewport";
 
-interface TalismanLevelUpAnimationProps {
+interface TalismanLevelUpAnimationProps extends TalismanLevelUpAnimationMappedProps {
+	enabled: boolean;
+}
+
+interface TalismanLevelUpAnimationMappedProps {
 	currentTalisman: CurrentTalismanState;
 	talismans: TalismansState;
 }
@@ -26,7 +29,7 @@ interface TalismanLevelUpAnimationProps {
  * @param state The current state of the store.
  * @returns The mapped props to render with.
  */
-function mapStateToProps(state: StoreState): TalismanLevelUpAnimationProps {
+function mapStateToProps(state: StoreState): TalismanLevelUpAnimationMappedProps {
 	return {
 		currentTalisman: state.currentTalisman,
 		talismans: state.talismans,
@@ -43,6 +46,10 @@ const cachedTalisman: { id: number; phase: TalismanPhases } = {
  */
 export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 	hooks((props: TalismanLevelUpAnimationProps, hooks) => {
+		if (!props.enabled) {
+			return <></>;
+		}
+
 		if (props.currentTalisman === undefined) {
 			return <></>;
 		}
@@ -66,8 +73,6 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 		} else {
 			cachedTalisman.phase = talismanPhase;
 		}
-
-		warn(`Displaying animation for ${talismanPhase}`);
 
 		/// Level up frame.
 		const minimizedSize = 0;
@@ -93,10 +98,14 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}
 				Position={UDim2.fromScale(0.5, 0.125)}
-				Size={UDim2.fromScale(0.4, 0.2)}
+				Size={frameBindingMotor.binding.map((value) => {
+					return UDim2.fromScale(0.4, value);
+				})}
 				Image={assetIds.images.ui.levelup.LevelUp}
 				ScaleType={Enum.ScaleType.Fit}
-				Visible={true}
+				Visible={frameBindingMotor.binding.map((value) => {
+					return value > 0;
+				})}
 			>
 				<uiaspectratioconstraint AspectRatio={2.2} />
 

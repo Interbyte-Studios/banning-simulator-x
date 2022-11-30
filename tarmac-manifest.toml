@@ -1353,6 +1353,11 @@ hash = "2dfff6a942bd4926760653c466ea2f99105fff573e91d2c347350940e78c9919"
 id = 11440122751
 packable = false
 
+[inputs."images/decals/worlds/Ban Land.png"]
+hash = "35cfabf6226041b887dd2c25da58c11f44f65e278d2fd904bc8a37f3a3ec2e5a"
+id = 11701906366
+packable = false
+
 [inputs."images/maps/Ban Land/world.jpg"]
 hash = "ca1e87c9948257fed7ac980ef92c8398b411f49a7e6d0b7b598646e8fd832b3a"
 id = 10509318265
@@ -1751,6 +1756,116 @@ packable = false
 [inputs."images/ui/talismanTower/sidebar.png"]
 hash = "a624d7f968f7cd5dfdb3d2922d0797af165bae02853a6913e95c230294822146"
 id = 11509649010
+packable = false
+
+[inputs."images/ui/teleportation/Ban Land Locked.png"]
+hash = "e7eb7055222d09f73d8ffa71d70ce2e54904bbc00d44be3d3183145b91cdc2d4"
+id = 11704046058
+packable = false
+
+[inputs."images/ui/teleportation/Ban Land.png"]
+hash = "8ed806bcbd36f4129716a33e2322171240f50d567461e53d6748d935d9e7d691"
+id = 11704046085
+packable = false
+
+[inputs."images/ui/teleportation/Beach Locked.png"]
+hash = "52b4db6834d40d28939a05781cb110c685f2020c6b89ef66ccf48dbc711520f2"
+id = 11704139642
+packable = false
+
+[inputs."images/ui/teleportation/Beach.png"]
+hash = "aff70c60a5cd2f7ddbae4ae76a439518dd23f871279823abc0810812c5a78597"
+id = 11704139673
+packable = false
+
+[inputs."images/ui/teleportation/Candy Land Locked.png"]
+hash = "8a7130869f89a2ce81b2b54bd84e94efddd83a01fb8aa9ea8d45a1254217acac"
+id = 11704139718
+packable = false
+
+[inputs."images/ui/teleportation/Candy Land.png"]
+hash = "64e442acce2abdc2e3114f8a40509c172902cba73050e2a508ff2ac2bbda004a"
+id = 11704139756
+packable = false
+
+[inputs."images/ui/teleportation/Desert Locked.png"]
+hash = "c7519947479545233e59a59dab25a87b2e2eca0471285a38cf59e0a4a9d0872c"
+id = 11704139789
+packable = false
+
+[inputs."images/ui/teleportation/Desert.png"]
+hash = "8a3705438495ee32f0cffac93dea15d0b63a5c3dd924f99b3691e0c351a886a7"
+id = 11704139824
+packable = false
+
+[inputs."images/ui/teleportation/Forest Locked.png"]
+hash = "79d405b48436ceac9400d2f92292ced1e31d46de8125cd1c0a1c22f28a385f40"
+id = 11704139857
+packable = false
+
+[inputs."images/ui/teleportation/Forest.png"]
+hash = "ce024c2e21bd2d34e1f1b3e43daf105decca94c87676be273a367d24bd4d7152"
+id = 11704139897
+packable = false
+
+[inputs."images/ui/teleportation/Honeycomb Locked.png"]
+hash = "90b833844f5544c9f900a951ab5c4a909fe87d9cb9afa497a7ae93d03e303078"
+id = 11704139942
+packable = false
+
+[inputs."images/ui/teleportation/Honeycomb.png"]
+hash = "1a6c4d7cc1cb28c8cec4300f2cc4a008f60bde41091f01d5f2b8f673a49192dd"
+id = 11704139989
+packable = false
+
+[inputs."images/ui/teleportation/Ice Land Locked.png"]
+hash = "4eb27c5ebef997615d5c33d9e4147dfe6345d7ad75ed607e6372f1b03d73007c"
+id = 11704140011
+packable = false
+
+[inputs."images/ui/teleportation/Ice Land.png"]
+hash = "b3fc403e7b7a679abf8e8237c5176393b601124bf03cf1c3adba0b9e5c017ea8"
+id = 11704140031
+packable = false
+
+[inputs."images/ui/teleportation/Lava Lands Locked.png"]
+hash = "b8e73e9a8ad541a15a7f6126a9026b251759d35b421e05803d0af3fe3fb3f683"
+id = 11704140073
+packable = false
+
+[inputs."images/ui/teleportation/Lava Lands.png"]
+hash = "b3b5dad734aa77befb4a627ea709975aa6e0e477241d443bbfa988a44a3323c7"
+id = 11704140110
+packable = false
+
+[inputs."images/ui/teleportation/Sunflower Field Locked.png"]
+hash = "c69e5fc2faa19eef5daecee4586ce0791e22e33f014463f129782f9893351425"
+id = 11704140186
+packable = false
+
+[inputs."images/ui/teleportation/Sunflower Field.png"]
+hash = "9578fd729daa1408f5964d5c91570aebe6a5165ca454a3bfcef8183f91fc4c5b"
+id = 11704140254
+packable = false
+
+[inputs."images/ui/teleportation/The Mines Locked.png"]
+hash = "93864b690dac3d79ea51f6588040bbfa27276db251c8ca6fffa5c2cb51b2decc"
+id = 11704140325
+packable = false
+
+[inputs."images/ui/teleportation/The Mines.png"]
+hash = "103cd1e0f49063cf926629ca973d6fa3276ee8c32a04d9bf6bd9a38b4571f2ef"
+id = 11704140370
+packable = false
+
+[inputs."images/ui/teleportation/background.png"]
+hash = "c830f12825ea4f5f4c560d15309592399d478ba4d8e8ed58a78c11b8e682a0f3"
+id = 11702120380
+packable = false
+
+[inputs."images/ui/teleportation/go.png"]
+hash = "480144a08fa8c88e7fd21d3993ea3d1352b57a748a244e3d208fa7fb13f3bb8f"
+id = 11702142633
 packable = false
 
 [inputs."images/ui/update log/background.png"]

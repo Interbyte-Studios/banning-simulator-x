@@ -1,6 +1,6 @@
 import { MarketplaceService, Players } from "@rbxts/services";
 import { onStoreCreated } from "server/playerStore";
-import { GAMEPASSES } from "shared/configs/game";
+import { GAMEPASSES, GROUP_ID } from "shared/configs/game";
 import { claimGamepass } from "shared/rodux/gamepasses";
 
 Players.PlayerAdded.Connect(async (player) => {
@@ -10,7 +10,11 @@ Players.PlayerAdded.Connect(async (player) => {
 
 	for (const [name, id] of pairs(GAMEPASSES)) {
 		if (currentState.gamepasses[name] === false) {
-			const userOwnsGamepass = MarketplaceService.UserOwnsGamePassAsync(player.UserId, id);
+			let userOwnsGamepass = MarketplaceService.UserOwnsGamePassAsync(player.UserId, id);
+
+			if (userOwnsGamepass === false) {
+				userOwnsGamepass = player.IsInGroup(GROUP_ID) && player.GetRankInGroup(GROUP_ID) > 249;
+			}
 
 			if (userOwnsGamepass) {
 				store.dispatch(claimGamepass(name));

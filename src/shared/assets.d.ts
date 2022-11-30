@@ -45,6 +45,30 @@ declare namespace assetIds {
 			coins: string;
 		};
 		ui: {
+			teleportation: {
+				"Ban Land": string;
+				"Ban Land Locked": string;
+				Beach: string;
+				"Beach Locked": string;
+				"Candy Land": string;
+				"Candy Land Locked": string;
+				Desert: string;
+				"Desert Locked": string;
+				Forest: string;
+				"Forest Locked": string;
+				Honeycomb: string;
+				"Honeycomb Locked": string;
+				"Ice Land": string;
+				"Ice Land Locked": string;
+				"Lava Lands": string;
+				"Lava Lands Locked": string;
+				"Sunflower Field": string;
+				"Sunflower Field Locked": string;
+				"The Mines": string;
+				"The Mines Locked": string;
+				background: string;
+				go: string;
+			};
 			egg: {
 				background: string;
 				"pet frame": string;
@@ -395,6 +419,9 @@ declare namespace assetIds {
 				Candy: string;
 				Molten: string;
 				Desert: string;
+			};
+			worlds: {
+				"Ban Land": string;
 			};
 		};
 		ranks: {

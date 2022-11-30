@@ -12,6 +12,7 @@ interface HudProps {
 	displayCodesMenu: () => void;
 	displayQuestsMenu: () => void;
 	displaySettingsMenu: () => void;
+	displayTeleportationMenu: () => void;
 }
 
 export const Hud = hooks((props: HudProps) => {
@@ -31,7 +32,7 @@ export const Hud = hooks((props: HudProps) => {
 			<RanksViewer />
 			<CoinsCurrency />
 			<GemsCurrency />
-			<HUDFooter />
+			<HUDFooter displayTeleportationMenu={props.displayTeleportationMenu} />
 		</frame>
 	);
 });

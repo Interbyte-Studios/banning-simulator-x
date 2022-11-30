@@ -5,7 +5,11 @@ import { TeleportIcon } from "./teleportIcon";
 import { TradingIcon } from "./tradingIcon";
 import { WheelSpinIcon } from "./wheelSpingIcon";
 
-export const HUDFooter = hooks(() => {
+interface HUDFooterProps {
+	displayTeleportationMenu: () => void;
+}
+
+export const HUDFooter = hooks((props: HUDFooterProps) => {
 	return (
 		<frame
 			BackgroundTransparency={1}
@@ -20,7 +24,7 @@ export const HUDFooter = hooks(() => {
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>
 			<TradingIcon />
-			<TeleportIcon />
+			<TeleportIcon displayTeleportationMenu={props.displayTeleportationMenu} />
 			<WheelSpinIcon />
 		</frame>
 	);

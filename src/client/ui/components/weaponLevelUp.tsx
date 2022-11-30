@@ -13,7 +13,11 @@ import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 import { WeaponViewport } from "../elements/weaponViewport";
 
-interface WeaponLevelUpAnimationProps {
+interface WeaponLevelUpAnimationProps extends WeaponLevelUpAnimationMappedProps {
+	enabled: boolean;
+}
+
+interface WeaponLevelUpAnimationMappedProps {
 	currentWeapon: CurrentWeaponState;
 	weapons: WeaponsState;
 }
@@ -24,7 +28,7 @@ interface WeaponLevelUpAnimationProps {
  * @param state The current state of the store.
  * @returns The mapped props to render with.
  */
-function mapStateToProps(state: StoreState): WeaponLevelUpAnimationProps {
+function mapStateToProps(state: StoreState): WeaponLevelUpAnimationMappedProps {
 	return {
 		currentWeapon: state.currentWeapon,
 		weapons: state.weapons,
@@ -41,6 +45,10 @@ const cachedWeapon = {
  */
 export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 	hooks((props: WeaponLevelUpAnimationProps, hooks) => {
+		if (!props.enabled) {
+			return <></>;
+		}
+
 		const storedWeapon = props.weapons.find((weapon) => weapon.id === props.currentWeapon.id);
 		assert(storedWeapon, `Expected player to own weapon of id: "${props.currentWeapon}" since they have it equipped.`);
 
