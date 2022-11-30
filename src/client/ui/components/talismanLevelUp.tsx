@@ -74,8 +74,6 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 			cachedTalisman.phase = talismanPhase;
 		}
 
-		warn(`Displaying animation for ${talismanPhase}`);
-
 		/// Level up frame.
 		const minimizedSize = 0;
 		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
