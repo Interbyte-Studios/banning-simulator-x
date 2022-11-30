@@ -100,10 +100,14 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}
 				Position={UDim2.fromScale(0.5, 0.125)}
-				Size={UDim2.fromScale(0.4, 0.2)}
+				Size={frameBindingMotor.binding.map((value) => {
+					return UDim2.fromScale(0.4, value);
+				})}
 				Image={assetIds.images.ui.levelup.LevelUp}
 				ScaleType={Enum.ScaleType.Fit}
-				Visible={true}
+				Visible={frameBindingMotor.binding.map((value) => {
+					return value > 0;
+				})}
 			>
 				<uiaspectratioconstraint AspectRatio={2.2} />
 

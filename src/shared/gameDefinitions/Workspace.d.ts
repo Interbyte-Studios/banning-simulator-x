@@ -1,6 +1,6 @@
 import { Eggs } from "shared/configs/eggs";
 import { Worlds } from "shared/configs/worlds";
-import { Zones } from "shared/configs/zones";
+import { ZoneNames, Zones } from "shared/configs/zones";
 
 declare global {
 	interface Workspace extends WorldRoot {
@@ -15,6 +15,9 @@ declare global {
 			};
 		};
 		interactions: Folder & {
+			teleports: Folder & {
+				[P in ZoneNames]: BasePart;
+			};
 			eggs: Folder & {
 				[P in keyof Eggs]: Folder & {
 					deco: Folder;

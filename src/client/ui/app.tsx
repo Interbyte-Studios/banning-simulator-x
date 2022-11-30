@@ -13,6 +13,7 @@ import { RankUpgrade } from "./components/ranks/menu";
 import { SettingsMenu } from "./components/settings/menu";
 import { TalismanLevelUpAnimation } from "./components/talismanLevelUp";
 import { TalismanTowerHandle } from "./components/talismans";
+import { Teleportation } from "./components/teleportation";
 import { WeaponLevelUpAnimation } from "./components/weaponLevelUp";
 import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
@@ -35,6 +36,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 	const [codesVisible, setCodesVisible] = useState(false);
 	const [questsVisible, setQuestsVisibility] = useState(false);
 	const [settingsVisible, setSettingsVisibility] = useState(false);
+	const [teleportationVisible, setTeleportationVisibility] = useState(false);
 	const [weaponShopVisibility, setWeaponShopVisibility] = useState(false);
 	const [talismanTowerVisibility, setTalismanTowerVisibility] = useState(false);
 
@@ -46,7 +48,12 @@ export const app = hooks((props: AppProps, { useState }) => {
 				<EggsUI
 					store={props.store}
 					visible={
-						!codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility && !talismanTowerVisibility
+						!codesVisible &&
+						!settingsVisible &&
+						!teleportationVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
 					}
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
@@ -58,6 +65,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!isHatching &&
 						!codesVisible &&
 						!settingsVisible &&
+						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility
@@ -65,12 +73,14 @@ export const app = hooks((props: AppProps, { useState }) => {
 					displayCodesMenu={(): void => setCodesVisible(true)}
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
+					displayTeleportationMenu={(): void => setTeleportationVisibility(true)}
 				/>
 				<WeaponLevelUpAnimation
 					enabled={
 						!isHatching &&
 						!codesVisible &&
 						!settingsVisible &&
+						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility
@@ -81,6 +91,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!isHatching &&
 						!codesVisible &&
 						!settingsVisible &&
+						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility
@@ -93,6 +104,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!isHatching &&
 						!codesVisible &&
 						!settingsVisible &&
+						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility
@@ -103,18 +115,33 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!isHatching &&
 						!codesVisible &&
 						!settingsVisible &&
+						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility
 					}
 				/>
 				<WeaponShopHandle
-					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !talismanTowerVisibility}
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!teleportationVisible &&
+						!questsVisible &&
+						!talismanTowerVisibility
+					}
 					weaponShopVisible={weaponShopVisibility}
 					setWeaponShopVisibility={(value: boolean): void => setWeaponShopVisibility(value)}
 				/>
 				<TalismanTowerHandle
-					enabled={!isHatching && !codesVisible && !settingsVisible && !questsVisible && !weaponShopVisibility}
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!teleportationVisible &&
+						!questsVisible &&
+						!weaponShopVisibility
+					}
 					talismanTowerVisible={talismanTowerVisibility}
 					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
 				/>
@@ -123,10 +150,23 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!isHatching &&
 						!codesVisible &&
 						!settingsVisible &&
+						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility
 					}
+				/>
+				<Teleportation
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
+					visible={teleportationVisible}
+					hideMenu={(): void => setTeleportationVisibility(false)}
 				/>
 			</>
 		</RoactRodux.StoreProvider>

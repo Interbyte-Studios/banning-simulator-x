@@ -283,6 +283,9 @@ return {
 				["Void Royal Dragon"] = "rbxassetid://11440122615",
 				["Void Royal Pegasus"] = "rbxassetid://11440122751",
 			},
+			worlds = {
+				["Ban Land"] = "rbxassetid://11701906366",
+			},
 		},
 		maps = {
 			["Ban Land"] = {
@@ -402,6 +405,30 @@ return {
 			talismanTower = {
 				background = "rbxassetid://11508721514",
 				sidebar = "rbxassetid://11509649010",
+			},
+			teleportation = {
+				["Ban Land"] = "rbxassetid://11704046085",
+				["Ban Land Locked"] = "rbxassetid://11704046058",
+				Beach = "rbxassetid://11704139673",
+				["Beach Locked"] = "rbxassetid://11704139642",
+				["Candy Land"] = "rbxassetid://11704139756",
+				["Candy Land Locked"] = "rbxassetid://11704139718",
+				Desert = "rbxassetid://11704139824",
+				["Desert Locked"] = "rbxassetid://11704139789",
+				Forest = "rbxassetid://11704139897",
+				["Forest Locked"] = "rbxassetid://11704139857",
+				Honeycomb = "rbxassetid://11704139989",
+				["Honeycomb Locked"] = "rbxassetid://11704139942",
+				["Ice Land"] = "rbxassetid://11704140031",
+				["Ice Land Locked"] = "rbxassetid://11704140011",
+				["Lava Lands"] = "rbxassetid://11704140110",
+				["Lava Lands Locked"] = "rbxassetid://11704140073",
+				["Sunflower Field"] = "rbxassetid://11704140254",
+				["Sunflower Field Locked"] = "rbxassetid://11704140186",
+				["The Mines"] = "rbxassetid://11704140370",
+				["The Mines Locked"] = "rbxassetid://11704140325",
+				background = "rbxassetid://11702120380",
+				go = "rbxassetid://11702142633",
 			},
 			["update log"] = {
 				background = "rbxassetid://11585613205",
