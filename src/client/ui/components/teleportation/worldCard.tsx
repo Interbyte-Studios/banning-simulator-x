@@ -100,7 +100,7 @@ export const WorldTeleportCard = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.25, 0.2)}
 					Size={UDim2.fromScale(0.4, 0.325)}
 					Font={font}
-					Text={props.world}
+					Text={storedWorldData !== undefined ? props.world : `${props.world} (Locked)`}
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextXAlignment={Enum.TextXAlignment.Left}

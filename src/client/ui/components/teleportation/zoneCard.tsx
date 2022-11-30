@@ -3,6 +3,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, Workspace } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
@@ -50,6 +51,9 @@ export const ZoneTeleportCard = RoactRodux.connect(mapStateToProps)(
 
 		const storedWorldData = props.worlds.find((world) => world.name === props.world);
 
+		const { useContext } = hooks;
+		const { addError } = useContext(AnnouncementContext);
+
 		return (
 			<imagelabel
 				AnchorPoint={vec2Middle}
@@ -78,6 +82,16 @@ export const ZoneTeleportCard = RoactRodux.connect(mapStateToProps)(
 					ScaleType={Enum.ScaleType.Fit}
 					Event={{
 						Activated: (): void => {
+							if (storedWorldData === undefined) {
+								addError(`You do not own that zone.`);
+								return;
+							}
+
+							if (storedWorldData.zones.find((zone) => zone === props.zone) === undefined) {
+								addError(`You do not own that zone.`);
+								return;
+							}
+
 							const player = Players.LocalPlayer;
 
 							const character = player.Character;
@@ -120,7 +134,13 @@ export const ZoneTeleportCard = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.25, 0.2)}
 					Size={UDim2.fromScale(0.4, 0.325)}
 					Font={font}
-					Text={props.zone}
+					Text={
+						storedWorldData !== undefined
+							? storedWorldData.zones.find((zone) => zone === props.zone)
+								? props.zone
+								: `${props.zone} (Locked)`
+							: `${props.zone} (Locked)`
+					}
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextXAlignment={Enum.TextXAlignment.Left}
