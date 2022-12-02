@@ -96,8 +96,8 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 
 	const hitbox = new Hitbox(weapon);
 	hitbox.RaycastParams = raycastParams;
-	hitbox.Visualizer = RunService.IsStudio();
-	hitbox.Debuglog = RunService.IsStudio();
+	hitbox.Visualizer = false; // RunService.IsStudio();
+	hitbox.Debuglog = false; // RunService.IsStudio();
 
 	let loadedAllPoints = true;
 	for (const hitboxAttachment of weapon.GetDescendants()) {
