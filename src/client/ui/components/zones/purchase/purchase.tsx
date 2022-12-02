@@ -82,7 +82,7 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 						if (checkZonePurchaseRequirements.success === false) {
 							switch (checkZonePurchaseRequirements.reason) {
 								case PurchaseZoneFailKind.InternalError: {
-									addError(`There was an error while purchasing "${props.zone}" zone (110).`);
+									addError(`There was an error while purchasing "${props.zone}" zone.`);
 									props.hideMenu();
 									return;
 								}
@@ -111,7 +111,7 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 							} else {
 								switch (requestZonePurchase.reason) {
 									case PurchaseZoneFailKind.InternalError: {
-										addError(`There was an error while purchasing "${props.zone}" zone (110).`);
+										addError(`There was an error while purchasing "${props.zone}" zone.`);
 										props.hideMenu();
 										return;
 									}

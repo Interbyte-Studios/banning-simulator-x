@@ -98,7 +98,7 @@ const MasteryChallengeFrame = hooks(
 
 		const { useContext } = hooks;
 		const { claimPetMastery } = useContext(remoteContext);
-		//const { addError } = useContext(AnnouncementContext);
+		const { addError } = useContext(AnnouncementContext);
 
 		const petMasteryReward = PET_MASTERY_REWARDS[props.rarity][props.variant][props.challengeType];
 		const boostRewardTime =
@@ -171,36 +171,36 @@ const MasteryChallengeFrame = hooks(
 							);
 
 							if (requestClaimPetMastery.success) {
-								//addError("You've claimed mastery of a pet!");
+								addError("You've claimed mastery of a pet!");
 								return;
 							} else {
 								switch (requestClaimPetMastery.reason) {
 									case ClaimPetMasteryFailKind.InternalError: {
-										//addError("There was an issue while claiming mastery of the pet.");
+										addError("There was an issue while claiming mastery of the pet.");
 										return;
 									}
 									case ClaimPetMasteryFailKind.InvalidMastery: {
-										//addError("The mastery you tried to claim does not exist for that variant.");
+										addError("The mastery you tried to claim does not exist for that variant.");
 										return;
 									}
 									case ClaimPetMasteryFailKind.NotEnoughFusions: {
-										//addError("You do not have enough fusions to claim mastery.");
+										addError("You do not have enough fusions to claim mastery.");
 										return;
 									}
 									case ClaimPetMasteryFailKind.NotEnoughHatches: {
-										//addError("You do not have enough hatches to claim mastery.");
+										addError("You do not have enough hatches to claim mastery.");
 										return;
 									}
 									case ClaimPetMasteryFailKind.NotEnoughMaxLevels: {
-										//addError("You have not reached max level enough time to claim mastery.");
+										addError("You have not reached max level enough time to claim mastery.");
 										return;
 									}
 									case ClaimPetMasteryFailKind.UndiscoveredPet: {
-										//addError("You haven't discovered the pet! Please report this to Devs.");
+										addError("You haven't discovered the pet! Please report this to Devs.");
 										return;
 									}
 									case ClaimPetMasteryFailKind.UndiscoveredVariant: {
-										//addError("You haven't discovered that variant. Please report this to Devs.");
+										addError("You haven't discovered that variant. Please report this to Devs.");
 										return;
 									}
 								}

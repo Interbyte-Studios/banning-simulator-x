@@ -10,10 +10,14 @@ const runningAnimation = ReplicatedStorage.animations.npcs.runAnimation;
  */
 function handleRunningAnimation(npc: Model): void {
 	const humanoid = npc.WaitForChild("Humanoid") as Humanoid;
-	assert(humanoid, `Failed to load running animation for ${npc.Name}. Could not find humanoid.`);
+	if (humanoid === undefined) {
+		return;
+	}
 
 	const animator = humanoid.FindFirstChildOfClass("Animator");
-	assert(animator, `Failed to load running animation for ${npc.Name}. Could not find animator object.`);
+	if (animator === undefined) {
+		return;
+	}
 
 	const runAnim = animator.LoadAnimation(runningAnimation);
 
