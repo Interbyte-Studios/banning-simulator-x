@@ -31,7 +31,7 @@ export const EpicRarityAutoDeleteSetting = RoactRodux.connect(mapStateToProps)(
 
 		return (
 			<ToggleSettingOption
-				position={UDim2.fromScale(0.5, 0.785)}
+				position={UDim2.fromScale(0.5, 0.795)}
 				size={UDim2.fromScale(0.95, 0.04)}
 				settingName={"Epic Rarity"}
 				isEnabled={props.enabled}
