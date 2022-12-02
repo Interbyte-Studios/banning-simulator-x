@@ -34,11 +34,9 @@ export const AnnouncementAPI = hooks(
 		const mounted = useValue(false);
 		useEffect(() => {
 			mounted.value = true;
-			warn(`Mounted was turned true`);
 
 			return (): void => {
 				mounted.value = false;
-				warn(`Mounted was turned false`);
 			};
 		}, []);
 
