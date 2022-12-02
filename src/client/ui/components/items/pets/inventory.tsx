@@ -2,7 +2,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { PetViewport } from "client/ui/elements/petViewport";
 import { RarityGradient } from "client/ui/elements/rarityGradient";
 import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
@@ -106,17 +106,8 @@ const PetFrame = hooks(
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 					<uicorner CornerRadius={new UDim(1, 0)} />
-					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 3, Transparency: 0.5 }} />
-					<PetViewport
-						native={{
-							AnchorPoint: vec2Middle,
-							Position: UDim2.fromScale(0.5, 0.5),
-							Size: UDim2.fromScale(0.9, 0.9),
-							BackgroundTransparency: 1,
-						}}
-						petId={props.storedPetData.id}
-						variant={props.storedPetData.variant}
-					/>
+					<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} />
+					<PetViewport petId={props.storedPetData.id} variant={props.storedPetData.variant} />
 					{additionalDisplayedElements}
 					<textlabel
 						AnchorPoint={vec2Middle}
@@ -135,8 +126,8 @@ const PetFrame = hooks(
 								: Color3.fromRGB(255, 255, 255)
 						}
 					>
-					  <RarityGradient Rarity={petData.rarity} />
-						<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+						<RarityGradient Rarity={petData.rarity} />
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
 					</textlabel>
 				</imagebutton>
 			</frame>

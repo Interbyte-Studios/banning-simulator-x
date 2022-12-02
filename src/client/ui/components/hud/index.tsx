@@ -13,6 +13,7 @@ interface HudProps {
 	displayQuestsMenu: () => void;
 	displaySettingsMenu: () => void;
 	displayTeleportationMenu: () => void;
+	displayItemsMenu: () => void;
 }
 
 export const Hud = hooks((props: HudProps) => {

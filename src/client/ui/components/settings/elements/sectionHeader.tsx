@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 
 import { font, vec2Middle } from "../../../commonValues";
 import { hooks } from "../../../hooks";

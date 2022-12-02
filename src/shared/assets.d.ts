@@ -91,6 +91,37 @@ declare namespace assetIds {
 				eggBackground: string;
 				view: string;
 			};
+
+			inventory: {
+				background: string;
+				icons: {
+					boosts: string;
+					pets: string;
+					talismans: string;
+					titles: string;
+					weapons: string;
+				};
+				"info sidebar": string;
+				pets: {
+					bottombar: string;
+					"delete-sidebar": string;
+					deleteIndicator: string;
+					"equipped checkmark": string;
+					"function button": string;
+					gamepassPrompt: string;
+					"inventory size counter icon": string;
+					locked: string;
+					maximize: string;
+					"multi-delete disabled": string;
+					"multi-delete enabled": string;
+					"pet counter icon": string;
+					search: string;
+					shrink: string;
+					sort: string;
+					topbar: string;
+					"unequip all": string;
+				};
+			};
 			"rank upgrade": {
 				cancel: string;
 				background: string;

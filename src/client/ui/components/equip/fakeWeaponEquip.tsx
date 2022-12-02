@@ -4,7 +4,7 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { ContextActionService } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
@@ -122,7 +122,7 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 					<uicorner CornerRadius={new UDim(1, 0)} />
-					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 2.5, Color: Color3.fromRGB(5, 112, 179) }} />
+					<BaseUIStroke native={{ Thickness: 2.5, Color: Color3.fromRGB(5, 112, 179) }} />
 					<textlabel
 						AnchorPoint={vec2Middle}
 						Position={UDim2.fromScale(0.5, 0.5)}
@@ -145,8 +145,7 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 					<uicorner CornerRadius={new UDim(1, 0)} />
-					<BSX_UIStroke
-						defaultBlackColor={true}
+					<BaseUIStroke
 						native={{
 							Thickness: 2,
 							Color: props.weaponEquipped ? Color3.fromRGB(38, 130, 23) : Color3.fromRGB(82, 5, 5),

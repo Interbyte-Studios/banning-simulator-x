@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
@@ -51,7 +51,7 @@ export const ItemInventory = hooks((props: ItemInventoryProps, hooks) => {
 				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 			>
-				<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 2, Color: Color3.fromRGB(122, 41, 0) }} />
+				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(122, 41, 0) }} />
 			</textlabel>
 			{inventoryToDisplay}
 			<BottomBar

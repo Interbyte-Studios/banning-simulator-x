@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import { font, udim2TopMiddle, vec2Middle } from "client/ui/commonValues";
 import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
-import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { PetViewport } from "client/ui/elements/petViewport";
 import { RarityGradient } from "client/ui/elements/rarityGradient";
 import { EggName } from "shared/configs/eggs";

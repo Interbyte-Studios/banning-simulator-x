@@ -1,7 +1,7 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import { Players, RunService } from "@rbxts/services";
-import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { CurrencyIcon } from "client/ui/elements/currencyIcon";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";

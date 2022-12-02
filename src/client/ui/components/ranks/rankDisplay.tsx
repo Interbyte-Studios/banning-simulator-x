@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { RankGradient } from "client/ui/elements/rankGradient";
 import { RankIcon } from "client/ui/elements/rankIcon";
 import { hooks } from "client/ui/hooks";
@@ -61,8 +61,7 @@ export const RankDisplay = hooks((props: RankDisplayProps) => {
 				TextScaled={true}
 				Font={font}
 			>
-				<BSX_UIStroke
-					defaultBlackColor={false}
+				<BaseUIStroke
 					rankGradient={props.rank - 1}
 					native={{ Thickness: 2.5, Color: Color3.fromRGB(255, 255, 255) }}
 				/>

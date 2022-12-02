@@ -15,10 +15,6 @@ return {
 			["red toggle button"] = "rbxassetid://10705304953",
 			["teal button"] = "rbxassetid://10705288749",
 		},
-		currencies = {
-			coins = "rbxassetid://11591957630",
-			gems = "rbxassetid://11591957802",
-		},
 		decals = {
 			boosts = {
 				luck = "rbxassetid://11676506054",
@@ -382,6 +378,36 @@ return {
 				sidebar = "rbxassetid://11627644894",
 				view = "rbxassetid://11632928741",
 				["view challenges"] = "rbxassetid://11656006779",
+			},
+			inventory = {
+				background = "rbxassetid://11722357172",
+				icons = {
+					boosts = "rbxassetid://11722357283",
+					pets = "rbxassetid://11722357351",
+					talismans = "rbxassetid://11722357413",
+					titles = "rbxassetid://11722357486",
+					weapons = "rbxassetid://11722357555",
+				},
+				["info sidebar"] = "rbxassetid://11722357647",
+				pets = {
+					bottombar = "rbxassetid://11722357729",
+					["delete-sidebar"] = "rbxassetid://11722357825",
+					deleteIndicator = "rbxassetid://11722357937",
+					["equipped checkmark"] = "rbxassetid://11722358044",
+					["function button"] = "rbxassetid://11722358115",
+					gamepassPrompt = "rbxassetid://11722358189",
+					["inventory size counter icon"] = "rbxassetid://11722358234",
+					locked = "rbxassetid://11722358289",
+					maximize = "rbxassetid://11722358367",
+					["multi-delete disabled"] = "rbxassetid://11722358498",
+					["multi-delete enabled"] = "rbxassetid://11722358556",
+					["pet counter icon"] = "rbxassetid://11722358632",
+					search = "rbxassetid://11722358716",
+					shrink = "rbxassetid://11722358820",
+					sort = "rbxassetid://11722358887",
+					topbar = "rbxassetid://11722358982",
+					["unequip all"] = "rbxassetid://11722359045",
+				},
 			},
 			levelup = {
 				LevelUp = "rbxassetid://11698018648",

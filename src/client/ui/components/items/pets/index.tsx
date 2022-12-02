@@ -3,7 +3,7 @@ import Roact from "@rbxts/roact";
 import { setPetItemRowSize } from "client/handlers/item inventory/inventoryLayoutHandler";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
@@ -76,7 +76,7 @@ export const CancelMultiDeleteSelection = hooks((props: { completeMultiDelete: (
 				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 			>
-				<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 1.5, Color: Color3.fromRGB(122, 0, 0) }} />
+				<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(122, 0, 0) }} />
 			</textlabel>
 		</imagebutton>
 	);
@@ -119,7 +119,7 @@ export const AcceptMultiDeleteSelection = hooks((props: { completeMultiDelete: (
 				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 			>
-				<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 1.5, Color: Color3.fromRGB(5, 89, 0) }} />
+				<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(5, 89, 0) }} />
 			</textlabel>
 		</imagebutton>
 	);
@@ -157,7 +157,7 @@ export const ToggleMultiDelete = hooks(
 						TextScaled={true}
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 					>
-						<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 74, 122) }} />
+						<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 74, 122) }} />
 					</textlabel>
 					<CancelMultiDeleteSelection
 						completeMultiDelete={(): void => {

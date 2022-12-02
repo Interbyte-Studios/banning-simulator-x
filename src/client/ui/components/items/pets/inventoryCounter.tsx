@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
@@ -54,7 +54,7 @@ export const PetsEquippedCounter = RoactRodux.connect(petInventoryCounterMapStat
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextXAlignment={Enum.TextXAlignment.Left}
 				>
-					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 1.25, Color: Color3.fromRGB(0, 41, 128) }} />
+					<BaseUIStroke native={{ Thickness: 1.25, Color: Color3.fromRGB(0, 41, 128) }} />
 				</textlabel>
 			</>
 		);
@@ -89,7 +89,7 @@ export const InventorySizeCounter = RoactRodux.connect(petInventoryCounterMapSta
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextXAlignment={Enum.TextXAlignment.Left}
 				>
-					<BSX_UIStroke defaultBlackColor={false} native={{ Thickness: 1.25, Color: Color3.fromRGB(0, 41, 128) }} />
+					<BaseUIStroke native={{ Thickness: 1.25, Color: Color3.fromRGB(0, 41, 128) }} />
 				</textlabel>
 			</>
 		);

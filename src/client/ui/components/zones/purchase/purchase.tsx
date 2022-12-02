@@ -5,7 +5,7 @@ import { tryPurchaseZone } from "client/modules/tryPurchaseZone";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
