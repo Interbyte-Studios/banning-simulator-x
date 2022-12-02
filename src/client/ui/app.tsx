@@ -40,6 +40,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 	const [teleportationVisible, setTeleportationVisibility] = useState(false);
 	const [weaponShopVisibility, setWeaponShopVisibility] = useState(false);
 	const [talismanTowerVisibility, setTalismanTowerVisibility] = useState(false);
+	const [itemsVisibility, setItemsVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
 
@@ -54,7 +55,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
-						!talismanTowerVisibility
+						!talismanTowerVisibility &&
+						!itemsVisibility
 					}
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
@@ -69,12 +71,14 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
-						!talismanTowerVisibility
+						!talismanTowerVisibility &&
+						!itemsVisibility
 					}
 					displayCodesMenu={(): void => setCodesVisible(true)}
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
 					displayTeleportationMenu={(): void => setTeleportationVisibility(true)}
+					displayItemsMenu={(): void => setItemsVisibility(true)}
 				/>
 				<WeaponLevelUpAnimation
 					enabled={
@@ -84,7 +88,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
-						!talismanTowerVisibility
+						!talismanTowerVisibility &&
+						!itemsVisibility
 					}
 				/>
 				<TalismanLevelUpAnimation
@@ -95,7 +100,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
-						!talismanTowerVisibility
+						!talismanTowerVisibility &&
+						!itemsVisibility
 					}
 				/>
 				<LocalMessages />
@@ -108,7 +114,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
-						!talismanTowerVisibility
+						!talismanTowerVisibility &&
+						!itemsVisibility
 					}
 				/>
 				<RankUpgrade
@@ -119,7 +126,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
-						!talismanTowerVisibility
+						!talismanTowerVisibility &&
+						!itemsVisibility
 					}
 				/>
 				<WeaponShopHandle
@@ -129,7 +137,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!settingsVisible &&
 						!teleportationVisible &&
 						!questsVisible &&
-						!talismanTowerVisibility
+						!talismanTowerVisibility &&
+						!itemsVisibility
 					}
 					weaponShopVisible={weaponShopVisibility}
 					setWeaponShopVisibility={(value: boolean): void => setWeaponShopVisibility(value)}
@@ -141,7 +150,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!settingsVisible &&
 						!teleportationVisible &&
 						!questsVisible &&
-						!weaponShopVisibility
+						!weaponShopVisibility &&
+						!itemsVisibility
 					}
 					talismanTowerVisible={talismanTowerVisibility}
 					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
@@ -154,7 +164,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
-						!talismanTowerVisibility
+						!talismanTowerVisibility &&
+						!itemsVisibility
 					}
 				/>
 				<Teleportation
@@ -164,7 +175,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!settingsVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
-						!talismanTowerVisibility
+						!talismanTowerVisibility &&
+						!itemsVisibility
 					}
 					visible={teleportationVisible}
 					hideMenu={(): void => setTeleportationVisibility(false)}

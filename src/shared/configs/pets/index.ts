@@ -87,14 +87,17 @@ export const VARIANT_GRADIENTS = preserveWithConstraint<Record<Variants, RarityG
 	regular: {
 		BeginningColor: Color3.fromRGB(255, 255, 255),
 		EndingColor: Color3.fromRGB(148, 148, 148),
+		SpecialColor: undefined,
 	},
 	void: {
 		BeginningColor: Color3.fromRGB(98, 37, 209),
 		EndingColor: Color3.fromRGB(57, 0, 86),
+		SpecialColor: undefined,
 	},
 	radiant: {
 		BeginningColor: Color3.fromRGB(255, 255, 255),
 		EndingColor: Color3.fromRGB(250, 196, 61),
+		SpecialColor: undefined,
 	},
 });
 export type VariantGradients = keyof typeof VARIANT_GRADIENTS;

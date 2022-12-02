@@ -23,7 +23,7 @@ export enum NPCImpact {
  * @param soundType The type of sound effect to play.
  * @param sfxVolume The volume of the player's sound effects settings.
  */
-export function playSFX(soundType: SoundEffect | WeaponSlash | NPCImpact, sfxVolume: number): void {
+export function playSFX(soundType: SoundEffect | WeaponSlash | NPCImpact | HatchEffect, sfxVolume: number): void {
 	const sound = Make("Sound", {
 		SoundId: `rbxassetid://${soundType}`,
 		Parent: SoundService,

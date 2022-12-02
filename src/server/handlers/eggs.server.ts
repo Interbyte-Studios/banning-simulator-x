@@ -158,6 +158,7 @@ hatchEgg.SetCallback(
 				variant: isVoid ? "void" : "regular",
 				method: "hatch",
 				egg: eggName,
+				enhancements: { [pet.rarity]: selectedEnhancement },
 			});
 		}
 
