@@ -2,7 +2,6 @@ import Rodux from "@rbxts/rodux";
 import { t } from "@rbxts/t";
 import { EggName } from "shared/configs/eggs";
 
-import { KillNpc } from "./currencies";
 import { AddPet } from "./pets";
 
 export const isValidIndexHatch = t.literal("regular", "void");
