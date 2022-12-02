@@ -32,7 +32,7 @@ export const PetAnimationSetting = RoactRodux.connect(mapStateToProps)(
 
 		return (
 			<ModifySettingOption
-				position={UDim2.fromScale(0.5, 0.465)}
+				position={UDim2.fromScale(0.5, 0.475)}
 				size={UDim2.fromScale(0.95, 0.04)}
 				settingName={"Pet Animation"}
 				displayValue={props.animation === "Following" ? "1" : "2"}

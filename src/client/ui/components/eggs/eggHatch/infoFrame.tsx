@@ -41,11 +41,12 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 			<textlabel
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 1.25)}
-				Size={UDim2.fromScale(0.65, 0.4)}
+				Position={UDim2.fromScale(0.65, 0)}
+				Size={UDim2.fromScale(0.7, 0.3)}
 				Text={"(Auto Deleted)"}
 				TextColor3={Color3.fromRGB(230, 112, 112)}
 				TextScaled={true}
+				TextXAlignment={Enum.TextXAlignment.Left}
 				Font={font}
 			>
 				<BaseUIStroke native={{ Thickness: 2 }} />
@@ -60,32 +61,47 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 			Position={infoFramePositions[props.id]}
 			Size={UDim2.fromScale(0.175, 0.12)}
 		>
-			<BaseTextLabel
-				Position={UDim2.fromScale(0.7, 0.3)}
-				Size={UDim2.fromScale(0.8, 0.55)}
-				Text={string.upper(petInfo.name)}
-				TextXAlignment={Enum.TextXAlignment.Left}
+			<uiaspectratioconstraint AspectRatio={2.2} />
+
+			<frame
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Position={UDim2.fromScale(0.125, 0.3)}
+				Size={UDim2.fromScale(0.25, 0.625)}
 			>
-				<PetViewport
-					native={{
-						AnchorPoint: new Vector2(1, 0.5),
-						Position: udim2TopMiddle,
-						Size: UDim2.fromScale(0.4, 1.15),
-						BackgroundTransparency: 1,
-					}}
-					petId={props.pet}
-					variant={props.isVoid ? "void" : "regular"}
-				/>
-				<BaseUIStroke native={{ Thickness: 2.4 }} />
-			</BaseTextLabel>
-			<BaseTextLabel
-				Position={UDim2.fromScale(0.5, 0.875)}
-				Size={UDim2.fromScale(0.75, 0.4)}
+				<PetViewport petId={props.pet} variant={props.isVoid ? "void" : "regular"}>
+					<uiaspectratioconstraint AspectRatio={1} />
+				</PetViewport>
+			</frame>
+
+			<textlabel
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Size={UDim2.fromScale(0.7, 0.45)}
+				Position={UDim2.fromScale(0.65, 0.375)}
+				Font={font}
+				Text={string.upper(petInfo.name)}
+				TextScaled={true}
+				TextXAlignment={Enum.TextXAlignment.Left}
+				TextColor3={Color3.fromRGB(255, 255, 255)}
+			>
+				<BaseUIStroke native={{ Thickness: 2 }} />
+			</textlabel>
+
+			<textlabel
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Size={UDim2.fromScale(0.7, 0.35)}
+				Position={UDim2.fromScale(0.65, 0.75)}
+				Font={font}
 				Text={string.upper(petInfo.rarity)}
+				TextScaled={true}
+				TextXAlignment={Enum.TextXAlignment.Left}
+				TextColor3={Color3.fromRGB(255, 255, 255)}
 			>
 				<RarityGradient Rarity={petInfo.rarity} />
-				<BaseUIStroke native={{ Thickness: 2.4 }} />
-			</BaseTextLabel>
+				<BaseUIStroke native={{ Thickness: 2 }} />
+			</textlabel>
 			{autoDelete}
 		</frame>
 	);

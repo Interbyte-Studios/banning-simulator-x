@@ -25,12 +25,12 @@ toggleAutoRemote.Connect(withPlayerStore((_, store) => store.dispatch(toggleAuto
 const toggleWalkSpeedRemote = gameplayRemotes.Create("toggleWalkSpeed");
 toggleWalkSpeedRemote.Connect(
 	withPlayerStore((_, store, walkSpeed) => {
-		if (walkSpeed < 16) {
+		if (walkSpeed < 24) {
 			return;
 		}
 
 		const currentState = store.getState();
-		let maxWalkSpeed = 16;
+		let maxWalkSpeed = 24;
 
 		const currentTalisman = currentState.currentTalisman;
 		if (currentTalisman !== undefined) {

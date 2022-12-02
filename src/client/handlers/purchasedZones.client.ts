@@ -52,6 +52,7 @@ onStoreCreated(player)
 			if (newState.worlds === oldState.worlds) {
 				return;
 			}
+			warn("Worlds store was changed");
 
 			unlockZones(newState.worlds);
 		});

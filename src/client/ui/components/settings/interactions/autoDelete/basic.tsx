@@ -31,7 +31,7 @@ export const BasicRarityAutoDeleteSetting = RoactRodux.connect(mapStateToProps)(
 
 		return (
 			<ToggleSettingOption
-				position={UDim2.fromScale(0.5, 0.65)}
+				position={UDim2.fromScale(0.5, 0.66)}
 				size={UDim2.fromScale(0.95, 0.04)}
 				settingName={"Basic Rarity"}
 				isEnabled={props.enabled}

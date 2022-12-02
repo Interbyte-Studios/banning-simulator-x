@@ -2,7 +2,6 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
-import assetIds from "shared/assets";
 import { currencies, Currency } from "shared/configs/currencies";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
@@ -32,7 +31,7 @@ export const CurrencyGainAnimation = RoactRodux.connect(mapStateToProps)(
 	hooks((props: CurrencyGainAnimationProps) => {
 		cachedCurrency.forEach((currencyData, currencyIndex) => {
 			const currentCurrencyAmount = props.currencies[currencyData.name];
-			if (currencyData.amount !== currentCurrencyAmount) {
+			if (currencyData.amount !== currentCurrencyAmount && currencyData.amount < currentCurrencyAmount) {
 				cachedCurrency[currencyIndex].amount = currentCurrencyAmount;
 
 				for (let i = 0; i < 4; i++) {

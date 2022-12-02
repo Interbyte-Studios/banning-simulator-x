@@ -45,7 +45,6 @@ export function createDummyStore(
 	const { middleware, dispatchedActions } = createSpyMiddleware();
 
 	const store = new Rodux.Store(storeReducer, initialState, [middleware]);
-
 	stores.set(player, store);
 
 	return {
