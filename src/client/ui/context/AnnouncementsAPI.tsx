@@ -25,68 +25,87 @@ let lastCheck = 0;
  * @param props The Roact children to display.
  * @returns A roact component.
  */
-export const AnnouncementAPI = hooks((props: Roact.PropsWithChildren<{}>, { useState, useCallback, useEffect }) => {
-	const [errors, setErrors] = useState<
-		Array<{ message: string; messageType: AnnouncementType; id: number; displayedTime: number }>
-	>([]);
+export const AnnouncementAPI = hooks(
+	(props: Roact.PropsWithChildren<{}>, { useState, useCallback, useEffect, useValue }) => {
+		const [errors, setErrors] = useState<
+			Array<{ message: string; messageType: AnnouncementType; id: number; displayedTime: number }>
+		>([]);
 
-	useEffect(() => {
-		const connection = RunService.Heartbeat.Connect(() => {
-			const now = time();
-			if (now - lastCheck < 1) {
-				return;
-			}
-			lastCheck = now;
+		const mounted = useValue(false);
+		useEffect(() => {
+			mounted.value = true;
+			warn(`Mounted was turned true`);
 
-			const newErrors = [...errors];
-			for (const errorData of newErrors) {
-				const now = time();
-				if (now - errorData.displayedTime < 5) {
-					continue;
+			return (): void => {
+				mounted.value = false;
+				warn(`Mounted was turned false`);
+			};
+		}, []);
+
+		useEffect(() => {
+			const connection = RunService.RenderStepped.Connect(() => {
+				if (mounted.value === false) {
+					return;
 				}
 
-				const errorIndex = newErrors.findIndex((eData) => eData.id === errorData.id);
-				newErrors.remove(errorIndex);
-			}
+				const now = time();
+				if (now - lastCheck < 1) {
+					return;
+				}
+				lastCheck = now;
 
-			setErrors(newErrors);
+				const newErrors = [...errors];
+				for (const errorData of newErrors) {
+					const now = time();
+					if (now - errorData.displayedTime < 5) {
+						continue;
+					}
+
+					const errorIndex = newErrors.findIndex((eData) => eData.id === errorData.id);
+					newErrors.remove(errorIndex);
+				}
+
+				if (mounted.value) {
+					setErrors(newErrors);
+				}
+			});
+
+			return (): void => {
+				connection.Disconnect();
+			};
 		});
 
-		return (): void => {
-			connection.Disconnect();
+		/**
+		 * Adds an error to the API's state.
+		 *
+		 * @param message The message to display.
+		 * @param displayTime The time the error is displayed (defaults to 5 seconds).
+		 */
+		const addError = useCallback(
+			(message: string): void => {
+				numberOfAnnouncements += 1;
+
+				const id = numberOfAnnouncements;
+				const newErrors = [
+					...errors,
+					{
+						message,
+						messageType: AnnouncementType.Error,
+						id,
+						displayedTime: time(),
+					},
+				];
+
+				setErrors(newErrors);
+			},
+			[errors, setErrors],
+		);
+
+		const contextValue = {
+			errors,
+			addError,
 		};
-	}, [errors]);
 
-	/**
-	 * Adds an error to the API's state.
-	 *
-	 * @param message The message to display.
-	 * @param displayTime The time the error is displayed (defaults to 5 seconds).
-	 */
-	const addError = useCallback(
-		(message: string): void => {
-			numberOfAnnouncements += 1;
-
-			const id = numberOfAnnouncements;
-			const newErrors = [
-				...errors,
-				{
-					message,
-					messageType: AnnouncementType.Error,
-					id,
-					displayedTime: time(),
-				},
-			];
-
-			setErrors(newErrors);
-		},
-		[errors, setErrors],
-	);
-
-	const contextValue = {
-		errors,
-		addError,
-	};
-
-	return <AnnouncementContext.Provider value={contextValue}>{props[Roact.Children]}</AnnouncementContext.Provider>;
-});
+		return <AnnouncementContext.Provider value={contextValue}>{props[Roact.Children]}</AnnouncementContext.Provider>;
+	},
+);

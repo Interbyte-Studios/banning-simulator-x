@@ -49,6 +49,19 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 	const weaponData = WEAPONS[weapon.Name as WeaponIndex];
 	const animations = ReplicatedStorage.animations.weapons[weaponData.weaponType];
 
+	let trail: Trail | undefined;
+	for (const _trail of weapon.GetDescendants()) {
+		if (!_trail.IsA("Trail")) {
+			continue;
+		}
+
+		trail = _trail;
+	}
+
+	if (trail !== undefined) {
+		trail.Enabled = false;
+	}
+
 	const defaultIdleAnimation = "http://www.roblox.com/asset/?id=507766388";
 
 	const attackAnimation = animator.LoadAnimation(animations.Attack);
@@ -141,6 +154,10 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 			return;
 		}
 
+		if (trail !== undefined) {
+			trail.Enabled = true;
+		}
+
 		canSwing = false;
 
 		const randomNumber = math.ceil(math.random(1, attackAnimations.size())) - 1;
@@ -171,6 +188,10 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 		}
 
 		canSwing = true;
+
+		if (trail !== undefined) {
+			trail.Enabled = false;
+		}
 	});
 
 	weapon.Unequipped.Connect(() => {

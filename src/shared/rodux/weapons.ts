@@ -30,7 +30,7 @@ export function purchaseWeapon(data: Omit<PurchaseWeapon, "type">): PurchaseWeap
 }
 
 const defaulWeapon = {
-	id: 1,
+	id: 24,
 	bans: 0,
 	level: 1,
 };
