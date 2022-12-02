@@ -6,7 +6,6 @@ import { vec2Middle } from "../commonValues";
 import { hooks } from "../hooks";
 
 interface PetViewportProps {
-	native: Partial<WritableInstanceProperties<ImageLabel>>;
 	petId: number;
 	variant: Variants;
 }

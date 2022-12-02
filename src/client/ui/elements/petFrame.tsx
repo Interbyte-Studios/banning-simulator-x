@@ -42,16 +42,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 				<uiaspectratioconstraint AspectRatio={1} />
 				<uicorner CornerRadius={new UDim(1, 0)} />
 				<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} isBillboard={props.isBillboard} />
-				<PetViewport
-					native={{
-						AnchorPoint: vec2Middle,
-						Position: UDim2.fromScale(0.5, 0.5),
-						Size: UDim2.fromScale(0.9, 0.9),
-						BackgroundTransparency: 1,
-					}}
-					petId={props.petId}
-					variant={props.variant}
-				/>
+				<PetViewport petId={props.petId} variant={props.variant} />
 				<textlabel
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
