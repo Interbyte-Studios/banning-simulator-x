@@ -37,7 +37,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 				Text={"Follow @TenrousR, @RealNotNert, and @InterbyteRBLX on Twitter for exclusive codes!"}
 				Font={font}
 			>
-				<BaseUIStroke native={{ Thickness: 2 }} />
+				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 			</textlabel>
 			<TwitterHandle />
 		</>,
@@ -56,7 +56,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 					Text={"Join our Discord server [https://discord.gg/interbyte] for a permanent 50% experience boost!"}
 					Font={font}
 				>
-					<BaseUIStroke native={{ Thickness: 2 }} />
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 				</textlabel>
 				<DiscordHandle />
 			</>,
@@ -73,7 +73,7 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 				Text={"Not all media features are displayed, as some are not allowed in your region."}
 				Font={font}
 			>
-				<BaseUIStroke native={{ Thickness: 2 }} />
+				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 			</textlabel>,
 		);
 	}
@@ -98,13 +98,13 @@ export const CodesMenu = hooks((props: CodesMenuProps) => {
 				Text={"Media"}
 				Font={font}
 			>
-				<BaseUIStroke native={{ Thickness: 3 }} />
+				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(148, 94, 15) }} />
 			</textlabel>
 			{mediaComponents}
 			<ExitButton
-				Position={UDim2.fromScale(0.95, 0.075)}
-				minimizedSize={0.1}
-				maximizedSize={0.125}
+				Position={UDim2.fromScale(0.965, 0.075)}
+				minimizedSize={0.085}
+				maximizedSize={0.1}
 				onClosed={(): void => props.hideMenu()}
 			/>
 		</imagelabel>
