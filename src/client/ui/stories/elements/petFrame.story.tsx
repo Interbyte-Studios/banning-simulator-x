@@ -5,7 +5,7 @@ import { createMockStory } from "../createMockStory";
 
 export = (target: GuiBase): (() => void) => {
 	const { cleanup } = createMockStory({}, target, () => (
-		<PetFrame eggName={"Starter"} petId={1} variant={"regular"} isBillboard={false} displayBackground={true} />
+		<PetFrame eggName={"Starter"} petId={1} variant={"regular"} displayBackground={true} isBillboard={false} />
 	));
 
 	return () => {

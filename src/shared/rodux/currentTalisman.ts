@@ -1,5 +1,7 @@
 import Rodux from "@rbxts/rodux";
 
+import { PurchaseTalisman } from "./talismans";
+
 export type CurrentTalismanState = number | undefined;
 export type CurrentTalismanActions = EquipTalisman;
 
@@ -22,12 +24,15 @@ export function equipTalisman(id: number): EquipTalisman & Rodux.AnyAction {
 const defaultTalismanId = undefined;
 
 /*eslint-disable jsdoc/require-jsdoc */
-export const currentTalismanReducer = Rodux.createReducer<CurrentTalismanState, CurrentTalismanActions>(
-	defaultTalismanId,
-	{
-		equipTalisman: (state, action) => {
-			return action.id;
-		},
+export const currentTalismanReducer = Rodux.createReducer<
+	CurrentTalismanState,
+	CurrentTalismanActions | PurchaseTalisman
+>(defaultTalismanId, {
+	equipTalisman: (state, action) => {
+		return action.id;
 	},
-);
+	purchaseTalisman: (state, action) => {
+		return action.id;
+	},
+});
 /*eslint-enable jsdoc/require-jsdoc */

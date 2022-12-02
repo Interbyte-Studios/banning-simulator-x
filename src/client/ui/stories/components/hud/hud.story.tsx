@@ -12,7 +12,7 @@ export = (target: GuiBase): (() => void) => {
 				displayCodesMenu={(): void => {}}
 				displayQuestsMenu={(): void => {}}
 				displaySettingsMenu={(): void => {}}
-				displayItemsMenu={(): void => {}}
+				displayTeleportationMenu={(): void => {}}
 			/>
 		</RoactRodux.StoreProvider>
 	));

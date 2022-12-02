@@ -9,12 +9,12 @@ import { getItemById } from "./getItemById";
  * @param weaponId The id of the weapon.
  * @returns Wepaon config data.
  */
-export function getWeaponInfo(weaponId: number): { name: string; data: Weapon } {
+export function getWeaponInfo(weaponId: number): { name: WeaponIndex; data: Weapon } {
 	const weaponModel = getItemById(ReplicatedStorage.assetObjects.weapons, weaponId);
 	assert(weaponModel, `Failed to get weapon model for weapon with id: ${tostring(weaponId)}`);
 
 	return {
-		name: weaponModel.Name,
+		name: weaponModel.Name as WeaponIndex,
 		data: WEAPONS[weaponModel.Name as WeaponIndex],
 	};
 }

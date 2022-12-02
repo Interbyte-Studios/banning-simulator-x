@@ -12,6 +12,7 @@ import {
 	toggleTimeOfDay,
 	toggleWalkSpeed,
 } from "shared/rodux/settings";
+import { getTalismanData } from "shared/util/getTalismanData";
 
 const settingsRemotes = remotes.Server.GetNamespace("settings");
 
@@ -22,7 +23,30 @@ const toggleAutoRemote = gameplayRemotes.Create("toggleAuto");
 toggleAutoRemote.Connect(withPlayerStore((_, store) => store.dispatch(toggleAuto())));
 
 const toggleWalkSpeedRemote = gameplayRemotes.Create("toggleWalkSpeed");
-toggleWalkSpeedRemote.Connect(withPlayerStore((_, store, walkSpeed) => store.dispatch(toggleWalkSpeed(walkSpeed))));
+toggleWalkSpeedRemote.Connect(
+	withPlayerStore((_, store, walkSpeed) => {
+		if (walkSpeed < 24) {
+			return;
+		}
+
+		const currentState = store.getState();
+		let maxWalkSpeed = 24;
+
+		const currentTalisman = currentState.currentTalisman;
+		if (currentTalisman !== undefined) {
+			const talismanData = getTalismanData(currentTalisman);
+			if (talismanData !== undefined) {
+				maxWalkSpeed += talismanData.stats.maxSpeed;
+			}
+		}
+
+		if (walkSpeed > maxWalkSpeed) {
+			return;
+		}
+
+		store.dispatch(toggleWalkSpeed(walkSpeed));
+	}),
+);
 
 // [ Sound Remotes ] \\
 const soundRemotes = settingsRemotes.GetNamespace("sound");

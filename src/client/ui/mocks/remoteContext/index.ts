@@ -1,6 +1,8 @@
 import { createContext } from "@rbxts/roact";
 import { RedeemCodeDefinition } from "shared/remotes/media/redeemCode";
 import { VerifyDiscordDefinition } from "shared/remotes/media/verifyDiscord";
+import { ClaimPetMasteryDefinition } from "shared/remotes/petMastery/claimMastery";
+import { TogglePetMasteryCosmetic } from "shared/remotes/petMastery/toggleCosmetic";
 import { DeletePetsDefinition } from "shared/remotes/pets/deletePets";
 import { PurchaseZoneDefinition } from "shared/remotes/purchaseZone";
 import { RedeemQuestDefinition } from "shared/remotes/redeemQuest";
@@ -29,6 +31,13 @@ import { fakeFunctionCall } from "./fakeFunctionCall";
 import { fakeRemoteCall } from "./fakeRemoteCall";
 
 export const fakeRemoteContext = {
+	claimPetMastery: fakeFunctionCall<ClaimPetMasteryDefinition>("claimPetMastery", () => {
+		return {
+			success: true,
+		};
+	}),
+	togglePetMasteryCosmetic: fakeRemoteCall<TogglePetMasteryCosmetic>("togglePetMasteryCosmetic"),
+
 	changeWeapon: fakeRemoteCall<ChangeWeaponDefinition>("changeWeapon"),
 	equipWeapon: fakeRemoteCall<EquipWeaponDefinition>("equipWeapon"),
 	unequipWeapon: fakeRemoteCall<UnequipWeaponDefinition>("unequipWeapon"),

@@ -41,7 +41,7 @@ export const DiscordRewards = hooks((_, hooks) => {
 				Text={"Verified"}
 				Font={font}
 			>
-				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 1.2 }} />
+				<BaseUIStroke native={{ Thickness: 1.2 }} />
 			</textlabel>
 		</imagebutton>
 	);

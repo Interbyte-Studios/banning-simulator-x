@@ -48,7 +48,7 @@ export const ModifySettingOption = hooks((props: ModifySettingOptionProps) => {
 				Font={font}
 				Text={props.settingName}
 			>
-				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 2 }} />
+				<BaseUIStroke native={{ Thickness: 2 }} />
 			</textlabel>
 			<DecreaseButton
 				Position={UDim2.fromScale(0.625, 0.5)}
@@ -66,7 +66,7 @@ export const ModifySettingOption = hooks((props: ModifySettingOptionProps) => {
 				Text={props.displayValue}
 				Font={font}
 			>
-				<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 2 }} />
+				<BaseUIStroke native={{ Thickness: 2 }} />
 			</textlabel>
 			<IncreaseButton
 				Position={UDim2.fromScale(0.925, 0.5)}

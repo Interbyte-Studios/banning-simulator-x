@@ -3,7 +3,6 @@ import { ReplicatedStorage } from "@rbxts/services";
 import { WeaponIndex } from "shared/configs/weapons";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
-import { PetDistanceSetting } from "../components/settings/interactions/visual/petDistance";
 import { hooks } from "../hooks";
 
 interface WeaponViewportProps {

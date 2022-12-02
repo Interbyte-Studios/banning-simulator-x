@@ -1,11 +1,10 @@
-import { Players, ReplicatedStorage, RunService, StarterGui, Workspace } from "@rbxts/services";
+import { Players, ReplicatedStorage, StarterGui, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
-import { NPCHit, playSFX, WeaponSlash } from "client/util/playSound";
+import { NPCImpact, playSFX, WeaponSlash } from "client/util/playSound";
 import { WeaponIndex, WEAPONS } from "shared/configs/weapons";
 import Hitbox from "shared/modules/raycastModule";
 import { remotes } from "shared/remotes";
 import { isNpcCharacter } from "shared/remotes/damageNPC";
-import { Store } from "shared/rodux";
 import { getItemById } from "shared/util/getItemById";
 
 const player = Players.LocalPlayer;
@@ -16,13 +15,16 @@ StarterGui.SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false);
 // get npcs folder
 const npcsFolder = Workspace.WaitForChild("npcs") as Folder;
 
+// cache connections
+const connections: Array<RBXScriptConnection> = [];
+
 /**
  * Handles equipping the player's weapon.
  *
  * @param weaponName The name of the weapon.
- * @param store The player's store.
+ * @param sfxVolume The sound level of sound effects.
  */
-function equipWeapon(weaponName: WeaponIndex, store: Store): void {
+function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 	// checks
 	const character = player.Character;
 	assert(character, `Failed to get Character for ${player.Name}`);
@@ -50,6 +52,19 @@ function equipWeapon(weaponName: WeaponIndex, store: Store): void {
 	const weaponData = WEAPONS[weapon.Name as WeaponIndex];
 	const animations = ReplicatedStorage.animations.weapons[weaponData.weaponType];
 
+	let trail: Trail | undefined;
+	for (const _trail of weapon.GetDescendants()) {
+		if (!_trail.IsA("Trail")) {
+			continue;
+		}
+
+		trail = _trail;
+	}
+
+	if (trail !== undefined) {
+		trail.Enabled = false;
+	}
+
 	const defaultIdleAnimation = "http://www.roblox.com/asset/?id=507766388";
 
 	const attackAnimation = animator.LoadAnimation(animations.Attack);
@@ -57,10 +72,7 @@ function equipWeapon(weaponName: WeaponIndex, store: Store): void {
 	const attack3Animation = animator.LoadAnimation(animations.Attack3);
 
 	const attackAnimations: Array<AnimationTrack> = [];
-	attackAnimations.push(attackAnimation, attack3Animation);
-	if (weaponData.weaponType !== "Hammer") {
-		attackAnimations.push(attack2Animation);
-	}
+	attackAnimations.push(attackAnimation, attack2Animation, attack3Animation);
 
 	const equipAnimation = animator.LoadAnimation(animations.Equip);
 
@@ -84,8 +96,8 @@ function equipWeapon(weaponName: WeaponIndex, store: Store): void {
 
 	const hitbox = new Hitbox(weapon);
 	hitbox.RaycastParams = raycastParams;
-	hitbox.Visualizer = RunService.IsStudio();
-	hitbox.Debuglog = RunService.IsStudio();
+	hitbox.Visualizer = false; // RunService.IsStudio();
+	hitbox.Debuglog = false; // RunService.IsStudio();
 
 	let loadedAllPoints = true;
 	for (const hitboxAttachment of weapon.GetDescendants()) {
@@ -95,12 +107,12 @@ function equipWeapon(weaponName: WeaponIndex, store: Store): void {
 
 		if (hitboxAttachment.Parent === undefined) {
 			loadedAllPoints = false;
-			warn("parent undefiend");
+			warn("hitbox point parent undefiend");
 			continue;
 		}
 
 		if (!hitboxAttachment.Parent.IsA("BasePart")) {
-			warn("not a basepart or bone");
+			warn("hitbox point not a basepart or bone");
 			loadedAllPoints = false;
 			continue;
 		}
@@ -129,12 +141,22 @@ function equipWeapon(weaponName: WeaponIndex, store: Store): void {
 	];
 
 	// connections
-	weapon.Equipped.Connect(() => equipAnimation.Play());
+	const weaponEquipped = weapon.Equipped.Connect(() => equipAnimation.Play());
+	connections.push(weaponEquipped);
 
 	let canSwing = true;
-	weapon.Activated.Connect(() => {
+	const weaponActivation = weapon.Activated.Connect(() => {
 		if (canSwing === false) {
 			return;
+		}
+
+		const playingAnimations = attackAnimations.filter((animation) => animation.IsPlaying === true);
+		if (playingAnimations.size() > 0) {
+			return;
+		}
+
+		if (trail !== undefined) {
+			trail.Enabled = true;
 		}
 
 		canSwing = false;
@@ -154,7 +176,7 @@ function equipWeapon(weaponName: WeaponIndex, store: Store): void {
 		const slashSound = slashSounds.filter((metaData) => metaData.played === false);
 		if (slashSound[0] !== undefined) {
 			slashSound[0].played = true;
-			playSFX(slashSound[0].soundType, store.getState().settings.sound.soundEffects);
+			playSFX(slashSound[0].soundType, sfxVolume);
 		} else {
 			warn(`Failed to load and play weapon activation sound.`);
 		}
@@ -162,11 +184,19 @@ function equipWeapon(weaponName: WeaponIndex, store: Store): void {
 		animationToPlay.Play();
 		animationToPlay.Stopped.Wait();
 
-		canSwing = true;
-		hitbox.HitStop();
-	});
+		if (hitbox.HitStop !== undefined) {
+			hitbox.HitStop();
+		}
 
-	weapon.Unequipped.Connect(() => {
+		canSwing = true;
+
+		if (trail !== undefined) {
+			trail.Enabled = false;
+		}
+	});
+	connections.push(weaponActivation);
+
+	const weaponUnequipped = weapon.Unequipped.Connect(() => {
 		for (const animation of presetIdleAnimation.GetChildren()) {
 			if (!animation.IsA("Animation")) {
 				continue;
@@ -175,8 +205,9 @@ function equipWeapon(weaponName: WeaponIndex, store: Store): void {
 			animation.AnimationId = defaultIdleAnimation;
 		}
 	});
+	connections.push(weaponUnequipped);
 
-	hitbox.OnHit.Connect((_, humanoid) => {
+	const hitBox = hitbox.OnHit.Connect((_, humanoid) => {
 		const npcCharacter = humanoid.Parent;
 		if (npcCharacter === undefined) {
 			return;
@@ -186,12 +217,13 @@ function equipWeapon(weaponName: WeaponIndex, store: Store): void {
 			return;
 		}
 
-		playSFX(NPCHit.Hit1, store.getState().settings.sound.soundEffects);
-
+		playSFX(NPCImpact.NPCImpact1, sfxVolume);
 		remotes.Client.Get("damageNPC").SendToServer(npcCharacter);
 	});
+	connections.push(hitBox);
 
 	// equip the tool
+	humanoid.UnequipTools();
 	humanoid.EquipTool(weapon);
 }
 
@@ -205,32 +237,48 @@ onStoreCreated(player)
 		 */
 		function checkToEquipWeapon(): void {
 			const currentState = store.getState();
-			if (currentState.currentWeapon.equipped) {
-				const weaponsFolder = ReplicatedStorage.assetObjects.weapons;
 
-				const weapon = getItemById(weaponsFolder, currentState.currentWeapon.id);
-				assert(weapon, `Failed to get weapon data for ${currentState.currentWeapon.id}`);
+			const character = player.Character;
+			assert(character, `Failed to get Character for ${player.Name}`);
 
-				equipWeapon(weapon.Name as WeaponIndex, store);
+			if (!currentState.currentWeapon.equipped) {
+				const humanoid = character.FindFirstChildOfClass("Humanoid");
+				assert(humanoid, `Failed to get Humanoid for ${player.Name}`);
+
+				humanoid.UnequipTools();
 			}
+
+			const weaponsFolder = ReplicatedStorage.assetObjects.weapons;
+
+			const weapon = getItemById(weaponsFolder, currentState.currentWeapon.id);
+			assert(weapon, `Failed to get weapon data for ${currentState.currentWeapon.id}`);
+
+			const currentlyEquippedTool = character.FindFirstChildOfClass("Tool");
+			if (currentlyEquippedTool !== undefined && currentlyEquippedTool.Name === weapon.Name) {
+				return;
+			}
+
+			for (const connection of connections) {
+				const connectionIndex = connections.findIndex((x) => x === connection);
+				if (connectionIndex !== undefined) {
+					connection.Disconnect();
+					connections.unorderedRemove(connectionIndex);
+				}
+			}
+
+			equipWeapon(weapon.Name as WeaponIndex, store.getState().settings.sound.soundEffects);
 		}
 
 		if (player.Character) {
 			checkToEquipWeapon();
 		}
-		player.CharacterAdded.Connect(() => checkToEquipWeapon());
-		backpack.ChildAdded.Connect(() => checkToEquipWeapon());
 
 		store.changed.connect((newState, oldState) => {
 			if (newState.currentWeapon === oldState.currentWeapon) {
 				return;
 			}
 
-			if (newState.currentWeapon.equipped && newState.currentWeapon.equipped !== oldState.currentWeapon.equipped) {
-				checkToEquipWeapon();
-			}
-
-			if (!newState.currentWeapon.equipped && newState.currentWeapon.equipped !== oldState.currentWeapon.equipped) {
+			if (!newState.currentWeapon.equipped) {
 				const character = player.Character;
 				assert(character, `Failed to get Character for ${player.Name}`);
 
@@ -238,6 +286,8 @@ onStoreCreated(player)
 				assert(humanoid, `Failed to get Humanoid for ${player.Name}`);
 
 				humanoid.UnequipTools();
+			} else {
+				checkToEquipWeapon();
 			}
 		});
 	})

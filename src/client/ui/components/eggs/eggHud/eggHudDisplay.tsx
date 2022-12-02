@@ -115,7 +115,7 @@ export const EggHudDisplay = hooks((props: EggHudProps, hooks) => {
 					TextScaled={true}
 					Font={font}
 				>
-					<BSX_UIStroke defaultBlackColor={true} isBillboard={true} native={{ Thickness: 2.5 }} />
+					<BaseUIStroke native={{ Thickness: 2.5 }} />
 				</textlabel>
 				<frame
 					BackgroundTransparency={1}
@@ -142,8 +142,8 @@ export const EggHudDisplay = hooks((props: EggHudProps, hooks) => {
 								eggName={props.eggName}
 								petId={petInfo.id}
 								variant={props.isVoid ? "void" : "regular"}
-								isBillboard={true}
 								displayBackground={true}
+								isBillboard={true}
 							/>
 						);
 					})}
@@ -158,7 +158,7 @@ export const EggHudDisplay = hooks((props: EggHudProps, hooks) => {
 					TextXAlignment={Enum.TextXAlignment.Left}
 					Font={font}
 				>
-					<BSX_UIStroke defaultBlackColor={true} isBillboard={true} native={{ Thickness: 2 }} />
+					<BaseUIStroke native={{ Thickness: 2.5 }} />
 					<CurrencyIcon
 						anchorPoint={new Vector2(1, 0.5)}
 						position={UDim2.fromScale(-0.03, 0.5)}

@@ -1,5 +1,4 @@
 import { Eggs } from "shared/configs/eggs";
-import { Talismans } from "shared/configs/talismans";
 import { Weapons, WeaponType } from "shared/configs/weapons";
 import { NPCs } from "shared/configs/zones";
 
@@ -109,9 +108,7 @@ declare global {
 			npcs: Folder & {
 				[P in keyof NPCs]: Model;
 			};
-			talismans: Folder & {
-				[P in keyof Talismans]: Model;
-			};
+			talismans: Folder;
 			hatch: Part & {
 				attachment: Attachment & {
 					flare: ParticleEmitter;

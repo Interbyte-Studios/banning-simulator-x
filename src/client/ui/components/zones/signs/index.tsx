@@ -22,7 +22,7 @@ interface ZoneSignProps {
  * A roact component that displays a sign for a designated zone with all the relevant purchase information.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const ZoneSign = hooks((props: ZoneSignProps, hooks) => {
+export const ZoneSign = hooks((props: ZoneSignProps) => {
 	if (props.zoneData.cost === undefined) {
 		return <></>;
 	}
@@ -45,7 +45,7 @@ export const ZoneSign = hooks((props: ZoneSignProps, hooks) => {
 					TextScaled={true}
 					Font={font}
 				>
-					<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 5 }} />
+					<BaseUIStroke native={{ Thickness: 5 }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -57,7 +57,7 @@ export const ZoneSign = hooks((props: ZoneSignProps, hooks) => {
 					TextScaled={true}
 					Font={font}
 				>
-					<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 5 }} />
+					<BaseUIStroke native={{ Thickness: 5 }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -76,7 +76,7 @@ export const ZoneSign = hooks((props: ZoneSignProps, hooks) => {
 						size={{ maximizedSize: 1, minimizedSize: 0.9 }}
 						currency={props.zoneData.cost.currency}
 					/>
-					<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 5 }} />
+					<BaseUIStroke native={{ Thickness: 5 }} />
 				</textlabel>
 				<DisplayZonePurchasePrompt
 					worldName={props.worldName}

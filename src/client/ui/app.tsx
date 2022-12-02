@@ -1,18 +1,22 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Workspace } from "@rbxts/services";
 import { Store } from "shared/rodux";
 
 import { LocalMessages } from "./components/announcements";
 import { CodesMenu } from "./components/codes/menu";
+import { CurrencyGainAnimation } from "./components/currencyGainAnimation";
 import { EggsUI } from "./components/eggs";
 import { WeaponEquip } from "./components/equip/weaponEquip";
 import { Hud } from "./components/hud";
-import { ItemInventory } from "./components/items";
+import { PetMastery } from "./components/petMastery";
 import { Quests } from "./components/quests";
 import { RankUpgrade } from "./components/ranks/menu";
 import { SettingsMenu } from "./components/settings/menu";
-import { TalismanShop } from "./components/talismans/talismanShop";
+import { TalismanLevelUpAnimation } from "./components/talismanLevelUp";
+import { TalismanTowerHandle } from "./components/talismans";
+import { Teleportation } from "./components/teleportation";
+import { WeaponLevelUpAnimation } from "./components/weaponLevelUp";
+import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
 import { hooks } from "./hooks";
 
@@ -29,115 +33,143 @@ interface AppProps {
  * @param props.store The store to create the app with.
  * @returns The Roact app to mount.
  */
-export const app = hooks((props: AppProps, { useEffect, useState }) => {
-	const [codesMenuVisible, setCodesVisible] = useState(false);
-	const [questsMenuVisible, setQuestsVisibility] = useState(false);
-	const [settingsMenuVisible, setSettingsVisibility] = useState(false);
-	const [rankUpgradeVisibility, setRankUpgradeVisibility] = useState(false);
-	const [itemInventoryVisibility, setItemInventoryVisibility] = useState(false);
+export const app = hooks((props: AppProps, { useState }) => {
+	const [codesVisible, setCodesVisible] = useState(false);
+	const [questsVisible, setQuestsVisibility] = useState(false);
+	const [settingsVisible, setSettingsVisibility] = useState(false);
+	const [teleportationVisible, setTeleportationVisibility] = useState(false);
+	const [weaponShopVisibility, setWeaponShopVisibility] = useState(false);
+	const [talismanTowerVisibility, setTalismanTowerVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
-	const [displayAnnouncement, setDisplayAnnouncement] = useState<
-		{ message: string; announcementType: "errors" | "announcements" } | undefined
-	>(undefined);
-
-	/**
-	 * @param announcementType The type of message to display.
-	 * @param message The message to display.
-	 * @returns A function to display the message.
-	 */
-	const applyAnnouncement = (announcementType: "errors" | "announcements", message: string): void =>
-		setDisplayAnnouncement({ message, announcementType });
-
-	useEffect(() => {
-		task.delay(5, () => {
-			setDisplayAnnouncement(undefined);
-		});
-	}, [displayAnnouncement]);
-
-	useEffect(() => {
-		let lastTouched = 0;
-
-		const connection = Workspace.interactions.rankUpgrade.interact.Touched.Connect((hit) => {
-			if (rankUpgradeVisibility) {
-				return;
-			}
-
-			const now = time();
-			if (now - lastTouched < 1) {
-				return;
-			}
-			lastTouched = now;
-
-			const hitInstance = hit.Parent;
-			if (hitInstance === undefined) {
-				return;
-			}
-
-			if (!hitInstance.IsA("Model")) {
-				return;
-			}
-
-			if (hitInstance.Name !== props.player.Name) {
-				return;
-			}
-
-			const character = props.player.Character;
-			if (character === undefined) {
-				return;
-			}
-
-			const humanoid = character.FindFirstChildOfClass("Humanoid");
-			if (humanoid === undefined) {
-				return;
-			}
-
-			const humanoidRootPart = humanoid.RootPart;
-			if (humanoidRootPart === undefined) {
-				return;
-			}
-
-			const distance = Workspace.interactions.rankUpgrade.teleport.Position.sub(humanoidRootPart.Position);
-			if (distance.Magnitude > 20) {
-				return;
-			}
-
-			setRankUpgradeVisibility(true);
-		});
-
-		return (): void => {
-			connection.Disconnect();
-		};
-	});
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
-				<EggsUI store={props.store} setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)} />
-				<TalismanShop store={props.store} />
-				<CodesMenu
-					visible={codesMenuVisible}
-					hideMenu={(): void => setCodesVisible(false)}
-					displayAnnouncement={applyAnnouncement}
+				<EggsUI
+					store={props.store}
+					visible={
+						!codesVisible &&
+						!settingsVisible &&
+						!teleportationVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
+					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
-				<SettingsMenu visible={settingsMenuVisible} hideMenu={(): void => setSettingsVisibility(false)} />
-				<Quests visible={questsMenuVisible} hideMenu={(): void => setQuestsVisibility(false)} />
+				<CodesMenu visible={codesVisible} hideMenu={(): void => setCodesVisible(false)} />
+				<SettingsMenu visible={settingsVisible} hideMenu={(): void => setSettingsVisibility(false)} />
+				<Quests visible={questsVisible} hideMenu={(): void => setQuestsVisibility(false)} />
 				<Hud
-					visible={!codesMenuVisible && !settingsMenuVisible && !isHatching && !itemInventoryVisibility}
+					visible={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!teleportationVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
 					displayCodesMenu={(): void => setCodesVisible(true)}
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
-					displayItemsMenu={(): void => setItemInventoryVisibility(true)}
+					displayTeleportationMenu={(): void => setTeleportationVisibility(true)}
 				/>
-				<LocalMessages currentMessage={displayAnnouncement} />
-				<ZonesUI displayAnnouncement={applyAnnouncement} />
-				<WeaponEquip visible={!codesMenuVisible && !settingsMenuVisible && !isHatching && !itemInventoryVisibility} />
+				<WeaponLevelUpAnimation
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!teleportationVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
+				/>
+				<TalismanLevelUpAnimation
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!teleportationVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
+				/>
+				<LocalMessages />
+				<ZonesUI />
+				<WeaponEquip
+					visible={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!teleportationVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
+				/>
 				<RankUpgrade
-					visible={rankUpgradeVisibility}
-					hideMenu={(): void => setRankUpgradeVisibility(false)}
-					displayAnnouncement={applyAnnouncement}
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!teleportationVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
 				/>
-				<ItemInventory visible={itemInventoryVisibility} hideMenu={(): void => setItemInventoryVisibility(false)} />
+				<WeaponShopHandle
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!teleportationVisible &&
+						!questsVisible &&
+						!talismanTowerVisibility
+					}
+					weaponShopVisible={weaponShopVisibility}
+					setWeaponShopVisibility={(value: boolean): void => setWeaponShopVisibility(value)}
+				/>
+				<TalismanTowerHandle
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!teleportationVisible &&
+						!questsVisible &&
+						!weaponShopVisibility
+					}
+					talismanTowerVisible={talismanTowerVisibility}
+					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
+				/>
+				<PetMastery
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!teleportationVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
+				/>
+				<Teleportation
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
+					visible={teleportationVisible}
+					hideMenu={(): void => setTeleportationVisibility(false)}
+				/>
+				<CurrencyGainAnimation />
 			</>
 		</RoactRodux.StoreProvider>
 	);

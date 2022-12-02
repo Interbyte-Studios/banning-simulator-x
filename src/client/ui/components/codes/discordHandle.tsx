@@ -2,6 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
@@ -11,10 +12,6 @@ import { VerifyDiscordFailKind } from "shared/remotes/media/verifyDiscord";
 import { StoreState } from "shared/rodux";
 
 import { DiscordRewards } from "./discordRewards";
-
-interface DiscordHandleProps extends DiscordHandleMappedProps {
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
-}
 
 interface DiscordHandleMappedProps {
 	enabled: boolean;
@@ -37,7 +34,7 @@ const minimizedSize = 0.075;
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const DiscordHandle = RoactRodux.connect(mapStateToProps)(
-	hooks((props: DiscordHandleProps, hooks) => {
+	hooks((props: DiscordHandleMappedProps, hooks) => {
 		if (props.enabled) {
 			return <DiscordRewards />;
 		}
@@ -49,6 +46,7 @@ export const DiscordHandle = RoactRodux.connect(mapStateToProps)(
 
 		const { useValue, useContext } = hooks;
 		const { verifyDiscord } = useContext(remoteContext);
+		const { addError } = useContext(AnnouncementContext);
 
 		const textBoxRef = useValue(Roact.createRef<TextBox>());
 
@@ -75,7 +73,7 @@ export const DiscordHandle = RoactRodux.connect(mapStateToProps)(
 						TextScaled={true}
 						Ref={textBoxRef.value}
 					>
-						<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 1.2 }} />
+						<BaseUIStroke native={{ Thickness: 1.2 }} />
 					</textbox>
 				</imagelabel>
 				<imagebutton
@@ -91,38 +89,26 @@ export const DiscordHandle = RoactRodux.connect(mapStateToProps)(
 						Activated: async (): Promise<void> => {
 							const textBox = textBoxRef.value.getValue();
 							if (textBox === undefined) {
-								props.displayAnnouncement(
-									"errors",
-									"An internal error occurred while verifying your information. Please try again later.",
-								);
+								addError("Please input your tag to verify.");
 								return;
 							}
 
 							const verifyDiscordPresence = await verifyDiscord.CallServerAsync(textBox.Text);
 							if (verifyDiscordPresence.success) {
-								props.displayAnnouncement(
-									"announcements",
-									"Congratulations! You have been verified! Enjoy your 50% experience boost :)",
-								);
+								addError("You have been verified! Enjoy your 50% experience boost :)");
 								return;
 							} else {
 								switch (verifyDiscordPresence.reason) {
 									case VerifyDiscordFailKind.InternalError: {
-										props.displayAnnouncement(
-											"errors",
-											"An internal error occurred while verifying your information. Please try again later.",
-										);
+										addError("An internal error occurred while verifying your information (100).");
 										return;
 									}
 									case VerifyDiscordFailKind.NotInDiscord: {
-										props.displayAnnouncement(
-											"errors",
-											"You are not in the Interbyte Discord server. Please join and try again.",
-										);
+										addError("You are not in the Interbyte Discord server.");
 										return;
 									}
 									case VerifyDiscordFailKind.RateLimit: {
-										props.displayAnnouncement("errors", "You have been rate limited. Please try again later.");
+										addError("You have been rate limited.");
 										return;
 									}
 								}
@@ -142,7 +128,7 @@ export const DiscordHandle = RoactRodux.connect(mapStateToProps)(
 						Text={"Verify"}
 						Font={font}
 					>
-						<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 1.2 }} />
+						<BaseUIStroke native={{ Thickness: 1.2 }} />
 					</textlabel>
 				</imagebutton>
 			</>

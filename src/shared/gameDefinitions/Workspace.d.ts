@@ -1,9 +1,13 @@
 import { Eggs } from "shared/configs/eggs";
 import { Worlds } from "shared/configs/worlds";
-import { Zones } from "shared/configs/zones";
+import { ZoneNames, Zones } from "shared/configs/zones";
 
 declare global {
 	interface Workspace extends WorldRoot {
+		"client objects": Folder & {
+			pets: Folder;
+			talismans: Folder;
+		};
 		worlds: Folder & {
 			[P in keyof Worlds]: Folder & {
 				zones: Folder;
@@ -11,6 +15,9 @@ declare global {
 			};
 		};
 		interactions: Folder & {
+			teleports: Folder & {
+				[P in ZoneNames]: BasePart;
+			};
 			eggs: Folder & {
 				[P in keyof Eggs]: Folder & {
 					deco: Folder;
@@ -26,8 +33,30 @@ declare global {
 					};
 				};
 			};
-			["talisman tower"]: Folder;
-			talismans: Folder;
+			worlds: Folder & {
+				[P in keyof Worlds]: {
+					weaponShop: Folder & {
+						InteractPrompt: BasePart;
+					};
+					talismanTower: Folder & {
+						InteractPrompt: BasePart;
+					};
+					petMastery: Folder & {
+						petMasteryVendor: Model;
+					};
+				};
+			};
+			itemShop: Folder & {
+				[P in keyof Worlds]: Folder & {
+					cameraline: BasePart;
+				};
+			};
+			talismanTowers: Folder & {
+				[P in keyof Worlds]: Folder & {
+					talismans: Folder;
+					cameraline: BasePart;
+				};
+			};
 			rankUpgrade: Folder & {
 				meshPart: BasePart;
 				interact: BasePart;

@@ -8,6 +8,7 @@ interface SectionHeaderProps {
 	position: UDim2;
 	size: UDim2;
 	text: string;
+	strokeColor: Color3;
 }
 
 /**
@@ -31,7 +32,7 @@ export const SectionHeader = hooks((props: SectionHeaderProps) => {
 			Text={props.text}
 			Font={font}
 		>
-			<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 3 }} />
+			<BaseUIStroke native={{ Thickness: 2, Color: props.strokeColor }} />
 		</textlabel>
 	);
 });

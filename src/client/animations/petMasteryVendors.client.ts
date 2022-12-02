@@ -1,0 +1,35 @@
+import { CollectionService, RunService } from "@rbxts/services";
+import { AssetAnimation } from "shared/assetTags";
+
+/**
+ * Animates pet mastery vendor models so they fly up and down like pets.
+ *
+ * @param petMasteryVendor The pet model of the pet mastery "vendor".
+ */
+function animateVendor(petMasteryVendor: Model): void {
+	const primary = petMasteryVendor.PrimaryPart;
+	assert(primary, `Expected pet mastery vendor to have a primary part.`);
+
+	const originalCFrame = primary.CFrame;
+
+	/// Hover
+	const hoverSpeed = 2;
+	const hoverAmount = 2.5;
+
+	/// Facing
+	const faceSpeed = 2.2;
+	const faceAmount = 15;
+
+	RunService.RenderStepped.Connect(() => {
+		const hover = math.sin(os.clock() * hoverSpeed) * hoverAmount;
+		const face = math.sin(os.clock() * faceSpeed) * faceAmount;
+
+		petMasteryVendor.PivotTo(originalCFrame.mul(new CFrame(0, hover, 0).mul(CFrame.Angles(math.rad(face), 0, 0))));
+	});
+}
+
+const petMasteryVendors = CollectionService.GetTagged(AssetAnimation.PetMasteryVendor);
+for (const petVendor of petMasteryVendors) {
+	assert(petVendor.IsA("Model"), `Expected pet mastery vendor ${petVendor.Name} to be a model.`);
+	animateVendor(petVendor);
+}

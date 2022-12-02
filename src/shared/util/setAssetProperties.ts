@@ -1,6 +1,8 @@
 import { CollectionService } from "@rbxts/services";
 import { TAG_CONFIG, Variants } from "shared/configs/pets";
 
+import { weldObject } from "./weldObject";
+
 export type ValidAssetType = "egg" | "pet" | "talisman" | "weapon";
 
 /**
@@ -94,20 +96,24 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 				throw `Expected talisman: "${assetObject.Name}" to be a Model`;
 			}
 
+			const primaryPart = assetObject.FindFirstChild("Primary") as BasePart;
+			assert(primaryPart, `Failed to get primary part for ${assetObject.Name}`);
+
+			assetObject.PrimaryPart = primaryPart;
+
 			for (const child of assetObject.GetChildren()) {
 				if (!child.IsA("BasePart")) continue;
 
-				if (assetObject.PrimaryPart === undefined && child.Name === "Primary") {
-					assetObject.PrimaryPart = child;
-				}
-
 				child.CanCollide = false;
 				child.Anchored = false;
-				child.Name = "meshPart";
+				child.Massless = true;
+				child.Name = child === assetObject.PrimaryPart ? "Primary" : "meshPart";
 			}
 
 			assert(assetObject.PrimaryPart, `No PrimaryPart set for ${assetObject.Name}`);
 			assetObject.PrimaryPart.Name = "Primary";
+
+			weldObject(assetObject.GetChildren() as Array<BasePart>, assetObject.PrimaryPart);
 
 			break;
 		}

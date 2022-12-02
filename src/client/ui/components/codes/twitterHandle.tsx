@@ -1,6 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BSX_UIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
@@ -11,12 +12,8 @@ import { RedeemCodeFailKind } from "shared/remotes/media/redeemCode";
 const maximizedSize = 0.1;
 const minimizedSize = 0.075;
 
-interface TwitterHandleProps {
-	displayAnnouncement: (announcementType: "errors" | "announcements", message: string) => void;
-}
-
 /* eslint-disable jsdoc/require-jsdoc */
-export const TwitterHandle = hooks((props: TwitterHandleProps, hooks) => {
+export const TwitterHandle = hooks((_, hooks) => {
 	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
 
@@ -24,6 +21,7 @@ export const TwitterHandle = hooks((props: TwitterHandleProps, hooks) => {
 
 	const { useValue, useContext } = hooks;
 	const { redeemCode } = useContext(remoteContext);
+	const { addError } = useContext(AnnouncementContext);
 
 	const textBoxRef = useValue(Roact.createRef<TextBox>());
 
@@ -50,7 +48,7 @@ export const TwitterHandle = hooks((props: TwitterHandleProps, hooks) => {
 					TextScaled={true}
 					Ref={textBoxRef.value}
 				>
-					<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 1.2 }} />
+					<BaseUIStroke native={{ Thickness: 1.2 }} />
 				</textbox>
 			</imagelabel>
 			<imagebutton
@@ -66,25 +64,22 @@ export const TwitterHandle = hooks((props: TwitterHandleProps, hooks) => {
 					Activated: async (): Promise<void> => {
 						const textBox = textBoxRef.value.getValue();
 						if (textBox === undefined) {
-							props.displayAnnouncement("errors", "Internal issue while redeemind code. Please try again later.");
-							return warn("No textbox ref found.");
+							addError("Please input your handle to verify.");
+							return;
 						}
 
 						const codeRedeemed = await redeemCode.CallServerAsync(textBox.Text);
 						if (codeRedeemed.success) {
-							props.displayAnnouncement(
-								"announcements",
-								`Congratulations! You've redeemed the code "${textBox.Text}."`,
-							);
+							addError(`You've redeemed the code "${textBox.Text}."`);
 							return;
 						} else {
 							switch (codeRedeemed.reason) {
 								case RedeemCodeFailKind.AlreadyRedeemed: {
-									props.displayAnnouncement("errors", "You have already redeemed that code.");
+									addError("You have already redeemed that code.");
 									return;
 								}
 								case RedeemCodeFailKind.InvalidCode: {
-									props.displayAnnouncement("errors", `The code you entered "${textBox.Text}" is invalid.`);
+									addError(`The code you entered "${textBox.Text}" is invalid.`);
 									return;
 								}
 							}
@@ -104,7 +99,7 @@ export const TwitterHandle = hooks((props: TwitterHandleProps, hooks) => {
 					Text={"Redeem"}
 					Font={font}
 				>
-					<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 1.2 }} />
+					<BaseUIStroke native={{ Thickness: 1.2 }} />
 				</textlabel>
 			</imagebutton>
 		</>

@@ -13,6 +13,11 @@ interface World {
 	 * The currency to reward players with.
 	 */
 	reward: Currency;
+
+	/**
+	 * The id of the world.
+	 */
+	id: number;
 }
 
 /**
@@ -22,6 +27,7 @@ export const WORLDS = preserveWithConstraint<Record<string, World>>()({
 	"Ban Land": {
 		zones: BAN_LAND_ZONES,
 		reward: "coins",
+		id: 1,
 		music: {
 			Paradise: 1837879082,
 			Leisure: 1836057733,

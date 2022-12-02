@@ -30,10 +30,6 @@ remotes.Server.GetNamespace("weapons")
 Players.PlayerAdded.Connect(async (player) => {
 	const store = await onStoreCreated(player);
 
-	// create weapon tools
-	const starterGear = player.FindFirstChildWhichIsA("StarterGear");
-	assert(starterGear, `Failed to get StarterGear for ${player.Name}`);
-
 	{
 		// backpack is deleted each time the player spawns
 		const backpack = player.FindFirstChildWhichIsA("Backpack");
@@ -47,8 +43,22 @@ Players.PlayerAdded.Connect(async (player) => {
 		setAssetProperties("weapon", weapon as Tool);
 
 		weapon.Parent = backpack;
-		weapon.Clone().Parent = starterGear;
 	}
+
+	player.CharacterAdded.Connect(() => {
+		// backpack is deleted each time the player spawns
+		const backpack = player.FindFirstChildWhichIsA("Backpack");
+		assert(backpack, `Failed to get backpack for ${player.Name}`);
+
+		const weaponModel = getItemById(ReplicatedStorage.assetObjects.weapons, store.getState().currentWeapon.id);
+		assert(weaponModel, `Failed to get weapon with id "${store.getState().currentWeapon}"`);
+
+		// put into player backpack and starterGear
+		const weapon = weaponModel.Clone();
+		setAssetProperties("weapon", weapon as Tool);
+
+		weapon.Parent = backpack;
+	});
 
 	// listen to store weapon changes and apply them
 	store.changed.connect((newState, oldState) => {
@@ -65,18 +75,12 @@ Players.PlayerAdded.Connect(async (player) => {
 		// remove weapon model from player
 		// first, remove the old weapon
 		const characterWeapon = player.Character?.FindFirstChild(oldWeaponModel.Name);
-		const wasEquipped = characterWeapon !== undefined;
 
 		// remove from character
 		const oldWeapon = backpack.FindFirstChild(oldWeaponModel.Name) ?? characterWeapon;
 		assert(oldWeapon, `Failed to get old weapon "${oldWeaponModel.Name}" from player`);
 		oldWeapon.Parent = undefined;
-
-		// remove from StarterGear
-		const starterGearWeapon = starterGear.FindFirstChild(oldWeaponModel.Name);
-		if (starterGearWeapon) {
-			starterGearWeapon.Parent = undefined;
-		}
+		oldWeapon.Destroy();
 
 		// give player new weapon
 		const newWeaponModel = getItemById(ReplicatedStorage.assetObjects.weapons, newState.currentWeapon.id);
@@ -85,7 +89,6 @@ Players.PlayerAdded.Connect(async (player) => {
 		const newWeapon = newWeaponModel.Clone();
 		setAssetProperties("weapon", newWeapon as Tool);
 
-		newWeapon.Parent = wasEquipped ? player.Character : backpack;
-		newWeapon.Clone().Parent = starterGear;
+		newWeapon.Parent = backpack;
 	});
 });

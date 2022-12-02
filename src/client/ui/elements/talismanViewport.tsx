@@ -1,6 +1,7 @@
 import Roact from "@rbxts/roact";
 import { ReplicatedStorage } from "@rbxts/services";
-import { getItemById } from "shared/util/getItemById";
+import { TalismanPhases } from "shared/configs/talismans";
+import { getTalismanData } from "shared/util/getTalismanData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
 import { hooks } from "../hooks";
@@ -8,6 +9,7 @@ import { hooks } from "../hooks";
 interface TalismanViewportProps {
 	native: Partial<WritableInstanceProperties<ViewportFrame>>;
 	talismanId: number;
+	phase: TalismanPhases;
 }
 
 /**
@@ -35,8 +37,16 @@ export const TalismanViewport = hooks((props: TalismanViewportProps, { useValue,
 
 		const talismansFolder = ReplicatedStorage.assetObjects.talismans;
 
-		const talismanModel = getItemById(talismansFolder, props.talismanId);
-		assert(talismanModel, `Did not find talisman model for talisman with id ${props.talismanId}`);
+		const talismanData = getTalismanData(props.talismanId);
+
+		const talismanFolder = talismansFolder.FindFirstChild(`Tier ${talismanData.id}`);
+		assert(talismanFolder, `Failed to get talisman folder for talisman tier ${talismanData.id}`);
+
+		const phaseName = props.phase === "awakend" ? "Awakend" : props.phase === "artifact" ? "Artifact" : "normal";
+		const talismanModel = talismanFolder.FindFirstChild(
+			phaseName === "normal" ? talismanData.name : `${phaseName} ${talismanData.name}`,
+		);
+		assert(talismanModel, `Failed to get talisman named: "${phaseName} ${talismanData.name}"`);
 
 		const talisman = talismanModel.Clone() as Model;
 		setAssetProperties("talisman", talisman, undefined);
@@ -53,7 +63,7 @@ export const TalismanViewport = hooks((props: TalismanViewportProps, { useValue,
 		camera.FieldOfView = 10;
 
 		const [, talismanSize] = talisman.GetBoundingBox();
-		talisman.SetPrimaryPartCFrame(
+		talisman.PivotTo(
 			camera.CFrame.ToWorldSpace(new CFrame(0, 0, -talismanSize.Z * talismanSize.Y * 1.6)).mul(
 				CFrame.Angles(0, math.rad(270), 0),
 			),

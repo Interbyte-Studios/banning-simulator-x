@@ -1,9 +1,10 @@
 import Rodux from "@rbxts/rodux";
 import { Currency } from "shared/configs/currencies";
+import { WEAPON_LEVELS } from "shared/configs/weapons";
 
 import { KillNpc } from "./currencies";
 
-export type WeaponsState = Array<{ id: number; bans: number }>;
+export type WeaponsState = Array<{ id: number; bans: number; level: number }>;
 export type WeaponsActions = PurchaseWeapon;
 
 export interface PurchaseWeapon extends Rodux.Action<"purchaseWeapon"> {
@@ -29,9 +30,11 @@ export function purchaseWeapon(data: Omit<PurchaseWeapon, "type">): PurchaseWeap
 }
 
 const defaulWeapon = {
-	id: 7,
+	id: 1,
 	bans: 0,
+	level: 1,
 };
+
 const defaultState: WeaponsState = [defaulWeapon];
 
 /* eslint-disable jsdoc/require-jsdoc */
@@ -40,6 +43,7 @@ export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions |
 		const newWeapon = {
 			id: action.id,
 			bans: 0,
+			level: 1,
 		};
 
 		const newState = [...state];
@@ -57,6 +61,12 @@ export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions |
 
 		const increasedWeaponBanCounter = currentWeapon.bans + 1;
 		currentWeapon.bans = increasedWeaponBanCounter;
+
+		WEAPON_LEVELS.forEach((levelData) => {
+			if (currentWeapon.bans >= levelData.requiredBans) {
+				currentWeapon.level = levelData.level;
+			}
+		});
 
 		return newState;
 	},

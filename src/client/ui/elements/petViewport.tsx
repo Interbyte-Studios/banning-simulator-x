@@ -1,12 +1,11 @@
 import Roact from "@rbxts/roact";
-import { getPetDecal } from "client/util/getPetDecal";
+import { getPetImage } from "client/util/getPetImage";
 import { Variants } from "shared/configs/pets";
 
 import { vec2Middle } from "../commonValues";
 import { hooks } from "../hooks";
 
 interface PetViewportProps {
-	native: Partial<WritableInstanceProperties<ImageLabel>>;
 	petId: number;
 	variant: Variants;
 }
@@ -25,7 +24,7 @@ export const PetViewport = hooks((props: PetViewportProps) => {
 			BackgroundTransparency={1}
 			Size={UDim2.fromScale(0.9, 0.9)}
 			Position={UDim2.fromScale(0.5, 0.5)}
-			Image={getPetDecal(props.petId, props.variant)}
+			Image={getPetImage(props.petId, props.variant)}
 			ScaleType={Enum.ScaleType.Fit}
 		/>
 	);

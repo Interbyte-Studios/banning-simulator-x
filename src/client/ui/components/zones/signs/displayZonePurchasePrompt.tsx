@@ -83,7 +83,7 @@ export const DisplayZonePurchasePrompt = RoactRodux.connect(mapStateToProps)(
 						TextXAlignment={Enum.TextXAlignment.Left}
 						Font={font}
 					>
-						<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 4 }} />
+						<BaseUIStroke native={{ Thickness: 2 }} />
 					</textlabel>
 				</imagebutton>
 			);
@@ -114,7 +114,7 @@ export const DisplayZonePurchasePrompt = RoactRodux.connect(mapStateToProps)(
 						TextXAlignment={Enum.TextXAlignment.Left}
 						Font={font}
 					>
-						<BSX_UIStroke defaultBlackColor={true} native={{ Thickness: 4 }} />
+						<BaseUIStroke native={{ Thickness: 2 }} />
 					</textlabel>
 				</imagebutton>
 			);

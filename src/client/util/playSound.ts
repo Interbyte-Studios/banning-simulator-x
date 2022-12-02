@@ -13,8 +13,8 @@ export enum WeaponSlash {
 	Slash3 = 11104013752,
 }
 
-export enum NPCHit {
-	Hit1 = 11158275165,
+export enum NPCImpact {
+	NPCImpact1 = 11514630844,
 }
 
 /**
@@ -23,14 +23,14 @@ export enum NPCHit {
  * @param soundType The type of sound effect to play.
  * @param sfxVolume The volume of the player's sound effects settings.
  */
-export function playSFX(soundType: HatchEffect | WeaponSlash | NPCHit, sfxVolume: number): void {
+export function playSFX(soundType: SoundEffect | WeaponSlash | NPCImpact, sfxVolume: number): void {
 	const sound = Make("Sound", {
 		SoundId: `rbxassetid://${soundType}`,
 		Parent: SoundService,
 	});
 
 	sound.Play();
-	sound.Volume = 0.8 * (sfxVolume / 10);
+	sound.Volume = sfxVolume / 10;
 
 	const connection = sound.Ended.Connect(() => {
 		sound.Parent = undefined;

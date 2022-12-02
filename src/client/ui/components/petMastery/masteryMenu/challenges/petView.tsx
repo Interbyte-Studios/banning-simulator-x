@@ -1,0 +1,84 @@
+import Flipper from "@rbxts/flipper";
+import Roact from "@rbxts/roact";
+import RoactRodux from "@rbxts/roact-rodux";
+import { vec2Middle } from "client/ui/commonValues";
+import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { hooks } from "client/ui/hooks";
+import { getPetImage } from "client/util/getPetImage";
+import { Variants } from "shared/configs/pets";
+import { StoreState } from "shared/rodux";
+import { PlayerIndexState } from "shared/rodux/playerIndex";
+
+interface PetViewProps extends PetViewMappedProps {
+	pet: number;
+	currentVariant: Variants | undefined;
+	activated: () => void;
+}
+
+interface PetViewMappedProps {
+	index: PlayerIndexState;
+}
+
+/**
+ * Maps the Rodux store's state to the props.
+ *
+ * @param state The current store state.
+ * @returns The mapped props to render with.
+ */
+function mapStateToProps(state: StoreState): PetViewMappedProps {
+	return {
+		index: state.index,
+	};
+}
+
+/**
+ * A decal of the pet being viewed in the pet mastery component.
+ */
+/* eslint-disable jsdoc/require-jsdoc */
+export const PetView = RoactRodux.connect(mapStateToProps)(
+	hooks((props: PetViewProps, hooks) => {
+		const petsIndex = props.index.pets.get(props.pet);
+
+		const raisedPosition = 0.4;
+		const raisedSpring = new Flipper.Spring(raisedPosition, { frequency: 5 });
+
+		const normalPosition = 0.5;
+		const normalSpring = new Flipper.Spring(normalPosition, { frequency: 5 });
+
+		const { motor, binding } = useBindingMotor(hooks, normalPosition);
+
+		return (
+			<imagebutton
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={0}
+				Position={UDim2.fromScale(0.1, 0.225)}
+				Size={UDim2.fromScale(0.1, 3)}
+				BackgroundColor3={Color3.fromRGB(0, 131, 213)}
+				Image={""}
+				Event={{
+					Activated: (): void => props.activated(),
+					MouseEnter: (): void => motor.setGoal(raisedSpring),
+					MouseLeave: (): void => motor.setGoal(normalSpring),
+				}}
+			>
+				<uiaspectratioconstraint AspectRatio={1} />
+				<uicorner CornerRadius={new UDim(1, 0)} />
+				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
+
+				<imagelabel
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					Size={UDim2.fromScale(0.9, 0.9)}
+					Position={binding.map((value) => {
+						return UDim2.fromScale(0.5, value);
+					})}
+					Image={getPetImage(props.pet, props.currentVariant ?? "regular")}
+					ScaleType={Enum.ScaleType.Fit}
+					ImageColor3={petsIndex !== undefined ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0)}
+				/>
+			</imagebutton>
+		);
+	}),
+);
+/* eslint-enable jsdoc/require-jsdoc */

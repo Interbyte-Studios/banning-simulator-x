@@ -32,7 +32,7 @@ export const GraphicsSetting = RoactRodux.connect(mapStateToProps)(
 
 		return (
 			<ToggleSettingOption
-				position={UDim2.fromScale(0.5, 0.375)}
+				position={UDim2.fromScale(0.5, 0.385)}
 				size={UDim2.fromScale(0.95, 0.04)}
 				settingName={"Low Graphics"}
 				isEnabled={props.quality === "Low"}

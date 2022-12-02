@@ -5,6 +5,7 @@ import { currencies, Currency } from "shared/configs/currencies";
 import { RedeemCode } from "./media";
 import { AddPet, EnhancePet } from "./pets";
 import { RedeemQuest } from "./quests";
+import { UnlockRank } from "./rank";
 import { PurchaseTalisman } from "./talismans";
 import { PurchaseWeapon } from "./weapons";
 import { UnlockWorld, UnlockZone } from "./worlds";
@@ -46,7 +47,7 @@ export function killNpc(
 }
 
 // start with 0 currency
-const defaultCurrencyAmount = 10000000000;
+const defaultCurrencyAmount = 50000000;
 const defaultCurrencies = Object.fromEntries(
 	Object.values(currencies).map((currency) => [currency, defaultCurrencyAmount] as const),
 );
@@ -63,6 +64,7 @@ export const currenciesReducer = Rodux.createReducer<
 	| PurchaseTalisman
 	| RedeemCode
 	| EnhancePet
+	| UnlockRank
 >(defaultCurrencies, {
 	purchaseWeapon: (state, action) => {
 		const purchasedCurrency = state[action.cost.currency] - action.cost.amount;
@@ -120,6 +122,10 @@ export const currenciesReducer = Rodux.createReducer<
 	enhancePet: (state, action) => {
 		const purchasedCurrency = state.gems - action.cost;
 		return { ...state, gems: purchasedCurrency };
+	},
+	unlockRank: (state, action) => {
+		const purchasedCurency = state[action.currency] - action.cost;
+		return { ...state, [action.currency]: purchasedCurency };
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */
