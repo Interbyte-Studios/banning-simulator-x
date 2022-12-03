@@ -382,11 +382,11 @@ return {
 			inventory = {
 				background = "rbxassetid://11722357172",
 				icons = {
-					boosts = "rbxassetid://11722357283",
-					pets = "rbxassetid://11722357351",
-					talismans = "rbxassetid://11722357413",
-					titles = "rbxassetid://11722357486",
-					weapons = "rbxassetid://11722357555",
+					boosts = "rbxassetid://11725924034",
+					pets = "rbxassetid://11725924086",
+					talismans = "rbxassetid://11725924145",
+					titles = "rbxassetid://11725924205",
+					weapons = "rbxassetid://11725924267",
 				},
 				["info sidebar"] = "rbxassetid://11722357647",
 				pets = {

@@ -1689,28 +1689,28 @@ id = 11722357172
 packable = false
 
 [inputs."images/ui/inventory/icons/boosts.png"]
-hash = "9ec0441ee396aca4f3ecb3b1ed3ad4f5d2081fdeb42c8c4e8b0cbb75fa2c4162"
-id = 11722357283
+hash = "c45075cfa6d5cccc5f2b4f1a5f8168277ffd6a6c4e81249202abe4296f11eaa6"
+id = 11725924034
 packable = false
 
 [inputs."images/ui/inventory/icons/pets.png"]
-hash = "c8f3ab00073646a9bcd5b84f80e36e58ace2f44d9511c43a9f4862540bb14ce9"
-id = 11722357351
+hash = "d46950d34f75751b5573ed82f0de9c99b112019332aee3bac90cc0073f5d8f04"
+id = 11725924086
 packable = false
 
 [inputs."images/ui/inventory/icons/talismans.png"]
-hash = "376f579a858d04f9d9acf579d08def1e3a559e410c2c0fa8f7031b50e40f99f9"
-id = 11722357413
+hash = "88e455c2fd20f24e378c33db83a655f5db84fbaf837e73f0cd2e922e04a7dda8"
+id = 11725924145
 packable = false
 
 [inputs."images/ui/inventory/icons/titles.png"]
-hash = "de733bc3e9562dacee9cf567c854a575f475e2baa88d24acbb44e510456dd5d5"
-id = 11722357486
+hash = "d3086d4aef866b2e09fb43ecad1592c82aa6a6a16d792d292240e10a95d0f718"
+id = 11725924205
 packable = false
 
 [inputs."images/ui/inventory/icons/weapons.png"]
-hash = "5dd324df4a54137bf597b57190f86dda7d8486160089402bf0851f4798c01c02"
-id = 11722357555
+hash = "eaf7b9ecc0335e0a7f5cce4ce4180c17c380a33fd6a7a642117142885ccb43e1"
+id = 11725924267
 packable = false
 
 [inputs."images/ui/inventory/info sidebar.png"]

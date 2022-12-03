@@ -40,9 +40,9 @@ export const DisplayTalismansInventory = hooks((props: DisplayTalismansInventory
 			<textlabel
 				BackgroundTransparency={1}
 				AnchorPoint={vec2Middle}
-				Size={UDim2.fromScale(0.9, 0.35)}
+				Size={UDim2.fromScale(0.9, 0.4)}
 				Position={UDim2.fromScale(0.5, 1)}
-				Text={"Weapons"}
+				Text={"Talismans"}
 				Font={font}
 				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}

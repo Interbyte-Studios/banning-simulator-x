@@ -34,7 +34,7 @@ export const BottomBar = hooks((props: BottomBarProps) => {
 			<DisplayPetInventory displayPetInventory={props.displayPetInventory} />
 			<DisplayWeaponsInventory displayWeaponsInventory={props.displayWeaponsInventory} />
 			<DisplayTalismansInventory displayTalismansInventory={props.displayTalismansInventory} />
-			<DisplayTitlesInventory displayTitlesInventory={props.displayTalismansInventory} />
+			<DisplayTitlesInventory displayTitlesInventory={props.displayTitlesInventory} />
 			<DisplayBoostsInventory displayBoostsInventory={props.displayBoostsInventory} />
 		</frame>
 	);
