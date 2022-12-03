@@ -64,10 +64,16 @@ export const worldsReducer = Rodux.createReducer<WorldsState, WorldActions>(defa
 		const newState = [...state];
 
 		// get existing unlocked world
-		const worldData = newState.find((x) => x.name === action.worldName);
-		assert(worldData, `Expected to find world data for ${action.worldName} when unlocking zone ${action.zoneName}`);
+		const worldDataIndex = newState.findIndex((x) => x.name === action.worldName);
+		assert(
+			worldDataIndex !== -1,
+			`Expected to find world data for ${action.worldName} when unlocking zone ${action.zoneName}`,
+		);
 
-		worldData.zones = [...worldData.zones, action.zoneName];
+		const newWorldData = { ...newState[worldDataIndex] };
+		newState[worldDataIndex] = newWorldData;
+
+		newWorldData.zones = [...newWorldData.zones, action.zoneName];
 
 		return newState;
 	},
