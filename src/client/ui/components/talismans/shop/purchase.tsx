@@ -7,6 +7,7 @@ import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
@@ -74,6 +75,8 @@ export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 				ScaleType={Enum.ScaleType.Fit}
 				Event={{
 					Activated: (): void => {
+						playSFX(UIEngagement.MajorEngagement);
+
 						// check to be sure they've bought the previous talisman
 						const previousTalismanId = props.currentTalisman - 1;
 						if (previousTalismanId > 0) {

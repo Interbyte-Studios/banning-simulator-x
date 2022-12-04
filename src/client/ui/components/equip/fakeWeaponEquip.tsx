@@ -7,6 +7,7 @@ import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { WeaponIndex } from "shared/configs/weapons";
 import { StoreState } from "shared/rodux";
@@ -73,6 +74,8 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 				Size={UDim2.fromScale(1, 1)}
 				Event={{
 					Activated: (): void => {
+						playSFX(UIEngagement.MinorEngagement);
+
 						if (props.weaponEquipped) {
 							unequipWeapon.SendToServer();
 						} else {

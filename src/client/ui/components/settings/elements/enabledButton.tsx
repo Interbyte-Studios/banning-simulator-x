@@ -4,6 +4,7 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 interface EnabledButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
@@ -43,7 +44,10 @@ export const EnabledButton = hooks((props: EnabledButtonProps, hooks) => {
 				props.isEnabled ? assetIds.images.buttons["green toggle button"] : assetIds.images.buttons["red toggle button"]
 			}
 			Event={{
-				Activated: (): void => props.onClicked(),
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.onClicked();
+				},
 				MouseEnter: (): void =>
 					motor.setGoal({
 						x: new Flipper.Spring(props.minimizedSize.x, springProps),

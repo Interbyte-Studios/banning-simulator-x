@@ -5,6 +5,7 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { WorldName } from "shared/configs/worlds";
 import { StoreState } from "shared/rodux";
@@ -73,7 +74,10 @@ export const WorldTeleportCard = RoactRodux.connect(mapStateToProps)(
 					Image={assetIds.images.ui.teleportation.go}
 					ScaleType={Enum.ScaleType.Fit}
 					Event={{
-						Activated: (): void => props.selectWorld(),
+						Activated: (): void => {
+							playSFX(UIEngagement.MinorEngagement);
+							props.selectWorld();
+						},
 						MouseEnter: (): void => motor.setGoal(minimizedSpring),
 						MouseLeave: (): void => motor.setGoal(maximizedSpring),
 					}}

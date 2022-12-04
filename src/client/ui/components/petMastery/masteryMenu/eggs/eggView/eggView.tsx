@@ -5,6 +5,7 @@ import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { getEggImage } from "client/util/getEggImage";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import { EggName } from "shared/configs/eggs";
 
 /**
@@ -29,7 +30,10 @@ export const EggView = hooks((props: { egg: EggName; hideInfo: () => void; isDis
 			BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 			Image={""}
 			Event={{
-				Activated: (): void => props.hideInfo(),
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.hideInfo();
+				},
 				MouseEnter: (): void => motor.setGoal(raisedSpring),
 				MouseLeave: (): void => motor.setGoal(normalSpring),
 			}}

@@ -1,5 +1,6 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 import { vec2Middle } from "../../../commonValues";
@@ -38,7 +39,10 @@ export const DecreaseButton = hooks((props: DecreaseButtonProps, hooks) => {
 			Image={assetIds.images.buttons["back arrow"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
-				Activated: (): void => props.onPressed(),
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.onPressed();
+				},
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}

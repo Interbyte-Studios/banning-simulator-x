@@ -7,6 +7,7 @@ import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
@@ -82,6 +83,8 @@ export const ZoneTeleportCard = RoactRodux.connect(mapStateToProps)(
 					ScaleType={Enum.ScaleType.Fit}
 					Event={{
 						Activated: (): void => {
+							playSFX(UIEngagement.MajorEngagement);
+
 							if (storedWorldData === undefined) {
 								addError(`You do not own that zone.`);
 								return;

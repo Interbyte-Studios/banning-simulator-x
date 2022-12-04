@@ -8,6 +8,7 @@ import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
@@ -71,6 +72,8 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 				ScaleType={Enum.ScaleType.Fit}
 				Event={{
 					Activated: async (): Promise<void> => {
+						playSFX(UIEngagement.MajorEngagement);
+
 						const checkZonePurchaseRequirements = tryPurchaseZone(
 							props.currencies,
 							props.worlds,

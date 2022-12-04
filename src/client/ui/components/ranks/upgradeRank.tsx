@@ -7,6 +7,7 @@ import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { RANKS } from "shared/configs/ranks";
 import { StoreState } from "shared/rodux";
@@ -71,6 +72,8 @@ export const UpgradeRank = RoactRodux.connect(mapStateToProps)(
 				ScaleType={Enum.ScaleType.Fit}
 				Event={{
 					Activated: (): void => {
+						playSFX(UIEngagement.MajorEngagement);
+
 						if (props.experience < nextRankData.requiredExperience) {
 							addError(`You don't have enough experience to upgrade your rank.`);
 							return;

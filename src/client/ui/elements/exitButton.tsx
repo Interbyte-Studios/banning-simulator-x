@@ -1,5 +1,6 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 import { font, vec2Middle } from "../commonValues";
@@ -39,10 +40,11 @@ export const ExitButton = hooks((props: ExitButtonProps, hooks) => {
 			Event={{
 				/**
 				 * Event that connects to the `onClosed` function prop.
-				 *
-				 * @returns Nothing.
 				 */
-				Activated: (): void => props.onClosed(),
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.onClosed();
+				},
 
 				/**
 				 * Event that connects to the motors `setGoal` method.
