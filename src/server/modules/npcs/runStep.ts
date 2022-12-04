@@ -151,7 +151,7 @@ export function runStep(
 
 		const weapon = getWeaponInfo(storeState.currentWeapon.id);
 		const weaponLevelBonus = getWeaponLevel(currentWeaponData.bans);
-		const damage = weapon.data.damage + talismanDamage + weapon.data.damage * 0.05 * weaponLevelBonus.level;
+		const damage = math.floor(weapon.data.damage + talismanDamage + weapon.data.damage * 0.05 * weaponLevelBonus.level);
 
 		npc.instance.Humanoid.TakeDamage(damage);
 
