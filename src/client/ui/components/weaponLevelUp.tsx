@@ -53,6 +53,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 		assert(storedWeapon, `Expected player to own weapon of id: "${props.currentWeapon}" since they have it equipped.`);
 
 		const weaponLevel = storedWeapon.level;
+		/*/^
 		if (cachedWeapon.id !== props.currentWeapon.id) {
 			cachedWeapon.id = props.currentWeapon.id;
 			cachedWeapon.level = weaponLevel;
@@ -84,6 +85,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 				frameBindingMotor.motor.setGoal(minimizedSpring);
 			});
 		});
+		*/
 
 		const weaponData = getWeaponInfo(props.currentWeapon.id);
 
@@ -92,14 +94,10 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}
 				Position={UDim2.fromScale(0.5, 0.125)}
-				Size={frameBindingMotor.binding.map((value) => {
-					return UDim2.fromScale(0.4, value);
-				})}
+				Size={UDim2.fromScale(0.4, 0.2)}
 				Image={assetIds.images.ui.levelup.LevelUp}
 				ScaleType={Enum.ScaleType.Fit}
-				Visible={frameBindingMotor.binding.map((value) => {
-					return value > 0;
-				})}
+				Visible={true}
 			>
 				<uiaspectratioconstraint AspectRatio={2.2} />
 
@@ -134,7 +132,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 				>
-					<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(185, 81, 1) }} />
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(185, 81, 1) }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -146,7 +144,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 				>
-					<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(0, 100, 163) }} />
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -158,7 +156,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 				>
-					<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(0, 100, 163) }} />
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 				</textlabel>
 			</imagelabel>
 		);
