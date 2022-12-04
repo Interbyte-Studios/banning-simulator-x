@@ -6,6 +6,7 @@ import { getRankIcon } from "client/util/getRankIcon";
 import { GROUP_ID, GROUP_ROLES } from "shared/configs/game";
 import { Store } from "shared/rodux";
 import { getNPCByName } from "shared/util/getNpcByName";
+import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 const player = Players.LocalPlayer;
 const playerGui = player.WaitForChild("PlayerGui") as PlayerGui;
@@ -198,7 +199,9 @@ function createEnemyTag(enemy: Model): void {
 	tag.hold.title.TextColor3 = npcData.isBoss ? Color3.fromRGB(250, 112, 112) : Color3.fromRGB(255, 255, 255);
 
 	tag.hold.fillBackground.fill.Size = UDim2.fromScale(1, 1);
-	tag.hold.fillBackground.health.Text = `[${humanoid.Health} / ${humanoid.MaxHealth}]`;
+	tag.hold.fillBackground.health.Text = `[${twoDpAbbreviator.numberToString(
+		humanoid.Health,
+	)} / ${twoDpAbbreviator.numberToString(humanoid.MaxHealth)}]`;
 
 	humanoid.GetPropertyChangedSignal("Health").Connect(() => {
 		const health = humanoid.Health;
