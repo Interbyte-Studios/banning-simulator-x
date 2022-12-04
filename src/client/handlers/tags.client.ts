@@ -61,52 +61,13 @@ const isPlayerTag = t.intersection(
 );
 
 /**
- * Updates a player's tag.
- *
- * @param player The player.
- * @param store The player's store.
- */
-function updatePlayerTag(player: Player, store: Store): void {
-	const character = player.Character;
-	if (character === undefined) {
-		warn(`Failed to update player tag for "${player.Name}". The Character was not found.`);
-		return;
-	}
-
-	const head = character.FindFirstChild("Head") as BasePart;
-	if (head === undefined) {
-		warn(`Failed to update player tag for "${player.Name}". The Head was not found.`);
-		return;
-	}
-
-	const storeState = store.getState();
-
-	let tag: BillboardGui | undefined;
-	for (const playerTag of friendlyTags.GetChildren()) {
-		if (!playerTag.IsA("BillboardGui")) {
-			continue;
-		}
-
-		if (playerTag.Adornee !== head) {
-			continue;
-		}
-
-		tag = playerTag;
-		break;
-	}
-	assert(tag, `Failed to find player tag for ${player.Name}`);
-	assert(isPlayerTag(tag), `Player tag for ${player.Name} was not a valid player tag.`);
-
-	tag.hold.name.rank.Image = getRankIcon(storeState.rank);
-}
-
-/**
  * Creates a player tag that's displayed above the player's head.
  *
  * @param player The player.
  * @param store The player's store.
+ * @returns The tag of the player.
  */
-function createPlayerTag(player: Player, store: Store): void {
+function createPlayerTag(player: Player, store: Store): t.static<typeof isPlayerTag> | undefined {
 	const playerTag = ReplicatedStorage.assetObjects.tags.playerTag;
 	assert(playerTag, `Failed to get player tag from rep storage`);
 
@@ -116,7 +77,7 @@ function createPlayerTag(player: Player, store: Store): void {
 	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
 	assert(humanoid, `Failed to create player tag. The Humanoid for ${player.Name} was not found.`);
 
-	const head = character.FindFirstChild("Head") as BasePart;
+	const head = character.WaitForChild("Head") as BasePart;
 	assert(head, `Failed to create player tag. The Head for ${player.Name} was not found.`);
 
 	const storeState = store.getState();
@@ -158,6 +119,54 @@ function createPlayerTag(player: Player, store: Store): void {
 
 	tag.Adornee = head;
 	tag.Parent = friendlyTags;
+
+	return tag;
+}
+
+/**
+ * Updates a player's tag.
+ *
+ * @param player The player.
+ * @param store The player's store.
+ */
+function updatePlayerTag(player: Player, store: Store): void {
+	const character = player.Character;
+	if (character === undefined) {
+		warn(`Failed to update player tag for "${player.Name}". The Character was not found.`);
+		return;
+	}
+
+	const head = character.FindFirstChild("Head") as BasePart;
+	if (head === undefined) {
+		warn(`Failed to update player tag for "${player.Name}". The Head was not found.`);
+		return;
+	}
+
+	const storeState = store.getState();
+
+	let tag: BillboardGui | undefined;
+	for (const playerTag of friendlyTags.GetChildren()) {
+		if (!playerTag.IsA("BillboardGui")) {
+			continue;
+		}
+
+		if (playerTag.Adornee !== head) {
+			continue;
+		}
+
+		tag = playerTag;
+		break;
+	}
+	if (tag === undefined) {
+		tag = createPlayerTag(player, store);
+		if (tag === undefined) {
+			warn(`Failed to find player tag for ${player.Name}`);
+			return;
+		}
+	}
+	assert(isPlayerTag(tag), `Player tag for ${player.Name} was not a valid player tag.`);
+
+	tag.hold.name.rank.Image = getRankIcon(storeState.rank);
 }
 
 /**
