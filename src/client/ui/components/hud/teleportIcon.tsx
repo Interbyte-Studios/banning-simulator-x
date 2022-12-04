@@ -4,6 +4,7 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { MarketplaceService, Players } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { GAMEPASSES } from "shared/configs/game";
 import { StoreState } from "shared/rodux";
@@ -60,6 +61,8 @@ export const TeleportIcon = RoactRodux.connect(mapStateToProps)(
 				LayoutOrder={6}
 				Event={{
 					Activated: (): void => {
+						playSFX(UIEngagement.MinorEngagement);
+
 						if (props.gamepasses.Teleportation) {
 							props.displayTeleportationMenu();
 						} else {

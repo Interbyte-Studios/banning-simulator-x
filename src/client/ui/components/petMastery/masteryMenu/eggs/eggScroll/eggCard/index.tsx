@@ -6,6 +6,7 @@ import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { getEggImage } from "client/util/getEggImage";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import { EggName } from "shared/configs/eggs";
 import { StoreState } from "shared/rodux";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
@@ -59,6 +60,8 @@ export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
 				Image={""}
 				Event={{
 					Activated: (): void => {
+						playSFX(UIEngagement.MajorEngagement);
+
 						if (props.currentEgg !== undefined && props.currentEgg === props.egg) {
 							props.displayEgg(undefined);
 							return;

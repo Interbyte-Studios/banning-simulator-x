@@ -4,6 +4,7 @@ import { Players, Workspace } from "@rbxts/services";
 import { vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
 import { getRankProgress } from "client/util/getRankProgress";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 const player = Players.LocalPlayer;
@@ -68,6 +69,8 @@ export const UpgradeRankTeleport = hooks((props: UpgradeRankTeleportProps, { use
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
 				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+
 					const character = player.Character;
 					assert(character, `Failed to get Character for ${player.Name} while teleporting to rank upgrade zone`);
 

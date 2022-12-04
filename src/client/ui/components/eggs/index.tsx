@@ -115,7 +115,6 @@ export const EggsUI = hooks((props: EggsUIProps, { useState, useContext }) => {
 						eggName: egg,
 						isVoid,
 						fastEnabled: currentState.gamepasses["Fast Hatch"],
-						soundEffectVolume: currentState.settings.sound.soundEffects,
 					});
 
 					setCurrentHatchData({
@@ -130,7 +129,6 @@ export const EggsUI = hooks((props: EggsUIProps, { useState, useContext }) => {
 						pets: requestEggHatch.pets,
 						isVoid,
 						fastEnabled: currentState.gamepasses["Fast Hatch"],
-						soundEffectVolume: currentState.settings.sound.soundEffects,
 					});
 
 					setCurrentHatchData(undefined);

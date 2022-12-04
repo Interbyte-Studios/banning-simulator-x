@@ -6,6 +6,7 @@ import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { getPetImage } from "client/util/getPetImage";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import { Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
@@ -57,7 +58,10 @@ export const PetView = RoactRodux.connect(mapStateToProps)(
 				BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 				Image={""}
 				Event={{
-					Activated: (): void => props.activated(),
+					Activated: (): void => {
+						playSFX(UIEngagement.MinorEngagement);
+						props.activated();
+					},
 					MouseEnter: (): void => motor.setGoal(raisedSpring),
 					MouseLeave: (): void => motor.setGoal(normalSpring),
 				}}

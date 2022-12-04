@@ -1,5 +1,5 @@
 import { HttpService, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
-import { playSFX, SoundEffect } from "client/util/playSound";
+import { HatchSFX, playSFX } from "client/util/playSound";
 import { EggName, hatchDebounce } from "shared/configs/eggs";
 import { ValidEggAmount } from "shared/remotes/eggs/hatchEgg";
 import { ConfirmedPet } from "shared/rodux/pets";
@@ -14,7 +14,6 @@ export interface HatchEggParams {
 	fastEnabled: boolean;
 	pets?: Array<ConfirmedPet>;
 	isVoid: boolean;
-	soundEffectVolume: number;
 }
 
 interface AnimatedEgg {
@@ -230,9 +229,8 @@ export class AnimateEggs {
 	 *
 	 * @param amount The amount of eggs being hatched.
 	 * @param fastEnabled Whether or not the animation is fast.
-	 * @param soundEffectVolume The volume of sound effect setting.
 	 */
-	private static animateEggHatches(amount: ValidEggAmount, fastEnabled: boolean, soundEffectVolume: number): void {
+	private static animateEggHatches(amount: ValidEggAmount, fastEnabled: boolean): void {
 		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
 
 		/**
@@ -276,15 +274,15 @@ export class AnimateEggs {
 		let amountComplete = 0;
 		for (const eggData of this.animatedEggs) {
 			task.spawn(() => {
-				playSFX(SoundEffect.HatchImpact_1, soundEffectVolume);
+				playSFX(HatchSFX.HatchImpact_1);
 				animateEggSegment(eggData, "segment1");
 				task.wait(0.5);
 
-				playSFX(SoundEffect.HatchImpact_2, soundEffectVolume);
+				playSFX(HatchSFX.HatchImpact_2);
 				animateEggSegment(eggData, "segment2", true);
 				task.wait(0.35);
 
-				playSFX(SoundEffect.HatchImpact_1, soundEffectVolume);
+				playSFX(HatchSFX.HatchImpact_1);
 				animateEggSegment(eggData, "segment3", true);
 
 				const segment = this.getSegment(amount, eggData.id);
@@ -302,7 +300,7 @@ export class AnimateEggs {
 
 					const shookTween = eggData.currentCFrame.Value.Lerp(segment.segment1.mul(CFrame.Angles(0, spin, 0)), alpha);
 					eggData.currentCFrame.Value = shookTween;
-					playSFX(SoundEffect.HatchImpact_2, soundEffectVolume);
+					playSFX(HatchSFX.HatchImpact_2);
 				}
 
 				eggData.eggModels[eggData.currentEgg].SetPrimaryPartCFrame(new CFrame(0, 0, 0));
@@ -324,9 +322,8 @@ export class AnimateEggs {
 	 *
 	 * @param amount The amount of pets being displayed.
 	 * @param fastEnabled Whether or not the animation is fast.
-	 * @param soundEffectVolume The volume of sound effect setting.
 	 */
-	private static animatePetHatches(amount: ValidEggAmount, fastEnabled: boolean, soundEffectVolume: number): void {
+	private static animatePetHatches(amount: ValidEggAmount, fastEnabled: boolean): void {
 		const camera = Workspace.CurrentCamera ?? Workspace.GetPropertyChangedSignal("CurrentCamera").Wait()[0];
 
 		let amountComplete = 0;
@@ -402,7 +399,7 @@ export class AnimateEggs {
 				amountComplete += 1;
 			});
 		}
-		playSFX(SoundEffect.HatchReveal, soundEffectVolume);
+		playSFX(HatchSFX.HatchReveal);
 
 		while (amountComplete !== amount) {
 			RunService.RenderStepped.Wait();
@@ -449,7 +446,7 @@ export class AnimateEggs {
 			this.animatedEggs.push(eggData);
 		}
 
-		this.animateEggHatches(params.amount, params.fastEnabled, params.soundEffectVolume);
+		this.animateEggHatches(params.amount, params.fastEnabled);
 	}
 
 	/**
@@ -490,7 +487,7 @@ export class AnimateEggs {
 			this.animatedPets.push(petData);
 		}
 
-		this.animatePetHatches(params.amount, params.fastEnabled, params.soundEffectVolume);
+		this.animatePetHatches(params.amount, params.fastEnabled);
 	}
 
 	/**

@@ -6,6 +6,7 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EGGS } from "shared/configs/eggs";
 import { StoreState } from "shared/rodux";
@@ -108,7 +109,10 @@ export const ToggleAutoHatchButton = RoactRodux.connect(mapStateToProps)(
 				Image={props.autoActive ? assetIds.images.buttons["green button"] : assetIds.images.buttons["red button"]}
 				ScaleType={Enum.ScaleType.Fit}
 				Event={{
-					Activated: async (): Promise<void> => toggleAuto.SendToServer(),
+					Activated: async (): Promise<void> => {
+						playSFX(UIEngagement.MajorEngagement);
+						toggleAuto.SendToServer();
+					},
 					MouseEnter: (): void => motor.setGoal(minimizedSpring),
 					MouseLeave: (): void => motor.setGoal(maximizedSpring),
 				}}

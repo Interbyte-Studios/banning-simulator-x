@@ -7,6 +7,7 @@ import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { DamageIcon } from "client/ui/elements/damageIcon";
 import { RarityGradient } from "client/ui/elements/rarityGradient";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { Pet, Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
@@ -112,7 +113,10 @@ export const ShowExtraStats = hooks((props: { isShowing: boolean; showStats: (sh
 			})}
 			Image={props.isShowing ? assetIds.images.ui.index.returnToSelection : assetIds.images.ui.index.showExtraStats}
 			Event={{
-				Activated: (): void => props.showStats(!props.isShowing),
+				Activated: (): void => {
+					playSFX(UIEngagement.MajorEngagement);
+					props.showStats(!props.isShowing);
+				},
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}

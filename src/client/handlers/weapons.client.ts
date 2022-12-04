@@ -22,9 +22,8 @@ const connections: Array<RBXScriptConnection> = [];
  * Handles equipping the player's weapon.
  *
  * @param weaponName The name of the weapon.
- * @param sfxVolume The volume of sound effects setting.
  */
-function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
+function equipWeapon(weaponName: WeaponIndex): void {
 	// checks
 	const character = player.Character;
 	assert(character, `Failed to get Character for ${player.Name}`);
@@ -176,7 +175,7 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 		const slashSound = slashSounds.filter((metaData) => metaData.played === false);
 		if (slashSound[0] !== undefined) {
 			slashSound[0].played = true;
-			playSFX(slashSound[0].soundType, sfxVolume);
+			playSFX(slashSound[0].soundType);
 		} else {
 			warn(`Failed to load and play weapon activation sound.`);
 		}
@@ -217,7 +216,7 @@ function equipWeapon(weaponName: WeaponIndex, sfxVolume: number): void {
 			return;
 		}
 
-		playSFX(NPCImpact.NPCImpact1, sfxVolume);
+		playSFX(NPCImpact.NPCImpact1);
 		remotes.Client.Get("damageNPC").SendToServer(npcCharacter);
 	});
 	connections.push(hitBox);
@@ -266,7 +265,7 @@ onStoreCreated(player)
 				}
 			}
 
-			equipWeapon(weapon.Name as WeaponIndex, store.getState().settings.sound.soundEffects);
+			equipWeapon(weapon.Name as WeaponIndex);
 		}
 
 		if (player.Character) {

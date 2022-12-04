@@ -4,6 +4,7 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 /**
@@ -30,7 +31,10 @@ export const ViewNextTalisman = hooks((props: { onActivated: () => void }, hooks
 			Image={assetIds.images.buttons["green button"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
-				Activated: (): void => props.onActivated(),
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.onActivated();
+				},
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}

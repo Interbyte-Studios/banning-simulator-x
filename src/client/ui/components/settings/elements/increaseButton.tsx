@@ -3,6 +3,7 @@ import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 interface IncreaseButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
@@ -37,7 +38,10 @@ export const IncreaseButton = hooks((props: IncreaseButtonProps, hooks) => {
 			Image={assetIds.images.buttons["forward arrow"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
-				Activated: (): void => props.onPressed(),
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.onPressed();
+				},
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}

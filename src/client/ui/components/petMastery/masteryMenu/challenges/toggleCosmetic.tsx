@@ -6,6 +6,7 @@ import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
@@ -108,6 +109,8 @@ export const TogglePetMasteryCosmetic = RoactRodux.connect(mapStateToProps)(
 					ScaleType={Enum.ScaleType.Fit}
 					Event={{
 						Activated: (): void => {
+							playSFX(UIEngagement.MajorEngagement);
+
 							if (!canToggleCosmetic) {
 								// add error
 								return;

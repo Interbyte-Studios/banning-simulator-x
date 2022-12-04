@@ -1,7 +1,8 @@
 import Make from "@rbxts/make";
-import { SoundService } from "@rbxts/services";
+import { Players, SoundService } from "@rbxts/services";
+import { retrieveStore } from "client/clientStores";
 
-export enum SoundEffect {
+export enum HatchSFX {
 	HatchImpact_1 = 9854462642,
 	HatchImpact_2 = 9854463496,
 	HatchReveal = 9854540368,
@@ -17,20 +18,26 @@ export enum NPCImpact {
 	NPCImpact1 = 11514630844,
 }
 
+export enum UIEngagement {
+	MajorEngagement = 11738749109,
+	MinorEngagement = 11738749109,
+}
+
 /**
  * Plays a specific sound effect.
  *
  * @param soundType The type of sound effect to play.
- * @param sfxVolume The volume of the player's sound effects settings.
  */
-export function playSFX(soundType: SoundEffect | WeaponSlash | NPCImpact, sfxVolume: number): void {
+export function playSFX(soundType: HatchSFX | WeaponSlash | NPCImpact | UIEngagement): void {
+	const store = retrieveStore(Players.LocalPlayer);
+
 	const sound = Make("Sound", {
 		SoundId: `rbxassetid://${soundType}`,
 		Parent: SoundService,
 	});
 
 	sound.Play();
-	sound.Volume = sfxVolume / 10;
+	sound.Volume = store.getState().settings.sound.soundEffects / 10;
 
 	const connection = sound.Ended.Connect(() => {
 		sound.Parent = undefined;

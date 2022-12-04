@@ -3,6 +3,7 @@ import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 /**
@@ -28,7 +29,10 @@ export const ReturnToEggScroll = hooks((props: { returnToSelection: () => void }
 			})}
 			Image={assetIds.images.ui.index.returnToSelection}
 			Event={{
-				Activated: (): void => props.returnToSelection(),
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.returnToSelection();
+				},
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}

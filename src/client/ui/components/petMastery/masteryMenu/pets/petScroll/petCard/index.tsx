@@ -7,6 +7,7 @@ import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { RarityGradient } from "client/ui/elements/rarityGradient";
 import { hooks } from "client/ui/hooks";
 import { getPetImage } from "client/util/getPetImage";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import { Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
@@ -70,6 +71,8 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 					Image={""}
 					Event={{
 						Activated: (): void => {
+							playSFX(UIEngagement.MinorEngagement);
+
 							if (props.currentPet !== undefined && props.currentPet === props.pet) {
 								props.displayPet(undefined);
 								return;

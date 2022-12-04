@@ -2,6 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 const minimizedSize = 0.8;
@@ -37,7 +38,10 @@ export const OptionsIcon = hooks((props: OptionsIconProps, { useEffect }) => {
 			Image={assetIds.images.ui.hud.icons.options}
 			LayoutOrder={1}
 			Event={{
-				Activated: (): void => props.displaySettingsMenu(),
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.displaySettingsMenu();
+				},
 				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
