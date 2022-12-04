@@ -26,6 +26,19 @@ export function onStoreCreated(player: Player): Promise<Store> {
 }
 
 /**
+ * Retrieves the store of the specified player if it exists.
+ *
+ * @param player The player object.
+ * @returns The store of the player.
+ */
+export function retrieveStore(player: Player): Store {
+	const store = stores.get(player);
+	assert(store, `Expected client store to exist for player ${player.Name}.`);
+
+	return store;
+}
+
+/**
  * Handles the store creation for a player when they join the game.
  *
  * This involves a network request out to retrieve their state from the server.

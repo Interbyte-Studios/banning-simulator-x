@@ -10,6 +10,7 @@ import {
 import { BaseImageButton } from "client/ui/elements/baseImageButton";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { WorldName } from "shared/configs/worlds";
 
@@ -41,7 +42,10 @@ export function WorldSelector(props: {
 						Image={assetIds.images.maps[world as keyof typeof assetIds.images.maps].world}
 						Size={UDim2.fromScale(1, 1 / 3)}
 						Event={{
-							Activated: () => props.onWorldSelected(world),
+							Activated: (): void => {
+								playSFX(UIEngagement.MinorEngagement);
+								props.onWorldSelected(world);
+							},
 						}}
 					>
 						<textlabel

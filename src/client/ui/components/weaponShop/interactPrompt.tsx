@@ -5,6 +5,7 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { getMagnitudeBetweenPlayerAndObject } from "shared/util/getDistanceFromObject";
 
@@ -102,7 +103,10 @@ export const WeaponShopInteractPrompt = hooks((props: { visible: boolean; displa
 				Image={assetIds.images.buttons["teal button"]}
 				ScaleType={Enum.ScaleType.Fit}
 				Event={{
-					Activated: (): void => props.displayShop(),
+					Activated: (): void => {
+						playSFX(UIEngagement.MinorEngagement);
+						props.displayShop();
+					},
 					MouseEnter: (): void => motor.setGoal(minimizedSpring),
 					MouseLeave: (): void => motor.setGoal(maximizedSpring),
 				}}

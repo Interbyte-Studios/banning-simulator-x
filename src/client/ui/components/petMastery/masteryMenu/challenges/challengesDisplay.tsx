@@ -7,6 +7,7 @@ import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { PET_MASTERY_REQUIREMENTS, PET_MASTERY_REWARDS } from "shared/configs/petMastery";
 import { Variants } from "shared/configs/pets";
@@ -154,6 +155,8 @@ const MasteryChallengeFrame = hooks(
 					Visible={!props.hasBeenClaimed}
 					Event={{
 						Activated: async (): Promise<void> => {
+							playSFX(UIEngagement.MajorEngagement);
+
 							if (props.hasBeenClaimed) {
 								return;
 							}

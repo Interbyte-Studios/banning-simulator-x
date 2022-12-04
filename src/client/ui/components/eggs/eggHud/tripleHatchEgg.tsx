@@ -5,6 +5,7 @@ import { MarketplaceService, Players, RunService } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
 import { GAMEPASSES } from "shared/configs/game";
@@ -74,6 +75,8 @@ export const TripleHatchEggButton = RoactRodux.connect(mapStateToProps)(
 				ScaleType={Enum.ScaleType.Fit}
 				Event={{
 					Activated: async (): Promise<void> => {
+						playSFX(UIEngagement.MajorEngagement);
+
 						// eslint-disable-next-line roblox-ts/lua-truthiness
 						if (!props.gamepassesState["Triple Hatch"]) {
 							MarketplaceService.PromptGamePassPurchase(player, GAMEPASSES["Triple Hatch"]);

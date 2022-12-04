@@ -5,6 +5,7 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { WorldName } from "shared/configs/worlds";
 import { Zone, ZoneNames } from "shared/configs/zones";
@@ -67,7 +68,10 @@ export const DisplayZonePurchasePrompt = RoactRodux.connect(mapStateToProps)(
 					Image={assetIds.images.buttons["green toggle button"]}
 					ScaleType={Enum.ScaleType.Fit}
 					Event={{
-						Activated: (): void => props.setViewedZone(props.worldName, props.zoneData.id),
+						Activated: (): void => {
+							playSFX(UIEngagement.MinorEngagement);
+							props.setViewedZone(props.worldName, props.zoneData.id);
+						},
 						MouseEnter: (): void => motor.setGoal(minimizedSpring),
 						MouseLeave: (): void => motor.setGoal(maximizedSpring),
 					}}

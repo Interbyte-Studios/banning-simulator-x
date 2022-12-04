@@ -2,6 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 interface CodesIconProps {
@@ -37,7 +38,10 @@ export const CodesIcon = hooks((props: CodesIconProps, { useEffect }) => {
 			Image={assetIds.images.ui.hud.icons.codes}
 			LayoutOrder={2}
 			Event={{
-				Activated: (): void => props.displayCodesMenu(),
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.displayCodesMenu();
+				},
 				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}

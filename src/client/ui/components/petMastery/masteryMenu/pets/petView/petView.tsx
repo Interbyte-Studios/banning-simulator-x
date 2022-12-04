@@ -5,6 +5,7 @@ import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { getPetImage } from "client/util/getPetImage";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import { Variants } from "shared/configs/pets";
 
 /**
@@ -33,7 +34,10 @@ export const PetView = hooks(
 				BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 				Image={""}
 				Event={{
-					Activated: (): void => props.hideInfo(),
+					Activated: (): void => {
+						playSFX(UIEngagement.MinorEngagement);
+						props.hideInfo();
+					},
 					MouseEnter: (): void => motor.setGoal(raisedSpring),
 					MouseLeave: (): void => motor.setGoal(normalSpring),
 				}}
