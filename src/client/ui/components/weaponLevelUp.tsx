@@ -53,7 +53,6 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 		assert(storedWeapon, `Expected player to own weapon of id: "${props.currentWeapon}" since they have it equipped.`);
 
 		const weaponLevel = storedWeapon.level;
-		/*/^
 		if (cachedWeapon.id !== props.currentWeapon.id) {
 			cachedWeapon.id = props.currentWeapon.id;
 			cachedWeapon.level = weaponLevel;
@@ -85,7 +84,6 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 				frameBindingMotor.motor.setGoal(minimizedSpring);
 			});
 		});
-		*/
 
 		const weaponData = getWeaponInfo(props.currentWeapon.id);
 
@@ -94,10 +92,14 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}
 				Position={UDim2.fromScale(0.5, 0.125)}
-				Size={UDim2.fromScale(0.4, 0.2)}
+				Size={frameBindingMotor.binding.map((value) => {
+					return UDim2.fromScale(0.4, value);
+				})}
 				Image={assetIds.images.ui.levelup.LevelUp}
 				ScaleType={Enum.ScaleType.Fit}
-				Visible={true}
+				Visible={frameBindingMotor.binding.map((value) => {
+					return value > 0;
+				})}
 			>
 				<uiaspectratioconstraint AspectRatio={2.2} />
 
