@@ -1719,8 +1719,8 @@ id = 11722357647
 packable = false
 
 [inputs."images/ui/inventory/pets/bottombar.png"]
-hash = "9e10b7e394b5bbef8ec98ef8f28a40497665fdea15d396dcef9af34ac0ec7487"
-id = 11722357729
+hash = "a0600c290bb7a3f99f92691af2922feedb9bdd07a00414c4ad1c10cd9641993e"
+id = 11752972298
 packable = false
 
 [inputs."images/ui/inventory/pets/delete-sidebar.png"]

@@ -6,11 +6,13 @@ import { EnhancePetMetadata } from "shared/configs/enchantments";
 import { Variants } from "shared/configs/pets";
 import { Rarities } from "shared/configs/rarities";
 
+import { KillNpc } from "./currencies";
 import { RedeemCode } from "./media";
 import { RedeemQuest } from "./quests";
 
 export interface Pet {
 	id: number;
+	bans: number;
 	guid: string;
 	equipped: boolean;
 	locked: boolean;
@@ -19,7 +21,7 @@ export interface Pet {
 }
 
 export type PetsState = Array<Pet>;
-export type PetsActions = AddPet | DeletePet | EnhancePet | TogglePetEquip | TogglePetLock;
+export type PetsActions = AddPet | DeletePet | EnhancePet | EquipPet | LockPet;
 
 export interface ConfirmedPet extends PetData {
 	autoDeleted: boolean;
@@ -45,14 +47,12 @@ export interface DeletePet extends Rodux.Action<"deletePet"> {
 	pets: Array<string>;
 }
 
-export interface TogglePetEquip extends Rodux.Action<"togglePetEquip"> {
-	guid: string;
-	equipped: boolean;
+export interface EquipPet extends Rodux.Action<"equipPets"> {
+	pets: Array<{ guid: string; enabled: boolean }>;
 }
 
-export interface TogglePetLock extends Rodux.Action<"togglePetLock"> {
-	guid: string;
-	locked: boolean;
+export interface LockPet extends Rodux.Action<"lockPets"> {
+	pets: Array<{ guid: string; enabled: boolean }>;
 }
 
 export interface EnhancePet extends Rodux.Action<"enhancePet"> {
@@ -88,28 +88,24 @@ export function deletePets(pets: Array<string>): DeletePet & Rodux.AnyAction {
 }
 
 /**
- * @param guid The guid of the pet.
- * @param equipped Whether or not it should be equipped.
+ * @param pets The pets to equip.
  * @returns The Rodux action to dispatch.
  */
-export function togglePetEquip(guid: string, equipped: boolean): TogglePetEquip & Rodux.AnyAction {
+export function equipPets(pets: Array<{ guid: string; enabled: boolean }>): EquipPet & Rodux.AnyAction {
 	return {
-		type: "togglePetEquip",
-		guid,
-		equipped,
+		type: "equipPets",
+		pets,
 	};
 }
 
 /**
- * @param guid The guid of the pet.
- * @param locked Whether or not it should be locked.
+ * @param pets The pets to lock.
  * @returns The Rodux action to dispatch.
  */
-export function togglePetLock(guid: string, locked: boolean): TogglePetLock & Rodux.AnyAction {
+export function lockPets(pets: Array<{ guid: string; enabled: boolean }>): LockPet & Rodux.AnyAction {
 	return {
-		type: "togglePetLock",
-		guid,
-		locked,
+		type: "lockPets",
+		pets,
 	};
 }
 
@@ -138,6 +134,7 @@ for (let x = 1; x <= 6; x++) {
 	for (let i = 1; i <= 81; i++) {
 		const pet: Pet = {
 			id: i,
+			bans: 1,
 			guid: tostring(i),
 			equipped: false,
 			locked: false,
@@ -147,6 +144,7 @@ for (let x = 1; x <= 6; x++) {
 
 		const voidPet: Pet = {
 			id: i,
+			bans: 1,
 			guid: tostring(i),
 			equipped: false,
 			locked: false,
@@ -156,6 +154,7 @@ for (let x = 1; x <= 6; x++) {
 
 		const radiantPet: Pet = {
 			id: i,
+			bans: 1,
 			guid: tostring(i),
 			equipped: false,
 			locked: false,
@@ -170,105 +169,128 @@ for (let x = 1; x <= 6; x++) {
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQuest | RedeemCode>(defaultPets, {
-	addPet: (state, action) => {
-		const newState: PetsState = [...state];
+export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQuest | RedeemCode | KillNpc>(
+	defaultPets,
+	{
+		addPet: (state, action) => {
+			const newState: PetsState = [...state];
 
-		for (const pet of action.pets) {
-			if (pet.autoDeleted) {
-				continue;
+			for (const pet of action.pets) {
+				if (pet.autoDeleted) {
+					continue;
+				}
+
+				const petGuid = HttpService.GenerateGUID(false);
+				const newPet: Pet = {
+					id: pet.id,
+					bans: 1,
+					guid: petGuid,
+					equipped: false,
+					locked: false,
+					variant: pet.variant,
+					enhancements: pet.enhancements ?? {},
+				};
+
+				newState.push(newPet);
+			}
+			return newState;
+		},
+		deletePet: (state, action) => {
+			const newState = [...state];
+
+			for (const petToDelete of action.pets) {
+				newState.unorderedRemove(newState.findIndex((pet) => pet.guid === petToDelete));
 			}
 
-			const petGuid = HttpService.GenerateGUID(false);
-			const newPet: Pet = {
-				id: pet.id,
-				guid: petGuid,
-				equipped: false,
-				locked: false,
-				variant: pet.variant,
-				enhancements: pet.enhancements ?? {},
-			};
+			return newState;
+		},
+		equipPets: (state, action) => {
+			const newState = [...state];
 
-			newState.push(newPet);
-		}
-		return newState;
+			for (const petToEquip of action.pets) {
+				const storedPet = newState.find((pet) => pet.guid === petToEquip.guid);
+				assert(storedPet, `Rodux failed to equip pet with guid: "${petToEquip.guid}"`);
+
+				storedPet.equipped = petToEquip.enabled;
+			}
+
+			return newState;
+		},
+		lockPets: (state, action) => {
+			const newState = [...state];
+
+			for (const petToEquip of action.pets) {
+				const storedPet = newState.find((pet) => pet.guid === petToEquip.guid);
+				assert(storedPet, `Rodux failed to equip pet with guid: "${petToEquip.guid}"`);
+
+				storedPet.locked = petToEquip.enabled;
+			}
+
+			return newState;
+		},
+		enhancePet: (state, action) => {
+			const newState = [...state];
+
+			const pet = newState.find((pet) => pet.guid === action.guid);
+			if (pet !== undefined) {
+				pet.enhancements[action.enhancementData.variant] = action.enhancementData;
+			}
+
+			return newState;
+		},
+		redeemQuest: (state, action) => {
+			if (action.rewardType.kind !== "pet") {
+				return state;
+			}
+
+			const { id, guid, variant } = action.rewardType;
+
+			return [
+				...state,
+				{
+					id,
+					bans: 1,
+					guid,
+					equipped: false,
+					locked: false,
+					variant,
+					enhancements: {},
+				},
+			];
+		},
+		redeemCode: (state, action) => {
+			if (action.pet === undefined) {
+				return state;
+			}
+
+			const { id, guid, variant } = action.pet;
+
+			return [
+				...state,
+				{
+					id,
+					bans: 1,
+					guid,
+					equipped: false,
+					locked: false,
+					variant,
+					enhancements: {},
+				},
+			];
+		},
+		killNpc: (state) => {
+			const newState = [...state];
+
+			for (const pet of newState) {
+				if (!pet.equipped) {
+					continue;
+				}
+
+				pet.bans += 1;
+			}
+
+			return newState;
+		},
 	},
-	deletePet: (state, action) => {
-		const newState = [...state];
-
-		for (const petToDelete of action.pets) {
-			newState.unorderedRemove(newState.findIndex((pet) => pet.guid === petToDelete));
-		}
-
-		return newState;
-	},
-	togglePetEquip: (state, action) => {
-		const newState = [...state];
-
-		const pet = newState.find((pet) => pet.guid === action.guid);
-		if (pet !== undefined) {
-			pet.equipped = action.equipped;
-		} else throw `Rodux failed to toggle pet equip; Couldn't find a pet with a matching guid.`;
-
-		return newState;
-	},
-	togglePetLock: (state, action) => {
-		const newState = [...state];
-
-		const pet = newState.find((pet) => pet.guid === action.guid);
-		if (pet !== undefined) {
-			pet.locked = action.locked;
-		} else throw `Rodux failed to toggle pet lock; Couldn't find a pet with a matching guid.`;
-
-		return newState;
-	},
-	enhancePet: (state, action) => {
-		const newState = [...state];
-
-		const pet = newState.find((pet) => pet.guid === action.guid);
-		if (pet !== undefined) {
-			pet.enhancements[action.enhancementData.variant] = action.enhancementData;
-		}
-
-		return newState;
-	},
-	redeemQuest: (state, action) => {
-		if (action.rewardType.kind !== "pet") {
-			return state;
-		}
-
-		const { id, guid, variant } = action.rewardType;
-
-		return [
-			...state,
-			{
-				id,
-				guid,
-				equipped: false,
-				locked: false,
-				variant,
-				enhancements: {},
-			},
-		];
-	},
-	redeemCode: (state, action) => {
-		if (action.pet === undefined) {
-			return state;
-		}
-
-		const { id, guid, variant } = action.pet;
-
-		return [
-			...state,
-			{
-				id,
-				guid,
-				equipped: false,
-				locked: false,
-				variant,
-				enhancements: {},
-			},
-		];
-	},
-});
+);
 /* eslint-enable jsdoc/require-jsdoc */

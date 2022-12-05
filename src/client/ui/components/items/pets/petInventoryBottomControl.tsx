@@ -1,16 +1,23 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
+import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
+import { StoreState } from "shared/rodux";
+import { PetsState } from "shared/rodux/pets";
 
 /**
  * Equips the best pets a player can have.
  */
 /* eslint-disable jsdoc/require-jsdoc */
 export const EquipBestPets = hooks((_, hooks) => {
+	const { useContext } = hooks;
+	const { equipPets } = useContext(remoteContext);
+
 	const maximizedSize = 0.8;
 	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 
@@ -30,6 +37,7 @@ export const EquipBestPets = hooks((_, hooks) => {
 			Image={assetIds.images.ui.inventory.pets["function button"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
+				Activated: (): void => {},
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
@@ -56,7 +64,10 @@ export const EquipBestPets = hooks((_, hooks) => {
  * Unequips the player's currently equipped pets.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const UnequipPets = hooks((_, hooks) => {
+export const UnequipPets = hooks((props: { renderedPets: PetsState }, hooks) => {
+	const { useContext } = hooks;
+	const { equipPets } = useContext(remoteContext);
+
 	const maximizedSize = 0.8;
 	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 
@@ -76,6 +87,17 @@ export const UnequipPets = hooks((_, hooks) => {
 			Image={assetIds.images.ui.inventory.pets["function button"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
+				Activated: (): void => {
+					const equippedPets = props.renderedPets.filter((pet) => pet.equipped);
+
+					const petsToUnequip: Array<{ guid: string; enabled: boolean }> = equippedPets.map((pet) => {
+						return {
+							guid: pet.guid,
+							enabled: false,
+						};
+					});
+					equipPets.SendToServer(petsToUnequip);
+				},
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
@@ -102,7 +124,7 @@ export const UnequipPets = hooks((_, hooks) => {
  * Toggles an interface for the player's pet teams.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const ToggleTeams = hooks((_, hooks) => {
+export const ToggleTeams = hooks((props: { enableTeams: () => void }, hooks) => {
 	const maximizedSize = 0.8;
 	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 
@@ -122,6 +144,7 @@ export const ToggleTeams = hooks((_, hooks) => {
 			Image={assetIds.images.ui.inventory.pets["function button"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
+				Activated: (): void => props.enableTeams(),
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
@@ -144,69 +167,42 @@ export const ToggleTeams = hooks((_, hooks) => {
 });
 /* eslint-enable jsdoc/require-jsdoc */
 
+interface PetInventoryBottomControlProps extends PetInventoryBottomControlMappedProps {
+	enableTeams: () => void;
+}
+
+interface PetInventoryBottomControlMappedProps {
+	pets: PetsState;
+}
+
 /**
- * Toggles between types of sorting options for the pet inventory.
+ * @param state The current state of the store.
+ * @returns The mapped props.
  */
-/* eslint-disable jsdoc/require-jsdoc */
-export const ToggleSort = hooks((_, hooks) => {
-	const maximizedSize = 0.8;
-	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-	const minimizedSize = 0.75;
-	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-	const { motor, binding } = useBindingMotor(hooks, maximizedSize);
-
-	return (
-		<imagebutton
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Size={binding.map((value) => {
-				return UDim2.fromScale(0.19, value);
-			})}
-			Position={UDim2.fromScale(0.9, 0.5)}
-			Image={assetIds.images.ui.inventory.pets["function button"]}
-			ScaleType={Enum.ScaleType.Fit}
-			Event={{
-				MouseEnter: (): void => motor.setGoal(minimizedSpring),
-				MouseLeave: (): void => motor.setGoal(maximizedSpring),
-			}}
-		>
-			<uiaspectratioconstraint AspectRatio={2.8} />
-			<textlabel
-				BackgroundTransparency={1}
-				AnchorPoint={vec2Middle}
-				Size={UDim2.fromScale(0.65, 0.6)}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Text={"Strength"}
-				Font={font}
-				TextScaled={true}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-			>
-				<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(153, 79, 0) }} />
-			</textlabel>
-		</imagebutton>
-	);
-});
-/* eslint-enable jsdoc/require-jsdoc */
+function mapStateToProps(state: StoreState): PetInventoryBottomControlMappedProps {
+	return {
+		pets: state.pets,
+	};
+}
 
 /**
  * A bottom bar interface of the pet inventory component providing player with extra control over their items.
  */
-export const PetInventoryBottomControl = hooks(() => {
-	return (
-		<imagelabel
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Size={UDim2.fromScale(1, 0.14)}
-			Position={UDim2.fromScale(0.5, 0.95)}
-			Image={assetIds.images.ui.inventory.pets.bottombar}
-			ScaleType={Enum.ScaleType.Fit}
-		>
-			<EquipBestPets />
-			<UnequipPets />
-			<ToggleTeams />
-			<ToggleSort />
-		</imagelabel>
-	);
-});
+export const PetInventoryBottomControl = RoactRodux.connect(mapStateToProps)(
+	hooks((props: PetInventoryBottomControlProps) => {
+		return (
+			<imagelabel
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Size={UDim2.fromScale(1, 0.14)}
+				Position={UDim2.fromScale(0.5, 0.95)}
+				Image={assetIds.images.ui.inventory.pets.bottombar}
+				ScaleType={Enum.ScaleType.Fit}
+			>
+				<EquipBestPets />
+				<UnequipPets renderedPets={props.pets} />
+				<ToggleTeams enableTeams={props.enableTeams} />
+			</imagelabel>
+		);
+	}),
+);

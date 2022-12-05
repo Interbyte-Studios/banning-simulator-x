@@ -390,7 +390,7 @@ return {
 				},
 				["info sidebar"] = "rbxassetid://11722357647",
 				pets = {
-					bottombar = "rbxassetid://11722357729",
+					bottombar = "rbxassetid://11752972298",
 					["delete-sidebar"] = "rbxassetid://11722357825",
 					deleteIndicator = "rbxassetid://11722357937",
 					["equipped checkmark"] = "rbxassetid://11722358044",

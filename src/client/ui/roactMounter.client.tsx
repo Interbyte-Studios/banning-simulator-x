@@ -29,6 +29,8 @@ onStoreCreated(player)
 					purchaseZone: remotes.Client.Get("purchaseZone"),
 					unlockRank: remotes.Client.Get("unlockRank"),
 					deletePets: remotes.Client.GetNamespace("pets").Get("deletePets"),
+					equipPets: remotes.Client.GetNamespace("pets").Get("equipPets"),
+					lockPets: remotes.Client.GetNamespace("pets").Get("lockPets"),
 					redeemCode: remotes.Client.GetNamespace("media").Get("redeemCode"),
 					redeemQuest: remotes.Client.Get("redeemQuest"),
 					toggleButtonClickSFX: remotes.Client.GetNamespace("settings").GetNamespace("sound").Get("toggleButtonClick"),

@@ -4,6 +4,8 @@ import { VerifyDiscordDefinition } from "shared/remotes/media/verifyDiscord";
 import { ClaimPetMasteryDefinition } from "shared/remotes/petMastery/claimMastery";
 import { TogglePetMasteryCosmetic } from "shared/remotes/petMastery/toggleCosmetic";
 import { DeletePetsDefinition } from "shared/remotes/pets/deletePets";
+import { EquipPetsDefinition } from "shared/remotes/pets/equipPets";
+import { LockPetsDefinition } from "shared/remotes/pets/lockPets";
 import { PurchaseZoneDefinition } from "shared/remotes/purchaseZone";
 import { RedeemQuestDefinition } from "shared/remotes/redeemQuest";
 import { ToggleAutoDeleteDefinition } from "shared/remotes/settings/autoDelete/toggleAutoDelete";
@@ -44,6 +46,8 @@ export const fakeRemoteContext = {
 	purchaseWeapon: fakeRemoteCall<PurchaseWeaponDefinition>("purchaseWeapon"),
 
 	deletePets: fakeRemoteCall<DeletePetsDefinition>("deletePets"),
+	equipPets: fakeRemoteCall<EquipPetsDefinition>("equipPets"),
+	lockPets: fakeRemoteCall<LockPetsDefinition>("lockPets"),
 
 	purchaseZone: fakeFunctionCall<PurchaseZoneDefinition>("purchaseZone", () => {
 		return {

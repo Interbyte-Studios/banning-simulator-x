@@ -207,6 +207,7 @@ export const ToggleMultiDelete = hooks(
  * Interface that displays the player's pets.
  */
 export const PetInventory = hooks((_, { useState, useCallback }) => {
+	const [teamsEnabled, setTeamsEnabled] = useState(false);
 	const [deleteEnabled, setDeleteEnabled] = useState(false);
 	const [petsToDelete, setPetsToDelete] = useState<Array<string>>([]);
 	const [searchText, setSearchText] = useState<string | undefined>(undefined);
@@ -237,38 +238,62 @@ export const PetInventory = hooks((_, { useState, useCallback }) => {
 		[setPetsToDelete, petsToDelete],
 	);
 
-	return (
-		<frame
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Size={UDim2.fromScale(0.975, 0.785)}
-			Position={UDim2.fromScale(0.5, 0.565)}
-		>
-			<PetInventoryCounterTopBar />
-			<PetInventorySearch
-				setSearch={(text: string): void => {
-					if (text === "") {
-						setSearchText(undefined);
-					} else {
-						setSearchText(text);
-					}
-				}}
-			/>
-			<ToggleShrink />
-			<ToggleMultiDelete
-				isEnabled={deleteEnabled}
-				setDeletion={(enabled: boolean): void => {
-					setDeleteEnabled(enabled);
-				}}
-				petsToDelete={petsToDelete}
-			/>
-			<PetItems
-				multiDeleteEnabled={deleteEnabled}
-				searchText={searchText}
-				addPetToDeletionRegistry={addPetToDeletionRegistry}
-				removePetFromDeletionRegistry={removePetFromDeletionRegistry}
-			/>
-			<PetInventoryBottomControl />
-		</frame>
-	);
+	if (teamsEnabled) {
+		return (
+			<frame
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Size={UDim2.fromScale(0.975, 0.785)}
+				Position={UDim2.fromScale(0.5, 0.61)}
+			>
+				<textlabel
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					Position={UDim2.fromScale(0.5, 0.2)}
+					Size={UDim2.fromScale(0.95, 0.05)}
+					Text={`Pet Teams allow you to functionally control multiple pets at once.`}
+					TextScaled={true}
+					TextColor3={Color3.fromRGB(255, 255, 255)}
+					Font={font}
+				>
+					<BaseUIStroke native={{ Thickness: 1, Color: Color3.fromRGB(0, 93, 150) }} />
+				</textlabel>
+			</frame>
+		);
+	} else {
+		return (
+			<frame
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Size={UDim2.fromScale(0.975, 0.785)}
+				Position={UDim2.fromScale(0.5, 0.565)}
+			>
+				<PetInventoryCounterTopBar />
+				<PetInventorySearch
+					setSearch={(text: string): void => {
+						if (text === "") {
+							setSearchText(undefined);
+						} else {
+							setSearchText(text);
+						}
+					}}
+				/>
+				<ToggleShrink />
+				<ToggleMultiDelete
+					isEnabled={deleteEnabled}
+					setDeletion={(enabled: boolean): void => {
+						setDeleteEnabled(enabled);
+					}}
+					petsToDelete={petsToDelete}
+				/>
+				<PetItems
+					multiDeleteEnabled={deleteEnabled}
+					searchText={searchText}
+					addPetToDeletionRegistry={addPetToDeletionRegistry}
+					removePetFromDeletionRegistry={removePetFromDeletionRegistry}
+				/>
+				<PetInventoryBottomControl enableTeams={(): void => setTeamsEnabled(true)} />
+			</frame>
+		);
+	}
 });

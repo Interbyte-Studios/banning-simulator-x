@@ -85,19 +85,35 @@ export type Variants = t.static<typeof isVariant>;
 
 export const VARIANT_GRADIENTS = preserveWithConstraint<Record<Variants, RarityGradient>>()({
 	regular: {
+		id: 1,
 		BeginningColor: Color3.fromRGB(255, 255, 255),
 		EndingColor: Color3.fromRGB(148, 148, 148),
 		SpecialColor: undefined,
 	},
 	void: {
+		id: 2,
 		BeginningColor: Color3.fromRGB(98, 37, 209),
 		EndingColor: Color3.fromRGB(57, 0, 86),
 		SpecialColor: undefined,
 	},
 	radiant: {
+		id: 3,
 		BeginningColor: Color3.fromRGB(255, 255, 255),
 		EndingColor: Color3.fromRGB(250, 196, 61),
 		SpecialColor: undefined,
 	},
 });
 export type VariantGradients = keyof typeof VARIANT_GRADIENTS;
+
+export const PET_MAX_LEVELS = {
+	regular: 30,
+	void: 40,
+	radiant: 50,
+};
+
+// Amount of bans required per level
+export const PET_LEVEL_REQUIREMENTS = {
+	regular: 20,
+	void: 30,
+	radiant: 40,
+};
