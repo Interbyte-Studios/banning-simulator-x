@@ -136,6 +136,8 @@ export function enhancePet(
 
 const defaultPets: PetsState = [];
 
+/*
+
 for (let x = 1; x <= 6; x++) {
 	for (let i = 1; i <= 81; i++) {
 		const pet: Pet = {
@@ -173,6 +175,8 @@ for (let x = 1; x <= 6; x++) {
 		defaultPets.push(radiantPet);
 	}
 }
+
+*/
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQuest | RedeemCode | KillNpc>(
