@@ -11,6 +11,7 @@ import { PetInventory } from "./pets";
 export type ValidInventoryType = "Pets" | "Weapons" | "Talismans" | "Titles" | "Boosts";
 
 interface ItemInventoryProps {
+	enabled: boolean;
 	visible: boolean;
 	hideMenu: () => void;
 }
@@ -30,6 +31,8 @@ export const ItemInventory = hooks((props: ItemInventoryProps, hooks) => {
 	if (itemInventoryVisible === "Pets") {
 		inventoryToDisplay.push(<PetInventory />);
 	}
+
+	print(itemInventoryVisible);
 
 	return (
 		<imagelabel

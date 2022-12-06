@@ -66,7 +66,7 @@ export = (target: GuiBase): (() => void) => {
 		target,
 		(_, store) => (
 			<RoactRodux.StoreProvider store={store}>
-				<ItemInventory visible={true} hideMenu={(): void => {}} />
+				<ItemInventory enabled={true} visible={true} hideMenu={(): void => {}} />
 			</RoactRodux.StoreProvider>
 		),
 	);

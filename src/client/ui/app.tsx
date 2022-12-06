@@ -8,6 +8,7 @@ import { CurrencyGainAnimation } from "./components/currencyGainAnimation";
 import { EggsUI } from "./components/eggs";
 import { WeaponEquip } from "./components/equip/weaponEquip";
 import { Hud } from "./components/hud";
+import { ItemInventory } from "./components/items";
 import { PetMastery } from "./components/petMastery";
 import { Quests } from "./components/quests";
 import { RankUpgrade } from "./components/ranks/menu";
@@ -182,6 +183,19 @@ export const app = hooks((props: AppProps, { useState }) => {
 					hideMenu={(): void => setTeleportationVisibility(false)}
 				/>
 				<CurrencyGainAnimation />
+				<ItemInventory
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility &&
+						!itemsVisibility
+					}
+					visible={itemsVisibility}
+					hideMenu={(): void => setItemsVisibility(false)}
+				/>
 			</>
 		</RoactRodux.StoreProvider>
 	);
