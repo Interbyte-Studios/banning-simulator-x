@@ -3,6 +3,7 @@ import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 const minimizedSize = 0.8;
@@ -38,7 +39,10 @@ export const ItemsIcon = hooks((props: ItemsIconProps, { useEffect }) => {
 			Image={assetIds.images.ui.hud.icons.items}
 			LayoutOrder={3}
 			Event={{
-				Activated: (): void => props.displayItemsMenu(),
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.displayItemsMenu();
+				},
 				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
