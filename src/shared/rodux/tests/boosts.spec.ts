@@ -1,9 +1,9 @@
 /// <reference types="@rbxts/testez/globals" />
 
 import { BoostProduct } from "shared/configs/game";
-import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 
 import { boostsReducer, BoostsState, claimBoost, useBoosts } from "../boosts";
+import { testAction } from "./testAction";
 
 export = (): void => {
 	describe("rodux/boosts", () => {
@@ -97,7 +97,7 @@ export = (): void => {
 
 			const action = claimBoost("x2 Currency", claimedBoostTime);
 
-			assertDeepEqual(boostsReducer(state, action), newState);
+			testAction(state, newState, boostsReducer, action);
 		});
 
 		it("should allow using a boost", () => {
@@ -159,7 +159,7 @@ export = (): void => {
 
 			const action = useBoosts(boostsToUse);
 
-			assertDeepEqual(boostsReducer(state, action), newState);
+			testAction(state, newState, boostsReducer, action);
 		});
 	});
 };
