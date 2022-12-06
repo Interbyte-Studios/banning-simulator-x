@@ -1,6 +1,7 @@
 import { RunService, TweenService, Workspace } from "@rbxts/services";
 import { EggName, EGGS } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
+import { getEggData } from "shared/util/getEggData";
 
 export {};
 
@@ -61,11 +62,15 @@ function animateEgg(eggName: EggName, variant: Exclude<Variants, "radiant">): vo
 	});
 }
 
-for (const [eggName] of pairs(EGGS)) {
+for (const [name, data] of pairs(EGGS)) {
+	if (!data.hatchable) {
+		continue;
+	}
+
 	task.spawn(() => {
-		animateEgg(eggName, "regular");
+		animateEgg(name, "regular");
 		task.wait(1);
-		animateEgg(eggName, "void");
+		animateEgg(name, "void");
 	});
 }
 

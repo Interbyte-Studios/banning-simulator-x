@@ -20,6 +20,11 @@ interface ItemInventoryProps {
  * Item inventory user interface.
  */
 export const ItemInventory = hooks((props: ItemInventoryProps, hooks) => {
+	if (!props.enabled) {
+		warn("Not enabled");
+		return <></>;
+	}
+
 	if (!props.visible) {
 		return <></>;
 	}
@@ -32,7 +37,7 @@ export const ItemInventory = hooks((props: ItemInventoryProps, hooks) => {
 		inventoryToDisplay.push(<PetInventory />);
 	}
 
-	print(itemInventoryVisible);
+	print("Should be visible");
 
 	return (
 		<imagelabel

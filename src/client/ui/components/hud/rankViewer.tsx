@@ -90,7 +90,7 @@ export const RanksViewer = RoactRodux.connect(mapStateToProps)(
 				>
 					<BaseUIStroke
 						rankGradient={props.rank - 1}
-						native={{ Thickness: 2.5, Color: Color3.fromRGB(255, 255, 255) }}
+						native={{ Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }}
 					/>
 				</textlabel>
 				<RanksFill progress={getRankProgress(props.rank, props.experience) ?? 1} />

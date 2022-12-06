@@ -93,6 +93,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 				BackgroundTransparency={1}
 				Position={UDim2.fromScale(0.5, 0.125)}
 				Size={frameBindingMotor.binding.map((value) => {
+					warn(value);
 					return UDim2.fromScale(0.4, value);
 				})}
 				Image={assetIds.images.ui.levelup.LevelUp}

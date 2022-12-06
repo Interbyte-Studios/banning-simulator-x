@@ -64,7 +64,11 @@ async function hatchClosestEgg(
 
 	let eggToHatch: EggName | undefined;
 	let isVoid = false;
-	for (const [name] of pairs(EGGS)) {
+	for (const [name, data] of pairs(EGGS)) {
+		if (!data.hatchable) {
+			continue;
+		}
+
 		const eggFolder = Workspace.interactions.eggs[name];
 
 		const regularEgg = eggFolder.regular.egg.PrimaryPart;
@@ -183,6 +187,8 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 						return;
 					}
 
+					warn("Hatching egg");
+
 					await manageEggHatch(1, props.initiateHatch, props.autoActive, false);
 				},
 				false,
@@ -195,6 +201,8 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					if (state !== Enum.UserInputState.Begin) {
 						return;
 					}
+
+					warn("Hatching triple");
 
 					await manageEggHatch(3, props.initiateHatch, props.autoActive, props.ownsTripleHatch);
 				},

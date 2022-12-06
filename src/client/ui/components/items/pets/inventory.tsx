@@ -171,6 +171,11 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 			if (scrollingFrame.CanvasPosition.Y === 0) {
 				const mutatedPets = [...petsToRender];
 				for (let i = 0; i <= uiGridLayout.FillDirectionMaxCells * 4 - 1; i++) {
+					const petToRender = mutatedPets[i];
+					if (petToRender === undefined) {
+						continue;
+					}
+
 					mutatedPets[i].isRendered = true;
 				}
 

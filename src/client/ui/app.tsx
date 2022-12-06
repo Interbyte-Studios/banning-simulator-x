@@ -45,6 +45,10 @@ export const app = hooks((props: AppProps, { useState }) => {
 
 	const [isHatching, setHatchingStatus] = useState(false);
 
+	if (itemsVisibility) {
+		warn("Item inventory should be visible");
+	}
+
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
@@ -190,8 +194,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!settingsVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
-						!talismanTowerVisibility &&
-						!itemsVisibility
+						!talismanTowerVisibility
 					}
 					visible={itemsVisibility}
 					hideMenu={(): void => setItemsVisibility(false)}
