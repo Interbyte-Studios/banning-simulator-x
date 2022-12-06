@@ -1,4 +1,4 @@
-import Rodux, { makeActionCreator } from "@rbxts/rodux";
+import Rodux from "@rbxts/rodux";
 
 import { DeletePet } from "./pets";
 
@@ -123,26 +123,31 @@ export const petTeamsReducer = Rodux.createReducer<PetTeamsState, PetTeamsAction
 	updateTeamName: (state, action) => {
 		const newState: PetTeamsState = { ...state };
 
-		const storedTeam = newState.teams.find((team) => team.id === action.teamId);
-		assert(storedTeam, `Failed to get stored team for team with id ${action.teamId}`);
+		const teamIndex = newState.teams.findIndex((team) => team.id === action.teamId);
+		assert(teamIndex, `Failed to get stored team for team with id ${action.teamId}`);
 
-		storedTeam.name = action.name;
+		const newTeamData = [...newState.teams];
+		newTeamData[teamIndex].name = action.name;
+
+		newState.teams = newTeamData;
 
 		return newState;
 	},
 	deletePet: (state, action) => {
 		const newState: PetTeamsState = { ...state };
 
-		for (const team of newState.teams) {
-			for (const [index, petGuid] of pairs(team.pets)) {
-				const isBeingDeleted = action.pets.find((deletedPetGuid) => deletedPetGuid === petGuid);
-				if (isBeingDeleted === undefined) {
+		const newTeams = [...newState.teams];
+		for (const deletedPetGuid of action.pets) {
+			for (const team of newState.teams) {
+				const petIndex = team.pets.findIndex((petGuid) => petGuid === deletedPetGuid)
+				if (petIndex === undefined) {
 					continue;
 				}
 
-				team.pets.unorderedRemove(index);
+				team.pets.unorderedRemove(petIndex);
 			}
 		}
+		newState.teams = newTeams;
 
 		return newState;
 	},
