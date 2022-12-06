@@ -1988,6 +1988,16 @@ hash = "d908f521e031f06a87cae5b94f2ed56655c08730047de8ef0265c0274be808bd"
 id = 11585642192
 packable = false
 
+[inputs."images/ui/weapon shop/delete.png"]
+hash = "15e123f5344e1d26edb8eb36937262cedc45bc3a5a63c6e04b45b4f128a5348b"
+id = 11754463150
+packable = false
+
+[inputs."images/ui/weapon shop/locked.png"]
+hash = "af548e90f0a7417529f842804eff9be2c5024f5c13f55d5e52c1e58f58e06638"
+id = 11754463237
+packable = false
+
 [inputs."images/ui/weapon shop/purchase button.png"]
 hash = "6204eee9751ace0a143a3a7c1019c1b004614f7e8774bb22b56b45293ce32683"
 id = 11497595550

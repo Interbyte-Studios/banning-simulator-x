@@ -49,6 +49,7 @@ export interface DeletePet extends Rodux.Action<"deletePet"> {
 
 export interface EquipPet extends Rodux.Action<"equipPets"> {
 	pets: Array<{ guid: string; enabled: boolean }>;
+	unequipAll: boolean;
 }
 
 export interface LockPet extends Rodux.Action<"lockPets"> {
@@ -89,12 +90,17 @@ export function deletePets(pets: Array<string>): DeletePet & Rodux.AnyAction {
 
 /**
  * @param pets The pets to equip.
+ * @param unequipAll Whether or not all equipped pets should be unequipped before the new pets are equipped.
  * @returns The Rodux action to dispatch.
  */
-export function equipPets(pets: Array<{ guid: string; enabled: boolean }>): EquipPet & Rodux.AnyAction {
+export function equipPets(
+	pets: Array<{ guid: string; enabled: boolean }>,
+	unequipAll: boolean,
+): EquipPet & Rodux.AnyAction {
 	return {
 		type: "equipPets",
 		pets,
+		unequipAll,
 	};
 }
 
@@ -206,6 +212,16 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 		},
 		equipPets: (state, action) => {
 			const newState = [...state];
+
+			if (action.unequipAll) {
+				for (const pet of newState) {
+					if (pet.equipped === false) {
+						continue;
+					}
+
+					pet.equipped = false;
+				}
+			}
 
 			for (const petToEquip of action.pets) {
 				const storedPet = newState.find((pet) => pet.guid === petToEquip.guid);

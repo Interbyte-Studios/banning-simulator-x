@@ -4,6 +4,7 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 interface DisplayBoostsInventoryProps {
@@ -31,7 +32,10 @@ export const DisplayBoostsInventory = hooks((props: DisplayBoostsInventoryProps,
 			Image={assetIds.images.ui.inventory.icons.boosts}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
-				Activated: (): void => props.displayBoostsInventory(),
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.displayBoostsInventory();
+				},
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}

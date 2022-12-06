@@ -12,6 +12,8 @@ import { PetItems } from "./inventory";
 import { PetInventoryCounterTopBar } from "./inventoryCounter";
 import { PetInventoryBottomControl } from "./petInventoryBottomControl";
 import { PetInventorySearch } from "./search";
+import { PetTeams } from "./teams";
+import { ReturnToPetInventory } from "./teams/returnToInventory";
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const ToggleShrink = hooks((_, hooks) => {
@@ -206,11 +208,15 @@ export const ToggleMultiDelete = hooks(
 /**
  * Interface that displays the player's pets.
  */
-export const PetInventory = hooks((_, { useState, useCallback }) => {
+export const PetInventory = hooks((_, { useState, useCallback, useEffect }) => {
 	const [teamsEnabled, setTeamsEnabled] = useState(false);
 	const [deleteEnabled, setDeleteEnabled] = useState(false);
 	const [petsToDelete, setPetsToDelete] = useState<Array<string>>([]);
 	const [searchText, setSearchText] = useState<string | undefined>(undefined);
+
+	useEffect(() => {
+		setPetsToDelete([]);
+	}, [deleteEnabled]);
 
 	/**
 	 * Adds a pet guid to the collection of pet guid's currently selected to be deleted.
@@ -240,12 +246,7 @@ export const PetInventory = hooks((_, { useState, useCallback }) => {
 
 	if (teamsEnabled) {
 		return (
-			<frame
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.975, 0.785)}
-				Position={UDim2.fromScale(0.5, 0.61)}
-			>
+			<>
 				<textlabel
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
@@ -258,7 +259,9 @@ export const PetInventory = hooks((_, { useState, useCallback }) => {
 				>
 					<BaseUIStroke native={{ Thickness: 1, Color: Color3.fromRGB(0, 93, 150) }} />
 				</textlabel>
-			</frame>
+				<PetTeams />
+				<ReturnToPetInventory returnToSelection={(): void => setTeamsEnabled(false)} />
+			</>
 		);
 	} else {
 		return (

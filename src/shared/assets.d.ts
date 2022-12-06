@@ -75,6 +75,8 @@ declare namespace assetIds {
 				delete: string;
 			};
 			"weapon shop": {
+				locked: string;
+				delete: string;
 				"purchase button": string;
 				"weapon info background": string;
 			};

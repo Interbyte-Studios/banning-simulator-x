@@ -461,6 +461,8 @@ return {
 				["update log"] = "rbxassetid://11585642192",
 			},
 			["weapon shop"] = {
+				delete = "rbxassetid://11754463150",
+				locked = "rbxassetid://11754463237",
 				["purchase button"] = "rbxassetid://11497595550",
 				["weapon info background"] = "rbxassetid://11497175188",
 			},

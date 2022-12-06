@@ -51,6 +51,19 @@ export = (target: GuiBase): (() => void) => {
 	const { cleanup } = createMockStory(
 		{
 			pets: pets,
+			petTeams: {
+				maxTeams: 10,
+				teams: [
+					{
+						id: 1,
+						pets: ["1", "2"],
+					},
+					{
+						id: 2,
+						pets: ["3", "4"],
+					},
+				],
+			},
 		},
 		target,
 		(_, store) => (

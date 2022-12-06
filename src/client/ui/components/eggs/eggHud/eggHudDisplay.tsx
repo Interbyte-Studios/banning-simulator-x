@@ -139,11 +139,11 @@ export const EggHudDisplay = hooks((props: EggHudProps, hooks) => {
 
 						return (
 							<PetFrame
-								eggName={props.eggName}
 								petId={petInfo.id}
 								variant={props.isVoid ? "void" : "regular"}
 								displayBackground={true}
 								isBillboard={true}
+								displayType={"stats"}
 							/>
 						);
 					})}

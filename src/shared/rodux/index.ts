@@ -5,11 +5,13 @@ import { BoostActions, boostsReducer, BoostsState } from "./boosts";
 import { CurrenciesActions, currenciesReducer, CurrenciesState } from "./currencies";
 import { CurrentTalismanActions, currentTalismanReducer, CurrentTalismanState } from "./currentTalisman";
 import { CurrentWeaponActions, currentWeaponReducer, CurrentWeaponState } from "./currentWeapon";
+import { DevProductActions, devProductReducer, DevProductState } from "./devProducts";
 import { experienceReducer, ExperienceState } from "./experience";
 import { GamepassActions, gamepassesReducer, GamepassesState } from "./gamepasses";
 import { MediaActions, mediaReducer, MediaState } from "./media";
 import { PetMasteryActions, petMasteryReducer, PetMasteryState } from "./petMastery";
 import { PetsActions, petsReducer, PetsState } from "./pets";
+import { PetTeamsActions, petTeamsReducer, PetTeamsState } from "./petTeams";
 import { playerIndexReducer, PlayerIndexState } from "./playerIndex";
 import { QuestsAction, questsReducer, QuestsState } from "./quests";
 import { RankActions, rankReducer, RankState } from "./rank";
@@ -38,6 +40,8 @@ export type StoreState = {
 	currentTalisman: CurrentTalismanState;
 	index: PlayerIndexState;
 	petMastery: PetMasteryState;
+	petTeams: PetTeamsState;
+	devProducts: DevProductState;
 };
 export type StoreActions = (
 	| BoostActions
@@ -55,6 +59,8 @@ export type StoreActions = (
 	| TalismanActions
 	| CurrentTalismanActions
 	| PetMasteryActions
+	| PetTeamsActions
+	| DevProductActions
 ) &
 	Rodux.AnyAction;
 
@@ -77,6 +83,8 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	currentTalisman: currentTalismanReducer,
 	index: playerIndexReducer,
 	petMastery: petMasteryReducer,
+	petTeams: petTeamsReducer,
+	devProducts: devProductReducer,
 });
 
 export type Store = Rodux.Store<StoreState, StoreActions>;

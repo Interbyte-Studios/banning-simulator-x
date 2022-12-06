@@ -6,6 +6,7 @@ import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { PetsState } from "shared/rodux/pets";
@@ -37,7 +38,9 @@ export const EquipBestPets = hooks((_, hooks) => {
 			Image={assetIds.images.ui.inventory.pets["function button"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
-				Activated: (): void => {},
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+				},
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
@@ -88,6 +91,8 @@ export const UnequipPets = hooks((props: { renderedPets: PetsState }, hooks) => 
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
 				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+
 					const equippedPets = props.renderedPets.filter((pet) => pet.equipped);
 
 					const petsToUnequip: Array<{ guid: string; enabled: boolean }> = equippedPets.map((pet) => {
@@ -96,7 +101,7 @@ export const UnequipPets = hooks((props: { renderedPets: PetsState }, hooks) => 
 							enabled: false,
 						};
 					});
-					equipPets.SendToServer(petsToUnequip);
+					equipPets.SendToServer(petsToUnequip, true);
 				},
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
@@ -144,7 +149,10 @@ export const ToggleTeams = hooks((props: { enableTeams: () => void }, hooks) => 
 			Image={assetIds.images.ui.inventory.pets["function button"]}
 			ScaleType={Enum.ScaleType.Fit}
 			Event={{
-				Activated: (): void => props.enableTeams(),
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.enableTeams();
+				},
 				MouseEnter: (): void => motor.setGoal(minimizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}

@@ -1,11 +1,12 @@
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
 import { equipPets } from "shared/rodux/pets";
+import { getMaxPetEquip } from "shared/util/getMaxPetEquip";
 
 remotes.Server.GetNamespace("pets")
 	.Create("equipPets")
 	.Connect(
-		withPlayerStore((_, store, pets) => {
+		withPlayerStore((_, store, pets, unequipAll) => {
 			const currentState = store.getState();
 
 			// verify that they own the pets
@@ -19,7 +20,17 @@ remotes.Server.GetNamespace("pets")
 				petsToEquip.push(petToEquip);
 			}
 
+			// verify that they have space
+			if (!unequipAll) {
+				const currentAmountEquipped = currentState.pets.filter((pet) => pet.equipped).size();
+				const maxEquipAmount = getMaxPetEquip(currentState.gamepasses);
+
+				if (currentAmountEquipped >= maxEquipAmount) {
+					return;
+				}
+			}
+
 			// equip the pets
-			store.dispatch(equipPets(petsToEquip));
+			store.dispatch(equipPets(petsToEquip, unequipAll));
 		}),
 	);

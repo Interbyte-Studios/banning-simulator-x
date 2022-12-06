@@ -9,12 +9,11 @@ import { PetViewport } from "./petViewport";
 import { RarityGradient } from "./rarityGradient";
 
 interface PetFrameProps {
-	eggName: EggName;
 	petId: number;
 	variant: Variants;
 	displayBackground: boolean;
 	isBillboard: boolean;
-	size?: UDim2;
+	displayType: "stats" | "stored";
 }
 
 /**
@@ -29,20 +28,10 @@ interface PetFrameProps {
 export function PetFrame(props: PetFrameProps): Roact.Element {
 	const petData = getPetData(props.petId);
 
-	return (
-		<frame BackgroundTransparency={1} LayoutOrder={props.petId}>
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={0}
-				BackgroundColor3={Color3.fromRGB(46, 115, 179)}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.925, 0.925)}
-				Image={""}
-			>
-				<uiaspectratioconstraint AspectRatio={1} />
-				<uicorner CornerRadius={new UDim(1, 0)} />
-				<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} isBillboard={props.isBillboard} />
-				<PetViewport petId={props.petId} variant={props.variant} />
+	const elementsToDisplay: Array<Roact.Element> = [];
+	if (props.displayType === "stats") {
+		elementsToDisplay.push(
+			<>
 				<textlabel
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
@@ -70,6 +59,25 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 					<RarityGradient Rarity={petData.rarity} />
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} isBillboard={props.isBillboard} />
 				</textlabel>
+			</>,
+		);
+	}
+
+	return (
+		<frame BackgroundTransparency={1} LayoutOrder={props.petId}>
+			<imagelabel
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={0}
+				BackgroundColor3={Color3.fromRGB(46, 115, 179)}
+				Position={UDim2.fromScale(0.5, 0.5)}
+				Size={UDim2.fromScale(0.925, 0.925)}
+				Image={""}
+			>
+				<uiaspectratioconstraint AspectRatio={1} />
+				<uicorner CornerRadius={new UDim(1, 0)} />
+				<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} isBillboard={props.isBillboard} />
+				<PetViewport petId={props.petId} variant={props.variant} />
+				{elementsToDisplay}
 			</imagelabel>
 		</frame>
 	);
