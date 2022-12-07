@@ -21,7 +21,6 @@ interface ItemInventoryProps {
  */
 export const ItemInventory = hooks((props: ItemInventoryProps, hooks) => {
 	if (!props.enabled) {
-		warn("Not enabled");
 		return <></>;
 	}
 
@@ -36,8 +35,6 @@ export const ItemInventory = hooks((props: ItemInventoryProps, hooks) => {
 	if (itemInventoryVisible === "Pets") {
 		inventoryToDisplay.push(<PetInventory />);
 	}
-
-	print("Should be visible");
 
 	return (
 		<imagelabel

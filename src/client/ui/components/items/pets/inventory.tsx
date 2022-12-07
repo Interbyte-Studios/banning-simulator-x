@@ -43,6 +43,7 @@ const PetFrame = hooks(
 			multiDeleteEnabled: boolean;
 			addPetToDeletionRegistry: (guid: string) => void;
 			removePetFromDeletionRegistry: (guid: string) => void;
+			layoutOrderIndex: number;
 		},
 		{ useState, useEffect },
 	) => {
@@ -90,7 +91,7 @@ const PetFrame = hooks(
 
 		if (props.isRendered) {
 			return (
-				<frame BackgroundTransparency={1} LayoutOrder={petData.id}>
+				<frame BackgroundTransparency={1} LayoutOrder={props.layoutOrderIndex}>
 					<imagebutton
 						AnchorPoint={vec2Middle}
 						BackgroundTransparency={0}
@@ -135,7 +136,7 @@ const PetFrame = hooks(
 				</frame>
 			);
 		} else {
-			return <frame BackgroundTransparency={0} LayoutOrder={petData.id}></frame>;
+			return <frame BackgroundTransparency={0} LayoutOrder={props.layoutOrderIndex}></frame>;
 		}
 	},
 	{
@@ -187,13 +188,12 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 						const absolutePosition =
 							y_coordinate * uiGridLayout.CellSize.Y.Offset + y_coordinate * uiGridLayout.CellPadding.Y.Offset;
 
-						let shouldBeRendered = false;
-						if (
-							absolutePosition >= scrollingFrame.CanvasPosition.Y / uiGridLayout.FillDirectionMaxCells &&
-							absolutePosition <= scrollingFrame.CanvasPosition.Y * uiGridLayout.FillDirectionMaxCells
-						) {
-							shouldBeRendered = true;
-						}
+						const greaterThanMinimum =
+							absolutePosition >= math.floor(scrollingFrame.CanvasPosition.Y / uiGridLayout.FillDirectionMaxCells);
+						const lessThanMaximum =
+							absolutePosition <= math.ceil(scrollingFrame.CanvasPosition.Y * uiGridLayout.FillDirectionMaxCells);
+
+						const shouldBeRendered = greaterThanMinimum && lessThanMaximum;
 
 						if (shouldBeRendered !== pet.isRendered) {
 							return {
@@ -276,7 +276,7 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 					FillDirectionMaxCells={5}
 					Ref={layoutRef.value}
 				/>
-				{petsToRender.map((pet) => {
+				{petsToRender.map((pet, index) => {
 					return (
 						<PetFrame
 							Key={pet.guid}
@@ -285,6 +285,7 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 							multiDeleteEnabled={props.multiDeleteEnabled}
 							addPetToDeletionRegistry={props.addPetToDeletionRegistry}
 							removePetFromDeletionRegistry={props.removePetFromDeletionRegistry}
+							layoutOrderIndex={index}
 						/>
 					);
 				})}
