@@ -146,6 +146,9 @@ const PetFrame = hooks(
 /* eslint-enable jsdoc/require-jsdoc */
 
 let lastRenderedTime = 0;
+interface RenderedPets extends Pet {
+	isRendered: boolean;
+}
 
 /**
  * Displays the player's pets.
@@ -153,11 +156,14 @@ let lastRenderedTime = 0;
 /* eslint-disable jsdoc/require-jsdoc */
 export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 	hooks((props: PetItemsProps, { useEffect, useValue, useState }) => {
-		const [petsToRender, setPetsToRender] = useState(
+		const [petsToRender, setPetsToRender] = useState<Array<RenderedPets> | undefined>(undefined);
+
+		setPetsToRender(
 			props.pets.map((pet) => {
 				return { ...pet, isRendered: false };
 			}),
 		);
+		assert(petsToRender, `Failed to get pets that should be rendered.`);
 
 		/**
 		 * Sets the `petsToRender` entries accordingly to which should be rendered.
