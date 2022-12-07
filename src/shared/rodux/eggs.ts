@@ -28,7 +28,10 @@ export const eggsReducer = Rodux.createReducer<EggsState, AddPet>(defaultEggs, {
 
 		for (const pet of action.pets) {
 			newState.eggs += 1;
-			newState.rarities[pet.rarity] += 1;
+			newState.rarities = {
+				...newState.rarities,
+				[pet.rarity]: newState.rarities[pet.rarity] + 1,
+			};
 		}
 
 		return newState;

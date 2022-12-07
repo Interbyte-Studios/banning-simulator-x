@@ -46,27 +46,29 @@ export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions |
 			level: 1,
 		};
 
-		const newState = [...state];
-		newState.push(newWeapon);
+		const newState = [...state, newWeapon];
 
 		return newState;
 	},
 	killNpc: (state, action) => {
 		const newState = [...state];
 
-		const currentWeapon = newState.find((weapon) => weapon.id === action.weaponId);
-		if (currentWeapon === undefined) {
+		const currentWeaponIndex = newState.findIndex((weapon) => weapon.id === action.weaponId);
+		if (currentWeaponIndex === undefined) {
 			throw `Expected player to own the weapon ${action.weaponId}`;
 		}
 
-		const increasedWeaponBanCounter = currentWeapon.bans + 1;
-		currentWeapon.bans = increasedWeaponBanCounter;
+		const newCurrentWeapon = { ...newState[currentWeaponIndex] };
+
+		newCurrentWeapon.bans += 1;
 
 		WEAPON_LEVELS.forEach((levelData) => {
-			if (currentWeapon.bans >= levelData.requiredBans) {
-				currentWeapon.level = levelData.level;
+			if (newCurrentWeapon.bans >= levelData.requiredBans) {
+				newCurrentWeapon.level = levelData.level;
 			}
 		});
+
+		newState[currentWeaponIndex] = newCurrentWeapon;
 
 		return newState;
 	},

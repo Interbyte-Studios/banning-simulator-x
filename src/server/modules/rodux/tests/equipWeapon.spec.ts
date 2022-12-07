@@ -14,7 +14,7 @@ export = (): void => {
 			};
 
 			const player = useMockPlayer();
-			const { dispatchedActions, cleanup } = createDummyStore(player, {
+			const { store, dispatchedActions, cleanup } = createDummyStore(player, {
 				currentWeapon: {
 					id: 1,
 					equipped: false,
@@ -22,11 +22,10 @@ export = (): void => {
 				weapons: [weaponData],
 			});
 
-			equipWeapon();
+			store.dispatch(equipWeapon());
 			assertDeepEqual(dispatchedActions, [
 				{
 					type: "equipWeapon",
-					id: weaponData.id,
 				},
 			]);
 

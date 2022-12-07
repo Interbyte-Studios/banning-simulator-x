@@ -1,9 +1,9 @@
 /// <reference types="@rbxts/testez/globals" />
 
 import { BoostProduct } from "shared/configs/game";
-import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 
-import { boostsReducer, BoostsState, claimBoost, useBoosts } from "../boosts";
+import { boostsReducer, claimBoost, useBoosts } from "../boosts";
+import { testAction } from "./testAction";
 
 export = (): void => {
 	describe("rodux/boosts", () => {
@@ -11,7 +11,7 @@ export = (): void => {
 			const defaultBoost = 0;
 			const claimedBoostTime = 6 * 60;
 
-			const state: BoostsState = {
+			const state = {
 				storage: {
 					["x2 Currency"]: {
 						15: 0,
@@ -53,7 +53,7 @@ export = (): void => {
 				},
 			};
 
-			const newState: BoostsState = {
+			const newState = {
 				storage: {
 					["x2 Currency"]: {
 						15: 0,
@@ -97,7 +97,7 @@ export = (): void => {
 
 			const action = claimBoost("x2 Currency", claimedBoostTime);
 
-			assertDeepEqual(boostsReducer(state, action), newState);
+			testAction(state, newState, boostsReducer, action);
 		});
 
 		it("should allow using a boost", () => {
@@ -110,7 +110,7 @@ export = (): void => {
 				"x2 Hatching Luck",
 			];
 
-			const state: BoostsState = {
+			const state = {
 				storage: {
 					["x2 Currency"]: {
 						15: 0,
@@ -152,14 +152,51 @@ export = (): void => {
 				},
 			};
 
-			const newState: BoostsState = { ...state };
-			for (const boost of boostsToUse) {
-				newState.active[boost] -= 1;
-			}
+			const newState = {
+				storage: {
+					["x2 Currency"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Rank Experience"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Pet Experience"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Talisman Experience"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Hatching Luck"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+				},
+				active: {
+					["x2 Currency"]: boostTime - 1,
+					["x2 Rank Experience"]: boostTime - 1,
+					["x2 Talisman Experience"]: boostTime - 1,
+					["x2 Pet Experience"]: boostTime - 1,
+					["x2 Hatching Luck"]: boostTime - 1,
+				},
+			};
 
 			const action = useBoosts(boostsToUse);
 
-			assertDeepEqual(boostsReducer(state, action), newState);
+			testAction(state, newState, boostsReducer, action);
 		});
 	});
 };

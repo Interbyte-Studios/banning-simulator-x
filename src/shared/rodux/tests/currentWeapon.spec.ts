@@ -1,6 +1,7 @@
 /// <reference types="@rbxts/testez/globals" />
 
 import { changeWeapon, currentWeaponReducer, equipWeapon, unequipWeapon } from "../currentWeapon";
+import { testAction } from "./testAction";
 
 export = (): void => {
 	describe("rodux/currentWeapon", () => {
@@ -15,12 +16,11 @@ export = (): void => {
 
 			const newState = {
 				id: newWeaponId,
-				equipWeapon: false,
+				equipped: true,
 			};
 
 			const action = changeWeapon(newWeaponId);
-
-			expect(currentWeaponReducer(state, action)).to.equal(newState);
+			testAction(state, newState, currentWeaponReducer, action);
 		});
 		it("should allow equipping a weapon", () => {
 			const weaponId = 1;
@@ -32,12 +32,11 @@ export = (): void => {
 
 			const newState = {
 				id: weaponId,
-				equipWeapon: true,
+				equipped: true,
 			};
 
 			const action = equipWeapon();
-
-			expect(currentWeaponReducer(state, action)).to.equal(newState);
+			testAction(state, newState, currentWeaponReducer, action);
 		});
 		it("should allow unequipping a weapon", () => {
 			const weaponId = 1;
@@ -49,12 +48,11 @@ export = (): void => {
 
 			const newState = {
 				id: weaponId,
-				equipWeapon: false,
+				equipped: false,
 			};
 
 			const action = unequipWeapon();
-
-			expect(currentWeaponReducer(state, action)).to.equal(newState);
+			testAction(state, newState, currentWeaponReducer, action);
 		});
 	});
 };
