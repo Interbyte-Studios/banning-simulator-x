@@ -16,7 +16,7 @@ export = (): void => {
 
 			const newState = {
 				id: newWeaponId,
-				equipped: false,
+				equipped: true,
 			};
 
 			const action = changeWeapon(newWeaponId);
