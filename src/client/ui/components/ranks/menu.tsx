@@ -86,7 +86,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 				}
 
 				const magnitude = humanoidRootPart.Position.sub(Workspace.interactions.rankUpgrade.teleport.Position).Magnitude;
-				if (magnitude > 20) {
+				if (magnitude > 15) {
 					return;
 				}
 

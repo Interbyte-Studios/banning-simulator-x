@@ -145,6 +145,8 @@ const PetFrame = hooks(
 );
 /* eslint-enable jsdoc/require-jsdoc */
 
+let lastRenderedTime = 0;
+
 /**
  * Displays the player's pets.
  */
@@ -163,6 +165,12 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 		 * @param scrollingFrame The pet inventory ScrollingFrame.
 		 */
 		function setRenderedPets(scrollingFrame: ScrollingFrame): void {
+			const now = time();
+			if (now - lastRenderedTime < 0.6) {
+				return;
+			}
+			lastRenderedTime = now;
+
 			const uiGridLayout = scrollingFrame.FindFirstChildOfClass("UIGridLayout");
 			if (uiGridLayout === undefined) {
 				warn("Did not find UIGridLayout");
@@ -221,29 +229,27 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 			const scrollingFrame = scrollingFrameRef.value.getValue();
 			assert(scrollingFrame, "Failed to get ScrollingFrame");
 
-			const gridLayout = scrollingFrame.FindFirstChildWhichIsA("UIGridStyleLayout");
-			assert(gridLayout, `No UIGridStyleLayout was found in ${scrollingFrame.GetFullName()}`);
-
-			const resizeConnection = updateContentSize(scrollingFrame, gridLayout);
-			return (): void => {
-				resizeConnection.Disconnect();
-			};
-		}, []);
-
-		useEffect(() => {
-			const scrollingFrame = scrollingFrameRef.value.getValue();
-			assert(scrollingFrame, "Failed to get ScrollingFrame");
-
 			const gridLayout = scrollingFrame.FindFirstChildWhichIsA("UIGridLayout");
 			assert(gridLayout, `No UIGridLayout was found in ${scrollingFrame.GetFullName()}`);
 
+			const connections: Array<RBXScriptConnection> = [];
+
 			setRenderedPets(scrollingFrame);
 
-			const connection = gridLayout.GetPropertyChangedSignal("FillDirectionMaxCells").Connect(() => {
+			const uiGridLayoutConnection = gridLayout.GetPropertyChangedSignal("FillDirectionMaxCells").Connect(() => {
 				setRenderedPets(scrollingFrame);
 			});
+			connections.push(uiGridLayoutConnection);
 
-			return (): void => connection.Disconnect();
+			const resizeConnection = updateContentSize(scrollingFrame, gridLayout);
+			connections.push(resizeConnection);
+
+			const canvasChangedConnection = scrollingFrame.GetPropertyChangedSignal("CanvasPosition").Connect(() => {
+				setRenderedPets(scrollingFrame);
+			});
+			connections.push(canvasChangedConnection);
+
+			return (): void => connections.forEach((connection) => connection.Disconnect());
 		}, []);
 
 		const searchText = props.searchText?.lower();
@@ -264,9 +270,6 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 				Size={UDim2.fromScale(0.965, 0.74)}
 				Position={UDim2.fromScale(0.5, 0.495)}
 				ScrollBarThickness={0}
-				Change={{
-					CanvasPosition: (scrollingFrame): void => setRenderedPets(scrollingFrame),
-				}}
 				Ref={scrollingFrameRef.value}
 			>
 				<uigridlayout

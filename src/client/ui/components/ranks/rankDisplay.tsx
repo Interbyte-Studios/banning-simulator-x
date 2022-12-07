@@ -61,10 +61,7 @@ export const RankDisplay = hooks((props: RankDisplayProps) => {
 				TextScaled={true}
 				Font={font}
 			>
-				<BaseUIStroke
-					rankGradient={props.rank - 1}
-					native={{ Thickness: 2.5, Color: Color3.fromRGB(255, 255, 255) }}
-				/>
+				<BaseUIStroke rankGradient={props.rank - 1} native={{ Thickness: 2.5, Color: Color3.fromRGB(255, 255, 255) }} />
 			</textlabel>
 			<frame
 				BackgroundTransparency={1}
