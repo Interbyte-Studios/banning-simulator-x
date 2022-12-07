@@ -2,7 +2,7 @@
 
 import { BoostProduct } from "shared/configs/game";
 
-import { boostsReducer, BoostsState, claimBoost, useBoosts } from "../boosts";
+import { boostsReducer, claimBoost, useBoosts } from "../boosts";
 import { testAction } from "./testAction";
 
 export = (): void => {
@@ -11,7 +11,7 @@ export = (): void => {
 			const defaultBoost = 0;
 			const claimedBoostTime = 6 * 60;
 
-			const state: BoostsState = {
+			const state = {
 				storage: {
 					["x2 Currency"]: {
 						15: 0,
@@ -53,7 +53,7 @@ export = (): void => {
 				},
 			};
 
-			const newState: BoostsState = {
+			const newState = {
 				storage: {
 					["x2 Currency"]: {
 						15: 0,
@@ -110,7 +110,7 @@ export = (): void => {
 				"x2 Hatching Luck",
 			];
 
-			const state: BoostsState = {
+			const state = {
 				storage: {
 					["x2 Currency"]: {
 						15: 0,
@@ -152,10 +152,47 @@ export = (): void => {
 				},
 			};
 
-			const newState: BoostsState = { ...state };
-			for (const boost of boostsToUse) {
-				newState.active[boost] -= 1;
-			}
+			const newState = {
+				storage: {
+					["x2 Currency"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Rank Experience"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Pet Experience"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Talisman Experience"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+					["x2 Hatching Luck"]: {
+						15: 0,
+						30: 0,
+						60: 0,
+						120: 0,
+					},
+				},
+				active: {
+					["x2 Currency"]: boostTime - 1,
+					["x2 Rank Experience"]: boostTime - 1,
+					["x2 Talisman Experience"]: boostTime - 1,
+					["x2 Pet Experience"]: boostTime - 1,
+					["x2 Hatching Luck"]: boostTime - 1,
+				},
+			};
 
 			const action = useBoosts(boostsToUse);
 

@@ -26,7 +26,6 @@ export = (): void => {
 			assertDeepEqual(dispatchedActions, [
 				{
 					type: "equipWeapon",
-					id: weaponData.id,
 				},
 			]);
 
