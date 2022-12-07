@@ -2,10 +2,10 @@
 
 import Object from "@rbxts/object-utils";
 import { currencies } from "shared/configs/currencies";
-import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 
 import { currenciesReducer, killNpc } from "../currencies";
 import { purchaseWeapon, weaponsReducer, WeaponsState } from "../weapons";
+import { testAction } from "./testAction";
 
 export = (): void => {
 	describe("rodux/weapons", () => {
@@ -27,7 +27,7 @@ export = (): void => {
 				},
 			});
 
-			assertDeepEqual(weaponsReducer(state, action), newState);
+			testAction(state, newState, weaponsReducer, action);
 		});
 
 		it("should take away currency purchasing a weapon", () => {
@@ -44,7 +44,7 @@ export = (): void => {
 				},
 			});
 
-			assertDeepEqual(currenciesReducer(state, action), newState);
+			testAction(state, newState, currenciesReducer, action);
 		});
 
 		it("should add experience to the equipped weapon", () => {
@@ -60,11 +60,11 @@ export = (): void => {
 				level: 1,
 			};
 
-			const state: WeaponsState = [weaponData];
-			const newState: WeaponsState = [updatedWeaponData];
+			const state = [weaponData];
+			const newState = [updatedWeaponData];
 
 			const action = killNpc(0, "coins", 1, weaponData.id, 1);
-			assertDeepEqual(weaponsReducer(state, action), newState);
+			testAction(state, newState, weaponsReducer, action);
 		});
 	});
 };
