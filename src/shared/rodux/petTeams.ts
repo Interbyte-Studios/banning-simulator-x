@@ -123,20 +123,19 @@ export const petTeamsReducer = Rodux.createReducer<PetTeamsState, PetTeamsAction
 	updateTeamName: (state, action) => {
 		const newState: PetTeamsState = { ...state };
 
-		for (const team of newState.teams) {
+		let teamIndex: number | undefined;
+		newState.teams.forEach((team, index) => {
 			print(team.id, action.teamId);
-			print(type(team.id), type(action.teamId));
-
-			if (team.id === action.teamId) {
-				warn("Found it!");
+			if (team.id !== action.teamId) {
+				return;
 			}
-		}
 
-		const teamIndex = newState.teams.findIndex((team) => team.id === action.teamId);
+			teamIndex = index + 1;
+		});
 		assert(teamIndex, `Failed to get stored team for team with id ${action.teamId}`);
 
 		const newTeamData = [...newState.teams];
-		newTeamData[teamIndex].name = action.name;
+		newTeamData[teamIndex - 1].name = action.name;
 
 		newState.teams = newTeamData;
 
