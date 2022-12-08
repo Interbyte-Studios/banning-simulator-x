@@ -34,7 +34,9 @@ function petItemsMapStateToProps(state: StoreState): PetItemsMappedProps {
 	};
 }
 
-/* eslint-disable jsdoc/require-jsdoc */
+/**
+ * Renders a single pet frame.
+ */
 const PetFrame = hooks(
 	(
 		props: {
@@ -47,6 +49,10 @@ const PetFrame = hooks(
 		},
 		{ useState, useEffect },
 	) => {
+		if (!props.isRendered) {
+			return <frame BackgroundTransparency={0} LayoutOrder={props.layoutOrderIndex} />;
+		}
+
 		const [isSelectedForDelete, setSelectedForDelete] = useState(false);
 
 		const petData = getPetData(props.storedPetData.id);
@@ -87,70 +93,65 @@ const PetFrame = hooks(
 			if (!isSelectedForDelete) {
 				props.removePetFromDeletionRegistry(props.storedPetData.guid);
 			}
-		}, [isSelectedForDelete]);
+		}, [isSelectedForDelete, props.multiDeleteEnabled]);
 
-		if (props.isRendered) {
-			return (
-				<frame BackgroundTransparency={1} LayoutOrder={props.layoutOrderIndex}>
-					<imagebutton
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={0}
-						BackgroundColor3={Color3.fromRGB(46, 115, 179)}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.925, 0.925)}
-						Image={""}
-						Event={{
-							Activated: (): void => {
-								if (props.multiDeleteEnabled) {
-									setSelectedForDelete(!isSelectedForDelete);
-								}
-							},
-						}}
-					>
-						<uiaspectratioconstraint AspectRatio={1} />
-						<uicorner CornerRadius={new UDim(1, 0)} />
-						<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} />
-						<PetViewport petId={props.storedPetData.id} variant={props.storedPetData.variant} />
-						{additionalDisplayedElements}
-						<textlabel
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Size={UDim2.fromScale(1, 0.2)}
-							Position={UDim2.fromScale(0.5, 0.1)}
-							Text={petData.name}
-							TextScaled={true}
-							Font={font}
-							TextColor3={
-								petData.rarity === "Epic" ||
-								petData.rarity === "Legendary" ||
-								petData.rarity === "Primordial" ||
-								petData.rarity === "Prismatic"
-									? rarityData.BeginningColor
-									: Color3.fromRGB(255, 255, 255)
+		return (
+			<frame BackgroundTransparency={1} LayoutOrder={props.layoutOrderIndex}>
+				<imagebutton
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={0}
+					BackgroundColor3={Color3.fromRGB(46, 115, 179)}
+					Position={UDim2.fromScale(0.5, 0.5)}
+					Size={UDim2.fromScale(0.925, 0.925)}
+					Image={""}
+					Event={{
+						/**
+						 * Triggered when the pet frame is clicked.
+						 */
+						Activated: (): void => {
+							if (props.multiDeleteEnabled) {
+								setSelectedForDelete(!isSelectedForDelete);
 							}
-						>
-							<RarityGradient Rarity={petData.rarity} />
-							<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-						</textlabel>
-					</imagebutton>
-				</frame>
-			);
-		} else {
-			return <frame BackgroundTransparency={0} LayoutOrder={props.layoutOrderIndex}></frame>;
-		}
+						},
+					}}
+				>
+					<uiaspectratioconstraint AspectRatio={1} />
+					<uicorner CornerRadius={new UDim(1, 0)} />
+					<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} />
+					<PetViewport petId={props.storedPetData.id} variant={props.storedPetData.variant} />
+					{additionalDisplayedElements}
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Size={UDim2.fromScale(1, 0.2)}
+						Position={UDim2.fromScale(0.5, 0.1)}
+						Text={petData.name}
+						TextScaled={true}
+						Font={font}
+						TextColor3={
+							petData.rarity === "Epic" ||
+							petData.rarity === "Legendary" ||
+							petData.rarity === "Primordial" ||
+							petData.rarity === "Prismatic"
+								? rarityData.BeginningColor
+								: Color3.fromRGB(255, 255, 255)
+						}
+					>
+						<RarityGradient Rarity={petData.rarity} />
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+					</textlabel>
+				</imagebutton>
+			</frame>
+		);
 	},
 	{
 		componentType: "PureComponent",
 	},
 );
-/* eslint-enable jsdoc/require-jsdoc */
-
-let lastRenderedTime = 0;
 
 /**
  * Displays the player's pets.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 	hooks((props: PetItemsProps, { useEffect, useValue, useState }) => {
 		const [petsToRender, setPetsToRender] = useState(
@@ -163,57 +164,32 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 		 * Sets the `petsToRender` entries accordingly to which should be rendered.
 		 *
 		 * @param scrollingFrame The pet inventory ScrollingFrame.
+		 * @param uiGridLayout The UIGridLayout associated with the `scrollingFrame`.
 		 */
-		function setRenderedPets(scrollingFrame: ScrollingFrame): void {
-			const now = time();
-			if (now - lastRenderedTime < 0.6) {
-				return;
-			}
-			lastRenderedTime = now;
+		function setRenderedPets(scrollingFrame: ScrollingFrame, uiGridLayout: UIGridLayout): void {
+			setPetsToRender(
+				petsToRender.map((pet, index) => {
+					const y = math.floor(index / uiGridLayout.FillDirectionMaxCells);
+					const yPos = y * uiGridLayout.CellSize.Y.Offset + y * uiGridLayout.CellPadding.Y.Offset;
 
-			const uiGridLayout = scrollingFrame.FindFirstChildOfClass("UIGridLayout");
-			if (uiGridLayout === undefined) {
-				warn("Did not find UIGridLayout");
-				return;
-			}
+					// the frame can be visible if we are half way from the previous y coordinate
+					// so we need to go from the previous y coordinate position + padding
+					// equivalent to the current CanvasPosition - CellSize
+					const belowTop = yPos >= scrollingFrame.CanvasPosition.Y - uiGridLayout.CellSize.Y.Offset;
+					const aboveBottom = yPos <= scrollingFrame.CanvasPosition.Y + scrollingFrame.AbsoluteWindowSize.Y;
 
-			if (scrollingFrame.CanvasPosition.Y === 0) {
-				const mutatedPets = [...petsToRender];
-				for (let i = 0; i <= uiGridLayout.FillDirectionMaxCells * 4 - 1; i++) {
-					const petToRender = mutatedPets[i];
-					if (petToRender === undefined) {
-						continue;
+					const shouldBeRendered = belowTop && aboveBottom;
+
+					if (shouldBeRendered !== pet.isRendered) {
+						return {
+							...pet,
+							isRendered: shouldBeRendered,
+						};
 					}
 
-					mutatedPets[i].isRendered = true;
-				}
-
-				setPetsToRender(mutatedPets);
-			} else {
-				setPetsToRender(
-					petsToRender.map((pet, index) => {
-						const y_coordinate = math.floor(index / uiGridLayout.FillDirectionMaxCells);
-						const absolutePosition =
-							y_coordinate * uiGridLayout.CellSize.Y.Offset + y_coordinate * uiGridLayout.CellPadding.Y.Offset;
-
-						const greaterThanMinimum =
-							absolutePosition >= math.floor(scrollingFrame.CanvasPosition.Y / uiGridLayout.FillDirectionMaxCells);
-						const lessThanMaximum =
-							absolutePosition <= math.ceil(scrollingFrame.CanvasPosition.Y * uiGridLayout.FillDirectionMaxCells);
-
-						const shouldBeRendered = greaterThanMinimum && lessThanMaximum;
-
-						if (shouldBeRendered !== pet.isRendered) {
-							return {
-								...pet,
-								isRendered: shouldBeRendered,
-							};
-						}
-
-						return pet;
-					}),
-				);
-			}
+					return pet;
+				}),
+			);
 		}
 
 		const layoutRef = useValue(Roact.createRef<UIGridLayout>());
@@ -232,25 +208,18 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 			const gridLayout = scrollingFrame.FindFirstChildWhichIsA("UIGridLayout");
 			assert(gridLayout, `No UIGridLayout was found in ${scrollingFrame.GetFullName()}`);
 
-			const connections: Array<RBXScriptConnection> = [];
-
-			setRenderedPets(scrollingFrame);
-
-			const uiGridLayoutConnection = gridLayout.GetPropertyChangedSignal("FillDirectionMaxCells").Connect(() => {
-				setRenderedPets(scrollingFrame);
-			});
-			connections.push(uiGridLayoutConnection);
+			const connections: Array<RBXScriptConnection> = [
+				gridLayout.GetPropertyChangedSignal("FillDirectionMaxCells"),
+				scrollingFrame.GetPropertyChangedSignal("CanvasPosition"),
+				scrollingFrame.GetPropertyChangedSignal("AbsoluteCanvasSize"),
+			].map((conn) => conn.Connect(() => setRenderedPets(scrollingFrame, gridLayout)));
 
 			const resizeConnection = updateContentSize(scrollingFrame, gridLayout);
 			connections.push(resizeConnection);
 
-			const canvasChangedConnection = scrollingFrame.GetPropertyChangedSignal("CanvasPosition").Connect(() => {
-				setRenderedPets(scrollingFrame);
-			});
-			connections.push(canvasChangedConnection);
-
+			setRenderedPets(scrollingFrame, gridLayout);
 			return (): void => connections.forEach((connection) => connection.Disconnect());
-		}, []);
+		}, [scrollingFrameRef]);
 
 		const searchText = props.searchText?.lower();
 		if (searchText !== undefined) {
@@ -296,4 +265,3 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 		);
 	}),
 );
-/* eslint-enable jsdoc/require-jsdoc */
