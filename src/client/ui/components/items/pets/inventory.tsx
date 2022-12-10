@@ -13,11 +13,15 @@ import { StoreState } from "shared/rodux";
 import { Pet, PetsState } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 
+import { PetInventoryData } from ".";
+import { PetSummary } from "./petSummary";
+
 interface PetItemsProps extends PetItemsMappedProps {
 	multiDeleteEnabled: boolean;
 	searchText: string | undefined;
 	addPetToDeletionRegistry: (guid: string) => void;
 	removePetFromDeletionRegistry: (guid: string) => void;
+	displayPetInfo: (guid: string) => void;
 }
 
 interface PetItemsMappedProps {
@@ -46,13 +50,15 @@ const PetFrame = hooks(
 			addPetToDeletionRegistry: (guid: string) => void;
 			removePetFromDeletionRegistry: (guid: string) => void;
 			layoutOrderIndex: number;
+			displayPetInfo: (guid: string) => void;
 		},
-		{ useState, useEffect },
+		{ useState, useEffect, useValue },
 	) => {
 		if (!props.isRendered) {
 			return <frame BackgroundTransparency={0} LayoutOrder={props.layoutOrderIndex} />;
 		}
 
+		const [displayingSummary, setDisplayingSummary] = useState(false);
 		const [isSelectedForDelete, setSelectedForDelete] = useState(false);
 
 		const petData = getPetData(props.storedPetData.id);
@@ -75,6 +81,22 @@ const PetFrame = hooks(
 			}
 		}
 
+		const petFrameRef = useValue(Roact.createRef<Frame>());
+		useEffect(() => {
+			const petFrame = petFrameRef.value.getValue();
+			assert(petFrame, `Failed to get pet frame ref value.`);
+
+			const connections: Array<RBXScriptConnection> = [];
+
+			const mouseEnteredConnection = petFrame.MouseEnter.Connect(() => setDisplayingSummary(true));
+			connections.push(mouseEnteredConnection);
+
+			const mouseLeftConnection = petFrame.MouseLeave.Connect(() => setDisplayingSummary(false));
+			connections.push(mouseLeftConnection);
+
+			return (): void => connections.forEach((conn) => conn.Disconnect());
+		}, []);
+
 		useEffect(() => {
 			if (isSelectedForDelete) {
 				if (!props.multiDeleteEnabled) {
@@ -95,8 +117,14 @@ const PetFrame = hooks(
 			}
 		}, [isSelectedForDelete, props.multiDeleteEnabled]);
 
+		let zindex = 1;
+		if (displayingSummary) {
+			//additionalDisplayedElements.push(<PetSummary storedPet={props.storedPetData} />);
+			zindex = 2;
+		}
+
 		return (
-			<frame BackgroundTransparency={1} LayoutOrder={props.layoutOrderIndex}>
+			<frame BackgroundTransparency={1} LayoutOrder={props.layoutOrderIndex} Ref={petFrameRef.value} ZIndex={zindex}>
 				<imagebutton
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={0}
@@ -112,6 +140,8 @@ const PetFrame = hooks(
 							if (props.multiDeleteEnabled) {
 								setSelectedForDelete(!isSelectedForDelete);
 							}
+
+							props.displayPetInfo(props.storedPetData.guid);
 						},
 					}}
 				>
@@ -119,7 +149,6 @@ const PetFrame = hooks(
 					<uicorner CornerRadius={new UDim(1, 0)} />
 					<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} />
 					<PetViewport petId={props.storedPetData.id} variant={props.storedPetData.variant} />
-					{additionalDisplayedElements}
 					<textlabel
 						AnchorPoint={vec2Middle}
 						BackgroundTransparency={1}
@@ -140,6 +169,7 @@ const PetFrame = hooks(
 						<RarityGradient Rarity={petData.rarity} />
 						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
 					</textlabel>
+					{additionalDisplayedElements}
 				</imagebutton>
 			</frame>
 		);
@@ -154,7 +184,7 @@ const PetFrame = hooks(
  */
 export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 	hooks((props: PetItemsProps, { useEffect, useValue, useState }) => {
-		const [petsToRender, setPetsToRender] = useState(
+		const [petsToRender, setPetsToRender] = useState<Array<PetInventoryData>>(
 			props.pets.map((pet) => {
 				return { ...pet, isRendered: false };
 			}),
@@ -258,6 +288,7 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 							addPetToDeletionRegistry={props.addPetToDeletionRegistry}
 							removePetFromDeletionRegistry={props.removePetFromDeletionRegistry}
 							layoutOrderIndex={index}
+							displayPetInfo={props.displayPetInfo}
 						/>
 					);
 				})}

@@ -389,6 +389,7 @@ return {
 					weapons = "rbxassetid://11725924267",
 				},
 				["info sidebar"] = "rbxassetid://11722357647",
+				petSummary = "rbxassetid://11769233643",
 				pets = {
 					bottombar = "rbxassetid://11752972298",
 					["delete-sidebar"] = "rbxassetid://11722357825",

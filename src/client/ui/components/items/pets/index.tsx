@@ -7,13 +7,19 @@ import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
+import { Pet } from "shared/rodux/pets";
 
 import { PetItems } from "./inventory";
 import { PetInventoryCounterTopBar } from "./inventoryCounter";
+import { PetInfoDisplay } from "./petInfoDisplay";
 import { PetInventoryBottomControl } from "./petInventoryBottomControl";
 import { PetInventorySearch } from "./search";
 import { PetTeams } from "./teams";
 import { ReturnToPetInventory } from "./teams/returnToInventory";
+
+export interface PetInventoryData extends Pet {
+	isRendered: boolean;
+}
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const ToggleShrink = hooks((_, hooks) => {
@@ -205,6 +211,8 @@ export const ToggleMultiDelete = hooks(
 );
 /* eslint-enable jsdoc/require-jsdoc */
 
+let petInfoDisplayOldState: string | undefined;
+
 /**
  * Interface that displays the player's pets.
  */
@@ -213,6 +221,7 @@ export const PetInventory = hooks((_, { useState, useCallback, useEffect }) => {
 	const [deleteEnabled, setDeleteEnabled] = useState(false);
 	const [petsToDelete, setPetsToDelete] = useState<Array<string>>([]);
 	const [searchText, setSearchText] = useState<string | undefined>(undefined);
+	const [petInfoDisplayed, setPetInfoDisplayed] = useState<string | undefined>(undefined);
 
 	useEffect(() => {
 		setPetsToDelete([]);
@@ -264,6 +273,23 @@ export const PetInventory = hooks((_, { useState, useCallback, useEffect }) => {
 			</>
 		);
 	} else {
+		const petInfoDisplay: Array<Roact.Element> = [];
+		if (petInfoDisplayed !== undefined) {
+			print(petInfoDisplayOldState, petInfoDisplay);
+
+			petInfoDisplay.push(
+				<PetInfoDisplay
+					guid={petInfoDisplayed}
+					shouldAnimate={petInfoDisplayOldState === undefined && petInfoDisplay !== undefined}
+					hideDisplay={(): void => setPetInfoDisplayed(undefined)}
+				/>,
+			);
+		}
+
+		if (petInfoDisplayOldState !== petInfoDisplayed) {
+			petInfoDisplayOldState = petInfoDisplayed;
+		}
+
 		return (
 			<frame
 				AnchorPoint={vec2Middle}
@@ -294,8 +320,10 @@ export const PetInventory = hooks((_, { useState, useCallback, useEffect }) => {
 					searchText={searchText}
 					addPetToDeletionRegistry={addPetToDeletionRegistry}
 					removePetFromDeletionRegistry={removePetFromDeletionRegistry}
+					displayPetInfo={(guid: string): void => setPetInfoDisplayed(guid)}
 				/>
 				<PetInventoryBottomControl enableTeams={(): void => setTeamsEnabled(true)} />
+				{petInfoDisplay}
 			</frame>
 		);
 	}

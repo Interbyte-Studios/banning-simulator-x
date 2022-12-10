@@ -95,6 +95,7 @@ declare namespace assetIds {
 			};
 
 			inventory: {
+				petSummary: string;
 				background: string;
 				icons: {
 					boosts: string;

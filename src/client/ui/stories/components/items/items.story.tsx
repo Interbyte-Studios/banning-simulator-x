@@ -3,22 +3,24 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { ItemInventory } from "client/ui/components/items";
 import { Pet } from "shared/rodux/pets";
 
-import { createMockStory } from "../createMockStory";
+import { createMockStory } from "../../createMockStory";
 
 export = (target: GuiBase): (() => void) => {
 	const pets: Array<Pet> = [];
 
-	for (let x = 1; x <= 6; x++) {
-		for (let i = 1; i <= 81; i++) {
-			const pet: Pet = {
-				id: i,
-				guid: tostring(i),
-				equipped: false,
-				locked: false,
-				variant: "regular",
-				bans: 1,
-				enhancements: {},
-			};
+	//for (let x = 1; x <= 6; x++) {
+	for (let i = 1; i <= 81; i++) {
+		const pet: Pet = {
+			id: i,
+			guid: tostring(i),
+			equipped: false,
+			locked: false,
+			variant: "regular",
+			bans: 1,
+			enhancements: {},
+		};
+
+		/*
 
 			const voidPet: Pet = {
 				id: i,
@@ -40,11 +42,13 @@ export = (target: GuiBase): (() => void) => {
 				enhancements: {},
 			};
 
-			pets.push(pet);
-			pets.push(voidPet);
-			pets.push(radiantPet);
-		}
+			*/
+
+		pets.push(pet);
+		//pets.push(voidPet);
+		//pets.push(radiantPet);
 	}
+	//}
 
 	const { cleanup } = createMockStory(
 		{
