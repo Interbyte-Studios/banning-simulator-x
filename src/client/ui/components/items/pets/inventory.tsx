@@ -119,7 +119,7 @@ const PetFrame = hooks(
 
 		let zindex = 1;
 		if (displayingSummary) {
-			//additionalDisplayedElements.push(<PetSummary storedPet={props.storedPetData} />);
+			additionalDisplayedElements.push(<PetSummary storedPet={props.storedPetData} />);
 			zindex = 2;
 		}
 
