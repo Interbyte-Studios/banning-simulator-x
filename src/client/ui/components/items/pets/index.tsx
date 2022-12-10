@@ -176,6 +176,8 @@ export const ToggleMultiDelete = hooks(
 						completeMultiDelete={(): void => {
 							props.setDeletion(false);
 
+							print(props.petsToDelete);
+
 							deletePets.SendToServer(props.petsToDelete);
 						}}
 					/>
@@ -275,8 +277,6 @@ export const PetInventory = hooks((_, { useState, useCallback, useEffect }) => {
 	} else {
 		const petInfoDisplay: Array<Roact.Element> = [];
 		if (petInfoDisplayed !== undefined) {
-			print(petInfoDisplayOldState, petInfoDisplay);
-
 			petInfoDisplay.push(
 				<PetInfoDisplay
 					guid={petInfoDisplayed}

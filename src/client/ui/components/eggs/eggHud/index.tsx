@@ -187,8 +187,6 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 						return;
 					}
 
-					warn("Hatching egg");
-
 					await manageEggHatch(1, props.initiateHatch, props.autoActive, false);
 				},
 				false,
@@ -201,8 +199,6 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					if (state !== Enum.UserInputState.Begin) {
 						return;
 					}
-
-					warn("Hatching triple");
 
 					await manageEggHatch(3, props.initiateHatch, props.autoActive, props.ownsTripleHatch);
 				},

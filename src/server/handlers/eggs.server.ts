@@ -1,4 +1,4 @@
-import { Players } from "@rbxts/services";
+import { HttpService, Players } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { rollEnhancement } from "server/modules/pets/rollEnhancement";
 import { getPetPercentages } from "server/util/getPetPercentages";
@@ -154,6 +154,7 @@ hatchEgg.SetCallback(
 			selectedPets.push({
 				autoDeleted,
 				id: pet.id,
+				guid: HttpService.GenerateGUID(false),
 				rarity: pet.rarity,
 				variant: isVoid ? "void" : "regular",
 				method: "hatch",

@@ -25,6 +25,7 @@ export type PetsActions = AddPet | DeletePet | EnhancePet | EquipPet | LockPet;
 
 export interface ConfirmedPet extends PetData {
 	autoDeleted: boolean;
+	guid: string;
 }
 
 export type PetAttainMethod = "maxLevel" | "fuse" | "hatch";
@@ -188,11 +189,10 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 					continue;
 				}
 
-				const petGuid = HttpService.GenerateGUID(false);
 				const newPet: Pet = {
 					id: pet.id,
 					bans: 1,
-					guid: petGuid,
+					guid: pet.guid,
 					equipped: false,
 					locked: false,
 					variant: pet.variant,

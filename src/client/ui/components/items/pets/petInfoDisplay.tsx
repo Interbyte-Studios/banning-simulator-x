@@ -199,6 +199,7 @@ const LockPet = RoactRodux.connect(mapStateToProps)(
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
 
+						print(props.storedPet.locked);
 						if (props.storedPet.locked) {
 							props.confirmUnlocking();
 						} else lockPets.SendToServer([{ guid: props.storedPet.guid, enabled: true }]);
@@ -214,7 +215,7 @@ const LockPet = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.5, 0.5)}
 					Size={UDim2.fromScale(0.95, 0.95)}
 					Font={font}
-					Text={"Lock"}
+					Text={props.storedPet.locked ? "Unlock" : "Lock"}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextScaled={true}
 				>
@@ -387,6 +388,7 @@ const CancelAction = RoactRodux.connect(mapStateToProps)(
  */
 export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 	hooks((props: PetInfoDisplayProps, hooks) => {
+		warn("Rendering");
 		const { useState, useEffect, useContext } = hooks;
 		const [unlockConfirm, setUnlockConfirm] = useState(false);
 		const [deleteConfirm, setDeleteConfirm] = useState(false);
@@ -422,6 +424,7 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 
 		const controlElements: Array<Roact.Element> = [];
 		if (unlockConfirm) {
+			print("Unlock is confirmed");
 			const { lockPets } = useContext(remoteContext);
 
 			controlElements.push(

@@ -10,6 +10,8 @@ remotes.Server.GetNamespace("pets")
 
 			const petsToDelete: Array<string> = [];
 			for (const petToDelete of pets) {
+				print(currentState.pets);
+				print(pets);
 				if (currentState.pets.find((pet) => pet.guid === petToDelete) === undefined) {
 					warn(`Could not delete pet with guid of ${petToDelete} because the player doesn't own it.`);
 					continue;

@@ -12,6 +12,7 @@ export = (): void => {
 			const eggName = "Starter";
 			const eggCost = getEggCost(eggName, false);
 			const petId = 1;
+			const petGuid = "1";
 
 			const state = {
 				eggs: 0,
@@ -35,7 +36,15 @@ export = (): void => {
 			};
 
 			const action = addPets(eggCost.amount, eggCost.currencyType, [
-				{ autoDeleted: false, id: petId, rarity: "Basic", variant: "regular", method: "hatch", egg: "Starter" },
+				{
+					autoDeleted: false,
+					id: petId,
+					guid: petGuid,
+					rarity: "Basic",
+					variant: "regular",
+					method: "hatch",
+					egg: "Starter",
+				},
 			]);
 
 			testAction(state, newState, eggsReducer, action);
