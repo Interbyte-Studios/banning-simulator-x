@@ -281,7 +281,9 @@ export const PetInventory = hooks((_, { useState, useCallback, useEffect }) => {
 				<PetInfoDisplay
 					guid={petInfoDisplayed}
 					shouldAnimate={petInfoDisplayOldState === undefined && petInfoDisplay !== undefined}
-					hideDisplay={(): void => setPetInfoDisplayed(undefined)}
+					hideDisplay={(): void => {
+						setPetInfoDisplayed(undefined);
+					}}
 				/>,
 			);
 		}

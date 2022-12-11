@@ -199,7 +199,6 @@ const LockPet = RoactRodux.connect(mapStateToProps)(
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
 
-						print(props.storedPet.locked);
 						if (props.storedPet.locked) {
 							props.confirmUnlocking();
 						} else lockPets.SendToServer([{ guid: props.storedPet.guid, enabled: true }]);
@@ -388,13 +387,23 @@ const CancelAction = RoactRodux.connect(mapStateToProps)(
  */
 export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 	hooks((props: PetInfoDisplayProps, hooks) => {
-		warn("Rendering");
 		const { useState, useEffect, useContext } = hooks;
 		const [unlockConfirm, setUnlockConfirm] = useState(false);
 		const [deleteConfirm, setDeleteConfirm] = useState(false);
 
+		const maximizedSize = 1.1;
+		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
+
+		const minimizedSize = 0;
+		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
+
+		const { motor, binding } = useBindingMotor(hooks, minimizedSize);
+
 		const storedPet = props.pets.find((pet) => pet.guid === props.guid);
-		assert(storedPet, `Failed to display pet information for pet with guid: "${props.guid}".`);
+		if (storedPet === undefined) {
+			//warn(`Failed to display pet information for pet with guid: "${props.guid}".`);
+			return <></>;
+		}
 
 		const petData = getPetData(storedPet.id);
 		const rarityData = RARITIES[petData.rarity];
@@ -406,14 +415,6 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 			petData.stats.additionalDamage + ((petData.stats.additionalDamage * variantMultiplier * 2.5) / 30) * petLevel,
 		);
 
-		const maximizedSize = 1.1;
-		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-		const minimizedSize = 0;
-		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-		const { motor, binding } = useBindingMotor(hooks, minimizedSize);
-
 		useEffect(() => {
 			if (!props.shouldAnimate) {
 				return;
@@ -424,7 +425,6 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 
 		const controlElements: Array<Roact.Element> = [];
 		if (unlockConfirm) {
-			print("Unlock is confirmed");
 			const { lockPets } = useContext(remoteContext);
 
 			controlElements.push(
@@ -438,7 +438,7 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 					Font={font}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(137, 150, 35) }} />
+					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 74, 122) }} />
 				</textlabel>,
 				<ConfirmAction
 					onActivated={(): void => {
@@ -462,12 +462,16 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 					Font={font}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(141, 32, 42) }} />
+					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 74, 122) }} />
 				</textlabel>,
 				<ConfirmAction
 					onActivated={(): void => {
-						deletePets.SendToServer([storedPet.guid]);
-						setDeleteConfirm(false);
+						motor.setGoal(minimizedSpring);
+
+						task.delay(0.3, () => {
+							props.hideDisplay();
+							deletePets.SendToServer([storedPet.guid]);
+						});
 					}}
 				/>,
 				<CancelAction onActivated={(): void => setDeleteConfirm(false)} />,
