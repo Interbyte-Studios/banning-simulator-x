@@ -8,7 +8,16 @@ import assetIds from "shared/assets";
  * Displays the counters of equipped pets and inventory size.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const PetInventorySearch = hooks((props: { setSearch: (text: string) => void }) => {
+export const PetInventorySearch = hooks((props: { setSearch: (text: string) => void }, { useValue, useEffect }) => {
+	const textboxRef = useValue(Roact.createRef<TextBox>());
+	useEffect(() => {
+		const textbox = textboxRef.value.getValue();
+		assert(textbox, `Failed to get pet inventory search.`);
+
+		const connection = textbox.GetPropertyChangedSignal("Text").Connect(() => props.setSearch(textbox.Text));
+		return (): void => connection.Disconnect();
+	});
+
 	return (
 		<imagelabel
 			AnchorPoint={vec2Middle}
@@ -29,11 +38,7 @@ export const PetInventorySearch = hooks((props: { setSearch: (text: string) => v
 				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 				PlaceholderColor3={Color3.fromRGB(255, 255, 255)}
-				Change={{
-					Text: (textbox): void => {
-						props.setSearch(textbox.Text);
-					},
-				}}
+				Ref={textboxRef.value}
 			>
 				<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 108, 176) }} />
 			</textbox>
