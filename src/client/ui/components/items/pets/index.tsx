@@ -1,6 +1,5 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
-import RoactRodux from "@rbxts/roact-rodux";
 import { setPetItemRowSize } from "client/handlers/item inventory/inventoryLayoutHandler";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
@@ -8,9 +7,7 @@ import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
-import { StoreState } from "shared/rodux";
-import { Pet, PetsState } from "shared/rodux/pets";
-import { getPetData } from "shared/util/getPetData";
+import { Pet } from "shared/rodux/pets";
 
 import { PetItems } from "./inventory";
 import { PetInventoryCounterTopBar } from "./inventoryCounter";
@@ -218,142 +215,118 @@ export const ToggleMultiDelete = hooks(
 
 let petInfoDisplayOldState: string | undefined;
 
-interface PetInventoryMappedProps {
-	pets: PetsState;
-}
-
-/**
- * @param state The current state of the store.
- * @returns The mapped props.
- */
-function mapStateToProps(state: StoreState): PetInventoryMappedProps {
-	return {
-		pets: state.pets,
-	};
-}
-
 /**
  * Interface that displays the player's pets.
  */
-export const PetInventory = RoactRodux.connect(mapStateToProps)(
-	hooks((props: PetInventoryMappedProps, { useState, useCallback, useEffect }) => {
-		const [teamsEnabled, setTeamsEnabled] = useState(false);
-		const [deleteEnabled, setDeleteEnabled] = useState(false);
-		const [petsToDelete, setPetsToDelete] = useState<Array<string>>([]);
-		const [searchText, setSearchText] = useState<string | undefined>(undefined);
-		const [petInfoDisplayed, setPetInfoDisplayed] = useState<string | undefined>(undefined);
+export const PetInventory = hooks((_, { useState, useCallback, useEffect }) => {
+	const [teamsEnabled, setTeamsEnabled] = useState(false);
+	const [deleteEnabled, setDeleteEnabled] = useState(false);
+	const [petsToDelete, setPetsToDelete] = useState<Array<string>>([]);
+	const [searchText, setSearchText] = useState<string | undefined>(undefined);
+	const [petInfoDisplayed, setPetInfoDisplayed] = useState<string | undefined>(undefined);
 
-		useEffect(() => {
-			setPetsToDelete([]);
-		}, [deleteEnabled]);
+	useEffect(() => {
+		setPetsToDelete([]);
+	}, [deleteEnabled]);
 
-		/**
-		 * Adds a pet guid to the collection of pet guid's currently selected to be deleted.
-		 *
-		 * @param guid The guid of the pet.
-		 */
-		const addPetToDeletionRegistry = useCallback(
-			(guid: string) => {
-				setPetsToDelete([...petsToDelete, guid]);
-			},
-			[setPetsToDelete, petsToDelete],
-		);
+	/**
+	 * Adds a pet guid to the collection of pet guid's currently selected to be deleted.
+	 *
+	 * @param guid The guid of the pet.
+	 */
+	const addPetToDeletionRegistry = useCallback(
+		(guid: string) => {
+			setPetsToDelete([...petsToDelete, guid]);
+		},
+		[setPetsToDelete, petsToDelete],
+	);
 
-		/**
-		 * Removes a pet guid from the collection of pet guid's currently selected to be deleted.
-		 *
-		 * @param guid The guid of the pet.
-		 */
-		const removePetFromDeletionRegistry = useCallback(
-			(guid: string) => {
-				const deleteIndex = petsToDelete.findIndex((x) => x === guid);
+	/**
+	 * Removes a pet guid from the collection of pet guid's currently selected to be deleted.
+	 *
+	 * @param guid The guid of the pet.
+	 */
+	const removePetFromDeletionRegistry = useCallback(
+		(guid: string) => {
+			const deleteIndex = petsToDelete.findIndex((x) => x === guid);
 
-				setPetsToDelete(petsToDelete.filter((_, i) => i !== deleteIndex));
-			},
-			[setPetsToDelete, petsToDelete],
-		);
+			setPetsToDelete(petsToDelete.filter((_, i) => i !== deleteIndex));
+		},
+		[setPetsToDelete, petsToDelete],
+	);
 
-		if (teamsEnabled) {
-			return (
-				<>
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.2)}
-						Size={UDim2.fromScale(0.95, 0.05)}
-						Text={`Pet Teams allow you to functionally control multiple pets at once.`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						Font={font}
-					>
-						<BaseUIStroke native={{ Thickness: 1, Color: Color3.fromRGB(0, 93, 150) }} />
-					</textlabel>
-					<PetTeams />
-					<ReturnToPetInventory returnToSelection={(): void => setTeamsEnabled(false)} />
-				</>
-			);
-		} else {
-			const petInfoDisplay: Array<Roact.Element> = [];
-			if (petInfoDisplayed !== undefined) {
-				petInfoDisplay.push(
-					<PetInfoDisplay
-						guid={petInfoDisplayed}
-						shouldAnimate={petInfoDisplayOldState === undefined && petInfoDisplay !== undefined}
-						hideDisplay={(): void => {
-							setPetInfoDisplayed(undefined);
-						}}
-					/>,
-				);
-			}
-
-			if (petInfoDisplayOldState !== petInfoDisplayed) {
-				petInfoDisplayOldState = petInfoDisplayed;
-			}
-
-			return (
-				<frame
+	if (teamsEnabled) {
+		return (
+			<>
+				<textlabel
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.975, 0.785)}
-					Position={UDim2.fromScale(0.5, 0.565)}
+					Position={UDim2.fromScale(0.5, 0.2)}
+					Size={UDim2.fromScale(0.95, 0.05)}
+					Text={`Pet Teams allow you to functionally control multiple pets at once.`}
+					TextScaled={true}
+					TextColor3={Color3.fromRGB(255, 255, 255)}
+					Font={font}
 				>
-					<PetInventoryCounterTopBar />
-					<PetInventorySearch
-						setSearch={(text: string): void => {
-							if (text === "") {
-								setSearchText(undefined);
-							} else {
-								setSearchText(text);
-							}
-						}}
-					/>
-					<ToggleShrink />
-					<ToggleMultiDelete
-						isEnabled={deleteEnabled}
-						setDeletion={(enabled: boolean): void => {
-							setDeleteEnabled(enabled);
-						}}
-						petsToDelete={petsToDelete}
-					/>
-					<PetItems
-						multiDeleteEnabled={deleteEnabled}
-						addPetToDeletionRegistry={addPetToDeletionRegistry}
-						removePetFromDeletionRegistry={removePetFromDeletionRegistry}
-						displayPetInfo={(guid: string): void => setPetInfoDisplayed(guid)}
-						pets={
-							searchText !== undefined
-								? props.pets.filter((pet) => {
-										const petData = getPetData(pet.id);
-
-										return petData.name.lower().find(searchText, 1, true)[0] !== undefined;
-								  })
-								: props.pets
-						}
-					/>
-					<PetInventoryBottomControl enableTeams={(): void => setTeamsEnabled(true)} />
-					{petInfoDisplay}
-				</frame>
+					<BaseUIStroke native={{ Thickness: 1, Color: Color3.fromRGB(0, 93, 150) }} />
+				</textlabel>
+				<PetTeams />
+				<ReturnToPetInventory returnToSelection={(): void => setTeamsEnabled(false)} />
+			</>
+		);
+	} else {
+		const petInfoDisplay: Array<Roact.Element> = [];
+		if (petInfoDisplayed !== undefined) {
+			petInfoDisplay.push(
+				<PetInfoDisplay
+					guid={petInfoDisplayed}
+					shouldAnimate={petInfoDisplayOldState === undefined && petInfoDisplay !== undefined}
+					hideDisplay={(): void => {
+						setPetInfoDisplayed(undefined);
+					}}
+				/>,
 			);
 		}
-	}),
-);
+
+		if (petInfoDisplayOldState !== petInfoDisplayed) {
+			petInfoDisplayOldState = petInfoDisplayed;
+		}
+
+		return (
+			<frame
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Size={UDim2.fromScale(0.975, 0.785)}
+				Position={UDim2.fromScale(0.5, 0.565)}
+			>
+				<PetInventoryCounterTopBar />
+				<PetInventorySearch
+					setSearch={(text: string): void => {
+						if (text === "") {
+							setSearchText(undefined);
+						} else {
+							setSearchText(text);
+						}
+					}}
+				/>
+				<ToggleShrink />
+				<ToggleMultiDelete
+					isEnabled={deleteEnabled}
+					setDeletion={(enabled: boolean): void => {
+						setDeleteEnabled(enabled);
+					}}
+					petsToDelete={petsToDelete}
+				/>
+				<PetItems
+					multiDeleteEnabled={deleteEnabled}
+					searchText={searchText}
+					addPetToDeletionRegistry={addPetToDeletionRegistry}
+					removePetFromDeletionRegistry={removePetFromDeletionRegistry}
+					displayPetInfo={(guid: string): void => setPetInfoDisplayed(guid)}
+				/>
+				<PetInventoryBottomControl enableTeams={(): void => setTeamsEnabled(true)} />
+				{petInfoDisplay}
+			</frame>
+		);
+	}
+});
