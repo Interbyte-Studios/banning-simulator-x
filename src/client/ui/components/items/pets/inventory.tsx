@@ -1,5 +1,4 @@
 import Roact from "@rbxts/roact";
-import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
@@ -9,33 +8,18 @@ import { updateContentSize } from "client/ui/elements/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { RARITIES } from "shared/configs/rarities";
-import { StoreState } from "shared/rodux";
-import { Pet, PetsState } from "shared/rodux/pets";
+import { Pet } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 
 import { PetInventoryData } from ".";
 import { PetSummary } from "./petSummary";
 
-interface PetItemsProps extends PetItemsMappedProps {
+interface PetItemsProps {
+	pets: Array<Pet>;
 	multiDeleteEnabled: boolean;
-	searchText: string | undefined;
 	addPetToDeletionRegistry: (guid: string) => void;
 	removePetFromDeletionRegistry: (guid: string) => void;
 	displayPetInfo: (guid: string) => void;
-}
-
-interface PetItemsMappedProps {
-	pets: PetsState;
-}
-
-/**
- * @param state The current state of the store.
- * @returns The mapped props.
- */
-function petItemsMapStateToProps(state: StoreState): PetItemsMappedProps {
-	return {
-		pets: state.pets,
-	};
 }
 
 /**
@@ -182,117 +166,104 @@ const PetFrame = hooks(
 /**
  * Displays the player's pets.
  */
-export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
-	hooks((props: PetItemsProps, { useEffect, useValue, useState }) => {
-		const [petsToRender, setPetsToRender] = useState<Array<PetInventoryData>>(
-			props.pets.map((pet) => {
-				return { ...pet, isRendered: false };
+export const PetItems = hooks((props: PetItemsProps, { useEffect, useValue, useState }) => {
+	const [petsToRender, setPetsToRender] = useState<Array<PetInventoryData>>(
+		props.pets.map((pet) => {
+			return { ...pet, isRendered: false };
+		}),
+	);
+
+	/**
+	 * Sets the `petsToRender` entries accordingly to which should be rendered.
+	 *
+	 * @param scrollingFrame The pet inventory ScrollingFrame.
+	 * @param uiGridLayout The UIGridLayout associated with the `scrollingFrame`.
+	 */
+	function setRenderedPets(scrollingFrame: ScrollingFrame, uiGridLayout: UIGridLayout): void {
+		setPetsToRender(
+			petsToRender.map((pet, index) => {
+				const y = math.floor(index / uiGridLayout.FillDirectionMaxCells);
+				const yPos = y * uiGridLayout.CellSize.Y.Offset + y * uiGridLayout.CellPadding.Y.Offset;
+
+				// the frame can be visible if we are half way from the previous y coordinate
+				// so we need to go from the previous y coordinate position + padding
+				// equivalent to the current CanvasPosition - CellSize
+				const belowTop = yPos >= scrollingFrame.CanvasPosition.Y - uiGridLayout.CellSize.Y.Offset;
+				const aboveBottom = yPos <= scrollingFrame.CanvasPosition.Y + scrollingFrame.AbsoluteWindowSize.Y;
+
+				const shouldBeRendered = belowTop && aboveBottom;
+
+				if (shouldBeRendered !== pet.isRendered) {
+					return {
+						...pet,
+						isRendered: shouldBeRendered,
+					};
+				}
+
+				return pet;
 			}),
 		);
+	}
 
-		/**
-		 * Sets the `petsToRender` entries accordingly to which should be rendered.
-		 *
-		 * @param scrollingFrame The pet inventory ScrollingFrame.
-		 * @param uiGridLayout The UIGridLayout associated with the `scrollingFrame`.
-		 */
-		function setRenderedPets(scrollingFrame: ScrollingFrame, uiGridLayout: UIGridLayout): void {
-			setPetsToRender(
-				petsToRender.map((pet, index) => {
-					const y = math.floor(index / uiGridLayout.FillDirectionMaxCells);
-					const yPos = y * uiGridLayout.CellSize.Y.Offset + y * uiGridLayout.CellPadding.Y.Offset;
+	const layoutRef = useValue(Roact.createRef<UIGridLayout>());
+	useEffect(() => {
+		const uiGridLayout = layoutRef.value.getValue();
+		assert(uiGridLayout, "Failed to get UIGridLayout for pet item inventory.");
 
-					// the frame can be visible if we are half way from the previous y coordinate
-					// so we need to go from the previous y coordinate position + padding
-					// equivalent to the current CanvasPosition - CellSize
-					const belowTop = yPos >= scrollingFrame.CanvasPosition.Y - uiGridLayout.CellSize.Y.Offset;
-					const aboveBottom = yPos <= scrollingFrame.CanvasPosition.Y + scrollingFrame.AbsoluteWindowSize.Y;
+		CollectionService.AddTag(uiGridLayout, `InventoryGridLayout`);
+	});
 
-					const shouldBeRendered = belowTop && aboveBottom;
+	const scrollingFrameRef = useValue(Roact.createRef<ScrollingFrame>());
+	useEffect(() => {
+		const scrollingFrame = scrollingFrameRef.value.getValue();
+		assert(scrollingFrame, "Failed to get ScrollingFrame");
 
-					if (shouldBeRendered !== pet.isRendered) {
-						return {
-							...pet,
-							isRendered: shouldBeRendered,
-						};
-					}
+		const gridLayout = scrollingFrame.FindFirstChildWhichIsA("UIGridLayout");
+		assert(gridLayout, `No UIGridLayout was found in ${scrollingFrame.GetFullName()}`);
 
-					return pet;
-				}),
-			);
-		}
+		const connections: Array<RBXScriptConnection> = [
+			gridLayout.GetPropertyChangedSignal("FillDirectionMaxCells"),
+			scrollingFrame.GetPropertyChangedSignal("CanvasPosition"),
+			scrollingFrame.GetPropertyChangedSignal("AbsoluteCanvasSize"),
+		].map((conn) => conn.Connect(() => setRenderedPets(scrollingFrame, gridLayout)));
 
-		const layoutRef = useValue(Roact.createRef<UIGridLayout>());
-		useEffect(() => {
-			const uiGridLayout = layoutRef.value.getValue();
-			assert(uiGridLayout, "Failed to get UIGridLayout for pet item inventory.");
+		const resizeConnection = updateContentSize(scrollingFrame, gridLayout);
+		connections.push(resizeConnection);
 
-			CollectionService.AddTag(uiGridLayout, `InventoryGridLayout`);
-		});
+		setRenderedPets(scrollingFrame, gridLayout);
+		return (): void => connections.forEach((connection) => connection.Disconnect());
+	}, [scrollingFrameRef]);
 
-		const scrollingFrameRef = useValue(Roact.createRef<ScrollingFrame>());
-		useEffect(() => {
-			const scrollingFrame = scrollingFrameRef.value.getValue();
-			assert(scrollingFrame, "Failed to get ScrollingFrame");
-
-			const gridLayout = scrollingFrame.FindFirstChildWhichIsA("UIGridLayout");
-			assert(gridLayout, `No UIGridLayout was found in ${scrollingFrame.GetFullName()}`);
-
-			const connections: Array<RBXScriptConnection> = [
-				gridLayout.GetPropertyChangedSignal("FillDirectionMaxCells"),
-				scrollingFrame.GetPropertyChangedSignal("CanvasPosition"),
-				scrollingFrame.GetPropertyChangedSignal("AbsoluteCanvasSize"),
-			].map((conn) => conn.Connect(() => setRenderedPets(scrollingFrame, gridLayout)));
-
-			const resizeConnection = updateContentSize(scrollingFrame, gridLayout);
-			connections.push(resizeConnection);
-
-			setRenderedPets(scrollingFrame, gridLayout);
-			return (): void => connections.forEach((connection) => connection.Disconnect());
-		}, [scrollingFrameRef]);
-
-		const searchText = props.searchText?.lower();
-		if (searchText !== undefined) {
-			setPetsToRender(
-				petsToRender.filter((pet) => {
-					const petData = getPetData(pet.id);
-
-					return petData.name.lower().find(searchText, 1, true)[0] !== undefined;
-				}),
-			);
-		}
-
-		return (
-			<scrollingframe
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.965, 0.74)}
-				Position={UDim2.fromScale(0.5, 0.495)}
-				ScrollBarThickness={0}
-				Ref={scrollingFrameRef.value}
-			>
-				<uigridlayout
-					CellPadding={UDim2.fromOffset(6, 6)}
-					CellSize={UDim2.fromOffset(110, 110)}
-					SortOrder={Enum.SortOrder.LayoutOrder}
-					FillDirectionMaxCells={5}
-					Ref={layoutRef.value}
-				/>
-				{petsToRender.map((pet, index) => {
-					return (
-						<PetFrame
-							Key={pet.guid}
-							isRendered={pet.isRendered}
-							storedPetData={pet}
-							multiDeleteEnabled={props.multiDeleteEnabled}
-							addPetToDeletionRegistry={props.addPetToDeletionRegistry}
-							removePetFromDeletionRegistry={props.removePetFromDeletionRegistry}
-							layoutOrderIndex={index}
-							displayPetInfo={props.displayPetInfo}
-						/>
-					);
-				})}
-			</scrollingframe>
-		);
-	}),
-);
+	return (
+		<scrollingframe
+			AnchorPoint={vec2Middle}
+			BackgroundTransparency={1}
+			Size={UDim2.fromScale(0.965, 0.74)}
+			Position={UDim2.fromScale(0.5, 0.495)}
+			ScrollBarThickness={0}
+			Ref={scrollingFrameRef.value}
+		>
+			<uigridlayout
+				CellPadding={UDim2.fromOffset(6, 6)}
+				CellSize={UDim2.fromOffset(110, 110)}
+				SortOrder={Enum.SortOrder.LayoutOrder}
+				FillDirectionMaxCells={5}
+				Ref={layoutRef.value}
+			/>
+			{petsToRender.map((pet, index) => {
+				return (
+					<PetFrame
+						Key={pet.guid}
+						isRendered={pet.isRendered}
+						storedPetData={pet}
+						multiDeleteEnabled={props.multiDeleteEnabled}
+						addPetToDeletionRegistry={props.addPetToDeletionRegistry}
+						removePetFromDeletionRegistry={props.removePetFromDeletionRegistry}
+						layoutOrderIndex={index}
+						displayPetInfo={props.displayPetInfo}
+					/>
+				);
+			})}
+		</scrollingframe>
+	);
+});
