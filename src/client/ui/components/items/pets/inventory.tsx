@@ -197,6 +197,8 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 		 * @param uiGridLayout The UIGridLayout associated with the `scrollingFrame`.
 		 */
 		function setRenderedPets(scrollingFrame: ScrollingFrame, uiGridLayout: UIGridLayout): void {
+			const searchText = props.searchText?.lower();
+
 			setPetsToRender(
 				petsToRender.map((pet, index) => {
 					const y = math.floor(index / uiGridLayout.FillDirectionMaxCells);
@@ -208,7 +210,15 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 					const belowTop = yPos >= scrollingFrame.CanvasPosition.Y - uiGridLayout.CellSize.Y.Offset;
 					const aboveBottom = yPos <= scrollingFrame.CanvasPosition.Y + scrollingFrame.AbsoluteWindowSize.Y;
 
-					const shouldBeRendered = belowTop && aboveBottom;
+					let shouldBeRendered = belowTop && aboveBottom;
+
+					// check against search text props
+					if (searchText !== undefined && shouldBeRendered) {
+						const petData = getPetData(pet.id);
+						if (petData.name.lower().find(searchText, 1, true)[0] === undefined) {
+							shouldBeRendered = false;
+						}
+					}
 
 					if (shouldBeRendered !== pet.isRendered) {
 						return {
@@ -250,17 +260,6 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 			setRenderedPets(scrollingFrame, gridLayout);
 			return (): void => connections.forEach((connection) => connection.Disconnect());
 		}, [scrollingFrameRef]);
-
-		const searchText = props.searchText?.lower();
-		if (searchText !== undefined) {
-			setPetsToRender(
-				petsToRender.filter((pet) => {
-					const petData = getPetData(pet.id);
-
-					return petData.name.lower().find(searchText, 1, true)[0] !== undefined;
-				}),
-			);
-		}
 
 		return (
 			<scrollingframe
