@@ -54,10 +54,6 @@ const PetFrame = hooks(
 		},
 		{ useState, useEffect, useValue },
 	) => {
-		if (!props.isRendered) {
-			return <frame BackgroundTransparency={0} LayoutOrder={props.layoutOrderIndex} />;
-		}
-
 		const [displayingSummary, setDisplayingSummary] = useState(false);
 		const [isSelectedForDelete, setSelectedForDelete] = useState(false);
 
@@ -116,6 +112,10 @@ const PetFrame = hooks(
 				props.removePetFromDeletionRegistry(props.storedPetData.guid);
 			}
 		}, [isSelectedForDelete, props.multiDeleteEnabled]);
+
+		if (!props.isRendered) {
+			return <frame BackgroundTransparency={0} LayoutOrder={props.layoutOrderIndex} />;
+		}
 
 		let zindex = 1;
 		if (displayingSummary) {
