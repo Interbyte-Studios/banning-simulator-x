@@ -180,6 +180,56 @@ const PetFrame = hooks(
 );
 
 /**
+ * Sets the `petsToRender` entries accordingly to which should be rendered.
+ *
+ * @param scrollingFrame The pet inventory ScrollingFrame.
+ * @param uiGridLayout The UIGridLayout associated with the `scrollingFrame`.
+ * @param search The current search text.
+ * @param renderedPetsState Rendered pets.
+ * @returns The filtered rendered pets.
+ */
+function setRenderedPets(
+	scrollingFrame: ScrollingFrame,
+	uiGridLayout: UIGridLayout,
+	search: string | undefined,
+	renderedPetsState: Array<PetInventoryData> | Readonly<Array<PetInventoryData>>,
+): Array<PetInventoryData> {
+	const searchText = search?.lower();
+
+	const renderedPets = renderedPetsState.map((pet, index) => {
+		const y = math.floor(index / uiGridLayout.FillDirectionMaxCells);
+		const yPos = y * uiGridLayout.CellSize.Y.Offset + y * uiGridLayout.CellPadding.Y.Offset;
+
+		// the frame can be visible if we are half way from the previous y coordinate
+		// so we need to go from the previous y coordinate position + padding
+		// equivalent to the current CanvasPosition - CellSize
+		const belowTop = yPos >= scrollingFrame.CanvasPosition.Y - uiGridLayout.CellSize.Y.Offset;
+		const aboveBottom = yPos <= scrollingFrame.CanvasPosition.Y + scrollingFrame.AbsoluteWindowSize.Y;
+
+		let shouldBeRendered = belowTop && aboveBottom;
+
+		// check against search text props
+		if (searchText !== undefined && shouldBeRendered) {
+			const petData = getPetData(pet.id);
+			if (petData.name.lower().find(searchText, 1, true)[0] === undefined) {
+				shouldBeRendered = false;
+			}
+		}
+
+		if (shouldBeRendered !== pet.isRendered) {
+			return {
+				...pet,
+				isRendered: shouldBeRendered,
+			};
+		}
+
+		return pet;
+	});
+
+	return renderedPets;
+}
+
+/**
  * Displays the player's pets.
  */
 export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
@@ -189,48 +239,6 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 				return { ...pet, isRendered: false };
 			}),
 		);
-
-		/**
-		 * Sets the `petsToRender` entries accordingly to which should be rendered.
-		 *
-		 * @param scrollingFrame The pet inventory ScrollingFrame.
-		 * @param uiGridLayout The UIGridLayout associated with the `scrollingFrame`.
-		 */
-		function setRenderedPets(scrollingFrame: ScrollingFrame, uiGridLayout: UIGridLayout): void {
-			const searchText = props.searchText?.lower();
-
-			setPetsToRender(
-				petsToRender.map((pet, index) => {
-					const y = math.floor(index / uiGridLayout.FillDirectionMaxCells);
-					const yPos = y * uiGridLayout.CellSize.Y.Offset + y * uiGridLayout.CellPadding.Y.Offset;
-
-					// the frame can be visible if we are half way from the previous y coordinate
-					// so we need to go from the previous y coordinate position + padding
-					// equivalent to the current CanvasPosition - CellSize
-					const belowTop = yPos >= scrollingFrame.CanvasPosition.Y - uiGridLayout.CellSize.Y.Offset;
-					const aboveBottom = yPos <= scrollingFrame.CanvasPosition.Y + scrollingFrame.AbsoluteWindowSize.Y;
-
-					let shouldBeRendered = belowTop && aboveBottom;
-
-					// check against search text props
-					if (searchText !== undefined && shouldBeRendered) {
-						const petData = getPetData(pet.id);
-						if (petData.name.lower().find(searchText, 1, true)[0] === undefined) {
-							shouldBeRendered = false;
-						}
-					}
-
-					if (shouldBeRendered !== pet.isRendered) {
-						return {
-							...pet,
-							isRendered: shouldBeRendered,
-						};
-					}
-
-					return pet;
-				}),
-			);
-		}
 
 		const layoutRef = useValue(Roact.createRef<UIGridLayout>());
 		useEffect(() => {
@@ -252,12 +260,16 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 				gridLayout.GetPropertyChangedSignal("FillDirectionMaxCells"),
 				scrollingFrame.GetPropertyChangedSignal("CanvasPosition"),
 				scrollingFrame.GetPropertyChangedSignal("AbsoluteCanvasSize"),
-			].map((conn) => conn.Connect(() => setRenderedPets(scrollingFrame, gridLayout)));
+			].map((conn) =>
+				conn.Connect(() =>
+					setPetsToRender(setRenderedPets(scrollingFrame, gridLayout, props.searchText, petsToRender)),
+				),
+			);
 
 			const resizeConnection = updateContentSize(scrollingFrame, gridLayout);
 			connections.push(resizeConnection);
 
-			setRenderedPets(scrollingFrame, gridLayout);
+			setPetsToRender(setRenderedPets(scrollingFrame, gridLayout, props.searchText, petsToRender));
 			return (): void => connections.forEach((connection) => connection.Disconnect());
 		}, [scrollingFrameRef]);
 
@@ -268,8 +280,44 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 			const gridLayout = scrollingFrame.FindFirstChildWhichIsA("UIGridLayout");
 			assert(gridLayout, `No UIGridLayout was found in ${scrollingFrame.GetFullName()}`);
 
-			setRenderedPets(scrollingFrame, gridLayout);
-		}, [props.searchText, props.pets]);
+			if (props.searchText?.lower() !== undefined) {
+				setPetsToRender(setRenderedPets(scrollingFrame, gridLayout, props.searchText, petsToRender));
+			}
+		}, [props.pets]);
+
+		useEffect(() => {
+			const scrollingFrame = scrollingFrameRef.value.getValue();
+			assert(scrollingFrame, "Failed to get ScrollingFrame");
+
+			const gridLayout = scrollingFrame.FindFirstChildWhichIsA("UIGridLayout");
+			assert(gridLayout, `No UIGridLayout was found in ${scrollingFrame.GetFullName()}`);
+
+			const searchText = props.searchText?.lower();
+			if (searchText === undefined) {
+				setPetsToRender(
+					setRenderedPets(
+						scrollingFrame,
+						gridLayout,
+						props.searchText,
+						props.pets.map((pet) => {
+							return {
+								...pet,
+								isRendered: false,
+							};
+						}),
+					),
+				);
+			} else {
+				const filteredPets = petsToRender.filter((pet) => {
+					const petData = getPetData(pet.id);
+
+					const matches = petData.name.lower().find(searchText, 1, true)[0] !== undefined;
+					return matches;
+				});
+
+				setPetsToRender(setRenderedPets(scrollingFrame, gridLayout, props.searchText, filteredPets));
+			}
+		}, [props.searchText]);
 
 		return (
 			<scrollingframe
