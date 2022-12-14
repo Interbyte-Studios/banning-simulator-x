@@ -261,6 +261,16 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 			return (): void => connections.forEach((connection) => connection.Disconnect());
 		}, [scrollingFrameRef]);
 
+		useEffect(() => {
+			const scrollingFrame = scrollingFrameRef.value.getValue();
+			assert(scrollingFrame, "Failed to get ScrollingFrame");
+
+			const gridLayout = scrollingFrame.FindFirstChildWhichIsA("UIGridLayout");
+			assert(gridLayout, `No UIGridLayout was found in ${scrollingFrame.GetFullName()}`);
+
+			setRenderedPets(scrollingFrame, gridLayout);
+		}, [props.searchText, props.pets]);
+
 		return (
 			<scrollingframe
 				AnchorPoint={vec2Middle}
