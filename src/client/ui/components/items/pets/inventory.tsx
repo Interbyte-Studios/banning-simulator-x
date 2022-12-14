@@ -77,6 +77,10 @@ const PetFrame = hooks(
 			}
 		}
 
+		if (!props.isRendered) {
+			return <frame BackgroundTransparency={0} LayoutOrder={props.layoutOrderIndex} />;
+		}
+
 		const petFrameRef = useValue(Roact.createRef<Frame>());
 		useEffect(() => {
 			const petFrame = petFrameRef.value.getValue();
@@ -112,10 +116,6 @@ const PetFrame = hooks(
 				props.removePetFromDeletionRegistry(props.storedPetData.guid);
 			}
 		}, [isSelectedForDelete, props.multiDeleteEnabled]);
-
-		if (!props.isRendered) {
-			return <frame BackgroundTransparency={0} LayoutOrder={props.layoutOrderIndex} />;
-		}
 
 		let zindex = 1;
 		if (displayingSummary) {
