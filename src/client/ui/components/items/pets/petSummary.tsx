@@ -14,6 +14,7 @@ import { RARITIES } from "shared/configs/rarities";
 import { Pet } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 import { getPetLevel } from "shared/util/getPetLevel";
+import { getPetStrength } from "shared/util/getPetStrength";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 /**
@@ -71,12 +72,6 @@ export const PetSummary = hooks((props: { storedPet: Pet }, { useEffect, useValu
 	const rarityData = RARITIES[petData.rarity];
 
 	const petLevel = math.floor(getPetLevel(props.storedPet));
-
-	// equation to get maximum damage is [((damage * variantMultiplier * 2.5) / 30) * pet level] where 2.5 is the maximum damage and 30 is the maximum level
-	const variantMultiplier = props.storedPet.variant === "radiant" ? 3 : props.storedPet.variant === "void" ? 2 : 1;
-	const damage = math.floor(
-		petData.stats.additionalDamage + ((petData.stats.additionalDamage * variantMultiplier * 2.5) / 30) * petLevel,
-	);
 
 	const petSummaryRef = useValue(Roact.createRef<ImageLabel>());
 	useEffect(() => {
@@ -202,7 +197,7 @@ export const PetSummary = hooks((props: { storedPet: Pet }, { useEffect, useValu
 				BackgroundTransparency={1}
 				TextScaled={true}
 				TextColor3={Color3.fromRGB(230, 64, 64)}
-				Text={twoDpAbbreviator.numberToString(damage)}
+				Text={twoDpAbbreviator.numberToString(getPetStrength(props.storedPet))}
 				TextXAlignment={Enum.TextXAlignment.Left}
 				Font={font}
 			>

@@ -15,9 +15,10 @@ export function getPetStrength(pet: Pet): number {
 	const petLevel = getPetLevel(pet);
 
 	const maxLevel = PET_LEVEL_REQUIREMENTS[pet.variant];
-	const strengthPerLevel = petData.stats.additionalDamage / maxLevel;
+	const variantMultiplier = pet.variant === "radiant" ? 3 : pet.variant === "void" ? 2 : 1;
+	const strengthPerLevel = (petData.stats.additionalDamage * variantMultiplier) / maxLevel;
 
-	const petDamage = math.floor(petData.stats.additionalDamage + petLevel * strengthPerLevel);
+	const petDamage = math.floor(petData.stats.additionalDamage * variantMultiplier + petLevel * strengthPerLevel);
 
 	return petDamage;
 }

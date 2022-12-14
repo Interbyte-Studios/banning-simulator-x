@@ -1,3 +1,4 @@
+import { PetInventoryData } from "client/ui/components/items/pets";
 import { RARITIES } from "shared/configs/rarities";
 import { Pet, PetsState } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
@@ -10,47 +11,60 @@ export enum PetSortType {
 }
 
 /**
- * @param pet1 The first stored pet.
- * @param pet2 The second stored pet.
- * @returns Returns true when the first pet must come before the second.
+ * Sorts pet1 and pet2 by which is equipped.
+ *
+ * @param nextSort The next sort.
+ * @returns Which pet should come before the other in the sort.
  */
-function checkEquipped(pet1: Pet, pet2: Pet): boolean {
-	if (pet1.equipped && !pet2.equipped) {
-		return true;
-	}
+export function checkEquipped(nextSort: (pet1: Pet, pet2: Pet) => boolean) {
+	return function (pet1: Pet, pet2: Pet): boolean {
+		if ((pet1.equipped && pet2.equipped) || (!pet1.equipped && !pet2.equipped)) {
+			return nextSort(pet1, pet2);
+		}
 
-	if (pet2.equipped && !pet1.equipped) {
-		return false;
-	}
-
-	return true;
+		return pet1.equipped && !pet2.equipped;
+	};
 }
 
 /**
- * @param pet1 The first stored pet.
- * @param pet2 The second stored pet.
- * @returns Returns true when the first pet must come before the second.
+ * Sorts pet1 and pet2 by which has greater strength.
+ *
+ * @param nextSort The next sort.
+ * @returns Which pet should come before the other in the sort.
  */
-function checkRarity(pet1: Pet, pet2: Pet): boolean {
-	const pet1Data = getPetData(pet1.id);
-	const pet2Data = getPetData(pet2.id);
+export function checkStrength(nextSort: (pet1: Pet, pet2: Pet) => boolean) {
+	return function (pet1: Pet, pet2: Pet): boolean {
+		const pet1Strength = getPetStrength(pet1);
+		const pet2Strength = getPetStrength(pet2);
 
-	const pet1RarityData = RARITIES[pet1Data.rarity];
-	const pet2RarityData = RARITIES[pet2Data.rarity];
+		if (pet1Strength === pet2Strength) {
+			return nextSort(pet1, pet2);
+		}
 
-	return pet1RarityData.id > pet2RarityData.id;
+		return pet1Strength > pet2Strength;
+	};
 }
 
 /**
- * @param pet1 The first stored pet.
- * @param pet2 The second stored pet.
- * @returns Returns true when the first pet must come before the second.
+ * Sorts pet1 and pet2 by which has greater strength.
+ *
+ * @param nextSort The next sort.
+ * @returns Which pet should come before the other in the sort.
  */
-function checkStrength(pet1: Pet, pet2: Pet): boolean {
-	const pet1Strength = getPetStrength(pet1);
-	const pet2Strength = getPetStrength(pet2);
+export function checkRarity(nextSort: (pet1: Pet, pet2: Pet) => boolean) {
+	return function (pet1: Pet, pet2: Pet): boolean {
+		const pet1Data = getPetData(pet1.id);
+		const pet2Data = getPetData(pet2.id);
 
-	return pet1Strength > pet2Strength;
+		const pet1Rarity = RARITIES[pet1Data.rarity];
+		const pet2Rarity = RARITIES[pet2Data.rarity];
+
+		if (pet1Rarity.id === pet2Rarity.id) {
+			return nextSort(pet1, pet2);
+		}
+
+		return pet1Rarity.id > pet2Rarity.id;
+	};
 }
 
 /**
@@ -58,28 +72,27 @@ function checkStrength(pet1: Pet, pet2: Pet): boolean {
  *
  * @param pets The collection of pets to sort.
  * @param sortType The type of sort used on the collection of pets.
- * @returns The sorted collection of pets.
+ * @param checkForEquipped Whether or not to sort for equipped.
  */
-export function sortPets(pets: PetsState, sortType: PetSortType): PetsState {
-	const sortedPets = pets;
-
+export function sortPets(
+	pets: PetsState | Array<PetInventoryData>,
+	sortType: PetSortType,
+	checkForEquipped: boolean,
+): void {
 	switch (sortType) {
 		case PetSortType.Strength: {
-			sortedPets.sort((pet1, pet2) => {
-				return checkStrength(pet1, pet2);
-			});
-			break;
-		}
-		case PetSortType.Rarity: {
-			sortedPets.sort((pet1, pet2) => {
-				return checkRarity(pet1, pet2);
-			});
+			if (checkForEquipped) {
+				table.sort(pets, checkEquipped(checkStrength((pet1, pet2) => pet1.guid > pet2.guid)));
+			} else {
+				table.sort(
+					pets,
+					checkStrength((pet1, pet2) => pet1.guid > pet2.guid),
+				);
+			}
 			break;
 		}
 		default: {
 			throw `Unsupported sort type: ${tostring(sortType)}`;
 		}
 	}
-
-	return [];
 }

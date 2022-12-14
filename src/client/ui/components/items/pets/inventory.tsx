@@ -1,6 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
+import { checkEquipped, PetSortType, sortPets } from "client/modules/pets/sort";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { PetViewport } from "client/ui/elements/petViewport";
@@ -281,7 +282,15 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 			assert(gridLayout, `No UIGridLayout was found in ${scrollingFrame.GetFullName()}`);
 
 			if (props.searchText?.lower() !== undefined) {
-				setPetsToRender(setRenderedPets(scrollingFrame, gridLayout, props.searchText, petsToRender));
+				const mappedPets = props.pets.map((pet) => {
+					return {
+						...pet,
+						isRendered: false,
+					};
+				});
+				sortPets(mappedPets, PetSortType.Strength, true);
+
+				setPetsToRender(setRenderedPets(scrollingFrame, gridLayout, props.searchText, mappedPets));
 			}
 		}, [props.pets]);
 

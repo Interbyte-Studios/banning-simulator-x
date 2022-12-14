@@ -20,6 +20,7 @@ import { Pet, PetsState } from "shared/rodux/pets";
 import { getMaxPetEquip } from "shared/util/getMaxPetEquip";
 import { getPetData } from "shared/util/getPetData";
 import { getPetLevel } from "shared/util/getPetLevel";
+import { getPetStrength } from "shared/util/getPetStrength";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 /**
@@ -409,12 +410,6 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 		const rarityData = RARITIES[petData.rarity];
 		const petLevel = math.floor(getPetLevel(storedPet));
 
-		// equation to get maximum damage is [((damage * variantMultiplier * 2.5) / 30) * pet level] where 2.5 is the maximum damage and 30 is the maximum level
-		const variantMultiplier = storedPet.variant === "radiant" ? 3 : storedPet.variant === "void" ? 2 : 1;
-		const damage = math.floor(
-			petData.stats.additionalDamage + ((petData.stats.additionalDamage * variantMultiplier * 2.5) / 30) * petLevel,
-		);
-
 		useEffect(() => {
 			if (!props.shouldAnimate) {
 				return;
@@ -552,7 +547,7 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 					BackgroundTransparency={1}
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(230, 64, 64)}
-					Text={twoDpAbbreviator.numberToString(damage)}
+					Text={twoDpAbbreviator.numberToString(getPetStrength(storedPet))}
 					TextXAlignment={Enum.TextXAlignment.Left}
 					Font={font}
 				>
