@@ -157,7 +157,7 @@ const EquipPet = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.5, 0.5)}
 					Size={UDim2.fromScale(0.95, 0.95)}
 					Font={font}
-					Text={"Equip"}
+					Text={props.storedPet.equipped ? "Unequip" : "Equip"}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextScaled={true}
 				>
@@ -301,7 +301,7 @@ const ConfirmAction = RoactRodux.connect(mapStateToProps)(
 				Size={binding.map((value) => {
 					return UDim2.fromScale(value, 0.08);
 				})}
-				Image={assetIds.images.ui["weapon shop"].delete}
+				Image={assetIds.images.ui["weapon shop"]["purchase button"]}
 				ScaleType={Enum.ScaleType.Fit}
 				Event={{
 					Activated: (): void => {
@@ -323,7 +323,7 @@ const ConfirmAction = RoactRodux.connect(mapStateToProps)(
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextScaled={true}
 				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(141, 32, 42) }} />
+					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(18, 176, 13) }} />
 				</textlabel>
 			</imagebutton>
 		);
@@ -353,7 +353,7 @@ const CancelAction = RoactRodux.connect(mapStateToProps)(
 				Size={binding.map((value) => {
 					return UDim2.fromScale(value, 0.08);
 				})}
-				Image={assetIds.images.ui["weapon shop"]["purchase button"]}
+				Image={assetIds.images.ui["weapon shop"].delete}
 				ScaleType={Enum.ScaleType.Fit}
 				Event={{
 					Activated: (): void => {
@@ -375,7 +375,7 @@ const CancelAction = RoactRodux.connect(mapStateToProps)(
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextScaled={true}
 				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(18, 176, 13) }} />
+					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(141, 32, 42) }} />
 				</textlabel>
 			</imagebutton>
 		);

@@ -74,7 +74,11 @@ export const ToggleAutoHatchButton = RoactRodux.connect(mapStateToProps)(
 						return;
 					}
 
-					for (const [name] of pairs(EGGS)) {
+					for (const [name, data] of pairs(EGGS)) {
+						if (!data.hatchable) {
+							continue;
+						}
+
 						const eggFolder = Workspace.interactions.eggs[name];
 
 						const regularEgg = eggFolder.regular.egg.PrimaryPart;

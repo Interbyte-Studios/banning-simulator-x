@@ -1718,6 +1718,11 @@ hash = "f248f68b58d31151215462f792172370eb90d13aed613defb6712b8de70ac161"
 id = 11722357647
 packable = false
 
+[inputs."images/ui/inventory/locked.png"]
+hash = "71d071e77e2377e3a422b7078ec4d8a6d3ef16204af3dcb6ca2db32d871d1e9f"
+id = 11822774222
+packable = false
+
 [inputs."images/ui/inventory/petSummary.png"]
 hash = "740de2ddd960418dd03f85c81a478ea869a721e6025b3e239008c257b2329303"
 id = 11769233643

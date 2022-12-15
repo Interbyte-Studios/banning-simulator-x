@@ -4,12 +4,6 @@ import { Pet, PetsState } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 import { getPetStrength } from "shared/util/getPetStrength";
 
-export enum PetSortType {
-	Strength,
-	Rarity,
-	Alphabetical,
-}
-
 /**
  * Sorts pet1 and pet2 by which is equipped.
  *
@@ -23,6 +17,22 @@ export function checkEquipped(nextSort: (pet1: Pet, pet2: Pet) => boolean) {
 		}
 
 		return pet1.equipped && !pet2.equipped;
+	};
+}
+
+/**
+ * Sorts pet1 and pet2 by which is locked.
+ *
+ * @param nextSort The next sort.
+ * @returns Which pet should come before the other in the sort.
+ */
+export function checkLocked(nextSort: (pet1: Pet, pet2: Pet) => boolean) {
+	return function (pet1: Pet, pet2: Pet): boolean {
+		if ((pet1.locked && pet2.locked) || (!pet1.locked && !pet2.locked)) {
+			return nextSort(pet1, pet2);
+		}
+
+		return pet1.locked && !pet2.locked;
 	};
 }
 
@@ -73,26 +83,23 @@ export function checkRarity(nextSort: (pet1: Pet, pet2: Pet) => boolean) {
  * @param pets The collection of pets to sort.
  * @param sortType The type of sort used on the collection of pets.
  * @param checkForEquipped Whether or not to sort for equipped.
+ * @param checkForLocked Whether or not to sort for locked.
  */
 export function sortPets(
 	pets: PetsState | Array<PetInventoryData>,
-	sortType: PetSortType,
 	checkForEquipped: boolean,
+	checkForLocked: boolean,
 ): void {
-	switch (sortType) {
-		case PetSortType.Strength: {
-			if (checkForEquipped) {
-				table.sort(pets, checkEquipped(checkStrength((pet1, pet2) => pet1.guid > pet2.guid)));
-			} else {
-				table.sort(
-					pets,
-					checkStrength((pet1, pet2) => pet1.guid > pet2.guid),
-				);
-			}
-			break;
-		}
-		default: {
-			throw `Unsupported sort type: ${tostring(sortType)}`;
-		}
+	if (checkForEquipped && checkForLocked) {
+		table.sort(pets, checkEquipped(checkLocked(checkStrength((pet1, pet2) => pet1.guid > pet2.guid))));
+	} else if (checkForEquipped) {
+		table.sort(pets, checkEquipped(checkStrength((pet1, pet2) => pet1.guid > pet2.guid)));
+	} else if (checkForLocked) {
+		table.sort(pets, checkLocked(checkStrength((pet1, pet2) => pet1.guid > pet2.guid)));
+	} else {
+		table.sort(
+			pets,
+			checkStrength((pet1, pet2) => pet1.guid > pet2.guid),
+		);
 	}
 }

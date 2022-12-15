@@ -1,8 +1,9 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
-import { checkEquipped, PetSortType, sortPets } from "client/modules/pets/sort";
+import { sortPets } from "client/modules/pets/sort";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { PetViewport } from "client/ui/elements/petViewport";
 import { RarityGradient } from "client/ui/elements/rarityGradient";
@@ -13,6 +14,7 @@ import { RARITIES } from "shared/configs/rarities";
 import { StoreState } from "shared/rodux";
 import { Pet, PetsState } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
+import { getPetLevel } from "shared/util/getPetLevel";
 
 import { PetInventoryData } from ".";
 import { PetSummary } from "./petSummary";
@@ -53,14 +55,17 @@ const PetFrame = hooks(
 			layoutOrderIndex: number;
 			displayPetInfo: (guid: string) => void;
 		},
-		{ useState, useEffect, useValue },
+		{ useState, useEffect, useValue, useContext },
 	) => {
 		const [displayingSummary, setDisplayingSummary] = useState(false);
 		const [isSelectedForDelete, setSelectedForDelete] = useState(false);
 
 		const petData = getPetData(props.storedPetData.id);
+		const petLevel = getPetLevel(props.storedPetData);
 
 		const rarityData = RARITIES[petData.rarity];
+
+		const { addError } = useContext(AnnouncementContext);
 
 		const additionalDisplayedElements: Array<Roact.Element> = [];
 		if (isSelectedForDelete) {
@@ -80,6 +85,71 @@ const PetFrame = hooks(
 
 		if (!props.isRendered) {
 			return <frame BackgroundTransparency={0} LayoutOrder={props.layoutOrderIndex} />;
+		}
+
+		if (props.storedPetData.locked) {
+			if (petLevel > 1) {
+				additionalDisplayedElements.push(
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.95)}
+						Size={UDim2.fromScale(0.7, 0.2)}
+						Font={font}
+						Text={`Level: ${petLevel}`}
+						TextScaled={true}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+					>
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+						<imagelabel
+							AnchorPoint={vec2Middle}
+							BackgroundTransparency={1}
+							Size={UDim2.fromScale(1, 1)}
+							Position={UDim2.fromScale(-0.15, 0.5)}
+							Image={assetIds.images.ui.inventory.locked}
+							ScaleType={Enum.ScaleType.Fit}
+						>
+							<uiaspectratioconstraint AspectRatio={1} />
+						</imagelabel>
+					</textlabel>,
+				);
+			} else {
+				additionalDisplayedElements.push(
+					<imagelabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Size={UDim2.fromScale(0.25, 0.25)}
+						Position={UDim2.fromScale(0.5, 0.95)}
+						Image={assetIds.images.ui.inventory.locked}
+						ScaleType={Enum.ScaleType.Fit}
+					>
+						<uiaspectratioconstraint AspectRatio={1} />
+					</imagelabel>,
+				);
+			}
+		} else {
+			if (petLevel > 1) {
+				additionalDisplayedElements.push(
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.95)}
+						Size={UDim2.fromScale(0.7, 0.2)}
+						Font={font}
+						Text={`Level: ${petLevel}`}
+						TextScaled={true}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+					>
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+					</textlabel>,
+				);
+			}
+		}
+
+		let zindex = 1;
+		if (displayingSummary) {
+			additionalDisplayedElements.push(<PetSummary storedPet={props.storedPetData} />);
+			zindex = 2;
 		}
 
 		const petFrameRef = useValue(Roact.createRef<Frame>());
@@ -118,18 +188,12 @@ const PetFrame = hooks(
 			}
 		}, [isSelectedForDelete, props.multiDeleteEnabled]);
 
-		let zindex = 1;
-		if (displayingSummary) {
-			additionalDisplayedElements.push(<PetSummary storedPet={props.storedPetData} />);
-			zindex = 2;
-		}
-
 		return (
 			<frame BackgroundTransparency={1} LayoutOrder={props.layoutOrderIndex} Ref={petFrameRef.value} ZIndex={zindex}>
 				<imagebutton
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={0}
-					BackgroundColor3={Color3.fromRGB(46, 115, 179)}
+					BackgroundColor3={props.storedPetData.equipped ? Color3.fromRGB(85, 255, 127) : Color3.fromRGB(46, 115, 179)}
 					Position={UDim2.fromScale(0.5, 0.5)}
 					Size={UDim2.fromScale(0.925, 0.925)}
 					Image={""}
@@ -139,7 +203,11 @@ const PetFrame = hooks(
 						 */
 						Activated: (): void => {
 							if (props.multiDeleteEnabled) {
-								setSelectedForDelete(!isSelectedForDelete);
+								if (props.storedPetData.locked) {
+									addError("That pet is locked.");
+								} else {
+									setSelectedForDelete(!isSelectedForDelete);
+								}
 							}
 
 							props.displayPetInfo(props.storedPetData.guid);
@@ -262,62 +330,61 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 				scrollingFrame.GetPropertyChangedSignal("CanvasPosition"),
 				scrollingFrame.GetPropertyChangedSignal("AbsoluteCanvasSize"),
 			].map((conn) =>
-				conn.Connect(() =>
-					setPetsToRender(setRenderedPets(scrollingFrame, gridLayout, props.searchText, petsToRender)),
-				),
+				conn.Connect(() => {
+					const searchText = props.searchText?.lower();
+					if (searchText === undefined) {
+						const mappedPets = props.pets.map((pet) => {
+							return {
+								...pet,
+								isRendered: false,
+							};
+						});
+
+						sortPets(mappedPets, true, true);
+						setPetsToRender(setRenderedPets(scrollingFrame, gridLayout, props.searchText, mappedPets));
+					} else {
+						const mappedPets = props.pets.map((pet) => {
+							return {
+								...pet,
+								isRendered: false,
+							};
+						});
+
+						const filteredPets = mappedPets.filter((pet) => {
+							const petData = getPetData(pet.id);
+
+							const matches = petData.name.lower().find(searchText, 1, true)[0] !== undefined;
+							return matches;
+						});
+
+						setPetsToRender(setRenderedPets(scrollingFrame, gridLayout, props.searchText, filteredPets));
+					}
+				}),
 			);
 
 			const resizeConnection = updateContentSize(scrollingFrame, gridLayout);
 			connections.push(resizeConnection);
 
-			setPetsToRender(setRenderedPets(scrollingFrame, gridLayout, props.searchText, petsToRender));
-			return (): void => connections.forEach((connection) => connection.Disconnect());
-		}, [scrollingFrameRef]);
-
-		useEffect(() => {
-			const scrollingFrame = scrollingFrameRef.value.getValue();
-			assert(scrollingFrame, "Failed to get ScrollingFrame");
-
-			const gridLayout = scrollingFrame.FindFirstChildWhichIsA("UIGridLayout");
-			assert(gridLayout, `No UIGridLayout was found in ${scrollingFrame.GetFullName()}`);
-
-			if (props.searchText?.lower() !== undefined) {
+			const searchText = props.searchText?.lower();
+			if (searchText === undefined) {
 				const mappedPets = props.pets.map((pet) => {
 					return {
 						...pet,
 						isRendered: false,
 					};
 				});
-				sortPets(mappedPets, PetSortType.Strength, true);
 
+				sortPets(mappedPets, true, true);
 				setPetsToRender(setRenderedPets(scrollingFrame, gridLayout, props.searchText, mappedPets));
-			}
-		}, [props.pets]);
-
-		useEffect(() => {
-			const scrollingFrame = scrollingFrameRef.value.getValue();
-			assert(scrollingFrame, "Failed to get ScrollingFrame");
-
-			const gridLayout = scrollingFrame.FindFirstChildWhichIsA("UIGridLayout");
-			assert(gridLayout, `No UIGridLayout was found in ${scrollingFrame.GetFullName()}`);
-
-			const searchText = props.searchText?.lower();
-			if (searchText === undefined) {
-				setPetsToRender(
-					setRenderedPets(
-						scrollingFrame,
-						gridLayout,
-						props.searchText,
-						props.pets.map((pet) => {
-							return {
-								...pet,
-								isRendered: false,
-							};
-						}),
-					),
-				);
 			} else {
-				const filteredPets = petsToRender.filter((pet) => {
+				const mappedPets = props.pets.map((pet) => {
+					return {
+						...pet,
+						isRendered: false,
+					};
+				});
+
+				const filteredPets = mappedPets.filter((pet) => {
 					const petData = getPetData(pet.id);
 
 					const matches = petData.name.lower().find(searchText, 1, true)[0] !== undefined;
@@ -326,7 +393,9 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 
 				setPetsToRender(setRenderedPets(scrollingFrame, gridLayout, props.searchText, filteredPets));
 			}
-		}, [props.searchText]);
+
+			return (): void => connections.forEach((connection) => connection.Disconnect());
+		}, [scrollingFrameRef, props.pets, props.searchText]);
 
 		return (
 			<scrollingframe

@@ -14,5 +14,9 @@ export function getPetLevel(pet: Pet): number {
 		return maxLevel;
 	}
 
-	return petLevel;
+	if (petLevel <= 0) {
+		return 1;
+	}
+
+	return math.floor(petLevel);
 }
