@@ -16,7 +16,7 @@ export = (target: GuiBase): (() => void) => {
 			equipped: false,
 			locked: false,
 			variant: "regular",
-			bans: 1,
+			bans: 0,
 			enhancements: {},
 		};
 

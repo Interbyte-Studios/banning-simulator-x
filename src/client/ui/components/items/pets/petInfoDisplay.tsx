@@ -416,7 +416,6 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 
 		const petLevel = getPetLevel(storedPet);
 		const maxPetLevel = PET_MAX_LEVELS[storedPet.variant];
-		print(petLevel);
 		const nextPetLevel = PET_LEVEL_REQUIREMENTS[storedPet.variant] * (petLevel + 1);
 		const progressToNextPetLevel = storedPet.bans / nextPetLevel;
 
@@ -591,7 +590,7 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 						Position={UDim2.fromScale(0.5, 0.5)}
 						Size={UDim2.fromScale(0.95, 0.95)}
 						Font={font}
-						Text={petLevel === maxPetLevel ? `Max Level` : `${storedPet.bans}/${nextPetLevel}`}
+						Text={petLevel === maxPetLevel ? `Max Level` : `${math.floor(progressToNextPetLevel * 100)}%`}
 						TextScaled={true}
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 					>
