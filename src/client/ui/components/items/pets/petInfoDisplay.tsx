@@ -13,6 +13,7 @@ import { remoteContext } from "client/ui/mocks/remoteContext";
 import { getPetImage } from "client/util/getPetImage";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
+import { PET_LEVEL_REQUIREMENTS, PET_MAX_LEVELS } from "shared/configs/pets";
 import { RARITIES } from "shared/configs/rarities";
 import { StoreState } from "shared/rodux";
 import { GamepassesState } from "shared/rodux/gamepasses";
@@ -136,15 +137,19 @@ const EquipPet = RoactRodux.connect(mapStateToProps)(
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
 
-						const maxPetsEquipped = getMaxPetEquip(props.gamepassesState);
-						const equippedPets = props.pets.filter((pet) => pet.equipped).size();
+						if (props.storedPet.equipped) {
+							equipPets.SendToServer([{ guid: props.storedPet.guid, enabled: false }], false);
+						} else {
+							const maxPetsEquipped = getMaxPetEquip(props.gamepassesState);
+							const equippedPets = props.pets.filter((pet) => pet.equipped).size();
 
-						if (equippedPets >= maxPetsEquipped) {
-							addError(`You have too many pets equipped.`);
-							return;
+							if (equippedPets >= maxPetsEquipped) {
+								addError(`You have too many pets equipped.`);
+								return;
+							}
+
+							equipPets.SendToServer([{ guid: props.storedPet.guid, enabled: true }], false);
 						}
-
-						equipPets.SendToServer([{ guid: props.storedPet.guid, enabled: !props.storedPet.equipped }], false);
 					},
 					MouseEnter: (): void => motor.setGoal(minSpring),
 					MouseLeave: (): void => motor.setGoal(maxSpring),
@@ -408,7 +413,12 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 
 		const petData = getPetData(storedPet.id);
 		const rarityData = RARITIES[petData.rarity];
-		const petLevel = math.floor(getPetLevel(storedPet));
+
+		const petLevel = getPetLevel(storedPet);
+		const maxPetLevel = PET_MAX_LEVELS[storedPet.variant];
+		print(petLevel);
+		const nextPetLevel = PET_LEVEL_REQUIREMENTS[storedPet.variant] * (petLevel + 1);
+		const progressToNextPetLevel = storedPet.bans / nextPetLevel;
 
 		useEffect(() => {
 			if (!props.shouldAnimate) {
@@ -498,7 +508,7 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 				<textlabel
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.9, 0.1)}
+					Size={UDim2.fromScale(0.9, 0.08)}
 					Position={UDim2.fromScale(0.5, 0.35)}
 					Text={petData.name}
 					TextScaled={true}
@@ -518,8 +528,8 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 				<textlabel
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.9, 0.08)}
-					Position={UDim2.fromScale(0.5, 0.45)}
+					Size={UDim2.fromScale(0.9, 0.07)}
+					Position={UDim2.fromScale(0.5, 0.425)}
 					Text={petData.rarity}
 					TextScaled={true}
 					Font={font}
@@ -531,8 +541,8 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 				<textlabel
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.9, 0.09)}
-					Position={UDim2.fromScale(0.5, 0.55)}
+					Size={UDim2.fromScale(0.9, 0.07)}
+					Position={UDim2.fromScale(0.5, 0.5)}
 					Text={`Level: ${petLevel >= 1 ? petLevel : 1}`}
 					TextScaled={true}
 					Font={font}
@@ -542,8 +552,8 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.635, 0.65)}
-					Size={UDim2.fromScale(0.45, 0.09)}
+					Position={UDim2.fromScale(0.665, 0.675)}
+					Size={UDim2.fromScale(0.45, 0.08)}
 					BackgroundTransparency={1}
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(230, 64, 64)}
@@ -558,6 +568,37 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 					/>
 					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(105, 0, 0) }} />
 				</textlabel>
+				<frame
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={0}
+					BackgroundColor3={Color3.fromRGB(255, 144, 144)}
+					Position={UDim2.fromScale(0.5, 0.575)}
+					Size={UDim2.fromScale(0.9, 0.05)}
+				>
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+					<uicorner CornerRadius={new UDim(0.5)} />
+					<frame
+						BackgroundTransparency={0}
+						BackgroundColor3={Color3.fromRGB(85, 255, 127)}
+						Position={UDim2.fromScale(0, 0)}
+						Size={UDim2.fromScale(progressToNextPetLevel, 1)}
+					>
+						<uicorner CornerRadius={new UDim(0.5)} />
+					</frame>
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.5)}
+						Size={UDim2.fromScale(0.95, 0.95)}
+						Font={font}
+						Text={petLevel === maxPetLevel ? `Max Level` : `${storedPet.bans}/${nextPetLevel}`}
+						TextScaled={true}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+					>
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+					</textlabel>
+				</frame>
+
 				<ExitButton
 					Position={UDim2.fromScale(0.965, 0.025)}
 					minimizedSize={0.125}
