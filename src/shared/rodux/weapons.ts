@@ -1,6 +1,6 @@
 import Rodux from "@rbxts/rodux";
 import { Currency } from "shared/configs/currencies";
-import { WEAPON_LEVELS } from "shared/configs/weapons";
+import { WEAPON_LEVELS, WEAPONS } from "shared/configs/weapons";
 
 import { KillNpc } from "./currencies";
 
@@ -30,6 +30,7 @@ export function purchaseWeapon(data: Omit<PurchaseWeapon, "type">): PurchaseWeap
 	};
 }
 
+/*
 const defaulWeapon = {
 	id: 1,
 	bans: 0,
@@ -37,9 +38,19 @@ const defaulWeapon = {
 };
 
 const defaultState: WeaponsState = [defaulWeapon];
+*/
+
+const weapons = [];
+for (const [, data] of pairs(WEAPONS)) {
+	weapons.push({
+		id: data.id,
+		bans: 0,
+		level: 10,
+	});
+}
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions | KillNpc>(defaultState, {
+export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions | KillNpc>(weapons, {
 	purchaseWeapon: (state, action) => {
 		const newWeapon = {
 			id: action.id,

@@ -136,46 +136,41 @@ export function enhancePet(
 }
 
 const defaultPets: PetsState = [];
+for (let i = 1; i <= 43; i++) {
+	const pet: Pet = {
+		id: i,
+		guid: `Regular-${tostring(i)}`,
+		equipped: false,
+		locked: false,
+		variant: "regular",
+		bans: 600,
+		enhancements: {},
+	};
 
-/*
-for (let x = 1; x <= 6; x++) {
-	for (let i = 1; i <= 81; i++) {
-		const pet: Pet = {
-			id: i,
-			bans: 1,
-			guid: tostring(i),
-			equipped: false,
-			locked: false,
-			variant: "regular",
-			enhancements: {},
-		};
+	const voidPet: Pet = {
+		id: i,
+		guid: `Void-${tostring(i)}`,
+		equipped: false,
+		locked: false,
+		variant: "void",
+		bans: 1200,
+		enhancements: {},
+	};
 
-		const voidPet: Pet = {
-			id: i,
-			bans: 1,
-			guid: tostring(i),
-			equipped: false,
-			locked: false,
-			variant: "void",
-			enhancements: {},
-		};
+	const radiantPet: Pet = {
+		id: i,
+		guid: `Radiant-${tostring(i)}`,
+		equipped: false,
+		locked: false,
+		variant: "radiant",
+		bans: 2000,
+		enhancements: {},
+	};
 
-		const radiantPet: Pet = {
-			id: i,
-			bans: 1,
-			guid: tostring(i),
-			equipped: false,
-			locked: false,
-			variant: "radiant",
-			enhancements: {},
-		};
-
-		defaultPets.push(pet);
-		defaultPets.push(voidPet);
-		defaultPets.push(radiantPet);
-	}
+	defaultPets.push(pet);
+	defaultPets.push(voidPet);
+	defaultPets.push(radiantPet);
 }
-*/
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQuest | RedeemCode | KillNpc>(

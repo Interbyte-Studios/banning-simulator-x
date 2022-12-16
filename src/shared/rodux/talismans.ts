@@ -1,6 +1,6 @@
 import Rodux from "@rbxts/rodux";
 import { Currency } from "shared/configs/currencies";
-import { TALISMAN_PHASES, TalismanPhases } from "shared/configs/talismans";
+import { TALISMAN_PHASES, TalismanPhases, TALISMANS } from "shared/configs/talismans";
 
 import { KillNpc } from "./currencies";
 
@@ -17,6 +17,13 @@ export interface PurchaseTalisman extends Rodux.Action<"purchaseTalisman"> {
 }
 
 const defaultTalismans: TalismansState = [];
+for (const [, data] of pairs(TALISMANS)) {
+	defaultTalismans.push({
+		id: data.id,
+		bans: 0,
+		phase: "artifact",
+	});
+}
 
 /**
  * Purchases a talisman from the stor, saving it to players talisman inventory.
