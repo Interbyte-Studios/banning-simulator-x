@@ -7,7 +7,7 @@ import { createMockStory } from "../createMockStory";
 export = (target: GuiBase): (() => void) => {
 	const { cleanup } = createMockStory({}, target, (_, store) => (
 		<RoactRodux.StoreProvider store={store}>
-			<SpinWheel />
+			<SpinWheel visible={true} hideMenu={(): void => print("Closed")} />
 		</RoactRodux.StoreProvider>
 	));
 	return () => {
