@@ -18,6 +18,7 @@ import { TogglePetsDisplayedDefinition } from "shared/remotes/settings/visual/to
 import { TogglePetsStudsOfDistanceDefinition } from "shared/remotes/settings/visual/togglePetsStudsOfDistance";
 import { ToggleTimeOfDayDefinition } from "shared/remotes/settings/visual/toggleTimeOfDay";
 import { SpinWheelDefinition } from "shared/remotes/spinWheel";
+import { SpinWheelInfoDefinition } from "shared/remotes/spinWheelnfo";
 import { EquipTalismanDefinition } from "shared/remotes/talismans/equipTalisman";
 import { PurchaseTalismanDefinition } from "shared/remotes/talismans/purchaseTalisman";
 import { UnlockRankDefinition } from "shared/remotes/unlockRank";
@@ -81,7 +82,12 @@ export const fakeRemoteContext = {
 
 	unlockRank: fakeRemoteCall<UnlockRankDefinition>("unlockRank"),
 
-	spinWheel: fakeRemoteCall<SpinWheelDefinition>("spinWheel"),
+	spinWheel: fakeFunctionCall<SpinWheelDefinition>("spinWheel", () => {
+		return {
+			reward: 1,
+		};
+	}),
+	spinWheelInfo: fakeRemoteCall<SpinWheelInfoDefinition>("spinWheelInfo"),
 
 	hatchEgg: fakeHatchEgg,
 };
