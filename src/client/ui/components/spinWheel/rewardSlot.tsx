@@ -37,7 +37,7 @@ export const RewardSlot = hooks((props: RewardSlotProps) => {
 				Font={font}
 				BackgroundTransparency={1}
 			>
-				<uistroke Thickness={2} Color={Color3.fromRGB()} />
+				<uistroke Thickness={2} Color={Color3.fromRGB(11, 52, 68)} />
 			</textlabel>
 		</frame>
 	);
