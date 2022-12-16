@@ -14,8 +14,8 @@ export const spinRewards: Record<
 	2: { rewardType: "currency", rewardData: { name: "gems", amount: 20 } },
 	3: { rewardType: "currency", rewardData: { name: "coins", amount: 600 } },
 	4: { rewardType: "boosts", rewardData: { name: "coins", amount: 1 } },
-	5: { rewardType: "boosts", rewardData: { name: "gems", amount: 1 } },
-	6: { rewardType: "boosts", rewardData: { name: "coins", amount: 1 } },
+	5: { rewardType: "pet", rewardData: { petId: 1, amount: 1 } },
+	6: { rewardType: "pet", rewardData: { petId: 12, amount: 1 } },
 	7: { rewardType: "pet", rewardData: { petId: 5, amount: 1 } },
-	8: { rewardType: "pet", rewardData: { petId: 2, amount: 2 } },
+	8: { rewardType: "pet", rewardData: { petId: 2, amount: 1 } },
 };
