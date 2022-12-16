@@ -4,15 +4,16 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { Currency } from "./currencies";
 
-export const talismanStats = ["health", "damage", "experience"] as const;
-export const isTalismanStat = t.literal(...talismanStats);
-export type TalismanStats = t.static<typeof isTalismanStat>;
+export interface TalismanStatEffects {
+	damage: number;
+	experience: number;
+	walkspeed: number;
+}
+
 export type TalismanPhases = "normal" | "awakend" | "artifact";
 
 export interface Talisman {
 	id: number;
-
-	tier: number;
 
 	cost: {
 		currency: Currency;
@@ -20,124 +21,112 @@ export interface Talisman {
 		rank: number;
 	};
 
-	stats: {
-		name: TalismanStats;
-		amount: number;
-		maxSpeed: number;
-	};
+	stats: TalismanStatEffects;
 }
 
 export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 	"All Seeing Talisman": {
 		id: 1,
-		tier: 1,
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("100k"),
 			rank: 6,
 		},
 		stats: {
-			name: "damage",
-			amount: 250,
-			maxSpeed: 6,
+			experience: 1.05,
+			damage: 250,
+			walkspeed: 6,
 		},
 	},
 	"Jester Talisman": {
 		id: 2,
-		tier: 2,
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("500k"),
 			rank: 8,
 		},
 		stats: {
-			name: "damage",
-			amount: 600,
-			maxSpeed: 8,
+			experience: 1.1,
+			damage: 600,
+			walkspeed: 8,
 		},
 	},
 	"Blade Talisman": {
 		id: 3,
-		tier: 3,
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("5M"),
 			rank: 10,
 		},
 		stats: {
-			name: "damage",
-			amount: 7500,
-			maxSpeed: 12,
+			experience: 1.2,
+			damage: 7500,
+			walkspeed: 12,
 		},
 	},
 	"Target Talisman": {
 		id: 4,
-		tier: 4,
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("12B"),
-			rank: 15,
+			rank: 12,
 		},
 		stats: {
-			name: "damage",
-			amount: twoDpAbbreviator.stringToNumber("120k"),
-			maxSpeed: 19,
+			experience: 1.3,
+			damage: 120_000,
+			walkspeed: 19,
 		},
 	},
 	"Lunar Talisman": {
 		id: 5,
-		tier: 5,
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("35B"),
-			rank: 18,
+			rank: 14,
 		},
 		stats: {
-			name: "damage",
-			amount: twoDpAbbreviator.stringToNumber("500k"),
-			maxSpeed: 28,
+			experience: 1.4,
+			damage: 500_000,
+			walkspeed: 28,
 		},
 	},
 	"Star Talisman": {
 		id: 6,
-		tier: 6,
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("50B"),
-			rank: 20,
+			rank: 16,
 		},
 		stats: {
-			name: "experience",
-			amount: 1.5,
-			maxSpeed: 34,
+			experience: 1.5,
+			damage: 1_200_000,
+			walkspeed: 34,
 		},
 	},
 	"Skull Talisman": {
 		id: 7,
-		tier: 6,
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("50B"),
-			rank: 20,
+			rank: 18,
 		},
 		stats: {
-			name: "damage",
-			amount: twoDpAbbreviator.stringToNumber("5M"),
-			maxSpeed: 34,
+			experience: 1.65,
+			damage: 1_500_000,
+			walkspeed: 40,
 		},
 	},
 	"Heart Talisman": {
 		id: 8,
-		tier: 6,
 		cost: {
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("50B"),
 			rank: 20,
 		},
 		stats: {
-			name: "health",
-			amount: 1000,
-			maxSpeed: 34,
+			experience: 1.8,
+			damage: 2_000_000,
+			walkspeed: 45,
 		},
 	},
 });
@@ -145,26 +134,30 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 export const TALISMAN_PHASES: Array<{
 	phase: TalismanPhases;
 	requiredBans: number;
+	id: number;
 	gradient?: { beginningColor: Color3; endingColor: Color3 };
 }> = [
 	{
 		phase: "normal",
 		requiredBans: 0,
+		id: 1,
 	},
 	{
 		phase: "awakend",
-		requiredBans: 5,
+		requiredBans: 750,
+		id: 2,
 		gradient: {
-			beginningColor: Color3.fromRGB(241, 138, 169),
-			endingColor: Color3.fromRGB(239, 175, 176),
+			beginningColor: Color3.fromRGB(241, 76, 78),
+			endingColor: Color3.fromRGB(239, 210, 210),
 		},
 	},
 	{
 		phase: "artifact",
-		requiredBans: 10,
+		requiredBans: 1500,
+		id: 3,
 		gradient: {
-			beginningColor: Color3.fromRGB(255, 93, 96),
-			endingColor: Color3.fromRGB(255, 159, 247),
+			beginningColor: Color3.fromRGB(255, 149, 227),
+			endingColor: Color3.fromRGB(0, 255, 183),
 		},
 	},
 ];

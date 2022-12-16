@@ -4,7 +4,8 @@ import { WEAPON_LEVELS } from "shared/configs/weapons";
 
 import { KillNpc } from "./currencies";
 
-export type WeaponsState = Array<{ id: number; bans: number; level: number }>;
+export type Weapon = { id: number; bans: number; level: number };
+export type WeaponsState = Array<Weapon>;
 export type WeaponsActions = PurchaseWeapon;
 
 export interface PurchaseWeapon extends Rodux.Action<"purchaseWeapon"> {

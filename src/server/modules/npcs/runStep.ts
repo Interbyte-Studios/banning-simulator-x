@@ -1,10 +1,13 @@
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
 import { stores } from "server/playerStore";
+import { TalismanStatEffects } from "shared/configs/talismans";
 import { WORLDS } from "shared/configs/worlds";
 import { NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 import { killNpc } from "shared/rodux/currencies";
+import { getTalismanStatEffect } from "shared/util/getTalismanDamage";
 import { getTalismanData } from "shared/util/getTalismanData";
+import { getWeaponDamage } from "shared/util/getWeaponDamage";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 import { getWeaponLevel } from "shared/util/getWeaponLevel";
 
@@ -134,26 +137,13 @@ export function runStep(
 			continue;
 		}
 
-		let talismanDamage = 0;
-		let talismanExperienceMultiplier = 1;
-		const talisman = storeState.currentTalisman;
-		if (talisman !== undefined) {
-			const talismanInfo = getTalismanData(talisman);
-			if (talismanInfo !== undefined) {
-				if (talismanInfo.stats.name === "damage") {
-					talismanDamage = talismanInfo.stats.amount;
-				} else if (talismanInfo.stats.name === "experience") {
-					talismanExperienceMultiplier = talismanInfo.stats.amount;
-				}
-			} else
-				warn(`Couldn't register talisman damage for hit from player ${player.Name}. Failed to fetch talisman data.`);
-		}
+		const weaponDamage = getWeaponDamage(currentWeaponData);
+		const talismanStatEffects = getTalismanStatEffect(
+			storeState.currentTalisman,
+			storeState.talismans.find((talisman) => talisman.id === storeState.currentTalisman)?.phase,
+		);
 
-		const weapon = getWeaponInfo(storeState.currentWeapon.id);
-		const weaponLevelBonus = getWeaponLevel(currentWeaponData.bans);
-		const damage = math.floor(weapon.data.damage + talismanDamage + weapon.data.damage * 0.05 * weaponLevelBonus.level);
-
-		npc.instance.Humanoid.TakeDamage(damage);
+		npc.instance.Humanoid.TakeDamage(weaponDamage + talismanStatEffects.damage);
 
 		// check if npc is dead
 		if (npc.instance.Humanoid.Health <= 0) {
@@ -170,7 +160,7 @@ export function runStep(
 				killNpc(
 					reward.currency,
 					WORLDS[npc.world.name].reward,
-					reward.experience * talismanExperienceMultiplier,
+					reward.experience * talismanStatEffects.experience,
 					storeState.currentWeapon.id,
 					storeState.currentTalisman,
 				),
@@ -178,7 +168,7 @@ export function runStep(
 
 			// display ban emitter
 			const banEmitters =
-				damage >= npc.instance.Humanoid.MaxHealth ? emitters["crit ban emitters"] : emitters["ban emitters"];
+				weaponDamage >= npc.instance.Humanoid.MaxHealth ? emitters["crit ban emitters"] : emitters["ban emitters"];
 
 			const randomBanEmitterIndex = math.ceil(math.random(1, banEmitters.GetChildren().size())) - 1;
 			const randomBanEmitter = banEmitters.GetChildren()[randomBanEmitterIndex] as BasePart;

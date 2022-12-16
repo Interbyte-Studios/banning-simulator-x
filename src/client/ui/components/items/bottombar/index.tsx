@@ -2,7 +2,6 @@ import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
 import { hooks } from "client/ui/hooks";
 
-import { DisplayBoostsInventory } from "./displayBoostsInventory";
 import { DisplayPetInventory } from "./displayPetInventory";
 import { DisplayTalismansInventory } from "./displayTalismansInventory";
 import { DisplayTitlesInventory } from "./displayTitlesInventory";
@@ -14,7 +13,6 @@ interface BottomBarProps {
 	displayWeaponsInventory: () => void;
 	displayTalismansInventory: () => void;
 	displayTitlesInventory: () => void;
-	displayBoostsInventory: () => void;
 }
 
 export const BottomBar = hooks((props: BottomBarProps) => {
@@ -35,7 +33,6 @@ export const BottomBar = hooks((props: BottomBarProps) => {
 			<DisplayWeaponsInventory displayWeaponsInventory={props.displayWeaponsInventory} />
 			<DisplayTalismansInventory displayTalismansInventory={props.displayTalismansInventory} />
 			<DisplayTitlesInventory displayTitlesInventory={props.displayTitlesInventory} />
-			<DisplayBoostsInventory displayBoostsInventory={props.displayBoostsInventory} />
 		</frame>
 	);
 });

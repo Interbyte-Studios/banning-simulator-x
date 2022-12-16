@@ -49,6 +49,10 @@ export function retrieveStore(player: Player): Store | undefined {
  * @param player The player that joined the game.
  */
 async function onPlayerAdded(player: Player): Promise<void> {
+	if (RunService.IsStudio()) {
+		return;
+	}
+
 	const getStoreState = remotes.Client.GetNamespace("rodux").Get("getStoreState");
 
 	const storeState = await getStoreState.CallServerAsync(player);

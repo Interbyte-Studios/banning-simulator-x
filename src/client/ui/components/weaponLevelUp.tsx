@@ -93,7 +93,6 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 				BackgroundTransparency={1}
 				Position={UDim2.fromScale(0.5, 0.125)}
 				Size={frameBindingMotor.binding.map((value) => {
-					warn(value);
 					return UDim2.fromScale(0.4, value);
 				})}
 				Image={assetIds.images.ui.levelup.LevelUp}
@@ -115,15 +114,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					<uicorner CornerRadius={new UDim(0.175, 0)} />
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
-					<WeaponViewport
-						native={{
-							AnchorPoint: vec2Middle,
-							BackgroundTransparency: 1,
-							Size: UDim2.fromScale(0.9, 0.9),
-							Position: UDim2.fromScale(0.5, 0.5),
-						}}
-						weaponName={weaponData.name}
-					/>
+					<WeaponViewport weaponId={weaponData.data.id} />
 				</frame>
 				<textlabel
 					AnchorPoint={vec2Middle}

@@ -1343,6 +1343,246 @@ hash = "2dfff6a942bd4926760653c466ea2f99105fff573e91d2c347350940e78c9919"
 id = 11440122751
 packable = false
 
+[inputs."images/decals/talismans/All Seeing Talisman.png"]
+hash = "35ebf96fa246e5c13f0a4cd10e77c7a3f4b1f37b4733cb100ec6a8c91320b886"
+id = 11827145009
+packable = false
+
+[inputs."images/decals/talismans/Artifact All Seeing Talisman.png"]
+hash = "55926a0d7cd9c1f5155206669c069fcace3e2026534e70dc86c77e89058c0ca7"
+id = 11827145096
+packable = false
+
+[inputs."images/decals/talismans/Artifact Blade Talisman.png"]
+hash = "8d7c57328094885446d8cb2674ea474dba99cb790ac554487e1eb356ce95e71c"
+id = 11827145184
+packable = false
+
+[inputs."images/decals/talismans/Artifact Heart Talisman.png"]
+hash = "a198d7e2e21b3d6d66c95282eb50a1e5e523fe263dff9f919b59916b13b97308"
+id = 11827145275
+packable = false
+
+[inputs."images/decals/talismans/Artifact Jester Talisman.png"]
+hash = "25b1535f367e2bd884ecb9d6eeba89bd6d97237934e469ce9cbd574222777b85"
+id = 11827145332
+packable = false
+
+[inputs."images/decals/talismans/Artifact Lunar Talisman.png"]
+hash = "fc66970b515106ec454265f4a699fccafc8d78c8118237b597b09f356690d8f1"
+id = 11827145398
+packable = false
+
+[inputs."images/decals/talismans/Artifact Skull Talisman.png"]
+hash = "6585d23b0ceab19f3e0b85da5a3401c8710b36a0b669495233eb95d581bd06b9"
+id = 11827145498
+packable = false
+
+[inputs."images/decals/talismans/Artifact Star Talisman.png"]
+hash = "8ae2d39c5e352b8250ce6b808364aa13699e6eedce4070f75240013f8f899518"
+id = 11827145649
+packable = false
+
+[inputs."images/decals/talismans/Artifact Target Talisman.png"]
+hash = "f9bdf59e2ab29575a8ea8f9b5ba1edf40a380edc9e45c38e9c28dbef289db114"
+id = 11827145734
+packable = false
+
+[inputs."images/decals/talismans/Awakend All Seeing Talisman.png"]
+hash = "1ea0ee86ced56ac4390ac2b4fcfb6d9425eee264599f9745ecd79e9b37e41fbc"
+id = 11829174979
+packable = false
+
+[inputs."images/decals/talismans/Awakend Blade Talisman.png"]
+hash = "ee88f56667d1ab3f42e79f178d58fa31d3a5765c902d83920e0595ab6800aced"
+id = 11829175058
+packable = false
+
+[inputs."images/decals/talismans/Awakend Heart Talisman.png"]
+hash = "81508271f44a7229073a55ca740bded1688ae0bbf78ed617b7b0555c7b1d852d"
+id = 11829175126
+packable = false
+
+[inputs."images/decals/talismans/Awakend Jester Talisman.png"]
+hash = "3793ee14df5d5d155f67986bcb62276afa9cd611a12603513e70e202d1a50724"
+id = 11829175196
+packable = false
+
+[inputs."images/decals/talismans/Awakend Lunar Talisman.png"]
+hash = "ad3adab61280e47bcc6e751bed55186253e139814eca321b1fb3ae2f2c216bf9"
+id = 11829175298
+packable = false
+
+[inputs."images/decals/talismans/Awakend Skull Talisman.png"]
+hash = "9775e4826d5f5d3203be3206a10b14d0b36b14aee6078d9d2f3016f164078d5f"
+id = 11829175496
+packable = false
+
+[inputs."images/decals/talismans/Awakend Star Talisman.png"]
+hash = "669eb5aee671ba51c715c6220e4a3513447d49ff9429dbbdc81ea0c61dbc524c"
+id = 11829175614
+packable = false
+
+[inputs."images/decals/talismans/Awakend Target Talisman.png"]
+hash = "d2deacfb109e6a3e086c6d0578399cafe60a87de372203e9c18db98e1b830d79"
+id = 11829175723
+packable = false
+
+[inputs."images/decals/talismans/Blade Talisman.png"]
+hash = "9ba90faff40beebb0a4f751f29b2f91b645578fd02c086c496208a5daaa7e5ca"
+id = 11827146379
+packable = false
+
+[inputs."images/decals/talismans/Heart Talisman.png"]
+hash = "d21e18d393f5fd2fae4455e81706a91d0984625c70f8e42ea28fd9c9b2dc7454"
+id = 11827146482
+packable = false
+
+[inputs."images/decals/talismans/Jester Talisman.png"]
+hash = "d57e7c57545c28e54c8fc82adf1d5eac97ffc7c552cc6fa79abdf0eae8f88dc5"
+id = 11827146560
+packable = false
+
+[inputs."images/decals/talismans/Lunar Talisman.png"]
+hash = "3ef45892e6f4f664e747d4c065c64241ac6e36d04ad50af1ccfc37f0feb5c7a6"
+id = 11827146661
+packable = false
+
+[inputs."images/decals/talismans/Skull Talisman.png"]
+hash = "6425eeece06ab9685f986de104073238d05f545879f9d88e7df15488c1c97f07"
+id = 11827146759
+packable = false
+
+[inputs."images/decals/talismans/Star Talisman.png"]
+hash = "3992ba068d15299529246cd91c2025f6b460a6b6882f75e7a8005cb56ccbe9e7"
+id = 11827146829
+packable = false
+
+[inputs."images/decals/talismans/Target Talisman.png"]
+hash = "d4ce21366e2374511b8c85d2563c45a157f0a8a9c5176ffa53fde5a60e61417d"
+id = 11827146912
+packable = false
+
+[inputs."images/decals/weapons/Atlantis Basher.png"]
+hash = "8adb6175d61e92b4a1cc3a2e0d3d3c69e8b08511781ee73207ae423f3a376b9a"
+id = 11827147014
+packable = false
+
+[inputs."images/decals/weapons/Atlantis Blade.png"]
+hash = "f4364416b8910aca69adcebe6713fd9bf20fe3b2453978622e0e47da98749836"
+id = 11827147111
+packable = false
+
+[inputs."images/decals/weapons/Basic Blade.png"]
+hash = "2119c62e52c8a5284c5288bbfeff3a989bdd346da58747532541056c75d036c5"
+id = 11827147219
+packable = false
+
+[inputs."images/decals/weapons/Bomba Bomber.png"]
+hash = "517da389b3aee193a0cf33801ed968caef13ae6455ff4ca56802b2d2d96c4516"
+id = 11827147315
+packable = false
+
+[inputs."images/decals/weapons/Carnival Mallet.png"]
+hash = "9f577d11b57eb7198c059967a77e945bbf5f0f4695dcbc1a133a6d49211ccbba"
+id = 11827147376
+packable = false
+
+[inputs."images/decals/weapons/Crimson Jewel.png"]
+hash = "7dc5d4175f310c0f30fbd164e592bd9a33f3c7a86be9127fa537c997a82cfe50"
+id = 11827147434
+packable = false
+
+[inputs."images/decals/weapons/Darkest Desires.png"]
+hash = "da70368166ce1033197b1531b53132190fc847aed9eb83e3f47ca0aca99b4e59"
+id = 11827147583
+packable = false
+
+[inputs."images/decals/weapons/Dune Glass.png"]
+hash = "5fd56af00cb99bb612e89f2b10f271e4e1b1303e57345e5d50e5760bbf806c01"
+id = 11827147705
+packable = false
+
+[inputs."images/decals/weapons/Flower Blade.png"]
+hash = "4076a1d02a82daa830250d36233f221df0f34789d40732e9a79f83d61446bb62"
+id = 11827147818
+packable = false
+
+[inputs."images/decals/weapons/Forest Slammer.png"]
+hash = "84d4a4986a7642e0dcbe32be22ecdd9fe7dd06b91ddaac8140c7d5fc141d6e04"
+id = 11827147882
+packable = false
+
+[inputs."images/decals/weapons/Galactic Blade.png"]
+hash = "4b7f2b9f515660871c8f1f26582edd77fb9805956ac40cd46c55602b0765297a"
+id = 11827148010
+packable = false
+
+[inputs."images/decals/weapons/Gooey Brawler.png"]
+hash = "e593d1b8728c86846c212cc472ae7b4cabc07ecc6fa39e26b996b44ee5305d36"
+id = 11827148161
+packable = false
+
+[inputs."images/decals/weapons/Haunted Blade.png"]
+hash = "ef02d3ce3458df67f877b52cc8137d3856ef662612aae269e8c8f0d4f168ea16"
+id = 11827148245
+packable = false
+
+[inputs."images/decals/weapons/Hellfire Slasher.png"]
+hash = "fa6bb9c300d3e3390015225834235e9050386be602084c7e172d9fc0e806230d"
+id = 11827148306
+packable = false
+
+[inputs."images/decals/weapons/Honey Whacker.png"]
+hash = "c5ec961fafd54dc220b77a60e49657546671ea8ffeb090853e7462a16eb84a27"
+id = 11827148440
+packable = false
+
+[inputs."images/decals/weapons/Infernal Staff.png"]
+hash = "ed756898b51b45bfaf448e1db24e88344e921eed948fd3ed0296ad0a997e0fe6"
+id = 11827148494
+packable = false
+
+[inputs."images/decals/weapons/Lime Lance.png"]
+hash = "15a7e9f91df83ecd082a012f97714e0bc8865117a125e3611638c6c12f17c3e5"
+id = 11827148552
+packable = false
+
+[inputs."images/decals/weapons/Pillar Slammer.png"]
+hash = "449a71320444f9d5b6ebd5aeb2e77b795d963e0552097cf27177d9ed278511f7"
+id = 11827148634
+packable = false
+
+[inputs."images/decals/weapons/Samurai Smasher.png"]
+hash = "8827c27bd7aed26629c345d38d4a1dc5265ba2c1e0761b655149a79fc042ade7"
+id = 11827148719
+packable = false
+
+[inputs."images/decals/weapons/Spark Plug.png"]
+hash = "6783b49221af6a561097fb3fefd2fbe930569c3e465a2afc871bc1fae64c7008"
+id = 11827148775
+packable = false
+
+[inputs."images/decals/weapons/Stone Hammer.png"]
+hash = "aaee21eeb2d257c7c5aee81de7986fe3f2f03eea791b022a00f2499045c179f9"
+id = 11827148862
+packable = false
+
+[inputs."images/decals/weapons/Stone Smacker.png"]
+hash = "bd9eecf3c412db766013b0990c78ac1e5175f0e2e82a8566bbc07008498884cb"
+id = 11827149002
+packable = false
+
+[inputs."images/decals/weapons/Sunflower Slammer.png"]
+hash = "b2a4a70e382b9638315d3dcc523caa1279a34d40de25c4a5608f1007b543e95c"
+id = 11827149119
+packable = false
+
+[inputs."images/decals/weapons/Twilight Blade.png"]
+hash = "6f568213a1739a4ec6acc0c17bbbc5552e1de860b80122ed1e4371a19dcca2da"
+id = 11827149201
+packable = false
+
 [inputs."images/decals/worlds/Ban Land.png"]
 hash = "35cfabf6226041b887dd2c25da58c11f44f65e278d2fd904bc8a37f3a3ec2e5a"
 id = 11701906366
@@ -2053,6 +2293,11 @@ hash = "e59cd418515186b5f21e1e9754bacd7fefb9c051e740f725f5fa2e757a5bce58"
 id = 11591957709
 packable = false
 
+[inputs."images/vectors/Experience.png"]
+hash = "8450bcac0e5990f02d5981090203e403acb037494522cc60dfff549d6449a579"
+id = 11830303788
+packable = false
+
 [inputs."images/vectors/FewGems.png"]
 hash = "15093d77c171183ef9994a24660863f159ea8688bfda6984e2a78acabfe6ebfa"
 id = 11591957751
@@ -2126,4 +2371,9 @@ packable = false
 [inputs."images/vectors/Trading.png"]
 hash = "c3a7a39491477789ad905857c99e521040ea151c009df43c0615e8e0d32a7b04"
 id = 11591958836
+packable = false
+
+[inputs."images/vectors/WalkSpeed.png"]
+hash = "5071ca0375e543ba732393e7bc774a0f547d9ab8d36a138ed62fa8a95bf68a17"
+id = 11830303907
 packable = false

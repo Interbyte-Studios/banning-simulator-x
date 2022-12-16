@@ -7,8 +7,10 @@ import assetIds from "shared/assets";
 
 import { BottomBar } from "./bottombar";
 import { PetInventory } from "./pets";
+import { TalismanItems } from "./talismans/inventory";
+import { WeaponItems } from "./weapons/inventory";
 
-export type ValidInventoryType = "Pets" | "Weapons" | "Talismans" | "Titles" | "Boosts";
+export type ValidInventoryType = "Pets" | "Weapons" | "Talismans" | "Titles";
 
 interface ItemInventoryProps {
 	enabled: boolean;
@@ -34,6 +36,10 @@ export const ItemInventory = hooks((props: ItemInventoryProps, hooks) => {
 	const inventoryToDisplay: Array<Roact.Element> = [];
 	if (itemInventoryVisible === "Pets") {
 		inventoryToDisplay.push(<PetInventory />);
+	} else if (itemInventoryVisible === "Weapons") {
+		inventoryToDisplay.push(<WeaponItems />);
+	} else if (itemInventoryVisible === "Talismans") {
+		inventoryToDisplay.push(<TalismanItems />);
 	}
 
 	return (
@@ -64,7 +70,6 @@ export const ItemInventory = hooks((props: ItemInventoryProps, hooks) => {
 				displayWeaponsInventory={(): void => setTypeOfInventoryDisplayed("Weapons")}
 				displayTalismansInventory={(): void => setTypeOfInventoryDisplayed("Talismans")}
 				displayTitlesInventory={(): void => setTypeOfInventoryDisplayed("Titles")}
-				displayBoostsInventory={(): void => setTypeOfInventoryDisplayed("Boosts")}
 			/>
 			<ExitButton
 				Position={UDim2.fromScale(0.985, 0.115)}

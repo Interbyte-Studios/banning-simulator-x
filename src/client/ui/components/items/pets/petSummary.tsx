@@ -248,6 +248,18 @@ export const PetSummary = hooks((props: { storedPet: Pet }, { useEffect, useValu
 			>
 				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(105, 0, 0) }} />
 			</textlabel>
+			<textlabel
+				AnchorPoint={vec2Middle}
+				Position={UDim2.fromScale(0.5, 0.9)}
+				Size={UDim2.fromScale(0.675, 0.075)}
+				BackgroundTransparency={1}
+				TextScaled={true}
+				TextColor3={Color3.fromRGB(252, 252, 252)}
+				Text={"Coming Soon"}
+				Font={font}
+			>
+				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+			</textlabel>
 		</imagelabel>
 	);
 });
