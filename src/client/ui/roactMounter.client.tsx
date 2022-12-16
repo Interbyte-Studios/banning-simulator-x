@@ -55,6 +55,7 @@ onStoreCreated(player)
 					purchaseTalisman: remotes.Client.GetNamespace("talismans").Get("purchaseTalisman"),
 					equipTalisman: remotes.Client.GetNamespace("talismans").Get("equipTalisman"),
 					spinWheel: remotes.Client.Get("spinWheel"),
+					spinWheelInfo: remotes.Client.Get("spinWheelInfo"),
 					verifyDiscord: remotes.Client.GetNamespace("media").Get("verifyDiscord"),
 				}}
 			>
