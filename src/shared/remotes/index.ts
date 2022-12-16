@@ -10,6 +10,7 @@ import { redeemQuestDefinition } from "./redeemQuest";
 import { roduxDefinitions } from "./rodux";
 import { settings } from "./settings";
 import { spinWheelDefinition } from "./spinWheel";
+import { spinWheelInfoDefinition } from "./spinWheelnfo";
 import { talismans } from "./talismans";
 import { unlockRankDefinition } from "./unlockRank";
 import { weapons } from "./weapons";
@@ -29,4 +30,5 @@ export const remotes = Net.Definitions.Create({
 	redeemQuest: redeemQuestDefinition,
 	unlockRank: unlockRankDefinition,
 	spinWheel: spinWheelDefinition,
+	spinWheelInfo: spinWheelInfoDefinition,
 });
