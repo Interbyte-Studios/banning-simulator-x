@@ -54,6 +54,7 @@ const PetFrame = hooks(
 			removePetFromDeletionRegistry: (guid: string) => void;
 			layoutOrderIndex: number;
 			displayPetInfo: (guid: string) => void;
+			inventoryFrame: Roact.Ref<ScrollingFrame>;
 		},
 		{ useState, useEffect, useValue, useContext },
 	) => {
@@ -148,7 +149,9 @@ const PetFrame = hooks(
 
 		let zindex = 1;
 		if (displayingSummary) {
-			additionalDisplayedElements.push(<PetSummary storedPet={props.storedPetData} />);
+			additionalDisplayedElements.push(
+				<PetSummary storedPet={props.storedPetData} inventoryFrame={props.inventoryFrame} />,
+			);
 			zindex = 2;
 		}
 
@@ -424,6 +427,7 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)(
 							removePetFromDeletionRegistry={props.removePetFromDeletionRegistry}
 							layoutOrderIndex={index}
 							displayPetInfo={props.displayPetInfo}
+							inventoryFrame={scrollingFrameRef.value}
 						/>
 					);
 				})}

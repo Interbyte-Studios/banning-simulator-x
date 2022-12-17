@@ -16,6 +16,8 @@ export = (target: GuiBase): (() => void) => {
 		enhancements: {},
 	};
 
+	const ref = Roact.createRef<ScrollingFrame>();
+
 	const { cleanup } = createMockStory(
 		{
 			pets: [pet],
@@ -23,7 +25,16 @@ export = (target: GuiBase): (() => void) => {
 		target,
 		(_, store) => (
 			<RoactRodux.StoreProvider store={store}>
-				<PetSummary storedPet={store.getState().pets[0]} />
+				<scrollingframe Ref={ref} Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1}>
+					{/* create the "pet frame" which the PetSummary needs */}
+					<imagebutton
+						Size={UDim2.fromScale(0.15, 0.15)}
+						Position={UDim2.fromScale(0.5, 0.5)}
+						AnchorPoint={new Vector2(0.5, 0.5)}
+					>
+						<PetSummary storedPet={store.getState().pets[0]} inventoryFrame={ref} />
+					</imagebutton>
+				</scrollingframe>
 			</RoactRodux.StoreProvider>
 		),
 	);
