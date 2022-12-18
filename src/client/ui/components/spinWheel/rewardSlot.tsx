@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 
 interface RewardSlotProps {
@@ -37,7 +38,12 @@ export const RewardSlot = hooks((props: RewardSlotProps) => {
 				Font={font}
 				BackgroundTransparency={1}
 			>
-				<uistroke Thickness={2} Color={Color3.fromRGB(11, 52, 68)} />
+				<BaseUIStroke
+					native={{
+						Thickness: 2,
+						Color: Color3.fromRGB(11, 52, 68),
+					}}
+				/>
 			</textlabel>
 		</frame>
 	);
