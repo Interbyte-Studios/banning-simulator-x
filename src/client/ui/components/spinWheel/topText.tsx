@@ -1,6 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactHooks from "@rbxts/roact-hooks";
 import { color3White, font, vec2Middle } from "client/ui/commonValues";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { formatTime } from "client/util/formatTime";
 
@@ -42,7 +43,6 @@ export const SpinWheelTopText = hooks((props: SpinWheelTextProps, { useState, us
 
 	return (
 		<textlabel
-			Key={"TIMER"}
 			Text={
 				props.spins === 6
 					? `Wait ${formatTime(timer)} to spin again.`
@@ -50,15 +50,15 @@ export const SpinWheelTopText = hooks((props: SpinWheelTextProps, { useState, us
 					? `SPIN!`
 					: `${formatTime(timer)} For next spin`
 			}
-			Position={UDim2.fromScale(0.5, 0.07)}
+			Position={UDim2.fromScale(0.5, 0.18)}
 			AnchorPoint={vec2Middle}
-			Size={UDim2.fromOffset(500, 60)}
+			Size={UDim2.fromScale(0.8, 0.1)}
 			TextColor3={color3White}
 			TextScaled={true}
 			Font={font}
 			BackgroundTransparency={1}
 		>
-			<uistroke Thickness={4} Color={Color3.fromRGB(11, 52, 68)} />
+			<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(11, 52, 68) }} />
 		</textlabel>
 	);
 });
