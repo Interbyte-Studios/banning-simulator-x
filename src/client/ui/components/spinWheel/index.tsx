@@ -1,8 +1,9 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { color3White, font, vec2Middle } from "client/ui/commonValues";
+import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
@@ -12,7 +13,9 @@ import { spinRewards } from "shared/configs/spinWheel";
 import { StoreState } from "shared/rodux";
 import { SpinWheelState } from "shared/rodux/spinWheel";
 
+import { SpinRewardFrame } from "./rewardFrame";
 import { RewardSlot } from "./rewardSlot";
+import { SpinWheelSidebar } from "./sideBar";
 import { SpinWheelTopText } from "./topText";
 
 interface SpinWheelMappedProps {
@@ -66,8 +69,16 @@ for (const [index, rewardInfo] of pairs(spinRewards)) {
 
 export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 	hooks((props: SpinWheelProps, hooks) => {
-		const { useContext } = hooks;
+		const { useContext, useEffect, useState } = hooks;
 		const { spinWheel, spinWheelInfo } = useContext(remoteContext);
+		const [rewardFrameVisibility, updateRewardFrameVisibility] = useState<boolean>(false);
+		const [displayedInfo, updateDisplayedInfo] = useState<{
+			image: string;
+			amount: number;
+		}>({
+			image: "",
+			amount: 0,
+		});
 
 		const defaultButtonScale = 1;
 		const updatedButtonScale = 0.9;
@@ -86,12 +97,13 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 			slots.push(
 				<RewardSlot
 					pos={slotPositions[index].pos}
-					amount={index}
+					amount={rewardData.amount}
 					image={rewardData.image}
 					rot={slotPositions[index].rot ?? 0}
 				/>,
 			);
 		}
+
 		/**
 		 *@param reward The index of the reward the player received.
 		 */
@@ -118,9 +130,13 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 
 			wheelSpin.motor.setGoal(new Flipper.Instant(0));
 			isSpinning = false;
+
+			if (rewardFrameVisibility === false && isSpinning === false) {
+				updateRewardFrameVisibility(true);
+			}
 		});
 
-		spinWheelInfo.SendToServer();
+		useEffect(() => spinWheelInfo.SendToServer());
 
 		return (
 			<frame
@@ -130,135 +146,171 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 				BackgroundTransparency={1}
 				Visible={props.visible}
 			>
-				<ExitButton
-					minimizedSize={0.09}
-					maximizedSize={0.1}
-					onClosed={(): void => props.hideMenu()}
-					Position={UDim2.fromScale(0.7, 0.12)}
+				<SpinRewardFrame
+					rewardData={{ image: displayedInfo.image, amount: displayedInfo.amount }}
+					closed={(): void => updateRewardFrameVisibility(false)}
+					visible={rewardFrameVisibility}
 				/>
-				<uiaspectratioconstraint AspectRatio={2.03} />
-				<SpinWheelTopText
+				<SpinWheelSidebar
+					spinsDone={props.spinWheel.spinsDone}
 					startTime={props.spinWheel.startTime}
 					endTime={props.spinWheel.endTime}
-					spins={props.spinWheel.spinsDone}
-					dayEndTime={props.spinWheel.dayEndTime}
+					visible={rewardFrameVisibility !== true}
 				/>
-				<textlabel
-					Key={"SPINS"}
-					Text={`${tostring(props.spinWheel.spinsDone)} / 6 Spins Done`}
-					Position={UDim2.fromScale(0.5, 0.16)}
-					AnchorPoint={vec2Middle}
-					Size={UDim2.fromOffset(500, 45)}
-					TextColor3={color3White}
-					TextScaled={true}
-					Font={font}
-					BackgroundTransparency={1}
-				>
-					<uistroke Thickness={4} Color={Color3.fromRGB(11, 52, 68)} />
-				</textlabel>
-				<frame
-					Key={"SPIN WHEEL"}
-					AnchorPoint={vec2Middle}
+				<uiaspectratioconstraint AspectRatio={2.03} />
+				<imagelabel
+					Size={UDim2.fromScale(0.37, 0.695)}
 					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.27, 0.57)}
+					AnchorPoint={vec2Middle}
+					ScaleType={Enum.ScaleType.Fit}
+					Image={assetIds.images.ui.codes.background}
 					BackgroundTransparency={1}
+					Visible={rewardFrameVisibility !== true}
 				>
-					<uiaspectratioconstraint AspectRatio={1} />
-					<imagelabel
-						BackgroundTransparency={1}
-						ScaleType={Enum.ScaleType.Fit}
-						Size={UDim2.fromScale(1, 1)}
-						Position={UDim2.fromScale(0.5, 0.5)}
+					<ExitButton
+						minimizedSize={0.1}
+						maximizedSize={0.12}
+						onClosed={(): void => props.hideMenu()}
+						Position={UDim2.fromScale(0.98, 0.08)}
+					/>
+					<SpinWheelTopText
+						startTime={props.spinWheel.startTime}
+						endTime={props.spinWheel.endTime}
+						spins={props.spinWheel.spinsDone}
+						dayEndTime={props.spinWheel.dayEndTime}
+					/>
+					<uiaspectratioconstraint AspectRatio={1.08} />
+					<textlabel
 						AnchorPoint={vec2Middle}
-						Image={"rbxassetid://11751284496"}
-					>
-						<uiaspectratioconstraint AspectRatio={1} />
-					</imagelabel>
-					<imagelabel
-						AnchorPoint={Vector2.one.mul(0.5)}
 						Position={UDim2.fromScale(0.5, 0.06)}
-						Size={UDim2.fromScale(0.2, 0.2)}
+						Size={UDim2.fromScale(0.375, 0.1)}
 						BackgroundTransparency={1}
-						Image={"rbxassetid://11752302246"}
-						ScaleType={Enum.ScaleType.Fit}
-						ZIndex={2}
-					></imagelabel>
-					<imagelabel
-						BackgroundTransparency={1}
-						ScaleType={Enum.ScaleType.Fit}
-						Size={UDim2.fromScale(0.9, 0.9)}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						AnchorPoint={vec2Middle}
-						Image={"rbxassetid://11751293075"}
-						Rotation={wheelSpin.binding.map((value) => {
-							return value;
-						})}
+						TextScaled={true}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+						Text={"Spin Wheel"}
+						Font={font}
 					>
-						{slots}
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(148, 94, 15) }} />
+					</textlabel>
+					<frame
+						Key={"SPIN WHEEL"}
+						AnchorPoint={vec2Middle}
+						Position={UDim2.fromScale(0.5, 0.6)}
+						Size={UDim2.fromScale(0.65, 0.68)}
+						BackgroundTransparency={1}
+					>
 						<uiaspectratioconstraint AspectRatio={1} />
-					</imagelabel>
-					<textbutton
-						Size={spinButton.binding.map((value) => {
-							return UDim2.fromScale(buttonSize.X.Scale * value, buttonSize.Y.Scale * value);
-						})}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						AnchorPoint={vec2Middle}
-						BackgroundColor3={Color3.fromRGB(52, 190, 255)}
-						AutoButtonColor={false}
-						TextTransparency={1}
-						Event={{
-							/* eslint-disable jsdoc/require-jsdoc */
-							MouseLeave: (): void => spinButton.motor.setGoal(defaultButtonSpring),
-							MouseEnter: (): void => spinButton.motor.setGoal(updatedButtonSpring),
-							Activated: (): void => {
-								if (isSpinning === true) {
-									return;
-								}
-
-								spinWheel
-									.CallServerAsync()
-									.andThen((rewardData) => {
-										if (isSpinning) {
-											return;
-										}
-
-										if (rewardData.reward === undefined) {
-											print("RETURNED");
-											return;
-										}
-
-										rotateWheel(rewardData.reward);
-									})
-									.catch(warn);
-							},
-							/* eslint-enable jsdoc/require-jsdoc */
-						}}
-					>
-						<uigradient
-							Rotation={90}
-							Color={
-								new ColorSequence([
-									new ColorSequenceKeypoint(0, Color3.fromRGB(175, 211, 255)),
-									new ColorSequenceKeypoint(1, Color3.fromRGB(74, 90, 109)),
-								])
-							}
-						/>
-						<uistroke Thickness={4} Color={Color3.fromRGB(11, 52, 68)} ApplyStrokeMode={Enum.ApplyStrokeMode.Border} />
-						<uicorner CornerRadius={new UDim(0.5, 0)} />
-						<textlabel
-							Text={"SPIN"}
+						<imagelabel
 							BackgroundTransparency={1}
-							Size={UDim2.fromScale(0.8, 0.8)}
-							AnchorPoint={vec2Middle}
-							TextColor3={Color3.fromRGB(255, 255, 255)}
+							ScaleType={Enum.ScaleType.Fit}
+							Size={UDim2.fromScale(1, 1)}
 							Position={UDim2.fromScale(0.5, 0.5)}
-							Font={font}
-							TextScaled={true}
+							AnchorPoint={vec2Middle}
+							Image={"rbxassetid://11751284496"}
 						>
-							<uistroke Thickness={3} Color={Color3.fromRGB(11, 52, 68)} />
-						</textlabel>
-					</textbutton>
-				</frame>
+							<uiaspectratioconstraint AspectRatio={1} />
+						</imagelabel>
+						<imagelabel
+							AnchorPoint={Vector2.one.mul(0.5)}
+							Position={UDim2.fromScale(0.5, 0.06)}
+							Size={UDim2.fromScale(0.2, 0.2)}
+							BackgroundTransparency={1}
+							Image={"rbxassetid://11752302246"}
+							ScaleType={Enum.ScaleType.Fit}
+							ZIndex={2}
+						></imagelabel>
+						<imagelabel
+							BackgroundTransparency={1}
+							ScaleType={Enum.ScaleType.Fit}
+							Size={UDim2.fromScale(0.9, 0.9)}
+							Position={UDim2.fromScale(0.5, 0.5)}
+							AnchorPoint={vec2Middle}
+							Image={"rbxassetid://11751293075"}
+							Rotation={wheelSpin.binding.map((value) => {
+								return value;
+							})}
+						>
+							{slots}
+							<uiaspectratioconstraint AspectRatio={1} />
+						</imagelabel>
+						<textbutton
+							Size={spinButton.binding.map((value) => {
+								return UDim2.fromScale(buttonSize.X.Scale * value, buttonSize.Y.Scale * value);
+							})}
+							Position={UDim2.fromScale(0.5, 0.5)}
+							AnchorPoint={vec2Middle}
+							BackgroundColor3={Color3.fromRGB(52, 190, 255)}
+							AutoButtonColor={false}
+							TextTransparency={1}
+							Event={{
+								/* eslint-disable jsdoc/require-jsdoc */
+								MouseLeave: (): void => spinButton.motor.setGoal(defaultButtonSpring),
+								MouseEnter: (): void => spinButton.motor.setGoal(updatedButtonSpring),
+								Activated: (): void => {
+									if (isSpinning === true) {
+										return;
+									}
+
+									spinWheel
+										.CallServerAsync()
+										.andThen((rewardData) => {
+											if (isSpinning) {
+												return;
+											}
+
+											if (rewardData.reward === undefined) {
+												print("RETURNED");
+												return;
+											}
+
+											rotateWheel(rewardData.reward);
+											updateDisplayedInfo({
+												image: slotsData[rewardData.reward].image,
+												amount: slotsData[rewardData.reward].amount,
+											});
+										})
+										.catch(warn);
+								},
+								/* eslint-enable jsdoc/require-jsdoc */
+							}}
+						>
+							<uigradient
+								Rotation={90}
+								Color={
+									new ColorSequence([
+										new ColorSequenceKeypoint(0, Color3.fromRGB(175, 211, 255)),
+										new ColorSequenceKeypoint(1, Color3.fromRGB(74, 90, 109)),
+									])
+								}
+							/>
+							<BaseUIStroke
+								native={{
+									Thickness: 4,
+									Color: Color3.fromRGB(11, 52, 68),
+									ApplyStrokeMode: Enum.ApplyStrokeMode.Border,
+								}}
+							/>
+							<uicorner CornerRadius={new UDim(0.5, 0)} />
+							<textlabel
+								Text={"SPIN"}
+								BackgroundTransparency={1}
+								Size={UDim2.fromScale(0.8, 0.8)}
+								AnchorPoint={vec2Middle}
+								TextColor3={Color3.fromRGB(255, 255, 255)}
+								Position={UDim2.fromScale(0.5, 0.5)}
+								Font={font}
+								TextScaled={true}
+							>
+								<BaseUIStroke
+									native={{
+										Thickness: 4,
+										Color: Color3.fromRGB(11, 52, 68),
+									}}
+								/>
+							</textlabel>
+						</textbutton>
+					</frame>
+				</imagelabel>
 			</frame>
 		);
 	}),
