@@ -5,12 +5,15 @@ import { BoostActions, boostsReducer, BoostsState } from "./boosts";
 import { CurrenciesActions, currenciesReducer, CurrenciesState } from "./currencies";
 import { CurrentTalismanActions, currentTalismanReducer, CurrentTalismanState } from "./currentTalisman";
 import { CurrentWeaponActions, currentWeaponReducer, CurrentWeaponState } from "./currentWeapon";
+import { DevProductActions, devProductReducer, DevProductState } from "./devProducts";
+import { EggsActions, eggsReducer, EggsState } from "./eggs";
 import { experienceReducer, ExperienceState } from "./experience";
 import { GamepassActions, gamepassesReducer, GamepassesState } from "./gamepasses";
 import { MediaActions, mediaReducer, MediaState } from "./media";
 import { PetMasteryActions, petMasteryReducer, PetMasteryState } from "./petMastery";
 import { PetsActions, petsReducer, PetsState } from "./pets";
-import { playerIndexReducer, PlayerIndexState } from "./playerIndex";
+import { PetTeamsActions, petTeamsReducer, PetTeamsState } from "./petTeams";
+import { PlayerIndexActions, playerIndexReducer, PlayerIndexState } from "./playerIndex";
 import { QuestsAction, questsReducer, QuestsState } from "./quests";
 import { RankActions, rankReducer, RankState } from "./rank";
 import { SettingsActions, settingsReducer, SettingsState } from "./settings";
@@ -24,6 +27,7 @@ export type StoreState = {
 	boosts: BoostsState;
 	currencies: CurrenciesState;
 	currentWeapon: CurrentWeaponState;
+	eggs: EggsState;
 	experience: ExperienceState;
 	gamepasses: GamepassesState;
 	media: MediaState;
@@ -38,11 +42,14 @@ export type StoreState = {
 	currentTalisman: CurrentTalismanState;
 	index: PlayerIndexState;
 	petMastery: PetMasteryState;
+	petTeams: PetTeamsState;
+	devProducts: DevProductState;
 };
 export type StoreActions = (
 	| BoostActions
 	| CurrenciesActions
 	| CurrentWeaponActions
+	| EggsActions
 	| GamepassActions
 	| MediaActions
 	| PetsActions
@@ -55,6 +62,9 @@ export type StoreActions = (
 	| TalismanActions
 	| CurrentTalismanActions
 	| PetMasteryActions
+	| PetTeamsActions
+	| PlayerIndexActions
+	| DevProductActions
 ) &
 	Rodux.AnyAction;
 
@@ -63,6 +73,7 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	boosts: boostsReducer,
 	currencies: currenciesReducer,
 	currentWeapon: currentWeaponReducer,
+	eggs: eggsReducer,
 	experience: experienceReducer,
 	gamepasses: gamepassesReducer,
 	media: mediaReducer,
@@ -77,6 +88,8 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	currentTalisman: currentTalismanReducer,
 	index: playerIndexReducer,
 	petMastery: petMasteryReducer,
+	petTeams: petTeamsReducer,
+	devProducts: devProductReducer,
 });
 
 export type Store = Rodux.Store<StoreState, StoreActions>;

@@ -14,23 +14,23 @@ export function purchaseTalisman(
 	talismanId: number,
 	purchaseTalismanRemote: InferClientRemote<PurchaseTalismanDefinition>,
 ): void {
-	const talismanData = getTalismanData(talismanId);
+	const currentState = store.getState();
 
-	if (talismanId - 1 > 0) {
-		const ownsPreviousTalisman = store.getState().talismans.has(talismanId - 1);
-		if (!ownsPreviousTalisman) {
-			warn(`Does not own talisman ${getTalismanData(talismanId - 1).name} of id ${talismanId - 1}}`);
+	const storedTalisman = currentState.talismans.find((talisman) => talisman.id === talismanId);
+	if (storedTalisman !== undefined) {
+		return;
+	}
+
+	const previousTalismanId = talismanId - 1;
+	if (previousTalismanId > 0) {
+		const storedPreviousTalisman = currentState.talismans.find((talisman) => talisman.id === previousTalismanId);
+		if (storedPreviousTalisman === undefined) {
 			return;
 		}
 	}
 
-	if (store.getState().talismans.has(talismanId)) {
-		warn(`Already owns talisman ${talismanData.name} of id ${talismanId}`);
-		return;
-	}
-
-	if (store.getState().currencies[talismanData.cost.currency] < talismanData.cost.amount) {
-		warn(`Not enough ${talismanData.cost.currency} to purchase talisman ${talismanData.name}`);
+	const talismanData = getTalismanData(talismanId);
+	if (currentState.currencies[talismanData.cost.currency] < talismanData.cost.amount) {
 		return;
 	}
 

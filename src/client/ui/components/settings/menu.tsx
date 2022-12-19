@@ -122,7 +122,7 @@ export const SettingsMenu = RoactRodux.connect(mapStateToProps)(
 					<EasyLegendariesRarityAutoDeleteSetting />
 				</scrollingframe>
 				<ExitButton
-					Position={UDim2.fromScale(0.975, 0.125)}
+					Position={UDim2.fromScale(0.975, 0.1)}
 					minimizedSize={0.125}
 					maximizedSize={0.15}
 					onClosed={(): void => props.hideMenu()}

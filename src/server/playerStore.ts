@@ -32,6 +32,19 @@ function onPlayerAdded(player: Player): void {
 }
 
 /**
+ * Retrieves a player's rodux store.
+ *
+ * @param player The player.
+ * @returns The store of the player.
+ */
+export function retrieveStore(player: Player): Store {
+	const store = stores.get(player);
+	assert(store, `Failed to retrieve rodux store for player ${player.Name}`);
+
+	return store;
+}
+
+/**
  * Creates a fake dummy store for a player.
  *
  * @param player The fake player to create a dummy store for.

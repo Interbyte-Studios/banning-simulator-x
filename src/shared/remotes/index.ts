@@ -5,6 +5,7 @@ import { eggs } from "./eggs";
 import { equipTitleDefinition } from "./equipTitle";
 import { media } from "./media";
 import { petMastery } from "./petMastery";
+import { pets } from "./pets";
 import { purchaseZoneDefinition } from "./purchaseZone";
 import { redeemQuestDefinition } from "./redeemQuest";
 import { roduxDefinitions } from "./rodux";
@@ -16,6 +17,7 @@ import { weapons } from "./weapons";
 export const remotes = Net.Definitions.Create({
 	eggs: eggs,
 	media: media,
+	pets: pets,
 	petMastery: petMastery,
 	rodux: roduxDefinitions,
 	settings: settings,

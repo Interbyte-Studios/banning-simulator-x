@@ -9,7 +9,7 @@ import { hooks } from "../hooks";
  * @param gridLayout The GridLayout associated with the ScrollingFrame.
  * @returns The resize connection.
  */
-function updateContentSize(scrollingFrame: ScrollingFrame, gridLayout: UIGridStyleLayout): RBXScriptConnection {
+export function updateContentSize(scrollingFrame: ScrollingFrame, gridLayout: UIGridStyleLayout): RBXScriptConnection {
 	/**
 	 * Updates the CanvasSize of the ScrollingFrame.
 	 */
@@ -28,6 +28,7 @@ interface RescalingScrollingFrameProps extends Partial<ScrollingFrame> {}
 /**
  * A component that automatically rescales the CanvasSize of the ScrollingFrame every time the AbsoluteContentSize changes.
  */
+/* eslint-disable jsdoc/require-jsdoc */
 export const RescalingScrollingFrame = hooks((props: RescalingScrollingFrameProps, { useValue, useEffect }) => {
 	const ref = useValue(Roact.createRef<ScrollingFrame>());
 
@@ -46,3 +47,4 @@ export const RescalingScrollingFrame = hooks((props: RescalingScrollingFrameProp
 
 	return <scrollingframe {...props} Ref={ref.value} />;
 });
+/* eslint-enable jsdoc/require-jsdoc */

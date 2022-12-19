@@ -35,7 +35,7 @@ export const WalkSpeedSetting = RoactRodux.connect(mapStateToProps)(
 
 		return (
 			<ModifySettingOption
-				position={UDim2.fromScale(0.5, 0.295)}
+				position={UDim2.fromScale(0.5, 0.285)}
 				size={UDim2.fromScale(0.95, 0.04)}
 				settingName={"Walk Speed"}
 				displayValue={`${props.walkSpeed}`}

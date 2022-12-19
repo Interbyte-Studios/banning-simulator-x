@@ -1,9 +1,12 @@
-import { Players } from "@rbxts/services";
+import { HttpService, Players } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
+import { rollEnhancement } from "server/modules/pets/rollEnhancement";
 import { getPetPercentages } from "server/util/getPetPercentages";
 import { hatchDebounce } from "shared/configs/eggs";
+import { EnhancePetMetadata } from "shared/configs/enchantments";
 import { Rarities } from "shared/configs/rarities";
 import { remotes } from "shared/remotes";
+import { addEgg } from "shared/rodux/eggs";
 import { addPets, ConfirmedPet } from "shared/rodux/pets";
 import { isImmuneRarity } from "shared/rodux/settings";
 import { getEggCost } from "shared/util/getEggCost";
@@ -129,16 +132,35 @@ hatchEgg.SetCallback(
 				autoDeleted = currentState.settings.autoDelete.rarities[pet.rarity];
 			}
 
+			// check to see if we should add an enhancement by default to the pet (random chance)
+			let selectedEnhancement: EnhancePetMetadata | undefined;
+
+			const randomNumber = new Random().NextInteger(0, 100);
+			if (randomNumber > 99) {
+				const rolledEnhancement = rollEnhancement(isVoid ? "void" : "regular");
+				if (rolledEnhancement === undefined) {
+					warn(`Failed to roll a "${isVoid ? "void" : "regular"}" enhancement upon hatching pet with id: "${pet.id}"`);
+				} else {
+					selectedEnhancement = {
+						category: rolledEnhancement.category,
+						rarity: rolledEnhancement.rarity,
+						variant: isVoid ? "void" : "regular",
+					};
+				}
+			}
+
 			// todo: check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 
 			selectedPets.push({
 				autoDeleted,
 				id: pet.id,
+				guid: HttpService.GenerateGUID(false),
 				rarity: pet.rarity,
 				variant: isVoid ? "void" : "regular",
 				method: "hatch",
 				egg: eggName,
+				enhancements: { [pet.rarity]: selectedEnhancement },
 			});
 		}
 
@@ -147,6 +169,7 @@ hatchEgg.SetCallback(
 		}
 
 		store.dispatch(addPets(eggCost.amount * selectedPets.size(), eggCost.currencyType, selectedPets));
+		store.dispatch(addEgg(selectedPets));
 		return {
 			success: true,
 			pets: selectedPets,

@@ -54,7 +54,7 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 			return <></>;
 		}
 
-		const storedTalisman = props.talismans.get(props.currentTalisman);
+		const storedTalisman = props.talismans.find((talisman) => talisman.id === props.currentTalisman);
 		assert(
 			storedTalisman,
 			`Expected player to own talisman of id: "${props.currentTalisman}" since they have it equipped.`,
@@ -120,16 +120,7 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					<uicorner CornerRadius={new UDim(0.175, 0)} />
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
-					<TalismanViewport
-						native={{
-							AnchorPoint: vec2Middle,
-							BackgroundTransparency: 1,
-							Size: UDim2.fromScale(0.9, 0.9),
-							Position: UDim2.fromScale(0.5, 0.5),
-						}}
-						talismanId={props.currentTalisman}
-						phase={storedTalisman.phase}
-					/>
+					<TalismanViewport talismanId={props.currentTalisman} phase={storedTalisman.phase} />
 				</frame>
 				<textlabel
 					AnchorPoint={vec2Middle}

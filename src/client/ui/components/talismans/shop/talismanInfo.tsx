@@ -122,7 +122,7 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 						BackgroundTransparency={1}
 						Position={UDim2.fromScale(0.5, 0.3)}
 						Size={UDim2.fromScale(0.8, 0.25)}
-						Text={`Tier: ${talismanInfo.tier}`}
+						Text={`NEEDS REWORKED`}
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 						TextScaled={true}
 						Font={font}
@@ -134,23 +134,7 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 						BackgroundTransparency={1}
 						Position={UDim2.fromScale(0.5, 0.525)}
 						Size={UDim2.fromScale(0.8, 0.2)}
-						Text={`${
-							talismanInfo.stats.name === "damage"
-								? "Damage"
-								: talismanInfo.stats.name === "experience"
-								? "Experience"
-								: talismanInfo.stats.name === "health"
-								? "Health"
-								: "Unknown"
-						}: ${
-							talismanInfo.stats.name === "damage"
-								? "+"
-								: talismanInfo.stats.name === "experience"
-								? "x"
-								: talismanInfo.stats.name === "health"
-								? "+"
-								: "Unknown"
-						}${twoDpAbbreviator.numberToString(talismanInfo.stats.amount)}`}
+						Text={`NEEDS REWORKED`}
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 						TextScaled={true}
 						Font={font}
@@ -162,7 +146,7 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 						BackgroundTransparency={1}
 						Position={UDim2.fromScale(0.5, 0.7)}
 						Size={UDim2.fromScale(0.8, 0.2)}
-						Text={`Walk Speed: +${talismanInfo.stats.maxSpeed}`}
+						Text={`Walk Speed: +${talismanInfo.stats.walkspeed}`}
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 						TextScaled={true}
 						Font={font}

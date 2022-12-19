@@ -6,10 +6,10 @@ import { testAction } from "./testAction";
 export = (): void => {
 	describe("rodux/title", () => {
 		it("should equip different title", () => {
-			const state = "500 exp";
+			const state = "Executive";
 
-			const action = equipTitle("free title!");
-			const newState = "free title!";
+			const action = equipTitle("Staff Team");
+			const newState = "Staff Team";
 
 			testAction(state, newState, titleReducer, action);
 		});
@@ -17,9 +17,9 @@ export = (): void => {
 		it("should equip title for first time", () => {
 			const state = undefined;
 
-			const action = equipTitle("500 exp");
+			const action = equipTitle("Executive");
 
-			const newState = "500 exp";
+			const newState = "Executive";
 
 			testAction(state, newState, titleReducer, action);
 		});

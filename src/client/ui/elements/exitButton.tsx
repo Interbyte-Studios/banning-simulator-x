@@ -6,6 +6,7 @@ import assetIds from "shared/assets";
 import { font, vec2Middle } from "../commonValues";
 import { useBindingMotor } from "../customHooks/useBindingMotor";
 import { hooks } from "../hooks";
+import { BaseUIStroke } from "./baseUIStroke";
 
 interface ExitButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
 	minimizedSize: number;
@@ -71,7 +72,7 @@ export const ExitButton = hooks((props: ExitButtonProps, hooks) => {
 				Text={"X"}
 				Font={font}
 			>
-				<uistroke Color={Color3.fromRGB(138, 92, 92)} Thickness={2} />
+				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(138, 92, 92) }} />
 			</textlabel>
 		</imagebutton>
 	);

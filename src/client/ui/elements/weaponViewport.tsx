@@ -1,13 +1,11 @@
 import Roact from "@rbxts/roact";
-import { ReplicatedStorage } from "@rbxts/services";
-import { WeaponIndex } from "shared/configs/weapons";
-import { setAssetProperties } from "shared/util/setAssetProperties";
+import { getWeaponDecal } from "client/util/getWeaponDecal";
 
+import { vec2Middle } from "../commonValues";
 import { hooks } from "../hooks";
 
 interface WeaponViewportProps {
-	native: Partial<WritableInstanceProperties<ViewportFrame>>;
-	weaponName: WeaponIndex;
+	weaponId: number;
 }
 
 /**
@@ -15,49 +13,17 @@ interface WeaponViewportProps {
  *
  * @param props The properties of the weapon viewport.
  * @param props.native The native properties of the viewport frame.
- * @param props.weaponId The id of the weapon.
+ * @param props.weaponId The id of the weapon being displayed.
  */
-export const WeaponViewport = hooks((props: WeaponViewportProps, { useValue, useEffect }) => {
-	const viewportRef = useValue(Roact.createRef<ViewportFrame>());
-	const cameraRef = useValue(Roact.createRef<Camera>());
-
-	useEffect(() => {
-		const viewport = viewportRef.value.getValue();
-		assert(viewport, `Failed to get Viewport Frame`);
-
-		viewport.Ambient = Color3.fromRGB(130, 130, 130);
-		viewport.LightColor = Color3.fromRGB(255, 255, 255);
-
-		const camera = cameraRef.value.getValue();
-		assert(camera, `Failed to get camera`);
-
-		viewport.CurrentCamera = camera;
-
-		const weaponsFolder = ReplicatedStorage.assetObjects.weapons;
-		const weaponTool = weaponsFolder[props.weaponName].Clone();
-		setAssetProperties("weapon", weaponTool);
-
-		const weaponModel = new Instance("Model");
-		weaponTool.Parent = weaponModel;
-		weaponModel.PrimaryPart = weaponTool.Handle;
-
-		weaponModel.Parent = viewport;
-
-		camera.CameraType = Enum.CameraType.Scriptable;
-		camera.FieldOfView = 10;
-
-		weaponModel.PivotTo(
-			camera.CFrame.ToWorldSpace(
-				new CFrame(0, -weaponModel.GetExtentsSize().Y / 2.5, -weaponModel.GetExtentsSize().Z * 10).mul(
-					CFrame.Angles(0, math.rad(90), 0),
-				),
-			),
-		);
-	}, []);
-
+export const WeaponViewport = hooks((props: WeaponViewportProps) => {
 	return (
-		<viewportframe {...props.native} Ref={viewportRef.value}>
-			<camera Ref={cameraRef.value} />
-		</viewportframe>
+		<imagelabel
+			AnchorPoint={vec2Middle}
+			BackgroundTransparency={1}
+			Size={UDim2.fromScale(0.75, 0.75)}
+			Position={UDim2.fromScale(0.5, 0.5)}
+			Image={getWeaponDecal(props.weaponId)}
+			ScaleType={Enum.ScaleType.Fit}
+		/>
 	);
 });

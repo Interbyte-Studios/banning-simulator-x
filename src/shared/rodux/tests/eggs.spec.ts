@@ -1,17 +1,13 @@
 /// <reference types="@rbxts/testez/globals" />
 
-import { getEggCost } from "shared/util/getEggCost";
-
-import { eggsReducer } from "../eggs";
-import { addPets } from "../pets";
+import { addEgg, eggsReducer } from "../eggs";
 import { testAction } from "./testAction";
 
 export = (): void => {
 	describe("rodux/eggs", () => {
 		it("should increase egg counter and rarity counter", () => {
-			const eggName = "Starter";
-			const eggCost = getEggCost(eggName, false);
 			const petId = 1;
+			const petGuid = "1";
 
 			const state = {
 				eggs: 0,
@@ -34,8 +30,16 @@ export = (): void => {
 				},
 			};
 
-			const action = addPets(eggCost.amount, eggCost.currencyType, [
-				{ autoDeleted: false, id: petId, rarity: "Basic", variant: "regular", method: "hatch", egg: "Starter" },
+			const action = addEgg([
+				{
+					autoDeleted: false,
+					id: petId,
+					guid: petGuid,
+					rarity: "Basic",
+					variant: "regular",
+					method: "hatch",
+					egg: "Starter",
+				},
 			]);
 
 			testAction(state, newState, eggsReducer, action);

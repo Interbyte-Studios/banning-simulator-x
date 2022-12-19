@@ -1,39 +1,63 @@
-import { Players, TextChatService } from "@rbxts/services";
+import { Players, RunService } from "@rbxts/services";
 import { TITLES } from "shared/configs/titles";
 
-import { stores } from "../clientStores";
+const player = Players.LocalPlayer;
+const playerGui = player.WaitForChild("PlayerGui");
 
-/**
- * Triggers whenever a message is about to be sent in the chat.
- *
- * @param message The message that is being sent.
- * @returns The `TextChatMessageProperties` to apply, or `undefined` if the default should be used.
- */
-TextChatService.OnIncomingMessage = (message): TextChatMessageProperties | undefined => {
-	if (message.TextSource === undefined) {
+const chat = playerGui.WaitForChild("Chat");
+const chatChannelParentFrame = chat.FindFirstChild("Frame")?.FindFirstChild("ChatChannelParentFrame");
+const chatScroll = chatChannelParentFrame?.FindFirstChild("Frame_MessageLogDisplay")?.FindFirstChild("Scroller");
+
+const gradients: Array<UIGradient> = [];
+chatScroll?.ChildAdded.Connect((chatObject) => {
+	if (!chatObject.IsA("Frame")) {
 		return;
 	}
 
-	const player = Players.GetPlayerByUserId(message.TextSource.UserId);
-	if (player === undefined) {
+	const messageObject = chatObject.FindFirstChildOfClass("TextLabel");
+	if (messageObject === undefined) {
 		return;
 	}
 
-	// get player store
-	const store = stores.get(player);
-	if (!store) {
+	const messageTitle = messageObject.FindFirstChildOfClass("TextLabel");
+	if (messageTitle === undefined) {
 		return;
 	}
 
-	// get player title
-	const title = TITLES.find((title) => title.name === store.getState().title);
-	if (!title) {
+	const titleContent = messageTitle.Text.split("[")[1].split("]")[0];
+	const titleData = TITLES.find((_title) => _title.name === titleContent);
+	assert(titleData, `Failed to get data for title named: "${titleContent}".`);
+
+	if (typeIs(titleData.effect, "Color3")) {
 		return;
 	}
 
-	// apply color to the chat
-	const properties = new Instance("TextChatMessageProperties");
-	properties.Text = `<font color="#${title.effect.ToHex()}">${message.Text}</font>`;
+	const titleGradient = new Instance("UIGradient");
+	titleGradient.Color = titleData.effect;
+	titleGradient.Offset = new Vector2(-0.75, 0);
+	titleGradient.Parent = messageTitle;
+	gradients.push(titleGradient);
 
-	return properties;
-};
+	const connection = titleGradient.Destroying.Connect(() => {
+		gradients.forEach((gradient, index) => {
+			if (gradient === titleGradient) {
+				gradients.unorderedRemove(index);
+				return;
+			}
+		});
+
+		connection.Disconnect();
+	});
+});
+
+RunService.RenderStepped.Connect((deltaTime) => {
+	gradients.forEach((gradient) => {
+		if (gradient.Offset.X < 0.75) {
+			gradient.Offset = new Vector2(gradient.Offset.X + 0.5 * deltaTime, 0);
+		} else {
+			gradient.Offset = new Vector2(-0.75, 0);
+		}
+
+		gradient.Rotation = 40;
+	});
+});

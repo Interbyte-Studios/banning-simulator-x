@@ -26,12 +26,8 @@ export const BOOST_PRODUCTS = {
 	["x2 Hatching Luck"]: 1,
 };
 
-export type TaskProduct = keyof typeof TASK_PRODUCTS;
-export const TASK_PRODUCTS = {
-	Regular: 1,
-	Void: 1,
-	Radiant: 1,
-};
+export const PURCHASE_PET_TEAM_PRODUCT = 1;
+export const PURCHASE_PET_TEAM_PRODUCT_COST = 149;
 
 export const GROUP_ID = 5126818;
 export const GROUP_ROLES: Record<number, { tag: string; color: Color3 }> = {

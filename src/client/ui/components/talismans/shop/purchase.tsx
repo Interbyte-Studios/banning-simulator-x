@@ -45,7 +45,8 @@ function mapStateToProps(state: StoreState): PurchaseTalismanMappedProps {
 /* eslint-disable jsdoc/require-jsdoc */
 export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 	hooks((props: PurchaseTalismanProps, hooks) => {
-		if (props.talismans.get(props.currentTalisman)) {
+		const storedTalisman = props.talismans.find((talisman) => talisman.id === props.currentTalisman);
+		if (storedTalisman !== undefined) {
 			return <></>;
 		}
 
@@ -80,8 +81,8 @@ export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 						// check to be sure they've bought the previous talisman
 						const previousTalismanId = props.currentTalisman - 1;
 						if (previousTalismanId > 0) {
-							const ownsPreviousTalisman = props.talismans.has(previousTalismanId);
-							if (!ownsPreviousTalisman) {
+							const ownsPreviousTalisman = props.talismans.find((talisman) => talisman.id === previousTalismanId);
+							if (ownsPreviousTalisman === undefined) {
 								addError(`You don't own the previous talisman!`);
 								return;
 							}

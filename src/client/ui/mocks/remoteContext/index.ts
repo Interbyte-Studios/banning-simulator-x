@@ -1,8 +1,15 @@
 import { createContext } from "@rbxts/roact";
+import { EquipTitleDefinition } from "shared/remotes/equipTitle";
 import { RedeemCodeDefinition } from "shared/remotes/media/redeemCode";
 import { VerifyDiscordDefinition } from "shared/remotes/media/verifyDiscord";
 import { ClaimPetMasteryDefinition } from "shared/remotes/petMastery/claimMastery";
 import { TogglePetMasteryCosmetic } from "shared/remotes/petMastery/toggleCosmetic";
+import { ChangePetTeamNameDefinition } from "shared/remotes/pets/changePetTeamName";
+import { CreatePetTeamDefinition } from "shared/remotes/pets/createPetTeam";
+import { DeletePetsDefinition } from "shared/remotes/pets/deletePets";
+import { DeletePetTeamDefinition } from "shared/remotes/pets/deletePetTeam";
+import { EquipPetsDefinition } from "shared/remotes/pets/equipPets";
+import { LockPetsDefinition } from "shared/remotes/pets/lockPets";
 import { PurchaseZoneDefinition } from "shared/remotes/purchaseZone";
 import { RedeemQuestDefinition } from "shared/remotes/redeemQuest";
 import { ToggleAutoDeleteDefinition } from "shared/remotes/settings/autoDelete/toggleAutoDelete";
@@ -19,6 +26,7 @@ import { TogglePetsStudsOfDistanceDefinition } from "shared/remotes/settings/vis
 import { ToggleTimeOfDayDefinition } from "shared/remotes/settings/visual/toggleTimeOfDay";
 import { EquipTalismanDefinition } from "shared/remotes/talismans/equipTalisman";
 import { PurchaseTalismanDefinition } from "shared/remotes/talismans/purchaseTalisman";
+import { UnequipTalismanDefinition } from "shared/remotes/talismans/unequipTalisman";
 import { UnlockRankDefinition } from "shared/remotes/unlockRank";
 import { ChangeWeaponDefinition } from "shared/remotes/weapons/changeWeapon";
 import { EquipWeaponDefinition } from "shared/remotes/weapons/equipWeapon";
@@ -41,6 +49,13 @@ export const fakeRemoteContext = {
 	equipWeapon: fakeRemoteCall<EquipWeaponDefinition>("equipWeapon"),
 	unequipWeapon: fakeRemoteCall<UnequipWeaponDefinition>("unequipWeapon"),
 	purchaseWeapon: fakeRemoteCall<PurchaseWeaponDefinition>("purchaseWeapon"),
+
+	deletePets: fakeRemoteCall<DeletePetsDefinition>("deletePets"),
+	equipPets: fakeRemoteCall<EquipPetsDefinition>("equipPets"),
+	lockPets: fakeRemoteCall<LockPetsDefinition>("lockPets"),
+	createPetTeam: fakeRemoteCall<CreatePetTeamDefinition>("createPetTeam"),
+	deletePetTeam: fakeRemoteCall<DeletePetTeamDefinition>("deletePetTeam"),
+	changePetTeamName: fakeRemoteCall<ChangePetTeamNameDefinition>("changePetTeamName"),
 
 	purchaseZone: fakeFunctionCall<PurchaseZoneDefinition>("purchaseZone", () => {
 		return {
@@ -77,8 +92,10 @@ export const fakeRemoteContext = {
 
 	purchaseTalisman: fakeRemoteCall<PurchaseTalismanDefinition>("purchaseTalisman"),
 	equipTalisman: fakeRemoteCall<EquipTalismanDefinition>("equipTalisman"),
+	unequipTalisman: fakeRemoteCall<UnequipTalismanDefinition>("unequipTalisman"),
 
 	unlockRank: fakeRemoteCall<UnlockRankDefinition>("unlockRank"),
+	equipTitle: fakeRemoteCall<EquipTitleDefinition>("equipTitle"),
 
 	hatchEgg: fakeHatchEgg,
 };

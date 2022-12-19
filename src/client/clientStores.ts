@@ -1,5 +1,5 @@
 import Rodux from "@rbxts/rodux";
-import { Players } from "@rbxts/services";
+import { Players, RunService } from "@rbxts/services";
 import { remotes } from "shared/remotes";
 import { Store, storeReducer } from "shared/rodux";
 import { getOrSetDefault } from "shared/util/getOrSetDefault";
@@ -31,8 +31,11 @@ export function onStoreCreated(player: Player): Promise<Store> {
  * @param player The player object.
  * @returns The store of the player.
  */
-export function retrieveStore(player: Player): Store {
+export function retrieveStore(player: Player): Store | undefined {
 	const store = stores.get(player);
+	if (store === undefined && RunService.IsStudio()) {
+		return undefined;
+	}
 	assert(store, `Expected client store to exist for player ${player.Name}.`);
 
 	return store;

@@ -14,7 +14,11 @@ import { EggCostDisplay } from "./eggCostDisplay";
 export function EggCost(): Roact.Element {
 	return (
 		<>
-			{Object.entries(EGGS).map(([eggName]) => {
+			{Object.entries(EGGS).map(([eggName, eggData]) => {
+				if (!eggData.hatchable) {
+					return <></>;
+				}
+
 				const eggModel = Workspace.interactions.eggs[eggName];
 
 				const eggCostRegular = getEggCost(eggName, false);

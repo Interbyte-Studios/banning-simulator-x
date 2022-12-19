@@ -125,7 +125,7 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 					<uicorner CornerRadius={new UDim(1, 0)} />
-					<uistroke Color={Color3.fromRGB(5, 112, 179)} Thickness={2} />
+					<BaseUIStroke native={{ Thickness: 2.5, Color: Color3.fromRGB(5, 112, 179) }} />
 					<textlabel
 						AnchorPoint={vec2Middle}
 						Position={UDim2.fromScale(0.5, 0.5)}
@@ -148,9 +148,11 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 					<uicorner CornerRadius={new UDim(1, 0)} />
-					<uistroke
-						Color={props.weaponEquipped ? Color3.fromRGB(38, 130, 23) : Color3.fromRGB(82, 5, 5)}
-						Thickness={2}
+					<BaseUIStroke
+						native={{
+							Thickness: 2,
+							Color: props.weaponEquipped ? Color3.fromRGB(38, 130, 23) : Color3.fromRGB(82, 5, 5),
+						}}
 					/>
 				</imagelabel>
 			</imagebutton>

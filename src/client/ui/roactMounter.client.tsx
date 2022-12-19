@@ -28,6 +28,12 @@ onStoreCreated(player)
 					hatchEgg: remotes.Client.GetNamespace("eggs").Get("hatchEgg"),
 					purchaseZone: remotes.Client.Get("purchaseZone"),
 					unlockRank: remotes.Client.Get("unlockRank"),
+					deletePets: remotes.Client.GetNamespace("pets").Get("deletePets"),
+					equipPets: remotes.Client.GetNamespace("pets").Get("equipPets"),
+					lockPets: remotes.Client.GetNamespace("pets").Get("lockPets"),
+					createPetTeam: remotes.Client.GetNamespace("pets").Get("createPetTeam"),
+					deletePetTeam: remotes.Client.GetNamespace("pets").Get("deletePetTeam"),
+					changePetTeamName: remotes.Client.GetNamespace("pets").Get("changePetTeamName"),
 					redeemCode: remotes.Client.GetNamespace("media").Get("redeemCode"),
 					redeemQuest: remotes.Client.Get("redeemQuest"),
 					toggleButtonClickSFX: remotes.Client.GetNamespace("settings").GetNamespace("sound").Get("toggleButtonClick"),
@@ -54,7 +60,9 @@ onStoreCreated(player)
 					toggleTimeOfDay: remotes.Client.GetNamespace("settings").GetNamespace("visual").Get("toggleTimeOfDay"),
 					purchaseTalisman: remotes.Client.GetNamespace("talismans").Get("purchaseTalisman"),
 					equipTalisman: remotes.Client.GetNamespace("talismans").Get("equipTalisman"),
+					unequipTalisman: remotes.Client.GetNamespace("talismans").Get("unequipTalisman"),
 					verifyDiscord: remotes.Client.GetNamespace("media").Get("verifyDiscord"),
+					equipTitle: remotes.Client.Get("equipTitle"),
 				}}
 			>
 				<AnnouncementAPI>
