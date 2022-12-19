@@ -234,8 +234,8 @@ const PetFrame = hooks(
 							petData.rarity === "Legendary" ||
 							petData.rarity === "Primordial" ||
 							petData.rarity === "Prismatic"
-								? rarityData.BeginningColor
-								: Color3.fromRGB(255, 255, 255)
+								? Color3.fromRGB(255, 255, 255)
+								: rarityData.BeginningColor
 						}
 					>
 						<RarityGradient Rarity={petData.rarity} />

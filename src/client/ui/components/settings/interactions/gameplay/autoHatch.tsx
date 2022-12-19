@@ -31,7 +31,7 @@ export const AutoHatchSetting = RoactRodux.connect(mapStateToProps)(
 
 		return (
 			<ToggleSettingOption
-				position={UDim2.fromScale(0.5, 0.24)}
+				position={UDim2.fromScale(0.5, 0.25)}
 				size={UDim2.fromScale(0.95, 0.04)}
 				settingName={"Auto Hatch"}
 				isEnabled={props.enabled}

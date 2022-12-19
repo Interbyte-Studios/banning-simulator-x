@@ -11,12 +11,26 @@ interface SpinWheelTextProps {
 	spins: number;
 }
 
-export const SpinWheelTopText = hooks((props: SpinWheelTextProps, { useState, useEffect }) => {
+export const SpinWheelTopText = hooks((props: SpinWheelTextProps, { useState, useEffect, useValue }) => {
 	const [timer, updateTimer] = useState<number>(0);
+
+	const mounted = useValue(false);
+	useEffect(() => {
+		mounted.value = true;
+
+		return (): void => {
+			mounted.value = false;
+		};
+	}, []);
 
 	useEffect(() => {
 		task.defer(() => {
 			while (props.spins > 0) {
+				if (!mounted.value) {
+					task.wait();
+					continue;
+				}
+
 				const timeNow = DateTime.now().UnixTimestamp;
 
 				if (props.spins === 6) {
