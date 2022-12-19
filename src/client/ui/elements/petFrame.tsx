@@ -44,7 +44,10 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 				>
 					<RarityGradient Rarity={petData.rarity} />
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} isBillboard={props.isBillboard} />
+					<BaseUIStroke
+						native={{ Thickness: 2.5, Color: Color3.fromRGB(0, 74, 122) }}
+						isBillboard={props.isBillboard}
+					/>
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
@@ -57,7 +60,10 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 				>
 					<RarityGradient Rarity={petData.rarity} />
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} isBillboard={props.isBillboard} />
+					<BaseUIStroke
+						native={{ Thickness: 2.5, Color: Color3.fromRGB(0, 74, 122) }}
+						isBillboard={props.isBillboard}
+					/>
 				</textlabel>
 			</>,
 		);

@@ -1,9 +1,10 @@
-import { CollectionService, Players, ReplicatedStorage, TweenService, Workspace } from "@rbxts/services";
+import { CollectionService, Players, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
 import { t } from "@rbxts/t";
 import { onStoreCreated } from "client/clientStores";
 import { getEnemyRankIcon } from "client/util/getEnemyRankIcon";
 import { getRankIcon } from "client/util/getRankIcon";
 import { GROUP_ID, GROUP_ROLES } from "shared/configs/game";
+import { TITLES } from "shared/configs/titles";
 import { Store } from "shared/rodux";
 import { getNPCByName } from "shared/util/getNpcByName";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
@@ -12,6 +13,8 @@ const player = Players.LocalPlayer;
 const playerGui = player.WaitForChild("PlayerGui") as PlayerGui;
 
 const npcsFolder = Workspace.WaitForChild("npcs");
+
+const gradients: Array<UIGradient> = [];
 
 const friendlyTags = new Instance("ScreenGui");
 friendlyTags.ResetOnSpawn = false;
@@ -91,11 +94,33 @@ function createPlayerTag(player: Player, store: Store): t.static<typeof isPlayer
 	tag.hold.staff.Visible = false;
 
 	if (storeState.title !== undefined) {
-		// todo: Add gradient or color
-		//const titleData = TITLES.find((title) => title.name === storeState.title);
-		//assert(titleData, `Failed to get data for title "${storeState.title}" while creating player tag`);
+		const titleData = TITLES.find((title) => title.name === storeState.title);
+		assert(titleData, `Failed to get data for title "${storeState.title}" while creating player tag`);
 
 		tag.hold.title.Text = storeState.title;
+
+		if (typeIs(titleData.effect, "Color3")) {
+			tag.hold.title.TextColor3 = titleData.effect;
+		} else {
+			const titleGradient = new Instance("UIGradient");
+			titleGradient.Color = titleData.effect;
+			titleGradient.Offset = new Vector2(-0.75, 0);
+			titleGradient.Parent = tag.hold.title;
+			gradients.push(titleGradient);
+
+			const connection = titleGradient.Destroying.Connect(() => {
+				gradients.forEach((gradient, index) => {
+					if (gradient === titleGradient) {
+						gradients.unorderedRemove(index);
+						return;
+					}
+				});
+
+				connection.Disconnect();
+			});
+
+			tag.hold.title.Visible = true;
+		}
 	}
 
 	if (isInGroup) {
@@ -176,6 +201,36 @@ function updatePlayerTag(player: Player, store: Store): void {
 	assert(isPlayerTag(tag), `Player tag for ${player.Name} was not a valid player tag.`);
 
 	tag.hold.name.rank.Image = getRankIcon(storeState.rank);
+
+	if (storeState.title !== undefined && storeState.title !== tag.hold.title.Text) {
+		const titleData = TITLES.find((title) => title.name === storeState.title);
+		assert(titleData, `Failed to get data for title "${storeState.title}" while creating player tag`);
+
+		tag.hold.title.Text = storeState.title;
+
+		if (typeIs(titleData.effect, "Color3")) {
+			tag.hold.title.TextColor3 = titleData.effect;
+		} else {
+			const titleGradient = new Instance("UIGradient");
+			titleGradient.Color = titleData.effect;
+			titleGradient.Offset = new Vector2(-0.75, 0);
+			titleGradient.Parent = tag.hold.title;
+			gradients.push(titleGradient);
+
+			const connection = titleGradient.Destroying.Connect(() => {
+				gradients.forEach((gradient, index) => {
+					if (gradient === titleGradient) {
+						gradients.unorderedRemove(index);
+						return;
+					}
+				});
+
+				connection.Disconnect();
+			});
+
+			tag.hold.title.Visible = true;
+		}
+	}
 }
 
 /**
@@ -269,7 +324,7 @@ function onPlayerAdded(player: Player): void {
 			player.CharacterAdded.Connect(() => createPlayerTag(player, store));
 
 			store.changed.connect((newState, oldState) => {
-				if (newState.rank === oldState.rank) {
+				if (newState.rank === oldState.rank && newState.title === oldState.title) {
 					return;
 				}
 
@@ -298,4 +353,16 @@ npcsFolder.GetChildren().forEach((enemy) => {
 	}
 
 	createEnemyTag(enemy);
+});
+
+RunService.RenderStepped.Connect((deltaTime) => {
+	gradients.forEach((gradient) => {
+		if (gradient.Offset.X < 0.75) {
+			gradient.Offset = new Vector2(gradient.Offset.X + 0.5 * deltaTime, 0);
+		} else {
+			gradient.Offset = new Vector2(-0.75, 0);
+		}
+
+		gradient.Rotation = 40;
+	});
 });

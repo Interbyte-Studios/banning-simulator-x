@@ -8,6 +8,7 @@ import assetIds from "shared/assets";
 import { BottomBar } from "./bottombar";
 import { PetInventory } from "./pets";
 import { TalismanItems } from "./talismans/inventory";
+import { TitlesItems } from "./titles/inventory";
 import { WeaponItems } from "./weapons/inventory";
 
 export type ValidInventoryType = "Pets" | "Weapons" | "Talismans" | "Titles";
@@ -40,6 +41,8 @@ export const ItemInventory = hooks((props: ItemInventoryProps, hooks) => {
 		inventoryToDisplay.push(<WeaponItems />);
 	} else if (itemInventoryVisible === "Talismans") {
 		inventoryToDisplay.push(<TalismanItems />);
+	} else if (itemInventoryVisible === "Titles") {
+		inventoryToDisplay.push(<TitlesItems />);
 	}
 
 	return (

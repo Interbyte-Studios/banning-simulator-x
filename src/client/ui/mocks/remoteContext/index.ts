@@ -1,4 +1,5 @@
 import { createContext } from "@rbxts/roact";
+import { EquipTitleDefinition } from "shared/remotes/equipTitle";
 import { RedeemCodeDefinition } from "shared/remotes/media/redeemCode";
 import { VerifyDiscordDefinition } from "shared/remotes/media/verifyDiscord";
 import { ClaimPetMasteryDefinition } from "shared/remotes/petMastery/claimMastery";
@@ -94,6 +95,7 @@ export const fakeRemoteContext = {
 	unequipTalisman: fakeRemoteCall<UnequipTalismanDefinition>("unequipTalisman"),
 
 	unlockRank: fakeRemoteCall<UnlockRankDefinition>("unlockRank"),
+	equipTitle: fakeRemoteCall<EquipTitleDefinition>("equipTitle"),
 
 	hatchEgg: fakeHatchEgg,
 };

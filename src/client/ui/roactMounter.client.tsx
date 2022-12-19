@@ -62,6 +62,7 @@ onStoreCreated(player)
 					equipTalisman: remotes.Client.GetNamespace("talismans").Get("equipTalisman"),
 					unequipTalisman: remotes.Client.GetNamespace("talismans").Get("unequipTalisman"),
 					verifyDiscord: remotes.Client.GetNamespace("media").Get("verifyDiscord"),
+					equipTitle: remotes.Client.Get("equipTitle"),
 				}}
 			>
 				<AnnouncementAPI>

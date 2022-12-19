@@ -3,7 +3,6 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { TalismanGradient } from "client/ui/elements/talismanGradient";
 import { TalismanViewport } from "client/ui/elements/talismanViewport";
-import { WeaponViewport } from "client/ui/elements/weaponViewport";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import { Talisman } from "shared/rodux/talismans";

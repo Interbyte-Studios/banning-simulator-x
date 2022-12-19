@@ -6,6 +6,7 @@ import { hatchDebounce } from "shared/configs/eggs";
 import { EnhancePetMetadata } from "shared/configs/enchantments";
 import { Rarities } from "shared/configs/rarities";
 import { remotes } from "shared/remotes";
+import { addEgg } from "shared/rodux/eggs";
 import { addPets, ConfirmedPet } from "shared/rodux/pets";
 import { isImmuneRarity } from "shared/rodux/settings";
 import { getEggCost } from "shared/util/getEggCost";
@@ -168,6 +169,7 @@ hatchEgg.SetCallback(
 		}
 
 		store.dispatch(addPets(eggCost.amount * selectedPets.size(), eggCost.currencyType, selectedPets));
+		store.dispatch(addEgg(selectedPets));
 		return {
 			success: true,
 			pets: selectedPets,

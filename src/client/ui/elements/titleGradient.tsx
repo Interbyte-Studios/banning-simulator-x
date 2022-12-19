@@ -1,24 +1,30 @@
 import Roact from "@rbxts/roact";
 import { CollectionService, RunService } from "@rbxts/services";
 import { RARITIES, Rarities } from "shared/configs/rarities";
+import { TITLES } from "shared/configs/titles";
 
 import { hooks } from "../hooks";
 
 /**
- * A ui gradient component which has its gradient colors set depending on the specified rarity.
+ * A ui gradient component which has its gradient colors set depending on the specified title.
  *
- * @param props The properties of the rarity gradient.
- * @param props.Rarity The rarity gradient to be displayed.
+ * @param props The properties of the title gradient.
+ * @param props.titleId The id of the title.
  * @returns A roact component.
  */
-export const RarityGradient = hooks((props: { Rarity: Rarities }, { useEffect, useValue, useBinding }) => {
+export const TitleGradient = hooks((props: { titleId: number }, { useEffect, useValue, useBinding }) => {
 	const [offsetOfAnimation, setAnimationOffset] = useBinding(new Vector2(-0.75, 0));
 
-	const rarityData = RARITIES[props.Rarity];
-	const gradientRef = useValue(Roact.createRef<UIGradient>());
+	const titleData = TITLES.find((title) => title.id === props.titleId);
+	assert(titleData, `Failed to get title data for title with id: "${props.titleId}".`);
 
+	if (typeIs(titleData.effect, "Color3")) {
+		return <></>;
+	}
+
+	const gradientRef = useValue(Roact.createRef<UIGradient>());
 	useEffect(() => {
-		if (rarityData.SpecialColor === undefined) {
+		if (typeIs(titleData.effect, "Color3")) {
 			return;
 		}
 
@@ -39,18 +45,5 @@ export const RarityGradient = hooks((props: { Rarity: Rarities }, { useEffect, u
 		return (): void => connection.Disconnect();
 	});
 
-	return (
-		<uigradient
-			Color={
-				rarityData.SpecialColor ??
-				new ColorSequence([
-					new ColorSequenceKeypoint(0, rarityData.BeginningColor),
-					new ColorSequenceKeypoint(1, rarityData.EndingColor),
-				])
-			}
-			Ref={gradientRef.value}
-			Rotation={rarityData.SpecialColor ? 90 : -90}
-			Offset={offsetOfAnimation.getValue()}
-		/>
-	);
+	return <uigradient Color={titleData.effect} Ref={gradientRef.value} Offset={offsetOfAnimation.getValue()} />;
 });
