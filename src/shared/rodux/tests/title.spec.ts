@@ -1,23 +1,27 @@
 /// <reference types="@rbxts/testez/globals" />
 
-import { equipTitle, titleReducer, TitleState } from "../title";
+import { equipTitle, titleReducer } from "../title";
+import { testAction } from "./testAction";
 
 export = (): void => {
 	describe("rodux/title", () => {
 		it("should equip different title", () => {
-			const state: TitleState = "500 exp";
+			const state = "Executive";
 
-			const action = equipTitle("free title!");
+			const action = equipTitle("Staff Team");
+			const newState = "Staff Team";
 
-			expect(titleReducer(state, action)).to.equal("free title!");
+			testAction(state, newState, titleReducer, action);
 		});
 
 		it("should equip title for first time", () => {
-			const state: TitleState = undefined;
+			const state = undefined;
 
-			const action = equipTitle("500 exp");
+			const action = equipTitle("Executive");
 
-			expect(titleReducer(state, action)).to.equal("500 exp");
+			const newState = "Executive";
+
+			testAction(state, newState, titleReducer, action);
 		});
 	});
 };

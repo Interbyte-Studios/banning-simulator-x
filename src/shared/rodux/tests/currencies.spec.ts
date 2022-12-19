@@ -1,31 +1,29 @@
 /// <reference types="@rbxts/testez/globals" />
 
-import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
-
-import { currenciesReducer, CurrenciesState, killNpc } from "../currencies";
-import { experienceReducer, ExperienceState } from "../experience";
+import { currenciesReducer, killNpc } from "../currencies";
+import { experienceReducer } from "../experience";
+import { testAction } from "./testAction";
 
 export = (): void => {
 	describe("rodux/currencies", () => {
 		it("should increase currency for npc kill", () => {
 			const currencyAmount = 100;
 
-			const state: CurrenciesState = { coins: 10, gems: 10 };
-			const newState: CurrenciesState = { coins: state.coins + currencyAmount, gems: 10 };
+			const state = { coins: 10, gems: 10 };
+			const newState = { coins: state.coins + currencyAmount, gems: 10 };
 
 			const action = killNpc(currencyAmount, "coins", 0, 1, 1);
-
-			assertDeepEqual(currenciesReducer(state, action), newState);
+			testAction(state, newState, currenciesReducer, action);
 		});
 
 		it("should reward experience for npc kill", () => {
 			const experienceAmount = 25;
 
-			const state: ExperienceState = 250;
-			const newState: ExperienceState = state + experienceAmount;
+			const state = 250;
+			const newState = state + experienceAmount;
 
 			const action = killNpc(50, "coins", experienceAmount, 1, 1);
-			expect(experienceReducer(state, action)).to.equal(newState);
+			testAction(state, newState, experienceReducer, action);
 		});
 	});
 };

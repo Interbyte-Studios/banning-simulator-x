@@ -1,18 +1,17 @@
 /// <reference types="@rbxts/testez/globals" />
 
-import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
-
-import { currenciesReducer, CurrenciesState } from "../currencies";
-import { experienceReducer, ExperienceState } from "../experience";
+import { currenciesReducer } from "../currencies";
+import { experienceReducer } from "../experience";
 import { petsReducer, PetsState } from "../pets";
-import { questsReducer, QuestsState, redeemWorldQuest, redeemZoneQuest } from "../quests";
+import { questsReducer, redeemWorldQuest, redeemZoneQuest } from "../quests";
+import { testAction } from "./testAction";
 
 export = (): void => {
 	describe("rodux/quests", () => {
 		it("should redeem a zone quest", () => {
-			const state: QuestsState = {
+			const state = {
 				"Ban Land": {
-					world: new Set(),
+					world: new Set<string>(),
 					zone: {},
 				},
 			};
@@ -21,20 +20,22 @@ export = (): void => {
 				kind: "title",
 			});
 
-			assertDeepEqual(questsReducer(state, action), {
+			const newState = {
 				"Ban Land": {
 					world: new Set<string>(),
 					zone: {
 						Desert: new Set(["Kill 15 mobs"]),
 					},
 				},
-			});
+			};
+
+			testAction(state, newState, questsReducer, action);
 		});
 
 		it("should redeem a world quest", () => {
-			const state: QuestsState = {
+			const state = {
 				"Ban Land": {
-					world: new Set(),
+					world: new Set<string>(),
 					zone: {},
 				},
 			};
@@ -43,26 +44,30 @@ export = (): void => {
 				kind: "title",
 			});
 
-			assertDeepEqual(questsReducer(state, action), {
+			const newState = {
 				"Ban Land": {
 					world: new Set(["Kill 30 mobs"]),
 					zone: {},
 				},
-			});
+			};
+
+			testAction(state, newState, questsReducer, action);
 		});
 
 		it("should add experience when redeeming quest", () => {
-			const state: ExperienceState = 100;
+			const state = 100;
 
 			const action = redeemWorldQuest("Ban Land", "Kill 30 mobs", 50, {
 				kind: "title",
 			});
 
-			expect(experienceReducer(state, action)).to.equal(150);
+			const newState = 150;
+
+			testAction(state, newState, experienceReducer, action);
 		});
 
 		it("should add currency when redeeming quest", () => {
-			const state: CurrenciesState = { coins: 100, gems: 10 };
+			const state = { coins: 100, gems: 10 };
 
 			const action = redeemWorldQuest("Ban Land", "Kill 30 mobs", 50, {
 				kind: "currency",
@@ -70,10 +75,12 @@ export = (): void => {
 				currency: "coins",
 			});
 
-			assertDeepEqual(currenciesReducer(state, action), {
+			const newState = {
 				coins: 200,
 				gems: 10,
-			});
+			};
+
+			testAction(state, newState, currenciesReducer, action);
 		});
 
 		it("should add pet when redeeming quest", () => {
@@ -86,16 +93,19 @@ export = (): void => {
 				variant: "regular",
 			});
 
-			assertDeepEqual(petsReducer(state, action), [
+			const newState: PetsState = [
 				{
 					id: 40,
 					guid: "abc123",
 					equipped: false,
 					locked: false,
-					enhancements: [],
+					enhancements: {},
+					bans: 0,
 					variant: "regular",
 				},
-			]);
+			];
+
+			testAction(state, newState, petsReducer, action);
 		});
 	});
 };

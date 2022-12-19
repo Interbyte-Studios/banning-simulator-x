@@ -1,10 +1,11 @@
 import Rodux from "@rbxts/rodux";
 import { Currency } from "shared/configs/currencies";
-import { WEAPON_LEVELS } from "shared/configs/weapons";
+import { WEAPON_LEVELS, WEAPONS } from "shared/configs/weapons";
 
 import { KillNpc } from "./currencies";
 
-export type WeaponsState = Array<{ id: number; bans: number; level: number }>;
+export type Weapon = { id: number; bans: number; level: number };
+export type WeaponsState = Array<Weapon>;
 export type WeaponsActions = PurchaseWeapon;
 
 export interface PurchaseWeapon extends Rodux.Action<"purchaseWeapon"> {
@@ -29,6 +30,7 @@ export function purchaseWeapon(data: Omit<PurchaseWeapon, "type">): PurchaseWeap
 	};
 }
 
+/*
 const defaulWeapon = {
 	id: 1,
 	bans: 0,
@@ -36,9 +38,19 @@ const defaulWeapon = {
 };
 
 const defaultState: WeaponsState = [defaulWeapon];
+*/
+
+const weapons = [];
+for (const [, data] of pairs(WEAPONS)) {
+	weapons.push({
+		id: data.id,
+		bans: 0,
+		level: 10,
+	});
+}
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions | KillNpc>(defaultState, {
+export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions | KillNpc>(weapons, {
 	purchaseWeapon: (state, action) => {
 		const newWeapon = {
 			id: action.id,
@@ -46,27 +58,29 @@ export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions |
 			level: 1,
 		};
 
-		const newState = [...state];
-		newState.push(newWeapon);
+		const newState = [...state, newWeapon];
 
 		return newState;
 	},
 	killNpc: (state, action) => {
 		const newState = [...state];
 
-		const currentWeapon = newState.find((weapon) => weapon.id === action.weaponId);
-		if (currentWeapon === undefined) {
+		const currentWeaponIndex = newState.findIndex((weapon) => weapon.id === action.weaponId);
+		if (currentWeaponIndex === undefined) {
 			throw `Expected player to own the weapon ${action.weaponId}`;
 		}
 
-		const increasedWeaponBanCounter = currentWeapon.bans + 1;
-		currentWeapon.bans = increasedWeaponBanCounter;
+		const newCurrentWeapon = { ...newState[currentWeaponIndex] };
+
+		newCurrentWeapon.bans += 1;
 
 		WEAPON_LEVELS.forEach((levelData) => {
-			if (currentWeapon.bans >= levelData.requiredBans) {
-				currentWeapon.level = levelData.level;
+			if (newCurrentWeapon.bans >= levelData.requiredBans) {
+				newCurrentWeapon.level = levelData.level;
 			}
 		});
+
+		newState[currentWeaponIndex] = newCurrentWeapon;
 
 		return newState;
 	},

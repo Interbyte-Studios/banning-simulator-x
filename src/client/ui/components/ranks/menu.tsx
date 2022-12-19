@@ -86,7 +86,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 				}
 
 				const magnitude = humanoidRootPart.Position.sub(Workspace.interactions.rankUpgrade.teleport.Position).Magnitude;
-				if (magnitude > 20) {
+				if (magnitude > 15) {
 					return;
 				}
 
@@ -170,7 +170,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 					Text={"Rank Upgrade"}
 					Font={font}
 				>
-					<uistroke Thickness={3} Color={Color3.fromRGB(150, 69, 3)} />
+					<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(150, 69, 3) }} />
 				</textlabel>
 				<RankDisplay rank={props.currentRank} experience={props.experience} position={UDim2.fromScale(0.165, 0.55)} />
 				<RankDisplay rank={props.currentRank + 1} experience={-1} position={UDim2.fromScale(0.835, 0.55)} />

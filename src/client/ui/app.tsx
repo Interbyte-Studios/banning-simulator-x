@@ -8,6 +8,7 @@ import { CurrencyGainAnimation } from "./components/currencyGainAnimation";
 import { EggsUI } from "./components/eggs";
 import { WeaponEquip } from "./components/equip/weaponEquip";
 import { Hud } from "./components/hud";
+import { ItemInventory } from "./components/items";
 import { PetMastery } from "./components/petMastery";
 import { Quests } from "./components/quests";
 import { RankUpgrade } from "./components/ranks/menu";
@@ -42,6 +43,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 	const [weaponShopVisibility, setWeaponShopVisibility] = useState(false);
 	const [talismanTowerVisibility, setTalismanTowerVisibility] = useState(false);
 	const [spinWheelVisibility, setSpinWheelVisibility] = useState(false);
+	const [itemsVisibility, setItemsVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
 
@@ -57,7 +59,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
-						!spinWheelVisibility
+						!spinWheelVisibility &&
+						!itemsVisibility
 					}
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
@@ -73,13 +76,15 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
-						!spinWheelVisibility
+						!spinWheelVisibility &&
+						!itemsVisibility
 					}
 					displayCodesMenu={(): void => setCodesVisible(true)}
 					displayQuestsMenu={(): void => setQuestsVisibility(true)}
 					displaySettingsMenu={(): void => setSettingsVisibility(true)}
 					displayTeleportationMenu={(): void => setTeleportationVisibility(true)}
 					displaySpinWheelMenu={(): void => setSpinWheelVisibility(true)}
+					displayItemsMenu={(): void => setItemsVisibility(true)}
 				/>
 				<WeaponLevelUpAnimation
 					enabled={
@@ -90,7 +95,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
-						!spinWheelVisibility
+						!spinWheelVisibility &&
+						!itemsVisibility
 					}
 				/>
 				<TalismanLevelUpAnimation
@@ -102,7 +108,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
-						!spinWheelVisibility
+						!spinWheelVisibility &&
+						!itemsVisibility
 					}
 				/>
 				<LocalMessages />
@@ -116,7 +123,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
-						!spinWheelVisibility
+						!spinWheelVisibility &&
+						!itemsVisibility
 					}
 				/>
 				<RankUpgrade
@@ -128,7 +136,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
-						!spinWheelVisibility
+						!spinWheelVisibility &&
+						!itemsVisibility
 					}
 				/>
 				<WeaponShopHandle
@@ -139,7 +148,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!teleportationVisible &&
 						!questsVisible &&
 						!talismanTowerVisibility &&
-						!spinWheelVisibility
+						!spinWheelVisibility &&
+						!itemsVisibility
 					}
 					weaponShopVisible={weaponShopVisibility}
 					setWeaponShopVisibility={(value: boolean): void => setWeaponShopVisibility(value)}
@@ -152,7 +162,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
-						!spinWheelVisibility
+						!spinWheelVisibility &&
+						!itemsVisibility
 					}
 					talismanTowerVisible={talismanTowerVisibility}
 					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
@@ -166,7 +177,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
-						!spinWheelVisibility
+						!spinWheelVisibility &&
+						!itemsVisibility
 					}
 				/>
 				<Teleportation
@@ -177,13 +189,26 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
-						!spinWheelVisibility
+						!spinWheelVisibility &&
+						!itemsVisibility
 					}
 					visible={teleportationVisible}
 					hideMenu={(): void => setTeleportationVisibility(false)}
 				/>
 				<CurrencyGainAnimation />
 				<SpinWheel visible={spinWheelVisibility} hideMenu={(): void => setSpinWheelVisibility(false)} />
+				<ItemInventory
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility
+					}
+					visible={itemsVisibility}
+					hideMenu={(): void => setItemsVisibility(false)}
+				/>
 			</>
 		</RoactRodux.StoreProvider>
 	);

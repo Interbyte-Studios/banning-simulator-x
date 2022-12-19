@@ -64,7 +64,11 @@ async function hatchClosestEgg(
 
 	let eggToHatch: EggName | undefined;
 	let isVoid = false;
-	for (const [name] of pairs(EGGS)) {
+	for (const [name, data] of pairs(EGGS)) {
+		if (!data.hatchable) {
+			continue;
+		}
+
 		const eggFolder = Workspace.interactions.eggs[name];
 
 		const regularEgg = eggFolder.regular.egg.PrimaryPart;
@@ -233,6 +237,10 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 		return (
 			<frame Visible={false}>
 				{Object.entries(EGGS).map(([eggName, eggData]) => {
+					if (!eggData.hatchable) {
+						return <></>;
+					}
+
 					const eggFolder = Workspace.interactions.eggs[eggName];
 
 					const regularEgg = eggFolder.regular.egg.PrimaryPart;

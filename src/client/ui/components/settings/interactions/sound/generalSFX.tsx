@@ -32,7 +32,7 @@ export const GeneralSFXSetting = RoactRodux.connect(mapStateToProps)(
 
 		return (
 			<ModifySettingOption
-				position={UDim2.fromScale(0.5, 0.16)}
+				position={UDim2.fromScale(0.5, 0.15)}
 				size={UDim2.fromScale(0.95, 0.04)}
 				settingName={"SFX Volume"}
 				displayValue={`${props.volume * 10}%`}

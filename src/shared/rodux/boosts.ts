@@ -100,14 +100,21 @@ const defaultBoosts: BoostsState = {
 export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions | RedeemCode>(defaultBoosts, {
 	claimBoost: (state, action) => {
 		const newState = { ...state };
-		newState.active[action.name] += action.boostTime;
+		newState.active = {
+			...newState.active,
+			[action.name]: newState.active[action.name] + action.boostTime,
+		};
 
 		return newState;
 	},
 	useBoosts: (state, action) => {
 		const newState = { ...state };
+
 		for (const boost of action.boosts) {
-			newState.active[boost] -= 1;
+			newState.active = {
+				...newState.active,
+				[boost]: newState.active[boost] - 1,
+			};
 		}
 
 		return newState;
@@ -118,7 +125,13 @@ export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions | Red
 		}
 
 		const newState = { ...state };
-		newState.storage[action.boosts.name][action.boosts.time] += 1;
+		newState.storage = {
+			...newState.storage,
+			[action.boosts.name]: {
+				...newState.storage[action.boosts.name],
+				[action.boosts.time]: newState.storage[action.boosts.name][action.boosts.time] + 1,
+			},
+		};
 
 		return newState;
 	},

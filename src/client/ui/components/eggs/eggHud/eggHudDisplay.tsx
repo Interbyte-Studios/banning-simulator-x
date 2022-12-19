@@ -124,8 +124,8 @@ export const EggHudDisplay = hooks((props: EggHudProps, hooks) => {
 					Position={props.pets.size() <= 6 ? UDim2.fromScale(0.5, 0.55) : UDim2.fromScale(0.5, 0.525)}
 				>
 					<uigridlayout
-						CellPadding={UDim2.fromScale(0.025, 0.1)}
-						CellSize={props.pets.size() <= 6 ? UDim2.fromScale(0.3, 0.35) : UDim2.fromScale(0.3, 0.225)}
+						CellPadding={props.pets.size() <= 6 ? UDim2.fromScale(0.025, 0.1) : UDim2.fromScale(0.025, 0.025)}
+						CellSize={props.pets.size() <= 6 ? UDim2.fromScale(0.3, 0.35) : UDim2.fromScale(0.3, 0.275)}
 						FillDirection={Enum.FillDirection.Horizontal}
 						FillDirectionMaxCells={3}
 						HorizontalAlignment={Enum.HorizontalAlignment.Center}
@@ -139,11 +139,11 @@ export const EggHudDisplay = hooks((props: EggHudProps, hooks) => {
 
 						return (
 							<PetFrame
-								eggName={props.eggName}
 								petId={petInfo.id}
 								variant={props.isVoid ? "void" : "regular"}
 								displayBackground={true}
 								isBillboard={true}
+								displayType={"stats"}
 							/>
 						);
 					})}

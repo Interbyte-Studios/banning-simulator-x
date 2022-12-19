@@ -13,7 +13,9 @@ import { getTalismanData } from "shared/util/getTalismanData";
  */
 export function equipTalisman(store: Store, talismanId: number): void {
 	const currentState = store.getState();
-	if (!currentState.talismans.has(talismanId)) {
+
+	const storedTalisman = currentState.talismans.find((talisman) => talisman.id === talismanId);
+	if (storedTalisman === undefined) {
 		return;
 	}
 
@@ -27,6 +29,6 @@ export function equipTalisman(store: Store, talismanId: number): void {
 
 	const currentTalisman = store.getState().currentTalisman;
 	if (currentTalisman !== undefined) {
-		store.dispatch(toggleWalkSpeed(24 + talismanData.stats.maxSpeed));
+		store.dispatch(toggleWalkSpeed(24 + talismanData.stats.walkspeed));
 	}
 }

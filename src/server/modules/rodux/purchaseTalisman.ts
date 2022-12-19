@@ -12,19 +12,20 @@ import { getTalismanData } from "shared/util/getTalismanData";
 export function purchaseTalisman(store: Store, talismanId: number): void {
 	const currentState = store.getState();
 
-	if (talismanId - 1 > 0) {
-		const ownsPreviousTalisman = currentState.talismans.has(talismanId - 1);
-		if (!ownsPreviousTalisman) {
+	const storedTalisman = currentState.talismans.find((talisman) => talisman.id === talismanId);
+	if (storedTalisman !== undefined) {
+		return;
+	}
+
+	const previousTalismanId = talismanId - 1;
+	if (previousTalismanId > 0) {
+		const storedPreviousTalisman = currentState.talismans.find((talisman) => talisman.id === previousTalismanId);
+		if (storedPreviousTalisman === undefined) {
 			return;
 		}
 	}
 
-	if (currentState.talismans.has(talismanId)) {
-		return;
-	}
-
 	const talismanData = getTalismanData(talismanId);
-
 	if (currentState.currencies[talismanData.cost.currency] < talismanData.cost.amount) {
 		return;
 	}

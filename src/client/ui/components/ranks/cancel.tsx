@@ -2,6 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
@@ -52,7 +53,7 @@ export const CancelRankUpgrade = hooks((props: CancelRankUpgradeProps, hooks) =>
 				TextScaled={true}
 				Font={font}
 			>
-				<uistroke Thickness={2.5} Color={Color3.fromRGB(115, 5, 5)} />
+				<BaseUIStroke native={{ Thickness: 2.5, Color: Color3.fromRGB(115, 5, 5) }} />
 			</textlabel>
 		</imagebutton>
 	);

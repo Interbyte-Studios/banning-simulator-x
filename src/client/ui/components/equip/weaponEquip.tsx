@@ -54,15 +54,7 @@ export const WeaponEquip = RoactRodux.connect(mapStateToProps)(
 				ScaleType={Enum.ScaleType.Fit}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-				<WeaponViewport
-					native={{
-						AnchorPoint: vec2Middle,
-						BackgroundTransparency: 1,
-						Position: UDim2.fromScale(0.5, 0.5),
-						Size: UDim2.fromScale(0.9, 0.9),
-					}}
-					weaponName={weapon.Name as WeaponIndex}
-				/>
+				<WeaponViewport weaponId={props.weaponId} />
 				<FakeWeaponEquip weaponName={weapon.Name as WeaponIndex} />
 			</imagebutton>
 		);

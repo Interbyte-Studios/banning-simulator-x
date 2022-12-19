@@ -1,6 +1,7 @@
 /// <reference types="@rbxts/testez/globals" />
 
-import { rankReducer, RankState, unlockRank } from "../rank";
+import { rankReducer, unlockRank } from "../rank";
+import { testAction } from "./testAction";
 
 export = (): void => {
 	describe("rodux/rank", () => {
@@ -8,11 +9,9 @@ export = (): void => {
 			const oldRankId = 1;
 			const newRankId = 2;
 
-			const state: RankState = oldRankId;
-
 			const action = unlockRank(newRankId, "coins", 0);
 
-			expect(rankReducer(state, action)).to.equal(newRankId);
+			testAction(oldRankId, newRankId, rankReducer, action);
 		});
 	});
 };

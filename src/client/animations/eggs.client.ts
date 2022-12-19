@@ -61,11 +61,15 @@ function animateEgg(eggName: EggName, variant: Exclude<Variants, "radiant">): vo
 	});
 }
 
-for (const [eggName] of pairs(EGGS)) {
+for (const [name, data] of pairs(EGGS)) {
+	if (!data.hatchable) {
+		continue;
+	}
+
 	task.spawn(() => {
-		animateEgg(eggName, "regular");
+		animateEgg(name, "regular");
 		task.wait(1);
-		animateEgg(eggName, "void");
+		animateEgg(name, "void");
 	});
 }
 

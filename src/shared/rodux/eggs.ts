@@ -1,11 +1,27 @@
 import Rodux from "@rbxts/rodux";
 import { Rarities } from "shared/configs/rarities";
 
-import { AddPet } from "./pets";
+import { ConfirmedPet } from "./pets";
 
 export interface EggsState {
 	eggs: number;
 	rarities: { [P in Rarities]: number };
+}
+export type EggsActions = AddEgg;
+
+export interface AddEgg extends Rodux.Action<"addEgg"> {
+	pets: Array<ConfirmedPet>;
+}
+
+/**
+ * @param pets The pets to add.
+ * @returns The Rodux action to dispatch.
+ */
+export function addEgg(pets: Array<ConfirmedPet>): AddEgg & Rodux.AnyAction {
+	return {
+		type: "addEgg",
+		pets,
+	};
 }
 
 const defaultEggs: EggsState = {
@@ -22,13 +38,16 @@ const defaultEggs: EggsState = {
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const eggsReducer = Rodux.createReducer<EggsState, AddPet>(defaultEggs, {
-	addPet: (state, action) => {
+export const eggsReducer = Rodux.createReducer<EggsState, EggsActions>(defaultEggs, {
+	addEgg: (state, action) => {
 		const newState = { ...state };
 
 		for (const pet of action.pets) {
 			newState.eggs += 1;
-			newState.rarities[pet.rarity] += 1;
+			newState.rarities = {
+				...newState.rarities,
+				[pet.rarity]: newState.rarities[pet.rarity] + 1,
+			};
 		}
 
 		return newState;

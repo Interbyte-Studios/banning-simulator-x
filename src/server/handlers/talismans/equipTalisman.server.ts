@@ -6,9 +6,11 @@ remotes.Server.GetNamespace("talismans")
 	.Create("equipTalisman")
 	.Connect(
 		withPlayerStore((_, store, talismanId) => {
-			if (!store.getState().talismans.has(talismanId)) {
+			const storedTalisman = store.getState().talismans.find((talisman) => talisman.id === talismanId);
+			if (storedTalisman === undefined) {
 				return;
 			}
+
 			equipTalisman(store, talismanId);
 		}),
 	);

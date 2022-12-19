@@ -9,6 +9,7 @@ import { RewardsIcon } from "./rewardsIcon";
 interface HUDHeaderProps {
 	displayCodesMenu: () => void;
 	displaySettingsMenu: () => void;
+	displayItemsMenu: () => void;
 }
 
 export const HUDHeader = hooks((props: HUDHeaderProps) => {
@@ -27,7 +28,7 @@ export const HUDHeader = hooks((props: HUDHeaderProps) => {
 			/>
 			<OptionsIcon displaySettingsMenu={props.displaySettingsMenu} />
 			<CodesIcon displayCodesMenu={props.displayCodesMenu} />
-			<ItemsIcon />
+			<ItemsIcon displayItemsMenu={props.displayItemsMenu} />
 			<RewardsIcon />
 		</frame>
 	);
