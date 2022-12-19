@@ -23,6 +23,7 @@ export const HUDHeader = hooks((props: HUDHeaderProps) => {
 			<uilistlayout
 				Padding={new UDim(0.05, 0)}
 				FillDirection={Enum.FillDirection.Horizontal}
+				SortOrder={Enum.SortOrder.LayoutOrder}
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>

@@ -37,7 +37,7 @@ export const OptionsIcon = hooks((props: OptionsIconProps, { useEffect }) => {
 				return UDim2.fromScale(value, value);
 			})}
 			Image={assetIds.images.ui.hud.icons.options}
-			LayoutOrder={1}
+			LayoutOrder={4}
 			Event={{
 				Activated: (): void => {
 					playSFX(UIEngagement.MinorEngagement);

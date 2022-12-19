@@ -106,7 +106,7 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		id: 7,
 		cost: {
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("50B"),
+			amount: twoDpAbbreviator.stringToNumber("240B"),
 			rank: 18,
 		},
 		stats: {
@@ -119,7 +119,7 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		id: 8,
 		cost: {
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("50B"),
+			amount: twoDpAbbreviator.stringToNumber("1T"),
 			rank: 20,
 		},
 		stats: {

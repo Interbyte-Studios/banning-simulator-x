@@ -41,7 +41,7 @@ export const WeaponItems = RoactRodux.connect(mapStateToProps)(
 			const uiGridLayout = uiGridLayoutRef.value.getValue();
 			assert(uiGridLayout, `Failed to get ui grid layout from roact ref.`);
 
-			CollectionService.AddTag(uiGridLayout, "InventoryGridLayout");
+			CollectionService.AddTag(uiGridLayout, "UnscaledInventoryGridLayout");
 		});
 
 		const weaponInfoDisplay: Array<Roact.Element> = [];

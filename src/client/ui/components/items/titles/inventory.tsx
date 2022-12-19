@@ -64,6 +64,16 @@ export const TitlesItems = RoactRodux.connect(mapStateToProps)(
 					petCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 9);
 				}
 			});
+
+			const connection = scrollingFrame.GetPropertyChangedSignal("AbsoluteSize").Connect(() => {
+				scrollingFrame.GetChildren().forEach((petCard) => {
+					if (petCard.IsA("Frame")) {
+						petCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 9);
+					}
+				});
+			});
+
+			return (): void => connection.Disconnect();
 		});
 
 		return (

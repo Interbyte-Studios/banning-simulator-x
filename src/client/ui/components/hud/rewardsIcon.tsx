@@ -32,7 +32,7 @@ export const RewardsIcon = hooks((_, { useEffect }) => {
 				return UDim2.fromScale(value, value);
 			})}
 			Image={assetIds.images.ui.hud.icons.rewards}
-			LayoutOrder={4}
+			LayoutOrder={2}
 			Event={{
 				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),

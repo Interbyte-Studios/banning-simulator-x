@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { Players, PolicyService } from "@rbxts/services";
+import { Players, PolicyService, RunService } from "@rbxts/services";
 import { udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
 import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
 import { remoteContext } from "client/ui/mocks/remoteContext";
@@ -48,6 +48,10 @@ export const EggsUI = hooks((props: EggsUIProps, { useState, useContext, useEffe
 	const { addError } = useContext(AnnouncementContext);
 
 	useEffect(() => {
+		if (RunService.IsStudio()) {
+			return;
+		}
+
 		const playerRegionalRegulations = PolicyService.GetPolicyInfoForPlayerAsync(player);
 		setReguionalRegulationsForced(playerRegionalRegulations.ArePaidRandomItemsRestricted);
 	}, []);
