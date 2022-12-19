@@ -1,5 +1,4 @@
 import { TalismanPhases, TalismanStatEffects } from "shared/configs/talismans";
-import { Weapon } from "shared/rodux/weapons";
 
 import { getTalismanData } from "./getTalismanData";
 

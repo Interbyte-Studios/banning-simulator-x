@@ -1,15 +1,11 @@
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
 import { stores } from "server/playerStore";
-import { TalismanStatEffects } from "shared/configs/talismans";
 import { WORLDS } from "shared/configs/worlds";
 import { NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 import { killNpc } from "shared/rodux/currencies";
 import { getTalismanStatEffect } from "shared/util/getTalismanDamage";
-import { getTalismanData } from "shared/util/getTalismanData";
 import { getWeaponDamage } from "shared/util/getWeaponDamage";
-import { getWeaponInfo } from "shared/util/getWeaponInfo";
-import { getWeaponLevel } from "shared/util/getWeaponLevel";
 
 import { getNpcCharacter } from "./getNpcCharacter";
 import { getNpcFolder } from "./getNpcFolder";

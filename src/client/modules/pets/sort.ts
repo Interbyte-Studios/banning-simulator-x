@@ -81,7 +81,6 @@ export function checkRarity(nextSort: (pet1: Pet, pet2: Pet) => boolean) {
  * Sorts a collection of pets based on a specified sort type.
  *
  * @param pets The collection of pets to sort.
- * @param sortType The type of sort used on the collection of pets.
  * @param checkForEquipped Whether or not to sort for equipped.
  * @param checkForLocked Whether or not to sort for locked.
  */

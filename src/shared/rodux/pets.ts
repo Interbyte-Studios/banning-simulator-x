@@ -1,5 +1,4 @@
 import Rodux from "@rbxts/rodux";
-import { HttpService } from "@rbxts/services";
 import { Currency } from "shared/configs/currencies";
 import { EggName } from "shared/configs/eggs";
 import { EnhancePetMetadata } from "shared/configs/enchantments";

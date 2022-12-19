@@ -1,4 +1,3 @@
-import { t } from "@rbxts/t";
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
