@@ -4,6 +4,7 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { formatTime } from "client/util/formatTime";
+import assetIds from "shared/assets";
 
 interface SpinSidebarProps {
 	spinsDone: number;
@@ -22,14 +23,28 @@ interface SpinSidebarProps {
  * @returns Roact element.
  */
 const SidebarSlot = hooks(
-	(props: { index: number; spinsDone: number; endTime: number }, { useEffect, useState }): Roact.Element => {
+	(props: { index: number; spinsDone: number; endTime: number }, { useEffect, useState, useValue }): Roact.Element => {
 		const [timer, updateTimer] = useState<number>(0);
 		const spinDone = props.index <= props.spinsDone;
 		const nextSpinWait = props.endTime;
 
+		const mounted = useValue(false);
+		useEffect(() => {
+			mounted.value = true;
+
+			return (): void => {
+				mounted.value = false;
+			};
+		}, []);
+
 		useEffect(() => {
 			task.defer(() => {
 				while (props.index === props.spinsDone + 1 && props.index + props.spinsDone < 7) {
+					if (!mounted.value) {
+						task.wait();
+						continue;
+					}
+
 					const timeNow = DateTime.now().UnixTimestamp;
 					const timeRemaining = nextSpinWait - timeNow;
 
@@ -44,7 +59,8 @@ const SidebarSlot = hooks(
 		}, [props.endTime]);
 
 		return (
-			<frame BackgroundColor3={Color3.fromRGB(52, 190, 255)} LayoutOrder={props.index}>
+			<frame BackgroundColor3={Color3.fromRGB(0, 141, 239)} LayoutOrder={props.index}>
+				<uiaspectratioconstraint AspectRatio={4.5} />
 				<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(11, 52, 68) }} />
 				<uicorner CornerRadius={new UDim(0.5, 0)} />
 				<textlabel
@@ -53,9 +69,9 @@ const SidebarSlot = hooks(
 							? "Used"
 							: props.index === props.spinsDone + 1
 							? timer <= 0
-								? "SPIN!"
+								? "Spin!"
 								: formatTime(timer)
-							: "DO BEFORE SPIN"
+							: "Locked"
 					}
 					Position={UDim2.fromScale(0.57, 0.5)}
 					AnchorPoint={vec2Middle}
@@ -107,6 +123,10 @@ const SidebarSlot = hooks(
 export const SpinWheelSidebar = hooks((props: SpinSidebarProps, { useEffect }) => {
 	const slots: Array<Roact.Element> = [];
 
+	if (!props.visible) {
+		return <></>;
+	}
+
 	for (let i = 1; i < 7; i++) {
 		slots.push(<SidebarSlot index={i} spinsDone={props.spinsDone} endTime={props.endTime} />);
 	}
@@ -119,17 +139,17 @@ export const SpinWheelSidebar = hooks((props: SpinSidebarProps, { useEffect }) =
 	}, [props.spinsDone]);
 
 	return (
-		<frame
+		<imagelabel
 			AnchorPoint={new Vector2(0.5, 0.5)}
+			BackgroundTransparency={1}
 			Size={UDim2.fromScale(0.167, 0.612)}
 			Position={UDim2.fromScale(0.22, 0.52)}
 			ClipsDescendants={true}
 			BackgroundColor3={Color3.fromRGB(52, 190, 255)}
-			Visible={props.visible}
+			Image={assetIds.images.ui.inventory["info sidebar"]}
+			ScaleType={Enum.ScaleType.Fit}
 		>
 			<uiaspectratioconstraint AspectRatio={0.55} />
-			<BaseUIStroke native={{ Thickness: 4, Color: Color3.fromRGB(11, 52, 68) }} />
-			<uicorner CornerRadius={new UDim(0.05, 0)} />
 			<frame Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1} ClipsDescendants={false}>
 				{slots}
 				<uipadding PaddingTop={new UDim(0.04, 0)} PaddingBottom={new UDim(0.04, 0)} />
@@ -139,6 +159,6 @@ export const SpinWheelSidebar = hooks((props: SpinSidebarProps, { useEffect }) =
 					HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				/>
 			</frame>
-		</frame>
+		</imagelabel>
 	);
 });

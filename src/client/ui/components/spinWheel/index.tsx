@@ -7,6 +7,7 @@ import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { getCurrencyIcon } from "client/util/getCurrencyIcon";
 import { getPetImage } from "client/util/getPetImage";
 import assetIds from "shared/assets";
 import { spinRewards } from "shared/configs/spinWheel";
@@ -54,7 +55,7 @@ const slotsData: Record<number, { image: string; amount: number }> = [];
 for (const [index, rewardInfo] of pairs(spinRewards)) {
 	if (rewardInfo.rewardType === "currency" && rewardInfo.rewardData.name !== undefined) {
 		slotsData[index] = {
-			image: assetIds.images.currencies[rewardInfo.rewardData.name],
+			image: getCurrencyIcon(rewardInfo.rewardData.name),
 			amount: rewardInfo.rewardData.amount,
 		};
 	} else if (rewardInfo.rewardType === "boosts") {
@@ -79,6 +80,10 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 			image: "",
 			amount: 0,
 		});
+
+		if (!props.visible) {
+			return <></>;
+		}
 
 		const defaultButtonScale = 1;
 		const updatedButtonScale = 0.9;
@@ -117,26 +122,32 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 			const randomRotAdded = new Random().NextInteger(-10, 10);
 			const wheelRotateGoal = new Flipper.Spring(-rewardRot - 360 * 5 + randomRotAdded, {
 				frequency: 3,
-				dampingRatio: 4,
+				dampingRatio: 2,
 			});
 
 			wheelSpin.motor.setGoal(wheelRotateGoal);
 		}
 
-		wheelSpin.motor.onComplete(() => {
-			if (wheelSpin.motor.getValue() >= 0) {
-				return;
-			}
+		useEffect(() => {
+			const connection = wheelSpin.motor.onComplete(() => {
+				if (wheelSpin.motor.getValue() >= 0) {
+					return;
+				}
 
-			wheelSpin.motor.setGoal(new Flipper.Instant(0));
-			isSpinning = false;
+				wheelSpin.motor.setGoal(new Flipper.Instant(0));
+				isSpinning = false;
 
-			if (rewardFrameVisibility === false && isSpinning === false) {
-				updateRewardFrameVisibility(true);
-			}
+				if (rewardFrameVisibility === false && isSpinning === false) {
+					updateRewardFrameVisibility(true);
+				}
+			});
+
+			return (): void => connection.disconnect();
+		}, []);
+
+		useEffect(() => {
+			spinWheelInfo.SendToServer();
 		});
-
-		useEffect(() => spinWheelInfo.SendToServer());
 
 		return (
 			<frame
@@ -144,7 +155,6 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 				Position={UDim2.fromScale(0.5, 0.5)}
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}
-				Visible={props.visible}
 			>
 				<SpinRewardFrame
 					rewardData={{ image: displayedInfo.image, amount: displayedInfo.amount }}
@@ -259,7 +269,6 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 											}
 
 											if (rewardData.reward === undefined) {
-												print("RETURNED");
 												return;
 											}
 

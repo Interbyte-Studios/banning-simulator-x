@@ -1,5 +1,4 @@
 import Roact from "@rbxts/roact";
-import RoactHooks from "@rbxts/roact-hooks";
 import { color3White, font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
