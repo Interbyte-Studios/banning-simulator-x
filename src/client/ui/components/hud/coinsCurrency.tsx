@@ -52,10 +52,7 @@ export const CoinsCurrency = RoactRodux.connect(mapStateToProps)(
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextScaled={true}
 				>
-					<BaseUIStroke
-						currencyGradient={"coins"}
-						native={{ Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }}
-					/>
+					<BaseUIStroke currencyGradient={"coins"} native={{ Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }} />
 				</textlabel>
 			</imagelabel>
 		);

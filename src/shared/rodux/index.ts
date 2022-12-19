@@ -17,6 +17,7 @@ import { PlayerIndexActions, playerIndexReducer, PlayerIndexState } from "./play
 import { QuestsAction, questsReducer, QuestsState } from "./quests";
 import { RankActions, rankReducer, RankState } from "./rank";
 import { SettingsActions, settingsReducer, SettingsState } from "./settings";
+import { SpinWheelActions, spinWheelReducer, SpinWheelState } from "./spinWheel";
 import { TalismanActions, talismanReducer, TalismansState } from "./talismans";
 import { TitleActions, titleReducer, TitleState } from "./title";
 import { WeaponsActions, weaponsReducer, WeaponsState } from "./weapons";
@@ -42,6 +43,7 @@ export type StoreState = {
 	currentTalisman: CurrentTalismanState;
 	index: PlayerIndexState;
 	petMastery: PetMasteryState;
+	spinWheel: SpinWheelState;
 	petTeams: PetTeamsState;
 	devProducts: DevProductState;
 };
@@ -62,6 +64,7 @@ export type StoreActions = (
 	| TalismanActions
 	| CurrentTalismanActions
 	| PetMasteryActions
+	| SpinWheelActions
 	| PetTeamsActions
 	| PlayerIndexActions
 	| DevProductActions
@@ -88,6 +91,7 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	currentTalisman: currentTalismanReducer,
 	index: playerIndexReducer,
 	petMastery: petMasteryReducer,
+	spinWheel: spinWheelReducer,
 	petTeams: petTeamsReducer,
 	devProducts: devProductReducer,
 });

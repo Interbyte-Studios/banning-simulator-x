@@ -35,7 +35,9 @@ const hatchTimeCache: Map<Player, number> = new Map();
 /**
  * A higher ordered component that displays both information for all the eggs in the game and functionality to hatch those eggs.
  */
-export const EggsUI = hooks((props: EggsUIProps, { useState, useContext }) => {
+export const EggsUI = hooks((props: EggsUIProps, { useState, useContext, useEffect }) => {
+	const [regionalRegulationsEnforced, setReguionalRegulationsForced] = useState(false);
+
 	if (!props.visible) {
 		return <></>;
 	}
@@ -45,14 +47,16 @@ export const EggsUI = hooks((props: EggsUIProps, { useState, useContext }) => {
 	const { hatchEgg } = useContext(remoteContext);
 	const { addError } = useContext(AnnouncementContext);
 
-	const playerRegionalRegulations = PolicyService.GetPolicyInfoForPlayerAsync(player);
-	const regulationsProhibit = playerRegionalRegulations.ArePaidRandomItemsRestricted;
+	useEffect(() => {
+		const playerRegionalRegulations = PolicyService.GetPolicyInfoForPlayerAsync(player);
+		setReguionalRegulationsForced(playerRegionalRegulations.ArePaidRandomItemsRestricted);
+	}, []);
 
 	const children = [
 		<EggCost />,
 		<EggHud
 			initiateHatch={async (amount: 1 | 2 | 3, egg: EggName, isVoid: boolean): Promise<void> => {
-				if (regulationsProhibit) {
+				if (regionalRegulationsEnforced) {
 					addError(`Hatching pets is regulated by your country. Sorry!`);
 					return;
 				}
