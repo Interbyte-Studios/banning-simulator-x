@@ -4,9 +4,6 @@ import { Currency } from "../currencies";
 import { BAN_LAND_ZONES } from "./banLand";
 import { BAN_LAND_NPCS } from "./banLand/npcs";
 
-export const isValidNPCRank = t.literal("Bronze", "Silver", "Gold", "Diamond", "Ruby");
-export type NPCRank = t.static<typeof isValidNPCRank>;
-
 export interface Npc {
 	name: string;
 	health: number;
@@ -14,7 +11,7 @@ export interface Npc {
 		currency: number;
 		experience: number;
 	};
-	rank: NPCRank;
+	rank: number;
 	isBoss: boolean;
 	damage?: number;
 }

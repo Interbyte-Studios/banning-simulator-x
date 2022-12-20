@@ -1643,104 +1643,64 @@ hash = "355231d051253820347bf1e411ff1fe9fe14c622a21dad834195641614e457a1"
 id = 11090695552
 packable = false
 
-[inputs."images/ranks/friendly/1.png"]
-hash = "387e2dbf76db5a302849077ba8e6552b5c1d29d27dadeed53c596bf9f4166e8b"
-id = 11090695634
+[inputs."images/ranks/friendly/Bronze.png"]
+hash = "d43dff26054adf47dbaee9d02707cb6bc56883c9a7de5dd0d67404ee594f8dd4"
+id = 11866055470
 packable = false
 
-[inputs."images/ranks/friendly/10.png"]
-hash = "1fb9cc2d5a62feffdf822232535b7bd3844bdfb7fcc308ab8053470a17bec5d1"
-id = 11090695721
+[inputs."images/ranks/friendly/Diamond.png"]
+hash = "232088c18d8db36459dc052236fc5b6b0b1b936198b818c59f116f652db0c44e"
+id = 11866055545
 packable = false
 
-[inputs."images/ranks/friendly/11.png"]
-hash = "5aa48dcf21918feb2118a5e31a9324233082e1e7392a35f1b141a98e1c31e036"
-id = 11090695820
+[inputs."images/ranks/friendly/Draconic.png"]
+hash = "0a07ceff29a9f9a3f3c07a123e3f165be468b8633a46c466220fc902b88bbc83"
+id = 11866055677
 packable = false
 
-[inputs."images/ranks/friendly/12.png"]
-hash = "e839779ab577d960a1b27a2e1464be1dbe2bc97ed2e8dd95f5bb88db44b1c1fd"
-id = 11090695946
+[inputs."images/ranks/friendly/Emerald.png"]
+hash = "a3bdc98af206e631fc85f18011a836f5d922cad1bfa29e3421f760d18cd18915"
+id = 11866055833
 packable = false
 
-[inputs."images/ranks/friendly/13.png"]
-hash = "37289e77f30b9c2c4f9fb34ba9c2bf669b584ba3442eef8ec8f117c03d820623"
-id = 11090696055
+[inputs."images/ranks/friendly/Gold.png"]
+hash = "25ea149f529d5054dca66a4e098f2b0b80fd10a63ccffd1c387b947f60270dee"
+id = 11866055963
 packable = false
 
-[inputs."images/ranks/friendly/14.png"]
-hash = "ecedc40081404273304acaa3c0d38b471116be808b2a48aeccbcbc52aafb3f01"
-id = 11090696196
+[inputs."images/ranks/friendly/Pendulum.png"]
+hash = "06430115e507924f509b5e3a56fc9c9fcc638eb2fa0cbb6b4982bd450dad199f"
+id = 11866056106
 packable = false
 
-[inputs."images/ranks/friendly/15.png"]
-hash = "92f6afdc7ed1979386d4a775296b0958a560bc9834ae3a9e354a75a7d5665cab"
-id = 11090696358
+[inputs."images/ranks/friendly/Silver.png"]
+hash = "cce0a022b202fd39be6c7691201784a9b85724a0ac320dcfe32f9c14704830be"
+id = 11866056302
 packable = false
 
-[inputs."images/ranks/friendly/16.png"]
-hash = "e59aa2e2137d907b4bf0ce7fd64b8d0f4fae07fbfcb06c35792f749092d8ca30"
-id = 11090696473
+[inputs."images/ranks/prestiges/Prestige1.png"]
+hash = "841b3259515b70d7860e16cdef7b5711fbd031df35b0c73fe5dfa08416f03b0c"
+id = 11866056439
 packable = false
 
-[inputs."images/ranks/friendly/17.png"]
-hash = "aa24051e37f3d34b47ce564a4675e7a8e086ffdb5d8d0cec3be22d335778391d"
-id = 11090696592
+[inputs."images/ranks/prestiges/Prestige2.png"]
+hash = "60b52d38c7581ae711ea9ef3a5716bb7dcb9aa12689ff2b246bfa80248c7a7a5"
+id = 11866056520
 packable = false
 
-[inputs."images/ranks/friendly/18.png"]
-hash = "9ab459e3e3f38b5f8ba76c4ddd1e18da754ff4284cd3ad35307febe290191db5"
-id = 11090696702
+[inputs."images/ranks/prestiges/Prestige3.png"]
+hash = "69736c9353c8df5e05a785b0005dacedc0b3b466dcc1218b60979737f8c17718"
+id = 11866056589
 packable = false
 
-[inputs."images/ranks/friendly/19.png"]
-hash = "bc1be47923e8e9d74ea12da24cc54e07f75dd6dd15158f454d795741536e15e5"
-id = 11090696902
+[inputs."images/ranks/prestiges/Prestige4.png"]
+hash = "85ff67868601e07edb89b2fc1c1aa8f6599ff855fde7a269f47485f5a8597aea"
+id = 11866056703
 packable = false
 
-[inputs."images/ranks/friendly/2.png"]
-hash = "e5a09ce8d12c7913cd2643f44b7bcd7877e281dfea8a0fb471da6a5d710c72fd"
-id = 11090697037
-packable = false
-
-[inputs."images/ranks/friendly/20.png"]
-hash = "ae7a83bdb36bba06a85c7f809b6876067964567e0dc8c22c989300353e502a18"
-id = 11090697238
-packable = false
-
-[inputs."images/ranks/friendly/3.png"]
-hash = "f2431c3293f2fcba6e97e880ea6fb39075f56b2dee1b2db63b01208051f8344b"
-id = 11090697390
-packable = false
-
-[inputs."images/ranks/friendly/4.png"]
-hash = "bfb3e909f3743a3cd3018848357059f91e196ce15102bdd0f4b6213d9ee720ee"
-id = 11090697513
-packable = false
-
-[inputs."images/ranks/friendly/5.png"]
-hash = "66715508efbf45536e5ff15153cb265906b54f7647a2f7a54325beeb0ba0cf5d"
-id = 11090697649
-packable = false
-
-[inputs."images/ranks/friendly/6.png"]
-hash = "bb0291f83f55acfe27697385e6794a5742236e07c3cee9e8cab158f5209996cd"
-id = 11090697763
-packable = false
-
-[inputs."images/ranks/friendly/7.png"]
-hash = "4d52a36ed020b948c8e34a46b3745911ba15e5ce9be047e89ba4885ce9ff6106"
-id = 11090697899
-packable = false
-
-[inputs."images/ranks/friendly/8.png"]
-hash = "3d022ec7757f373c29163201436d97be3596310f10086d1797c883b0c6468c03"
-id = 11090698106
-packable = false
-
-[inputs."images/ranks/friendly/9.png"]
-hash = "ef801fb8430aaee8b29f2c458a0c04f0fd7e08421cebe10ed46c85389fe60d6c"
-id = 11090698226
+[inputs."images/ranks/prestiges/Prestige5.png"]
+hash = "d4ff26dcc1d1adb415537916d479d4c42f4731e51add965b014d060679e7b370"
+id = 11866056838
 packable = false
 
 [inputs."images/ui/autoDelete/background.png"]
@@ -2079,23 +2039,8 @@ id = 10832810250
 packable = false
 
 [inputs."images/ui/rank upgrade/background.png"]
-hash = "2d8222e59136632a3940f9b981c2f569ffa71009b863db23e3275e15491189b3"
-id = 11111317486
-packable = false
-
-[inputs."images/ui/rank upgrade/cancel.png"]
-hash = "6f950ed7955ec02f573f474e0dd6aba30cf120fc4b10625f1c02656a24e0395c"
-id = 11108539666
-packable = false
-
-[inputs."images/ui/rank upgrade/maxRank.png"]
-hash = "0cee9785b06188a2b865d55feadc50a2c848d89208bec1500b2290d3b06da05c"
-id = 11527733801
-packable = false
-
-[inputs."images/ui/rank upgrade/upgrade.png"]
-hash = "e2295693341b34cb9d5bad54564db46fc67fd5c7ad17385eb7337c77699fc1fa"
-id = 11108539728
+hash = "0d627e65e3e62a88e9fa6e317221402b8fad4da760197fe1b9c2cc870fc1c614"
+id = 11866563965
 packable = false
 
 [inputs."images/ui/settings/background.png"]
@@ -2294,8 +2239,8 @@ id = 11591957709
 packable = false
 
 [inputs."images/vectors/Experience.png"]
-hash = "8450bcac0e5990f02d5981090203e403acb037494522cc60dfff549d6449a579"
-id = 11830303788
+hash = "2f285faf84e073ab3147595ba8fc954c94ba2b46e294ff571018d2f1d48a9f91"
+id = 11866056920
 packable = false
 
 [inputs."images/vectors/FewGems.png"]
@@ -2328,6 +2273,11 @@ hash = "a0bb7854c6e3d8cc8d64741f8d23584dabdaa3297a163ac7d019b198da24835a"
 id = 11591958191
 packable = false
 
+[inputs."images/vectors/Lock.png"]
+hash = "a04c8dd0ee7f28852208585d0ab48556a7ca6a797ed9ae6c0d7473bebea3f636"
+id = 11866057058
+packable = false
+
 [inputs."images/vectors/Medal.png"]
 hash = "f750ac2499508342ab567602f1b1631117f8857b6f27ffbe4e96e3f1b18fc2d1"
 id = 11591958260
@@ -2358,6 +2308,11 @@ hash = "4a903d4105b2e766917b906060fb5b22cdc48853d20926d9017ab3572acf3045"
 id = 11591958579
 packable = false
 
+[inputs."images/vectors/StarCoin.png"]
+hash = "d32f1ff9d894140850ab2e1aa137eae19e31d207b9864b870ccfbdc2fd845334"
+id = 11866057225
+packable = false
+
 [inputs."images/vectors/Sword.png"]
 hash = "15767b36a9ddcf41a49d0de3b608a17fcf9c58e766b6a7b3428232b5b8d41f22"
 id = 11591958646
@@ -2374,6 +2329,6 @@ id = 11591958836
 packable = false
 
 [inputs."images/vectors/WalkSpeed.png"]
-hash = "5071ca0375e543ba732393e7bc774a0f547d9ab8d36a138ed62fa8a95bf68a17"
-id = 11830303907
+hash = "748f4791e08d5b7bff0173756c7be231711971f51896c222081a200113222c27"
+id = 11866057362
 packable = false

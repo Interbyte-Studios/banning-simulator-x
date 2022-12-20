@@ -1,235 +1,118 @@
+import { t } from "@rbxts/t";
+
 import { Currency } from "./currencies";
 
+export const isRankName = t.literal("Bronze", "Silver", "Gold", "Diamond", "Emerald", "Draconic", "Pendulum");
+export type RankName = t.static<typeof isRankName>;
+
 interface Rank {
-	amount: number;
-	currency: Currency;
+	name: RankName;
+	id: number;
+
+	cost: {
+		amount: number;
+		currency: Currency;
+	};
+
 	gradient: {
 		beginningColor: Color3;
 		endingColor: Color3;
 	};
-	name: string;
+
 	requiredExperience: number;
 }
 
+export const MAX_RANK = 7;
 export const RANKS: Array<Rank> = [
 	{
-		// rank 1
-		amount: 1_000,
-		currency: "coins",
+		name: "Bronze",
+		id: 1,
+		cost: {
+			amount: 0,
+			currency: "coins",
+		},
 		gradient: {
 			beginningColor: Color3.fromRGB(92, 51, 32),
 			endingColor: Color3.fromRGB(161, 108, 78),
 		},
-		name: "Bronze I",
 		requiredExperience: 0,
 	},
 	{
-		// rank 2
-		amount: 2_500,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(92, 51, 32),
-			endingColor: Color3.fromRGB(161, 108, 78),
+		name: "Silver",
+		id: 2,
+		cost: {
+			amount: 30_000,
+			currency: "coins",
 		},
-		name: "Bronze II",
-		requiredExperience: 350,
-	},
-	{
-		// rank 3
-		amount: 7_500,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(92, 51, 32),
-			endingColor: Color3.fromRGB(161, 108, 78),
-		},
-		name: "Bronze III",
-		requiredExperience: 750,
-	},
-	{
-		// rank 4
-		amount: 12_500,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(92, 51, 32),
-			endingColor: Color3.fromRGB(161, 108, 78),
-		},
-		name: "Bronze IV",
-		requiredExperience: 1_100,
-	},
-	{
-		// rank 5
-		amount: 20_000,
-		currency: "coins",
 		gradient: {
 			beginningColor: Color3.fromRGB(86, 100, 107),
 			endingColor: Color3.fromRGB(151, 161, 167),
 		},
-		name: "Silver I",
-		requiredExperience: 1_800,
-	},
-	{
-		// rank 6
-		amount: 30_000,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(86, 100, 107),
-			endingColor: Color3.fromRGB(151, 161, 167),
-		},
-		name: "Silver II",
-		requiredExperience: 2_250,
-	},
-	{
-		// rank 7
-		amount: 75_000,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(86, 100, 107),
-			endingColor: Color3.fromRGB(151, 161, 167),
-		},
-		name: "Silver III",
-		requiredExperience: 2_900,
-	},
-	{
-		// rank 8
-		amount: 150_000,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(86, 100, 107),
-			endingColor: Color3.fromRGB(151, 161, 167),
-		},
-		name: "Silver IV",
-		requiredExperience: 3_750,
-	},
-	{
-		// rank 9
-		amount: 375_000,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(124, 70, 21),
-			endingColor: Color3.fromRGB(179, 134, 61),
-		},
-		name: "Gold I",
 		requiredExperience: 7_000,
 	},
 	{
-		// rank 10
-		amount: 750_000,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(124, 70, 21),
-			endingColor: Color3.fromRGB(179, 134, 61),
+		name: "Gold",
+		id: 3,
+		cost: {
+			amount: 750_000,
+			currency: "coins",
 		},
-		name: "Gold II",
-		requiredExperience: 9_000,
+		gradient: {
+			beginningColor: Color3.fromRGB(84, 54, 0),
+			endingColor: Color3.fromRGB(252, 199, 84),
+		},
+		requiredExperience: 22_000,
 	},
 	{
-		// rank 11
-		amount: 1_875_000,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(124, 70, 21),
-			endingColor: Color3.fromRGB(179, 134, 61),
+		name: "Diamond",
+		id: 4,
+		cost: {
+			amount: 15_000_000,
+			currency: "coins",
 		},
-		name: "Gold III",
-		requiredExperience: 21_000,
+		gradient: {
+			beginningColor: Color3.fromRGB(0, 46, 69),
+			endingColor: Color3.fromRGB(82, 181, 245),
+		},
+		requiredExperience: 450_000,
 	},
 	{
-		// rank 12
-		amount: 3_750_000,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(124, 70, 21),
-			endingColor: Color3.fromRGB(179, 134, 61),
+		name: "Emerald",
+		id: 5,
+		cost: {
+			amount: 560_000_000,
+			currency: "coins",
 		},
-		name: "Gold IV",
-		requiredExperience: 37_500,
+		gradient: {
+			beginningColor: Color3.fromRGB(5, 61, 3),
+			endingColor: Color3.fromRGB(120, 235, 107),
+		},
+		requiredExperience: 5_700_000,
 	},
 	{
-		// rank 13
-		amount: 11_250_000,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(52, 94, 205),
-			endingColor: Color3.fromRGB(131, 161, 232),
+		name: "Draconic",
+		id: 6,
+		cost: {
+			amount: 25_200_000_000,
+			currency: "coins",
 		},
-		name: "Diamond I",
-		requiredExperience: 125_000,
+		gradient: {
+			beginningColor: Color3.fromRGB(51, 0, 0),
+			endingColor: Color3.fromRGB(135, 51, 43),
+		},
+		requiredExperience: 10_000_000,
 	},
 	{
-		// rank 14
-		amount: 22_500_000,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(52, 94, 205),
-			endingColor: Color3.fromRGB(131, 161, 232),
+		name: "Pendulum",
+		id: 7,
+		cost: {
+			amount: 1_008_000_000_000,
+			currency: "coins",
 		},
-		name: "Diamond II",
-		requiredExperience: 262_500,
-	},
-	{
-		// rank 15
-		amount: 135_000_000,
-		currency: "coins",
 		gradient: {
-			beginningColor: Color3.fromRGB(52, 94, 205),
-			endingColor: Color3.fromRGB(131, 161, 232),
+			beginningColor: Color3.fromRGB(245, 252, 99),
+			endingColor: Color3.fromRGB(64, 181, 255),
 		},
-		name: "Diamond III",
-		requiredExperience: 1_237_500,
-	},
-	{
-		// rank 16
-		amount: 750_000_000,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(52, 94, 205),
-			endingColor: Color3.fromRGB(131, 161, 232),
-		},
-		name: "Diamond IV",
-		requiredExperience: 7_350_000,
-	},
-	{
-		// rank 17
-		amount: 1_500_000_000,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(116, 24, 25),
-			endingColor: Color3.fromRGB(175, 65, 65),
-		},
-		name: "Ruby I",
-		requiredExperience: 37_500_000,
-	},
-	{
-		// rank 18
-		amount: 5_000_000_000,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(116, 24, 25),
-			endingColor: Color3.fromRGB(175, 65, 65),
-		},
-		name: "Ruby II",
-		requiredExperience: 185_625_000,
-	},
-	{
-		// rank 19
-		amount: 10_000_000_000,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(116, 24, 25),
-			endingColor: Color3.fromRGB(175, 65, 65),
-		},
-		name: "Ruby III",
-		requiredExperience: 965_250_000,
-	},
-	{
-		// rank 20
-		amount: 25_000_000_000,
-		currency: "coins",
-		gradient: {
-			beginningColor: Color3.fromRGB(116, 24, 25),
-			endingColor: Color3.fromRGB(175, 65, 65),
-		},
-		name: "Ruby IV",
-		requiredExperience: 6_000_000_000,
+		requiredExperience: 2_375_000_000,
 	},
 ];

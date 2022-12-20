@@ -19,7 +19,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 10_000,
-			requiredRank: 3,
+			requiredRank: 1,
 		},
 		color: Color3.fromRGB(154, 106, 79),
 	},
@@ -31,7 +31,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 40_000,
-			requiredRank: 6,
+			requiredRank: 2,
 		},
 		color: Color3.fromRGB(61, 163, 90),
 	},
@@ -43,7 +43,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 200_000,
-			requiredRank: 8,
+			requiredRank: 2,
 		},
 		color: Color3.fromRGB(175, 128, 99),
 	},
@@ -55,7 +55,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 1_000_000,
-			requiredRank: 10,
+			requiredRank: 3,
 		},
 		color: Color3.fromRGB(152, 166, 175),
 	},
@@ -67,7 +67,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 5_000_000,
-			requiredRank: 12,
+			requiredRank: 3,
 		},
 		color: Color3.fromRGB(7, 113, 170),
 	},
@@ -79,7 +79,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 30_000_000,
-			requiredRank: 14,
+			requiredRank: 4,
 		},
 		color: Color3.fromRGB(206, 130, 160),
 	},
@@ -91,7 +91,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 180_000_000,
-			requiredRank: 15,
+			requiredRank: 4,
 		},
 		color: Color3.fromRGB(98, 37, 209),
 	},
@@ -103,8 +103,12 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 1_000_000_000,
-			requiredRank: 16,
+			requiredRank: 5,
 		},
 		color: Color3.fromRGB(213, 115, 61),
 	},
+
+	// zone 10 (Emerald)
+	// zone 11 (Draconic)
+	// zone 12 (Pendulum)
 });

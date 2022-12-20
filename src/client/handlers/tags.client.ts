@@ -1,7 +1,6 @@
 import { CollectionService, Players, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
 import { t } from "@rbxts/t";
 import { onStoreCreated } from "client/clientStores";
-import { getEnemyRankIcon } from "client/util/getEnemyRankIcon";
 import { getRankIcon } from "client/util/getRankIcon";
 import { GROUP_ID, GROUP_ROLES } from "shared/configs/game";
 import { TITLES } from "shared/configs/titles";
@@ -256,7 +255,7 @@ function createEnemyTag(enemy: Model): void {
 
 	const tag = enemyTag.Clone();
 	tag.hold.name.Text = enemy.Name;
-	tag.hold.name.rank.Image = getEnemyRankIcon(npcData.rank, npcData.isBoss);
+	tag.hold.name.rank.Image = getRankIcon(npcData.rank);
 	tag.hold.title.Visible = npcData.isBoss;
 	tag.hold.title.Text = npcData.isBoss ? `Boss` : `NPC`;
 	tag.hold.title.TextColor3 = npcData.isBoss ? Color3.fromRGB(250, 112, 112) : Color3.fromRGB(255, 255, 255);
