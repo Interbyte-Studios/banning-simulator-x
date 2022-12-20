@@ -30,7 +30,6 @@ export function purchaseWeapon(data: Omit<PurchaseWeapon, "type">): PurchaseWeap
 	};
 }
 
-/*
 const defaulWeapon = {
 	id: 1,
 	bans: 0,
@@ -38,8 +37,8 @@ const defaulWeapon = {
 };
 
 const defaultState: WeaponsState = [defaulWeapon];
-*/
 
+/*
 const weapons = [];
 for (const [, data] of pairs(WEAPONS)) {
 	weapons.push({
@@ -48,9 +47,10 @@ for (const [, data] of pairs(WEAPONS)) {
 		level: 10,
 	});
 }
+*/
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions | KillNpc>(weapons, {
+export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions | KillNpc>(defaultState, {
 	purchaseWeapon: (state, action) => {
 		const newWeapon = {
 			id: action.id,

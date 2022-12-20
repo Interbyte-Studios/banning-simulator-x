@@ -9,6 +9,7 @@ import assetIds from "shared/assets";
 import { MAX_RANK, RANKS } from "shared/configs/ranks";
 import { StoreState } from "shared/rodux";
 import { ExperienceState } from "shared/rodux/experience";
+import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { UpgradeRankTeleport } from "./upgradeRankTeleport";
 
@@ -87,7 +88,13 @@ export const RanksViewer = RoactRodux.connect(mapStateToProps)(
 						Position={UDim2.fromScale(0.5, 0.5)}
 						Size={UDim2.fromScale(0.95, 0.95)}
 						Font={font}
-						Text={props.rank === MAX_RANK ? "Max Rank" : `${math.floor(progressToNextRank * 100)}%`}
+						Text={
+							props.rank === MAX_RANK
+								? "Max Rank"
+								: `${twoDpAbbreviator.numberToString(props.experience)}/${twoDpAbbreviator.numberToString(
+										nextRankData.requiredExperience,
+								  )} (${math.floor(progressToNextRank * 100)}%)`
+						}
 						TextScaled={true}
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 					>
