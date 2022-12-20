@@ -135,6 +135,7 @@ export function enhancePet(
 }
 
 const defaultPets: PetsState = [];
+/*
 for (let i = 1; i <= 43; i++) {
 	const pet: Pet = {
 		id: i,
@@ -170,6 +171,7 @@ for (let i = 1; i <= 43; i++) {
 	defaultPets.push(voidPet);
 	defaultPets.push(radiantPet);
 }
+*/
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQuest | RedeemCode | KillNpc>(

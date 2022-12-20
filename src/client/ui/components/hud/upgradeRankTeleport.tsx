@@ -7,6 +7,7 @@ import { hooks } from "client/ui/hooks";
 import { getRankProgress } from "client/util/getRankProgress";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
+import { MAX_RANK, RANKS } from "shared/configs/ranks";
 
 const player = Players.LocalPlayer;
 
@@ -22,8 +23,15 @@ type NonImmuneProps = "position" | "minimizedSize" | "maximizedSize";
 type UpgradeNotificationProps = Omit<UpgradeRankTeleportProps, NonImmuneProps>;
 
 export const UpgradeNotification = hooks((props: UpgradeNotificationProps) => {
-	const rankProgress = getRankProgress(props.rank, props.experience);
-	if (rankProgress !== 5) {
+	const nextRank = props.rank + 1 <= MAX_RANK ? props.rank + 1 : MAX_RANK;
+
+	const rankData = RANKS.find((rank) => rank.id === nextRank);
+	assert(rankData, `Failed to get data for rank of id: "${nextRank}".`);
+
+	const progress = props.experience < rankData.requiredExperience ? props.experience / rankData.requiredExperience : 1;
+	const shouldDisplay = nextRank !== MAX_RANK ? (progress === 1 ? true : false) : false;
+
+	if (!shouldDisplay) {
 		return <></>;
 	}
 

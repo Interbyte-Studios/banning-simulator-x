@@ -31,7 +31,7 @@ export const ToggleButtonSFXSetting = RoactRodux.connect(mapStateToProps)(
 
 		return (
 			<ToggleSettingOption
-				position={UDim2.fromScale(0.5, 0.06)}
+				position={UDim2.fromScale(0.5, 0.07)}
 				size={UDim2.fromScale(0.95, 0.04)}
 				settingName={"Button Click SFX"}
 				isEnabled={props.enabled}

@@ -21,7 +21,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: 250,
 			experience: 7.5,
 		},
-		rank: "Bronze",
+		rank: 1,
 		isBoss: false,
 	},
 	nyxun: {
@@ -31,7 +31,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: 750,
 			experience: 26,
 		},
-		rank: "Bronze",
+		rank: 1,
 		isBoss: false,
 	},
 	onett: identity<Npc>({
@@ -41,7 +41,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("3k"),
 			experience: 45,
 		},
-		rank: "Bronze",
+		rank: 2,
 		isBoss: false,
 	}),
 	rellhub: identity<Npc>({
@@ -51,7 +51,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("12.5k"),
 			experience: 83,
 		},
-		rank: "Bronze",
+		rank: 2,
 		isBoss: false,
 	}),
 	buildIntoGames: identity<Npc>({
@@ -61,7 +61,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("50k"),
 			experience: 136,
 		},
-		rank: "Silver",
+		rank: 3,
 		isBoss: false,
 	}),
 	foreverDev: identity<Npc>({
@@ -71,7 +71,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("250k"),
 			experience: shorten("1.1k"),
 		},
-		rank: "Silver",
+		rank: 3,
 		isBoss: false,
 	}),
 	snickTrix: identity<Npc>({
@@ -81,7 +81,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("1.25M"),
 			experience: shorten("3.7k"),
 		},
-		rank: "Silver",
+		rank: 4,
 		isBoss: false,
 	}),
 	mygame43: identity<Npc>({
@@ -91,7 +91,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("7M"),
 			experience: shorten("14k"),
 		},
-		rank: "Silver",
+		rank: 4,
 		isBoss: false,
 	}),
 	gamesReborn: identity<Npc>({
@@ -101,7 +101,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("35M"),
 			experience: shorten("30k"),
 		},
-		rank: "Gold",
+		rank: 5,
 		isBoss: false,
 	}),
 
@@ -112,7 +112,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: 500,
 			experience: 50,
 		},
-		rank: "Bronze",
+		rank: 1,
 		isBoss: true,
 	}),
 	sonsofFun_YT: identity<Npc>({
@@ -122,7 +122,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("1.5k"),
 			experience: 175,
 		},
-		rank: "Bronze",
+		rank: 1,
 		isBoss: true,
 	}),
 	carbonMeister: identity<Npc>({
@@ -132,7 +132,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("6k"),
 			experience: 300,
 		},
-		rank: "Bronze",
+		rank: 2,
 		isBoss: true,
 	}),
 	sabrinaBrite: identity<Npc>({
@@ -142,7 +142,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("25k"),
 			experience: 550,
 		},
-		rank: "Bronze",
+		rank: 2,
 		isBoss: true,
 	}),
 	djMonopoli: identity<Npc>({
@@ -152,7 +152,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("100k"),
 			experience: 900,
 		},
-		rank: "Silver",
+		rank: 3,
 		isBoss: true,
 	}),
 	merely: identity<Npc>({
@@ -162,7 +162,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("500k"),
 			experience: shorten("7.5k"),
 		},
-		rank: "Silver",
+		rank: 3,
 		isBoss: true,
 	}),
 	alvin_Blox: identity<Npc>({
@@ -172,7 +172,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("2.5M"),
 			experience: shorten("25k"),
 		},
-		rank: "Silver",
+		rank: 4,
 		isBoss: true,
 	}),
 	deeterPlays: identity<Npc>({
@@ -182,7 +182,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("14M"),
 			experience: shorten("95k"),
 		},
-		rank: "Silver",
+		rank: 4,
 		isBoss: true,
 	}),
 	beeism: identity<Npc>({
@@ -192,7 +192,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 			currency: shorten("70M"),
 			experience: shorten("200k"),
 		},
-		rank: "Gold",
+		rank: 5,
 		isBoss: true,
 	}),
 });

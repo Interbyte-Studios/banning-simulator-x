@@ -17,6 +17,7 @@ export interface PurchaseTalisman extends Rodux.Action<"purchaseTalisman"> {
 }
 
 const defaultTalismans: TalismansState = [];
+/*
 for (const [, data] of pairs(TALISMANS)) {
 	defaultTalismans.push({
 		id: data.id,
@@ -24,6 +25,7 @@ for (const [, data] of pairs(TALISMANS)) {
 		phase: "artifact",
 	});
 }
+*/
 
 /**
  * Purchases a talisman from the stor, saving it to players talisman inventory.

@@ -307,28 +307,28 @@ declare namespace assetIds {
 			};
 			talismans: {
 				"All Seeing Talisman": string;
-				"Awakend Jester Talisman": string;
+				"Awakend Target Talisman": string;
+				"Jester Talisman": string;
 				"Artifact Skull Talisman": string;
+				"Awakend Blade Talisman": string;
 				"Artifact Lunar Talisman": string;
 				"Artifact Blade Talisman": string;
 				"Artifact Star Talisman": string;
 				"Heart Talisman": string;
-				"Awakend Target Talisman": string;
-				"Lunar Talisman": string;
+				"Awakend Skull Talisman": string;
 				"Artifact Target Talisman": string;
-				"Target Talisman": string;
+				"Awakend Lunar Talisman": string;
 				"Artifact Jester Talisman": string;
 				"Artifact All Seeing Talisman": string;
-				"Awakend Blade Talisman": string;
-				"Awakend Heart Talisman": string;
-				"Skull Talisman": string;
-				"Awakend All Seeing Talisman": string;
-				"Jester Talisman": string;
-				"Awakend Star Talisman": string;
-				"Awakend Lunar Talisman": string;
-				"Blade Talisman": string;
-				"Awakend Skull Talisman": string;
+				"Target Talisman": string;
 				"Star Talisman": string;
+				"Awakend Star Talisman": string;
+				"Awakend Jester Talisman": string;
+				"Skull Talisman": string;
+				"Lunar Talisman": string;
+				"Blade Talisman": string;
+				"Awakend All Seeing Talisman": string;
+				"Awakend Heart Talisman": string;
 				"Artifact Heart Talisman": string;
 			};
 			eggs: {
@@ -348,6 +348,7 @@ declare namespace assetIds {
 			GemBag: string;
 			Settings: string;
 			Codes: string;
+			WalkSpeed: string;
 			PetPaw: string;
 			CyberToken: string;
 			Coin: string;
@@ -356,11 +357,12 @@ declare namespace assetIds {
 			Rewards: string;
 			Trading: string;
 			GemVault: string;
-			Gem: string;
-			GemChest: string;
-			Clover: string;
 			Experience: string;
-			WalkSpeed: string;
+			GemChest: string;
+			StarCoin: string;
+			Lock: string;
+			Clover: string;
+			Gem: string;
 		};
 		ui: {
 			egg: {
@@ -420,10 +422,7 @@ declare namespace assetIds {
 				LevelUp: string;
 			};
 			"rank upgrade": {
-				cancel: string;
 				background: string;
-				maxRank: string;
-				upgrade: string;
 			};
 			"update log": {
 				"update log": string;
@@ -509,27 +508,21 @@ declare namespace assetIds {
 			};
 		};
 		ranks: {
+			prestiges: {
+				Prestige1: string;
+				Prestige4: string;
+				Prestige3: string;
+				Prestige5: string;
+				Prestige2: string;
+			};
 			friendly: {
-				"9": string;
-				"8": string;
-				"4": string;
-				"20": string;
-				"1": string;
-				"5": string;
-				"3": string;
-				"2": string;
-				"19": string;
-				"18": string;
-				"7": string;
-				"6": string;
-				"14": string;
-				"15": string;
-				"16": string;
-				"17": string;
-				"13": string;
-				"12": string;
-				"11": string;
-				"10": string;
+				Pendulum: string;
+				Diamond: string;
+				Silver: string;
+				Gold: string;
+				Emerald: string;
+				Bronze: string;
+				Draconic: string;
 			};
 			enemy: {
 				regular: {

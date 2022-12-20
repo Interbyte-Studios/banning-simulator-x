@@ -32,7 +32,7 @@ export const ToggleMusicFXSetting = RoactRodux.connect(mapStateToProps)(
 
 		return (
 			<ModifySettingOption
-				position={UDim2.fromScale(0.5, 0.105)}
+				position={UDim2.fromScale(0.5, 0.115)}
 				size={UDim2.fromScale(0.95, 0.04)}
 				settingName={"Music Volume"}
 				displayValue={`${props.volume * 10}%`}
