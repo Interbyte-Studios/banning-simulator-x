@@ -115,5 +115,13 @@ declare global {
 				};
 			};
 		};
+		events: Folder & {
+			x2Currency: BoolValue;
+			x2Experience: BoolValue;
+			x3Currency: BoolValue;
+			x2Luck: BoolValue;
+		};
+		PetExistStores: ObjectValue;
+		GameVersion: StringValue;
 	}
 }

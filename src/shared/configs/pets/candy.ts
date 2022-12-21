@@ -29,7 +29,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 		},
 	},
 	"Gummy Bear": {
-		chance: 8.98495,
+		chance: 8.9849,
 		id: 27,
 		rarity: "Basic",
 		stats: {

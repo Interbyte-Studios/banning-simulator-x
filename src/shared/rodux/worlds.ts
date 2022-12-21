@@ -32,7 +32,7 @@ const defaultWorlds: WorldsState = [
 		name: "Ban Land",
 		zones: [
 			"Forest",
-			/*
+			// /*
 			"Beach",
 			"Candy Land",
 			"Desert",
@@ -42,7 +42,7 @@ const defaultWorlds: WorldsState = [
 			"Lava Lands",
 			"Sunflower Field",
 			"The Mines",
-			*/
+			// */
 		],
 	},
 ];

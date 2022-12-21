@@ -1,6 +1,6 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
-import { UserInputService } from "@rbxts/services";
+import { ReplicatedStorage, UserInputService } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
@@ -132,6 +132,27 @@ export const PetSummary = hooks(
 			return (): void => connections.forEach((conn) => conn.Disconnect());
 		}, []);
 
+		const existingCounter: Array<Roact.Element> = [];
+		const existAmount = ReplicatedStorage.PetExistStores.GetAttribute(tostring(props.storedPet.id));
+		if (existAmount !== undefined) {
+			if (typeIs(existAmount, "number")) {
+				existingCounter.push(
+					<textlabel
+						AnchorPoint={vec2Middle}
+						Position={UDim2.fromScale(0.375, 0.6)}
+						Size={UDim2.fromScale(0.675, 0.1)}
+						BackgroundTransparency={1}
+						TextScaled={true}
+						TextColor3={Color3.fromRGB(255, 170, 255)}
+						Text={`⭐ ${twoDpAbbreviator.numberToString(existAmount)} Exist`}
+						Font={font}
+					>
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(111, 74, 111) }} />
+					</textlabel>,
+				);
+			}
+		}
+
 		return (
 			<imagelabel
 				BackgroundTransparency={1}
@@ -222,8 +243,8 @@ export const PetSummary = hooks(
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.335, 0.5)}
-					Size={UDim2.fromScale(0.6, 0.075)}
+					Position={UDim2.fromScale(0.485, 0.5)}
+					Size={UDim2.fromScale(0.9, 0.08)}
 					BackgroundTransparency={1}
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
@@ -237,7 +258,7 @@ export const PetSummary = hooks(
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.5, 0.7)}
+					Position={UDim2.fromScale(0.5, 0.8)}
 					Size={UDim2.fromScale(0.675, 0.1)}
 					BackgroundTransparency={1}
 					TextScaled={true}
@@ -259,6 +280,7 @@ export const PetSummary = hooks(
 				>
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
 				</textlabel>
+				{existingCounter}
 			</imagelabel>
 		);
 	},
