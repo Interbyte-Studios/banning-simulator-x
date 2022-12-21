@@ -5,6 +5,7 @@ import { Store } from "shared/rodux";
 import { LocalMessages } from "./components/announcements";
 import { CodesMenu } from "./components/codes/menu";
 import { CurrencyGainAnimation } from "./components/currencyGainAnimation";
+import { DatastoreEvents } from "./components/datastoreEvents";
 import { EggsUI } from "./components/eggs";
 import { WeaponEquip } from "./components/equip/weaponEquip";
 import { Hud } from "./components/hud";
@@ -208,6 +209,17 @@ export const app = hooks((props: AppProps, { useState }) => {
 					}
 					visible={itemsVisibility}
 					hideMenu={(): void => setItemsVisibility(false)}
+				/>
+				<DatastoreEvents
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility &&
+						!itemsVisibility
+					}
 				/>
 			</>
 		</RoactRodux.StoreProvider>

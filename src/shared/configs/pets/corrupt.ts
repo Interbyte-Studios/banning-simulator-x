@@ -5,7 +5,7 @@ import { Pet } from ".";
  */
 export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 	"Corrupt Doggy": {
-		chance: 38.32995,
+		chance: 38.3299,
 		id: 72,
 		rarity: "Basic",
 		stats: {

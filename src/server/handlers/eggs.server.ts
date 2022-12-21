@@ -1,4 +1,6 @@
 import { HttpService, Players } from "@rbxts/services";
+import { TestRunner } from "@rbxts/testez";
+import { addPetToCache } from "server/modules/datastoreCaches/petExistStore";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { rollEnhancement } from "server/modules/pets/rollEnhancement";
 import { getPetPercentages } from "server/util/getPetPercentages";
@@ -87,13 +89,13 @@ hatchEgg.SetCallback(
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		for (const _ of $range(1, amount)) {
-			const randomNumber = randomGenerator.NextNumber(0, 100);
+			const randomNumber = randomGenerator.NextNumber(99.99995, 100);
 
-			for (const registeredPet of truePetPercentages) {
+			truePetPercentages.forEach((registeredPet) => {
 				if (registeredPet.isLowestId) {
 					if (randomNumber < registeredPet.petChance) {
 						hatchedPets.push({ id: registeredPet.petId, rarity: registeredPet.rarity });
-						break;
+						return;
 					}
 				}
 
@@ -101,15 +103,15 @@ hatchEgg.SetCallback(
 					const nextPet = truePetPercentages.find((x) => x.petId === registeredPet.petId + 1);
 					if (nextPet === undefined) {
 						hatchedPets.push({ id: registeredPet.petId, rarity: registeredPet.rarity });
-						break;
+						return;
 					}
 
 					if (randomNumber < nextPet.petChance) {
 						hatchedPets.push({ id: registeredPet.petId, rarity: registeredPet.rarity });
-						break;
+						return;
 					}
 				}
-			}
+			});
 		}
 
 		// confirm pet
@@ -151,6 +153,9 @@ hatchEgg.SetCallback(
 
 			// todo: check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
+			if (pet.rarity === "Prismatic" || pet.rarity === "Primordial") {
+				addPetToCache(pet.id);
+			}
 
 			selectedPets.push({
 				autoDeleted,
