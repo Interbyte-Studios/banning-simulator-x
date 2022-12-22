@@ -2,7 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { DamageIcon } from "client/ui/elements/damageIcon";
@@ -121,7 +121,7 @@ const EquipPet = RoactRodux.connect(mapStateToProps)(
 
 		const { useContext } = hooks;
 		const { equipPets } = useContext(remoteContext);
-		const { addError } = useContext(AnnouncementContext);
+		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		return (
 			<imagebutton
@@ -144,7 +144,7 @@ const EquipPet = RoactRodux.connect(mapStateToProps)(
 							const equippedPets = props.pets.filter((pet) => pet.equipped).size();
 
 							if (equippedPets >= maxPetsEquipped) {
-								addError(`You have too many pets equipped.`);
+								addAnnouncement(`You have too many pets equipped.`, AnnouncementType.Error);
 								return;
 							}
 

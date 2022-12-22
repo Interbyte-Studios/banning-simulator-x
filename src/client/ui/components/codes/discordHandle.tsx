@@ -2,7 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
@@ -47,7 +47,7 @@ export const DiscordHandle = RoactRodux.connect(mapStateToProps)(
 
 		const { useValue, useContext } = hooks;
 		const { verifyDiscord } = useContext(remoteContext);
-		const { addError } = useContext(AnnouncementContext);
+		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		const textBoxRef = useValue(Roact.createRef<TextBox>());
 
@@ -92,26 +92,32 @@ export const DiscordHandle = RoactRodux.connect(mapStateToProps)(
 
 							const textBox = textBoxRef.value.getValue();
 							if (textBox === undefined) {
-								addError("Please input your tag to verify.");
+								addAnnouncement("Please input your tag to verify.", AnnouncementType.Error);
 								return;
 							}
 
 							const verifyDiscordPresence = await verifyDiscord.CallServerAsync(textBox.Text);
 							if (verifyDiscordPresence.success) {
-								addError("You have been verified! Enjoy your 50% experience boost :)");
+								addAnnouncement(
+									"You have been verified! Enjoy your 50% experience boost :)",
+									AnnouncementType.Announcement,
+								);
 								return;
 							} else {
 								switch (verifyDiscordPresence.reason) {
 									case VerifyDiscordFailKind.InternalError: {
-										addError("An internal error occurred while verifying your information (100).");
+										addAnnouncement(
+											"An internal error occurred while verifying your information (100).",
+											AnnouncementType.Error,
+										);
 										return;
 									}
 									case VerifyDiscordFailKind.NotInDiscord: {
-										addError("You are not in the Interbyte Discord server.");
+										addAnnouncement("You are not in the Interbyte Discord server.", AnnouncementType.Error);
 										return;
 									}
 									case VerifyDiscordFailKind.RateLimit: {
-										addError("You have been rate limited.");
+										addAnnouncement("You have been rate limited.", AnnouncementType.Error);
 										return;
 									}
 								}

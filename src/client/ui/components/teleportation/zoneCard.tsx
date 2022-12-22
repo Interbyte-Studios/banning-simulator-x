@@ -3,7 +3,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, Workspace } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
@@ -53,7 +53,7 @@ export const ZoneTeleportCard = RoactRodux.connect(mapStateToProps)(
 		const storedWorldData = props.worlds.find((world) => world.name === props.world);
 
 		const { useContext } = hooks;
-		const { addError } = useContext(AnnouncementContext);
+		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		return (
 			<imagelabel
@@ -86,12 +86,12 @@ export const ZoneTeleportCard = RoactRodux.connect(mapStateToProps)(
 							playSFX(UIEngagement.MajorEngagement);
 
 							if (storedWorldData === undefined) {
-								addError(`You do not own that zone.`);
+								addAnnouncement(`You do not own the world.`, AnnouncementType.Error);
 								return;
 							}
 
 							if (storedWorldData.zones.find((zone) => zone === props.zone) === undefined) {
-								addError(`You do not own that zone.`);
+								addAnnouncement(`You do not own that zone.`, AnnouncementType.Error);
 								return;
 							}
 

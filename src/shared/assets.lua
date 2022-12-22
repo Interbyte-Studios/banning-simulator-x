@@ -518,10 +518,12 @@ return {
 			},
 		},
 		vectors = {
+			Announcement = "rbxassetid://11887192774",
 			Clover = "rbxassetid://11591957467",
 			Codes = "rbxassetid://11591957528",
 			Coin = "rbxassetid://11591957630",
 			CyberToken = "rbxassetid://11591957709",
+			Error = "rbxassetid://11887192861",
 			Experience = "rbxassetid://11866056920",
 			FewGems = "rbxassetid://11591957751",
 			Gem = "rbxassetid://11591957802",

@@ -2,7 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
@@ -56,7 +56,7 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 
 		const { useContext } = hooks;
 		const { purchaseWeapon } = useContext(remoteContext);
-		const { addError } = useContext(AnnouncementContext);
+		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		const maximizedSize = 0.08;
 		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
@@ -82,26 +82,35 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 
 						// check to be sure weapon can be purchased
 						if (weaponInfo.data.cost === undefined) {
-							addError(`There was an internal issue while purchasing "${weaponInfo.name}" (105).`);
+							addAnnouncement(
+								`There was an internal issue while purchasing "${weaponInfo.name}" (105).`,
+								AnnouncementType.Error,
+							);
 							return;
 						}
 
 						// check to be sure player has enough currency to purchase weapon
 						if (props.currencies[weaponInfo.data.cost.currency] < weaponInfo.data.cost.amount) {
-							addError(`You don't have enough currency to purchase "${weaponInfo.name}".`);
+							addAnnouncement(
+								`You don't have enough currency to purchase "${weaponInfo.name}".`,
+								AnnouncementType.Error,
+							);
 							return;
 						}
 
 						// check to be sure player is required rank
 						if (weaponInfo.data.cost.requiredRank !== undefined) {
 							if (props.rank < weaponInfo.data.cost.requiredRank) {
-								addError(`You're not a high enough rank to purchase "${weaponInfo.name}".`);
+								addAnnouncement(
+									`You're not a high enough rank to purchase "${weaponInfo.name}".`,
+									AnnouncementType.Error,
+								);
 								return;
 							}
 						}
 
 						purchaseWeapon.SendToServer(props.currentWeapon);
-						addError(`You've purchased the "${weaponInfo.name}" weapon!`);
+						addAnnouncement(`You've purchased the "${weaponInfo.name}" weapon!`, AnnouncementType.Announcement);
 					},
 					MouseEnter: (): void => motor.setGoal(minimizedSpring),
 					MouseLeave: (): void => motor.setGoal(maximizedSpring),

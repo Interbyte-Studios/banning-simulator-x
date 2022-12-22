@@ -2218,6 +2218,11 @@ hash = "11e682e65b34a8a8f07f63af4b9f18653047085ef54509aede741d9716ac7f6a"
 id = 10970620840
 packable = false
 
+[inputs."images/vectors/Announcement.png"]
+hash = "282fb6612f3808984af770eb2a593af528df413530ee3bde631678285f0440eb"
+id = 11887192774
+packable = false
+
 [inputs."images/vectors/Clover.png"]
 hash = "cda77f0813456bf8d79fd4c8893d3b23c551ee5e4d04e5612aca058f7263d224"
 id = 11591957467
@@ -2236,6 +2241,11 @@ packable = false
 [inputs."images/vectors/CyberToken.png"]
 hash = "e59cd418515186b5f21e1e9754bacd7fefb9c051e740f725f5fa2e757a5bce58"
 id = 11591957709
+packable = false
+
+[inputs."images/vectors/Error.png"]
+hash = "73671753dd9515542fe12e4a5614773f06038c8f2cddb6fb3886c4114da25636"
+id = 11887192861
 packable = false
 
 [inputs."images/vectors/Experience.png"]

@@ -13,7 +13,7 @@ export const AnnouncementContext = Roact.createContext({
 		ReadonlyArray<{ message: string; messageType: AnnouncementType; id: number; displayedTime: number }>
 	>([]),
 	// eslint-disable-next-line jsdoc/require-jsdoc, @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-	addError: (message: string) => {},
+	addAnnouncement: (message: string, messageType: AnnouncementType) => {},
 });
 
 let numberOfAnnouncements = 0;
@@ -52,6 +52,8 @@ export const AnnouncementAPI = hooks(
 				}
 				lastCheck = now;
 
+				let requiresUpdate = false;
+
 				const newErrors = [...errors];
 				for (const errorData of newErrors) {
 					const now = time();
@@ -59,8 +61,14 @@ export const AnnouncementAPI = hooks(
 						continue;
 					}
 
+					requiresUpdate = true;
+
 					const errorIndex = newErrors.findIndex((eData) => eData.id === errorData.id);
 					newErrors.remove(errorIndex);
+				}
+
+				if (!requiresUpdate) {
+					return;
 				}
 
 				if (mounted.value) {
@@ -68,10 +76,8 @@ export const AnnouncementAPI = hooks(
 				}
 			});
 
-			return (): void => {
-				connection.Disconnect();
-			};
-		});
+			return (): void => connection.Disconnect();
+		}, []);
 
 		/**
 		 * Adds an error to the API's state.
@@ -79,8 +85,8 @@ export const AnnouncementAPI = hooks(
 		 * @param message The message to display.
 		 * @param displayTime The time the error is displayed (defaults to 5 seconds).
 		 */
-		const addError = useCallback(
-			(message: string): void => {
+		const addAnnouncement = useCallback(
+			(message: string, messageType: AnnouncementType): void => {
 				numberOfAnnouncements += 1;
 
 				const id = numberOfAnnouncements;
@@ -88,7 +94,7 @@ export const AnnouncementAPI = hooks(
 					...errors,
 					{
 						message,
-						messageType: AnnouncementType.Error,
+						messageType,
 						id,
 						displayedTime: time(),
 					},
@@ -101,7 +107,7 @@ export const AnnouncementAPI = hooks(
 
 		const contextValue = {
 			errors,
-			addError,
+			addAnnouncement,
 		};
 
 		return <AnnouncementContext.Provider value={contextValue}>{props[Roact.Children]}</AnnouncementContext.Provider>;

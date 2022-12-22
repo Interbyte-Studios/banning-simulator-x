@@ -8,7 +8,6 @@ import {
 	setLocalPetCache,
 	setPetsCache,
 	updateStoreInterval,
-	ValidPetExistCache,
 	validPetExistCache,
 } from "server/modules/datastoreCaches/petExistStore";
 
@@ -16,8 +15,6 @@ const datastoreEventsStore = DataStoreService.GetDataStore(datastoreName, datast
 
 /**
  * Retrieves the cache of existing secret pets.
- *
- * @param compare Whether or not to compare the retrieved store to the locally cached data in order to keep everything up to date.
  */
 function getPetExistStore(): void {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

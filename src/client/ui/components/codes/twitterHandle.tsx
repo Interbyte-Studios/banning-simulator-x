@@ -1,7 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
@@ -22,7 +22,7 @@ export const TwitterHandle = hooks((_, hooks) => {
 
 	const { useValue, useContext } = hooks;
 	const { redeemCode } = useContext(remoteContext);
-	const { addError } = useContext(AnnouncementContext);
+	const { addAnnouncement } = useContext(AnnouncementContext);
 
 	const textBoxRef = useValue(Roact.createRef<TextBox>());
 
@@ -67,22 +67,22 @@ export const TwitterHandle = hooks((_, hooks) => {
 
 						const textBox = textBoxRef.value.getValue();
 						if (textBox === undefined) {
-							addError("Please input your handle to verify.");
+							addAnnouncement("Please input your handle to verify.", AnnouncementType.Error);
 							return;
 						}
 
 						const codeRedeemed = await redeemCode.CallServerAsync(textBox.Text);
 						if (codeRedeemed.success) {
-							addError(`You've redeemed the code "${textBox.Text}."`);
+							addAnnouncement(`You've redeemed the code "${textBox.Text}."`, AnnouncementType.Announcement);
 							return;
 						} else {
 							switch (codeRedeemed.reason) {
 								case RedeemCodeFailKind.AlreadyRedeemed: {
-									addError("You have already redeemed that code.");
+									addAnnouncement("You have already redeemed that code.", AnnouncementType.Error);
 									return;
 								}
 								case RedeemCodeFailKind.InvalidCode: {
-									addError(`The code you entered "${textBox.Text}" is invalid.`);
+									addAnnouncement(`The code you entered "${textBox.Text}" is invalid.`, AnnouncementType.Error);
 									return;
 								}
 							}
