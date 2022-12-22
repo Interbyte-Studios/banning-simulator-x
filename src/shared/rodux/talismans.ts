@@ -1,6 +1,6 @@
 import Rodux from "@rbxts/rodux";
 import { Currency } from "shared/configs/currencies";
-import { TALISMAN_PHASES, TalismanPhases, TALISMANS } from "shared/configs/talismans";
+import { TALISMAN_PHASES, TalismanPhases } from "shared/configs/talismans";
 
 import { KillNpc } from "./currencies";
 

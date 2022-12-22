@@ -1,6 +1,6 @@
 import Rodux from "@rbxts/rodux";
 import { Currency } from "shared/configs/currencies";
-import { WEAPON_LEVELS, WEAPONS } from "shared/configs/weapons";
+import { WEAPON_LEVELS } from "shared/configs/weapons";
 
 import { KillNpc } from "./currencies";
 

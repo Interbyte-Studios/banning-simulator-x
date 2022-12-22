@@ -1,5 +1,4 @@
 import { HttpService, Players } from "@rbxts/services";
-import { TestRunner } from "@rbxts/testez";
 import { addPetToCache } from "server/modules/datastoreCaches/petExistStore";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { rollEnhancement } from "server/modules/pets/rollEnhancement";
