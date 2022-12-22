@@ -3,7 +3,7 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
 import { sortPets } from "client/modules/pets/sort";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { PetViewport } from "client/ui/elements/petViewport";
 import { RarityGradient } from "client/ui/elements/rarityGradient";
@@ -66,7 +66,7 @@ const PetFrame = hooks(
 
 		const rarityData = RARITIES[petData.rarity];
 
-		const { addError } = useContext(AnnouncementContext);
+		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		const additionalDisplayedElements: Array<Roact.Element> = [];
 		if (isSelectedForDelete) {
@@ -207,7 +207,7 @@ const PetFrame = hooks(
 						Activated: (): void => {
 							if (props.multiDeleteEnabled) {
 								if (props.storedPetData.locked) {
-									addError("That pet is locked.");
+									addAnnouncement("That pet is locked.", AnnouncementType.Error);
 								} else {
 									setSelectedForDelete(!isSelectedForDelete);
 								}

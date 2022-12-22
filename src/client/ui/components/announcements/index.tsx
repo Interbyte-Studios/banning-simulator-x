@@ -1,8 +1,11 @@
+import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
+import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import assetIds from "shared/assets";
 
 interface LocalMessageProps {
 	messageType: AnnouncementType;
@@ -12,11 +15,9 @@ interface LocalMessageProps {
 
 const cachedAnnouncements: Array<number> = [];
 
-const LocalMessage = hooks((props: LocalMessageProps, { useBinding, useEffect }) => {
+const LocalMessage = hooks((props: LocalMessageProps, hooks) => {
+	const { useBinding, useEffect } = hooks;
 	const [transparency, setTransparency] = useBinding(0);
-
-	const announcementColor = Color3.fromRGB(255, 255, 127);
-	const errorColor = Color3.fromRGB(255, 119, 155);
 
 	useEffect(() => {
 		task.spawn(() =>
@@ -31,33 +32,85 @@ const LocalMessage = hooks((props: LocalMessageProps, { useBinding, useEffect })
 		);
 	}, []);
 
+	const maxSize = 1;
+	const maxSpring = new Flipper.Spring(maxSize, { frequency: 5 });
+
+	const minSize = 0.99;
+	const minSpring = new Flipper.Spring(minSize, { frequency: 5 });
+
+	const { motor, binding } = useBindingMotor(hooks, maxSize);
+
 	return (
 		<canvasgroup
 			AnchorPoint={vec2Middle}
 			BackgroundTransparency={1}
-			Size={UDim2.fromScale(1, 0.048)}
+			Size={UDim2.fromScale(1, 0.065)}
 			GroupTransparency={transparency}
+			LayoutOrder={transparency.map((value) => {
+				return value >= 1 ? -1 : props.id;
+			})}
 		>
-			<imagelabel
+			<uiaspectratioconstraint AspectRatio={5.2} />
+			<frame
 				AnchorPoint={vec2Middle}
-				BackgroundColor3={Color3.fromRGB(44, 44, 44)}
+				BackgroundColor3={
+					props.messageType === AnnouncementType.Announcement ? Color3.fromRGB(234, 209, 21) : Color3.fromRGB(126, 0, 0)
+				}
 				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(1, 1)}
-				Image={""}
+				Size={UDim2.fromScale(0.95, 0.715)}
 			>
-				<uicorner CornerRadius={new UDim(0.15, 0)} />
+				<uicorner CornerRadius={new UDim(0.4, 0)} />
+				<BaseUIStroke
+					native={{
+						Thickness: 2,
+						Color:
+							props.messageType === AnnouncementType.Announcement
+								? Color3.fromRGB(89, 82, 9)
+								: Color3.fromRGB(75, 0, 0),
+					}}
+				/>
 				<textlabel
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.95)}
+					Position={UDim2.fromScale(0.575, 0.5)}
+					Size={UDim2.fromScale(0.8, 0.95)}
 					Text={props.message}
-					TextColor3={props.messageType === AnnouncementType.Announcement ? announcementColor : errorColor}
+					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextScaled={true}
 					Font={font}
 				>
-					<BaseUIStroke native={{ Thickness: 1, Color: Color3.fromRGB(50, 50, 50) }} />
+					<BaseUIStroke
+						native={{
+							Thickness: 1.5,
+							Color:
+								props.messageType === AnnouncementType.Announcement
+									? Color3.fromRGB(89, 82, 9)
+									: Color3.fromRGB(75, 0, 0),
+						}}
+					/>
 				</textlabel>
+			</frame>
+			<imagelabel
+				AnchorPoint={vec2Middle}
+				BackgroundTransparency={1}
+				Size={binding.map((value) => {
+					return UDim2.fromScale(value, value);
+				})}
+				Position={UDim2.fromScale(0.09, 0.5)}
+				Image={
+					props.messageType === AnnouncementType.Announcement
+						? assetIds.images.vectors.Announcement
+						: assetIds.images.vectors.Error
+				}
+				ScaleType={Enum.ScaleType.Fit}
+				Event={{
+					/* eslint-disable jsdoc/require-jsdoc */
+					MouseLeave: (): void => motor.setGoal(maxSpring),
+					MouseEnter: (): void => motor.setGoal(minSpring),
+					/* eslint-enable jsdoc/require-jsdoc */
+				}}
+			>
+				<uiaspectratioconstraint AspectRatio={1} />
 			</imagelabel>
 		</canvasgroup>
 	);
@@ -73,14 +126,15 @@ export const LocalMessages = hooks((_, { useContext }) => {
 		<frame
 			AnchorPoint={vec2Middle}
 			BackgroundTransparency={1}
-			Position={UDim2.fromScale(0.905, 0.495)}
-			Size={UDim2.fromScale(0.17, 0.99)}
+			Position={UDim2.fromScale(0.875, 0.495)}
+			Size={UDim2.fromScale(0.23, 0.99)}
 		>
 			<uilistlayout
 				Padding={new UDim(0.005, 0)}
 				FillDirection={Enum.FillDirection.Vertical}
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				VerticalAlignment={Enum.VerticalAlignment.Bottom}
+				SortOrder={Enum.SortOrder.LayoutOrder}
 			/>
 			{errors.map((errorData) => {
 				const cachedAnnouncement = cachedAnnouncements.find((id) => id === errorData.id);
@@ -91,7 +145,7 @@ export const LocalMessages = hooks((_, { useContext }) => {
 				return (
 					<LocalMessage
 						message={errorData.message}
-						messageType={AnnouncementType.Error}
+						messageType={errorData.messageType}
 						id={errorData.id}
 						Key={errorData.id}
 					/>

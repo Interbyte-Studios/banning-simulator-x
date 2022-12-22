@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import { Players, PolicyService, RunService } from "@rbxts/services";
 import { udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
-import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { EggName, hatchDebounce } from "shared/configs/eggs";
 import { Store } from "shared/rodux";
@@ -45,7 +45,7 @@ export const EggsUI = hooks((props: EggsUIProps, { useState, useContext, useEffe
 	const [currentHatchData, setCurrentHatchData] = useState<HatchData | undefined>(undefined);
 
 	const { hatchEgg } = useContext(remoteContext);
-	const { addError } = useContext(AnnouncementContext);
+	const { addAnnouncement } = useContext(AnnouncementContext);
 
 	useEffect(() => {
 		if (RunService.IsStudio()) {
@@ -61,7 +61,7 @@ export const EggsUI = hooks((props: EggsUIProps, { useState, useContext, useEffe
 		<EggHud
 			initiateHatch={async (amount: 1 | 2 | 3, egg: EggName, isVoid: boolean): Promise<void> => {
 				if (regionalRegulationsEnforced) {
-					addError(`Hatching pets is regulated by your country. Sorry!`);
+					addAnnouncement(`Hatching pets is regulated by your country. Sorry!`, AnnouncementType.Error);
 					return;
 				}
 

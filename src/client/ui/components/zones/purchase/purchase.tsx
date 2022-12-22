@@ -3,7 +3,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { tryPurchaseZone } from "client/modules/tryPurchaseZone";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
@@ -50,7 +50,7 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 	hooks((props: PurchaseZoneButtonProps, hooks) => {
 		const { useContext } = hooks;
 		const { purchaseZone } = useContext(remoteContext);
-		const { addError } = useContext(AnnouncementContext);
+		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		const minimizedSize = 0.15;
 		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
@@ -85,22 +85,25 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 						if (checkZonePurchaseRequirements.success === false) {
 							switch (checkZonePurchaseRequirements.reason) {
 								case PurchaseZoneFailKind.InternalError: {
-									addError(`There was an error while purchasing "${props.zone}" zone.`);
+									addAnnouncement(`There was an error while purchasing "${props.zone}" zone.`, AnnouncementType.Error);
 									props.hideMenu();
 									return;
 								}
 								case PurchaseZoneFailKind.NotEnoughCurrency: {
-									addError(`You don't have enough to purchase "${props.zone}".`);
+									addAnnouncement(`You don't have enough to purchase "${props.zone}".`, AnnouncementType.Error);
 									props.hideMenu();
 									return;
 								}
 								case PurchaseZoneFailKind.NotRequiredRank: {
-									addError(`You aren't a high enough rank to purchase "${props.zone}".`);
+									addAnnouncement(`You aren't a high enough rank to purchase "${props.zone}".`, AnnouncementType.Error);
 									props.hideMenu();
 									return;
 								}
 								case PurchaseZoneFailKind.NonlinearProgression: {
-									addError(`You don't meet the requirements to purchase "${props.zone}".`);
+									addAnnouncement(
+										`You don't meet the requirements to purchase "${props.zone}".`,
+										AnnouncementType.Error,
+									);
 									props.hideMenu();
 									return;
 								}
@@ -108,28 +111,37 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 						} else {
 							const requestZonePurchase = await purchaseZone.CallServerAsync(props.world, props.zone);
 							if (requestZonePurchase.success === true) {
-								addError(`You have purchased the "${props.zone}" zone.`);
+								addAnnouncement(`You have purchased the "${props.zone}" zone.`, AnnouncementType.Announcement);
 								props.hideMenu();
 								return;
 							} else {
 								switch (requestZonePurchase.reason) {
 									case PurchaseZoneFailKind.InternalError: {
-										addError(`There was an error while purchasing "${props.zone}" zone.`);
+										addAnnouncement(
+											`There was an error while purchasing "${props.zone}" zone.`,
+											AnnouncementType.Error,
+										);
 										props.hideMenu();
 										return;
 									}
 									case PurchaseZoneFailKind.NotEnoughCurrency: {
-										addError(`You don't have enough to purchase "${props.zone}".`);
+										addAnnouncement(`You don't have enough to purchase "${props.zone}".`, AnnouncementType.Error);
 										props.hideMenu();
 										return;
 									}
 									case PurchaseZoneFailKind.NotRequiredRank: {
-										addError(`You aren't a high enough rank to purchase "${props.zone}".`);
+										addAnnouncement(
+											`You aren't a high enough rank to purchase "${props.zone}".`,
+											AnnouncementType.Error,
+										);
 										props.hideMenu();
 										return;
 									}
 									case PurchaseZoneFailKind.NonlinearProgression: {
-										addError(`You don't meet the requirements to purchase "${props.zone}".`);
+										addAnnouncement(
+											`You don't meet the requirements to purchase "${props.zone}".`,
+											AnnouncementType.Error,
+										);
 										props.hideMenu();
 										return;
 									}

@@ -340,6 +340,8 @@ declare namespace assetIds {
 			};
 		};
 		vectors: {
+			Announcement: string;
+			Error: string;
 			Inventory: string;
 			Medal: string;
 			FewGems: string;

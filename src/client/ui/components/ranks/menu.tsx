@@ -3,7 +3,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService, Workspace } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { CurrencyIcon } from "client/ui/elements/currencyIcon";
@@ -56,7 +56,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 
 		const { useState, useValue, useEffect, useContext } = hooks;
 		const { unlockRank } = useContext(remoteContext);
-		const { addError } = useContext(AnnouncementContext);
+		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		const [isVisible, setVisibility] = useState(false);
 
@@ -256,19 +256,19 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 
 									// check to be sure this is the next rank
 									if (rankData.id > props.currentRank + 1) {
-										addError("That rank is too high to upgrade to!");
+										addAnnouncement("That rank is too high to upgrade to!", AnnouncementType.Error);
 										return;
 									}
 
 									// not enough experience to unlock rank
 									if (props.experience < rankData.requiredExperience) {
-										addError("Not enough experience to upgrade.");
+										addAnnouncement("Not enough experience to upgrade.", AnnouncementType.Error);
 										return;
 									}
 
 									// not enough currency to unlock rank
 									if (props.currencies[rankData.cost.currency] < rankData.cost.amount) {
-										addError("Not enough currency to upgrade.");
+										addAnnouncement("Not enough currency to upgrade.", AnnouncementType.Error);
 										return;
 									}
 
