@@ -116,10 +116,17 @@ declare global {
 			};
 		};
 		events: Folder & {
-			x2Currency: BoolValue;
-			x2Experience: BoolValue;
-			x3Currency: BoolValue;
-			x2Luck: BoolValue;
+			currency: Configuration & {
+				enabled: BoolValue;
+				multiplier: IntValue;
+			};
+			experience: Configuration & {
+				enabled: BoolValue;
+				multiplier: IntValue;
+			};
+			luck: Configuration & {
+				enabled: BoolValue;
+			};
 		};
 		PetExistStores: ObjectValue;
 		GameVersion: StringValue;

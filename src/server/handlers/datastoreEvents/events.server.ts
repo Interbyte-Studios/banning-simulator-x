@@ -6,10 +6,15 @@ const eventsKey = "BSX_DataStoreEvents";
 const getAsyncInterval = 60 * 30;
 
 const validDatastoreEventCache = t.strictInterface({
-	x2CurrencyEvent: t.boolean,
-	x2ExperienceEvent: t.boolean,
-	x2LuckEvent: t.boolean,
-	x3CurrencyEvent: t.boolean,
+	currencyEvent: t.strictInterface({
+		enabled: t.boolean,
+		multiplier: t.number,
+	}),
+	experienceEvent: t.strictInterface({
+		enabled: t.boolean,
+		multiplier: t.number,
+	}),
+	luckEvent: t.boolean,
 });
 export type ValidDatastoreEventCache = t.static<typeof validDatastoreEventCache>;
 
@@ -34,10 +39,13 @@ function updateDatastoreEventCache(): void {
 		throw `Failed to get datastore events cache from global data store.`;
 	}
 
-	ReplicatedStorage.events.x2Currency.Value = datastoreEventCache.x2CurrencyEvent;
-	ReplicatedStorage.events.x2Experience.Value = datastoreEventCache.x2ExperienceEvent;
-	ReplicatedStorage.events.x3Currency.Value = datastoreEventCache.x3CurrencyEvent;
-	ReplicatedStorage.events.x2Luck.Value = datastoreEventCache.x2LuckEvent;
+	ReplicatedStorage.events.currency.enabled.Value = datastoreEventCache.currencyEvent.enabled;
+	ReplicatedStorage.events.currency.multiplier.Value = datastoreEventCache.currencyEvent.multiplier;
+
+	ReplicatedStorage.events.experience.enabled.Value = datastoreEventCache.experienceEvent.enabled;
+	ReplicatedStorage.events.experience.multiplier.Value = datastoreEventCache.experienceEvent.multiplier;
+
+	ReplicatedStorage.events.luck.enabled.Value = datastoreEventCache.luckEvent;
 }
 
 task.spawn(() => {
