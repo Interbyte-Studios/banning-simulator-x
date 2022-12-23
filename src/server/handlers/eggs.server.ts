@@ -88,7 +88,7 @@ hatchEgg.SetCallback(
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		for (const _ of $range(1, amount)) {
-			const randomNumber = randomGenerator.NextNumber(99.99995, 100);
+			const randomNumber = randomGenerator.NextNumber(0, 100);
 
 			truePetPercentages.forEach((registeredPet) => {
 				if (registeredPet.isLowestId) {

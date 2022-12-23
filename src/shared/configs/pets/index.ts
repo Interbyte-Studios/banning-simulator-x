@@ -10,11 +10,6 @@ export interface Pet {
 	chance: number;
 
 	/**
-	 * The lucky chance of the pet (0 - 100).
-	 */
-	luckChance: number;
-
-	/**
 	 * The id of the pet.
 	 */
 	id: number;
