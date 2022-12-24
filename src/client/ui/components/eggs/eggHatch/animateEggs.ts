@@ -84,14 +84,14 @@ export class AnimateEggs {
 		tweenInfo: {
 			regular: {
 				segment1: new TweenInfo(0.75, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
-				segment2: new TweenInfo(0.65, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
-				segment3: new TweenInfo(0.65, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				segment2: new TweenInfo(0.6, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				segment3: new TweenInfo(0.6, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
 				pets: new TweenInfo(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
 			},
 			fast: {
 				segment1: new TweenInfo(0.5, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
-				segment2: new TweenInfo(0.35, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
-				segment3: new TweenInfo(0.35, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				segment2: new TweenInfo(0.25, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				segment3: new TweenInfo(0.25, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
 				pets: new TweenInfo(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
 			},
 		},
