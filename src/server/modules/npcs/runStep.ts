@@ -152,11 +152,45 @@ export function runStep(
 
 			const { reward } = npc.npc;
 
+			// get currency multiplier
+			const currencyBoosters: Array<number> = [];
+			currencyBoosters.push(
+				ReplicatedStorage.events.currency.enabled.Value
+					? ReplicatedStorage.events.currency.multiplier.Value > 1
+						? ReplicatedStorage.events.currency.multiplier.Value
+						: 0
+					: 0,
+				store.getState().boosts.active["x2 Currency"] > 0 ? 2 : 0,
+			);
+
+			let currencyMultiplier = 0;
+			currencyBoosters.forEach((booster) => {
+				currencyMultiplier += booster;
+			});
+			currencyMultiplier = currencyMultiplier > 1 ? currencyMultiplier : 1;
+
+			// get experience multiplier
+			const experienceBoosters: Array<number> = [];
+			experienceBoosters.push(
+				ReplicatedStorage.events.experience.enabled.Value
+					? ReplicatedStorage.events.experience.multiplier.Value > 1
+						? ReplicatedStorage.events.experience.multiplier.Value
+						: 0
+					: 0,
+				store.getState().boosts.active["x2 Rank Experience"] > 0 ? 2 : 0,
+			);
+
+			let experienceMultiplier = talismanStatEffects.experience;
+			experienceBoosters.forEach((booster) => {
+				experienceMultiplier += booster;
+			});
+
+			// apply reward
 			store.dispatch(
 				killNpc(
-					reward.currency,
+					reward.currency * currencyMultiplier,
 					WORLDS[npc.world.name].reward,
-					reward.experience * talismanStatEffects.experience,
+					reward.experience * experienceMultiplier,
 					storeState.currentWeapon.id,
 					storeState.currentTalisman,
 				),

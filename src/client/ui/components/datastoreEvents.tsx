@@ -5,11 +5,15 @@ import { font, vec2Middle } from "../commonValues";
 import { BaseUIStroke } from "../elements/baseUIStroke";
 import { hooks } from "../hooks";
 
-type DatastoreEventType = "x2Luck" | "x2Experience" | "x2Currency" | "x3Currency";
+type DatastoreEventType = "luck" | "currency" | "experience";
+interface DatastoreEventCache {
+	eventName: DatastoreEventType;
+	multiplier: number;
+}
 
 // Displays active events.
 export const DatastoreEvents = hooks((props: { enabled: boolean }, { useState, useEffect }) => {
-	const [eventsEnabled, setEventsEnabled] = useState<Array<DatastoreEventType>>([]);
+	const [eventsEnabled, setEventsEnabled] = useState<Array<DatastoreEventCache>>([]);
 
 	if (!props.enabled) {
 		return <></>;
@@ -18,79 +22,76 @@ export const DatastoreEvents = hooks((props: { enabled: boolean }, { useState, u
 	useEffect(() => {
 		const connections: Array<RBXScriptConnection> = [];
 
-		const x2CurrencyConnection = ReplicatedStorage.events.x2Currency.GetPropertyChangedSignal("Value").Connect(() => {
-			if (ReplicatedStorage.events.x2Currency.Value) {
-				if (eventsEnabled.includes("x2Currency")) {
-					return;
-				}
-
-				setEventsEnabled([...eventsEnabled, "x2Currency"]);
-			} else {
-				if (eventsEnabled.includes("x2Currency")) {
-					setEventsEnabled([...eventsEnabled.filter((eventType) => eventType !== "x2Currency")]);
-				}
-			}
-		});
-		connections.push(x2CurrencyConnection);
-
-		const x3CurrencyConnection = ReplicatedStorage.events.x3Currency.GetPropertyChangedSignal("Value").Connect(() => {
-			if (ReplicatedStorage.events.x3Currency.Value) {
-				if (eventsEnabled.includes("x3Currency")) {
-					return;
-				}
-
-				setEventsEnabled([...eventsEnabled, "x3Currency"]);
-			} else {
-				if (eventsEnabled.includes("x3Currency")) {
-					setEventsEnabled([...eventsEnabled.filter((eventType) => eventType !== "x3Currency")]);
-				}
-			}
-		});
-		connections.push(x3CurrencyConnection);
-
-		const x2LuckConnection = ReplicatedStorage.events.x2Luck.GetPropertyChangedSignal("Value").Connect(() => {
-			if (ReplicatedStorage.events.x2Currency.Value) {
-				if (eventsEnabled.includes("x2Luck")) {
-					return;
-				}
-
-				setEventsEnabled([...eventsEnabled, "x2Luck"]);
-			} else {
-				if (eventsEnabled.includes("x2Luck")) {
-					setEventsEnabled([...eventsEnabled.filter((eventType) => eventType !== "x2Luck")]);
-				}
-			}
-		});
-		connections.push(x2LuckConnection);
-
-		const x2ExperienceConnection = ReplicatedStorage.events.x2Experience
+		const currencyConnection = ReplicatedStorage.events.currency.enabled
 			.GetPropertyChangedSignal("Value")
 			.Connect(() => {
-				if (ReplicatedStorage.events.x2Currency.Value) {
-					if (eventsEnabled.includes("x2Experience")) {
+				if (ReplicatedStorage.events.currency.enabled.Value) {
+					const cachedEvent = eventsEnabled.find((eventData) => eventData.eventName === "currency");
+					if (cachedEvent !== undefined) {
 						return;
 					}
 
-					setEventsEnabled([...eventsEnabled, "x2Experience"]);
-				} else {
-					if (eventsEnabled.includes("x2Experience")) {
-						setEventsEnabled([...eventsEnabled.filter((eventType) => eventType !== "x2Experience")]);
+					if (ReplicatedStorage.events.currency.multiplier.Value < 2) {
+						return;
 					}
+
+					setEventsEnabled([
+						...eventsEnabled,
+						{ eventName: "currency", multiplier: ReplicatedStorage.events.currency.multiplier.Value },
+					]);
 				}
 			});
-		connections.push(x2ExperienceConnection);
+		connections.push(currencyConnection);
+
+		const experienceConnection = ReplicatedStorage.events.experience.enabled
+			.GetPropertyChangedSignal("Value")
+			.Connect(() => {
+				if (ReplicatedStorage.events.experience.enabled.Value) {
+					const cachedEvent = eventsEnabled.find((eventData) => eventData.eventName === "experience");
+					if (cachedEvent !== undefined) {
+						return;
+					}
+
+					if (ReplicatedStorage.events.experience.multiplier.Value < 2) {
+						return;
+					}
+
+					setEventsEnabled([
+						...eventsEnabled,
+						{ eventName: "experience", multiplier: ReplicatedStorage.events.experience.multiplier.Value },
+					]);
+				}
+			});
+		connections.push(experienceConnection);
+
+		const luckConnection = ReplicatedStorage.events.luck.enabled.GetPropertyChangedSignal("Value").Connect(() => {
+			if (ReplicatedStorage.events.luck.enabled.Value) {
+				const cachedEvent = eventsEnabled.find((eventData) => eventData.eventName === "luck");
+				if (cachedEvent !== undefined) {
+					return;
+				}
+
+				setEventsEnabled([...eventsEnabled, { eventName: "luck", multiplier: 2 }]);
+			}
+		});
+		connections.push(luckConnection);
 
 		return (): void => connections.forEach((conn) => conn.Disconnect());
 	});
 
 	const messagesToDisplay: Array<Roact.Element> = [];
-	if (eventsEnabled.includes("x2Currency")) {
+
+	const currencyEvent = eventsEnabled.find((eventData) => eventData.eventName === "currency");
+	const experienceEvent = eventsEnabled.find((eventData) => eventData.eventName === "experience");
+	const luckEvent = eventsEnabled.find((eventData) => eventData.eventName === "luck");
+
+	if (currencyEvent !== undefined) {
 		messagesToDisplay.push(
 			<textlabel
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}
 				Font={font}
-				Text={"🤑x2 Currency Event🤑"}
+				Text={`🤑${currencyEvent.multiplier} Currency Event🤑`}
 				TextColor3={Color3.fromRGB(255, 141, 1)}
 				TextScaled={true}
 				LayoutOrder={1}
@@ -100,29 +101,13 @@ export const DatastoreEvents = hooks((props: { enabled: boolean }, { useState, u
 		);
 	}
 
-	if (eventsEnabled.includes("x3Currency")) {
+	if (experienceEvent !== undefined) {
 		messagesToDisplay.push(
 			<textlabel
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}
 				Font={font}
-				Text={"🤑x3 Currency Event🤑"}
-				TextColor3={Color3.fromRGB(255, 141, 1)}
-				TextScaled={true}
-				LayoutOrder={2}
-			>
-				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(104, 57, 0) }} />
-			</textlabel>,
-		);
-	}
-
-	if (eventsEnabled.includes("x2Experience")) {
-		messagesToDisplay.push(
-			<textlabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Font={font}
-				Text={"⭐x2 Experience Event⭐"}
+				Text={`⭐${experienceEvent.multiplier} Experience Event⭐`}
 				TextColor3={Color3.fromRGB(195, 255, 0)}
 				TextScaled={true}
 				LayoutOrder={3}
@@ -132,7 +117,7 @@ export const DatastoreEvents = hooks((props: { enabled: boolean }, { useState, u
 		);
 	}
 
-	if (eventsEnabled.includes("x2Luck")) {
+	if (luckEvent !== undefined) {
 		messagesToDisplay.push(
 			<textlabel
 				AnchorPoint={vec2Middle}

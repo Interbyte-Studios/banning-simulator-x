@@ -4,7 +4,7 @@ import { EGGS } from "shared/configs/eggs";
 export const datastoreName = "DataStoreEvents";
 export const datastoreScope = "PetStore";
 export const eventsKey = "BSX_PetsStore";
-export const updateStoreInterval = 60; // * 60;
+export const updateStoreInterval = 60 * 60;
 
 export const validPetExistCache = t.array(t.interface({ id: t.number, existingAmount: t.number }));
 export type ValidPetExistCache = t.static<typeof validPetExistCache>;

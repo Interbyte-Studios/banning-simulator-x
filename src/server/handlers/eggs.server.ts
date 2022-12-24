@@ -84,11 +84,11 @@ hatchEgg.SetCallback(
 			rarity: Rarities;
 		}> = [];
 
-		const truePetPercentages = getPetPercentages(eggName);
+		const truePetPercentages = getPetPercentages(eggName, currentState.boosts.active["x2 Hatching Luck"] > 0);
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		for (const _ of $range(1, amount)) {
-			const randomNumber = randomGenerator.NextNumber(99.99995, 100);
+			const randomNumber = randomGenerator.NextNumber(0, 100);
 
 			truePetPercentages.forEach((registeredPet) => {
 				if (registeredPet.isLowestId) {
@@ -150,7 +150,6 @@ hatchEgg.SetCallback(
 				}
 			}
 
-			// todo: check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			if (pet.rarity === "Prismatic" || pet.rarity === "Primordial") {
 				addPetToCache(pet.id);

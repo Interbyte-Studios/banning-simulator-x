@@ -105,7 +105,6 @@ export = (): void => {
 			const boostsToUse: Array<BoostProduct> = [
 				"x2 Currency",
 				"x2 Rank Experience",
-				"x2 Talisman Experience",
 				"x2 Pet Experience",
 				"x2 Hatching Luck",
 			];
@@ -130,12 +129,6 @@ export = (): void => {
 						60: 0,
 						120: 0,
 					},
-					["x2 Talisman Experience"]: {
-						15: 0,
-						30: 0,
-						60: 0,
-						120: 0,
-					},
 					["x2 Hatching Luck"]: {
 						15: 0,
 						30: 0,
@@ -146,7 +139,6 @@ export = (): void => {
 				active: {
 					["x2 Currency"]: boostTime,
 					["x2 Rank Experience"]: boostTime,
-					["x2 Talisman Experience"]: boostTime,
 					["x2 Pet Experience"]: boostTime,
 					["x2 Hatching Luck"]: boostTime,
 				},
@@ -172,12 +164,6 @@ export = (): void => {
 						60: 0,
 						120: 0,
 					},
-					["x2 Talisman Experience"]: {
-						15: 0,
-						30: 0,
-						60: 0,
-						120: 0,
-					},
 					["x2 Hatching Luck"]: {
 						15: 0,
 						30: 0,
@@ -188,7 +174,6 @@ export = (): void => {
 				active: {
 					["x2 Currency"]: boostTime - 1,
 					["x2 Rank Experience"]: boostTime - 1,
-					["x2 Talisman Experience"]: boostTime - 1,
 					["x2 Pet Experience"]: boostTime - 1,
 					["x2 Hatching Luck"]: boostTime - 1,
 				},
