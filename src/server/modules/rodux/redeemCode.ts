@@ -76,13 +76,6 @@ const validCodes: Array<codeData> = [
 		},
 	},
 	{
-		name: "Talismans",
-		boosts: {
-			name: "x2 Talisman Experience",
-			time: 15,
-		},
-	},
-	{
 		name: "Collection",
 		boosts: {
 			name: "x2 Hatching Luck",

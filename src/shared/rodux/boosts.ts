@@ -68,12 +68,6 @@ const defaultBoosts: BoostsState = {
 			60: 0,
 			120: 0,
 		},
-		["x2 Talisman Experience"]: {
-			15: 0,
-			30: 0,
-			60: 0,
-			120: 0,
-		},
 		["x2 Pet Experience"]: {
 			15: 0,
 			30: 0,
@@ -90,9 +84,8 @@ const defaultBoosts: BoostsState = {
 	active: {
 		["x2 Currency"]: 0,
 		["x2 Rank Experience"]: 0,
-		["x2 Talisman Experience"]: 0,
 		["x2 Pet Experience"]: 0,
-		["x2 Hatching Luck"]: 0,
+		["x2 Hatching Luck"]: 500000000,
 	},
 };
 

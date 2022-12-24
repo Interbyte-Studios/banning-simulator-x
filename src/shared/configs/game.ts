@@ -21,7 +21,6 @@ export type BoostProduct = keyof typeof BOOST_PRODUCTS;
 export const BOOST_PRODUCTS = {
 	["x2 Currency"]: 1,
 	["x2 Rank Experience"]: 1,
-	["x2 Talisman Experience"]: 1,
 	["x2 Pet Experience"]: 1,
 	["x2 Hatching Luck"]: 1,
 };
