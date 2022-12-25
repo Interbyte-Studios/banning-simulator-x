@@ -6,7 +6,9 @@ import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { DamageIcon } from "client/ui/elements/damageIcon";
 import { ExitButton } from "client/ui/elements/exitButton";
+import { ExperienceIcon } from "client/ui/elements/experienceIcon";
 import { TalismanGradient } from "client/ui/elements/talismanGradient";
+import { WalkSpeedIcon } from "client/ui/elements/walkspeedIcon";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { getTalismanDecal } from "client/util/getTalismanDecal";
@@ -252,8 +254,8 @@ export const TalismanInfoDisplay = RoactRodux.connect(mapStateToProps)(
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.6, 0.65)}
-					Size={UDim2.fromScale(0.45, 0.08)}
+					Position={UDim2.fromScale(0.7, 0.625)}
+					Size={UDim2.fromScale(0.45, 0.075)}
 					BackgroundTransparency={1}
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(230, 64, 64)}
@@ -267,6 +269,42 @@ export const TalismanInfoDisplay = RoactRodux.connect(mapStateToProps)(
 						size={{ minimizedSize: 0.9, maximizedSize: 1 }}
 					/>
 					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(105, 0, 0) }} />
+				</textlabel>
+				<textlabel
+					AnchorPoint={vec2Middle}
+					Position={UDim2.fromScale(0.7, 0.71)}
+					Size={UDim2.fromScale(0.45, 0.075)}
+					BackgroundTransparency={1}
+					TextScaled={true}
+					TextColor3={Color3.fromRGB(43, 185, 255)}
+					Text={`+${twoDpAbbreviator.numberToString(talismanStatEffects.walkspeed)}`}
+					TextXAlignment={Enum.TextXAlignment.Left}
+					Font={font}
+				>
+					<WalkSpeedIcon
+						anchorPoint={new Vector2(0, 0.5)}
+						position={UDim2.fromScale(-0.35, 0.5)}
+						size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+					/>
+					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(21, 94, 127) }} />
+				</textlabel>
+				<textlabel
+					AnchorPoint={vec2Middle}
+					Position={UDim2.fromScale(0.7, 0.795)}
+					Size={UDim2.fromScale(0.45, 0.075)}
+					BackgroundTransparency={1}
+					TextScaled={true}
+					TextColor3={Color3.fromRGB(255, 235, 13)}
+					Text={`x${twoDpAbbreviator.numberToString(talismanStatEffects.experience)}`}
+					TextXAlignment={Enum.TextXAlignment.Left}
+					Font={font}
+				>
+					<ExperienceIcon
+						anchorPoint={new Vector2(0, 0.5)}
+						position={UDim2.fromScale(-0.35, 0.5)}
+						size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+					/>
+					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(108, 99, 6) }} />
 				</textlabel>
 				<frame
 					AnchorPoint={vec2Middle}

@@ -12,8 +12,12 @@ import { BaseZoneInfo } from "./signs/baseInfo";
  * Generates ui's that display information for each zone.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const ZonesUI = hooks((_, { useState }) => {
+export const ZonesUI = hooks((props: { enabled: boolean }, { useState }) => {
 	const [viewingZone, setViewedZone] = useState<{ world: WorldName; zone: number } | undefined>(undefined);
+
+	if (!props.enabled) {
+		return <></>;
+	}
 
 	const elements: Array<Roact.Element> = [];
 

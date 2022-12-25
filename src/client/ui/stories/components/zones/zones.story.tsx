@@ -4,7 +4,7 @@ import { ZonesUI } from "client/ui/components/zones";
 import { createMockStory } from "../../createMockStory";
 
 export = (target: GuiBase): (() => void) => {
-	const { cleanup } = createMockStory({}, target, () => <ZonesUI />);
+	const { cleanup } = createMockStory({}, target, () => <ZonesUI enabled={true} />);
 	return () => {
 		cleanup();
 	};

@@ -114,7 +114,19 @@ export const app = hooks((props: AppProps, { useState }) => {
 					}
 				/>
 				<LocalMessages />
-				<ZonesUI />
+				<ZonesUI
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!teleportationVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility &&
+						!spinWheelVisibility &&
+						!itemsVisibility
+					}
+				/>
 				<WeaponEquip
 					visible={
 						!isHatching &&

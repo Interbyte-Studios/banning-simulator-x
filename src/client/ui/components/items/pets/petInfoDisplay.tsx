@@ -551,8 +551,8 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.665, 0.675)}
-					Size={UDim2.fromScale(0.45, 0.08)}
+					Position={UDim2.fromScale(0.7, 0.675)}
+					Size={UDim2.fromScale(0.5, 0.08)}
 					BackgroundTransparency={1}
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(230, 64, 64)}
