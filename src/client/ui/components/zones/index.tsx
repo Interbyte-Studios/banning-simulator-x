@@ -6,6 +6,7 @@ import { isStarterZone } from "shared/configs/zones";
 
 import { PurchaseZoneUI } from "./purchase";
 import { ZoneSign } from "./signs";
+import { BaseZoneInfo } from "./signs/baseInfo";
 
 /**
  * Generates ui's that display information for each zone.
@@ -32,19 +33,24 @@ export const ZonesUI = hooks((_, { useState }) => {
 			const sign = zoneFolder.sign;
 			const adorneePart = sign.description.infoPart;
 
+			const baseInfoAdornee = sign.zoneInfo.display;
+
 			const elementToDisplay = (
-				<ZoneSign
-					adornee={adorneePart}
-					zoneName={zoneName}
-					zoneData={zoneData}
-					worldName={worldName}
-					setViewedZone={(world: WorldName, zone: number): void =>
-						setViewedZone({
-							world,
-							zone,
-						})
-					}
-				/>
+				<>
+					<ZoneSign
+						adornee={adorneePart}
+						zoneName={zoneName}
+						zoneData={zoneData}
+						worldName={worldName}
+						setViewedZone={(world: WorldName, zone: number): void =>
+							setViewedZone({
+								world,
+								zone,
+							})
+						}
+					/>
+					<BaseZoneInfo adornee={baseInfoAdornee} zoneData={zoneData} />
+				</>
 			);
 
 			elements.push(elementToDisplay);
