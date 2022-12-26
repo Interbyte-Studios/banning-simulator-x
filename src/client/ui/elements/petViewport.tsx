@@ -8,6 +8,7 @@ import { hooks } from "../hooks";
 interface PetViewportProps {
 	petId: number;
 	variant: Variants;
+	shouldBlackout: boolean;
 }
 
 /**
@@ -25,6 +26,7 @@ export const PetViewport = hooks((props: PetViewportProps) => {
 			Size={UDim2.fromScale(0.9, 0.9)}
 			Position={UDim2.fromScale(0.5, 0.5)}
 			Image={getPetImage(props.petId, props.variant)}
+			ImageColor3={props.shouldBlackout ? Color3.fromRGB(0, 0, 0) : Color3.fromRGB(255, 255, 255)}
 			ScaleType={Enum.ScaleType.Fit}
 		/>
 	);

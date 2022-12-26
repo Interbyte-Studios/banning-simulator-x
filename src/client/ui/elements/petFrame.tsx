@@ -1,5 +1,4 @@
 import Roact from "@rbxts/roact";
-import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
 import { getPetData } from "shared/util/getPetData";
 
@@ -14,6 +13,7 @@ interface PetFrameProps {
 	displayBackground: boolean;
 	isBillboard: boolean;
 	displayType: "stats" | "stored";
+	shouldBlackout: boolean;
 }
 
 /**
@@ -82,7 +82,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 				<uiaspectratioconstraint AspectRatio={1} />
 				<uicorner CornerRadius={new UDim(1, 0)} />
 				<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} isBillboard={props.isBillboard} />
-				<PetViewport petId={props.petId} variant={props.variant} />
+				<PetViewport petId={props.petId} variant={props.variant} shouldBlackout={props.shouldBlackout} />
 				{elementsToDisplay}
 			</imagelabel>
 		</frame>

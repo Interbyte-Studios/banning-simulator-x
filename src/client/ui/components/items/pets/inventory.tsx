@@ -220,7 +220,7 @@ const PetFrame = hooks(
 					<uiaspectratioconstraint AspectRatio={1} />
 					<uicorner CornerRadius={new UDim(1, 0)} />
 					<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} />
-					<PetViewport petId={props.storedPetData.id} variant={props.storedPetData.variant} />
+					<PetViewport petId={props.storedPetData.id} variant={props.storedPetData.variant} shouldBlackout={false} />
 					<textlabel
 						AnchorPoint={vec2Middle}
 						BackgroundTransparency={1}

@@ -8,7 +8,7 @@ const musicQueue: Array<number> = [];
 
 let currentWorld: WorldName | undefined;
 let musicEnabled = true;
-let volume = 0.5;
+let volume = 0;
 
 const player = Players.LocalPlayer;
 onStoreCreated(player)

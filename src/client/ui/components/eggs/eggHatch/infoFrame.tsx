@@ -69,7 +69,7 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 				Position={UDim2.fromScale(0.125, 0.3)}
 				Size={UDim2.fromScale(0.25, 0.625)}
 			>
-				<PetViewport petId={props.pet} variant={props.isVoid ? "void" : "regular"}>
+				<PetViewport petId={props.pet} variant={props.isVoid ? "void" : "regular"} shouldBlackout={false}>
 					<uiaspectratioconstraint AspectRatio={1} />
 				</PetViewport>
 			</frame>

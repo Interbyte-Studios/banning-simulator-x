@@ -52,7 +52,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
 				<EggsUI
-					store={props.store}
 					visible={
 						!codesVisible &&
 						!settingsVisible &&
