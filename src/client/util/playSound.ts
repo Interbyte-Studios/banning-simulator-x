@@ -34,13 +34,25 @@ export function playSFX(soundType: UIEngagement | WeaponSlash | NPCImpact | Hatc
 		return;
 	}
 
+	if (soundType === UIEngagement.MajorEngagement) {
+		if (!store.getState().settings.sound.buttonClick) {
+			return;
+		}
+	}
+
+	if (soundType === UIEngagement.MinorEngagement) {
+		if (!store.getState().settings.sound.buttonClick) {
+			return;
+		}
+	}
+
 	const sound = Make("Sound", {
 		SoundId: `rbxassetid://${soundType}`,
 		Parent: SoundService,
 	});
 
 	sound.Play();
-	sound.Volume = store.getState().settings.sound.soundEffects / 10;
+	sound.Volume = store.getState().settings.sound.soundEffects * 0.05;
 
 	const connection = sound.Ended.Connect(() => {
 		sound.Parent = undefined;
