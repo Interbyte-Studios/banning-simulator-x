@@ -39,6 +39,11 @@ export interface Egg {
 	 * Whether or not the egg is hatchable.
 	 */
 	hatchable: boolean;
+
+	/**
+	 * Whether or not luck boost and luck events apply to the egg.
+	 */
+	luckApplies: boolean;
 }
 
 /**
@@ -51,6 +56,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Ban Land",
 		zone: "Forest",
 		hatchable: true,
+		luckApplies: true,
 	},
 	Desert: {
 		id: 2,
@@ -58,6 +64,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Ban Land",
 		zone: "Desert",
 		hatchable: true,
+		luckApplies: true,
 	},
 	Honeycomb: {
 		id: 3,
@@ -65,6 +72,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Ban Land",
 		zone: "Honeycomb",
 		hatchable: true,
+		luckApplies: true,
 	},
 	Candy: {
 		id: 4,
@@ -72,6 +80,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Ban Land",
 		zone: "Candy Land",
 		hatchable: true,
+		luckApplies: true,
 	},
 	Molten: {
 		id: 5,
@@ -79,6 +88,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Ban Land",
 		zone: "Lava Lands",
 		hatchable: true,
+		luckApplies: true,
 	},
 	Royalty: {
 		id: 6,
@@ -86,6 +96,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,
+		luckApplies: false,
 	},
 	City: {
 		id: 7,
@@ -93,6 +104,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,
+		luckApplies: true,
 	},
 	Cyber: {
 		id: 8,
@@ -100,6 +112,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,
+		luckApplies: true,
 	},
 	Corrupt: {
 		id: 9,
@@ -107,6 +120,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,
+		luckApplies: true,
 	},
 	Armored: {
 		id: 10,
@@ -114,6 +128,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,
+		luckApplies: true,
 	},
 });
 
