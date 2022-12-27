@@ -67,6 +67,9 @@ declare global {
 			[P in keyof Worlds]: Folder & {
 				[P in keyof Zones]: Folder & {
 					sign: Folder & {
+						zoneInfo: Folder & {
+							display: BasePart;
+						};
 						description: Folder & {
 							infoPart: Part;
 						};

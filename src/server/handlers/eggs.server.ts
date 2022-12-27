@@ -1,4 +1,4 @@
-import { HttpService, Players } from "@rbxts/services";
+import { HttpService, Players, ReplicatedStorage } from "@rbxts/services";
 import { addPetToCache } from "server/modules/datastoreCaches/petExistStore";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { rollEnhancement } from "server/modules/pets/rollEnhancement";
@@ -84,12 +84,14 @@ hatchEgg.SetCallback(
 			rarity: Rarities;
 		}> = [];
 
-		const truePetPercentages = getPetPercentages(eggName, currentState.boosts.active["x2 Hatching Luck"] > 0);
+		const boostEnabled = eggData.luckApplies
+			? currentState.boosts.active["x2 Hatching Luck"] > 0 || ReplicatedStorage.events.luck.enabled.Value
+			: false;
+		const truePetPercentages = getPetPercentages(eggName, boostEnabled);
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		for (const _ of $range(1, amount)) {
 			const randomNumber = randomGenerator.NextNumber(0, 100);
-
 			truePetPercentages.forEach((registeredPet) => {
 				if (registeredPet.isLowestId) {
 					if (randomNumber < registeredPet.petChance) {

@@ -44,7 +44,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Flower Blade": {
 		id: 3,
 		cost: {
-			requiredRank: 2,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("2.2k"),
 		},
@@ -55,7 +55,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Stone Smacker": {
 		id: 4,
 		cost: {
-			requiredRank: 2,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("3.4k"),
 		},
@@ -66,7 +66,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Spark Plug": {
 		id: 5,
 		cost: {
-			requiredRank: 4,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("8.3k"),
 		},
@@ -77,7 +77,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Bomba Bomber": {
 		id: 6,
 		cost: {
-			requiredRank: 4,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("10.2k"),
 		},
@@ -88,7 +88,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Forest Slammer": {
 		id: 7,
 		cost: {
-			requiredRank: 6,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("20k"),
 		},
@@ -99,7 +99,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Honey Whacker": {
 		id: 8,
 		cost: {
-			requiredRank: 6,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("30.4k"),
 		},
@@ -110,7 +110,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Darkest Desires": {
 		id: 9,
 		cost: {
-			requiredRank: 8,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("81k"),
 		},
@@ -121,7 +121,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Gooey Brawler": {
 		id: 10,
 		cost: {
-			requiredRank: 8,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("122k"),
 		},
@@ -132,7 +132,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Lime Lance": {
 		id: 11,
 		cost: {
-			requiredRank: 10,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("305k"),
 		},
@@ -143,7 +143,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Carnival Mallet": {
 		id: 12,
 		cost: {
-			requiredRank: 10,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("455k"),
 		},
@@ -154,7 +154,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Samurai Smasher": {
 		id: 13,
 		cost: {
-			requiredRank: 12,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("920k"),
 		},
@@ -165,7 +165,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Atlantis Blade": {
 		id: 14,
 		cost: {
-			requiredRank: 12,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("1.3M"),
 		},
@@ -176,7 +176,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Sunflower Slammer": {
 		id: 15,
 		cost: {
-			requiredRank: 12,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("2M"),
 		},
@@ -187,7 +187,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Dune Glass": {
 		id: 16,
 		cost: {
-			requiredRank: 14,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("3.9M"),
 		},
@@ -198,7 +198,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Atlantis Basher": {
 		id: 17,
 		cost: {
-			requiredRank: 14,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("4.7M"),
 		},
@@ -209,7 +209,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Infernal Staff": {
 		id: 18,
 		cost: {
-			requiredRank: 14,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("5.9M"),
 		},
@@ -220,7 +220,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Galactic Blade": {
 		id: 19,
 		cost: {
-			requiredRank: 16,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("11.6M"),
 		},
@@ -231,7 +231,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Crimson Jewel": {
 		id: 20,
 		cost: {
-			requiredRank: 16,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("25M"),
 		},
@@ -242,7 +242,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Twilight Blade": {
 		id: 21,
 		cost: {
-			requiredRank: 16,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("37.5M"),
 		},
@@ -253,7 +253,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Hellfire Slasher": {
 		id: 22,
 		cost: {
-			requiredRank: 17,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("75M"),
 		},
@@ -264,7 +264,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Pillar Slammer": {
 		id: 23,
 		cost: {
-			requiredRank: 17,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("150M"),
 		},
@@ -275,7 +275,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Haunted Blade": {
 		id: 24,
 		cost: {
-			requiredRank: 18,
+			requiredRank: 1,
 			currency: "coins",
 			amount: twoDpAbbreviator.stringToNumber("350M"),
 		},

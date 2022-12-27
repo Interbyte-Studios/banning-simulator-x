@@ -23,7 +23,7 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 	"City Kitty": {
 		chance: 20,
 		id: 68,
-		rarity: "Basic",
+		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -47,7 +47,7 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 	"City Defender": {
 		chance: 0.2,
 		id: 71,
-		rarity: "Epic",
+		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
 		},

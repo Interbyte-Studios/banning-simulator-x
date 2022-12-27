@@ -4,7 +4,8 @@ import { t } from "@rbxts/t";
 import { EggName, isEggName } from "shared/configs/eggs";
 import { ConfirmedPet } from "shared/rodux/pets";
 
-export type ValidEggAmount = 1 | 2 | 3;
+export const validEggEmount = t.literal(1, 2, 3);
+export type ValidEggAmount = t.static<typeof validEggEmount>;
 
 export const hatchEggDefinition = Net.Definitions.ServerAsyncFunction<
 	(

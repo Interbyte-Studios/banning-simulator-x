@@ -255,7 +255,7 @@ export const WeaponInfoDisplay = RoactRodux.connect(mapStateToProps)(
 				</textlabel>
 				<textlabel
 					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.6, 0.65)}
+					Position={UDim2.fromScale(0.7, 0.65)}
 					Size={UDim2.fromScale(0.45, 0.08)}
 					BackgroundTransparency={1}
 					TextScaled={true}

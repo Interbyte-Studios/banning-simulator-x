@@ -5,7 +5,7 @@ import assetIds from "shared/assets";
 import { vec2Middle } from "../commonValues";
 import { hooks } from "../hooks";
 
-interface DamageIconProps {
+interface ExperienceIconProps {
 	anchorPoint?: Vector2;
 	position: UDim2;
 	size:
@@ -17,7 +17,7 @@ interface DamageIconProps {
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const DamageIcon = hooks((props: DamageIconProps, { useEffect }) => {
+export const ExperienceIcon = hooks((props: ExperienceIconProps, { useEffect }) => {
 	if (typeIs(props.size, "UDim2")) {
 		return (
 			<imagelabel
@@ -54,7 +54,7 @@ export const DamageIcon = hooks((props: DamageIconProps, { useEffect }) => {
 					return UDim2.fromScale(value, value);
 				})}
 				Position={props.position}
-				Image={assetIds.images.vectors.Sword}
+				Image={assetIds.images.vectors.Experience}
 				ScaleType={Enum.ScaleType.Fit}
 				Event={{
 					MouseEnter: (): void => motor.setGoal(minizmizedSpring),

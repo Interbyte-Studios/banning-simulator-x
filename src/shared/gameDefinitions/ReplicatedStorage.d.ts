@@ -62,6 +62,28 @@ declare global {
 				};
 			};
 			emitters: Folder & {
+				"hatching emitters": Folder & {
+					flare: Part & {
+						attachment: Attachment & {
+							flare: ParticleEmitter;
+						};
+					};
+					legendary: Part & {
+						attachment: Attachment & {
+							legendary: ParticleEmitter;
+						};
+					};
+					prismatic: Part & {
+						attachment: Attachment & {
+							prismatic: ParticleEmitter;
+						};
+					};
+					primordial: Part & {
+						attachment: Attachment & {
+							primordial: ParticleEmitter;
+						};
+					};
+				};
 				"impact emitters": Folder & {
 					Impact: BasePart;
 				};
@@ -109,11 +131,6 @@ declare global {
 				[P in keyof NPCs]: Model;
 			};
 			talismans: Folder;
-			hatch: Part & {
-				attachment: Attachment & {
-					flare: ParticleEmitter;
-				};
-			};
 		};
 		events: Folder & {
 			currency: Configuration & {

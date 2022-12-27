@@ -4,7 +4,10 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { CurrencyGradient } from "client/ui/elements/currencyGradient";
 import { CurrencyIcon } from "client/ui/elements/currencyIcon";
+import { DamageIcon } from "client/ui/elements/damageIcon";
+import { ExperienceIcon } from "client/ui/elements/experienceIcon";
 import { RankIcon } from "client/ui/elements/rankIcon";
+import { WalkSpeedIcon } from "client/ui/elements/walkspeedIcon";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
@@ -116,13 +119,13 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 					Image={assetIds.images.ui.talismanTower.sidebar}
 					ScaleType={Enum.ScaleType.Fit}
 				>
-					<uiaspectratioconstraint AspectRatio={0.95} />
+					<uiaspectratioconstraint AspectRatio={1.4} />
 					<textlabel
 						AnchorPoint={vec2Middle}
 						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.3)}
-						Size={UDim2.fromScale(0.8, 0.25)}
-						Text={`NEEDS REWORKED`}
+						Position={UDim2.fromScale(0.5, 0.15)}
+						Size={UDim2.fromScale(0.9, 0.25)}
+						Text={talismanInfo.name}
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 						TextScaled={true}
 						Font={font}
@@ -131,27 +134,57 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 					</textlabel>
 					<textlabel
 						AnchorPoint={vec2Middle}
+						Position={UDim2.fromScale(0.675, 0.35)}
+						Size={UDim2.fromScale(0.45, 0.2)}
 						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.525)}
-						Size={UDim2.fromScale(0.8, 0.2)}
-						Text={`NEEDS REWORKED`}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
 						TextScaled={true}
+						TextColor3={Color3.fromRGB(230, 64, 64)}
+						Text={twoDpAbbreviator.numberToString(talismanInfo.stats.damage)}
+						TextXAlignment={Enum.TextXAlignment.Left}
 						Font={font}
 					>
-						<BaseUIStroke native={{ Thickness: 2 }} />
+						<DamageIcon
+							anchorPoint={new Vector2(0, 0.5)}
+							position={UDim2.fromScale(-0.35, 0.5)}
+							size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+						/>
+						<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(105, 0, 0) }} />
 					</textlabel>
 					<textlabel
 						AnchorPoint={vec2Middle}
+						Position={UDim2.fromScale(0.675, 0.6)}
+						Size={UDim2.fromScale(0.45, 0.2)}
 						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.7)}
-						Size={UDim2.fromScale(0.8, 0.2)}
-						Text={`Walk Speed: +${talismanInfo.stats.walkspeed}`}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
 						TextScaled={true}
+						TextColor3={Color3.fromRGB(43, 185, 255)}
+						Text={`+${twoDpAbbreviator.numberToString(talismanInfo.stats.walkspeed)}`}
+						TextXAlignment={Enum.TextXAlignment.Left}
 						Font={font}
 					>
-						<BaseUIStroke native={{ Thickness: 2 }} />
+						<WalkSpeedIcon
+							anchorPoint={new Vector2(0, 0.5)}
+							position={UDim2.fromScale(-0.35, 0.5)}
+							size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+						/>
+						<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(21, 94, 127) }} />
+					</textlabel>
+					<textlabel
+						AnchorPoint={vec2Middle}
+						Position={UDim2.fromScale(0.675, 0.85)}
+						Size={UDim2.fromScale(0.45, 0.2)}
+						BackgroundTransparency={1}
+						TextScaled={true}
+						TextColor3={Color3.fromRGB(255, 235, 13)}
+						Text={`x${twoDpAbbreviator.numberToString(talismanInfo.stats.experience)}`}
+						TextXAlignment={Enum.TextXAlignment.Left}
+						Font={font}
+					>
+						<ExperienceIcon
+							anchorPoint={new Vector2(0, 0.5)}
+							position={UDim2.fromScale(-0.35, 0.5)}
+							size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+						/>
+						<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(108, 99, 6) }} />
 					</textlabel>
 				</imagelabel>
 			</>

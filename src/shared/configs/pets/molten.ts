@@ -15,7 +15,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 	"Molten Bunny": {
 		chance: 22,
 		id: 35,
-		rarity: "Basic",
+		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -23,7 +23,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 	"Molten Kitty": {
 		chance: 21.5,
 		id: 36,
-		rarity: "Basic",
+		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -31,7 +31,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 	"Molten Squirrel": {
 		chance: 21.5,
 		id: 37,
-		rarity: "Basic",
+		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -39,7 +39,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 	"Molten Pegasus": {
 		chance: 1.2,
 		id: 38,
-		rarity: "Ordinary",
+		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -47,7 +47,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 	"Molten Blob": {
 		chance: 0.8,
 		id: 39,
-		rarity: "Ordinary",
+		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -55,7 +55,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 	"Molten Wraith": {
 		chance: 0.2,
 		id: 40,
-		rarity: "Rare",
+		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -63,7 +63,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 	"Molten Leviathan": {
 		chance: 0.1,
 		id: 41,
-		rarity: "Rare",
+		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
 		},

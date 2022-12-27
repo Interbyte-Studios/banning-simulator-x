@@ -31,7 +31,7 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 	"Desert Angel": {
 		chance: 15,
 		id: 10,
-		rarity: "Basic",
+		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -39,7 +39,7 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 	"Desert Dragon": {
 		chance: 7.5,
 		id: 11,
-		rarity: "Basic",
+		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -47,7 +47,7 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 	"Desert Spider": {
 		chance: 1.7,
 		id: 12,
-		rarity: "Ordinary",
+		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -55,7 +55,7 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 	"Desert Wraith": {
 		chance: 0.5,
 		id: 13,
-		rarity: "Rare",
+		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -63,7 +63,7 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 	"Desert Scorpilord": {
 		chance: 0.3,
 		id: 14,
-		rarity: "Rare",
+		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
 		},

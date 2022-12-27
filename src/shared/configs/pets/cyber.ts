@@ -23,7 +23,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 	"Cyber Kitty": {
 		chance: 20,
 		id: 48,
-		rarity: "Basic",
+		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -31,7 +31,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 	"Cyber Bear": {
 		chance: 10,
 		id: 49,
-		rarity: "Basic",
+		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -39,7 +39,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 	"Cyber Angel": {
 		chance: 1.5,
 		id: 50,
-		rarity: "Rare",
+		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -47,7 +47,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 	"Cyber Pegasus": {
 		chance: 1.4,
 		id: 51,
-		rarity: "Rare",
+		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -55,7 +55,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 	"Cybernetic Phoenix": {
 		chance: 0.05,
 		id: 52,
-		rarity: "Epic",
+		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
 		},

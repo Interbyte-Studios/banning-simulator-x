@@ -52,7 +52,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
 				<EggsUI
-					store={props.store}
 					visible={
 						!codesVisible &&
 						!settingsVisible &&
@@ -114,7 +113,19 @@ export const app = hooks((props: AppProps, { useState }) => {
 					}
 				/>
 				<LocalMessages />
-				<ZonesUI />
+				<ZonesUI
+					enabled={
+						!isHatching &&
+						!codesVisible &&
+						!settingsVisible &&
+						!teleportationVisible &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility &&
+						!spinWheelVisibility &&
+						!itemsVisibility
+					}
+				/>
 				<WeaponEquip
 					visible={
 						!isHatching &&
