@@ -1,21 +1,23 @@
+import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService, Workspace } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
+import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { CurrencyGradient } from "client/ui/elements/currencyGradient";
 import { CurrencyIcon } from "client/ui/elements/currencyIcon";
 import { ExitButton } from "client/ui/elements/exitButton";
 import { RankIcon } from "client/ui/elements/rankIcon";
+import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
+import { remoteContext } from "client/ui/mocks/remoteContext";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { RANKS } from "shared/configs/ranks";
 import { StoreState } from "shared/rodux";
+import { CurrenciesState } from "shared/rodux/currencies";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
-
-import { CancelRankUpgrade } from "./cancel";
-import { RankDisplay } from "./rankDisplay";
-import { UpgradeRank } from "./upgradeRank";
 
 const player = Players.LocalPlayer;
 
@@ -25,6 +27,7 @@ interface RankUpgradeProps extends RankUpgradeMappedProps {
 
 interface RankUpgradeMappedProps {
 	currentRank: number;
+	currencies: CurrenciesState;
 	experience: number;
 }
 
@@ -37,6 +40,7 @@ interface RankUpgradeMappedProps {
 function mapStateToProps(state: StoreState): RankUpgradeMappedProps {
 	return {
 		currentRank: state.rank,
+		currencies: state.currencies,
 		experience: state.experience,
 	};
 }
@@ -45,10 +49,14 @@ function mapStateToProps(state: StoreState): RankUpgradeMappedProps {
  * A UI to upgrade a player's rank.
  */
 export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
-	hooks((props: RankUpgradeProps, { useState, useEffect }) => {
+	hooks((props: RankUpgradeProps, hooks) => {
 		if (!props.enabled) {
 			return <></>;
 		}
+
+		const { useState, useValue, useEffect, useContext } = hooks;
+		const { unlockRank } = useContext(remoteContext);
+		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		const [isVisible, setVisibility] = useState(false);
 
@@ -86,7 +94,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 				}
 
 				const magnitude = humanoidRootPart.Position.sub(Workspace.interactions.rankUpgrade.teleport.Position).Magnitude;
-				if (magnitude > 20) {
+				if (magnitude > 15) {
 					return;
 				}
 
@@ -102,100 +110,267 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 			return <></>;
 		}
 
-		if (props.currentRank === 20) {
-			const rankData = RANKS[props.currentRank - 1];
+		const uiListLayoutRef = useValue(Roact.createRef<UIListLayout>());
+		useEffect(() => {
+			const uiListLayout = uiListLayoutRef.value.getValue();
+			assert(uiListLayout, `Failed to get pet mastery UIGridLayout.`);
+
+			const scrollingFrame = uiListLayout.Parent;
+			assert(scrollingFrame, `Failed to get pet mastery ScrollingFrame.`);
+			assert(scrollingFrame.IsA("ScrollingFrame"), `Expected pet mastery to have a ScrollingFrame.`);
+
+			scrollingFrame.GetChildren().forEach((petCard) => {
+				if (petCard.IsA("Frame")) {
+					petCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+				}
+			});
+
+			const connection = scrollingFrame.GetPropertyChangedSignal("AbsoluteSize").Connect(() => {
+				scrollingFrame.GetChildren().forEach((petCard) => {
+					if (petCard.IsA("Frame")) {
+						petCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+					}
+				});
+			});
+
+			return (): void => connection.Disconnect();
+		});
+
+		const ranksUIs: Array<Roact.Element> = RANKS.map((rankData) => {
+			const maxSize = 0.5;
+			const minSize = 0.45;
+
+			const maxSpring = new Flipper.Spring(maxSize, { frequency: 5 });
+			const minSpring = new Flipper.Spring(minSize, { frequency: 5 });
+
+			const motor = useBindingMotor(hooks, maxSize);
+
+			const progressToRank =
+				rankData.id > props.currentRank + 1
+					? 0
+					: props.currentRank >= rankData.id
+					? 1
+					: rankData.id === 1
+					? 1
+					: props.experience < rankData.requiredExperience
+					? props.experience / rankData.requiredExperience
+					: 1;
 
 			return (
-				<imagelabel
+				<frame
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.35, 0.4)}
-					Image={assetIds.images.ui["rank upgrade"].maxRank}
-					ScaleType={Enum.ScaleType.Fit}
+					Size={UDim2.fromScale(1, 0.3)}
+					LayoutOrder={rankData.id}
 				>
-					<uiaspectratioconstraint AspectRatio={1.31} />
-					<RankIcon
-						position={UDim2.fromScale(0.5, 0.285)}
-						size={{ maximizedSize: 0.5, minimizedSize: 0.4 }}
-						rank={props.currentRank}
-					/>
-					<textlabel
+					<uiaspectratioconstraint AspectRatio={4.7} />
+					<frame
 						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.75)}
-						Size={UDim2.fromScale(0.9, 0.3)}
-						Text={`Congratulations! You made it to the final rank, ${rankData.name}!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						Font={font}
+						BackgroundTransparency={0}
+						BackgroundColor3={Color3.fromRGB(1, 109, 177)}
+						Position={UDim2.fromScale(0.5, 0.5)}
+						Size={UDim2.fromScale(0.99, 0.95)}
 					>
-						<BaseUIStroke native={{ Thickness: 1.5 }} />
-					</textlabel>
-					<ExitButton
-						minimizedSize={0.15}
-						maximizedSize={0.175}
-						onClosed={(): void => setVisibility(false)}
-						Position={UDim2.fromScale(0.975, 0.02)}
-					/>
-				</imagelabel>
+						<uiaspectratioconstraint AspectRatio={5} />
+						<uicorner CornerRadius={new UDim(0.07, 0)} />
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+						<RankIcon
+							position={UDim2.fromScale(0.1, 0.5)}
+							size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+							rank={rankData.id}
+						/>
+
+						<textlabel
+							AnchorPoint={vec2Middle}
+							Position={UDim2.fromScale(0.575, 0.15)}
+							Size={UDim2.fromScale(0.7, 0.3)}
+							BackgroundTransparency={1}
+							TextScaled={true}
+							TextColor3={Color3.fromRGB(255, 255, 255)}
+							Text={rankData.name}
+							TextXAlignment={Enum.TextXAlignment.Left}
+							Font={font}
+						>
+							<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+						</textlabel>
+						<textlabel
+							AnchorPoint={vec2Middle}
+							Position={UDim2.fromScale(0.575, 0.4)}
+							Size={UDim2.fromScale(0.7, 0.2)}
+							BackgroundTransparency={1}
+							TextScaled={true}
+							TextColor3={Color3.fromRGB(255, 255, 255)}
+							Text={`Required Exp: ${twoDpAbbreviator.numberToString(rankData.requiredExperience)} (${math.floor(
+								progressToRank * 100,
+							)}%)`}
+							TextXAlignment={Enum.TextXAlignment.Left}
+							Font={font}
+						>
+							<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+						</textlabel>
+						<frame
+							AnchorPoint={vec2Middle}
+							BackgroundTransparency={0}
+							BackgroundColor3={Color3.fromRGB(255, 144, 144)}
+							Position={UDim2.fromScale(0.475, 0.85)}
+							Size={UDim2.fromScale(0.5, 0.2)}
+						>
+							<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+							<uicorner CornerRadius={new UDim(0.5)} />
+							<frame
+								BackgroundTransparency={0}
+								BackgroundColor3={Color3.fromRGB(85, 255, 127)}
+								Position={UDim2.fromScale(0, 0)}
+								Size={UDim2.fromScale(progressToRank, 1)}
+							>
+								<uicorner CornerRadius={new UDim(0.5)} />
+							</frame>
+							<textlabel
+								AnchorPoint={vec2Middle}
+								BackgroundTransparency={1}
+								Position={UDim2.fromScale(0.5, 0.5)}
+								Size={UDim2.fromScale(0.95, 0.95)}
+								Font={font}
+								Text={`${math.floor(progressToRank * 100)}%`}
+								TextScaled={true}
+								TextColor3={Color3.fromRGB(255, 255, 255)}
+							>
+								<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+							</textlabel>
+						</frame>
+						<imagebutton
+							AnchorPoint={vec2Middle}
+							BackgroundTransparency={1}
+							Position={UDim2.fromScale(0.875, 0.7)}
+							Size={motor.binding.map((value) => {
+								return UDim2.fromScale(0.5, value);
+							})}
+							Image={progressToRank === 1 ? assetIds.images.ui.index.Claim : assetIds.images.ui.index.Off}
+							ScaleType={Enum.ScaleType.Fit}
+							Event={{
+								/* eslint-disable jsdoc/require-jsdoc */
+								MouseEnter: (): void => motor.motor.setGoal(minSpring),
+								MouseLeave: (): void => motor.motor.setGoal(maxSpring),
+								Activated: (): void => {
+									playSFX(UIEngagement.MinorEngagement);
+
+									// check to be sure this is the next rank
+									if (rankData.id > props.currentRank + 1) {
+										addAnnouncement("That rank is too high to upgrade to!", AnnouncementType.Error);
+										return;
+									}
+
+									// not enough experience to unlock rank
+									if (props.experience < rankData.requiredExperience) {
+										addAnnouncement("Not enough experience to upgrade.", AnnouncementType.Error);
+										return;
+									}
+
+									// not enough currency to unlock rank
+									if (props.currencies[rankData.cost.currency] < rankData.cost.amount) {
+										addAnnouncement("Not enough currency to upgrade.", AnnouncementType.Error);
+										return;
+									}
+
+									unlockRank.SendToServer();
+								},
+								/* eslint-enable jsdoc/require-jsdoc */
+							}}
+						>
+							<uiaspectratioconstraint AspectRatio={2} />
+							<textlabel
+								AnchorPoint={vec2Middle}
+								BackgroundTransparency={1}
+								Position={UDim2.fromScale(0.5, 0.5)}
+								Size={UDim2.fromScale(0.95, 0.95)}
+								Font={font}
+								Text={progressToRank === 1 ? (props.currentRank >= rankData.id ? "Owned" : "Purchase") : "Unavailable"}
+								TextScaled={true}
+								TextColor3={Color3.fromRGB(255, 255, 255)}
+							>
+								<BaseUIStroke
+									native={{
+										Thickness: 2,
+										Color: progressToRank === 1 ? Color3.fromRGB(44, 126, 102) : Color3.fromRGB(152, 54, 54),
+									}}
+								/>
+							</textlabel>
+						</imagebutton>
+						<textlabel
+							BackgroundTransparency={1}
+							AnchorPoint={vec2Middle}
+							Position={UDim2.fromScale(0.905, 0.225)}
+							Size={UDim2.fromScale(0.125, 0.3)}
+							Font={font}
+							Text={twoDpAbbreviator.numberToString(rankData.cost.amount)}
+							TextColor3={Color3.fromRGB(255, 255, 255)}
+							TextScaled={true}
+							TextXAlignment={Enum.TextXAlignment.Left}
+						>
+							<BaseUIStroke
+								native={{ Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }}
+								currencyGradient={rankData.cost.currency}
+							/>
+							<CurrencyIcon
+								anchorPoint={new Vector2(1, 0.5)}
+								position={UDim2.fromScale(-0.03, 0.5)}
+								size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+								currency={rankData.cost.currency}
+							/>
+						</textlabel>
+					</frame>
+				</frame>
 			);
-		}
-
-		const currentRank = props.currentRank - 1;
-		const nextRank = currentRank + 1;
-
-		const nextRankData = RANKS[nextRank];
-		if (nextRankData === undefined) {
-			throw `Expected rank data for rank ${nextRank}`;
-		}
+		});
 
 		return (
 			<imagelabel
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}
 				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.5, 0.5)}
+				Size={UDim2.fromScale(0.5, 0.75)}
 				Image={assetIds.images.ui["rank upgrade"].background}
 				ScaleType={Enum.ScaleType.Fit}
 			>
-				<uiaspectratioconstraint AspectRatio={1.55} />
+				<uiaspectratioconstraint AspectRatio={1} />
 				<textlabel
 					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.5, 0.1)}
-					Size={UDim2.fromScale(0.345, 0.125)}
+					Position={UDim2.fromScale(0.5, 0.058)}
+					Size={UDim2.fromScale(0.4, 0.1)}
 					BackgroundTransparency={1}
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Text={"Rank Upgrade"}
+					Text={"Ranks"}
 					Font={font}
 				>
-					<uistroke Thickness={3} Color={Color3.fromRGB(150, 69, 3)} />
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(148, 94, 15) }} />
 				</textlabel>
-				<RankDisplay rank={props.currentRank} experience={props.experience} position={UDim2.fromScale(0.165, 0.55)} />
-				<RankDisplay rank={props.currentRank + 1} experience={-1} position={UDim2.fromScale(0.835, 0.55)} />
-				<UpgradeRank rank={props.currentRank} experience={props.experience} />
-				<textlabel
-					BackgroundTransparency={1}
+				<RescalingScrollingFrame
 					AnchorPoint={vec2Middle}
-					Size={UDim2.fromScale(0.175, 0.125)}
-					Position={UDim2.fromScale(0.535, 0.65)}
-					Font={font}
-					Text={twoDpAbbreviator.numberToString(nextRankData.amount)}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-					TextXAlignment={Enum.TextXAlignment.Left}
+					BackgroundTransparency={1}
+					Position={UDim2.fromScale(0.5, 0.55)}
+					Size={UDim2.fromScale(0.95, 0.835)}
+					ScrollBarThickness={0}
+					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
-					<uistroke Color={Color3.fromRGB(255, 255, 255)} Thickness={1.5}>
-						<CurrencyGradient Currency={nextRankData.currency} />
-					</uistroke>
-					<CurrencyIcon
-						position={UDim2.fromScale(-0.25, 0.5)}
-						size={{ maximizedSize: 0.9, minimizedSize: 0.8 }}
-						currency={nextRankData.currency}
+					<uilistlayout
+						SortOrder={Enum.SortOrder.LayoutOrder}
+						Ref={uiListLayoutRef.value}
+						HorizontalAlignment={Enum.HorizontalAlignment.Center}
+						Padding={new UDim(0, 5)}
 					/>
-				</textlabel>
-				<CancelRankUpgrade hideMenu={(): void => setVisibility(false)} />
+					{ranksUIs}
+				</RescalingScrollingFrame>
+				<ExitButton
+					Position={UDim2.fromScale(0.985, 0.09)}
+					minimizedSize={0.06}
+					maximizedSize={0.075}
+					onClosed={(): void => {
+						playSFX(UIEngagement.MinorEngagement);
+
+						setVisibility(false);
+					}}
+				/>
 			</imagelabel>
 		);
 	}),

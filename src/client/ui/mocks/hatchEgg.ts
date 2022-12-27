@@ -12,6 +12,7 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 			{
 				autoDeleted: false,
 				id: 1,
+				guid: "1",
 				rarity: "Basic",
 				variant: "regular",
 				method: "hatch",
@@ -20,6 +21,7 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 			{
 				autoDeleted: false,
 				id: 2,
+				guid: "2",
 				rarity: "Basic",
 				variant: "regular",
 				method: "hatch",
@@ -28,6 +30,7 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 			{
 				autoDeleted: false,
 				id: 3,
+				guid: "3",
 				rarity: "Basic",
 				variant: "regular",
 				method: "hatch",
@@ -42,23 +45,49 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 	// single hatch
 	{
 		success: true,
-		pets: [{ id: 1, autoDeleted: false, rarity: "Legendary", variant: "radiant", method: "hatch", egg: "Starter" }],
+		pets: [
+			{
+				id: 1,
+				guid: "1",
+				autoDeleted: false,
+				rarity: "Legendary",
+				variant: "radiant",
+				method: "hatch",
+				egg: "Starter",
+			},
+		],
 	},
 	// double hatch
 	{
 		success: true,
 		pets: [
-			{ id: 2, autoDeleted: false, rarity: "Primordial", variant: "void", method: "hatch", egg: "Starter" },
-			{ id: 3, autoDeleted: false, rarity: "Prismatic", variant: "regular", method: "hatch", egg: "Starter" },
+			{ id: 2, guid: "2", autoDeleted: false, rarity: "Primordial", variant: "void", method: "hatch", egg: "Starter" },
+			{
+				id: 3,
+				guid: "3",
+				autoDeleted: false,
+				rarity: "Prismatic",
+				variant: "regular",
+				method: "hatch",
+				egg: "Starter",
+			},
 		],
 	},
 	// triple hatch with auto deleted
 	{
 		success: true,
 		pets: [
-			{ id: 1, autoDeleted: false, rarity: "Legendary", variant: "radiant", method: "hatch", egg: "Starter" },
-			{ id: 2, autoDeleted: false, rarity: "Primordial", variant: "void", method: "hatch", egg: "Starter" },
-			{ id: 3, autoDeleted: true, rarity: "Prismatic", variant: "regular", method: "hatch", egg: "Starter" },
+			{
+				id: 1,
+				guid: "1",
+				autoDeleted: false,
+				rarity: "Legendary",
+				variant: "radiant",
+				method: "hatch",
+				egg: "Starter",
+			},
+			{ id: 2, guid: "2", autoDeleted: false, rarity: "Primordial", variant: "void", method: "hatch", egg: "Starter" },
+			{ id: 3, guid: "3", autoDeleted: true, rarity: "Prismatic", variant: "regular", method: "hatch", egg: "Starter" },
 		],
 	},
 ];

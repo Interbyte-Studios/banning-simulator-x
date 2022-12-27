@@ -99,7 +99,8 @@ export = (): void => {
 					guid: "abc123",
 					equipped: false,
 					locked: false,
-					enhancements: [],
+					enhancements: {},
+					bans: 0,
 					variant: "regular",
 				},
 			];

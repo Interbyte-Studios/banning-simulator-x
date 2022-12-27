@@ -5,7 +5,7 @@ import { Pet } from ".";
  */
 export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 	"Bumble Bee": {
-		chance: 30,
+		chance: 29.95,
 		id: 15,
 		rarity: "Basic",
 		stats: {
@@ -23,7 +23,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 	"Dinosaur Bee": {
 		chance: 15,
 		id: 17,
-		rarity: "Basic",
+		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -31,7 +31,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 	"Evil Bee": {
 		chance: 15,
 		id: 18,
-		rarity: "Basic",
+		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -39,7 +39,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 	"Bunny Bee": {
 		chance: 6.75,
 		id: 19,
-		rarity: "Basic",
+		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -47,7 +47,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 	"Honey Bee": {
 		chance: 1.8,
 		id: 20,
-		rarity: "Ordinary",
+		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -55,7 +55,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 	"Pegasus Bee": {
 		chance: 1.2,
 		id: 21,
-		rarity: "Ordinary",
+		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -63,7 +63,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 	"Queen Bee": {
 		chance: 0.2,
 		id: 22,
-		rarity: "Rare",
+		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
 		},

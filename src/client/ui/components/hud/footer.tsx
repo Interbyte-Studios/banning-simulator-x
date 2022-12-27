@@ -7,6 +7,7 @@ import { WheelSpinIcon } from "./wheelSpingIcon";
 
 interface HUDFooterProps {
 	displayTeleportationMenu: () => void;
+	displaySpinWheelMenu: () => void;
 }
 
 export const HUDFooter = hooks((props: HUDFooterProps) => {
@@ -25,7 +26,7 @@ export const HUDFooter = hooks((props: HUDFooterProps) => {
 			/>
 			<TradingIcon />
 			<TeleportIcon displayTeleportationMenu={props.displayTeleportationMenu} />
-			<WheelSpinIcon />
+			<WheelSpinIcon displayWheelSpinMenu={props.displaySpinWheelMenu} />
 		</frame>
 	);
 });

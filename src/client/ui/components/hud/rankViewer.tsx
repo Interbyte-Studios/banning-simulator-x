@@ -1,15 +1,15 @@
-import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { RankGradient } from "client/ui/elements/rankGradient";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { RankIcon } from "client/ui/elements/rankIcon";
 import { hooks } from "client/ui/hooks";
 import { getRankProgress } from "client/util/getRankProgress";
 import assetIds from "shared/assets";
-import { RANKS } from "shared/configs/ranks";
+import { MAX_RANK, RANKS } from "shared/configs/ranks";
 import { StoreState } from "shared/rodux";
 import { ExperienceState } from "shared/rodux/experience";
+import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { UpgradeRankTeleport } from "./upgradeRankTeleport";
 
@@ -29,46 +29,20 @@ function mapStateToProps(state: StoreState): RankMappedProps {
 	};
 }
 
-const RanksFill = hooks((props: { progress: 1 | 2 | 3 | 4 | 5 }) => {
-	const elements: Array<Roact.Element> = [];
-
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	for (const _ of $range(1, props.progress)) {
-		elements.push(
-			<imagelabel
-				BackgroundTransparency={1}
-				AnchorPoint={vec2Middle}
-				Size={UDim2.fromScale(0.2, 1)}
-				Image={assetIds.images.ui.hud["rank fill"]}
-				ScaleType={Enum.ScaleType.Fit}
-			/>,
-		);
-	}
-
-	return (
-		<frame
-			BackgroundTransparency={1}
-			AnchorPoint={vec2Middle}
-			Size={UDim2.fromScale(0.65, 0.475)}
-			Position={UDim2.fromScale(0.515, 0.7)}
-		>
-			<uilistlayout
-				Padding={new UDim(0.01, 0)}
-				FillDirection={Enum.FillDirection.Horizontal}
-				HorizontalAlignment={Enum.HorizontalAlignment.Left}
-				VerticalAlignment={Enum.VerticalAlignment.Center}
-			/>
-			{elements}
-		</frame>
-	);
-});
-
 export const RanksViewer = RoactRodux.connect(mapStateToProps)(
 	hooks((props: RankMappedProps) => {
-		const rankData = RANKS[props.rank - 1];
+		const rankData = RANKS.find((rank) => rank.id === props.rank);
 		if (rankData === undefined) {
-			throw `Expected rank data for rank ${props.rank - 1}`;
+			throw `Expected rank data for rank ${props.rank}`;
 		}
+
+		const nextRankData = RANKS.find((rank) => rank.id === props.rank + 1);
+		if (nextRankData === undefined) {
+			throw `Expected rank data for rank ${props.rank + 1}`;
+		}
+
+		const progressToNextRank =
+			props.experience < nextRankData.requiredExperience ? props.experience / nextRankData.requiredExperience : 1;
 
 		return (
 			<imagelabel
@@ -82,18 +56,51 @@ export const RanksViewer = RoactRodux.connect(mapStateToProps)(
 				<textlabel
 					BackgroundTransparency={1}
 					AnchorPoint={vec2Middle}
-					Size={UDim2.fromScale(0.7, 0.4)}
-					Position={UDim2.fromScale(0.525, 0.3)}
+					Size={UDim2.fromScale(0.65, 0.45)}
+					Position={UDim2.fromScale(0.5, 0.3)}
 					Text={rankData.name}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					TextScaled={true}
 					Font={font}
 				>
-					<uistroke Color={Color3.fromRGB(255, 255, 255)} Thickness={2.5}>
-						<RankGradient Rank={props.rank - 1} />
-					</uistroke>
+					<BaseUIStroke rankGradient={props.rank} native={{ Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }} />
 				</textlabel>
-				<RanksFill progress={getRankProgress(props.rank, props.experience) ?? 1} />
+				<frame
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={0}
+					BackgroundColor3={Color3.fromRGB(255, 144, 144)}
+					Position={UDim2.fromScale(0.5, 0.76)}
+					Size={UDim2.fromScale(0.65, 0.3)}
+				>
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+					<uicorner CornerRadius={new UDim(0.5)} />
+					<frame
+						BackgroundTransparency={0}
+						BackgroundColor3={Color3.fromRGB(85, 255, 127)}
+						Position={UDim2.fromScale(0, 0)}
+						Size={UDim2.fromScale(progressToNextRank, 1)}
+					>
+						<uicorner CornerRadius={new UDim(0.5)} />
+					</frame>
+					<textlabel
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={1}
+						Position={UDim2.fromScale(0.5, 0.5)}
+						Size={UDim2.fromScale(0.95, 0.95)}
+						Font={font}
+						Text={
+							props.rank === MAX_RANK
+								? "Max Rank"
+								: `${twoDpAbbreviator.numberToString(props.experience)}/${twoDpAbbreviator.numberToString(
+										nextRankData.requiredExperience,
+								  )} (${math.floor(progressToNextRank * 100)}%)`
+						}
+						TextScaled={true}
+						TextColor3={Color3.fromRGB(255, 255, 255)}
+					>
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+					</textlabel>
+				</frame>
 				<RankIcon
 					position={UDim2.fromScale(0.075, 0.5)}
 					size={{ minimizedSize: 0.9, maximizedSize: 1.05 }}
@@ -102,7 +109,7 @@ export const RanksViewer = RoactRodux.connect(mapStateToProps)(
 				<UpgradeRankTeleport
 					minimizedSize={0.8}
 					maximizedSize={0.9}
-					position={UDim2.fromScale(0.95, 0.5)}
+					position={UDim2.fromScale(0.925, 0.5)}
 					rank={props.rank}
 					experience={props.experience}
 				/>

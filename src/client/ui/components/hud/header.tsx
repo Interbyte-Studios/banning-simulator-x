@@ -9,6 +9,7 @@ import { RewardsIcon } from "./rewardsIcon";
 interface HUDHeaderProps {
 	displayCodesMenu: () => void;
 	displaySettingsMenu: () => void;
+	displayItemsMenu: () => void;
 }
 
 export const HUDHeader = hooks((props: HUDHeaderProps) => {
@@ -22,12 +23,13 @@ export const HUDHeader = hooks((props: HUDHeaderProps) => {
 			<uilistlayout
 				Padding={new UDim(0.05, 0)}
 				FillDirection={Enum.FillDirection.Horizontal}
+				SortOrder={Enum.SortOrder.LayoutOrder}
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>
 			<OptionsIcon displaySettingsMenu={props.displaySettingsMenu} />
 			<CodesIcon displayCodesMenu={props.displayCodesMenu} />
-			<ItemsIcon />
+			<ItemsIcon displayItemsMenu={props.displayItemsMenu} />
 			<RewardsIcon />
 		</frame>
 	);

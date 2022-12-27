@@ -5,10 +5,10 @@ import { unlockRank } from "shared/rodux/rank";
 
 remotes.Server.Create("unlockRank").Connect(
 	withPlayerStore((_, store) => {
-		const currentRank = store.getState().rank - 1;
+		const currentRank = store.getState().rank;
 		const nextRank = currentRank + 1;
 
-		const rankData = RANKS[nextRank];
+		const rankData = RANKS.find((rank) => rank.id === nextRank);
 		if (rankData === undefined) throw `Expected to find rank data for rank with id ${nextRank}`;
 
 		// not enough experience to unlock rank
@@ -17,10 +17,10 @@ remotes.Server.Create("unlockRank").Connect(
 		}
 
 		// not enough currency to unlock rank
-		if (store.getState().currencies[rankData.currency] < rankData.amount) {
+		if (store.getState().currencies[rankData.cost.currency] < rankData.cost.amount) {
 			return;
 		}
 
-		store.dispatch(unlockRank(nextRank + 1, rankData.currency, rankData.amount));
+		store.dispatch(unlockRank(nextRank, rankData.cost.currency, rankData.cost.amount));
 	}),
 );

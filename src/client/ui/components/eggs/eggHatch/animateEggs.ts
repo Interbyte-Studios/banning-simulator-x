@@ -1,7 +1,8 @@
 import { HttpService, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
-import { HatchSFX, playSFX } from "client/util/playSound";
+import { HatchEffect, playSFX } from "client/util/playSound";
 import { EggName, hatchDebounce } from "shared/configs/eggs";
-import { ValidEggAmount } from "shared/remotes/eggs/hatchEgg";
+import { RARITIES } from "shared/configs/rarities";
+import { ValidEggAmount, validEggEmount } from "shared/remotes/eggs/hatchEgg";
 import { ConfirmedPet } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
@@ -30,9 +31,15 @@ interface AnimatedEgg {
 
 interface AnimatedPet {
 	id: ValidEggAmount;
+	petId: number;
 	currentCFrame: CFrameValue;
-	flareLifetime: NumberValue;
-	flare: typeof ReplicatedStorage.assetObjects.hatch;
+	flareDisplayed: boolean;
+	raritySparklesDisplayed: boolean;
+	flare?: typeof ReplicatedStorage.assetObjects.emitters["hatching emitters"]["flare"];
+	raritySparkles?:
+		| typeof ReplicatedStorage.assetObjects.emitters["hatching emitters"]["legendary"]
+		| typeof ReplicatedStorage.assetObjects.emitters["hatching emitters"]["prismatic"]
+		| typeof ReplicatedStorage.assetObjects.emitters["hatching emitters"]["primordial"];
 	petModel: Model;
 }
 
@@ -83,16 +90,16 @@ export class AnimateEggs {
 	private static tweenData: TweenDataDoc = {
 		tweenInfo: {
 			regular: {
-				segment1: new TweenInfo(1, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
-				segment2: new TweenInfo(0.3, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
-				segment3: new TweenInfo(0.3, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				segment1: new TweenInfo(0.75, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				segment2: new TweenInfo(0.6, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				segment3: new TweenInfo(0.6, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
 				pets: new TweenInfo(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
 			},
 			fast: {
-				segment1: new TweenInfo(0.75, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
-				segment2: new TweenInfo(0.2, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
-				segment3: new TweenInfo(0.2, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
-				pets: new TweenInfo(0.35, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+				segment1: new TweenInfo(0.5, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				segment2: new TweenInfo(0.25, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				segment3: new TweenInfo(0.25, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+				pets: new TweenInfo(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
 			},
 		},
 		tweenData: {
@@ -274,16 +281,17 @@ export class AnimateEggs {
 		let amountComplete = 0;
 		for (const eggData of this.animatedEggs) {
 			task.spawn(() => {
-				playSFX(HatchSFX.HatchImpact_1);
+				playSFX(HatchEffect.HatchImpact_1);
 				animateEggSegment(eggData, "segment1");
 				task.wait(0.5);
 
-				playSFX(HatchSFX.HatchImpact_2);
+				playSFX(HatchEffect.HatchImpact_2);
 				animateEggSegment(eggData, "segment2", true);
 				task.wait(0.35);
 
-				playSFX(HatchSFX.HatchImpact_1);
+				playSFX(HatchEffect.HatchImpact_1);
 				animateEggSegment(eggData, "segment3", true);
+				task.wait(0.35);
 
 				const segment = this.getSegment(amount, eggData.id);
 
@@ -300,7 +308,7 @@ export class AnimateEggs {
 
 					const shookTween = eggData.currentCFrame.Value.Lerp(segment.segment1.mul(CFrame.Angles(0, spin, 0)), alpha);
 					eggData.currentCFrame.Value = shookTween;
-					playSFX(HatchSFX.HatchImpact_2);
+					playSFX(HatchEffect.HatchImpact_2);
 				}
 
 				eggData.eggModels[eggData.currentEgg].SetPrimaryPartCFrame(new CFrame(0, 0, 0));
@@ -331,19 +339,15 @@ export class AnimateEggs {
 			task.spawn(() => {
 				const segment = this.getSegment(amount, petData.id);
 
-				petData.flare.Parent = Workspace;
+				if (petData.flare !== undefined) {
+					petData.flare.Parent = Workspace;
+				}
 
-				task.delay(0.15, () => {
-					TweenService.Create(
-						petData.flareLifetime,
-						new TweenInfo(0.85, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
-						{
-							Value: 0,
-						},
-					).Play();
-				});
+				if (petData.raritySparkles !== undefined) {
+					petData.raritySparkles.Parent = Workspace;
+				}
 
-				petData.petModel.SetPrimaryPartCFrame(camera.GetRenderCFrame().mul(segment.segment1));
+				petData.petModel.PivotTo(camera.GetRenderCFrame().mul(segment.segment1));
 				petData.currentCFrame.Value = new CFrame(segment.segment1.X, segment.segment1.Y, segment.segment1.Z - 5);
 
 				let rotationDegrees = 0;
@@ -399,7 +403,7 @@ export class AnimateEggs {
 				amountComplete += 1;
 			});
 		}
-		playSFX(HatchSFX.HatchReveal);
+		playSFX(HatchEffect.HatchReveal);
 
 		while (amountComplete !== amount) {
 			RunService.RenderStepped.Wait();
@@ -466,25 +470,112 @@ export class AnimateEggs {
 		let currentId = 0;
 		for (const pet of params.pets) {
 			const petMetadata = getPetData(pet.id);
+			const rarityData = RARITIES[petMetadata.rarity];
 
 			const petModel = petFolder.FindFirstChild(petMetadata.name) as Model;
 			assert(petModel, `Expected to find pet model for pet with name ${petMetadata.name}`);
 
 			currentId += 1;
+			if (!validEggEmount(currentId)) {
+				throw `Expected ${currentId} to be a valid egg amount.`;
+			}
+
 			const petData: AnimatedPet = {
-				id: currentId as ValidEggAmount,
+				id: currentId,
+				petId: petMetadata.id,
 				currentCFrame: new Instance("CFrameValue"),
-				flareLifetime: new Instance("NumberValue"),
-				flare: ReplicatedStorage.assetObjects.hatch.Clone(),
 				petModel: petModel.Clone(),
+				flareDisplayed: false,
+				raritySparklesDisplayed: false,
 			};
 
-			setAssetProperties("pet", petData.petModel, params.isVoid);
+			setAssetProperties("pet", petData.petModel, params.isVoid ? "void" : "regular");
 			petData.petModel.Parent = Workspace;
 
-			petData.flareLifetime.Value = 0.75;
+			if (params.amount === 1) {
+				petData.flare = ReplicatedStorage.assetObjects.emitters["hatching emitters"].flare.Clone();
+				petData.flare.attachment.flare.Color = new ColorSequence([
+					new ColorSequenceKeypoint(0, rarityData.BeginningColor),
+					new ColorSequenceKeypoint(1, rarityData.EndingColor),
+				]);
+				petData.flare.attachment.flare.Enabled = false;
+				petData.flare.attachment.flare.Lifetime = new NumberRange(1);
+
+				if (petMetadata.rarity === "Legendary") {
+					petData.raritySparkles = ReplicatedStorage.assetObjects.emitters["hatching emitters"].legendary.Clone();
+					petData.raritySparkles.attachment.legendary.Enabled = false;
+					petData.raritySparkles.attachment.legendary.Lifetime = new NumberRange(0.5);
+					petData.raritySparkles.attachment.legendary.Rate = 17;
+					petData.raritySparkles.attachment.legendary.TimeScale = 0.3;
+				} else if (petMetadata.rarity === "Prismatic") {
+					petData.raritySparkles = ReplicatedStorage.assetObjects.emitters["hatching emitters"].prismatic.Clone();
+					petData.raritySparkles.attachment.prismatic.Enabled = false;
+					petData.raritySparkles.attachment.prismatic.Lifetime = new NumberRange(0.5);
+					petData.raritySparkles.attachment.prismatic.Rate = 17;
+					petData.raritySparkles.attachment.prismatic.TimeScale = 0.3;
+				} else if (petMetadata.rarity === "Primordial") {
+					petData.raritySparkles = ReplicatedStorage.assetObjects.emitters["hatching emitters"].primordial.Clone();
+					petData.raritySparkles.attachment.primordial.Enabled = false;
+					petData.raritySparkles.attachment.primordial.Lifetime = new NumberRange(0.5);
+					petData.raritySparkles.attachment.primordial.Rate = 17;
+					petData.raritySparkles.attachment.primordial.TimeScale = 0.3;
+				}
+			}
 
 			this.animatedPets.push(petData);
+		}
+
+		if (params.amount !== 1) {
+			let petWithHighestRarity = 0;
+			let lastRarityId = 0;
+			for (const pet of this.animatedPets) {
+				const petData = getPetData(pet.petId);
+				const rarityData = RARITIES[petData.rarity];
+
+				if (rarityData.id < lastRarityId) {
+					continue;
+				}
+
+				lastRarityId = rarityData.id;
+				petWithHighestRarity = pet.id;
+			}
+
+			const petToAddEmitters = this.animatedPets.find((pet) => pet.id === petWithHighestRarity);
+			if (petToAddEmitters !== undefined) {
+				const petData = getPetData(petToAddEmitters.petId);
+				const rarityData = RARITIES[petData.rarity];
+
+				petToAddEmitters.flare = ReplicatedStorage.assetObjects.emitters["hatching emitters"].flare.Clone();
+				petToAddEmitters.flare.attachment.flare.Color = new ColorSequence([
+					new ColorSequenceKeypoint(0, rarityData.BeginningColor),
+					new ColorSequenceKeypoint(1, rarityData.EndingColor),
+				]);
+				petToAddEmitters.flare.attachment.flare.Enabled = false;
+				petToAddEmitters.flare.attachment.flare.Lifetime = new NumberRange(1);
+
+				if (petData.rarity === "Legendary") {
+					petToAddEmitters.raritySparkles =
+						ReplicatedStorage.assetObjects.emitters["hatching emitters"].legendary.Clone();
+					petToAddEmitters.raritySparkles.attachment.legendary.Enabled = false;
+					petToAddEmitters.raritySparkles.attachment.legendary.Lifetime = new NumberRange(0.5);
+					petToAddEmitters.raritySparkles.attachment.legendary.Rate = 17;
+					petToAddEmitters.raritySparkles.attachment.legendary.TimeScale = 0.3;
+				} else if (petData.rarity === "Prismatic") {
+					petToAddEmitters.raritySparkles =
+						ReplicatedStorage.assetObjects.emitters["hatching emitters"].prismatic.Clone();
+					petToAddEmitters.raritySparkles.attachment.prismatic.Enabled = false;
+					petToAddEmitters.raritySparkles.attachment.prismatic.Lifetime = new NumberRange(0.5);
+					petToAddEmitters.raritySparkles.attachment.prismatic.Rate = 17;
+					petToAddEmitters.raritySparkles.attachment.prismatic.TimeScale = 0.3;
+				} else if (petData.rarity === "Primordial") {
+					petToAddEmitters.raritySparkles =
+						ReplicatedStorage.assetObjects.emitters["hatching emitters"].primordial.Clone();
+					petToAddEmitters.raritySparkles.attachment.primordial.Enabled = false;
+					petToAddEmitters.raritySparkles.attachment.primordial.Lifetime = new NumberRange(0.5);
+					petToAddEmitters.raritySparkles.attachment.primordial.Rate = 17;
+					petToAddEmitters.raritySparkles.attachment.primordial.TimeScale = 0.3;
+				}
+			}
 		}
 
 		this.animatePetHatches(params.amount, params.fastEnabled);
@@ -510,9 +601,7 @@ export class AnimateEggs {
 		this.currentRenderGuid = HttpService.GenerateGUID(false);
 		RunService.BindToRenderStep(this.currentRenderGuid, Enum.RenderPriority.Camera.Value + 1, () => {
 			for (const eggData of this.animatedEggs) {
-				eggData.eggModels[eggData.currentEgg].SetPrimaryPartCFrame(
-					camera.GetRenderCFrame().mul(eggData.currentCFrame.Value),
-				);
+				eggData.eggModels[eggData.currentEgg].PivotTo(camera.GetRenderCFrame().mul(eggData.currentCFrame.Value));
 			}
 
 			if (this.eggAnimationComplete) {
@@ -526,17 +615,37 @@ export class AnimateEggs {
 				this.animatedEggs = [];
 
 				for (const petData of this.animatedPets) {
-					petData.petModel.SetPrimaryPartCFrame(camera.GetRenderCFrame().mul(petData.currentCFrame.Value));
-					petData.flare.CFrame = petData.petModel.GetPrimaryPartCFrame();
-					petData.flare.attachment.flare.Lifetime = new NumberRange(petData.flareLifetime.Value);
+					petData.petModel.PivotTo(camera.GetRenderCFrame().mul(petData.currentCFrame.Value));
+
+					if (!petData.flareDisplayed) {
+						if (petData.flare !== undefined) {
+							petData.flare.CFrame = camera.GetRenderCFrame().mul(this.tweenData.tweenData.middle.segment1);
+							petData.flare.attachment.flare.Emit(10);
+							petData.flareDisplayed = true;
+						}
+					}
+
+					if (!petData.raritySparklesDisplayed) {
+						if (petData.raritySparkles !== undefined) {
+							petData.raritySparkles.CFrame = camera.GetRenderCFrame().mul(this.tweenData.tweenData.middle.segment1);
+
+							const particleEmitter = petData.raritySparkles.attachment.FindFirstChildOfClass("ParticleEmitter");
+							if (particleEmitter !== undefined) {
+								particleEmitter.Emit(10);
+								petData.raritySparklesDisplayed = true;
+							}
+						}
+					}
 				}
 
 				if (this.petAnimationComplete) {
 					for (const petData of this.animatedPets) {
 						petData.currentCFrame.Destroy();
-						petData.flareLifetime.Destroy();
 						petData.petModel.Destroy();
-						petData.flare.Destroy();
+
+						if (petData.flare !== undefined) {
+							petData.flare.Destroy();
+						}
 					}
 
 					this.animatedPets = [];

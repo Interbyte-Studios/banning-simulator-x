@@ -1,13 +1,11 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
-import { getCurrencyIcon } from "client/util/getCurrencyIcon";
 import assetIds from "shared/assets";
-import { Currency } from "shared/configs/currencies";
 
 import { vec2Middle } from "../commonValues";
 import { hooks } from "../hooks";
 
-interface CurrencyIconProps {
+interface DamageIconProps {
 	anchorPoint?: Vector2;
 	position: UDim2;
 	size:
@@ -19,7 +17,7 @@ interface CurrencyIconProps {
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const DamageIcon = hooks((props: CurrencyIconProps, { useEffect }) => {
+export const DamageIcon = hooks((props: DamageIconProps, { useEffect }) => {
 	if (typeIs(props.size, "UDim2")) {
 		return (
 			<imagelabel

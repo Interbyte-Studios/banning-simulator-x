@@ -27,7 +27,7 @@ export function setWalkSpeed(
 	if (currentTalisman !== undefined) {
 		const talismanData = getTalismanData(currentTalisman);
 		if (talismanData !== undefined) {
-			maxWalkSpeed += talismanData.stats.maxSpeed;
+			maxWalkSpeed += talismanData.stats.walkspeed;
 		}
 	}
 

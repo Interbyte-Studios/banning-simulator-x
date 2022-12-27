@@ -62,6 +62,31 @@ declare global {
 				};
 			};
 			emitters: Folder & {
+				"hatching emitters": Folder & {
+					flare: Part & {
+						attachment: Attachment & {
+							flare: ParticleEmitter;
+						};
+					};
+					legendary: Part & {
+						attachment: Attachment & {
+							legendary: ParticleEmitter;
+						};
+					};
+					prismatic: Part & {
+						attachment: Attachment & {
+							prismatic: ParticleEmitter;
+						};
+					};
+					primordial: Part & {
+						attachment: Attachment & {
+							primordial: ParticleEmitter;
+						};
+					};
+				};
+				"impact emitters": Folder & {
+					Impact: BasePart;
+				};
 				"ban emitters": Folder & {
 					Banned: BasePart;
 					Banned1: BasePart;
@@ -106,11 +131,21 @@ declare global {
 				[P in keyof NPCs]: Model;
 			};
 			talismans: Folder;
-			hatch: Part & {
-				attachment: Attachment & {
-					flare: ParticleEmitter;
-				};
+		};
+		events: Folder & {
+			currency: Configuration & {
+				enabled: BoolValue;
+				multiplier: IntValue;
+			};
+			experience: Configuration & {
+				enabled: BoolValue;
+				multiplier: IntValue;
+			};
+			luck: Configuration & {
+				enabled: BoolValue;
 			};
 		};
+		PetExistStores: ObjectValue;
+		GameVersion: StringValue;
 	}
 }

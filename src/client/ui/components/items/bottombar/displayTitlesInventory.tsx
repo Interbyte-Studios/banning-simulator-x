@@ -1,0 +1,59 @@
+import Flipper from "@rbxts/flipper";
+import Roact from "@rbxts/roact";
+import { font, vec2Middle } from "client/ui/commonValues";
+import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
+import assetIds from "shared/assets";
+
+interface DisplayTitlesInventoryProps {
+	displayTitlesInventory: () => void;
+}
+
+/* eslint-disable jsdoc/require-jsdoc */
+export const DisplayTitlesInventory = hooks((props: DisplayTitlesInventoryProps, hooks) => {
+	const maximizedSize = 0.9;
+	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
+
+	const minimizedSize = 0.825;
+	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
+
+	const { motor, binding } = useBindingMotor(hooks, maximizedSize);
+
+	return (
+		<imagebutton
+			AnchorPoint={vec2Middle}
+			BackgroundTransparency={1}
+			Size={binding.map((value) => {
+				return UDim2.fromScale(0.5, value);
+			})}
+			Position={UDim2.fromScale(0.5, 0.5)}
+			Image={assetIds.images.ui.inventory.icons.titles}
+			ScaleType={Enum.ScaleType.Fit}
+			Event={{
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.displayTitlesInventory();
+				},
+				MouseEnter: (): void => motor.setGoal(minimizedSpring),
+				MouseLeave: (): void => motor.setGoal(maximizedSpring),
+			}}
+		>
+			<uiaspectratioconstraint AspectRatio={1} />
+			<textlabel
+				BackgroundTransparency={1}
+				AnchorPoint={vec2Middle}
+				Size={UDim2.fromScale(0.9, 0.35)}
+				Position={UDim2.fromScale(0.5, 1)}
+				Text={"Titles"}
+				Font={font}
+				TextScaled={true}
+				TextColor3={Color3.fromRGB(255, 255, 255)}
+			>
+				<BaseUIStroke native={{ Thickness: 1.25, Color: Color3.fromRGB(0, 108, 176) }} />
+			</textlabel>
+		</imagebutton>
+	);
+});
+/* eslint-enable jsdoc/require-jsdoc */

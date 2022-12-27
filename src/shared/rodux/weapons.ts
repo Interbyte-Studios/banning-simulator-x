@@ -4,7 +4,8 @@ import { WEAPON_LEVELS } from "shared/configs/weapons";
 
 import { KillNpc } from "./currencies";
 
-export type WeaponsState = Array<{ id: number; bans: number; level: number }>;
+export type Weapon = { id: number; bans: number; level: number };
+export type WeaponsState = Array<Weapon>;
 export type WeaponsActions = PurchaseWeapon;
 
 export interface PurchaseWeapon extends Rodux.Action<"purchaseWeapon"> {
@@ -36,6 +37,17 @@ const defaulWeapon = {
 };
 
 const defaultState: WeaponsState = [defaulWeapon];
+
+/*
+const weapons = [];
+for (const [, data] of pairs(WEAPONS)) {
+	weapons.push({
+		id: data.id,
+		bans: 0,
+		level: 10,
+	});
+}
+*/
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions | KillNpc>(defaultState, {

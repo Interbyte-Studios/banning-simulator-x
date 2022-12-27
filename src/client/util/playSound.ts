@@ -2,7 +2,7 @@ import Make from "@rbxts/make";
 import { Players, SoundService } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
 
-export enum HatchSFX {
+export enum HatchEffect {
 	HatchImpact_1 = 9854462642,
 	HatchImpact_2 = 9854463496,
 	HatchReveal = 9854540368,
@@ -28,8 +28,23 @@ export enum UIEngagement {
  *
  * @param soundType The type of sound effect to play.
  */
-export function playSFX(soundType: HatchSFX | WeaponSlash | NPCImpact | UIEngagement): void {
+export function playSFX(soundType: UIEngagement | WeaponSlash | NPCImpact | HatchEffect): void {
 	const store = retrieveStore(Players.LocalPlayer);
+	if (store === undefined) {
+		return;
+	}
+
+	if (soundType === UIEngagement.MajorEngagement) {
+		if (!store.getState().settings.sound.buttonClick) {
+			return;
+		}
+	}
+
+	if (soundType === UIEngagement.MinorEngagement) {
+		if (!store.getState().settings.sound.buttonClick) {
+			return;
+		}
+	}
 
 	const sound = Make("Sound", {
 		SoundId: `rbxassetid://${soundType}`,
@@ -37,7 +52,7 @@ export function playSFX(soundType: HatchSFX | WeaponSlash | NPCImpact | UIEngage
 	});
 
 	sound.Play();
-	sound.Volume = store.getState().settings.sound.soundEffects / 10;
+	sound.Volume = store.getState().settings.sound.soundEffects * 0.05;
 
 	const connection = sound.Ended.Connect(() => {
 		sound.Parent = undefined;

@@ -1,14 +1,19 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
+
+interface WheelSpinIconProps {
+	displayWheelSpinMenu: () => void;
+}
 
 const minimizedSize = 0.8;
 const maximizedSize = 0.9;
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const WheelSpinIcon = hooks((_, { useEffect }) => {
+export const WheelSpinIcon = hooks((props: WheelSpinIconProps, { useEffect }) => {
 	const minizmizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
 	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 
@@ -35,6 +40,7 @@ export const WheelSpinIcon = hooks((_, { useEffect }) => {
 			Event={{
 				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
+				Activated: (): void => props.displayWheelSpinMenu(),
 			}}
 		>
 			<textlabel
@@ -47,7 +53,7 @@ export const WheelSpinIcon = hooks((_, { useEffect }) => {
 				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 			>
-				<uistroke Color={Color3.fromRGB(0, 108, 176)} />
+				<BaseUIStroke native={{ Thickness: 1, Color: Color3.fromRGB(0, 108, 176) }} />
 			</textlabel>
 			<uiaspectratioconstraint AspectRatio={1} />
 		</imagebutton>

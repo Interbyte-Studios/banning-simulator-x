@@ -4,6 +4,7 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
@@ -140,7 +141,10 @@ export const HatchEggButton = RoactRodux.connect(mapStateToProps)(
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					Font={font}
 				>
-					<uistroke Color={Color3.fromRGB(122, 54, 133)} Thickness={2} />
+					<BaseUIStroke
+						isBillboard={true}
+						native={{ Thickness: 2, Color: Color3.fromRGB(122, 54, 133) }}
+					/>
 					<textlabel
 						BackgroundTransparency={1}
 						AnchorPoint={vec2Middle}
@@ -151,7 +155,10 @@ export const HatchEggButton = RoactRodux.connect(mapStateToProps)(
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 						Font={font}
 					>
-						<uistroke Color={Color3.fromRGB(122, 54, 133)} Thickness={2} />
+						<BaseUIStroke
+							isBillboard={true}
+							native={{ Thickness: 2, Color: Color3.fromRGB(122, 54, 133) }}
+						/>
 					</textlabel>
 				</textlabel>
 			</imagebutton>

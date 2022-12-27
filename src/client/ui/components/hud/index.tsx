@@ -13,6 +13,8 @@ interface HudProps {
 	displayQuestsMenu: () => void;
 	displaySettingsMenu: () => void;
 	displayTeleportationMenu: () => void;
+	displaySpinWheelMenu: () => void;
+	displayItemsMenu: () => void;
 }
 
 export const Hud = hooks((props: HudProps) => {
@@ -28,11 +30,18 @@ export const Hud = hooks((props: HudProps) => {
 			Size={UDim2.fromScale(0.25, 0.5)}
 		>
 			<uiaspectratioconstraint AspectRatio={0.8} />
-			<HUDHeader displayCodesMenu={props.displayCodesMenu} displaySettingsMenu={props.displaySettingsMenu} />
+			<HUDHeader
+				displayCodesMenu={props.displayCodesMenu}
+				displaySettingsMenu={props.displaySettingsMenu}
+				displayItemsMenu={props.displayItemsMenu}
+			/>
 			<RanksViewer />
 			<CoinsCurrency />
 			<GemsCurrency />
-			<HUDFooter displayTeleportationMenu={props.displayTeleportationMenu} />
+			<HUDFooter
+				displayTeleportationMenu={props.displayTeleportationMenu}
+				displaySpinWheelMenu={props.displaySpinWheelMenu}
+			/>
 		</frame>
 	);
 });

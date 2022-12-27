@@ -4,8 +4,8 @@ import { TALISMAN_PHASES, TalismanPhases } from "shared/configs/talismans";
 
 import { KillNpc } from "./currencies";
 
-export type TalismansState = Map<number, { bans: number; phase: TalismanPhases }>;
-
+export type Talisman = { id: number; bans: number; phase: TalismanPhases };
+export type TalismansState = Array<Talisman>;
 export type TalismanActions = PurchaseTalisman;
 
 export interface PurchaseTalisman extends Rodux.Action<"purchaseTalisman"> {
@@ -16,7 +16,16 @@ export interface PurchaseTalisman extends Rodux.Action<"purchaseTalisman"> {
 	id: number;
 }
 
-const defaultTalismans: TalismansState = new Map();
+const defaultTalismans: TalismansState = [];
+/*
+for (const [, data] of pairs(TALISMANS)) {
+	defaultTalismans.push({
+		id: data.id,
+		bans: 0,
+		phase: "artifact",
+	});
+}
+*/
 
 /**
  * Purchases a talisman from the stor, saving it to players talisman inventory.
@@ -35,17 +44,28 @@ export function purchaseTalisman(data: Omit<PurchaseTalisman, "type">): Purchase
 /* eslint-disable jsdoc/require-jsdoc */
 export const talismanReducer = Rodux.createReducer<TalismansState, TalismanActions | KillNpc>(defaultTalismans, {
 	purchaseTalisman: (state, action) => {
-		return new Map([...state, [action.id, { bans: 0, phase: "normal" }]]);
+		return [
+			...state,
+			{
+				id: action.id,
+				bans: 0,
+				phase: "normal",
+			},
+		];
 	},
 	killNpc: (state, action) => {
 		if (action.talismanId === undefined) {
 			return state;
 		}
 
-		const currentTalisman = state.get(action.talismanId);
-		if (currentTalisman === undefined) {
+		const newState = [...state];
+
+		const currentTalismanIndex = newState.findIndex((talisman) => talisman.id === action.talismanId);
+		if (currentTalismanIndex === undefined) {
 			throw `Expected player to own the talisman ${action.talismanId}`;
 		}
+
+		const currentTalisman = newState[currentTalismanIndex];
 
 		const increaseTalismanBanCounter = currentTalisman.bans + 1;
 
@@ -53,9 +73,6 @@ export const talismanReducer = Rodux.createReducer<TalismansState, TalismanActio
 		for (const talismanPhase of TALISMAN_PHASES) {
 			if (currentTalisman.bans >= talismanPhase.requiredBans) {
 				phase = talismanPhase.phase;
-				warn(
-					`Current Talisman Bans: ${currentTalisman.bans} | Phase Name: ${phase} | Required Bans: ${talismanPhase.requiredBans}`,
-				);
 			}
 		}
 		assert(phase, `Expected to find a phase for the currently equipped talisman with id: ${action.talismanId}`);
@@ -63,13 +80,14 @@ export const talismanReducer = Rodux.createReducer<TalismansState, TalismanActio
 		let upgradePhase = false;
 		if (phase !== currentTalisman.phase) {
 			upgradePhase = true;
-			warn(`Upgrading to ${phase}`);
 		}
 
-		return new Map([
-			...state,
-			[action.talismanId, { bans: increaseTalismanBanCounter, phase: upgradePhase ? phase : currentTalisman.phase }],
-		]);
+		const newTalismanData = { ...newState[currentTalismanIndex] };
+		newTalismanData.bans = increaseTalismanBanCounter;
+		newTalismanData.phase = upgradePhase ? phase : currentTalisman.phase;
+
+		newState[currentTalismanIndex] = newTalismanData;
+		return newState;
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */

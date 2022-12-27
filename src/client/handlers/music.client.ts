@@ -8,19 +8,27 @@ const musicQueue: Array<number> = [];
 
 let currentWorld: WorldName | undefined;
 let musicEnabled = true;
-let volume = 0.8;
+let volume = 0;
 
 const player = Players.LocalPlayer;
 onStoreCreated(player)
 	.andThen((store) => {
-		volume = 0.8 * (store.getState().settings.sound.music / 10);
+		volume = 0.5 * (store.getState().settings.sound.music * 0.05);
+
+		for (const sound of SoundService.GetChildren()) {
+			if (!sound.IsA("Sound")) {
+				return;
+			}
+
+			sound.Volume = volume;
+		}
 
 		store.changed.connect((newState, oldState) => {
 			if (newState.settings.sound.music === oldState.settings.sound.music) {
 				return;
 			}
 
-			volume = 0.8 * (newState.settings.sound.music / 10);
+			volume = 0.5 * (newState.settings.sound.music * 0.05);
 
 			for (const sound of SoundService.GetChildren()) {
 				if (!sound.IsA("Sound")) {
@@ -39,27 +47,22 @@ onStoreCreated(player)
  * Plays the current playlist.
  */
 function loopPlaylist(): void {
-	for (const musicId of musicQueue) {
-		if (!musicEnabled) {
-			return;
-		}
+	if (!musicEnabled) {
+		return;
+	}
 
+	for (const musicId of musicQueue) {
 		const sound = Make("Sound", {
 			SoundId: `rbxassetid://${musicId}`,
 			Parent: SoundService,
+			Volume: volume,
 		});
-
-		sound.Volume = volume;
 
 		sound.Play();
 		sound.Ended.Wait();
 
 		sound.Parent = undefined;
 		sound.Destroy();
-	}
-
-	if (!musicEnabled) {
-		return;
 	}
 
 	loopPlaylist();

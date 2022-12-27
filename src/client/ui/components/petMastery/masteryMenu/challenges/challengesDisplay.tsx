@@ -2,7 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
@@ -99,7 +99,7 @@ const MasteryChallengeFrame = hooks(
 
 		const { useContext } = hooks;
 		const { claimPetMastery } = useContext(remoteContext);
-		const { addError } = useContext(AnnouncementContext);
+		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		const petMasteryReward = PET_MASTERY_REWARDS[props.rarity][props.variant][props.challengeType];
 		const boostRewardTime =
@@ -174,36 +174,48 @@ const MasteryChallengeFrame = hooks(
 							);
 
 							if (requestClaimPetMastery.success) {
-								addError("You've claimed mastery of a pet!");
+								addAnnouncement("You've claimed mastery of a pet!", AnnouncementType.Announcement);
 								return;
 							} else {
 								switch (requestClaimPetMastery.reason) {
 									case ClaimPetMasteryFailKind.InternalError: {
-										addError("There was an issue while claiming mastery of the pet.");
+										addAnnouncement("There was an issue while claiming mastery of the pet.", AnnouncementType.Error);
 										return;
 									}
 									case ClaimPetMasteryFailKind.InvalidMastery: {
-										addError("The mastery you tried to claim does not exist for that variant.");
+										addAnnouncement(
+											"The mastery you tried to claim does not exist for that variant.",
+											AnnouncementType.Error,
+										);
 										return;
 									}
 									case ClaimPetMasteryFailKind.NotEnoughFusions: {
-										addError("You do not have enough fusions to claim mastery.");
+										addAnnouncement("You do not have enough fusions to claim mastery.", AnnouncementType.Error);
 										return;
 									}
 									case ClaimPetMasteryFailKind.NotEnoughHatches: {
-										addError("You do not have enough hatches to claim mastery.");
+										addAnnouncement("You do not have enough hatches to claim mastery.", AnnouncementType.Error);
 										return;
 									}
 									case ClaimPetMasteryFailKind.NotEnoughMaxLevels: {
-										addError("You have not reached max level enough time to claim mastery.");
+										addAnnouncement(
+											"You have not reached max level enough time to claim mastery.",
+											AnnouncementType.Error,
+										);
 										return;
 									}
 									case ClaimPetMasteryFailKind.UndiscoveredPet: {
-										addError("You haven't discovered the pet! Please report this to Devs.");
+										addAnnouncement(
+											"You haven't discovered the pet! Please report this to Devs.",
+											AnnouncementType.Error,
+										);
 										return;
 									}
 									case ClaimPetMasteryFailKind.UndiscoveredVariant: {
-										addError("You haven't discovered that variant. Please report this to Devs.");
+										addAnnouncement(
+											"You haven't discovered that variant. Please report this to Devs.",
+											AnnouncementType.Error,
+										);
 										return;
 									}
 								}

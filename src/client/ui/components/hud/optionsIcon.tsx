@@ -1,6 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
@@ -36,7 +37,7 @@ export const OptionsIcon = hooks((props: OptionsIconProps, { useEffect }) => {
 				return UDim2.fromScale(value, value);
 			})}
 			Image={assetIds.images.ui.hud.icons.options}
-			LayoutOrder={1}
+			LayoutOrder={4}
 			Event={{
 				Activated: (): void => {
 					playSFX(UIEngagement.MinorEngagement);
@@ -56,7 +57,7 @@ export const OptionsIcon = hooks((props: OptionsIconProps, { useEffect }) => {
 				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
 			>
-				<uistroke Color={Color3.fromRGB(0, 108, 176)} />
+				<BaseUIStroke native={{ Thickness: 1, Color: Color3.fromRGB(0, 108, 176) }} />
 			</textlabel>
 			<uiaspectratioconstraint AspectRatio={1} />
 		</imagebutton>

@@ -1,27 +1,6 @@
 declare namespace assetIds {
 	const images: {
 		Exit: string;
-		vectors: {
-			Inventory: string;
-			Medal: string;
-			FewGems: string;
-			Shield: string;
-			Sword: string;
-			GemBag: string;
-			Settings: string;
-			Codes: string;
-			PetPaw: string;
-			CyberToken: string;
-			Coin: string;
-			Teleport: string;
-			SpinWheel: string;
-			Rewards: string;
-			Trading: string;
-			GemVault: string;
-			Gem: string;
-			GemChest: string;
-			Clover: string;
-		};
 		maps: {
 			"Ban Land": {
 				world: string;
@@ -40,126 +19,7 @@ declare namespace assetIds {
 			"forward arrow": string;
 			"purple button": string;
 		};
-		currencies: {
-			gems: string;
-			coins: string;
-		};
-		ui: {
-			teleportation: {
-				"Ban Land": string;
-				"Ban Land Locked": string;
-				Beach: string;
-				"Beach Locked": string;
-				"Candy Land": string;
-				"Candy Land Locked": string;
-				Desert: string;
-				"Desert Locked": string;
-				Forest: string;
-				"Forest Locked": string;
-				Honeycomb: string;
-				"Honeycomb Locked": string;
-				"Ice Land": string;
-				"Ice Land Locked": string;
-				"Lava Lands": string;
-				"Lava Lands Locked": string;
-				"Sunflower Field": string;
-				"Sunflower Field Locked": string;
-				"The Mines": string;
-				"The Mines Locked": string;
-				background: string;
-				go: string;
-			};
-			egg: {
-				background: string;
-				"pet frame": string;
-				delete: string;
-			};
-			"weapon shop": {
-				"purchase button": string;
-				"weapon info background": string;
-			};
-			index: {
-				Off: string;
-				footerNotice: string;
-				Claim: string;
-				extra: string;
-				showExtraStats: string;
-				"view challenges": string;
-				returnToSelection: string;
-				background: string;
-				sidebar: string;
-				eggBackground: string;
-				view: string;
-			};
-			"rank upgrade": {
-				cancel: string;
-				background: string;
-				maxRank: string;
-				upgrade: string;
-			};
-			zones: {
-				background: string;
-				purchase: string;
-				cancel: string;
-			};
-			"update log": {
-				"update log": string;
-				background: string;
-			};
-			hud: {
-				"interface button": string;
-				shop: string;
-				upgrade: string;
-				"viewer background": string;
-				icons: {
-					items: string;
-					options: string;
-					codes: string;
-					wheel: string;
-					rewards: string;
-					teleport: string;
-					trading: string;
-				};
-				"rank fill": string;
-			};
-			autoDelete: {
-				background: string;
-				"long green button": string;
-				"long red button": string;
-			};
-			codes: {
-				input: string;
-				background: string;
-			};
-			equip: {
-				unequipped: string;
-				keybind: string;
-				toolTp: string;
-				background: string;
-				equipped: string;
-			};
-			talismanTower: {
-				sidebar: string;
-				background: string;
-			};
-			quests: {
-				"world background": string;
-				"world entry background": string;
-				"quests background": string;
-				"entry background": string;
-			};
-			settings: {
-				"setting background": string;
-				background: string;
-			};
-			levelup: {
-				LevelUp: string;
-			};
-		};
 		decals: {
-			boosts: {
-				luck: string;
-			};
 			pets: {
 				"Void Desert Scorpilord": string;
 				"Desert Pegasus": string;
@@ -413,6 +273,64 @@ declare namespace assetIds {
 				"Corrupted Titan": string;
 				"Radiant Royal Pegasus": string;
 			};
+			worlds: {
+				"Ban Land": string;
+			};
+			weapons: {
+				"Samurai Smasher": string;
+				"Spark Plug": string;
+				"Infernal Staff": string;
+				"Atlantis Basher": string;
+				"Gooey Brawler": string;
+				"Crimson Jewel": string;
+				"Galactic Blade": string;
+				"Twilight Blade": string;
+				"Bomba Bomber": string;
+				"Sunflower Slammer": string;
+				"Stone Smacker": string;
+				"Stone Hammer": string;
+				"Hellfire Slasher": string;
+				"Haunted Blade": string;
+				"Carnival Mallet": string;
+				"Honey Whacker": string;
+				"Lime Lance": string;
+				"Pillar Slammer": string;
+				"Atlantis Blade": string;
+				"Flower Blade": string;
+				"Darkest Desires": string;
+				"Forest Slammer": string;
+				"Dune Glass": string;
+				"Basic Blade": string;
+			};
+			boosts: {
+				luck: string;
+			};
+			talismans: {
+				"All Seeing Talisman": string;
+				"Awakend Target Talisman": string;
+				"Jester Talisman": string;
+				"Artifact Skull Talisman": string;
+				"Awakend Blade Talisman": string;
+				"Artifact Lunar Talisman": string;
+				"Artifact Blade Talisman": string;
+				"Artifact Star Talisman": string;
+				"Heart Talisman": string;
+				"Awakend Skull Talisman": string;
+				"Artifact Target Talisman": string;
+				"Awakend Lunar Talisman": string;
+				"Artifact Jester Talisman": string;
+				"Artifact All Seeing Talisman": string;
+				"Target Talisman": string;
+				"Star Talisman": string;
+				"Awakend Star Talisman": string;
+				"Awakend Jester Talisman": string;
+				"Skull Talisman": string;
+				"Lunar Talisman": string;
+				"Blade Talisman": string;
+				"Awakend All Seeing Talisman": string;
+				"Awakend Heart Talisman": string;
+				"Artifact Heart Talisman": string;
+			};
 			eggs: {
 				Honeycomb: string;
 				Starter: string;
@@ -420,32 +338,193 @@ declare namespace assetIds {
 				Molten: string;
 				Desert: string;
 			};
-			worlds: {
+		};
+		vectors: {
+			Announcement: string;
+			Error: string;
+			Inventory: string;
+			Medal: string;
+			FewGems: string;
+			Shield: string;
+			Sword: string;
+			GemBag: string;
+			Settings: string;
+			Codes: string;
+			WalkSpeed: string;
+			PetPaw: string;
+			CyberToken: string;
+			Coin: string;
+			Teleport: string;
+			SpinWheel: string;
+			Rewards: string;
+			Trading: string;
+			GemVault: string;
+			Experience: string;
+			GemChest: string;
+			StarCoin: string;
+			Lock: string;
+			Clover: string;
+			Gem: string;
+		};
+		ui: {
+			egg: {
+				background: string;
+				"pet frame": string;
+				delete: string;
+			};
+			"weapon shop": {
+				locked: string;
+				delete: string;
+				"weapon info background": string;
+				"purchase button": string;
+			};
+			index: {
+				view: string;
+				extra: string;
+				Claim: string;
+				returnToSelection: string;
+				Off: string;
+				sidebar: string;
+				eggBackground: string;
+				"view challenges": string;
+				background: string;
+				footerNotice: string;
+				showExtraStats: string;
+			};
+			teleportation: {
+				"Candy Land Locked": string;
+				Desert: string;
+				"The Mines": string;
+				"Sunflower Field": string;
+				"Candy Land": string;
+				"Lava Lands": string;
+				"Honeycomb Locked": string;
+				"Desert Locked": string;
+				Honeycomb: string;
+				Beach: string;
+				"Beach Locked": string;
+				"Ban Land Locked": string;
+				"Ice Land": string;
+				Forest: string;
+				background: string;
+				"The Mines Locked": string;
 				"Ban Land": string;
+				"Lava Lands Locked": string;
+				"Forest Locked": string;
+				"Ice Land Locked": string;
+				"Sunflower Field Locked": string;
+				go: string;
+			};
+			zones: {
+				background: string;
+				purchase: string;
+				cancel: string;
+			};
+			levelup: {
+				LevelUp: string;
+			};
+			"rank upgrade": {
+				background: string;
+			};
+			"update log": {
+				"update log": string;
+				background: string;
+			};
+			talismanTower: {
+				sidebar: string;
+				background: string;
+			};
+			hud: {
+				"interface button": string;
+				shop: string;
+				upgrade: string;
+				"viewer background": string;
+				icons: {
+					items: string;
+					options: string;
+					codes: string;
+					wheel: string;
+					rewards: string;
+					teleport: string;
+					trading: string;
+				};
+				"rank fill": string;
+			};
+			autoDelete: {
+				background: string;
+				"long green button": string;
+				"long red button": string;
+			};
+			codes: {
+				input: string;
+				background: string;
+			};
+			equip: {
+				unequipped: string;
+				keybind: string;
+				toolTp: string;
+				background: string;
+				equipped: string;
+			};
+			settings: {
+				"setting background": string;
+				background: string;
+			};
+			quests: {
+				"world background": string;
+				"world entry background": string;
+				"quests background": string;
+				"entry background": string;
+			};
+			inventory: {
+				pets: {
+					"unequip all": string;
+					"multi-delete disabled": string;
+					"inventory size counter icon": string;
+					gamepassPrompt: string;
+					"delete-sidebar": string;
+					sort: string;
+					locked: string;
+					deleteIndicator: string;
+					bottombar: string;
+					"pet counter icon": string;
+					shrink: string;
+					"equipped checkmark": string;
+					search: string;
+					topbar: string;
+					"multi-delete enabled": string;
+					maximize: string;
+					"function button": string;
+				};
+				petSummary: string;
+				locked: string;
+				background: string;
+				icons: {
+					pets: string;
+					weapons: string;
+					boosts: string;
+					titles: string;
+					talismans: string;
+				};
+				"info sidebar": string;
 			};
 		};
 		ranks: {
+			prestiges: {
+				Prestige1: string;
+				Prestige4: string;
+				Prestige3: string;
+				Prestige5: string;
+				Prestige2: string;
+			};
 			friendly: {
-				"9": string;
-				"8": string;
-				"4": string;
-				"20": string;
-				"1": string;
-				"5": string;
-				"3": string;
-				"2": string;
-				"19": string;
-				"18": string;
-				"7": string;
-				"6": string;
-				"14": string;
-				"15": string;
-				"16": string;
-				"17": string;
-				"13": string;
-				"12": string;
-				"11": string;
-				"10": string;
+				Pendulum: string;
+				Diamond: string;
+				Silver: string;
+				Gold: string;
+				Emerald: string;
+				Bronze: string;
+				Draconic: string;
 			};
 			enemy: {
 				regular: {

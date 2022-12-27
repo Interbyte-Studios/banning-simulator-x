@@ -2,7 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { AnnouncementContext } from "client/ui/context/AnnouncementsAPI";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
@@ -45,13 +45,14 @@ function mapStateToProps(state: StoreState): PurchaseTalismanMappedProps {
 /* eslint-disable jsdoc/require-jsdoc */
 export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 	hooks((props: PurchaseTalismanProps, hooks) => {
-		if (props.talismans.get(props.currentTalisman)) {
+		const storedTalisman = props.talismans.find((talisman) => talisman.id === props.currentTalisman);
+		if (storedTalisman !== undefined) {
 			return <></>;
 		}
 
 		const { useContext } = hooks;
 		const { purchaseTalisman } = useContext(remoteContext);
-		const { addError } = useContext(AnnouncementContext);
+		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		const maximizedSize = 0.08;
 		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
@@ -80,27 +81,33 @@ export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 						// check to be sure they've bought the previous talisman
 						const previousTalismanId = props.currentTalisman - 1;
 						if (previousTalismanId > 0) {
-							const ownsPreviousTalisman = props.talismans.has(previousTalismanId);
-							if (!ownsPreviousTalisman) {
-								addError(`You don't own the previous talisman!`);
+							const ownsPreviousTalisman = props.talismans.find((talisman) => talisman.id === previousTalismanId);
+							if (ownsPreviousTalisman === undefined) {
+								addAnnouncement(`You don't own the previous talisman!`, AnnouncementType.Error);
 								return;
 							}
 						}
 
 						// check to be sure player has enough currency to purchase talisman
 						if (props.currencies[talismanInfo.cost.currency] < talismanInfo.cost.amount) {
-							addError(`You don't have enough currency to purchase "${talismanInfo.name}".`);
+							addAnnouncement(
+								`You don't have enough currency to purchase "${talismanInfo.name}".`,
+								AnnouncementType.Error,
+							);
 							return;
 						}
 
 						// check to be sure player is required rank
 						if (props.rank < talismanInfo.cost.rank) {
-							addError(`You're not a high enough rank to purchase "${talismanInfo.name}".`);
+							addAnnouncement(
+								`You're not a high enough rank to purchase "${talismanInfo.name}".`,
+								AnnouncementType.Error,
+							);
 							return;
 						}
 
 						purchaseTalisman.SendToServer(props.currentTalisman);
-						addError(`You've purchased the "${talismanInfo.name}" talisman!`);
+						addAnnouncement(`You've purchased the "${talismanInfo.name}" talisman!`, AnnouncementType.Announcement);
 					},
 					MouseEnter: (): void => motor.setGoal(minimizedSpring),
 					MouseLeave: (): void => motor.setGoal(maximizedSpring),
