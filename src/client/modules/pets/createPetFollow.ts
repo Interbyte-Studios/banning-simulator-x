@@ -1,4 +1,5 @@
 import { ReplicatedStorage } from "@rbxts/services";
+import { Variants } from "shared/configs/pets";
 import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 import { weldObject } from "shared/util/weldObject";
@@ -36,15 +37,15 @@ function getPetModel(petName: string): Model {
  * @param player Player The owner of the pet.
  * @param petId The id of the pet.
  * @param guid The unique id of the pet.
- * @param isVoid The value to see if the pet is void type or not.
+ * @param variant The variant of the pet.
  * @returns Data for the new pet.
  */
-export function createPetFollow(player: Player, petId: number, guid: string, isVoid: boolean): PetCreated {
+export function createPetFollow(player: Player, petId: number, guid: string, variant: Variants): PetCreated {
 	const petData = getPetData(petId);
 
 	const petModel = getPetModel(petData.name);
 	assert(petModel.IsA("Model"));
-	setAssetProperties("pet", petModel, isVoid);
+	setAssetProperties("pet", petModel, variant);
 
 	if (petModel.PrimaryPart === undefined) {
 		throw ` Expected to find primary part for pet ${petData.name}`;

@@ -156,7 +156,7 @@ onStoreCreated(player)
 			const petAlreadyStored = storedPets.find((stordPet) => stordPet.guid === pet.guid) !== undefined;
 
 			if (!petEquipped && !petAlreadyStored) {
-				const createdPet = createPetFollow(player, pet.id, pet.guid, pet.variant === "void");
+				const createdPet = createPetFollow(player, pet.id, pet.guid, pet.variant);
 				storedPets.push(createdPet);
 				createdPet.model.Parent = settings.visual.petsDisplayed === true ? Workspace["client objects"].pets : undefined;
 			}
@@ -173,7 +173,7 @@ onStoreCreated(player)
 				const petAlreadyStored = storedPets.find((stordPet) => stordPet.guid === pet.guid) !== undefined;
 
 				if (!petEquipped && !petAlreadyStored) {
-					const createdPet = createPetFollow(player, pet.id, pet.guid, pet.variant === "void");
+					const createdPet = createPetFollow(player, pet.id, pet.guid, pet.variant);
 					storedPets.push(createdPet);
 					createdPet.model.Parent =
 						settings.visual.petsDisplayed === true ? Workspace["client objects"].pets : undefined;
