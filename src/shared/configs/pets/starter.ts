@@ -31,7 +31,7 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 	Piggy: {
 		chance: 16,
 		id: 4,
-		rarity: "Basic",
+		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -39,7 +39,7 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 	Deer: {
 		chance: 3.5,
 		id: 5,
-		rarity: "Ordinary",
+		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -47,7 +47,7 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 	"Royal Bunny": {
 		chance: 0.5,
 		id: 6,
-		rarity: "Rare",
+		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
 		},

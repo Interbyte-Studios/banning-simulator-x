@@ -23,7 +23,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 	"Corrupt Bear": {
 		chance: 20,
 		id: 74,
-		rarity: "Basic",
+		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -31,7 +31,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 	"Corrupt Deer": {
 		chance: 10,
 		id: 75,
-		rarity: "Basic",
+		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -39,7 +39,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 	"Corrupt Pegasus": {
 		chance: 1,
 		id: 76,
-		rarity: "Rare",
+		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
 		},
@@ -47,7 +47,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 	"Corrupt Demon": {
 		chance: 0.5,
 		id: 77,
-		rarity: "Rare",
+		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
 		},

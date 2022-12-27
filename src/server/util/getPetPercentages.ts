@@ -86,11 +86,6 @@ export function getPetPercentages(egg: EggName, boostEnabled: boolean): Array<Re
 									const nextPet = registeredPets.find((petData) => petData.petId === pet.petId + 1);
 									if (nextPet !== undefined) {
 										pet.petChance = nextPet.petChance - petData.chance * boostMultiplier;
-										warn(
-											`Old least rare pet chance: ${newLeastRarePetChance} | Subtracting: ${
-												petData.chance * boostMultiplier + petData.chance
-											} thanks to pet ${petData.id}`,
-										);
 										newLeastRarePetChance -= petData.chance * boostMultiplier + petData.chance;
 									} else
 										warn(
