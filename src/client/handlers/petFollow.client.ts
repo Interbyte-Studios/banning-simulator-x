@@ -182,6 +182,11 @@ onStoreCreated(player)
 						removePet(pet.guid);
 					}
 				} else {
+					const storedPet = animatedPets.find((animatedPet) => animatedPet.guid === pet.guid);
+					if (storedPet !== undefined) {
+						return;
+					}
+
 					const createdPet = createPetFollow(player, pet.id, pet.guid, pet.variant);
 					animatedPets.push(createdPet);
 					createdPet.model.Parent =
