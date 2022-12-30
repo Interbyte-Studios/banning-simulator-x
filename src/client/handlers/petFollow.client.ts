@@ -164,7 +164,7 @@ onStoreCreated(player)
 		});
 
 		store.changed.connect((newState, oldState) => {
-			if (newState.pets === oldState.pets && newState.settings.gameplay === oldState.settings.gameplay) {
+			if (newState.pets === oldState.pets && newState.settings.visual === oldState.settings.visual) {
 				return warn("Stores were the same");
 			}
 
