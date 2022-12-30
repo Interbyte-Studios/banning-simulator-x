@@ -4,8 +4,10 @@ import { createPetFollow, PetCreated } from "client/modules/pets/createPetFollow
 import { removePet } from "client/modules/pets/unequipPet";
 
 const player = Players.LocalPlayer;
+
 const radius = math.pi * 2;
-const storedPets: Array<PetCreated> = [];
+const animatedPets: Array<PetCreated> = [];
+
 const hidePets = new Instance("BoolValue");
 const distanceValue = new Instance("IntValue");
 
@@ -32,7 +34,7 @@ function getXandZ(angle: number, totalPets: number, settingsDistance: number): {
 function getOwnedPets(player: Player): number {
 	let counter = 0;
 
-	storedPets.forEach((pet) => {
+	animatedPets.forEach((pet) => {
 		if (pet.owner.UserId === player.UserId) {
 			counter += 1;
 		}
@@ -42,7 +44,7 @@ function getOwnedPets(player: Player): number {
 }
 
 RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
-	for (const [index, pet] of pairs(storedPets)) {
+	for (const [index, pet] of pairs(animatedPets)) {
 		if (pet.model.Parent === undefined) {
 			continue;
 		}
@@ -137,7 +139,7 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 });
 
 hidePets.Changed.Connect((Value) => {
-	for (const [, pet] of pairs(storedPets)) {
+	for (const [, pet] of pairs(animatedPets)) {
 		pet.model.Parent = Value === true ? Workspace["client objects"].pets : undefined;
 	}
 });
@@ -152,35 +154,37 @@ onStoreCreated(player)
 		distanceValue.Value = settings.visual.petsStudsOfDistance;
 
 		playerPets.forEach((pet) => {
-			const petEquipped = pet.equipped;
-			const petAlreadyStored = storedPets.find((stordPet) => stordPet.guid === pet.guid) !== undefined;
-
-			if (!petEquipped && !petAlreadyStored) {
-				const createdPet = createPetFollow(player, pet.id, pet.guid, pet.variant);
-				storedPets.push(createdPet);
-				createdPet.model.Parent = settings.visual.petsDisplayed === true ? Workspace["client objects"].pets : undefined;
+			if (!pet.equipped) {
+				return;
 			}
+
+			const createdPet = createPetFollow(player, pet.id, pet.guid, pet.variant);
+			animatedPets.push(createdPet);
+			createdPet.model.Parent = settings.visual.petsDisplayed === true ? Workspace["client objects"].pets : undefined;
 		});
 
-		store.changed.connect((newState) => {
-			const updatedSettings = newState.settings;
-			const updatedPlayerPets = newState.pets;
+		store.changed.connect((newState, oldState) => {
+			if (newState.pets === oldState.pets && newState.settings.gameplay === oldState.settings.gameplay) {
+				return warn("Stores were the same");
+			}
 
+			const updatedSettings = newState.settings;
 			hidePets.Value = updatedSettings.visual.petsDisplayed;
 			distanceValue.Value = updatedSettings.visual.petsStudsOfDistance;
-			updatedPlayerPets.forEach((pet) => {
-				const petEquipped = pet.equipped;
-				const petAlreadyStored = storedPets.find((stordPet) => stordPet.guid === pet.guid) !== undefined;
 
-				if (!petEquipped && !petAlreadyStored) {
+			const updatedPlayerPets = newState.pets;
+			updatedPlayerPets.forEach((pet) => {
+				if (!pet.equipped) {
+					const cachedPetIndex = animatedPets.findIndex((animatedPet) => animatedPet.guid === pet.guid);
+					if (cachedPetIndex !== undefined) {
+						animatedPets.unorderedRemove(cachedPetIndex);
+						removePet(pet.guid);
+					}
+				} else {
 					const createdPet = createPetFollow(player, pet.id, pet.guid, pet.variant);
-					storedPets.push(createdPet);
+					animatedPets.push(createdPet);
 					createdPet.model.Parent =
 						settings.visual.petsDisplayed === true ? Workspace["client objects"].pets : undefined;
-				} else if (!petEquipped && petAlreadyStored) {
-					const removedPetIndex = storedPets.findIndex((storedPet) => storedPet.guid === pet.guid);
-					storedPets.unorderedRemove(removedPetIndex);
-					removePet(pet.guid);
 				}
 			});
 		});
