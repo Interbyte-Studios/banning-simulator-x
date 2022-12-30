@@ -164,13 +164,14 @@ onStoreCreated(player)
 		});
 
 		store.changed.connect((newState, oldState) => {
-			if (newState.pets === oldState.pets && newState.settings.visual === oldState.settings.visual) {
-				return warn("Stores were the same");
+			if (newState.settings.visual !== oldState.settings.visual) {
+				hidePets.Value = newState.settings.visual.petsDisplayed;
+				distanceValue.Value = newState.settings.visual.petsStudsOfDistance;
 			}
 
-			const updatedSettings = newState.settings;
-			hidePets.Value = updatedSettings.visual.petsDisplayed;
-			distanceValue.Value = updatedSettings.visual.petsStudsOfDistance;
+			if (newState.pets === oldState.pets) {
+				return;
+			}
 
 			const updatedPlayerPets = newState.pets;
 			updatedPlayerPets.forEach((pet) => {
