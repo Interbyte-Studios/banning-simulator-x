@@ -161,6 +161,23 @@ onStoreCreated(player)
 			const createdPet = createPetFollow(player, pet.id, pet.guid, pet.variant);
 			animatedPets.push(createdPet);
 			createdPet.model.Parent = settings.visual.petsDisplayed === true ? Workspace["client objects"].pets : undefined;
+
+			const character = player.Character;
+			if (character === undefined) {
+				return;
+			}
+
+			const humanoid = character.FindFirstChildOfClass("Humanoid");
+			if (humanoid === undefined) {
+				return;
+			}
+
+			const humanoidRootPart = humanoid.RootPart;
+			if (humanoidRootPart === undefined) {
+				return;
+			}
+
+			createdPet.model.PivotTo(humanoidRootPart.CFrame);
 		});
 
 		store.changed.connect((newState, oldState) => {
@@ -191,6 +208,23 @@ onStoreCreated(player)
 					animatedPets.push(createdPet);
 					createdPet.model.Parent =
 						settings.visual.petsDisplayed === true ? Workspace["client objects"].pets : undefined;
+
+					const character = player.Character;
+					if (character === undefined) {
+						return;
+					}
+
+					const humanoid = character.FindFirstChildOfClass("Humanoid");
+					if (humanoid === undefined) {
+						return;
+					}
+
+					const humanoidRootPart = humanoid.RootPart;
+					if (humanoidRootPart === undefined) {
+						return;
+					}
+
+					createdPet.model.PivotTo(humanoidRootPart.CFrame);
 				}
 			});
 		});
