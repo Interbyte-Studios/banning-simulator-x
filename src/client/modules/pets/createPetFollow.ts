@@ -15,18 +15,23 @@ export interface PetCreated {
 }
 
 /**
- *
  * @param petName The name of the pet we are getting the model for.
  * @returns The model for the pet.
  */
 function getPetModel(petName: string): Model {
-	for (const [, eggFolder] of pairs(ReplicatedStorage.assetObjects.pets.GetChildren())) {
-		for (const [_, petModel] of pairs(eggFolder.GetChildren())) {
-			if (petModel.Name === petName) {
-				if (petModel.IsA("Model")) {
-					return petModel.Clone();
-				}
+	const eggModels = ReplicatedStorage.assetObjects.pets.GetChildren();
+	for (const eggModel of eggModels) {
+		for (const petModel of eggModel.GetChildren()) {
+			print(petModel.Name);
+			if (!petModel.IsA("Model")) {
+				continue;
 			}
+
+			if (petModel.Name !== petName) {
+				continue;
+			}
+
+			return petModel.Clone();
 		}
 	}
 
@@ -52,10 +57,11 @@ export function createPetFollow(player: Player, petId: number, guid: string, var
 	}
 
 	const petParts: Array<BasePart> = [];
-	for (const [, part] of pairs(petModel.GetChildren())) {
-		if (!part.IsA("BasePart")) continue;
-		petParts.push(part);
-	}
+	petModel.GetChildren().forEach((part) => {
+		if (part.IsA("BasePart")) {
+			petParts.push(part);
+		}
+	});
 
 	petModel.Name = guid;
 	weldObject(petParts, petModel.PrimaryPart);
@@ -77,17 +83,31 @@ export function createPetFollow(player: Player, petId: number, guid: string, var
 	alignPosition.Responsiveness = animationType === "Fly" ? 15 : 20;
 	alignOrientation.Responsiveness = 20;
 
-	const character = player.Character;
-	petModel.PrimaryPart.PivotTo(character?.PrimaryPart?.CFrame ?? new CFrame(0, 0, 0));
-	const data: PetCreated = {
-		guid: guid,
+	const originCFrame = new CFrame(0, 0, 0);
+	const returnValue: PetCreated = {
+		guid,
 		id: petId,
 		model: petModel,
-		alignOrientation: alignOrientation,
-		alignPosition: alignPosition,
+		alignOrientation,
+		alignPosition,
 		petType: animationType,
 		owner: player,
 	};
 
-	return data;
+	const character = player.Character;
+	if (character === undefined) {
+		petModel.PrimaryPart.PivotTo(originCFrame);
+		warn("No character");
+		return returnValue;
+	}
+
+	const primaryPart = character.PrimaryPart;
+	if (primaryPart === undefined) {
+		petModel.PrimaryPart.PivotTo(originCFrame);
+		warn("No primary part");
+		return returnValue;
+	}
+
+	petModel.PrimaryPart.PivotTo(primaryPart.CFrame);
+	return returnValue;
 }

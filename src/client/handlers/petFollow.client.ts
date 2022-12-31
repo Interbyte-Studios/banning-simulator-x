@@ -2,6 +2,7 @@ import { Players, RunService, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { createPetFollow, PetCreated } from "client/modules/pets/createPetFollow";
 import { removePet } from "client/modules/pets/unequipPet";
+import { ValidPetAnimationType } from "shared/rodux/settings";
 
 const player = Players.LocalPlayer;
 
@@ -158,29 +159,12 @@ onStoreCreated(player)
 				return;
 			}
 
-			const createdPet = createPetFollow(player, pet.id, pet.guid, pet.variant);
-			createdPet.model.Parent = settings.visual.petsDisplayed === true ? Workspace["client objects"].pets : undefined;
-
-			const character = player.Character;
-			if (character === undefined) {
+			if (initialState.settings.visual.petAnimationType === "Surrounding") {
+				const createdPet = createPetFollow(player, pet.id, pet.guid, pet.variant);
+				createdPet.model.Parent = settings.visual.petsDisplayed === true ? Workspace["client objects"].pets : undefined;
 				animatedPets.push(createdPet);
-				return;
+			} else {
 			}
-
-			const humanoid = character.FindFirstChildOfClass("Humanoid");
-			if (humanoid === undefined) {
-				animatedPets.push(createdPet);
-				return;
-			}
-
-			const humanoidRootPart = humanoid.RootPart;
-			if (humanoidRootPart === undefined) {
-				animatedPets.push(createdPet);
-				return;
-			}
-
-			createdPet.model.PivotTo(humanoidRootPart.CFrame);
-			animatedPets.push(createdPet);
 		});
 
 		store.changed.connect((newState, oldState) => {
@@ -210,26 +194,6 @@ onStoreCreated(player)
 					const createdPet = createPetFollow(player, pet.id, pet.guid, pet.variant);
 					createdPet.model.Parent =
 						settings.visual.petsDisplayed === true ? Workspace["client objects"].pets : undefined;
-
-					const character = player.Character;
-					if (character === undefined) {
-						animatedPets.push(createdPet);
-						return;
-					}
-
-					const humanoid = character.FindFirstChildOfClass("Humanoid");
-					if (humanoid === undefined) {
-						animatedPets.push(createdPet);
-						return;
-					}
-
-					const humanoidRootPart = humanoid.RootPart;
-					if (humanoidRootPart === undefined) {
-						animatedPets.push(createdPet);
-						return;
-					}
-
-					createdPet.model.PivotTo(humanoidRootPart.CFrame);
 					animatedPets.push(createdPet);
 				}
 			});
