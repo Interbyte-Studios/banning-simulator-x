@@ -4,15 +4,7 @@ import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 import { weldObject } from "shared/util/weldObject";
 
-export interface PetCreated {
-	guid: string;
-	id: number;
-	model: Model;
-	owner: Player;
-	alignOrientation: AlignOrientation;
-	alignPosition: AlignPosition;
-	petType: "Walk" | "Fly";
-}
+import { PetCreated } from "./petAnimationCache";
 
 /**
  * @param petName The name of the pet we are getting the model for.
@@ -22,7 +14,6 @@ function getPetModel(petName: string): Model {
 	const eggModels = ReplicatedStorage.assetObjects.pets.GetChildren();
 	for (const eggModel of eggModels) {
 		for (const petModel of eggModel.GetChildren()) {
-			print(petModel.Name);
 			if (!petModel.IsA("Model")) {
 				continue;
 			}
@@ -45,7 +36,7 @@ function getPetModel(petName: string): Model {
  * @param variant The variant of the pet.
  * @returns Data for the new pet.
  */
-export function createPetFollow(player: Player, petId: number, guid: string, variant: Variants): PetCreated {
+export function cachePetForAnimation(player: Player, petId: number, guid: string, variant: Variants): PetCreated {
 	const petData = getPetData(petId);
 
 	const petModel = getPetModel(petData.name);
@@ -53,7 +44,7 @@ export function createPetFollow(player: Player, petId: number, guid: string, var
 	setAssetProperties("pet", petModel, variant);
 
 	if (petModel.PrimaryPart === undefined) {
-		throw ` Expected to find primary part for pet ${petData.name}`;
+		throw `Expected to find primary part for pet ${petData.name}`;
 	}
 
 	const petParts: Array<BasePart> = [];
@@ -97,14 +88,12 @@ export function createPetFollow(player: Player, petId: number, guid: string, var
 	const character = player.Character;
 	if (character === undefined) {
 		petModel.PrimaryPart.PivotTo(originCFrame);
-		warn("No character");
 		return returnValue;
 	}
 
 	const primaryPart = character.PrimaryPart;
 	if (primaryPart === undefined) {
 		petModel.PrimaryPart.PivotTo(originCFrame);
-		warn("No primary part");
 		return returnValue;
 	}
 
