@@ -97,6 +97,6 @@ export function cachePetForAnimation(player: Player, petId: number, guid: string
 		return returnValue;
 	}
 
-	petModel.PrimaryPart.PivotTo(primaryPart.CFrame);
+	petModel.MoveTo(primaryPart.Position);
 	return returnValue;
 }
