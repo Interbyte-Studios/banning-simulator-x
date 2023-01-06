@@ -64,6 +64,16 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 					return;
 				}
 
+				const character = player.Character;
+				if (character === undefined) {
+					return;
+				}
+
+				const primaryPart = character.PrimaryPart;
+				if (primaryPart === undefined) {
+					return;
+				}
+
 				newState.pets.forEach((pet) => {
 					if (!pet.equipped) {
 						const cachedPetIndex = playerCache.pets.findIndex((animatedPet) => animatedPet.guid === pet.guid);
@@ -81,6 +91,7 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 
 						const createdPet = cachePetForAnimation(player, pet.id, pet.guid, pet.variant);
 						createdPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
+						createdPet.model.MoveTo(primaryPart.Position);
 						playerCache.pets.push(createdPet);
 					}
 				});
@@ -138,10 +149,6 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 				return;
 			}
 
-			const equippedPets = playerCache.pets.size();
-			const petAngle = index / (radius / equippedPets);
-			const { xCoord, zCoord } = getXandZ(petAngle, equippedPets, playerCache.distance.Value);
-
 			/// Variables
 			const alignPosition = pet.alignPosition;
 			const alignOrientation = pet.alignOrientation;
@@ -166,55 +173,120 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 			const rayCastParams = new RaycastParams();
 			rayCastParams.IgnoreWater = true;
 			rayCastParams.FilterType = Enum.RaycastFilterType.Blacklist;
-			rayCastParams.FilterDescendantsInstances = [character, petModel];
+			rayCastParams.FilterDescendantsInstances = [character];
 
-			if (petType === "Walk") {
-				const rayCast = Workspace.Raycast(
-					humanoidRootPart.Position.add(new Vector3(xCoord, 20, zCoord)),
-					new Vector3(0, -100, 0),
-				);
+			if (playerCache.animationType.Value === "Surrounding") {
+				const equippedPets = playerCache.pets.size();
+				const petAngle = index / (radius / equippedPets);
+				const { xCoord, zCoord } = getXandZ(petAngle, equippedPets, playerCache.distance.Value);
 
-				if (rayCast === undefined) {
-					return;
-				}
-
-				if (rayCast.Instance.CanCollide === false) {
-					return;
-				}
-
-				if (isMoving) {
-					alignPosition.Position = new CFrame(
-						humanoidRootPart.CFrame.X,
-						rayCast.Position.Y + petSize.Y / (petSize.Y * 2),
-						humanoidRootPart.CFrame.Z,
-					).mul(new CFrame(xCoord, petJump, zCoord)).Position;
-					alignOrientation.CFrame = humanoidRootPart.CFrame.mul(CFrame.Angles(math.rad(petRotate), 0, 0));
-				} else {
-					alignPosition.Position = new CFrame(
-						humanoidRootPart.CFrame.X,
-						rayCast.Position.Y + petSize.Y / (petSize.Y * 1.1),
-						humanoidRootPart.CFrame.Z,
-					).mul(new CFrame(xCoord, 0, zCoord)).Position;
-					alignOrientation.CFrame = CFrame.lookAt(primaryPart.Position, humanoidRootPart.Position);
-					alignOrientation.SecondaryAxis = new Vector3(0, 1, 0);
-				}
-			} else if (petType === "Fly") {
-				if (isMoving) {
-					alignPosition.Position = new CFrame(
-						humanoidRootPart.CFrame.X,
-						humanoidRootPart.Position.Y,
-						humanoidRootPart.CFrame.Z,
-					).mul(new CFrame(xCoord, petHover, zCoord)).Position;
-					alignOrientation.CFrame = humanoidRootPart.CFrame.mul(CFrame.Angles(math.rad(petFace), 0, 0));
-				} else {
-					alignPosition.Position = new CFrame(
-						humanoidRootPart.CFrame.X,
-						humanoidRootPart.Position.Y,
-						humanoidRootPart.CFrame.Z,
-					).mul(new CFrame(xCoord, petHover, zCoord)).Position;
-					alignOrientation.CFrame = CFrame.lookAt(primaryPart.Position, humanoidRootPart.Position).mul(
-						CFrame.Angles(math.rad(petFace), 0, 0),
+				if (petType === "Walk") {
+					const rayCast = Workspace.Raycast(
+						humanoidRootPart.Position.add(new Vector3(xCoord, 20, zCoord)),
+						new Vector3(0, -100, 0),
+						rayCastParams,
 					);
+
+					if (rayCast === undefined) {
+						return;
+					}
+
+					if (rayCast.Instance.CanCollide === false) {
+						return;
+					}
+
+					if (isMoving) {
+						alignPosition.Position = new CFrame(
+							humanoidRootPart.CFrame.X,
+							rayCast.Position.Y + petSize.Y / (petSize.Y * 2),
+							humanoidRootPart.CFrame.Z,
+						).mul(new CFrame(xCoord, petJump, zCoord)).Position;
+						alignOrientation.CFrame = humanoidRootPart.CFrame.mul(CFrame.Angles(math.rad(petRotate), 0, 0));
+					} else {
+						alignPosition.Position = new CFrame(
+							humanoidRootPart.CFrame.X,
+							rayCast.Position.Y + petSize.Y / (petSize.Y * 1.1),
+							humanoidRootPart.CFrame.Z,
+						).mul(new CFrame(xCoord, 0, zCoord)).Position;
+						alignOrientation.CFrame = CFrame.lookAt(primaryPart.Position, humanoidRootPart.Position);
+						alignOrientation.SecondaryAxis = new Vector3(0, 1, 0);
+					}
+				} else if (petType === "Fly") {
+					if (isMoving) {
+						alignPosition.Position = new CFrame(
+							humanoidRootPart.CFrame.X,
+							humanoidRootPart.Position.Y,
+							humanoidRootPart.CFrame.Z,
+						).mul(new CFrame(xCoord, petHover, zCoord)).Position;
+						alignOrientation.CFrame = humanoidRootPart.CFrame.mul(CFrame.Angles(math.rad(petFace), 0, 0));
+					} else {
+						alignPosition.Position = new CFrame(
+							humanoidRootPart.CFrame.X,
+							humanoidRootPart.Position.Y,
+							humanoidRootPart.CFrame.Z,
+						).mul(new CFrame(xCoord, petHover, zCoord)).Position;
+						alignOrientation.CFrame = CFrame.lookAt(primaryPart.Position, humanoidRootPart.Position).mul(
+							CFrame.Angles(math.rad(petFace), 0, 0),
+						);
+					}
+				}
+			} else if (playerCache.animationType.Value === "Following") {
+				const spacing = 2;
+				const columns = math.floor(math.sqrt(playerCache.pets.size()));
+				const offset = new Vector3((-columns / 1.5) * spacing + spacing / 2, 0, 4);
+
+				const xCoord = (index % columns) * spacing;
+				const zCoord = math.floor(index / columns);
+
+				if (petType === "Walk") {
+					const rayCast = Workspace.Raycast(
+						humanoidRootPart.Position.add(new Vector3(0, 20, 0)),
+						new Vector3(0, -100, 0),
+						rayCastParams,
+					);
+
+					if (rayCast === undefined) {
+						return;
+					}
+
+					if (isMoving) {
+						alignPosition.Position = new CFrame(
+							humanoidRootPart.CFrame.X,
+							rayCast.Position.Y + petSize.Y / (petSize.Y * 2),
+							humanoidRootPart.CFrame.Z,
+						)
+							.mul(humanoidRootPart.CFrame.Rotation)
+							.mul(new CFrame(offset.add(new Vector3(xCoord, petJump, zCoord).mul(spacing)))).Position;
+						alignOrientation.CFrame = humanoidRootPart.CFrame.mul(CFrame.Angles(math.rad(petRotate), 0, 0));
+					} else {
+						alignPosition.Position = new CFrame(
+							humanoidRootPart.CFrame.X,
+							rayCast.Position.Y + petSize.Y / (petSize.Y * 1.1),
+							humanoidRootPart.CFrame.Z,
+						)
+							.mul(humanoidRootPart.CFrame.Rotation)
+							.mul(new CFrame(offset.add(new Vector3(xCoord, 0, zCoord).mul(spacing)))).Position;
+						alignOrientation.CFrame = humanoidRootPart.CFrame;
+						alignOrientation.SecondaryAxis = new Vector3(0, 1, 0);
+					}
+				} else if (petType === "Fly") {
+					if (isMoving) {
+						alignPosition.Position = new CFrame(
+							humanoidRootPart.CFrame.X,
+							humanoidRootPart.Position.Y,
+							humanoidRootPart.CFrame.Z,
+						).mul(new CFrame(xCoord, petHover, zCoord)).Position;
+						alignOrientation.CFrame = humanoidRootPart.CFrame.mul(CFrame.Angles(math.rad(petFace), 0, 0));
+					} else {
+						alignPosition.Position = new CFrame(
+							humanoidRootPart.CFrame.X,
+							humanoidRootPart.Position.Y,
+							humanoidRootPart.CFrame.Z,
+						).mul(new CFrame(xCoord, petHover, zCoord)).Position;
+						alignOrientation.CFrame = CFrame.lookAt(primaryPart.Position, humanoidRootPart.Position).mul(
+							CFrame.Angles(math.rad(petFace), 0, 0),
+						);
+					}
 				}
 			}
 		});
