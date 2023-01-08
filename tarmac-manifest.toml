@@ -1718,6 +1718,11 @@ hash = "3b891b00fd9c232e7ec1aaae25b330da98d6162bd3b2782cb2bee144c16830b7"
 id = 10931058710
 packable = false
 
+[inputs."images/ui/autoFight/minimized.png"]
+hash = "c70b0397f467c607b3f9387e24cf5ee10a7b6809984500a130656ecb55ccf1e6"
+id = 12099564738
+packable = false
+
 [inputs."images/ui/codes/background.png"]
 hash = "6587e982836cdf78e3ccaa8a8a81bf8178a97fd012610efc2cca0a9637c6aaac"
 id = 10913446755
