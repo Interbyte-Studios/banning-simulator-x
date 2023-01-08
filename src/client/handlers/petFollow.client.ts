@@ -231,7 +231,7 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 					}
 				}
 			} else if (playerCache.animationType.Value === "Following") {
-				const spacing = 2;
+				const spacing = 2.5;
 				const columns = math.floor(math.sqrt(playerCache.pets.size()));
 				const offset = new Vector3((-columns / 1.5) * spacing + spacing / 2, 0, 4);
 
@@ -275,17 +275,23 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 							humanoidRootPart.CFrame.X,
 							humanoidRootPart.Position.Y,
 							humanoidRootPart.CFrame.Z,
-						).mul(new CFrame(xCoord, petHover, zCoord)).Position;
+						)
+							.mul(humanoidRootPart.CFrame.Rotation)
+							.mul(
+								new CFrame(offset.add(new Vector3(xCoord, math.clamp(petHover, -0.5, 0.5), zCoord).mul(spacing))),
+							).Position;
 						alignOrientation.CFrame = humanoidRootPart.CFrame.mul(CFrame.Angles(math.rad(petFace), 0, 0));
 					} else {
 						alignPosition.Position = new CFrame(
 							humanoidRootPart.CFrame.X,
 							humanoidRootPart.Position.Y,
 							humanoidRootPart.CFrame.Z,
-						).mul(new CFrame(xCoord, petHover, zCoord)).Position;
-						alignOrientation.CFrame = CFrame.lookAt(primaryPart.Position, humanoidRootPart.Position).mul(
-							CFrame.Angles(math.rad(petFace), 0, 0),
-						);
+						)
+							.mul(humanoidRootPart.CFrame.Rotation)
+							.mul(
+								new CFrame(offset.add(new Vector3(xCoord, math.clamp(petHover, -0.5, 0.5), zCoord).mul(spacing))),
+							).Position;
+						alignOrientation.CFrame = humanoidRootPart.CFrame.mul(CFrame.Angles(math.rad(petFace), 0, 0));
 					}
 				}
 			}
