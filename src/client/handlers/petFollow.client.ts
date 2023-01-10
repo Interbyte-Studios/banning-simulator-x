@@ -167,8 +167,8 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 			const petJump = math.clamp(math.cos(now * 24) * 2, 0, 2);
 			const petRotate = math.cos(now * 10) * 30;
 
-			const petHover = math.cos(now * 3) * 1.2;
-			const petFace = math.clamp(math.cos(now * 2) * 10, 0, 10);
+			const petHover = math.cos(now * 2.5) * 1.2;
+			const petFace = math.sin(now * 2.2) * 15;
 
 			const rayCastParams = new RaycastParams();
 			rayCastParams.IgnoreWater = true;
