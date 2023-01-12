@@ -443,6 +443,7 @@ declare namespace assetIds {
 				upgrade: string;
 				"viewer background": string;
 				icons: {
+					"auto fight": string;
 					items: string;
 					options: string;
 					codes: string;

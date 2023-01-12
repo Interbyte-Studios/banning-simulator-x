@@ -73,7 +73,7 @@ export const EnabledButton = hooks((props: EnabledButtonProps, hooks) => {
 				<BaseUIStroke
 					native={{
 						Thickness: 2.5,
-						Color: props.isEnabled ? Color3.fromRGB(111, 158, 113) : Color3.fromRGB(138, 92, 92),
+						Color: props.isEnabled ? Color3.fromRGB(111, 158, 113) : Color3.fromRGB(204, 98, 112),
 					}}
 				/>
 			</textlabel>

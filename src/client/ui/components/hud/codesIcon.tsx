@@ -7,7 +7,7 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 interface CodesIconProps {
-	displayCodesMenu: () => void;
+	displayCodes: () => void;
 }
 
 const minimizedSize = 0.8;
@@ -41,7 +41,7 @@ export const CodesIcon = hooks((props: CodesIconProps, { useEffect }) => {
 			Event={{
 				Activated: (): void => {
 					playSFX(UIEngagement.MinorEngagement);
-					props.displayCodesMenu();
+					props.displayCodes();
 				},
 				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),

@@ -10,7 +10,7 @@ const minimizedSize = 0.8;
 const maximizedSize = 0.9;
 
 interface OptionsIconProps {
-	displaySettingsMenu: () => void;
+	displaySettings: () => void;
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
@@ -41,7 +41,7 @@ export const OptionsIcon = hooks((props: OptionsIconProps, { useEffect }) => {
 			Event={{
 				Activated: (): void => {
 					playSFX(UIEngagement.MinorEngagement);
-					props.displaySettingsMenu();
+					props.displaySettings();
 				},
 				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),

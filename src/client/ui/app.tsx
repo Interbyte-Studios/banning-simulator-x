@@ -3,6 +3,7 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { Store } from "shared/rodux";
 
 import { LocalMessages } from "./components/announcements";
+import { AutoFight } from "./components/auto fight";
 import { CodesMenu } from "./components/codes/menu";
 import { CurrencyGainAnimation } from "./components/currencyGainAnimation";
 import { DatastoreEvents } from "./components/datastoreEvents";
@@ -45,6 +46,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 	const [talismanTowerVisibility, setTalismanTowerVisibility] = useState(false);
 	const [spinWheelVisibility, setSpinWheelVisibility] = useState(false);
 	const [itemsVisibility, setItemsVisibility] = useState(false);
+	const [autoFightVisibility, setAutoFightVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
 
@@ -79,12 +81,13 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!spinWheelVisibility &&
 						!itemsVisibility
 					}
-					displayCodesMenu={(): void => setCodesVisible(true)}
-					displayQuestsMenu={(): void => setQuestsVisibility(true)}
-					displaySettingsMenu={(): void => setSettingsVisibility(true)}
-					displayTeleportationMenu={(): void => setTeleportationVisibility(true)}
-					displaySpinWheelMenu={(): void => setSpinWheelVisibility(true)}
-					displayItemsMenu={(): void => setItemsVisibility(true)}
+					displayCodes={(): void => setCodesVisible(true)}
+					displayQuests={(): void => setQuestsVisibility(true)}
+					displaySettings={(): void => setSettingsVisibility(true)}
+					displayTeleportation={(): void => setTeleportationVisibility(true)}
+					displaySpinWheel={(): void => setSpinWheelVisibility(true)}
+					displayItems={(): void => setItemsVisibility(true)}
+					displayAutoFight={(): void => setAutoFightVisibility(true)}
 				/>
 				<WeaponLevelUpAnimation
 					enabled={
@@ -232,6 +235,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!itemsVisibility
 					}
 				/>
+				<AutoFight enabled={autoFightVisibility} hideMenu={(): void => setAutoFightVisibility(false)} />
 			</>
 		</RoactRodux.StoreProvider>
 	);

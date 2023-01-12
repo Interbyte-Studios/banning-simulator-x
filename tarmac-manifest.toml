@@ -1773,6 +1773,11 @@ hash = "49e4e31dc73a66de85fbeb9ed19f9901cdf49204ab0460d082cf32a1055641ae"
 id = 11016579897
 packable = false
 
+[inputs."images/ui/hud/icons/auto fight.png"]
+hash = "4a02090cdb39fa9fde33b1c0887d40f006c8d4bf78dce864108fc3de9c7a439a"
+id = 12131905288
+packable = false
+
 [inputs."images/ui/hud/icons/codes.png"]
 hash = "4d894e85da7b21a65ef1e8f3a405a044b05bce8408fa266a47b1e66bea790951"
 id = 11591957031
