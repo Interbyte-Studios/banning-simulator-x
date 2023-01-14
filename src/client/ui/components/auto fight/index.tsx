@@ -1,7 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Players, Workspace } from "@rbxts/services";
+import { Players, RunService, Workspace } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
@@ -16,7 +16,9 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { currencies, Currency } from "shared/configs/currencies";
 import { MAX_RANK, RANKS } from "shared/configs/ranks";
-import { isValidZone, ZoneNames } from "shared/configs/zones";
+import { MAX_WEAPON_ID } from "shared/configs/weapons";
+import { WorldName } from "shared/configs/worlds";
+import { UniversalWorldData, Zone } from "shared/configs/zones";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
 import { CurrentWeaponState } from "shared/rodux/currentWeapon";
@@ -25,6 +27,7 @@ import { GamepassesState } from "shared/rodux/gamepasses";
 import { RankState } from "shared/rodux/rank";
 import { WorldsState } from "shared/rodux/worlds";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
+import { isValidWorld } from "shared/util/isValidWorld";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { EnabledButton } from "../settings/elements/enabledButton";
@@ -37,6 +40,11 @@ interface AutoFightCache {
 	endingWeapon: number;
 	petExperience: number;
 }
+
+let lastTimerCheck = 0;
+
+const NPC_ATTACK_DEBOUNCE = 1.5;
+let lastNPCAttackCheck = 0;
 
 const autoFightCache: AutoFightCache = {
 	currencies: currencies.map((value) => {
@@ -89,9 +97,9 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 			return <></>;
 		}
 
-		const { useState, useEffect, useContext } = hooks;
+		const { useState, useEffect, useContext, useValue } = hooks;
 		const [isEnabled, setIsEnabled] = useState(false);
-		const [zoneSelected, setSelectedZone] = useState<ZoneNames | undefined>(undefined);
+		const [worldSelected, setSelectedWorld] = useState<WorldName | undefined>(undefined);
 		const [timeElapsed, setTimeElapsed] = useState(0);
 		const [autoRankEnabled, setAutoRankEnabled] = useState(false);
 		const [purchaseWeaponsEnabled, setPurchaseWeaponsEnabled] = useState(false);
@@ -100,19 +108,36 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 		const { unlockRank, purchaseWeapon } = useContext(remoteContext);
 		const { addAnnouncement } = useContext(AnnouncementContext);
 
+		const mounted = useValue(false);
 		useEffect(() => {
-			task.spawn(() => {
-				// eslint-disable-next-line no-constant-condition
-				while (true) {
-					if (!isEnabled) {
-						return;
-					}
+			mounted.value = true;
 
-					setTimeElapsed(timeElapsed + 1);
-					task.wait(1);
-				}
-			});
+			return (): void => {
+				mounted.value = false;
+			};
 		}, []);
+
+		useEffect(() => {
+			const connection = RunService.Heartbeat.Connect(() => {
+				if (!mounted) {
+					return;
+				}
+
+				if (!isEnabled) {
+					return;
+				}
+
+				const now = time();
+				if (now - lastTimerCheck < 1) {
+					return;
+				}
+				lastTimerCheck = now;
+
+				setTimeElapsed(timeElapsed + 1);
+			});
+
+			return (): void => connection.Disconnect();
+		}, [isEnabled, timeElapsed]);
 
 		useEffect(() => {
 			if (!isEnabled) {
@@ -152,10 +177,12 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				return;
 			}
 
-			const nextWeapon = getWeaponInfo(props.currentWeapon.id + 1);
-			if (nextWeapon === undefined) {
+			const nextWeaponId = props.currentWeapon.id + 1;
+			if (nextWeaponId > MAX_WEAPON_ID) {
 				return;
 			}
+
+			const nextWeapon = getWeaponInfo(props.currentWeapon.id + 1);
 
 			if (nextWeapon.data.cost === undefined) {
 				return;
@@ -173,6 +200,86 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 
 			purchaseWeapon.SendToServer(nextWeapon.data.id);
 		}, [props.currencies, props.rank]);
+
+		useEffect(() => {
+			if (!isEnabled) {
+				return;
+			}
+
+			if (worldSelected === undefined) {
+				warn(`No world could be found for enabling auto fight. Disabling for component safety (E-1).`);
+				setIsEnabled(false);
+				return;
+			}
+
+			const storedWorldData = props.worlds.find((storedWorld) => storedWorld.name === worldSelected);
+			if (storedWorldData === undefined) {
+				warn(
+					`The world selected for auto fight: "${worldSelected}" is not owned by the local player. Disabling for component safety (E-2).`,
+				);
+				setIsEnabled(false);
+				return;
+			}
+
+			let lastZoneId = 0;
+			storedWorldData.zones.forEach((storedZone) => {
+				for (const [worldName, worldZones] of pairs(UniversalWorldData)) {
+					if (worldName !== worldSelected) {
+						continue;
+					}
+
+					for (const [zoneName, zoneData] of pairs(worldZones)) {
+						if (zoneName !== storedZone) {
+							continue;
+						}
+
+						if (zoneData.id < lastZoneId) {
+							continue;
+						}
+
+						lastZoneId = zoneData.id;
+					}
+				}
+			});
+
+			let highestOrderedZone: Zone | undefined;
+			for (const [worldName, worldZones] of pairs(UniversalWorldData)) {
+				if (worldName !== worldSelected) {
+					continue;
+				}
+
+				for (const [, zoneData] of pairs(worldZones)) {
+					if (zoneData.id !== lastZoneId) {
+						continue;
+					}
+
+					highestOrderedZone = zoneData;
+				}
+			}
+			if (highestOrderedZone === undefined) {
+				warn(
+					`Could not find highest ordered zone for world: ${worldSelected}. Was searching for a zone with the id of: ${lastZoneId}. Disabling for component safety (E-3).`,
+				);
+				setIsEnabled(false);
+				return;
+			}
+
+			const connection = RunService.Heartbeat.Connect(() => {
+				if (!mounted) {
+					return;
+				}
+
+				const now = time();
+				if (now - lastNPCAttackCheck < NPC_ATTACK_DEBOUNCE) {
+					return;
+				}
+				lastNPCAttackCheck = now;
+
+				// find NPC to attack, if not within a 215 stud distance (magnitude), then teleport to it.
+			});
+
+			return (): void => connection.Disconnect();
+		}, [isEnabled, props.worlds]);
 
 		if (!isEnabled) {
 			// todo: Add case for if they do not own the gamepass or have it unlocked through mastery
@@ -369,8 +476,8 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 					<imagelabel
 						AnchorPoint={vec2Middle}
 						BackgroundTransparency={1}
-						Size={UDim2.fromScale(0.4, 0.45)}
-						Position={UDim2.fromScale(0.5, 0.8)}
+						Size={UDim2.fromScale(0.35, 0.4)}
+						Position={UDim2.fromScale(0.5, 0.75)}
 						Image={assetIds.images.ui.autoFight.minimized}
 						ScaleType={Enum.ScaleType.Fit}
 					>
@@ -422,38 +529,44 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 									}
 
 									const raycastParams = new RaycastParams();
-									raycastParams.FilterDescendantsInstances = [Workspace.worlds["Ban Land"].zones];
+									raycastParams.FilterDescendantsInstances = [Workspace.worlds["Ban Land"].landing];
 									raycastParams.FilterType = Enum.RaycastFilterType.Whitelist;
 									raycastParams.IgnoreWater = false;
 
 									const raycastResult = Workspace.Raycast(
 										humanoidRootPart.Position,
-										new Vector3(0, 100, 0),
+										new Vector3(0, -100, 0),
 										raycastParams,
 									);
 
 									if (raycastResult === undefined) {
-										addAnnouncement("There was an issue while enabling auto fight (E-4).", AnnouncementType.Error);
+										addAnnouncement("Couldn't find a location to enable Auto Fight (E-4).", AnnouncementType.Error);
 										return;
 									}
 
-									if (raycastResult.Instance.Name !== "floor") {
-										warn(raycastResult.Instance.Name, raycastResult.Instance.Parent?.Name);
-										return;
-									}
-
-									const zoneFolder = raycastResult.Instance.Parent;
-									if (zoneFolder === undefined) {
+									if (raycastResult.Instance.Name !== "Part") {
 										addAnnouncement("There was an issue while enabling auto fight (E-5).", AnnouncementType.Error);
 										return;
 									}
 
-									if (!isValidZone(zoneFolder.Name)) {
+									const landingFolder = raycastResult.Instance.Parent;
+									if (landingFolder === undefined) {
 										addAnnouncement("There was an issue while enabling auto fight (E-6).", AnnouncementType.Error);
 										return;
 									}
 
-									setSelectedZone(zoneFolder.Name);
+									const worldFolder = landingFolder.Parent;
+									if (worldFolder === undefined) {
+										addAnnouncement("There was an issue while enabling auto fight (E-7).", AnnouncementType.Error);
+										return;
+									}
+
+									if (!isValidWorld(worldFolder.Name)) {
+										addAnnouncement("There was an issue while enabling auto fight (E-8).", AnnouncementType.Error);
+										return;
+									}
+
+									setSelectedWorld(worldFolder.Name);
 									setIsEnabled(true);
 								},
 								MouseEnter: (): void => motor.setGoal(minimizedSpring),
@@ -499,8 +612,8 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 					<imagelabel
 						AnchorPoint={vec2Middle}
 						BackgroundTransparency={1}
-						Size={UDim2.fromScale(0.4, 0.45)}
-						Position={UDim2.fromScale(0.5, 0.8)}
+						Size={UDim2.fromScale(0.35, 0.4)}
+						Position={UDim2.fromScale(0.5, 0.75)}
 						Image={assetIds.images.ui.autoFight.minimized}
 						ScaleType={Enum.ScaleType.Fit}
 					>
