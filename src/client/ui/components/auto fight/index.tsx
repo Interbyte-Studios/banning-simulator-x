@@ -2,6 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService, Workspace } from "@rbxts/services";
+import { toggleAutoFight } from "client/modules/autoFightWalkspeedHandler";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
@@ -46,6 +47,8 @@ let lastTimerCheck = 0;
 const NPC_ATTACK_DEBOUNCE = 1.5;
 let lastNPCAttackCheck = 0;
 
+const npcsFolder = Workspace.WaitForChild("npcs") as Folder;
+
 const autoFightCache: AutoFightCache = {
 	currencies: currencies.map((value) => {
 		return { name: value, amount: 0 };
@@ -69,6 +72,7 @@ interface AutoFightMappedProps {
 	currentWeapon: CurrentWeaponState;
 	experience: ExperienceState;
 	currencies: CurrenciesState;
+	walkspeed: number;
 }
 /**
  * Maps the Rodux store's state to the props.
@@ -84,6 +88,7 @@ function mapStateToProps(state: StoreState): AutoFightMappedProps {
 		currentWeapon: state.currentWeapon,
 		experience: state.experience,
 		currencies: state.currencies,
+		walkspeed: state.settings.gameplay.walkSpeed,
 	};
 }
 
@@ -256,16 +261,62 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 					highestOrderedZone = zoneData;
 				}
 			}
-			if (highestOrderedZone === undefined) {
-				warn(
-					`Could not find highest ordered zone for world: ${worldSelected}. Was searching for a zone with the id of: ${lastZoneId}. Disabling for component safety (E-3).`,
-				);
-				setIsEnabled(false);
-				return;
-			}
 
+			let focusedNpc: Humanoid | undefined;
+
+			const randomObject = new Random();
 			const connection = RunService.Heartbeat.Connect(() => {
 				if (!mounted) {
+					return;
+				}
+
+				const character = Players.LocalPlayer.Character;
+				if (character === undefined) {
+					return;
+				}
+
+				const humanoid = character.FindFirstChildOfClass("Humanoid");
+				if (humanoid === undefined) {
+					return;
+				}
+
+				const humanoidRootPart = humanoid.RootPart;
+				if (humanoidRootPart === undefined) {
+					return;
+				}
+
+				if (focusedNpc !== undefined && focusedNpc.Health > 0) {
+					const root = focusedNpc.RootPart;
+					if (root === undefined) {
+						return;
+					}
+
+					if (humanoidRootPart.Position.sub(root.Position).Magnitude > 4) {
+						humanoid.MoveTo(root.Position);
+					}
+				} else {
+					focusedNpc = undefined;
+				}
+
+				if (highestOrderedZone === undefined) {
+					warn(
+						`Could not find highest ordered zone for world: ${worldSelected}. Was searching for a zone with the id of: ${lastZoneId}. Disabling for component safety (E-3).`,
+					);
+					setIsEnabled(false);
+					return;
+				}
+
+				const randomNumber = randomObject.NextNumber(1, 2);
+				const isBoss = randomNumber === 2;
+
+				// find NPC to attack, if not within a 215 stud distance (magnitude), then teleport to it.
+				const zoneNPC = highestOrderedZone.npcs.find((npcData) => (isBoss ? npcData.isBoss : !npcData.isBoss));
+				if (zoneNPC === undefined) {
+					return;
+				}
+
+				const npcToAttack = npcsFolder.FindFirstChild(zoneNPC.name);
+				if (npcToAttack === undefined) {
 					return;
 				}
 
@@ -275,11 +326,60 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				}
 				lastNPCAttackCheck = now;
 
-				// find NPC to attack, if not within a 215 stud distance (magnitude), then teleport to it.
+				const npcHumanoid = npcToAttack.FindFirstChildOfClass("Humanoid");
+				if (npcHumanoid === undefined) {
+					return;
+				}
+
+				const npcRootPart = npcHumanoid.RootPart;
+				if (npcRootPart === undefined) {
+					return;
+				}
+
+				if (humanoidRootPart.Position.sub(npcRootPart.Position).Magnitude > 215) {
+					humanoidRootPart.PivotTo(npcRootPart.CFrame);
+				} else {
+					humanoid.MoveTo(npcRootPart.Position);
+				}
+
+				focusedNpc = npcHumanoid;
 			});
 
 			return (): void => connection.Disconnect();
 		}, [isEnabled, props.worlds]);
+
+		useEffect(() => {
+			if (!isEnabled) {
+				return;
+			}
+
+			const localPlayer = Players.LocalPlayer;
+
+			let lastSwingTime = 0;
+			const connection = RunService.RenderStepped.Connect(() => {
+				const now = time();
+				if (now - lastSwingTime < 0.5) {
+					return;
+				}
+				lastSwingTime = now;
+
+				const character = localPlayer.Character;
+				if (character === undefined) {
+					return;
+				}
+
+				const weapon = character.FindFirstChildOfClass("Tool");
+				if (weapon === undefined) {
+					return;
+				}
+
+				weapon.Activate();
+			});
+
+			return (): void => connection.Disconnect();
+		}, [isEnabled]);
+
+		useEffect(() => toggleAutoFight(isEnabled, props.walkspeed), [isEnabled, props.walkspeed]);
 
 		if (!isEnabled) {
 			// todo: Add case for if they do not own the gamepass or have it unlocked through mastery

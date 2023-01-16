@@ -42,6 +42,6 @@ export function purchaseTalisman(store: Store, talismanId: number): void {
 
 	const talismanEquipped = store.getState().currentTalisman;
 	if (talismanEquipped !== undefined) {
-		store.dispatch(toggleWalkSpeed(24 + talismanEquipped));
+		store.dispatch(toggleWalkSpeed(24 + talismanData.stats.walkspeed));
 	}
 }
