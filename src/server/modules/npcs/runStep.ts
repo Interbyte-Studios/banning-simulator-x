@@ -140,7 +140,6 @@ export function runStep(
 		);
 
 		const damageAmount = weaponDamage + talismanStatEffects.damage;
-		warn(weaponDamage, talismanStatEffects.damage, damageAmount);
 
 		npc.instance.Humanoid.TakeDamage(damageAmount);
 

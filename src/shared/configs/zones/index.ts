@@ -9,6 +9,7 @@ export interface Npc {
 	health: number;
 	reward: {
 		currency: number;
+		currencyType: Currency;
 		experience: number;
 	};
 	rank: number;

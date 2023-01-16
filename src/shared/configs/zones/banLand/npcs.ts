@@ -19,6 +19,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: 50,
 		reward: {
 			currency: 250,
+			currencyType: "coins",
 			experience: 7.5,
 		},
 		rank: 1,
@@ -29,6 +30,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: 200,
 		reward: {
 			currency: 750,
+			currencyType: "coins",
 			experience: 26,
 		},
 		rank: 1,
@@ -39,6 +41,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: 800,
 		reward: {
 			currency: shorten("3k"),
+			currencyType: "coins",
 			experience: 45,
 		},
 		rank: 2,
@@ -49,6 +52,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("3.2k"),
 		reward: {
 			currency: shorten("12.5k"),
+			currencyType: "coins",
 			experience: 83,
 		},
 		rank: 2,
@@ -59,6 +63,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("12.8k"),
 		reward: {
 			currency: shorten("50k"),
+			currencyType: "coins",
 			experience: 136,
 		},
 		rank: 3,
@@ -69,6 +74,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("51.2k"),
 		reward: {
 			currency: shorten("250k"),
+			currencyType: "coins",
 			experience: shorten("1.1k"),
 		},
 		rank: 3,
@@ -79,6 +85,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("204.8k"),
 		reward: {
 			currency: shorten("1.25M"),
+			currencyType: "coins",
 			experience: shorten("3.7k"),
 		},
 		rank: 4,
@@ -89,6 +96,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("819.2k"),
 		reward: {
 			currency: shorten("7M"),
+			currencyType: "coins",
 			experience: shorten("14k"),
 		},
 		rank: 4,
@@ -99,6 +107,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("3.277M"),
 		reward: {
 			currency: shorten("35M"),
+			currencyType: "coins",
 			experience: shorten("30k"),
 		},
 		rank: 5,
@@ -110,6 +119,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: 150,
 		reward: {
 			currency: 500,
+			currencyType: "coins",
 			experience: 50,
 		},
 		rank: 1,
@@ -120,6 +130,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: 600,
 		reward: {
 			currency: shorten("1.5k"),
+			currencyType: "coins",
 			experience: 175,
 		},
 		rank: 1,
@@ -130,6 +141,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("2.4k"),
 		reward: {
 			currency: shorten("6k"),
+			currencyType: "coins",
 			experience: 300,
 		},
 		rank: 2,
@@ -140,6 +152,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("9.6k"),
 		reward: {
 			currency: shorten("25k"),
+			currencyType: "coins",
 			experience: 550,
 		},
 		rank: 2,
@@ -150,6 +163,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("38.4k"),
 		reward: {
 			currency: shorten("100k"),
+			currencyType: "coins",
 			experience: 900,
 		},
 		rank: 3,
@@ -160,6 +174,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("153.6k"),
 		reward: {
 			currency: shorten("500k"),
+			currencyType: "coins",
 			experience: shorten("7.5k"),
 		},
 		rank: 3,
@@ -170,6 +185,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("614.4k"),
 		reward: {
 			currency: shorten("2.5M"),
+			currencyType: "coins",
 			experience: shorten("25k"),
 		},
 		rank: 4,
@@ -180,6 +196,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("2.458M"),
 		reward: {
 			currency: shorten("14M"),
+			currencyType: "coins",
 			experience: shorten("95k"),
 		},
 		rank: 4,
@@ -190,6 +207,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		health: shorten("9.83M"),
 		reward: {
 			currency: shorten("70M"),
+			currencyType: "coins",
 			experience: shorten("200k"),
 		},
 		rank: 5,

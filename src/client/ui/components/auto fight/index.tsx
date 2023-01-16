@@ -18,8 +18,7 @@ import assetIds from "shared/assets";
 import { currencies, Currency } from "shared/configs/currencies";
 import { MAX_RANK, RANKS } from "shared/configs/ranks";
 import { MAX_WEAPON_ID } from "shared/configs/weapons";
-import { WorldName } from "shared/configs/worlds";
-import { UniversalWorldData, Zone } from "shared/configs/zones";
+import { isValidZone, UniversalWorldData, Zone, ZoneNames } from "shared/configs/zones";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
 import { CurrentWeaponState } from "shared/rodux/currentWeapon";
@@ -34,11 +33,9 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 import { EnabledButton } from "../settings/elements/enabledButton";
 
 interface AutoFightCache {
-	currencies: Array<{ name: Currency; amount: number }>;
+	obtainedCurrency: Array<{ name: Currency; amount: number }>;
 	startingRank: number;
-	endingRank: number;
 	startingWeapon: number;
-	endingWeapon: number;
 	petExperience: number;
 }
 
@@ -46,18 +43,17 @@ let lastTimerCheck = 0;
 
 const NPC_ATTACK_DEBOUNCE = 1.5;
 let lastNPCAttackCheck = 0;
+let focusedNpc: Humanoid | undefined;
 
 const npcsFolder = Workspace.WaitForChild("npcs") as Folder;
 
 const autoFightCache: AutoFightCache = {
-	currencies: currencies.map((value) => {
+	obtainedCurrency: currencies.map((value) => {
 		return { name: value, amount: 0 };
 	}),
 	startingRank: 1,
-	endingRank: 1,
 	startingWeapon: 1,
-	endingWeapon: 1,
-	petExperience: 1,
+	petExperience: 0,
 };
 
 interface AutoFightProps extends AutoFightMappedProps {
@@ -104,7 +100,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 
 		const { useState, useEffect, useContext, useValue } = hooks;
 		const [isEnabled, setIsEnabled] = useState(false);
-		const [worldSelected, setSelectedWorld] = useState<WorldName | undefined>(undefined);
+		const [zoneSelected, setSelectedZone] = useState<ZoneNames | undefined>(undefined);
 		const [timeElapsed, setTimeElapsed] = useState(0);
 		const [autoRankEnabled, setAutoRankEnabled] = useState(false);
 		const [purchaseWeaponsEnabled, setPurchaseWeaponsEnabled] = useState(false);
@@ -211,58 +207,39 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				return;
 			}
 
-			if (worldSelected === undefined) {
-				warn(`No world could be found for enabling auto fight. Disabling for component safety (E-1).`);
+			if (zoneSelected === undefined) {
+				warn(`No zone could be found for enabling auto fight. Disabling for component safety (E-1).`);
 				setIsEnabled(false);
 				return;
 			}
 
-			const storedWorldData = props.worlds.find((storedWorld) => storedWorld.name === worldSelected);
-			if (storedWorldData === undefined) {
-				warn(
-					`The world selected for auto fight: "${worldSelected}" is not owned by the local player. Disabling for component safety (E-2).`,
-				);
-				setIsEnabled(false);
-				return;
-			}
-
-			let lastZoneId = 0;
-			storedWorldData.zones.forEach((storedZone) => {
-				for (const [worldName, worldZones] of pairs(UniversalWorldData)) {
-					if (worldName !== worldSelected) {
-						continue;
-					}
-
-					for (const [zoneName, zoneData] of pairs(worldZones)) {
-						if (zoneName !== storedZone) {
-							continue;
-						}
-
-						if (zoneData.id < lastZoneId) {
-							continue;
-						}
-
-						lastZoneId = zoneData.id;
-					}
-				}
-			});
-
-			let highestOrderedZone: Zone | undefined;
-			for (const [worldName, worldZones] of pairs(UniversalWorldData)) {
-				if (worldName !== worldSelected) {
+			let storedZoneData: Zone | undefined;
+			for (const worldData of props.worlds) {
+				const zoneIsOwned = worldData.zones.find((zoneName) => zoneName === zoneSelected);
+				if (zoneIsOwned === undefined) {
 					continue;
 				}
 
-				for (const [, zoneData] of pairs(worldZones)) {
-					if (zoneData.id !== lastZoneId) {
-						continue;
-					}
+				for (const [, worldData] of pairs(UniversalWorldData)) {
+					for (const [zoneName, zoneData] of pairs(worldData)) {
+						if (zoneName !== zoneSelected) {
+							continue;
+						}
 
-					highestOrderedZone = zoneData;
+						storedZoneData = zoneData;
+						break;
+					}
 				}
 			}
 
-			let focusedNpc: Humanoid | undefined;
+			if (storedZoneData === undefined) {
+				warn(
+					`The zone selected for auto fight: "${zoneSelected}" is not owned by the local player. Disabling for component safety (E-2).`,
+				);
+				addAnnouncement(`You don't own the zone you're enabling auto fight in!`, AnnouncementType.Error);
+				setIsEnabled(false);
+				return;
+			}
 
 			const randomObject = new Random();
 			const connection = RunService.Heartbeat.Connect(() => {
@@ -294,23 +271,25 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 					if (humanoidRootPart.Position.sub(root.Position).Magnitude > 4) {
 						humanoid.MoveTo(root.Position);
 					}
+					return;
 				} else {
 					focusedNpc = undefined;
 				}
 
-				if (highestOrderedZone === undefined) {
+				if (storedZoneData === undefined) {
 					warn(
-						`Could not find highest ordered zone for world: ${worldSelected}. Was searching for a zone with the id of: ${lastZoneId}. Disabling for component safety (E-3).`,
+						`Selected zone state for auto fight has been marked as undefined while operation is running. This is a problem!`,
 					);
+					addAnnouncement(`There's been an issue while auto fighting. Try again later.`, AnnouncementType.Error);
 					setIsEnabled(false);
 					return;
 				}
 
-				const randomNumber = randomObject.NextNumber(1, 2);
+				const randomNumber = randomObject.NextInteger(1, 2);
 				const isBoss = randomNumber === 2;
 
 				// find NPC to attack, if not within a 215 stud distance (magnitude), then teleport to it.
-				const zoneNPC = highestOrderedZone.npcs.find((npcData) => (isBoss ? npcData.isBoss : !npcData.isBoss));
+				const zoneNPC = storedZoneData.npcs.find((npcData) => (isBoss ? npcData.isBoss : !npcData.isBoss));
 				if (zoneNPC === undefined) {
 					return;
 				}
@@ -374,6 +353,70 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				}
 
 				weapon.Activate();
+			});
+
+			return (): void => connection.Disconnect();
+		}, [isEnabled]);
+
+		useEffect(() => {
+			if (isEnabled) {
+				return;
+			}
+
+			autoFightCache.obtainedCurrency.forEach((currencyData) => {
+				currencyData.amount = 0;
+			});
+			autoFightCache.startingRank = props.rank;
+			autoFightCache.startingWeapon = props.currentWeapon.id;
+			autoFightCache.petExperience = 0;
+
+			focusedNpc = undefined;
+		}, [isEnabled, props.currencies, props.rank, props.currentWeapon]);
+
+		useEffect(() => {
+			if (!isEnabled) {
+				return;
+			}
+
+			const connection = npcsFolder.ChildRemoved.Connect((npcCharacter) => {
+				if (focusedNpc === undefined) {
+					return warn("Focused was undefined.");
+				}
+
+				if (!npcCharacter.IsA("Model")) {
+					return;
+				}
+
+				if (npcCharacter.Name !== focusedNpc.Parent?.Name) {
+					return warn("Names didn't match.");
+				}
+
+				const humanoid = npcCharacter.FindFirstChildOfClass("Humanoid");
+				if (humanoid === undefined) {
+					return;
+				}
+
+				if (focusedNpc === humanoid) {
+					for (const [, worldData] of pairs(UniversalWorldData)) {
+						for (const [, zoneData] of pairs(worldData)) {
+							const npcData = zoneData.npcs.find((npcData) => npcData.name === npcCharacter.Name);
+							if (npcData === undefined) {
+								continue;
+							}
+
+							const cachedCurrency = autoFightCache.obtainedCurrency.find(
+								(currencyData) => currencyData.name === npcData.reward.currencyType,
+							);
+							if (cachedCurrency === undefined) {
+								continue;
+							}
+
+							cachedCurrency.amount += npcData.reward.currency;
+						}
+					}
+
+					focusedNpc = undefined;
+				}
 			});
 
 			return (): void => connection.Disconnect();
@@ -629,7 +672,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 									}
 
 									const raycastParams = new RaycastParams();
-									raycastParams.FilterDescendantsInstances = [Workspace.worlds["Ban Land"].landing];
+									raycastParams.FilterDescendantsInstances = [Workspace.worlds["Ban Land"].zones];
 									raycastParams.FilterType = Enum.RaycastFilterType.Whitelist;
 									raycastParams.IgnoreWater = false;
 
@@ -640,11 +683,11 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 									);
 
 									if (raycastResult === undefined) {
-										addAnnouncement("Couldn't find a location to enable Auto Fight (E-4).", AnnouncementType.Error);
+										addAnnouncement("Please enter the zone you wish to auto fight in.", AnnouncementType.Error);
 										return;
 									}
 
-									if (raycastResult.Instance.Name !== "Part") {
+									if (raycastResult.Instance.Name !== "floor") {
 										addAnnouncement("There was an issue while enabling auto fight (E-5).", AnnouncementType.Error);
 										return;
 									}
@@ -655,18 +698,12 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 										return;
 									}
 
-									const worldFolder = landingFolder.Parent;
-									if (worldFolder === undefined) {
-										addAnnouncement("There was an issue while enabling auto fight (E-7).", AnnouncementType.Error);
-										return;
-									}
-
-									if (!isValidWorld(worldFolder.Name)) {
+									if (!isValidZone(landingFolder.Name)) {
 										addAnnouncement("There was an issue while enabling auto fight (E-8).", AnnouncementType.Error);
 										return;
 									}
 
-									setSelectedWorld(worldFolder.Name);
+									setSelectedZone(landingFolder.Name);
 									setIsEnabled(true);
 								},
 								MouseEnter: (): void => motor.setGoal(minimizedSpring),
@@ -880,7 +917,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 						>
 							<uilistlayout Padding={new UDim(0.02, 0)} />
 
-							{autoFightCache.currencies.map((currencyData) => {
+							{autoFightCache.obtainedCurrency.map((currencyData) => {
 								return (
 									<frame
 										AnchorPoint={vec2Middle}
@@ -1041,40 +1078,6 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 									Size={UDim2.fromScale(0.3, 0.7)}
 									Font={font}
 									Text={storedWeaponData.name}
-									TextScaled={true}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
-									TextXAlignment={Enum.TextXAlignment.Right}
-								>
-									<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 79, 130) }} />
-								</textlabel>
-							</frame>
-
-							<frame
-								AnchorPoint={vec2Middle}
-								BackgroundColor3={Color3.fromRGB(26, 116, 172)}
-								Size={UDim2.fromScale(1, 0.12)}
-							>
-								<uicorner CornerRadius={new UDim(0.3, 0)} />
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.265, 0.5)}
-									Size={UDim2.fromScale(0.5, 0.5)}
-									Font={font}
-									Text={"Pet Experience:"}
-									TextScaled={true}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
-									TextXAlignment={Enum.TextXAlignment.Left}
-								>
-									<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 79, 130) }} />
-								</textlabel>
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.825, 0.5)}
-									Size={UDim2.fromScale(0.3, 0.7)}
-									Font={font}
-									Text={twoDpAbbreviator.numberToString(autoFightCache.petExperience)}
 									TextScaled={true}
 									TextColor3={Color3.fromRGB(255, 255, 255)}
 									TextXAlignment={Enum.TextXAlignment.Right}
