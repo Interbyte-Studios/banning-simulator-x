@@ -9,12 +9,13 @@ import { RanksViewer } from "./rankViewer";
 
 interface HudProps {
 	visible: boolean;
-	displayCodesMenu: () => void;
-	displayQuestsMenu: () => void;
-	displaySettingsMenu: () => void;
-	displayTeleportationMenu: () => void;
-	displaySpinWheelMenu: () => void;
-	displayItemsMenu: () => void;
+	displayCodes: () => void;
+	displayQuests: () => void;
+	displaySettings: () => void;
+	displayTeleportation: () => void;
+	displaySpinWheel: () => void;
+	displayItems: () => void;
+	displayAutoFight: () => void;
 }
 
 export const Hud = hooks((props: HudProps) => {
@@ -31,16 +32,17 @@ export const Hud = hooks((props: HudProps) => {
 		>
 			<uiaspectratioconstraint AspectRatio={0.8} />
 			<HUDHeader
-				displayCodesMenu={props.displayCodesMenu}
-				displaySettingsMenu={props.displaySettingsMenu}
-				displayItemsMenu={props.displayItemsMenu}
+				displayCodes={props.displayCodes}
+				displaySettings={props.displaySettings}
+				displayItems={props.displayItems}
 			/>
 			<RanksViewer />
 			<CoinsCurrency />
 			<GemsCurrency />
 			<HUDFooter
-				displayTeleportationMenu={props.displayTeleportationMenu}
-				displaySpinWheelMenu={props.displaySpinWheelMenu}
+				displayTeleportation={props.displayTeleportation}
+				displaySpinWheel={props.displaySpinWheel}
+				displayAutoFight={props.displayAutoFight}
 			/>
 		</frame>
 	);

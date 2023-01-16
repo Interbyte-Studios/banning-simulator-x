@@ -139,7 +139,9 @@ export function runStep(
 			storeState.talismans.find((talisman) => talisman.id === storeState.currentTalisman)?.phase,
 		);
 
-		npc.instance.Humanoid.TakeDamage(weaponDamage + talismanStatEffects.damage);
+		const damageAmount = weaponDamage + talismanStatEffects.damage;
+
+		npc.instance.Humanoid.TakeDamage(damageAmount);
 
 		// check if npc is dead
 		if (npc.instance.Humanoid.Health <= 0) {

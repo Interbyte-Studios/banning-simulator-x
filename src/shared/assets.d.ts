@@ -367,6 +367,9 @@ declare namespace assetIds {
 			Gem: string;
 		};
 		ui: {
+			autoFight: {
+				minimized: string;
+			};
 			egg: {
 				background: string;
 				"pet frame": string;
@@ -440,6 +443,7 @@ declare namespace assetIds {
 				upgrade: string;
 				"viewer background": string;
 				icons: {
+					"auto fight": string;
 					items: string;
 					options: string;
 					codes: string;

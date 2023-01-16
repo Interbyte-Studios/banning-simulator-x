@@ -3,6 +3,8 @@ import { ToggleWalkSpeedDefinition } from "shared/remotes/settings/gameplay/togg
 import { isValidWalkSpeed } from "shared/rodux/settings";
 import { getTalismanData } from "shared/util/getTalismanData";
 
+import { getAutoFightState } from "../autoFightWalkspeedHandler";
+
 /**
  * Increases or decreases the walk speed of the player according to what they're maximum walk speed is.
  *
@@ -19,11 +21,15 @@ export function setWalkSpeed(
 		return;
 	}
 
-	if (walkSpeed < 16) {
+	if (getAutoFightState()) {
 		return;
 	}
 
-	let maxWalkSpeed = 16;
+	if (walkSpeed < 24) {
+		return;
+	}
+
+	let maxWalkSpeed = 24;
 	if (currentTalisman !== undefined) {
 		const talismanData = getTalismanData(currentTalisman);
 		if (talismanData !== undefined) {

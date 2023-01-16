@@ -1,13 +1,15 @@
 import Roact from "@rbxts/roact";
 import { hooks } from "client/ui/hooks";
 
+import { AutoFightIcon } from "./autoFightIcon";
 import { TeleportIcon } from "./teleportIcon";
 import { TradingIcon } from "./tradingIcon";
 import { WheelSpinIcon } from "./wheelSpingIcon";
 
 interface HUDFooterProps {
-	displayTeleportationMenu: () => void;
-	displaySpinWheelMenu: () => void;
+	displayTeleportation: () => void;
+	displaySpinWheel: () => void;
+	displayAutoFight: () => void;
 }
 
 export const HUDFooter = hooks((props: HUDFooterProps) => {
@@ -25,8 +27,9 @@ export const HUDFooter = hooks((props: HUDFooterProps) => {
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>
 			<TradingIcon />
-			<TeleportIcon displayTeleportationMenu={props.displayTeleportationMenu} />
-			<WheelSpinIcon displayWheelSpinMenu={props.displaySpinWheelMenu} />
+			<TeleportIcon displayTeleportationMenu={props.displayTeleportation} />
+			<WheelSpinIcon displayWheelSpinMenu={props.displaySpinWheel} />
+			<AutoFightIcon displayAutoFightIcon={props.displayAutoFight} />
 		</frame>
 	);
 });

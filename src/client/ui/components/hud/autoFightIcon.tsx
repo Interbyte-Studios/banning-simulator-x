@@ -6,15 +6,15 @@ import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
+interface AutoFightIconProps {
+	displayAutoFightIcon: () => void;
+}
+
 const minimizedSize = 0.8;
 const maximizedSize = 0.9;
 
-interface ItemsIconProps {
-	displayItems: () => void;
-}
-
 /* eslint-disable jsdoc/require-jsdoc */
-export const ItemsIcon = hooks((props: ItemsIconProps, { useEffect }) => {
+export const AutoFightIcon = hooks((props: AutoFightIconProps, { useEffect }) => {
 	const minizmizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
 	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 
@@ -36,15 +36,15 @@ export const ItemsIcon = hooks((props: ItemsIconProps, { useEffect }) => {
 			Size={binding.map((value) => {
 				return UDim2.fromScale(value, value);
 			})}
-			Image={assetIds.images.ui.hud.icons.items}
-			LayoutOrder={1}
+			Image={assetIds.images.ui.hud.icons["auto fight"]}
+			LayoutOrder={8}
 			Event={{
-				Activated: (): void => {
-					playSFX(UIEngagement.MinorEngagement);
-					props.displayItems();
-				},
 				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.displayAutoFightIcon();
+				},
 			}}
 		>
 			<textlabel
@@ -52,7 +52,7 @@ export const ItemsIcon = hooks((props: ItemsIconProps, { useEffect }) => {
 				AnchorPoint={vec2Middle}
 				Size={UDim2.fromScale(0.9, 0.35)}
 				Position={UDim2.fromScale(0.5, 1)}
-				Text={"Items"}
+				Text={"Auto"}
 				Font={font}
 				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}

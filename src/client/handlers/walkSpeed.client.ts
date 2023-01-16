@@ -1,5 +1,6 @@
 import { Players } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
+import { getAutoFightState } from "client/modules/autoFightWalkspeedHandler";
 
 const player = Players.LocalPlayer;
 
@@ -14,6 +15,10 @@ function changeWalkSpeed(walkSpeed: number): void {
 
 	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
 	assert(humanoid, `Failed to get Humanoid for ${player.Name}`);
+
+	if (getAutoFightState()) {
+		return;
+	}
 
 	humanoid.WalkSpeed = walkSpeed;
 }

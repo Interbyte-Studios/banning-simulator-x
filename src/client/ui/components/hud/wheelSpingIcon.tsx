@@ -3,6 +3,7 @@ import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 interface WheelSpinIconProps {
@@ -40,7 +41,10 @@ export const WheelSpinIcon = hooks((props: WheelSpinIconProps, { useEffect }) =>
 			Event={{
 				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
-				Activated: (): void => props.displayWheelSpinMenu(),
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.displayWheelSpinMenu();
+				},
 			}}
 		>
 			<textlabel

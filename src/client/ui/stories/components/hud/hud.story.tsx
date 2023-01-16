@@ -9,12 +9,13 @@ export = (target: GuiBase): (() => void) => {
 		<RoactRodux.StoreProvider store={store}>
 			<Hud
 				visible={true}
-				displayCodesMenu={(): void => {}}
-				displayQuestsMenu={(): void => {}}
-				displaySettingsMenu={(): void => {}}
-				displayTeleportationMenu={(): void => {}}
-				displaySpinWheelMenu={(): void => {}}
-				displayItemsMenu={(): void => {}}
+				displayCodes={(): void => {}}
+				displayQuests={(): void => {}}
+				displaySettings={(): void => {}}
+				displayTeleportation={(): void => {}}
+				displaySpinWheel={(): void => {}}
+				displayItems={(): void => {}}
+				displayAutoFight={(): void => {}}
 			/>
 		</RoactRodux.StoreProvider>
 	));
