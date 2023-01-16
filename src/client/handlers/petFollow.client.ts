@@ -177,7 +177,7 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 
 			if (playerCache.animationType.Value === "Surrounding") {
 				const equippedPets = playerCache.pets.size();
-				const petAngle = index / (radius / equippedPets);
+				const petAngle = index * (radius / equippedPets);
 				const { xCoord, zCoord } = getXandZ(petAngle, equippedPets, playerCache.distance.Value);
 
 				if (petType === "Walk") {
@@ -246,6 +246,10 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 					);
 
 					if (rayCast === undefined) {
+						return;
+					}
+
+					if (rayCast.Instance.CanCollide === false) {
 						return;
 					}
 
