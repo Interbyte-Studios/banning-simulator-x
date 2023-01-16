@@ -7,9 +7,9 @@ import { OptionsIcon } from "./optionsIcon";
 import { RewardsIcon } from "./rewardsIcon";
 
 interface HUDHeaderProps {
-	displayCodesMenu: () => void;
-	displaySettingsMenu: () => void;
-	displayItemsMenu: () => void;
+	displayCodes: () => void;
+	displaySettings: () => void;
+	displayItems: () => void;
 }
 
 export const HUDHeader = hooks((props: HUDHeaderProps) => {
@@ -27,9 +27,9 @@ export const HUDHeader = hooks((props: HUDHeaderProps) => {
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>
-			<OptionsIcon displaySettingsMenu={props.displaySettingsMenu} />
-			<CodesIcon displayCodesMenu={props.displayCodesMenu} />
-			<ItemsIcon displayItemsMenu={props.displayItemsMenu} />
+			<OptionsIcon displaySettings={props.displaySettings} />
+			<CodesIcon displayCodes={props.displayCodes} />
+			<ItemsIcon displayItems={props.displayItems} />
 			<RewardsIcon />
 		</frame>
 	);

@@ -1,6 +1,7 @@
 import { Workspace } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { WORLDS } from "shared/configs/worlds";
+import { UniversalWorldData } from "shared/configs/zones";
 import { remotes } from "shared/remotes";
 import { NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
@@ -15,6 +16,27 @@ const attackDownTime = 0.5;
 let npcAttacks: Array<{ player: Player; store: Store; character: NpcCharacter }> = [];
 remotes.Server.Create("damageNPC").Connect(
 	withPlayerStore((player, store, character) => {
+		const currentState = store.getState();
+		for (const [worldName, worldData] of pairs(UniversalWorldData)) {
+			for (const [zoneName, zoneData] of pairs(worldData)) {
+				const npcData = zoneData.npcs.find((npcData) => npcData.name === character.Name);
+				if (npcData === undefined) {
+					continue;
+				}
+
+				const ownsWorld = currentState.worlds.find((storedWorld) => storedWorld.name === worldName);
+				if (ownsWorld === undefined) {
+					warn("Doesn't own world");
+					return;
+				}
+
+				const ownsZone = ownsWorld.zones.find((storedZone) => storedZone === zoneName);
+				if (ownsZone === undefined) {
+					return;
+				}
+			}
+		}
+
 		const now = time();
 		const lastAttack = _lastAttack.get(player.UserId);
 		if (lastAttack === undefined) {

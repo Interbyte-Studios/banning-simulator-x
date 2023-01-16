@@ -106,8 +106,9 @@ export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 							return;
 						}
 
-						purchaseTalisman.SendToServer(props.currentTalisman);
 						addAnnouncement(`You've purchased the "${talismanInfo.name}" talisman!`, AnnouncementType.Announcement);
+
+						purchaseTalisman.SendToServer(props.currentTalisman);
 					},
 					MouseEnter: (): void => motor.setGoal(minimizedSpring),
 					MouseLeave: (): void => motor.setGoal(maximizedSpring),

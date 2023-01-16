@@ -1718,6 +1718,11 @@ hash = "3b891b00fd9c232e7ec1aaae25b330da98d6162bd3b2782cb2bee144c16830b7"
 id = 10931058710
 packable = false
 
+[inputs."images/ui/autoFight/minimized.png"]
+hash = "c70b0397f467c607b3f9387e24cf5ee10a7b6809984500a130656ecb55ccf1e6"
+id = 12099564738
+packable = false
+
 [inputs."images/ui/codes/background.png"]
 hash = "6587e982836cdf78e3ccaa8a8a81bf8178a97fd012610efc2cca0a9637c6aaac"
 id = 10913446755
@@ -1766,6 +1771,11 @@ packable = false
 [inputs."images/ui/equip/unequipped.png"]
 hash = "49e4e31dc73a66de85fbeb9ed19f9901cdf49204ab0460d082cf32a1055641ae"
 id = 11016579897
+packable = false
+
+[inputs."images/ui/hud/icons/auto fight.png"]
+hash = "4a02090cdb39fa9fde33b1c0887d40f006c8d4bf78dce864108fc3de9c7a439a"
+id = 12131905288
 packable = false
 
 [inputs."images/ui/hud/icons/codes.png"]

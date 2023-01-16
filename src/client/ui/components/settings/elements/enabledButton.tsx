@@ -40,9 +40,8 @@ export const EnabledButton = hooks((props: EnabledButtonProps, hooks) => {
 				return UDim2.fromScale(value.x, value.y);
 			})}
 			BackgroundTransparency={1}
-			Image={
-				props.isEnabled ? assetIds.images.buttons["green toggle button"] : assetIds.images.buttons["red toggle button"]
-			}
+			Image={props.isEnabled ? assetIds.images.ui.index.Claim : assetIds.images.ui.index.Off}
+			ScaleType={Enum.ScaleType.Fit}
 			Event={{
 				Activated: (): void => {
 					playSFX(UIEngagement.MinorEngagement);
@@ -60,6 +59,7 @@ export const EnabledButton = hooks((props: EnabledButtonProps, hooks) => {
 					}),
 			}}
 		>
+			<uiaspectratioconstraint AspectRatio={2} />
 			<textlabel
 				AnchorPoint={vec2Middle}
 				Position={UDim2.fromScale(0.5, 0.5)}
@@ -73,7 +73,7 @@ export const EnabledButton = hooks((props: EnabledButtonProps, hooks) => {
 				<BaseUIStroke
 					native={{
 						Thickness: 2.5,
-						Color: props.isEnabled ? Color3.fromRGB(111, 158, 113) : Color3.fromRGB(138, 92, 92),
+						Color: props.isEnabled ? Color3.fromRGB(111, 158, 113) : Color3.fromRGB(204, 98, 112),
 					}}
 				/>
 			</textlabel>

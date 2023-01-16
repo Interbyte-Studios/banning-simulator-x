@@ -380,6 +380,9 @@ return {
 				["long green button"] = "rbxassetid://10931066791",
 				["long red button"] = "rbxassetid://10931058710",
 			},
+			autoFight = {
+				minimized = "rbxassetid://12099564738",
+			},
 			codes = {
 				background = "rbxassetid://10913446755",
 				input = "rbxassetid://10908456187",
@@ -398,6 +401,7 @@ return {
 			},
 			hud = {
 				icons = {
+					["auto fight"] = "rbxassetid://12131905288",
 					codes = "rbxassetid://11591957031",
 					items = "rbxassetid://11591957067",
 					options = "rbxassetid://11591957114",

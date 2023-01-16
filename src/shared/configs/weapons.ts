@@ -23,6 +23,7 @@ export interface Weapon {
 	isBossWeapon: boolean;
 }
 
+export const MAX_WEAPON_ID = 24;
 export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Stone Hammer": {
 		id: 1,
