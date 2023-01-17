@@ -173,7 +173,7 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 			const rayCastParams = new RaycastParams();
 			rayCastParams.IgnoreWater = true;
 			rayCastParams.FilterType = Enum.RaycastFilterType.Blacklist;
-			rayCastParams.FilterDescendantsInstances = [character];
+			rayCastParams.FilterDescendantsInstances = [character, Workspace.worlds];
 
 			if (playerCache.animationType.Value === "Surrounding") {
 				const equippedPets = playerCache.pets.size();
@@ -246,10 +246,6 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 					);
 
 					if (rayCast === undefined) {
-						return;
-					}
-
-					if (rayCast.Instance.CanCollide === false) {
 						return;
 					}
 
