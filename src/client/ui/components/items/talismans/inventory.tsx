@@ -40,9 +40,9 @@ export const TalismanItems = RoactRodux.connect(mapStateToProps)(
 		const uiGridLayoutRef = useValue(Roact.createRef<UIGridLayout>());
 		useEffect(() => {
 			const uiGridLayout = uiGridLayoutRef.value.getValue();
-			assert(uiGridLayout, `Failed to get ui grid layout from roact ref.`);
-
-			CollectionService.AddTag(uiGridLayout, "UnscaledInventoryGridLayout");
+			if (uiGridLayout !== undefined) {
+				CollectionService.AddTag(uiGridLayout, "UnscaledInventoryGridLayout");
+			}
 		});
 
 		const talismanInfoDisplay: Array<Roact.Element> = [];
