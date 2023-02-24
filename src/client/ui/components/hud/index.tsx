@@ -11,7 +11,6 @@ interface HudProps {
 	visible: boolean;
 	displayCodes: () => void;
 	displayQuests: () => void;
-	displaySettings: () => void;
 	displayTeleportation: () => void;
 	displaySpinWheel: () => void;
 	displayItems: () => void;
@@ -34,7 +33,6 @@ export const Hud = hooks((props: HudProps) => {
 			<uiaspectratioconstraint AspectRatio={0.8} />
 			<HUDHeader
 				displayCodes={props.displayCodes}
-				displaySettings={props.displaySettings}
 				displayItems={props.displayItems}
 				displayAccount={props.displayAccount}
 			/>

@@ -1,7 +1,6 @@
+import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
 import { toggleRarityDelete } from "shared/rodux/settings";
-
-import { withPlayerStore } from "../../modules/net/withPlayerStore";
 
 remotes.Server.GetNamespace("settings")
 	.GetNamespace("autoDelete")

@@ -11,7 +11,6 @@ export = (target: GuiBase): (() => void) => {
 				visible={true}
 				displayCodes={(): void => {}}
 				displayQuests={(): void => {}}
-				displaySettings={(): void => {}}
 				displayTeleportation={(): void => {}}
 				displaySpinWheel={(): void => {}}
 				displayItems={(): void => {}}

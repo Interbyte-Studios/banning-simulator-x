@@ -65,6 +65,11 @@ onStoreCreated(player)
 					unequipTalisman: remotes.Client.GetNamespace("talismans").Get("unequipTalisman"),
 					verifyDiscord: remotes.Client.GetNamespace("media").Get("verifyDiscord"),
 					equipTitle: remotes.Client.Get("equipTitle"),
+
+					togglePublicInventory: remotes.Client.GetNamespace("settings").GetNamespace("privacy").Get("publicInventory"),
+					togglePublicTradeHistory: remotes.Client.GetNamespace("settings")
+						.GetNamespace("privacy")
+						.Get("publicTradeHistory"),
 				}}
 			>
 				<AnnouncementAPI>

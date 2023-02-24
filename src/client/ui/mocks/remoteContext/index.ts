@@ -16,6 +16,8 @@ import { ToggleAutoDeleteDefinition } from "shared/remotes/settings/autoDelete/t
 import { ToggleEasyLegendariesAutoDeleteDefinition } from "shared/remotes/settings/autoDelete/toggleEasyLegendariesAutoDelete";
 import { ToggleAutoHatchDefinition } from "shared/remotes/settings/gameplay/toggleAuto";
 import { ToggleWalkSpeedDefinition } from "shared/remotes/settings/gameplay/toggleWalkSpeed";
+import { TogglePublicInventoryDefinition } from "shared/remotes/settings/privacy/publicInventory";
+import { TogglePublicTradeHistoryDefinition } from "shared/remotes/settings/privacy/publicTradeHistory";
 import { ToggleButtonClickDefinition } from "shared/remotes/settings/sound/toggleButtonClick";
 import { ToggleMusicVolumeDefinition } from "shared/remotes/settings/sound/toggleMusicVolume";
 import { ToggleSoundEffectsVolumeDefinition } from "shared/remotes/settings/sound/toggleSoundEffectsVolume";
@@ -107,6 +109,9 @@ export const fakeRemoteContext = {
 	spinWheelInfo: fakeRemoteCall<SpinWheelInfoDefinition>("spinWheelInfo"),
 
 	hatchEgg: fakeHatchEgg,
+
+	togglePublicInventory: fakeRemoteCall<TogglePublicInventoryDefinition>("togglePublicInventory"),
+	togglePublicTradeHistory: fakeRemoteCall<TogglePublicTradeHistoryDefinition>("togglePublicTradeHistory"),
 };
 
 export const remoteContext = createContext(fakeRemoteContext);

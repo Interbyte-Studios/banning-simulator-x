@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Store } from "shared/rodux";
@@ -15,7 +16,6 @@ import { ItemInventory } from "./components/items";
 import { PetMastery } from "./components/petMastery";
 import { Quests } from "./components/quests";
 import { RankUpgrade } from "./components/ranks/menu";
-import { SettingsMenu } from "./components/settings/menu";
 import { SpinWheel } from "./components/spinWheel";
 import { TalismanLevelUpAnimation } from "./components/talismanLevelUp";
 import { TalismanTowerHandle } from "./components/talismans";
@@ -41,7 +41,6 @@ interface AppProps {
 export const app = hooks((props: AppProps, { useState }) => {
 	const [codesVisible, setCodesVisible] = useState(false);
 	const [questsVisible, setQuestsVisibility] = useState(false);
-	const [settingsVisible, setSettingsVisibility] = useState(false);
 	const [teleportationVisible, setTeleportationVisibility] = useState(false);
 	const [weaponShopVisibility, setWeaponShopVisibility] = useState(false);
 	const [talismanTowerVisibility, setTalismanTowerVisibility] = useState(false);
@@ -58,7 +57,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 				<EggsUI
 					visible={
 						!codesVisible &&
-						!settingsVisible &&
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
@@ -70,13 +68,11 @@ export const app = hooks((props: AppProps, { useState }) => {
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
 				<CodesMenu visible={codesVisible} hideMenu={(): void => setCodesVisible(false)} />
-				<SettingsMenu visible={settingsVisible} hideMenu={(): void => setSettingsVisibility(false)} />
 				<Quests visible={questsVisible} hideMenu={(): void => setQuestsVisibility(false)} />
 				<Hud
 					visible={
 						!isHatching &&
 						!codesVisible &&
-						!settingsVisible &&
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
@@ -87,7 +83,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 					}
 					displayCodes={(): void => setCodesVisible(true)}
 					displayQuests={(): void => setQuestsVisibility(true)}
-					displaySettings={(): void => setSettingsVisibility(true)}
 					displayTeleportation={(): void => setTeleportationVisibility(true)}
 					displaySpinWheel={(): void => setSpinWheelVisibility(true)}
 					displayItems={(): void => setItemsVisibility(true)}
@@ -98,7 +93,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 					enabled={
 						!isHatching &&
 						!codesVisible &&
-						!settingsVisible &&
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
@@ -112,7 +106,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 					enabled={
 						!isHatching &&
 						!codesVisible &&
-						!settingsVisible &&
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
@@ -127,7 +120,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 					enabled={
 						!isHatching &&
 						!codesVisible &&
-						!settingsVisible &&
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
@@ -141,7 +133,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 					visible={
 						!isHatching &&
 						!codesVisible &&
-						!settingsVisible &&
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
@@ -155,7 +146,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 					enabled={
 						!isHatching &&
 						!codesVisible &&
-						!settingsVisible &&
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
@@ -169,7 +159,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 					enabled={
 						!isHatching &&
 						!codesVisible &&
-						!settingsVisible &&
 						!teleportationVisible &&
 						!questsVisible &&
 						!talismanTowerVisibility &&
@@ -184,7 +173,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 					enabled={
 						!isHatching &&
 						!codesVisible &&
-						!settingsVisible &&
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
@@ -199,7 +187,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 					enabled={
 						!isHatching &&
 						!codesVisible &&
-						!settingsVisible &&
 						!teleportationVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
@@ -213,7 +200,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 					enabled={
 						!isHatching &&
 						!codesVisible &&
-						!settingsVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
@@ -230,7 +216,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 					enabled={
 						!isHatching &&
 						!codesVisible &&
-						!settingsVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
@@ -243,7 +228,6 @@ export const app = hooks((props: AppProps, { useState }) => {
 					enabled={
 						!isHatching &&
 						!codesVisible &&
-						!settingsVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&

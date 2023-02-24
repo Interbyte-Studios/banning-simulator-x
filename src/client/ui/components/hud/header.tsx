@@ -1,14 +1,12 @@
 import Roact from "@rbxts/roact";
 import { hooks } from "client/ui/hooks";
 
+import { AccountIcon } from "./accountIcon";
 import { CodesIcon } from "./codesIcon";
 import { ItemsIcon } from "./itemsIcon";
-import { OptionsIcon } from "./optionsIcon";
-import { AccountIcon } from "./rewardsIcon";
 
 interface HUDHeaderProps {
 	displayCodes: () => void;
-	displaySettings: () => void;
 	displayItems: () => void;
 	displayAccount: () => void;
 }
@@ -28,7 +26,6 @@ export const HUDHeader = hooks((props: HUDHeaderProps) => {
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>
-			<OptionsIcon displaySettings={props.displaySettings} />
 			<CodesIcon displayCodes={props.displayCodes} />
 			<ItemsIcon displayItems={props.displayItems} />
 			<AccountIcon dispayAccount={props.displayAccount} />

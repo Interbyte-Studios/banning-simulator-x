@@ -16,11 +16,13 @@ const storeCreationCallbacks: Map<Player, Array<(store: Store) => void>> = new M
 export function onStoreCreated(player: Player): Promise<Store> {
 	const store = stores.get(player);
 	if (store) {
+		print("Store exists");
 		return Promise.resolve(store);
 	}
 
 	// wait until the store has been created
 	return new Promise((resolve) => {
+		print("Store created");
 		getOrSetDefault(storeCreationCallbacks, player, () => []).push(resolve);
 	});
 }

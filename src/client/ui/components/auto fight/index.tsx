@@ -27,10 +27,7 @@ import { GamepassesState } from "shared/rodux/gamepasses";
 import { RankState } from "shared/rodux/rank";
 import { WorldsState } from "shared/rodux/worlds";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
-import { isValidWorld } from "shared/util/isValidWorld";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
-
-import { EnabledButton } from "../settings/elements/enabledButton";
 
 interface AutoFightCache {
 	obtainedCurrency: Array<{ name: Currency; amount: number }>;
@@ -789,6 +786,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 							>
 								<BaseUIStroke native={{ Thickness: 2 }} />
 							</textlabel>
+							{/*
 							<EnabledButton
 								AnchorPoint={vec2Middle}
 								isEnabled={purchaseWeaponsEnabled}
@@ -796,7 +794,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 								minimizedSize={{ x: 0.225, y: 0.6 }}
 								maximizedSize={{ x: 0.25, y: 0.7 }}
 								onClicked={(): void => setPurchaseWeaponsEnabled(!purchaseWeaponsEnabled)}
-							/>
+							/> */}
 						</imagelabel>
 
 						<imagelabel
@@ -819,6 +817,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 							>
 								<BaseUIStroke native={{ Thickness: 2 }} />
 							</textlabel>
+							{/*
 							<EnabledButton
 								AnchorPoint={vec2Middle}
 								isEnabled={autoRankEnabled}
@@ -827,6 +826,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 								maximizedSize={{ x: 0.25, y: 0.7 }}
 								onClicked={(): void => setAutoRankEnabled(!autoRankEnabled)}
 							/>
+							*/}
 						</imagelabel>
 
 						<imagebutton
