@@ -1703,6 +1703,61 @@ hash = "d4ff26dcc1d1adb415537916d479d4c42f4731e51add965b014d060679e7b370"
 id = 11866056838
 packable = false
 
+[inputs."images/ui/account/Accolades.png"]
+hash = "fe09ce40ec99ce9bb497b6dc7e5b46644be1339ae57a18d691bd4c05ac57ac88"
+id = 12359583377
+packable = false
+
+[inputs."images/ui/account/accountMastery.png"]
+hash = "2f7ce0366b1239b13d4783b99f5ee70403a0f937b930b47597496858926e19d5"
+id = 12592292302
+packable = false
+
+[inputs."images/ui/account/background.png"]
+hash = "89b0144ef1ce4013e6397b1d7ee786d9413017cec8742d67640085c15c8396fc"
+id = 12246424600
+packable = false
+
+[inputs."images/ui/account/banMastery.png"]
+hash = "9510d448bd87ad6583555a40d9b34887533b08f58342635c7ae0beb5cc8c17a4"
+id = 12592292375
+packable = false
+
+[inputs."images/ui/account/boostsMastery.png"]
+hash = "99be0435a22b286e454eb386cfdaf6c671c3be793b0f24961440649ce2d7499c"
+id = 12592292419
+packable = false
+
+[inputs."images/ui/account/editCharacter.png"]
+hash = "d40cc167e9a96fbe7544007a82107057266d4df70efc8743a7b2eed498622198"
+id = 12359570462
+packable = false
+
+[inputs."images/ui/account/fusingMastery.png"]
+hash = "e254c75a6e0ab29f1715eb532bd6c52b3b3261d5e2a455af9f38f07240c07007"
+id = 12592292468
+packable = false
+
+[inputs."images/ui/account/hatchingMastery.png"]
+hash = "9d0f7a57b9f6a40e8cdf6118c09406edcf47f1495b78510e7c1d8bf8fcef3de7"
+id = 12592292536
+packable = false
+
+[inputs."images/ui/account/rankMastery.png"]
+hash = "5a206ecd0cd868112d8d9fc3b74f75cf59c0bb1f67cbea47f31d3b45f901f4fb"
+id = 12592292582
+packable = false
+
+[inputs."images/ui/account/statsBackground.png"]
+hash = "2fd45889651360d9e5f15898b6c59d48f367537e0058a6e6ffb07382b33a09fa"
+id = 12359570540
+packable = false
+
+[inputs."images/ui/account/tradeHistory.png"]
+hash = "7eafa98157293616c3385ce027bae986d57734722d50cdd7513ee16f9559f316"
+id = 12547612333
+packable = false
+
 [inputs."images/ui/autoDelete/background.png"]
 hash = "4cec0116037d210fb6a5b3737cfe182fa8d784a20e909a66baab948b931e3504"
 id = 10931005537
@@ -2351,4 +2406,104 @@ packable = false
 [inputs."images/vectors/WalkSpeed.png"]
 hash = "748f4791e08d5b7bff0173756c7be231711971f51896c222081a200113222c27"
 id = 11866057362
+packable = false
+
+[inputs."images/vectors/boosts/BlueTriple.png"]
+hash = "15015f2853610bd8497c4dd9ad545c44105bbcacdb529b89009ca0b1570f9327"
+id = 12592292653
+packable = false
+
+[inputs."images/vectors/boosts/blueCrate.png"]
+hash = "b8e5369590372590419bd6e6ff237e8e748a2c355d9a3449ed2dc56206d020d1"
+id = 12592292748
+packable = false
+
+[inputs."images/vectors/boosts/blueDouble.png"]
+hash = "b20bff9e0899ff3e52e3ba10ab9a46ceea836d4dac58d51659498a44f2ce7b8f"
+id = 12592292820
+packable = false
+
+[inputs."images/vectors/boosts/blueSingle.png"]
+hash = "79ea54956189adf3fb69a4b30fb37c70098cf71dca103755dfd727da13bb7bae"
+id = 12592292864
+packable = false
+
+[inputs."images/vectors/boosts/greenCrate.png"]
+hash = "70e7fb7e81b3333ac3ede6aa76beae7a81a9c4e9760570e1ab87307d877315f6"
+id = 12592292916
+packable = false
+
+[inputs."images/vectors/boosts/greenDouble.png"]
+hash = "872207ec4797086627fa614602ce1c45dad82e1723d5ed6ea6a8f45944555bef"
+id = 12592292984
+packable = false
+
+[inputs."images/vectors/boosts/greenSingle.png"]
+hash = "bc809c7bac0aa0fdc61a736245f5d9fdb8d5da3c27958da4d7de4b782e449989"
+id = 12592293045
+packable = false
+
+[inputs."images/vectors/boosts/greenTriple.png"]
+hash = "76282648f924e64450963064320b22ca35fe96a1a96aacad3905e9e720ce623b"
+id = 12592293094
+packable = false
+
+[inputs."images/vectors/boosts/orangeCrate.png"]
+hash = "31e5d0171616f5a8ad50382f7ba07af95aa26a2fa21430ac1d5200faed5aef2c"
+id = 12592293147
+packable = false
+
+[inputs."images/vectors/boosts/orangeDouble.png"]
+hash = "ac7040a38bd20580d92a2e689c3d68880fd40a67133f3d4c2ededbf2403c4acb"
+id = 12592293223
+packable = false
+
+[inputs."images/vectors/boosts/orangeSingle.png"]
+hash = "02f733cdb2abcdd9d63fbbaf1a12fa5dc694b9b4c20e5ea44ae7d82f47bc198c"
+id = 12592293324
+packable = false
+
+[inputs."images/vectors/boosts/orangeTriple.png"]
+hash = "9863dfe8d098393ef2770823b2aeaa7675acc5d23f430b143e3370b0f3a1d145"
+id = 12592293377
+packable = false
+
+[inputs."images/vectors/boosts/purpleCrate.png"]
+hash = "f13131f71229343b56cce6834735f76ec19654426c9893d8845d03fb6c9dc3ee"
+id = 12592293455
+packable = false
+
+[inputs."images/vectors/boosts/purpleDouble.png"]
+hash = "b0b01b6c797c66876495f9c177c808121c7ee01887eeb1b09b75fb17087f19c6"
+id = 12592293579
+packable = false
+
+[inputs."images/vectors/boosts/purpleSingle.png"]
+hash = "407ec296c6514895fa9d6b7ba4d6c619341341a2876eba9af53bf400479dd00a"
+id = 12592293670
+packable = false
+
+[inputs."images/vectors/boosts/purpleTriple.png"]
+hash = "b194b5c5cbf7d4b6f3f69db51a57ac10e2aa51bd0ccd4ffbc2a10589bf2c3d29"
+id = 12592293759
+packable = false
+
+[inputs."images/vectors/boosts/redCrate.png"]
+hash = "a0a97f67e5f686b15f899d56983b2f6acf3112b28d7a5c9e4b0d777b1b569119"
+id = 12592293822
+packable = false
+
+[inputs."images/vectors/boosts/redDouble.png"]
+hash = "6e7a3479d7d0b598581924ac971366cae7ebabed1f949f6a8014fcd02283dc5d"
+id = 12592293864
+packable = false
+
+[inputs."images/vectors/boosts/redSingle.png"]
+hash = "734db2806a969eede916e7428d49dbe6969a23a1dcebce761f7ac3522a577889"
+id = 12592293919
+packable = false
+
+[inputs."images/vectors/boosts/redTriple.png"]
+hash = "7f4466e540e8aa456d4d149c00fe3d00e216e53e7be423a907d18f5351785ae5"
+id = 12592293985
 packable = false

@@ -2,6 +2,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Store } from "shared/rodux";
 
+import { AccountHub } from "./components/account";
 import { LocalMessages } from "./components/announcements";
 import { AutoFight } from "./components/auto fight";
 import { CodesMenu } from "./components/codes/menu";
@@ -47,6 +48,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 	const [spinWheelVisibility, setSpinWheelVisibility] = useState(false);
 	const [itemsVisibility, setItemsVisibility] = useState(false);
 	const [autoFightVisibility, setAutoFightVisibility] = useState(false);
+	const [accountHubVisibility, setAccountHubVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
 
@@ -62,7 +64,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
-						!itemsVisibility
+						!itemsVisibility &&
+						!accountHubVisibility
 					}
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
@@ -79,7 +82,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
-						!itemsVisibility
+						!itemsVisibility &&
+						!accountHubVisibility
 					}
 					displayCodes={(): void => setCodesVisible(true)}
 					displayQuests={(): void => setQuestsVisibility(true)}
@@ -88,6 +92,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 					displaySpinWheel={(): void => setSpinWheelVisibility(true)}
 					displayItems={(): void => setItemsVisibility(true)}
 					displayAutoFight={(): void => setAutoFightVisibility(true)}
+					displayAccount={(): void => setAccountHubVisibility(true)}
 				/>
 				<WeaponLevelUpAnimation
 					enabled={
@@ -99,7 +104,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
-						!itemsVisibility
+						!itemsVisibility &&
+						!accountHubVisibility
 					}
 				/>
 				<TalismanLevelUpAnimation
@@ -112,7 +118,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
-						!itemsVisibility
+						!itemsVisibility &&
+						!accountHubVisibility
 					}
 				/>
 				<LocalMessages />
@@ -126,7 +133,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
-						!itemsVisibility
+						!itemsVisibility &&
+						!accountHubVisibility
 					}
 				/>
 				<WeaponEquip
@@ -139,7 +147,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
-						!itemsVisibility
+						!itemsVisibility &&
+						!accountHubVisibility
 					}
 				/>
 				<RankUpgrade
@@ -152,7 +161,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
-						!itemsVisibility
+						!itemsVisibility &&
+						!accountHubVisibility
 					}
 				/>
 				<WeaponShopHandle
@@ -164,7 +174,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!questsVisible &&
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
-						!itemsVisibility
+						!itemsVisibility &&
+						!accountHubVisibility
 					}
 					weaponShopVisible={weaponShopVisibility}
 					setWeaponShopVisibility={(value: boolean): void => setWeaponShopVisibility(value)}
@@ -178,7 +189,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!questsVisible &&
 						!weaponShopVisibility &&
 						!spinWheelVisibility &&
-						!itemsVisibility
+						!itemsVisibility &&
+						!accountHubVisibility
 					}
 					talismanTowerVisible={talismanTowerVisibility}
 					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
@@ -193,7 +205,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
-						!itemsVisibility
+						!itemsVisibility &&
+						!accountHubVisibility
 					}
 				/>
 				<Teleportation
@@ -205,7 +218,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!weaponShopVisibility &&
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
-						!itemsVisibility
+						!itemsVisibility &&
+						!accountHubVisibility
 					}
 					visible={teleportationVisible}
 					hideMenu={(): void => setTeleportationVisibility(false)}
@@ -219,7 +233,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!settingsVisible &&
 						!questsVisible &&
 						!weaponShopVisibility &&
-						!talismanTowerVisibility
+						!talismanTowerVisibility &&
+						!accountHubVisibility
 					}
 					visible={itemsVisibility}
 					hideMenu={(): void => setItemsVisibility(false)}
@@ -236,6 +251,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 					}
 				/>
 				<AutoFight enabled={autoFightVisibility} hideMenu={(): void => setAutoFightVisibility(false)} />
+				<AccountHub enabled={accountHubVisibility} hideMenu={(): void => setAccountHubVisibility(false)} />
 			</>
 		</RoactRodux.StoreProvider>
 	);

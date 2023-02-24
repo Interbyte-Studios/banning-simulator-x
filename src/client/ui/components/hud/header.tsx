@@ -4,12 +4,13 @@ import { hooks } from "client/ui/hooks";
 import { CodesIcon } from "./codesIcon";
 import { ItemsIcon } from "./itemsIcon";
 import { OptionsIcon } from "./optionsIcon";
-import { RewardsIcon } from "./rewardsIcon";
+import { AccountIcon } from "./rewardsIcon";
 
 interface HUDHeaderProps {
 	displayCodes: () => void;
 	displaySettings: () => void;
 	displayItems: () => void;
+	displayAccount: () => void;
 }
 
 export const HUDHeader = hooks((props: HUDHeaderProps) => {
@@ -30,7 +31,7 @@ export const HUDHeader = hooks((props: HUDHeaderProps) => {
 			<OptionsIcon displaySettings={props.displaySettings} />
 			<CodesIcon displayCodes={props.displayCodes} />
 			<ItemsIcon displayItems={props.displayItems} />
-			<RewardsIcon />
+			<AccountIcon dispayAccount={props.displayAccount} />
 		</frame>
 	);
 });

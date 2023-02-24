@@ -47,11 +47,13 @@ export interface PlayerIndexState {
 	gameVersion: Array<number>;
 	groupRank: number | undefined;
 }
-export type PlayerIndexActions = SetGroupRank;
+export type PlayerIndexActions = SetGroupRank | AddTimePlayed;
 
 interface SetGroupRank extends Rodux.Action<"setGroupRank"> {
 	rank: number;
 }
+
+interface AddTimePlayed extends Rodux.Action<"addTimePlayed"> {}
 
 /**
  * @param rank The rank to set.
@@ -61,6 +63,15 @@ export function setGroupRank(rank: number): SetGroupRank & Rodux.AnyAction {
 	return {
 		type: "setGroupRank",
 		rank,
+	};
+}
+
+/**
+ * @returns The Rodux action to dispatch.
+ */
+export function addTimePlayed(): AddTimePlayed & Rodux.AnyAction {
+	return {
+		type: "addTimePlayed",
 	};
 }
 
@@ -140,6 +151,9 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 		},
 		setGroupRank: (state, action) => {
 			return { ...state, groupRank: action.rank };
+		},
+		addTimePlayed: (state) => {
+			return { ...state, timePlayed: state.timePlayed + 1 };
 		},
 	},
 );
