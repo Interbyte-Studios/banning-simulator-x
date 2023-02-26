@@ -74,10 +74,6 @@ export const EggsUI = RoactRodux.connect(mapStateToProps)(
 		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		useEffect(() => {
-			if (RunService.IsStudio()) {
-				return;
-			}
-
 			const playerRegionalRegulations = PolicyService.GetPolicyInfoForPlayerAsync(player);
 			setReguionalRegulationsForced(playerRegionalRegulations.ArePaidRandomItemsRestricted);
 		}, []);

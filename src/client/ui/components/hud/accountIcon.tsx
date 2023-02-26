@@ -52,7 +52,7 @@ export const AccountIcon = hooks((props: AccountIconProps, { useEffect }) => {
 				AnchorPoint={vec2Middle}
 				Size={UDim2.fromScale(0.9, 0.35)}
 				Position={UDim2.fromScale(0.5, 1)}
-				Text={"Rewards"}
+				Text={"Account"}
 				Font={font}
 				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
