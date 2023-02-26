@@ -2,9 +2,11 @@ import Roact from "@rbxts/roact";
 import { retrieveStore } from "client/clientStores";
 import { vec2Middle } from "client/ui/commonValues";
 import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
+import { TitleGradient } from "client/ui/elements/titleGradient";
 import { hooks } from "client/ui/hooks";
 import { formatTime } from "client/util/formatTime";
 import { GROUP_ROLES } from "shared/configs/game";
+import { TITLES } from "shared/configs/titles";
 import { getTalismanData } from "shared/util/getTalismanData";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
@@ -45,7 +47,21 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 	});
 
 	const groupRankName = groupRank === undefined ? "No Rank" : GROUP_ROLES[groupRank].tag;
+	const groupRankColor = groupRank === undefined ? Color3.fromRGB(255, 255, 255) : GROUP_ROLES[groupRank].color;
+
+	const titleSpecialElement: Array<Roact.Element> = [];
 	const titleName = title ?? "No Title";
+	if (title !== undefined) {
+		const titleData = TITLES.find((x) => x.name === title);
+		if (titleData !== undefined) {
+			titleSpecialElement.push(
+				<>
+					<TitleGradient titleId={titleData.id} />
+				</>,
+			);
+		}
+	}
+
 	const weaponName = getWeaponInfo(weapon).name;
 	const talismanName = talisman === undefined ? "No Talisman" : getTalismanData(talisman).name;
 
@@ -123,9 +139,9 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 				<StatCard header={"Reg. Eggs:"} stat={statsAbbreviator.numberToString(totalRegularEggHatches)} />
 				<StatCard header={"Void Eggs:"} stat={statsAbbreviator.numberToString(totalVoidEggHatches)} />
 				<StatCard header={"Time Played:"} stat={formatTime(timePlayed)} />
-				<StatCard header={"Group Rank:"} stat={groupRankName} />
+				<StatCard header={"Group Rank:"} stat={groupRankName} textColor={groupRankColor} />
 				<StatCard header={"Rank:"} stat={rank} />
-				<StatCard header={"Title:"} stat={titleName} />
+				<StatCard header={"Title:"} stat={titleName} additionalElements={titleSpecialElement} />
 				<StatCard header={"Weapon:"} stat={weaponName} />
 				<StatCard header={"Talisman:"} stat={talismanName} />
 			</RescalingScrollingFrame>
