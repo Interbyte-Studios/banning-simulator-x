@@ -292,7 +292,7 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 				},
 			];
 		},
-		killNpc: (state) => {
+		killNpc: (state, action) => {
 			const newState = [...state];
 
 			for (const pet of newState) {
@@ -300,7 +300,7 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 					continue;
 				}
 
-				pet.bans += 1;
+				pet.bans += 1 * math.ceil(action.petExperienceMultiplier);
 			}
 
 			return newState;

@@ -2,6 +2,7 @@ import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { Currency } from "./currencies";
+import { WorldName } from "./worlds";
 
 export type WeaponType = "Hammer" | "Lance" | "Sword";
 
@@ -18,6 +19,8 @@ export interface Weapon {
 
 	damage: number;
 
+	world: WorldName;
+
 	weaponType: WeaponType;
 
 	isBossWeapon: boolean;
@@ -29,6 +32,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 1,
 		cost: undefined,
 		damage: 18,
+		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
@@ -39,6 +43,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("1.1k"),
 		},
 		damage: 35,
+		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
@@ -50,6 +55,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("2.2k"),
 		},
 		damage: 90,
+		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
@@ -61,6 +67,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("3.4k"),
 		},
 		damage: 200,
+		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
@@ -72,6 +79,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("8.3k"),
 		},
 		damage: 450,
+		world: "Ban Land",
 		weaponType: "Lance",
 		isBossWeapon: false,
 	},
@@ -83,6 +91,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("10.2k"),
 		},
 		damage: 800,
+		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
@@ -94,6 +103,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("20k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("2.2k"),
+		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
@@ -105,6 +115,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("30.4k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("3.8k"),
+		world: "Ban Land",
 		weaponType: "Lance",
 		isBossWeapon: false,
 	},
@@ -116,6 +127,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("81k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("9k"),
+		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
@@ -127,6 +139,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("122k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("16.5k"),
+		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
@@ -138,6 +151,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("305k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("55k"),
+		world: "Ban Land",
 		weaponType: "Lance",
 		isBossWeapon: false,
 	},
@@ -149,6 +163,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("455k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("102k"),
+		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
@@ -160,6 +175,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("920k"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("155k"),
+		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
@@ -171,6 +187,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("1.3M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("210k"),
+		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
@@ -182,6 +199,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("2M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("475k"),
+		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
@@ -193,6 +211,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("3.9M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("600k"),
+		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
@@ -204,6 +223,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("4.7M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("1.1M"),
+		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
@@ -215,6 +235,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("5.9M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("1.8M"),
+		world: "Ban Land",
 		weaponType: "Lance",
 		isBossWeapon: false,
 	},
@@ -226,6 +247,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("11.6M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("2.4M"),
+		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
@@ -237,6 +259,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("25M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("3M"),
+		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
@@ -248,6 +271,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("37.5M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("3.7M"),
+		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
@@ -259,6 +283,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("75M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("8M"),
+		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
@@ -270,6 +295,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("150M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("14M"),
+		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
@@ -281,6 +307,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 			amount: twoDpAbbreviator.stringToNumber("350M"),
 		},
 		damage: twoDpAbbreviator.stringToNumber("20M"),
+		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},

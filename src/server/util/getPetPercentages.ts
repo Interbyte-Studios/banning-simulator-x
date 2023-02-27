@@ -15,9 +15,10 @@ interface RegisteredPet {
  *
  * @param egg The name of the egg.
  * @param boostEnabled Whether luck boost is enabled or not;.
+ * @param gamepassOwned Whether or not the player owns the luck gamepass.
  * @returns An array of pets with calculated true percentages.
  */
-export function getPetPercentages(egg: EggName, boostEnabled: boolean): Array<RegisteredPet> {
+export function getPetPercentages(egg: EggName, boostEnabled: boolean, gamepassOwned: boolean): Array<RegisteredPet> {
 	const eggData = getEggData(egg);
 
 	// get the pet with the lowest id in the egg.
@@ -45,13 +46,16 @@ export function getPetPercentages(egg: EggName, boostEnabled: boolean): Array<Re
 	}
 
 	// apply luck boost
-	const shouldCheckForBoost = boostEnabled || ReplicatedStorage.events.luck.enabled.Value;
+	const shouldCheckForBoost = boostEnabled || ReplicatedStorage.events.luck.enabled.Value || gamepassOwned;
 	if (shouldCheckForBoost) {
 		let boostMultiplier = 0;
 		if (boostEnabled) {
 			boostMultiplier += 2;
 		}
 		if (ReplicatedStorage.events.luck.enabled.Value) {
+			boostMultiplier += 2;
+		}
+		if (gamepassOwned) {
 			boostMultiplier += 2;
 		}
 

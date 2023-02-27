@@ -12,9 +12,10 @@ export interface EggCost {
 /**
  * @param egg The name of the egg.
  * @param isVoid Whether or not the egg is a void egg or not.
+ * @param reducedCost Reduced cost provided by mastery.
  * @returns The cost of the egg.
  */
-export function getEggCost(egg: EggName, isVoid: boolean): EggCost {
+export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): EggCost {
 	const eggData = getEggData(egg);
 	if (eggData.world === "Limited") {
 		return {
@@ -43,7 +44,7 @@ export function getEggCost(egg: EggName, isVoid: boolean): EggCost {
 			case "Starter": {
 				const cost = 500;
 
-				eggCost.amount = isVoid ? cost * 5 : cost;
+				eggCost.amount = isVoid ? cost * 5 - cost * reducedCost : cost - cost * reducedCost;
 				eggCost.currencyType = "coins";
 				break;
 			}
@@ -52,7 +53,9 @@ export function getEggCost(egg: EggName, isVoid: boolean): EggCost {
 			}
 		}
 	} else {
-		eggCost.amount = isVoid ? zoneData.cost.amount * 1.5 * 5 : zoneData.cost.amount;
+		eggCost.amount = isVoid
+			? zoneData.cost.amount * 5 - zoneData.cost.amount * 5 * reducedCost
+			: zoneData.cost.amount - zoneData.cost.amount * reducedCost;
 		eggCost.currencyType = zoneData.cost.currency;
 	}
 

@@ -1,7 +1,10 @@
 import Rodux from "@rbxts/rodux";
 import { t } from "@rbxts/t";
 import { EggName } from "shared/configs/eggs";
+import { PET_MAX_LEVELS } from "shared/configs/pets";
+import { getPetLevel } from "shared/util/getPetLevel";
 
+import { KillNpc } from "./currencies";
 import { AddPet } from "./pets";
 
 export const isValidIndexHatch = t.literal("regular", "void");
@@ -84,7 +87,7 @@ const defaultPlayerIndex: PlayerIndexState = {
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet | PlayerIndexActions>(
+export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet | PlayerIndexActions | KillNpc>(
 	defaultPlayerIndex,
 	{
 		addPet: (state, action) => {
@@ -128,7 +131,14 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 							`Attempted to index a pet hatch of unsupported variant "${petToIndex.variant}".`,
 						);
 
-						pet.hatched[petToIndex.variant] += 1;
+						newState.pets.set(petToIndex.id, {
+							fused: pet.fused,
+							maxLevel: pet.maxLevel,
+							hatched: {
+								...pet.hatched,
+								[petToIndex.variant]: pet.hatched[petToIndex.variant] + 1,
+							},
+						});
 						break;
 					}
 					case "fuse": {
@@ -137,7 +147,14 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 							`Attempted to index a pet fusion of unsupported variant "${petToIndex.variant}".`,
 						);
 
-						pet.fused[petToIndex.variant] += 1;
+						newState.pets.set(petToIndex.id, {
+							fused: {
+								...pet.fused,
+								[petToIndex.variant]: pet.fused[petToIndex.variant] + 1,
+							},
+							maxLevel: pet.maxLevel,
+							hatched: pet.hatched,
+						});
 						break;
 					}
 					case "maxLevel": {
@@ -154,6 +171,32 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 		},
 		addTimePlayed: (state) => {
 			return { ...state, timePlayed: state.timePlayed + 1 };
+		},
+		killNpc: (state, action) => {
+			const newState = { ...state };
+
+			for (const pet of action.equippedPets) {
+				const masteryData = newState.pets.get(pet.id);
+				assert(masteryData, `Failed to get mastery data for pet with id ${pet.id}`);
+
+				const maxLevel = PET_MAX_LEVELS[pet.variant];
+				const petLevel = getPetLevel(pet);
+
+				if (petLevel < maxLevel) {
+					continue;
+				}
+
+				newState.pets.set(pet.id, {
+					hatched: masteryData.hatched,
+					fused: masteryData.fused,
+					maxLevel: {
+						...masteryData.maxLevel,
+						[pet.variant]: masteryData.maxLevel[pet.variant] + 1,
+					},
+				});
+			}
+
+			return newState;
 		},
 	},
 );

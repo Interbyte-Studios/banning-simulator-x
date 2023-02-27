@@ -12,6 +12,7 @@ import { addPets, ConfirmedPet } from "shared/rodux/pets";
 import { isImmuneRarity } from "shared/rodux/settings";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
+import { getEggsMastery } from "shared/util/getEggsMastery";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
 import { withinDistanceToHatch } from "shared/util/withinDistanceToHatch";
 
@@ -35,7 +36,10 @@ hatchEgg.SetCallback(
 		// verify that the user can hatch the eggs
 		const currentState = store.getState();
 		const eggData = getEggData(eggName);
-		const eggCost = getEggCost(eggName, isVoid);
+
+		// find reduced egg cost provided by player mastery
+		const eggMasteryReducedMultiplier = getEggsMastery(store.getState().eggs).reducedEggCostMultiplier;
+		const eggCost = getEggCost(eggName, isVoid, eggMasteryReducedMultiplier);
 
 		// check that user owns world
 		const ownsWorld = currentState.worlds.find((x) => x.name === eggData.world);
@@ -87,7 +91,8 @@ hatchEgg.SetCallback(
 		const boostEnabled = eggData.luckApplies
 			? currentState.boosts.active["x2 Hatching Luck"] > 0 || ReplicatedStorage.events.luck.enabled.Value
 			: false;
-		const truePetPercentages = getPetPercentages(eggName, boostEnabled);
+		const ownsLuckGamepass = store.getState().gamepasses["x2 Luck"];
+		const truePetPercentages = getPetPercentages(eggName, boostEnabled, ownsLuckGamepass);
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		for (const _ of $range(1, amount)) {

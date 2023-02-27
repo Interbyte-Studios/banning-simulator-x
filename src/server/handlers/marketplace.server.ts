@@ -4,6 +4,7 @@ import { BOOST_PRODUCTS, PURCHASE_PET_TEAM_PRODUCT } from "shared/configs/game";
 import { claimBoost } from "shared/rodux/boosts";
 import { claimDevProduct } from "shared/rodux/devProducts";
 import { purchasePetTeam } from "shared/rodux/petTeams";
+import { getBoostMastery } from "shared/util/getBoostMastery";
 
 const marketplaceDataStore = DataStoreService.GetDataStore("marketplacePurchases");
 
@@ -24,12 +25,15 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 	}
 
 	const store = retrieveStore(player);
+	const boostMasteryExtendedDuration = getBoostMastery(store.getState().boosts).extendedDurationMultiplier;
 
 	let purchaseProcessed = false;
-	for (const [boostName, boostId] of pairs(BOOST_PRODUCTS)) {
-		if (boostId === receiptInfo.ProductId) {
-			store.dispatch(claimBoost(boostName, 15));
-			purchaseProcessed = true;
+	for (const [boostName, boostTimes] of pairs(BOOST_PRODUCTS)) {
+		for (const [, boostId] of pairs(boostTimes)) {
+			if (boostId === receiptInfo.ProductId) {
+				store.dispatch(claimBoost(boostName, 15, boostMasteryExtendedDuration));
+				purchaseProcessed = true;
+			}
 		}
 	}
 

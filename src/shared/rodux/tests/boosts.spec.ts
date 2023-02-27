@@ -2,14 +2,14 @@
 
 import { BoostProduct } from "shared/configs/game";
 
-import { boostsReducer, claimBoost, useBoosts } from "../boosts";
+import { boostsReducer, claimBoost, useBoosts, ValidBoostTime } from "../boosts";
 import { testAction } from "./testAction";
 
 export = (): void => {
 	describe("rodux/boosts", () => {
 		it("should allow claiming a boost", () => {
 			const defaultBoost = 0;
-			const claimedBoostTime = 6 * 60;
+			const claimedBoostTime: ValidBoostTime = 120;
 
 			const state = {
 				storage: {
@@ -51,6 +51,7 @@ export = (): void => {
 					["x2 Pet Experience"]: defaultBoost,
 					["x2 Hatching Luck"]: defaultBoost,
 				},
+				uses: 0,
 			};
 
 			const newState = {
@@ -93,9 +94,10 @@ export = (): void => {
 					["x2 Pet Experience"]: defaultBoost,
 					["x2 Hatching Luck"]: defaultBoost,
 				},
+				uses: 0,
 			};
 
-			const action = claimBoost("x2 Currency", claimedBoostTime);
+			const action = claimBoost("x2 Currency", claimedBoostTime, 1);
 
 			testAction(state, newState, boostsReducer, action);
 		});
@@ -142,6 +144,7 @@ export = (): void => {
 					["x2 Pet Experience"]: boostTime,
 					["x2 Hatching Luck"]: boostTime,
 				},
+				uses: 0,
 			};
 
 			const newState = {
@@ -177,6 +180,7 @@ export = (): void => {
 					["x2 Pet Experience"]: boostTime - 1,
 					["x2 Hatching Luck"]: boostTime - 1,
 				},
+				uses: 0,
 			};
 
 			const action = useBoosts(boostsToUse);

@@ -1,4 +1,5 @@
 import { createContext } from "@rbxts/roact";
+import { ClaimAccoladeDefinition } from "shared/remotes/accolades/claimAccolade";
 import { EquipTitleDefinition } from "shared/remotes/equipTitle";
 import { RedeemCodeDefinition } from "shared/remotes/media/redeemCode";
 import { VerifyDiscordDefinition } from "shared/remotes/media/verifyDiscord";
@@ -112,6 +113,12 @@ export const fakeRemoteContext = {
 
 	togglePublicInventory: fakeRemoteCall<TogglePublicInventoryDefinition>("togglePublicInventory"),
 	togglePublicTradeHistory: fakeRemoteCall<TogglePublicTradeHistoryDefinition>("togglePublicTradeHistory"),
+
+	claimAccolade: fakeFunctionCall<ClaimAccoladeDefinition>("claimAccolade", () => {
+		return {
+			success: true,
+		};
+	}),
 };
 
 export const remoteContext = createContext(fakeRemoteContext);

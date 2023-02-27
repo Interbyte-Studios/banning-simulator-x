@@ -3,7 +3,7 @@ import Rodux from "@rbxts/rodux";
 import { currencies, Currency } from "shared/configs/currencies";
 
 import { RedeemCode } from "./media";
-import { AddPet, EnhancePet } from "./pets";
+import { AddPet, EnhancePet, Pet } from "./pets";
 import { RedeemQuest } from "./quests";
 import { UnlockRank } from "./rank";
 import { PurchaseTalisman } from "./talismans";
@@ -11,7 +11,7 @@ import { PurchaseWeapon } from "./weapons";
 import { UnlockWorld, UnlockZone } from "./worlds";
 
 export type CurrenciesState = { [P in Currency]: number };
-export type CurrenciesActions = KillNpc;
+export type CurrenciesActions = KillNpc | AwardCurrency;
 
 export interface KillNpc extends Rodux.Action<"killNpc"> {
 	currency: number;
@@ -19,6 +19,13 @@ export interface KillNpc extends Rodux.Action<"killNpc"> {
 	experience: number;
 	weaponId: number;
 	talismanId: number | undefined;
+	petExperienceMultiplier: number;
+	equippedPets: Array<Pet>;
+}
+
+export interface AwardCurrency extends Rodux.Action<"awardCurrency"> {
+	currency: Currency;
+	amount: number;
 }
 
 /**
@@ -27,6 +34,8 @@ export interface KillNpc extends Rodux.Action<"killNpc"> {
  * @param experience The amount of experience to give them.
  * @param weaponId The id of the weapon the player has equipped.
  * @param talismanId The id of the talisman the player has equipped.
+ * @param petExperienceMultiplier Additional experience granted to pets.
+ * @param equippedPets The pets the player has equipped.
  * @returns The Rodux action to dispatch.
  */
 export function killNpc(
@@ -35,6 +44,8 @@ export function killNpc(
 	experience: number,
 	weaponId: number,
 	talismanId: number | undefined,
+	petExperienceMultiplier: number,
+	equippedPets: Array<Pet>,
 ): KillNpc & Rodux.AnyAction {
 	return {
 		type: "killNpc",
@@ -43,6 +54,21 @@ export function killNpc(
 		experience,
 		weaponId,
 		talismanId,
+		petExperienceMultiplier,
+		equippedPets,
+	};
+}
+
+/**
+ * @param currency The type of currency to reward the player with.
+ * @param amount The amount of currency to reward the player with.
+ * @returns The Rodux action to dispatch.
+ */
+export function awardCurrency(currency: Currency, amount: number): AwardCurrency & Rodux.AnyAction {
+	return {
+		type: "awardCurrency",
+		currency,
+		amount,
 	};
 }
 
@@ -126,6 +152,12 @@ export const currenciesReducer = Rodux.createReducer<
 	unlockRank: (state, action) => {
 		const purchasedCurency = state[action.currency] - action.cost;
 		return { ...state, [action.currency]: purchasedCurency };
+	},
+	awardCurrency: (state, action) => {
+		const newState = { ...state };
+		newState[action.currency] += action.amount;
+
+		return newState;
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */

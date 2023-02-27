@@ -141,10 +141,7 @@ export const HatchEggButton = RoactRodux.connect(mapStateToProps)(
 					TextColor3={Color3.fromRGB(255, 255, 255)}
 					Font={font}
 				>
-					<BaseUIStroke
-						isBillboard={true}
-						native={{ Thickness: 2, Color: Color3.fromRGB(122, 54, 133) }}
-					/>
+					<BaseUIStroke isBillboard={true} native={{ Thickness: 2, Color: Color3.fromRGB(122, 54, 133) }} />
 					<textlabel
 						BackgroundTransparency={1}
 						AnchorPoint={vec2Middle}
@@ -155,10 +152,7 @@ export const HatchEggButton = RoactRodux.connect(mapStateToProps)(
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 						Font={font}
 					>
-						<BaseUIStroke
-							isBillboard={true}
-							native={{ Thickness: 2, Color: Color3.fromRGB(122, 54, 133) }}
-						/>
+						<BaseUIStroke isBillboard={true} native={{ Thickness: 2, Color: Color3.fromRGB(122, 54, 133) }} />
 					</textlabel>
 				</textlabel>
 			</imagebutton>

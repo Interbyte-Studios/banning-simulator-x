@@ -12,7 +12,7 @@ export = (): void => {
 			const state = { coins: 10, gems: 10 };
 			const newState = { coins: state.coins + currencyAmount, gems: 10 };
 
-			const action = killNpc(currencyAmount, "coins", 0, 1, 1);
+			const action = killNpc(currencyAmount, "coins", 0, 1, 1, 1, []);
 			testAction(state, newState, currenciesReducer, action);
 		});
 
@@ -22,7 +22,7 @@ export = (): void => {
 			const state = 250;
 			const newState = state + experienceAmount;
 
-			const action = killNpc(50, "coins", experienceAmount, 1, 1);
+			const action = killNpc(50, "coins", experienceAmount, 1, 1, 1, []);
 			testAction(state, newState, experienceReducer, action);
 		});
 	});

@@ -26,7 +26,7 @@ const defaultGamepasses: GamepassesState = {
 	["Fast Hatch"]: false,
 	["x2 Currency"]: false,
 	["x2 Experience"]: false,
-	["x2 Fusion Luck"]: false,
+	["Better Fusion"]: false,
 	VIP: false,
 	["+800 Inventory"]: false,
 	["+450 Inventory"]: false,

@@ -13,33 +13,59 @@ export interface BoostsState {
 	active: {
 		[boost in BoostProduct]: number;
 	};
+	uses: number;
 }
-export type BoostActions = ClaimBoost | UseBoosts;
+export type BoostActions = StoreBoost | ClaimBoost | UseBoosts;
 
 export const validBoostTime = t.union(t.literal(15), t.literal(30), t.literal(60), t.literal(120));
 export type ValidBoostTime = t.static<typeof validBoostTime>;
 
-interface ClaimBoost extends Rodux.Action<"claimBoost"> {
+export type ValidBoostUseRecord = Array<BoostProduct>;
+
+interface StoreBoost extends Rodux.Action<"storeBoost"> {
 	name: BoostProduct;
-	boostTime: number;
+	boostTime: ValidBoostTime;
 }
 
-export type ValidBoostUseRecord = Array<BoostProduct>;
+interface ClaimBoost extends Rodux.Action<"claimBoost"> {
+	name: BoostProduct;
+	boostTime: ValidBoostTime;
+	extendedDurationMultiplier: number;
+}
 
 interface UseBoosts extends Rodux.Action<"useBoosts"> {
 	boosts: Array<BoostProduct>;
 }
 
 /**
- * @param boostName The name of the product that's being claimed.
- * @param boostTime The time that should be added.
+ * @param name The name of the boost.
+ * @param boostTime The amount of time to dispatch.
  * @returns The Rodux action to dispatch.
  */
-export function claimBoost(boostName: BoostProduct, boostTime: number): ClaimBoost & Rodux.AnyAction {
+export function storeBoost(name: BoostProduct, boostTime: ValidBoostTime): StoreBoost & Rodux.AnyAction {
+	return {
+		type: "storeBoost",
+		name,
+		boostTime,
+	};
+}
+
+/**
+ * @param boostName The name of the product that's being claimed.
+ * @param boostTime The time that should be added.
+ * @param extendedDurationMultiplier The extended duration multiplier provided by mastery.
+ * @returns The Rodux action to dispatch.
+ */
+export function claimBoost(
+	boostName: BoostProduct,
+	boostTime: ValidBoostTime,
+	extendedDurationMultiplier: number,
+): ClaimBoost & Rodux.AnyAction {
 	return {
 		type: "claimBoost",
 		name: boostName,
 		boostTime,
+		extendedDurationMultiplier,
 	};
 }
 
@@ -85,18 +111,32 @@ const defaultBoosts: BoostsState = {
 		["x2 Currency"]: 0,
 		["x2 Rank Experience"]: 0,
 		["x2 Pet Experience"]: 0,
-		["x2 Hatching Luck"]: 500000000,
+		["x2 Hatching Luck"]: 0,
 	},
+	uses: 0,
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions | RedeemCode>(defaultBoosts, {
+	storeBoost: (state, action) => {
+		const newState = { ...state };
+		newState.storage = {
+			...newState.storage,
+			[action.name]: {
+				...newState.storage[action.name],
+				[action.boostTime]: newState.storage[action.name][action.boostTime] + 1,
+			},
+		};
+
+		return newState;
+	},
 	claimBoost: (state, action) => {
 		const newState = { ...state };
 		newState.active = {
 			...newState.active,
-			[action.name]: newState.active[action.name] + action.boostTime,
+			[action.name]: newState.active[action.name] + action.boostTime * action.extendedDurationMultiplier,
 		};
+		newState.uses += 1;
 
 		return newState;
 	},
