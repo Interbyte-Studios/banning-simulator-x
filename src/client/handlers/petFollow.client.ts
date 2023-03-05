@@ -7,7 +7,7 @@ import {
 	removePetAnimationCache,
 } from "client/modules/pets/petAnimationCache";
 import { removePet } from "client/modules/pets/unequipPet";
-import { isValidPetAnimationType, ValidPetAnimationType } from "shared/rodux/settings";
+import { isValidPetAnimationType } from "shared/rodux/settings";
 
 const radius = math.pi * 2;
 

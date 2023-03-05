@@ -1,6 +1,5 @@
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
 import { stores } from "server/playerStore";
-import { AccountMastery } from "shared/configs/accountMastery";
 import { WORLDS } from "shared/configs/worlds";
 import { NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";

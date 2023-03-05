@@ -5,7 +5,6 @@ import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFr
 import { hooks } from "client/ui/hooks";
 import { ACCOLADES } from "shared/configs/accolades";
 import { StoreState } from "shared/rodux";
-import { AccoladeState } from "shared/rodux/accolade";
 
 import { FullComponentHeader } from "../util/fullComponentHeader";
 import { AccoladeCard } from "./accoladeCard";
