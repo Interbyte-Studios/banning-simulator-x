@@ -7,7 +7,7 @@ import { RedeemCode } from "./media";
 export interface BoostsState {
 	storage: {
 		[boost in BoostProduct]: {
-			[time in ValidBoostTime]: number;
+			[time in ValidStoredBoostTime]: number;
 		};
 	};
 	active: {
@@ -19,6 +19,9 @@ export type BoostActions = StoreBoost | ClaimBoost | UseBoosts;
 
 export const validBoostTime = t.union(t.literal(15), t.literal(30), t.literal(60), t.literal(120));
 export type ValidBoostTime = t.static<typeof validBoostTime>;
+
+export const validStoredBoostTime = t.union(t.literal("15"), t.literal("30"), t.literal("60"), t.literal("120"));
+export type ValidStoredBoostTime = t.static<typeof validStoredBoostTime>;
 
 export type ValidBoostUseRecord = Array<BoostProduct>;
 
@@ -83,28 +86,28 @@ export function useBoosts(boosts: ValidBoostUseRecord): UseBoosts & Rodux.AnyAct
 const defaultBoosts: BoostsState = {
 	storage: {
 		["x2 Currency"]: {
-			15: 0,
-			30: 0,
-			60: 0,
-			120: 0,
+			"15": 0,
+			"30": 0,
+			"60": 0,
+			"120": 0,
 		},
 		["x2 Rank Experience"]: {
-			15: 0,
-			30: 0,
-			60: 0,
-			120: 0,
+			"15": 0,
+			"30": 0,
+			"60": 0,
+			"120": 0,
 		},
 		["x2 Pet Experience"]: {
-			15: 0,
-			30: 0,
-			60: 0,
-			120: 0,
+			"15": 0,
+			"30": 0,
+			"60": 0,
+			"120": 0,
 		},
 		["x2 Hatching Luck"]: {
-			15: 0,
-			30: 0,
-			60: 0,
-			120: 0,
+			"15": 0,
+			"30": 0,
+			"60": 0,
+			"120": 0,
 		},
 	},
 	active: {
@@ -120,11 +123,14 @@ const defaultBoosts: BoostsState = {
 export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions | RedeemCode>(defaultBoosts, {
 	storeBoost: (state, action) => {
 		const newState = { ...state };
+
+		const timeIndex = tostring(action.boostTime) as ValidStoredBoostTime;
+
 		newState.storage = {
 			...newState.storage,
 			[action.name]: {
 				...newState.storage[action.name],
-				[action.boostTime]: newState.storage[action.name][action.boostTime] + 1,
+				[action.boostTime]: newState.storage[action.name][timeIndex] + 1,
 			},
 		};
 

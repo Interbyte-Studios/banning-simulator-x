@@ -67,6 +67,10 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 				return;
 			}
 
+			if (rightComponentDisplayed === "Accolades" || rightComponentDisplayed === "Mastery") {
+				return;
+			}
+
 			let mouseInDisplay = false;
 			let holdingDisplay = false;
 			let currentX: number | undefined;
@@ -182,37 +186,41 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 
 		const leftDisplayedComponents: Array<Roact.Element> = [];
 		if (playerSelectionVisible) {
-			leftDisplayedComponents.push(
-				<AccountPlayerSelection
-					setPlayerViewed={(player): void => setViewedPlayer(player)}
-					returnToSelection={(): void => setPlayerSelectionVisibility(false)}
-				/>,
-				<ReturnToAccountView returnToSelection={(): void => setPlayerSelectionVisibility(false)} />,
-			);
+			if (rightComponentDisplayed !== "Accolades" && rightComponentDisplayed !== "Mastery") {
+				leftDisplayedComponents.push(
+					<AccountPlayerSelection
+						setPlayerViewed={(player): void => setViewedPlayer(player)}
+						returnToSelection={(): void => setPlayerSelectionVisibility(false)}
+					/>,
+					<ReturnToAccountView returnToSelection={(): void => setPlayerSelectionVisibility(false)} />,
+				);
+			}
 		} else {
-			leftDisplayedComponents.push(
-				<frame
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={0}
-					BackgroundColor3={Color3.fromRGB(19, 81, 128)}
-					Position={UDim2.fromScale(0.23, 0.565)}
-					Size={UDim2.fromScale(0.425, 0.775)}
-				>
-					<uicorner CornerRadius={new UDim(0.075, 0)} />
-					<viewportframe
+			if (rightComponentDisplayed !== "Accolades" && rightComponentDisplayed !== "Mastery") {
+				leftDisplayedComponents.push(
+					<frame
 						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(1, 1)}
-						Ref={viewportFrameRef.value}
+						BackgroundTransparency={0}
+						BackgroundColor3={Color3.fromRGB(19, 81, 128)}
+						Position={UDim2.fromScale(0.23, 0.565)}
+						Size={UDim2.fromScale(0.425, 0.775)}
 					>
-						<camera CFrame={new CFrame(0, 0, 0)} Ref={cameraRef.value} />
-					</viewportframe>
-				</frame>,
+						<uicorner CornerRadius={new UDim(0.075, 0)} />
+						<viewportframe
+							AnchorPoint={vec2Middle}
+							BackgroundTransparency={1}
+							Position={UDim2.fromScale(0.5, 0.5)}
+							Size={UDim2.fromScale(1, 1)}
+							Ref={viewportFrameRef.value}
+						>
+							<camera CFrame={new CFrame(0, 0, 0)} Ref={cameraRef.value} />
+						</viewportframe>
+					</frame>,
 
-				<EditAccount />,
-				<SelectPlayer setPlayerSelectionVisibility={(): void => setPlayerSelectionVisibility(true)} />,
-			);
+					<EditAccount />,
+					<SelectPlayer setPlayerSelectionVisibility={(): void => setPlayerSelectionVisibility(true)} />,
+				);
+			}
 		}
 
 		const rightDisplayedComponents: Array<Roact.Element> = [];

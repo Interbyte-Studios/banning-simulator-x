@@ -6,11 +6,12 @@ import { getEggsMastery } from "shared/util/getEggsMastery";
 import { getPetExperienceMastery } from "shared/util/getPetExperienceMastery";
 
 import { Currency } from "./currencies";
+import { EGGS } from "./eggs";
 import { BoostProduct } from "./game";
 import { WEAPONS } from "./weapons";
 import { BAN_LAND_ZONES } from "./zones/banLand";
 
-type AccoladeCompletion = true | { progressPercentage: number; progress: number; maxProgress: number }; // Able to claim or the percentage of completion
+export type AccoladeCompletion = true | { progressPercentage: number; progress: number; maxProgress: number }; // Able to claim or the percentage of completion
 export interface Accolade {
 	id: number; // id of the accolade
 	name: string; // the display name or title of the accolade
@@ -68,42 +69,53 @@ export const ACCOLADES: Array<Accolade> = [
 	},
 	{
 		id: 2,
-		name: "Complete the pet mastery",
+		name: "Complete the Ban Land Pet Mastery",
 		progress: (state): AccoladeCompletion => {
 			let totalObjectives = 0;
 			let completedObjectives = 0;
 
-			state.petMastery.forEach((masteryData) => {
-				totalObjectives += 7; // total objectives per pet
-
-				if (masteryData.radiant.fuseClaimed) {
-					completedObjectives += 1;
+			for (const [, eggData] of pairs(EGGS)) {
+				if (eggData.world !== "Ban Land") {
+					continue;
 				}
 
-				if (masteryData.radiant.maxLevelClaimed) {
-					completedObjectives += 1;
-				}
+				for (const [, petData] of pairs(eggData.pets)) {
+					totalObjectives += 7; // total objectives per pet
 
-				if (masteryData.void.fuseClaimed) {
-					completedObjectives += 1;
-				}
+					const storedMasteryData = state.petMastery.get(petData.id);
+					if (storedMasteryData === undefined) {
+						continue;
+					}
 
-				if (masteryData.void.maxLevelClaimed) {
-					completedObjectives += 1;
-				}
+					if (storedMasteryData.radiant.fuseClaimed) {
+						completedObjectives += 1;
+					}
 
-				if (masteryData.void.hatchClaimed) {
-					completedObjectives += 1;
-				}
+					if (storedMasteryData.radiant.maxLevelClaimed) {
+						completedObjectives += 1;
+					}
 
-				if (masteryData.regular.maxLevelClaimed) {
-					completedObjectives += 1;
-				}
+					if (storedMasteryData.void.fuseClaimed) {
+						completedObjectives += 1;
+					}
 
-				if (masteryData.regular.hatchClaimed) {
-					completedObjectives += 1;
+					if (storedMasteryData.void.maxLevelClaimed) {
+						completedObjectives += 1;
+					}
+
+					if (storedMasteryData.void.hatchClaimed) {
+						completedObjectives += 1;
+					}
+
+					if (storedMasteryData.regular.maxLevelClaimed) {
+						completedObjectives += 1;
+					}
+
+					if (storedMasteryData.regular.hatchClaimed) {
+						completedObjectives += 1;
+					}
 				}
-			});
+			}
 
 			if (completedObjectives >= totalObjectives) {
 				return true;
