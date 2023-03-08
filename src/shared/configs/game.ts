@@ -18,6 +18,7 @@ export const GAMEPASSES = {
 	["+2 Pets Equipped"]: 27753303, // Implemented
 	["+3 Pets Equipped"]: 27753311, // Implemented
 	Teleportation: 27753320, // Implemented
+	["Auto Fight"]: 146371039,
 };
 
 export type BoostProduct = keyof typeof BOOST_PRODUCTS;

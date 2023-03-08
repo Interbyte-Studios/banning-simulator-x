@@ -34,6 +34,7 @@ const defaultGamepasses: GamepassesState = {
 	["+2 Pets Equipped"]: false,
 	["+3 Pets Equipped"]: false,
 	Teleportation: false,
+	["Auto Fight"]: false,
 };
 
 /* eslint-disable jsdoc/require-jsdoc */

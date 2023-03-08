@@ -31,6 +31,7 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 	}
 
 	const storeState = playerStore.getState();
+	const [bans, setBans] = useState(storeState.bans.bans);
 	const [hatches, setHatches] = useState(storeState.index.eggs);
 	const [timePlayed, setTimePlayed] = useState(storeState.index.timePlayed);
 	const [groupRank, setGroupRank] = useState(storeState.index.groupRank);
@@ -83,6 +84,10 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 
 	useEffect(() => {
 		const connection = playerStore.changed.connect((newState, oldState) => {
+			if (newState.bans.bans !== oldState.bans.bans) {
+				setBans(newState.bans.bans);
+			}
+
 			if (newState.index.eggs !== oldState.index.eggs) {
 				setHatches(newState.index.eggs);
 			}
@@ -136,6 +141,7 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 					Padding={new UDim(0.025, 0)}
 					Ref={uiListLayoutRef.value}
 				/>
+				<StatCard header={"Bans:"} stat={statsAbbreviator.numberToString(bans)} />
 				<StatCard header={"Reg. Eggs:"} stat={statsAbbreviator.numberToString(totalRegularEggHatches)} />
 				<StatCard header={"Void Eggs:"} stat={statsAbbreviator.numberToString(totalVoidEggHatches)} />
 				<StatCard header={"Time Played:"} stat={formatTime(timePlayed)} />

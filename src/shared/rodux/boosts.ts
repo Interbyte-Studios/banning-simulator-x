@@ -123,7 +123,6 @@ const defaultBoosts: BoostsState = {
 export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions | RedeemCode>(defaultBoosts, {
 	storeBoost: (state, action) => {
 		const newState = { ...state };
-
 		const timeIndex = tostring(action.boostTime) as ValidStoredBoostTime;
 
 		newState.storage = {
@@ -164,11 +163,13 @@ export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions | Red
 		}
 
 		const newState = { ...state };
+		const timeIndex = tostring(action.boosts.time) as ValidStoredBoostTime;
+
 		newState.storage = {
 			...newState.storage,
-			[action.boosts.name]: {
+			[action.name]: {
 				...newState.storage[action.boosts.name],
-				[action.boosts.time]: newState.storage[action.boosts.name][action.boosts.time] + 1,
+				[action.boosts.time]: newState.storage[action.boosts.name][timeIndex] + 1,
 			},
 		};
 

@@ -60,6 +60,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
 						!itemsVisibility &&
+						!autoFightVisibility &&
 						!accountHubVisibility
 					}
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
@@ -74,6 +75,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
 						!itemsVisibility &&
+						!autoFightVisibility &&
 						!accountHubVisibility
 					}
 					displayQuests={(): void => setQuestsVisibility(true)}
@@ -95,6 +97,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
 						!itemsVisibility &&
+						!autoFightVisibility &&
 						!accountHubVisibility
 					}
 				/>
@@ -107,6 +110,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
 						!itemsVisibility &&
+						!autoFightVisibility &&
 						!accountHubVisibility
 					}
 				/>
@@ -119,6 +123,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
 						!itemsVisibility &&
+						!autoFightVisibility &&
 						!accountHubVisibility
 					}
 				/>
@@ -130,6 +135,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
 						!itemsVisibility &&
+						!autoFightVisibility &&
 						!accountHubVisibility
 					}
 					weaponShopVisible={weaponShopVisibility}
@@ -143,6 +149,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!weaponShopVisibility &&
 						!spinWheelVisibility &&
 						!itemsVisibility &&
+						!autoFightVisibility &&
 						!accountHubVisibility
 					}
 					talismanTowerVisible={talismanTowerVisibility}
@@ -157,6 +164,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
 						!itemsVisibility &&
+						!autoFightVisibility &&
 						!accountHubVisibility
 					}
 				/>
@@ -168,6 +176,7 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!talismanTowerVisibility &&
 						!spinWheelVisibility &&
 						!itemsVisibility &&
+						!autoFightVisibility &&
 						!accountHubVisibility
 					}
 					visible={teleportationVisible}
@@ -177,7 +186,12 @@ export const app = hooks((props: AppProps, { useState }) => {
 				<SpinWheel visible={spinWheelVisibility} hideMenu={(): void => setSpinWheelVisibility(false)} />
 				<ItemInventory
 					enabled={
-						!isHatching && !questsVisible && !weaponShopVisibility && !talismanTowerVisibility && !accountHubVisibility
+						!isHatching &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility &&
+						!autoFightVisibility &&
+						!accountHubVisibility
 					}
 					visible={itemsVisibility}
 					hideMenu={(): void => setItemsVisibility(false)}

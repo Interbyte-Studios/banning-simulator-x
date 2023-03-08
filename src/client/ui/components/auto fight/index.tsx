@@ -1,7 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Players, RunService, Workspace } from "@rbxts/services";
+import { MarketplaceService, Players, RunService, Workspace } from "@rbxts/services";
 import { toggleAutoFight } from "client/modules/autoFightWalkspeedHandler";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
@@ -16,6 +16,7 @@ import { formatTime } from "client/util/formatTime";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { currencies, Currency } from "shared/configs/currencies";
+import { GAMEPASSES } from "shared/configs/game";
 import { MAX_RANK, RANKS } from "shared/configs/ranks";
 import { MAX_WEAPON_ID } from "shared/configs/weapons";
 import { isValidZone, UniversalWorldData, Zone, ZoneNames } from "shared/configs/zones";
@@ -91,10 +92,6 @@ function mapStateToProps(state: StoreState): AutoFightMappedProps {
 /* eslint-disable jsdoc/require-jsdoc */
 export const AutoFight = RoactRodux.connect(mapStateToProps)(
 	hooks((props: AutoFightProps, hooks) => {
-		if (!props.enabled) {
-			return <></>;
-		}
-
 		const { useState, useEffect, useContext, useValue } = hooks;
 		const [isEnabled, setIsEnabled] = useState(false);
 		const [zoneSelected, setSelectedZone] = useState<ZoneNames | undefined>(undefined);
@@ -181,7 +178,6 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 			}
 
 			const nextWeapon = getWeaponInfo(props.currentWeapon.id + 1);
-
 			if (nextWeapon.data.cost === undefined) {
 				return;
 			}
@@ -421,9 +417,12 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 
 		useEffect(() => toggleAutoFight(isEnabled, props.walkspeed), [isEnabled, props.walkspeed]);
 
+		if (!props.enabled) {
+			return <></>;
+		}
+
 		if (!isEnabled) {
-			// todo: Add case for if they do not own the gamepass or have it unlocked through mastery
-			if (!props.gamepasses.Teleportation) {
+			if (!props.gamepasses["Auto Fight"]) {
 				const minimizedSize = 0.6;
 				const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
 
@@ -471,57 +470,10 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 						<textlabel
 							AnchorPoint={vec2Middle}
 							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.5, 0.35)}
-							Size={UDim2.fromScale(0.85, 0.11)}
-							Font={font}
-							Text={`You can unlock auto fight for free through account mastery:`}
-							TextScaled={true}
-							TextColor3={Color3.fromRGB(255, 255, 255)}
-						>
-							<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 79, 130) }} />
-						</textlabel>
-						<frame
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={0}
-							BackgroundColor3={Color3.fromRGB(13, 147, 230)}
-							Position={UDim2.fromScale(0.5, 0.51)}
-							Size={UDim2.fromScale(0.9, 0.175)}
-						>
-							<uicorner CornerRadius={new UDim(0.15, 0)} />
-							<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 79, 130) }} />
-
-							<textlabel
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.6, 0.5)}
-								Size={UDim2.fromScale(0.75, 0.6)}
-								Font={font}
-								Text={`Not complete yet`} // todo: Change text based on completion of banning account mastery (i.e: "You're half way there! 50% more progress to go (100/200).")
-								TextScaled={true}
-								TextColor3={Color3.fromRGB(255, 255, 255)}
-							>
-								<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 79, 130) }} />
-							</textlabel>
-
-							<frame // todo: Convert to image label of banning account mastery
-								AnchorPoint={vec2Middle}
-								BackgroundColor3={Color3.fromRGB(14, 165, 253)}
-								Position={UDim2.fromScale(0.1, 0.5)}
-								Size={UDim2.fromScale(0.9, 0.9)}
-							>
-								<uiaspectratioconstraint AspectRatio={1} />
-								<uicorner CornerRadius={new UDim(1, 0)} />
-								<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 79, 130) }} />
-							</frame>
-						</frame>
-
-						<textlabel
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.5, 0.675)}
+							Position={UDim2.fromScale(0.5, 0.3)}
 							Size={UDim2.fromScale(0.85, 0.05)}
 							Font={font}
-							Text={`or purchase the gamepass:`}
+							Text={`You can unlock Auto Fight by purchasing the gamepass:`}
 							TextScaled={true}
 							TextColor3={Color3.fromRGB(255, 255, 255)}
 						>
@@ -531,7 +483,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 							AnchorPoint={vec2Middle}
 							BackgroundTransparency={0}
 							BackgroundColor3={Color3.fromRGB(13, 147, 230)}
-							Position={UDim2.fromScale(0.5, 0.815)}
+							Position={UDim2.fromScale(0.5, 0.45)}
 							Size={UDim2.fromScale(0.6, 0.175)}
 						>
 							<uicorner CornerRadius={new UDim(0.15, 0)} />
@@ -543,7 +495,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 								Position={UDim2.fromScale(0.4, 0.5)}
 								Size={UDim2.fromScale(0.2, 0.4)}
 								Font={font}
-								Text={`R$249`}
+								Text={`R$699`}
 								TextScaled={true}
 								TextColor3={Color3.fromRGB(85, 255, 127)}
 							>
@@ -562,6 +514,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 									/* eslint-disable jsdoc/require-jsdoc */
 									Activated: (): void => {
 										playSFX(UIEngagement.MinorEngagement);
+										MarketplaceService.PromptProductPurchase(Players.LocalPlayer, GAMEPASSES["Auto Fight"]);
 									},
 									MouseEnter: (): void => motor.setGoal(minimizedSpring),
 									MouseLeave: (): void => motor.setGoal(maximizedSpring),
@@ -734,13 +687,22 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 			}
 		} else {
 			if (!viewingRewards) {
-				const minimizedSize = 0.35;
+				const rewardsMinSize = 0.35;
+				const rewardsMinSpring = new Flipper.Spring(rewardsMinSize, { frequency: 5 });
+
+				const rewardsMaxSize = 0.4;
+				const rewardsMaxSpring = new Flipper.Spring(rewardsMaxSize, { frequency: 5 });
+
+				const rewardsMotor = useBindingMotor(hooks, rewardsMaxSize);
+
+				const minimizedSize = 0.2;
 				const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
 
-				const maximizedSize = 0.4;
+				const maximizedSize = 0.25;
 				const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 
-				const { motor, binding } = useBindingMotor(hooks, maximizedSize);
+				const weaponsMotor = useBindingMotor(hooks, maximizedSize);
+				const ranksMotor = useBindingMotor(hooks, maximizedSize);
 
 				return (
 					<imagelabel
@@ -786,15 +748,46 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 							>
 								<BaseUIStroke native={{ Thickness: 2 }} />
 							</textlabel>
-							{/*
-							<EnabledButton
+							<imagebutton
 								AnchorPoint={vec2Middle}
-								isEnabled={purchaseWeaponsEnabled}
+								BackgroundTransparency={1}
 								Position={UDim2.fromScale(0.85, 0.5)}
-								minimizedSize={{ x: 0.225, y: 0.6 }}
-								maximizedSize={{ x: 0.25, y: 0.7 }}
-								onClicked={(): void => setPurchaseWeaponsEnabled(!purchaseWeaponsEnabled)}
-							/> */}
+								Size={weaponsMotor.binding.map((value) => {
+									return UDim2.fromScale(value, 0.9);
+								})}
+								Image={purchaseWeaponsEnabled ? assetIds.images.ui.index.Claim : assetIds.images.ui.index.Off}
+								ScaleType={Enum.ScaleType.Fit}
+								Event={{
+									// eslint-disable-next-line jsdoc/require-jsdoc
+									Activated: (): void => {
+										playSFX(UIEngagement.MinorEngagement);
+										setPurchaseWeaponsEnabled(!purchaseWeaponsEnabled);
+									},
+									// eslint-disable-next-line jsdoc/require-jsdoc
+									MouseEnter: (): void => weaponsMotor.motor.setGoal(minimizedSpring),
+									// eslint-disable-next-line jsdoc/require-jsdoc
+									MouseLeave: (): void => weaponsMotor.motor.setGoal(maximizedSpring),
+								}}
+							>
+								<uiaspectratioconstraint AspectRatio={2} />
+								<textlabel
+									AnchorPoint={vec2Middle}
+									BackgroundTransparency={1}
+									Position={UDim2.fromScale(0.5, 0.5)}
+									Size={UDim2.fromScale(0.9, 0.9)}
+									Text={purchaseWeaponsEnabled ? "On" : "Off"}
+									TextScaled={true}
+									TextColor3={Color3.fromRGB(255, 255, 255)}
+									Font={font}
+								>
+									<BaseUIStroke
+										native={{
+											Thickness: 1.5,
+											Color: purchaseWeaponsEnabled ? Color3.fromRGB(36, 159, 66) : Color3.fromRGB(106, 14, 46),
+										}}
+									/>
+								</textlabel>
+							</imagebutton>
 						</imagelabel>
 
 						<imagelabel
@@ -817,25 +810,55 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 							>
 								<BaseUIStroke native={{ Thickness: 2 }} />
 							</textlabel>
-							{/*
-							<EnabledButton
+							<imagebutton
 								AnchorPoint={vec2Middle}
-								isEnabled={autoRankEnabled}
+								BackgroundTransparency={1}
 								Position={UDim2.fromScale(0.85, 0.5)}
-								minimizedSize={{ x: 0.225, y: 0.6 }}
-								maximizedSize={{ x: 0.25, y: 0.7 }}
-								onClicked={(): void => setAutoRankEnabled(!autoRankEnabled)}
-							/>
-							*/}
+								Size={ranksMotor.binding.map((value) => {
+									return UDim2.fromScale(value, 0.9);
+								})}
+								Image={autoRankEnabled ? assetIds.images.ui.index.Claim : assetIds.images.ui.index.Off}
+								ScaleType={Enum.ScaleType.Fit}
+								Event={{
+									// eslint-disable-next-line jsdoc/require-jsdoc
+									Activated: (): void => {
+										playSFX(UIEngagement.MinorEngagement);
+										setAutoRankEnabled(!autoRankEnabled);
+									},
+									// eslint-disable-next-line jsdoc/require-jsdoc
+									MouseEnter: (): void => ranksMotor.motor.setGoal(minimizedSpring),
+									// eslint-disable-next-line jsdoc/require-jsdoc
+									MouseLeave: (): void => ranksMotor.motor.setGoal(maximizedSpring),
+								}}
+							>
+								<uiaspectratioconstraint AspectRatio={2} />
+								<textlabel
+									AnchorPoint={vec2Middle}
+									BackgroundTransparency={1}
+									Position={UDim2.fromScale(0.5, 0.5)}
+									Size={UDim2.fromScale(0.9, 0.9)}
+									Text={autoRankEnabled ? "On" : "Off"}
+									TextScaled={true}
+									TextColor3={Color3.fromRGB(255, 255, 255)}
+									Font={font}
+								>
+									<BaseUIStroke
+										native={{
+											Thickness: 1.5,
+											Color: autoRankEnabled ? Color3.fromRGB(36, 159, 66) : Color3.fromRGB(106, 14, 46),
+										}}
+									/>
+								</textlabel>
+							</imagebutton>
 						</imagelabel>
 
 						<imagebutton
 							AnchorPoint={vec2Middle}
 							BackgroundTransparency={1}
 							Position={UDim2.fromScale(0.5, 0.9)}
-							Size={binding.map((value) => {
-								if (value < minimizedSize) {
-									return UDim2.fromScale(minimizedSize, minimizedSize);
+							Size={rewardsMotor.binding.map((value) => {
+								if (value < rewardsMinSize) {
+									return UDim2.fromScale(rewardsMinSize, rewardsMaxSize);
 								}
 
 								return UDim2.fromScale(value, value);
@@ -848,8 +871,8 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 									playSFX(UIEngagement.MinorEngagement);
 									setViewingRewards(true);
 								},
-								MouseEnter: (): void => motor.setGoal(minimizedSpring),
-								MouseLeave: (): void => motor.setGoal(maximizedSpring),
+								MouseEnter: (): void => rewardsMotor.motor.setGoal(rewardsMaxSpring),
+								MouseLeave: (): void => rewardsMotor.motor.setGoal(rewardsMinSpring),
 								/* eslint-enable jsdoc/require-jsdoc */
 							}}
 						>

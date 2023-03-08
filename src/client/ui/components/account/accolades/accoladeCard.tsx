@@ -1,4 +1,5 @@
 import Flipper from "@rbxts/flipper";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
