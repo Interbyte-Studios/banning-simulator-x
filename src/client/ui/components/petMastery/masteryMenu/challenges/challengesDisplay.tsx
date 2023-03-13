@@ -9,6 +9,7 @@ import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
+import { BOOST_IMAGES } from "shared/configs/game";
 import { PET_MASTERY_REQUIREMENTS, PET_MASTERY_REWARDS } from "shared/configs/petMastery";
 import { Variants } from "shared/configs/pets";
 import { Rarities } from "shared/configs/rarities";
@@ -102,8 +103,20 @@ const MasteryChallengeFrame = hooks(
 		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		const petMasteryReward = PET_MASTERY_REWARDS[props.rarity][props.variant][props.challengeType];
+		assert(
+			petMasteryReward,
+			`Failed to get pet mastery reward for ${props.rarity} ${props.variant} ${props.challengeType}`,
+		);
+
 		const boostRewardTime =
-			petMasteryReward === 15 ? "15m" : petMasteryReward === 30 ? "30m" : petMasteryReward === 60 ? "1h" : "2h";
+			petMasteryReward.duration === 15
+				? "15m"
+				: petMasteryReward.duration === 30
+				? "30m"
+				: petMasteryReward.duration === 60
+				? "1h"
+				: "2h";
+		const boostImage = BOOST_IMAGES[petMasteryReward.boost][petMasteryReward.duration];
 
 		return (
 			<frame
@@ -246,10 +259,9 @@ const MasteryChallengeFrame = hooks(
 					BackgroundTransparency={1}
 					Position={UDim2.fromScale(0.85, 0.2)}
 					Size={UDim2.fromScale(0.2, 0.4)}
-					Image={assetIds.images.decals.boosts.luck}
+					Image={boostImage}
 					ScaleType={Enum.ScaleType.Fit}
 					ImageColor3={!props.hasBeenClaimed ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(149, 149, 149)}
-					Visible={!props.hasBeenClaimed}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 				</imagelabel>

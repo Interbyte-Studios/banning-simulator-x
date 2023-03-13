@@ -416,8 +416,10 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 
 		const petLevel = getPetLevel(storedPet);
 		const maxPetLevel = PET_MAX_LEVELS[storedPet.variant];
+		const currentPetLevel = PET_LEVEL_REQUIREMENTS[storedPet.variant] * petLevel;
 		const nextPetLevel = PET_LEVEL_REQUIREMENTS[storedPet.variant] * (petLevel + 1);
-		const progressToNextPetLevel = petLevel === maxPetLevel ? 1 : storedPet.bans / nextPetLevel;
+		const progressToNextPetLevel =
+			petLevel === maxPetLevel ? 1 : (storedPet.bans - currentPetLevel) / (nextPetLevel - currentPetLevel);
 
 		useEffect(() => {
 			if (!props.shouldAnimate) {

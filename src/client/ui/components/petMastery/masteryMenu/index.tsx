@@ -51,7 +51,7 @@ export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useState }) =
 				<ChallengesPetHeader pet={petToView} variant={petViewType} />
 				<PetView pet={petToView} currentVariant={petViewType} activated={(): void => setViewingChallenges(false)} />
 				<PetMasteryChallenges pet={petToView} variant={petViewType} />
-				<TogglePetMasteryCosmetic pet={petToView} variant={petViewType} />
+				{/* <TogglePetMasteryCosmetic pet={petToView} variant={petViewType} /> */}
 				<ExitButton
 					Position={UDim2.fromScale(0.975, 0.075)}
 					minimizedSize={0.075}
