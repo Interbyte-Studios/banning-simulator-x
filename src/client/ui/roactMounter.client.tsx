@@ -72,6 +72,15 @@ onStoreCreated(player)
 						.Get("publicTradeHistory"),
 
 					claimAccolade: remotes.Client.GetNamespace("accolades").Get("claimAccolade"),
+
+					admin_SpawnPet: remotes.Client.GetNamespace("admin").Get("admin_SpawnPet"),
+					admin_ModifyPetLevel: remotes.Client.GetNamespace("admin").Get("admin_ModifyPetLevel"),
+					admin_ModifyWeaponLevel: remotes.Client.GetNamespace("admin").Get("admin_ModifyWeaponLevel"),
+					admin_ModifyTalismanLevel: remotes.Client.GetNamespace("admin").Get("admin_ModifyTalismanLevel"),
+					admin_ModifyRank: remotes.Client.GetNamespace("admin").Get("admin_ModifyRank"),
+					admin_ModifyCurrency: remotes.Client.GetNamespace("admin").Get("admin_ModifyCurrency"),
+					admin_ShutdownServer: remotes.Client.GetNamespace("admin").Get("admin_ShutdownServer"),
+					admin_KickPlayer: remotes.Client.GetNamespace("admin").Get("admin_KickPlayer"),
 				}}
 			>
 				<AnnouncementAPI>

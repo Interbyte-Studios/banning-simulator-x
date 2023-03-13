@@ -40,6 +40,7 @@ hatchEgg.SetCallback(
 		// find reduced egg cost provided by player mastery
 		const eggMasteryReducedMultiplier = getEggsMastery(store.getState().eggs).reducedEggCostMultiplier;
 		const eggCost = getEggCost(eggName, isVoid, eggMasteryReducedMultiplier);
+		print(eggCost.amount);
 
 		// check that user owns world
 		const ownsWorld = currentState.worlds.find((x) => x.name === eggData.world);
@@ -171,6 +172,7 @@ hatchEgg.SetCallback(
 				method: "hatch",
 				egg: eggName,
 				enhancements: { [pet.rarity]: selectedEnhancement },
+				tradeLocked: false,
 			});
 		}
 

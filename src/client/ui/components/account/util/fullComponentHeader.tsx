@@ -60,7 +60,7 @@ export const FullComponentHeader = hooks(
 					<textlabel
 						AnchorPoint={vec2Middle}
 						BackgroundTransparency={1}
-						Size={UDim2.fromScale(0.4, 0.1)}
+						Size={UDim2.fromScale(0.8, 0.065)}
 						Position={UDim2.fromScale(0.5, 0.215)}
 						Text={props.headerText}
 						TextScaled={true}

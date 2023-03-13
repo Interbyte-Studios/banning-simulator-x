@@ -2,7 +2,7 @@ import Rodux from "@rbxts/rodux";
 import { Currency } from "shared/configs/currencies";
 import { EggName } from "shared/configs/eggs";
 import { EnhancePetMetadata } from "shared/configs/enchantments";
-import { Variants } from "shared/configs/pets";
+import { PET_LEVEL_REQUIREMENTS, PET_MAX_LEVELS, Variants } from "shared/configs/pets";
 import { Rarities } from "shared/configs/rarities";
 
 import { KillNpc } from "./currencies";
@@ -16,18 +16,19 @@ export interface Pet {
 	equipped: boolean;
 	locked: boolean;
 	variant: Variants;
+	tradeLocked: boolean;
 	enhancements: { [slot in Variants]?: Omit<EnhancePetMetadata, "variant"> };
 }
 
 export type PetsState = Array<Pet>;
-export type PetsActions = AddPet | DeletePet | EnhancePet | EquipPet | LockPet;
+export type PetsActions = AddPet | DeletePet | EnhancePet | EquipPet | LockPet | Admin_ModifyPetLevel;
 
 export interface ConfirmedPet extends PetData {
 	autoDeleted: boolean;
 	guid: string;
 }
 
-export type PetAttainMethod = "maxLevel" | "fuse" | "hatch";
+export type PetAttainMethod = "maxLevel" | "fuse" | "hatch" | "admin";
 export interface PetData {
 	id: number;
 	rarity: Rarities;
@@ -35,6 +36,7 @@ export interface PetData {
 	enhancements?: { [slot in Variants]?: Omit<EnhancePetMetadata, "variant"> };
 	egg: EggName;
 	method: PetAttainMethod;
+	tradeLocked: boolean;
 }
 
 export interface AddPet extends Rodux.Action<"addPet"> {
@@ -60,6 +62,11 @@ export interface EnhancePet extends Rodux.Action<"enhancePet"> {
 	guid: string;
 	enhancementData: EnhancePetMetadata;
 	cost: number;
+}
+
+export interface Admin_ModifyPetLevel extends Rodux.Action<"admin_ModifyPetLevel"> {
+	guid: string;
+	level: number;
 }
 
 /**
@@ -134,6 +141,21 @@ export function enhancePet(
 	};
 }
 
+/**
+ * Modifies the level of a pet.
+ *
+ * @param guid The guid of the pet to modify.
+ * @param level The level to set the pet to.
+ * @returns The Rodux action to dispatch.
+ */
+export function admin_ModifyPetLevel(guid: string, level: number): Admin_ModifyPetLevel & Rodux.AnyAction {
+	return {
+		type: "admin_ModifyPetLevel",
+		guid,
+		level,
+	};
+}
+
 const defaultPets: PetsState = [];
 /*
 for (let i = 1; i <= 43; i++) {
@@ -192,6 +214,7 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 					equipped: false,
 					locked: false,
 					variant: pet.variant,
+					tradeLocked: pet.tradeLocked,
 					enhancements: pet.enhancements ?? {},
 				};
 
@@ -267,6 +290,7 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 					guid,
 					equipped: false,
 					locked: false,
+					tradeLocked: false,
 					variant,
 					enhancements: {},
 				},
@@ -287,6 +311,7 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 					guid,
 					equipped: false,
 					locked: false,
+					tradeLocked: false,
 					variant,
 					enhancements: {},
 				},
@@ -301,6 +326,19 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 				}
 
 				pet.bans += 1 * math.ceil(action.petExperienceMultiplier);
+			}
+
+			return newState;
+		},
+		admin_ModifyPetLevel: (state, action) => {
+			const newState = [...state];
+
+			const pet = newState.find((pet) => pet.guid === action.guid);
+			if (pet !== undefined) {
+				const desiredLevels = action.level < PET_MAX_LEVELS[pet.variant] ? action.level : PET_MAX_LEVELS[pet.variant];
+				const banResult = PET_LEVEL_REQUIREMENTS[pet.variant] * desiredLevels;
+
+				pet.bans = banResult;
 			}
 
 			return newState;

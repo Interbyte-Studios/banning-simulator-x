@@ -14,6 +14,7 @@ export = (target: GuiBase): (() => void) => {
 		variant: "regular",
 		bans: 1,
 		enhancements: {},
+			tradeLocked: false,
 	};
 
 	const ref = Roact.createRef<ScrollingFrame>();

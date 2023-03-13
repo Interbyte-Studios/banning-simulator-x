@@ -180,7 +180,6 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 									variant={props.isVoid ? "void" : "regular"}
 									displayBackground={true}
 									isBillboard={true}
-									displayType={"stats"}
 									shouldBlackout={!hasHatchedVariant}
 								/>
 							);

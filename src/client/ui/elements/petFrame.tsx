@@ -1,4 +1,5 @@
 import Roact from "@rbxts/roact";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import { Variants } from "shared/configs/pets";
 import { getPetData } from "shared/util/getPetData";
 
@@ -9,11 +10,12 @@ import { RarityGradient } from "./rarityGradient";
 
 interface PetFrameProps {
 	petId: number;
+	petLevel?: number;
 	variant: Variants;
 	displayBackground: boolean;
 	isBillboard: boolean;
-	displayType: "stats" | "stored";
 	shouldBlackout: boolean;
+	onActivated?: () => void;
 }
 
 /**
@@ -25,11 +27,12 @@ interface PetFrameProps {
  * @param props.variant The variant of the pet.
  * @returns A roact component.
  */
+/* eslint-disable jsdoc/require-jsdoc */
 export function PetFrame(props: PetFrameProps): Roact.Element {
 	const petData = getPetData(props.petId);
 
 	const elementsToDisplay: Array<Roact.Element> = [];
-	if (props.displayType === "stats") {
+	if (props.petLevel === undefined) {
 		elementsToDisplay.push(
 			<>
 				<textlabel
@@ -67,24 +70,87 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 				</textlabel>
 			</>,
 		);
+	} else {
+		elementsToDisplay.push(
+			<>
+				<textlabel
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={1}
+					Position={UDim2.fromScale(0.5, 0.9)}
+					Size={UDim2.fromScale(0.9, 0.3)}
+					Text={`Level: ${props.petLevel}`}
+					TextXAlignment={Enum.TextXAlignment.Right}
+					TextScaled={true}
+					Font={font}
+					TextColor3={Color3.fromRGB(255, 255, 255)}
+				>
+					<BaseUIStroke
+						native={{ Thickness: 2.5, Color: Color3.fromRGB(0, 74, 122) }}
+						isBillboard={props.isBillboard}
+					/>
+				</textlabel>
+			</>,
+		);
 	}
 
-	return (
-		<frame BackgroundTransparency={1} LayoutOrder={props.petId}>
-			<imagelabel
+	if (props.onActivated !== undefined) {
+		return (
+			<frame
 				AnchorPoint={vec2Middle}
-				BackgroundTransparency={0}
-				BackgroundColor3={Color3.fromRGB(46, 115, 179)}
 				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.925, 0.925)}
-				Image={""}
+				Size={UDim2.fromScale(0.85, 0.85)}
+				BackgroundTransparency={1}
+				LayoutOrder={props.petId}
 			>
-				<uiaspectratioconstraint AspectRatio={1} />
-				<uicorner CornerRadius={new UDim(1, 0)} />
-				<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} isBillboard={props.isBillboard} />
-				<PetViewport petId={props.petId} variant={props.variant} shouldBlackout={props.shouldBlackout} />
-				{elementsToDisplay}
-			</imagelabel>
-		</frame>
-	);
-}
+				<imagebutton
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={0}
+					BackgroundColor3={Color3.fromRGB(46, 115, 179)}
+					Position={UDim2.fromScale(0.5, 0.5)}
+					Size={UDim2.fromScale(0.925, 0.925)}
+					Image={""}
+					Event={{
+						Activated: (): void => {
+							playSFX(UIEngagement.MajorEngagement);
+
+							if (props.onActivated !== undefined) {
+								props.onActivated();
+							}
+						},
+					}}
+				>
+					<uiaspectratioconstraint AspectRatio={1} />
+					<uicorner CornerRadius={new UDim(1, 0)} />
+					<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} isBillboard={props.isBillboard} />
+					<PetViewport petId={props.petId} variant={props.variant} shouldBlackout={props.shouldBlackout} />
+					{elementsToDisplay}
+				</imagebutton>
+			</frame>
+		);
+	} else {
+		return (
+			<frame
+				AnchorPoint={vec2Middle}
+				Position={UDim2.fromScale(0.5, 0.5)}
+				Size={UDim2.fromScale(0.9, 0.9)}
+				BackgroundTransparency={1}
+				LayoutOrder={props.petId}
+			>
+				<imagelabel
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={0}
+					BackgroundColor3={Color3.fromRGB(46, 115, 179)}
+					Position={UDim2.fromScale(0.5, 0.5)}
+					Size={UDim2.fromScale(0.925, 0.925)}
+					Image={""}
+				>
+					<uiaspectratioconstraint AspectRatio={1} />
+					<uicorner CornerRadius={new UDim(1, 0)} />
+					<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} isBillboard={props.isBillboard} />
+					<PetViewport petId={props.petId} variant={props.variant} shouldBlackout={props.shouldBlackout} />
+					{elementsToDisplay}
+				</imagelabel>
+			</frame>
+		);
+	}
+} /* eslint-enable jsdoc/require-jsdoc */

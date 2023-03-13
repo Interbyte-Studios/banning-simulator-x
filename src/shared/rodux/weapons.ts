@@ -6,7 +6,7 @@ import { KillNpc } from "./currencies";
 
 export type Weapon = { id: number; bans: number; level: number };
 export type WeaponsState = Array<Weapon>;
-export type WeaponsActions = PurchaseWeapon;
+export type WeaponsActions = PurchaseWeapon | Admin_ModifyWeaponLevel;
 
 export interface PurchaseWeapon extends Rodux.Action<"purchaseWeapon"> {
 	cost: {
@@ -14,6 +14,11 @@ export interface PurchaseWeapon extends Rodux.Action<"purchaseWeapon"> {
 		amount: number;
 	};
 	id: number;
+}
+
+export interface Admin_ModifyWeaponLevel extends Rodux.Action<"admin_ModifyWeaponLevel"> {
+	weaponId: number;
+	level: number;
 }
 
 /**
@@ -30,6 +35,21 @@ export function purchaseWeapon(data: Omit<PurchaseWeapon, "type">): PurchaseWeap
 	};
 }
 
+/**
+ * Modifies the level of a weapon.
+ *
+ * @param weaponId The id of the weapon to modify.
+ * @param level The level to set the weapon to.
+ * @returns The Rodux action to dispatch.
+ */
+export function admin_ModifyWeaponLevel(weaponId: number, level: number): Admin_ModifyWeaponLevel & Rodux.AnyAction {
+	return {
+		type: "admin_ModifyWeaponLevel",
+		weaponId,
+		level,
+	};
+}
+
 const defaulWeapon = {
 	id: 1,
 	bans: 0,
@@ -37,17 +57,6 @@ const defaulWeapon = {
 };
 
 const defaultState: WeaponsState = [defaulWeapon];
-
-/*
-const weapons = [];
-for (const [, data] of pairs(WEAPONS)) {
-	weapons.push({
-		id: data.id,
-		bans: 0,
-		level: 10,
-	});
-}
-*/
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions | KillNpc>(defaultState, {
@@ -75,10 +84,30 @@ export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions |
 		newCurrentWeapon.bans += 1;
 
 		WEAPON_LEVELS.forEach((levelData) => {
+			if (newCurrentWeapon.level >= levelData.level) {
+				return;
+			}
+
 			if (newCurrentWeapon.bans >= levelData.requiredBans) {
 				newCurrentWeapon.level = levelData.level;
 			}
 		});
+
+		newState[currentWeaponIndex] = newCurrentWeapon;
+
+		return newState;
+	},
+	admin_ModifyWeaponLevel: (state, action) => {
+		const newState = [...state];
+
+		const currentWeaponIndex = newState.findIndex((weapon) => weapon.id === action.weaponId);
+		if (currentWeaponIndex === undefined) {
+			throw `Expected player to own the weapon ${action.weaponId}`;
+		}
+
+		const newCurrentWeapon = { ...newState[currentWeaponIndex] };
+
+		newCurrentWeapon.level = action.level;
 
 		newState[currentWeaponIndex] = newCurrentWeapon;
 

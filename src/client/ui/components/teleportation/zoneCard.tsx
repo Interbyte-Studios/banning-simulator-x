@@ -1,4 +1,5 @@
 import Flipper from "@rbxts/flipper";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, Workspace } from "@rbxts/services";
@@ -18,6 +19,7 @@ interface ZoneTeleportCardProps extends WorldTeleportCardMappedProps {
 	world: WorldName;
 	zone: ZoneNames;
 	id: number;
+	onActivated?: () => void;
 }
 
 interface WorldTeleportCardMappedProps {
@@ -84,6 +86,11 @@ export const ZoneTeleportCard = RoactRodux.connect(mapStateToProps)(
 					Event={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
+
+							if (props.onActivated !== undefined) {
+								props.onActivated();
+								return;
+							}
 
 							if (storedWorldData === undefined) {
 								addAnnouncement(`You do not own the world.`, AnnouncementType.Error);

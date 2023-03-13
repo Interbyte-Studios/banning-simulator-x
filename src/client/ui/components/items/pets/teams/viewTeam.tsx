@@ -272,7 +272,6 @@ export const ViewPetTeam = RoactRodux.connect(mapStateToProps)(
 								variant={storedPet.variant}
 								displayBackground={true}
 								isBillboard={false}
-								displayType={"stored"}
 								shouldBlackout={false}
 							/>
 						);

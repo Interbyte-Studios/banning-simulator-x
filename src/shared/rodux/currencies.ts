@@ -73,7 +73,7 @@ export function awardCurrency(currency: Currency, amount: number): AwardCurrency
 }
 
 // start with 0 currency
-const defaultCurrencyAmount = 5e18;
+const defaultCurrencyAmount = 0;
 const defaultCurrencies = Object.fromEntries(
 	Object.values(currencies).map((currency) => [currency, defaultCurrencyAmount] as const),
 );

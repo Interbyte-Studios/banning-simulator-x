@@ -10,6 +10,7 @@ import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 
 import { Accolades } from "./accolades";
+import { Admin } from "./admin";
 import { EditAccount } from "./admin/editAccount";
 import { Codes } from "./codes";
 import { Mastery } from "./mastery";
@@ -57,7 +58,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 		const [playerViewing, setViewedPlayer] = useState<Player>(Players.LocalPlayer);
 		const [playerSelectionVisible, setPlayerSelectionVisibility] = useState(false);
 		const [rightComponentDisplayed, setRightComponentDisplayed] = useState<
-			"Stats" | "Accolades" | "TradeHistory" | "Options" | "Codes" | "Mastery" | undefined
+			"Stats" | "Accolades" | "TradeHistory" | "Options" | "Codes" | "Mastery" | "Admin" | undefined
 		>(undefined);
 
 		const viewportFrameRef = useValue(Roact.createRef<ViewportFrame>());
@@ -67,7 +68,11 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 				return;
 			}
 
-			if (rightComponentDisplayed === "Accolades" || rightComponentDisplayed === "Mastery") {
+			if (
+				rightComponentDisplayed === "Accolades" ||
+				rightComponentDisplayed === "Mastery" ||
+				rightComponentDisplayed === "Admin"
+			) {
 				return;
 			}
 
@@ -196,7 +201,11 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 				);
 			}
 		} else {
-			if (rightComponentDisplayed !== "Accolades" && rightComponentDisplayed !== "Mastery") {
+			if (
+				rightComponentDisplayed !== "Accolades" &&
+				rightComponentDisplayed !== "Mastery" &&
+				rightComponentDisplayed !== "Admin"
+			) {
 				leftDisplayedComponents.push(
 					<frame
 						AnchorPoint={vec2Middle}
@@ -217,7 +226,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 						</viewportframe>
 					</frame>,
 
-					<EditAccount />,
+					<EditAccount showAdmin={(): void => setRightComponentDisplayed("Admin")} />,
 					<SelectPlayer setPlayerSelectionVisibility={(): void => setPlayerSelectionVisibility(true)} />,
 				);
 			}
@@ -254,6 +263,10 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 					returnToSelection={(): void => setRightComponentDisplayed(undefined)}
 					playerViewing={playerViewing}
 				/>,
+			);
+		} else if (rightComponentDisplayed === "Admin") {
+			rightDisplayedComponents.push(
+				<Admin returnToSelection={(): void => setRightComponentDisplayed(undefined)} playerViewing={playerViewing} />,
 			);
 		} else if (rightComponentDisplayed === undefined) {
 			if (playerStore === undefined && !RunService.IsStudio()) {

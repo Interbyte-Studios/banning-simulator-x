@@ -6,9 +6,14 @@ import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
+import { ADMIN_RANK } from "shared/configs/admin";
 import { StoreState } from "shared/rodux";
 
-interface EditAccountProps {
+interface EditAccountProps extends EditAccountMappedProps {
+	showAdmin: () => void;
+}
+
+interface EditAccountMappedProps {
 	groupRank: number | undefined;
 }
 
@@ -18,7 +23,7 @@ interface EditAccountProps {
  * @param state The current state of the store.
  * @returns The mapped props to render with.
  */
-function editAccountMapProps(state: StoreState): EditAccountProps {
+function editAccountMapProps(state: StoreState): EditAccountMappedProps {
 	return {
 		groupRank: state.index.groupRank,
 	};
@@ -27,7 +32,7 @@ function editAccountMapProps(state: StoreState): EditAccountProps {
 /* eslint-disable jsdoc/require-jsdoc */
 export const EditAccount = RoactRodux.connect(editAccountMapProps)(
 	hooks((props: EditAccountProps, { useEffect }) => {
-		if (props.groupRank === undefined || props.groupRank < 250) {
+		if (props.groupRank === undefined || props.groupRank < ADMIN_RANK) {
 			return <></>;
 		}
 
@@ -61,6 +66,7 @@ export const EditAccount = RoactRodux.connect(editAccountMapProps)(
 				Event={{
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
+						props.showAdmin();
 					},
 					MouseEnter: (): void => motor.setGoal(minizmizedSpring),
 					MouseLeave: (): void => motor.setGoal(maximizedSpring),
@@ -71,7 +77,7 @@ export const EditAccount = RoactRodux.connect(editAccountMapProps)(
 					AnchorPoint={vec2Middle}
 					Size={UDim2.fromScale(0.9, 0.9)}
 					Position={UDim2.fromScale(0.5, 0.5)}
-					Text={"Edit"}
+					Text={"Admin"}
 					Font={font}
 					TextScaled={true}
 					TextColor3={Color3.fromRGB(255, 255, 255)}
