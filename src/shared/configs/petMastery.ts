@@ -1,3 +1,8 @@
+import { ValidBoostTime } from "shared/rodux/boosts";
+
+import { BoostProduct } from "./game";
+import { Rarity } from "./rarities";
+
 export const PET_MASTERY_REQUIREMENTS = {
 	Basic: {
 		regular: {
@@ -120,124 +125,310 @@ export const PET_MASTERY_REQUIREMENTS = {
 	},
 };
 
-export const PET_MASTERY_REWARDS = {
+interface Pet_Mastery_Rewards_Def {
+	regular: {
+		hatch: {
+			boost: BoostProduct;
+			duration: ValidBoostTime;
+		};
+		maxLevel: {
+			boost: BoostProduct;
+			duration: ValidBoostTime;
+		};
+		fuse: undefined;
+	};
+	void: {
+		hatch: {
+			boost: BoostProduct;
+			duration: ValidBoostTime;
+		};
+		maxLevel: {
+			boost: BoostProduct;
+			duration: ValidBoostTime;
+		};
+		fuse: {
+			boost: BoostProduct;
+			duration: ValidBoostTime;
+		};
+	};
+	radiant: {
+		hatch: undefined;
+		maxLevel: {
+			boost: BoostProduct;
+			duration: ValidBoostTime;
+		};
+		fuse: {
+			boost: BoostProduct;
+			duration: ValidBoostTime;
+		};
+	};
+}
+
+export const PET_MASTERY_REWARDS: { [rarity in Rarity]: Pet_Mastery_Rewards_Def } = {
 	Basic: {
 		regular: {
-			hatch: 15, // 15 min x2 luck boost
-			maxLevel: 15, // 15 min x2 pet experience boost
-			fuse: 0, // no fuse requirement
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 15,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 15,
+			},
+			fuse: undefined, // no fuse requirement
 		},
 		void: {
-			hatch: 15, // 15 min x2 luck boost
-			maxLevel: 15, // 15 min x2 pet experience boost
-			fuse: 15, // 15 min x2 rank upgrade boost
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 15,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 15,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 15,
+			},
 		},
 		radiant: {
-			hatch: 0, // no hatch requirement
-			maxLevel: 30, // 30 min x2 pet experience boost
-			fuse: 30, // 30 min x2 rank upgrade boost
+			hatch: undefined, // no hatch requirement
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 30,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 30,
+			},
 		},
 	},
 	Ordinary: {
 		regular: {
-			hatch: 15, // 15 min x2 luck boost
-			maxLevel: 15, // 15 min x2 pet experience boost
-			fuse: 0, // no fuse requirement
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 15,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 15,
+			},
+			fuse: undefined, // no fuse requirement
 		},
 		void: {
-			hatch: 15, // 15 min x2 luck boost
-			maxLevel: 15, // 15 min x2 pet experience boost
-			fuse: 15, // 15 min x2 rank upgrade boost
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 15,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 15,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 15,
+			},
 		},
 		radiant: {
-			hatch: 0, // no hatch requirement
-			maxLevel: 30, // 30 min x2 pet experience boost
-			fuse: 30, // 30 min x2 rank upgrade boost
+			hatch: undefined, // no hatch requirement
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 30,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 30,
+			},
 		},
 	},
 	Rare: {
 		regular: {
-			hatch: 15, // 15 min x2 luck boost
-			maxLevel: 15, // 15 min x2 pet experience boost
-			fuse: 0, // no fuse requirement
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 15,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 15,
+			},
+			fuse: undefined, // no fuse requirement
 		},
 		void: {
-			hatch: 15, // 15 min x2 luck boost
-			maxLevel: 15, // 15 min x2 pet experience boost
-			fuse: 15, // 15 min x2 rank upgrade boost
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 15,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 15,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 15,
+			},
 		},
 		radiant: {
-			hatch: 0, // no hatch requirement
-			maxLevel: 30, // 30 min x2 pet experience boost
-			fuse: 30, // 30 min x2 rank upgrade boost
+			hatch: undefined, // no hatch requirement
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 30,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 30,
+			},
 		},
 	},
 	Epic: {
 		regular: {
-			hatch: 30, // 30 min x2 luck boost
-			maxLevel: 30, // 30 min x2 pet experience boost
-			fuse: 0, // no fuse requirement
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 30,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 30,
+			},
+			fuse: undefined, // no fuse requirement
 		},
 		void: {
-			hatch: 30, // 30 min x2 luck boost
-			maxLevel: 30, // 30 min x2 pet experience boost
-			fuse: 30, // 30 min x2 rank upgrade boost
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 30,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 30,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 30,
+			},
 		},
 		radiant: {
-			hatch: 0, // no hatch requirement
-			maxLevel: 60, // 60 min x2 pet experience boost
-			fuse: 60, // 60 min x2 rank upgrade boost
+			hatch: undefined, // no hatch requirement
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 60,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 60,
+			},
 		},
 	},
 	Legendary: {
 		regular: {
-			hatch: 60, // 60 min x2 luck boost
-			maxLevel: 60, // 60 min x2 pet experience boost
-			fuse: 0, // no fuse requirement
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 60,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 60,
+			},
+			fuse: undefined, // no fuse requirement
 		},
 		void: {
-			hatch: 60, // 60 min x2 luck boost
-			maxLevel: 60, // 60 min x2 pet experience boost
-			fuse: 60, // 60 min x2 rank upgrade boost
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 60,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 60,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 60,
+			},
 		},
 		radiant: {
-			hatch: 0, // no hatch requirement
-			maxLevel: 60, // 60 min x2 pet experience boost
-			fuse: 60, // 60 min x2 rank upgrade boost
+			hatch: undefined, // no hatch requirement
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 60,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 60,
+			},
 		},
 	},
 	Primordial: {
 		regular: {
-			hatch: 120, // 120 min x2 luck boost
-			maxLevel: 120, // 120 min x2 pet experience boost
-			fuse: 0, // no fuse requirement
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 120,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 120,
+			},
+			fuse: undefined, // no fuse requirement
 		},
 		void: {
-			hatch: 120, // 120 min x2 luck boost
-			maxLevel: 120, // 120 min x2 pet experience boost
-			fuse: 120, // 120 min x2 rank upgrade boost
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 120,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 120,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 120,
+			},
 		},
 		radiant: {
-			hatch: 0, // no hatch requirement
-			maxLevel: 120, // 120 min x2 pet experience boost
-			fuse: 120, // 120 min x2 rank upgrade boost
+			hatch: undefined, // no hatch requirement
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 120,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 120,
+			},
 		},
 	},
 	Prismatic: {
 		regular: {
-			hatch: 120, // 120 min x2 luck boost
-			maxLevel: 120, // 120 min x2 pet experience boost
-			fuse: 0, // no fuse requirement
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 120,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 120,
+			},
+			fuse: undefined, // no fuse requirement
 		},
 		void: {
-			hatch: 120, // 120 min x2 luck boost
-			maxLevel: 120, // 120 min x2 pet experience boost
-			fuse: 120, // 120 min x2 rank upgrade boost
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 120,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 120,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 120,
+			},
 		},
 		radiant: {
-			hatch: 0, // no hatch requirement
-			maxLevel: 120, // 120 min x2 pet experience boost
-			fuse: 120, // 120 min x2 rank upgrade boost
+			hatch: undefined, // no hatch requirement
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 120,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 120,
+			},
 		},
 	},
 };

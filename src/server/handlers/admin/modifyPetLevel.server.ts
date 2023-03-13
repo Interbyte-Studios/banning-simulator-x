@@ -21,6 +21,6 @@ remotes.Server.GetNamespace("admin")
 			const ownsPet = targetPlayerStore.getState().pets.find((pet) => pet.guid === petData.petGuid);
 			if (ownsPet === undefined) return;
 
-			targetPlayerStore.dispatch(admin_ModifyPetLevel(ownsPet.guid, petData.level));
+			targetPlayerStore.dispatch(admin_ModifyPetLevel(ownsPet.guid, ownsPet.id, ownsPet.variant, petData.level));
 		}),
 	);

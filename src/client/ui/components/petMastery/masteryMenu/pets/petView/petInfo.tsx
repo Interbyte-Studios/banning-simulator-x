@@ -9,7 +9,7 @@ import { RarityGradient } from "client/ui/elements/rarityGradient";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { Pet, Variants } from "shared/configs/pets";
+import { Pet, PET_MAX_LEVELS, Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
 import { getPetData } from "shared/util/getPetData";
@@ -314,6 +314,8 @@ const ExtraStats = hooks((props: { pet: number; variant: Variants }, hooks) => {
  * Displays the stats of the pet at minimum and maximum level.
  */
 const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
+	const maxLevel = PET_MAX_LEVELS[props.variant];
+
 	// equation to get maximum damage is [((damage * variantMultiplier * 2.5) / 30) * pet level] where 2.5 is the maximum damage and 30 is the maximum level
 	const variantMultiplier = props.variant === "radiant" ? 3 : props.variant === "void" ? 2 : 1;
 	const maximumDamage = props.pet.stats.additionalDamage * variantMultiplier * 2.5;
@@ -357,7 +359,7 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
 				BackgroundTransparency={1}
 				TextScaled={true}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
-				Text={`Level 30:`}
+				Text={`Level ${maxLevel}:`}
 				Font={font}
 			>
 				<BaseUIStroke native={{ Thickness: 1.5 }} />

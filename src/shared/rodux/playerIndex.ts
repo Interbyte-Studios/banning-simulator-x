@@ -5,7 +5,7 @@ import { PET_MAX_LEVELS } from "shared/configs/pets";
 import { getPetLevel } from "shared/util/getPetLevel";
 
 import { KillNpc } from "./currencies";
-import { AddPet } from "./pets";
+import { AddPet, Admin_ModifyPetLevel } from "./pets";
 
 export const isValidIndexHatch = t.literal("regular", "void");
 export const isValidIndexFusion = t.literal("void", "radiant");
@@ -50,7 +50,7 @@ export interface PlayerIndexState {
 	gameVersion: Array<number>;
 	groupRank: number | undefined;
 }
-export type PlayerIndexActions = SetGroupRank | AddTimePlayed;
+export type PlayerIndexActions = SetGroupRank | AddTimePlayed | Admin_ModifyPetLevel;
 
 interface SetGroupRank extends Rodux.Action<"setGroupRank"> {
 	rank: number;
@@ -125,6 +125,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 				}
 
 				switch (petToIndex.method) {
+					case "admin":
 					case "hatch": {
 						assert(
 							isValidIndexHatch(petToIndex.variant),
@@ -192,6 +193,26 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 					maxLevel: {
 						...masteryData.maxLevel,
 						[pet.variant]: masteryData.maxLevel[pet.variant] + 1,
+					},
+				});
+			}
+
+			return newState;
+		},
+		admin_ModifyPetLevel: (state, action) => {
+			const newState = { ...state };
+
+			const petIndex = newState.pets.get(action.id);
+			assert(petIndex, `Admin: Failed to get pet index for pet with id ${action.id}`);
+
+			const maxLevel = PET_MAX_LEVELS[action.variant];
+			if (action.level >= maxLevel) {
+				newState.pets.set(action.id, {
+					hatched: petIndex.hatched,
+					fused: petIndex.fused,
+					maxLevel: {
+						...petIndex.maxLevel,
+						[action.variant]: petIndex.maxLevel[action.variant] + 1,
 					},
 				});
 			}

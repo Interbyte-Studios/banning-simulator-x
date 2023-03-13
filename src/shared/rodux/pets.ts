@@ -66,6 +66,8 @@ export interface EnhancePet extends Rodux.Action<"enhancePet"> {
 
 export interface Admin_ModifyPetLevel extends Rodux.Action<"admin_ModifyPetLevel"> {
 	guid: string;
+	id: number;
+	variant: Variants;
 	level: number;
 }
 
@@ -145,13 +147,22 @@ export function enhancePet(
  * Modifies the level of a pet.
  *
  * @param guid The guid of the pet to modify.
+ * @param id The id of the pet.
+ * @param variant The variant of the pet.
  * @param level The level to set the pet to.
  * @returns The Rodux action to dispatch.
  */
-export function admin_ModifyPetLevel(guid: string, level: number): Admin_ModifyPetLevel & Rodux.AnyAction {
+export function admin_ModifyPetLevel(
+	guid: string,
+	id: number,
+	variant: Variants,
+	level: number,
+): Admin_ModifyPetLevel & Rodux.AnyAction {
 	return {
 		type: "admin_ModifyPetLevel",
 		guid,
+		id,
+		variant,
 		level,
 	};
 }

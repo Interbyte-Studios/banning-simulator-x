@@ -7,6 +7,7 @@ export interface RarityGradient {
 	SpecialColor: ColorSequence | undefined;
 }
 
+export type Rarity = keyof typeof RARITIES;
 export const RARITIES = preserveWithConstraint<Record<string, RarityGradient>>()({
 	Basic: {
 		id: 1,
