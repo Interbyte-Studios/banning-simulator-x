@@ -42,6 +42,10 @@ const defaultSettings: SettingsState = {
 		petsDisplayed: true,
 		petsStudsOfDistance: 10,
 	},
+	privacy: {
+		publicInventory: true,
+		publicTradeHistory: true,
+	},
 };
 
 export = (): void => {

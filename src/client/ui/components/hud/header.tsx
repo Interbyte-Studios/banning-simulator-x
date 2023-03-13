@@ -1,15 +1,16 @@
 import Roact from "@rbxts/roact";
 import { hooks } from "client/ui/hooks";
 
-import { CodesIcon } from "./codesIcon";
+import { AccountIcon } from "./accountIcon";
+import { AutoFightIcon } from "./autoFightIcon";
 import { ItemsIcon } from "./itemsIcon";
-import { OptionsIcon } from "./optionsIcon";
-import { RewardsIcon } from "./rewardsIcon";
+import { TeleportIcon } from "./teleportIcon";
 
 interface HUDHeaderProps {
-	displayCodes: () => void;
-	displaySettings: () => void;
 	displayItems: () => void;
+	displayAccount: () => void;
+	displayAutoFight: () => void;
+	displayTeleportation: () => void;
 }
 
 export const HUDHeader = hooks((props: HUDHeaderProps) => {
@@ -27,10 +28,10 @@ export const HUDHeader = hooks((props: HUDHeaderProps) => {
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>
-			<OptionsIcon displaySettings={props.displaySettings} />
-			<CodesIcon displayCodes={props.displayCodes} />
 			<ItemsIcon displayItems={props.displayItems} />
-			<RewardsIcon />
+			<AccountIcon dispayAccount={props.displayAccount} />
+			<AutoFightIcon displayAutoFightIcon={props.displayAutoFight} />
+			<TeleportIcon displayTeleportationMenu={props.displayTeleportation} />
 		</frame>
 	);
 });

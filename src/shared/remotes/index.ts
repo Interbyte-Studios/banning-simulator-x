@@ -1,5 +1,7 @@
 import Net from "@rbxts/net";
 
+import { accolades } from "./accolades";
+import { admin } from "./admin";
 import { damageNPCDefinition } from "./damageNPC";
 import { eggs } from "./eggs";
 import { equipTitleDefinition } from "./equipTitle";
@@ -17,6 +19,8 @@ import { unlockRankDefinition } from "./unlockRank";
 import { weapons } from "./weapons";
 
 export const remotes = Net.Definitions.Create({
+	accolades: accolades,
+	admin: admin,
 	eggs: eggs,
 	media: media,
 	pets: pets,

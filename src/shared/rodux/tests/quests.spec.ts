@@ -102,6 +102,7 @@ export = (): void => {
 					enhancements: {},
 					bans: 0,
 					variant: "regular",
+					tradeLocked: false,
 				},
 			];
 

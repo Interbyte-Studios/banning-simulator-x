@@ -39,6 +39,7 @@ export = (): void => {
 					variant: "regular",
 					method: "hatch",
 					egg: "Starter",
+					tradeLocked: false,
 				},
 			]);
 

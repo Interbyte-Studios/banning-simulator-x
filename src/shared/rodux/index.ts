@@ -1,5 +1,6 @@
 import Rodux from "@rbxts/rodux";
 
+import { AccoladeActions, accoladeReducer, AccoladeState } from "./accolade";
 import { bansReducer, BansState } from "./bans";
 import { BoostActions, boostsReducer, BoostsState } from "./boosts";
 import { CurrenciesActions, currenciesReducer, CurrenciesState } from "./currencies";
@@ -24,6 +25,7 @@ import { WeaponsActions, weaponsReducer, WeaponsState } from "./weapons";
 import { WorldActions, worldsReducer, WorldsState } from "./worlds";
 
 export type StoreState = {
+	accolades: AccoladeState;
 	bans: BansState;
 	boosts: BoostsState;
 	currencies: CurrenciesState;
@@ -48,6 +50,7 @@ export type StoreState = {
 	devProducts: DevProductState;
 };
 export type StoreActions = (
+	| AccoladeActions
 	| BoostActions
 	| CurrenciesActions
 	| CurrentWeaponActions
@@ -72,6 +75,7 @@ export type StoreActions = (
 	Rodux.AnyAction;
 
 export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
+	accolades: accoladeReducer,
 	bans: bansReducer,
 	boosts: boostsReducer,
 	currencies: currenciesReducer,

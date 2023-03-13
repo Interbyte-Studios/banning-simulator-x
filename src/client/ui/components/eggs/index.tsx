@@ -7,11 +7,13 @@ import { remoteContext } from "client/ui/mocks/remoteContext";
 import { EggName, hatchDebounce } from "shared/configs/eggs";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
+import { EggsState } from "shared/rodux/eggs";
 import { GamepassesState } from "shared/rodux/gamepasses";
 import { ConfirmedPet, PetsState } from "shared/rodux/pets";
 import { WorldsState } from "shared/rodux/worlds";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
+import { getEggsMastery } from "shared/util/getEggsMastery";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
 import { withinDistanceToHatch } from "shared/util/withinDistanceToHatch";
 
@@ -31,6 +33,7 @@ interface EggsUIMappedProps {
 	pets: PetsState;
 	gamepasses: GamepassesState;
 	currencies: CurrenciesState;
+	eggs: EggsState;
 }
 
 /**
@@ -45,6 +48,7 @@ function mapStateToProps(state: StoreState): EggsUIMappedProps {
 		pets: state.pets,
 		gamepasses: state.gamepasses,
 		currencies: state.currencies,
+		eggs: state.eggs,
 	};
 }
 
@@ -74,10 +78,6 @@ export const EggsUI = RoactRodux.connect(mapStateToProps)(
 		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		useEffect(() => {
-			if (RunService.IsStudio()) {
-				return;
-			}
-
 			const playerRegionalRegulations = PolicyService.GetPolicyInfoForPlayerAsync(player);
 			setReguionalRegulationsForced(playerRegionalRegulations.ArePaidRandomItemsRestricted);
 		}, []);
@@ -102,7 +102,9 @@ export const EggsUI = RoactRodux.connect(mapStateToProps)(
 
 					// verify that the user can hatch the eggs
 					const eggData = getEggData(egg);
-					const eggCost = getEggCost(egg, isVoid);
+
+					const eggMasteryReducedMultiplier = getEggsMastery(props.eggs).reducedEggCostMultiplier;
+					const eggCost = getEggCost(egg, isVoid, eggMasteryReducedMultiplier);
 
 					// check that user owns world
 					const ownsWorld = props.worlds.find((x) => x.name === eggData.world);

@@ -42,6 +42,10 @@ export interface Settings {
 		petsDisplayed: boolean;
 		petsStudsOfDistance: number;
 	};
+	privacy: {
+		publicInventory: boolean;
+		publicTradeHistory: boolean;
+	};
 }
 
 export type SettingsState = Settings;
@@ -57,7 +61,9 @@ export type SettingsActions =
 	| ToggleWalkSpeed
 	| TogglePetAnimationType
 	| TogglePetsDisplayed
-	| TogglePetsStudsOfDistance;
+	| TogglePetsStudsOfDistance
+	| TogglePublicInventory
+	| TogglePublicTradeHistory;
 
 export interface ToggleRarityDelete extends Rodux.Action<"toggleRarityDelete"> {
 	rarity: Exclude<Rarities, ImmuneRarities>;
@@ -102,6 +108,9 @@ interface TogglePetsDisplayed extends Rodux.Action<"togglePetsDisplayed"> {
 interface TogglePetsStudsOfDistance extends Rodux.Action<"togglePetsStudsOfDistance"> {
 	studs: number;
 }
+
+interface TogglePublicInventory extends Rodux.Action<"togglePublicInventory"> {}
+interface TogglePublicTradeHistory extends Rodux.Action<"togglePublicTradeHistory"> {}
 
 /**
  * Toggles the auto delete status of a specified rarity.
@@ -235,6 +244,24 @@ export function togglePetsStudsOfDistance(studs: number): TogglePetsStudsOfDista
 	};
 }
 
+/**
+ * @returns The Rodux action to dispatch.
+ */
+export function togglePublicInventory(): TogglePublicInventory & Rodux.AnyAction {
+	return {
+		type: "togglePublicInventory",
+	};
+}
+
+/**
+ * @returns The Rodux action to dispatch.
+ */
+export function togglePublicTradeHistory(): TogglePublicTradeHistory & Rodux.AnyAction {
+	return {
+		type: "togglePublicTradeHistory",
+	};
+}
+
 const defaultSettings: Settings = {
 	autoDelete: {
 		rarities: {
@@ -252,7 +279,7 @@ const defaultSettings: Settings = {
 	},
 	gameplay: {
 		autoHatch: false,
-		walkSpeed: 24,
+		walkSpeed: 80,
 	},
 	visual: {
 		graphicsQuality: "High",
@@ -260,6 +287,10 @@ const defaultSettings: Settings = {
 		petAnimationType: "Surrounding",
 		petsDisplayed: true,
 		petsStudsOfDistance: 10,
+	},
+	privacy: {
+		publicInventory: true,
+		publicTradeHistory: true,
 	},
 };
 
@@ -334,6 +365,18 @@ export const settingsReducer = Rodux.createReducer<SettingsState, SettingsAction
 	togglePetsStudsOfDistance: (state, action) => {
 		const newState: Settings = { ...state };
 		newState.visual = { ...state.visual, petsStudsOfDistance: action.studs };
+
+		return newState;
+	},
+	togglePublicInventory: (state) => {
+		const newState: Settings = { ...state };
+		newState.privacy = { ...state.privacy, publicInventory: !state.privacy.publicInventory };
+
+		return newState;
+	},
+	togglePublicTradeHistory: (state) => {
+		const newState: Settings = { ...state };
+		newState.privacy = { ...state.privacy, publicTradeHistory: !state.privacy.publicTradeHistory };
 
 		return newState;
 	},

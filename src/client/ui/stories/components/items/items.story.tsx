@@ -39,6 +39,7 @@ export = (target: GuiBase): (() => void) => {
 			variant: "regular",
 			bans: 600,
 			enhancements: {},
+			tradeLocked: false,
 		};
 
 		const voidPet: Pet = {
@@ -49,6 +50,7 @@ export = (target: GuiBase): (() => void) => {
 			variant: "void",
 			bans: 1200,
 			enhancements: {},
+			tradeLocked: false,
 		};
 
 		const radiantPet: Pet = {
@@ -59,6 +61,7 @@ export = (target: GuiBase): (() => void) => {
 			variant: "radiant",
 			bans: 2000,
 			enhancements: {},
+			tradeLocked: false,
 		};
 
 		pets.push(pet);

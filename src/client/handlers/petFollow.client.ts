@@ -7,7 +7,7 @@ import {
 	removePetAnimationCache,
 } from "client/modules/pets/petAnimationCache";
 import { removePet } from "client/modules/pets/unequipPet";
-import { isValidPetAnimationType, ValidPetAnimationType } from "shared/rodux/settings";
+import { isValidPetAnimationType } from "shared/rodux/settings";
 
 const radius = math.pi * 2;
 
@@ -127,16 +127,19 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 	for (const playerCache of currentCacheState) {
 		const character = playerCache.player.Character;
 		if (character === undefined) {
+			warn("No Character");
 			continue;
 		}
 
 		const humanoid = character.FindFirstChildOfClass("Humanoid");
 		if (humanoid === undefined) {
+			warn("No humanoid");
 			continue;
 		}
 
 		const humanoidRootPart = humanoid.RootPart;
 		if (humanoidRootPart === undefined) {
+			warn("No root");
 			continue;
 		}
 
@@ -146,6 +149,7 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 			}
 
 			if (!isValidPetAnimationType(playerCache.animationType.Value)) {
+				warn("No valid animation");
 				return;
 			}
 
@@ -160,6 +164,7 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 			const petType = pet.petType;
 			const primaryPart = petModel.PrimaryPart;
 			if (primaryPart === undefined) {
+				warn("No pet primary");
 				return;
 			}
 
@@ -188,10 +193,12 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 					);
 
 					if (rayCast === undefined) {
+						warn("No Raycast");
 						return;
 					}
 
 					if (rayCast.Instance.CanCollide === false) {
+						warn("Cancollide enabled");
 						return;
 					}
 

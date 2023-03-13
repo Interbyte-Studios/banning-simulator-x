@@ -4,6 +4,8 @@ import { WORLDS } from "shared/configs/worlds";
 import { NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 import { killNpc } from "shared/rodux/currencies";
+import { getBanningMastery } from "shared/util/getBanningMastery";
+import { getPetExperienceMastery } from "shared/util/getPetExperienceMastery";
 import { getTalismanStatEffect } from "shared/util/getTalismanDamage";
 import { getWeaponDamage } from "shared/util/getWeaponDamage";
 
@@ -156,13 +158,20 @@ export function runStep(
 
 			// get currency multiplier
 			const currencyBoosters: Array<number> = [];
+			const globalCurrencyEventMultiplier = ReplicatedStorage.events.currency.enabled.Value
+				? ReplicatedStorage.events.currency.multiplier.Value > 1
+					? ReplicatedStorage.events.currency.multiplier.Value
+					: 0
+				: 0;
+			const boostCurrencyMultiplier = store.getState().boosts.active["x2 Currency"] > 0 ? 2 : 0;
+			const gamepassCurrencyMultiplier = store.getState().gamepasses["x2 Currency"] ? 2 : 0;
+			const masteryCurrencyMultiplier = getBanningMastery(store.getState().bans).currencyGainedMultiplier;
+
 			currencyBoosters.push(
-				ReplicatedStorage.events.currency.enabled.Value
-					? ReplicatedStorage.events.currency.multiplier.Value > 1
-						? ReplicatedStorage.events.currency.multiplier.Value
-						: 0
-					: 0,
-				store.getState().boosts.active["x2 Currency"] > 0 ? 2 : 0,
+				globalCurrencyEventMultiplier,
+				boostCurrencyMultiplier,
+				gamepassCurrencyMultiplier,
+				masteryCurrencyMultiplier,
 			);
 
 			let currencyMultiplier = 0;
@@ -173,19 +182,38 @@ export function runStep(
 
 			// get experience multiplier
 			const experienceBoosters: Array<number> = [];
-			experienceBoosters.push(
-				ReplicatedStorage.events.experience.enabled.Value
-					? ReplicatedStorage.events.experience.multiplier.Value > 1
-						? ReplicatedStorage.events.experience.multiplier.Value
-						: 0
-					: 0,
-				store.getState().boosts.active["x2 Rank Experience"] > 0 ? 2 : 0,
-			);
+			const globalExperienceEventMultiplier = ReplicatedStorage.events.experience.enabled.Value
+				? ReplicatedStorage.events.experience.multiplier.Value > 1
+					? ReplicatedStorage.events.experience.multiplier.Value
+					: 0
+				: 0;
+			const boostExperienceMultiplier = store.getState().boosts.active["x2 Rank Experience"] > 0 ? 2 : 0;
+			const gamepassExperienceMultiplier = store.getState().gamepasses["x2 Experience"] ? 2 : 0;
+			experienceBoosters.push(globalExperienceEventMultiplier, boostExperienceMultiplier, gamepassExperienceMultiplier);
 
 			let experienceMultiplier = talismanStatEffects.experience;
 			experienceBoosters.forEach((booster) => {
 				experienceMultiplier += booster;
 			});
+			experienceMultiplier = experienceMultiplier > 1 ? experienceMultiplier : 1;
+
+			// get pet experience multiplier
+			const petExperienceMultipliers: Array<number> = [];
+			const boostPetExperienceMultiplier = store.getState().boosts.active["x2 Pet Experience"] > 0 ? 2 : 0;
+			const masteryPetExperienceMultiplier = getPetExperienceMastery(
+				store.getState().index,
+			).additionalPetExperienceMultiplier;
+
+			petExperienceMultipliers.push(boostPetExperienceMultiplier, masteryPetExperienceMultiplier);
+
+			let petExperienceMultiplier = 0;
+			petExperienceMultipliers.forEach((booster) => {
+				petExperienceMultiplier += booster;
+			});
+			petExperienceMultiplier = petExperienceMultiplier > 1 ? petExperienceMultiplier : 1;
+
+			// get equipped pets
+			const equippedPets = store.getState().pets.filter((pet) => pet.equipped);
 
 			// apply reward
 			store.dispatch(
@@ -195,6 +223,8 @@ export function runStep(
 					reward.experience * experienceMultiplier,
 					storeState.currentWeapon.id,
 					storeState.currentTalisman,
+					petExperienceMultiplier,
+					equippedPets,
 				),
 			);
 

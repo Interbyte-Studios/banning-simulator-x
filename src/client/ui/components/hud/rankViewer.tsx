@@ -36,13 +36,17 @@ export const RanksViewer = RoactRodux.connect(mapStateToProps)(
 			throw `Expected rank data for rank ${props.rank}`;
 		}
 
-		const nextRankData = RANKS.find((rank) => rank.id === props.rank + 1);
+		const nextRankData = props.rank + 1 > MAX_RANK ? rankData : RANKS.find((rank) => rank.id === props.rank + 1);
 		if (nextRankData === undefined) {
 			throw `Expected rank data for rank ${props.rank + 1}`;
 		}
 
 		const progressToNextRank =
-			props.experience < nextRankData.requiredExperience ? props.experience / nextRankData.requiredExperience : 1;
+			props.rank + 1 > MAX_RANK
+				? 1
+				: props.experience < nextRankData.requiredExperience
+				? props.experience / nextRankData.requiredExperience
+				: 1;
 
 		return (
 			<imagelabel

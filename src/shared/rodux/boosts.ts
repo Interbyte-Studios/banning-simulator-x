@@ -7,39 +7,68 @@ import { RedeemCode } from "./media";
 export interface BoostsState {
 	storage: {
 		[boost in BoostProduct]: {
-			[time in ValidBoostTime]: number;
+			[time in ValidStoredBoostTime]: number;
 		};
 	};
 	active: {
 		[boost in BoostProduct]: number;
 	};
+	uses: number;
 }
-export type BoostActions = ClaimBoost | UseBoosts;
+export type BoostActions = StoreBoost | ClaimBoost | UseBoosts;
 
 export const validBoostTime = t.union(t.literal(15), t.literal(30), t.literal(60), t.literal(120));
 export type ValidBoostTime = t.static<typeof validBoostTime>;
 
-interface ClaimBoost extends Rodux.Action<"claimBoost"> {
-	name: BoostProduct;
-	boostTime: number;
-}
+export const validStoredBoostTime = t.union(t.literal("15"), t.literal("30"), t.literal("60"), t.literal("120"));
+export type ValidStoredBoostTime = t.static<typeof validStoredBoostTime>;
 
 export type ValidBoostUseRecord = Array<BoostProduct>;
+
+interface StoreBoost extends Rodux.Action<"storeBoost"> {
+	name: BoostProduct;
+	boostTime: ValidBoostTime;
+}
+
+interface ClaimBoost extends Rodux.Action<"claimBoost"> {
+	name: BoostProduct;
+	boostTime: ValidBoostTime;
+	extendedDurationMultiplier: number;
+}
 
 interface UseBoosts extends Rodux.Action<"useBoosts"> {
 	boosts: Array<BoostProduct>;
 }
 
 /**
- * @param boostName The name of the product that's being claimed.
- * @param boostTime The time that should be added.
+ * @param name The name of the boost.
+ * @param boostTime The amount of time to dispatch.
  * @returns The Rodux action to dispatch.
  */
-export function claimBoost(boostName: BoostProduct, boostTime: number): ClaimBoost & Rodux.AnyAction {
+export function storeBoost(name: BoostProduct, boostTime: ValidBoostTime): StoreBoost & Rodux.AnyAction {
+	return {
+		type: "storeBoost",
+		name,
+		boostTime,
+	};
+}
+
+/**
+ * @param boostName The name of the product that's being claimed.
+ * @param boostTime The time that should be added.
+ * @param extendedDurationMultiplier The extended duration multiplier provided by mastery.
+ * @returns The Rodux action to dispatch.
+ */
+export function claimBoost(
+	boostName: BoostProduct,
+	boostTime: ValidBoostTime,
+	extendedDurationMultiplier: number,
+): ClaimBoost & Rodux.AnyAction {
 	return {
 		type: "claimBoost",
 		name: boostName,
 		boostTime,
+		extendedDurationMultiplier,
 	};
 }
 
@@ -57,46 +86,62 @@ export function useBoosts(boosts: ValidBoostUseRecord): UseBoosts & Rodux.AnyAct
 const defaultBoosts: BoostsState = {
 	storage: {
 		["x2 Currency"]: {
-			15: 0,
-			30: 0,
-			60: 0,
-			120: 0,
+			"15": 0,
+			"30": 0,
+			"60": 0,
+			"120": 0,
 		},
 		["x2 Rank Experience"]: {
-			15: 0,
-			30: 0,
-			60: 0,
-			120: 0,
+			"15": 0,
+			"30": 0,
+			"60": 0,
+			"120": 0,
 		},
 		["x2 Pet Experience"]: {
-			15: 0,
-			30: 0,
-			60: 0,
-			120: 0,
+			"15": 0,
+			"30": 0,
+			"60": 0,
+			"120": 0,
 		},
 		["x2 Hatching Luck"]: {
-			15: 0,
-			30: 0,
-			60: 0,
-			120: 0,
+			"15": 0,
+			"30": 0,
+			"60": 0,
+			"120": 0,
 		},
 	},
 	active: {
 		["x2 Currency"]: 0,
 		["x2 Rank Experience"]: 0,
 		["x2 Pet Experience"]: 0,
-		["x2 Hatching Luck"]: 500000000,
+		["x2 Hatching Luck"]: 0,
 	},
+	uses: 0,
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions | RedeemCode>(defaultBoosts, {
+	storeBoost: (state, action) => {
+		const newState = { ...state };
+		const timeIndex = tostring(action.boostTime) as ValidStoredBoostTime;
+
+		newState.storage = {
+			...newState.storage,
+			[action.name]: {
+				...newState.storage[action.name],
+				[action.boostTime]: newState.storage[action.name][timeIndex] + 1,
+			},
+		};
+
+		return newState;
+	},
 	claimBoost: (state, action) => {
 		const newState = { ...state };
 		newState.active = {
 			...newState.active,
-			[action.name]: newState.active[action.name] + action.boostTime,
+			[action.name]: newState.active[action.name] + action.boostTime * action.extendedDurationMultiplier,
 		};
+		newState.uses += 1;
 
 		return newState;
 	},
@@ -118,11 +163,13 @@ export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions | Red
 		}
 
 		const newState = { ...state };
+		const timeIndex = tostring(action.boosts.time) as ValidStoredBoostTime;
+
 		newState.storage = {
 			...newState.storage,
-			[action.boosts.name]: {
+			[action.name]: {
 				...newState.storage[action.boosts.name],
-				[action.boosts.time]: newState.storage[action.boosts.name][action.boosts.time] + 1,
+				[action.boosts.time]: newState.storage[action.boosts.name][timeIndex] + 1,
 			},
 		};
 

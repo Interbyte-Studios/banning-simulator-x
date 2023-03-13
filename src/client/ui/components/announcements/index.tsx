@@ -132,7 +132,7 @@ export const LocalMessages = hooks((_, { useContext }) => {
 			<uilistlayout
 				Padding={new UDim(0.005, 0)}
 				FillDirection={Enum.FillDirection.Vertical}
-				HorizontalAlignment={Enum.HorizontalAlignment.Center}
+				HorizontalAlignment={Enum.HorizontalAlignment.Right}
 				VerticalAlignment={Enum.VerticalAlignment.Bottom}
 				SortOrder={Enum.SortOrder.LayoutOrder}
 			/>

@@ -9,9 +9,11 @@ import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
 import { Pet } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
+import { EggsState } from "shared/rodux/eggs";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
 import { getMagnitudeBetweenPlayerAndObject } from "shared/util/getDistanceFromObject";
 import { getEggCost } from "shared/util/getEggCost";
+import { getEggsMastery } from "shared/util/getEggsMastery";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { font, vec2Middle } from "../../../commonValues";
@@ -35,6 +37,7 @@ interface EggHudProps extends EggHudMappedProps {
 
 interface EggHudMappedProps {
 	index: PlayerIndexState;
+	eggs: EggsState;
 }
 
 /**
@@ -46,6 +49,7 @@ interface EggHudMappedProps {
 function mapStateToProps(state: StoreState): EggHudMappedProps {
 	return {
 		index: state.index,
+		eggs: state.eggs,
 	};
 }
 
@@ -80,7 +84,9 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 		const { useEffect, useState } = hooks;
 		const [isVisible, setVisibility] = useState(shouldDisplayHud(Players.LocalPlayer.Character, props.adornee));
 
-		const eggCost = getEggCost(props.eggName, props.isVoid);
+		// find reduced egg cost provided by player mastery
+		const eggMasteryReducedMultiplier = getEggsMastery(props.eggs).reducedEggCostMultiplier;
+		const eggCost = getEggCost(props.eggName, props.isVoid, eggMasteryReducedMultiplier);
 
 		useEffect(() => {
 			const player = Players.LocalPlayer;
@@ -174,7 +180,6 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 									variant={props.isVoid ? "void" : "regular"}
 									displayBackground={true}
 									isBillboard={true}
-									displayType={"stats"}
 									shouldBlackout={!hasHatchedVariant}
 								/>
 							);
