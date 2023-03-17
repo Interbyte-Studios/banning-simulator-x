@@ -9,6 +9,7 @@ import { Admin_ModifyWeaponLevelDefinition } from "shared/remotes/admin/modifyWe
 import { Admin_ShutDownDefinition } from "shared/remotes/admin/shutdownServer";
 import { Admin_SpawnPetDefinition } from "shared/remotes/admin/spawnPet";
 import { EquipTitleDefinition } from "shared/remotes/equipTitle";
+import { FusionRequestDefinition } from "shared/remotes/fusing";
 import { RedeemCodeDefinition } from "shared/remotes/media/redeemCode";
 import { VerifyDiscordDefinition } from "shared/remotes/media/verifyDiscord";
 import { ClaimPetMasteryDefinition } from "shared/remotes/petMastery/claimMastery";
@@ -132,6 +133,12 @@ export const fakeRemoteContext = {
 	togglePublicTradeHistory: fakeRemoteCall<TogglePublicTradeHistoryDefinition>("togglePublicTradeHistory"),
 
 	claimAccolade: fakeFunctionCall<ClaimAccoladeDefinition>("claimAccolade", () => {
+		return {
+			success: true,
+		};
+	}),
+
+	requestFusion: fakeFunctionCall<FusionRequestDefinition>("requestFusion", () => {
 		return {
 			success: true,
 		};

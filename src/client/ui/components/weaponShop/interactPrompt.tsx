@@ -1,4 +1,5 @@
 import Flipper from "@rbxts/flipper";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { Players, RunService, Workspace } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
@@ -21,7 +22,7 @@ const DISPLAY_DISTANCE = 25;
  * @param adornee The adornee to determine the distance from.
  * @returns If the egg hud should display.
  */
-function shouldDisplay(character: Model | undefined, adornee: BasePart): boolean {
+export function shouldDisplay(character: Model | undefined, adornee: BasePart): boolean {
 	if (!character) {
 		return false;
 	}

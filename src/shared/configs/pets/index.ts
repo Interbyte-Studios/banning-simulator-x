@@ -86,18 +86,24 @@ export type Variants = t.static<typeof isVariant>;
 export const VARIANT_GRADIENTS = preserveWithConstraint<Record<Variants, RarityGradient>>()({
 	regular: {
 		id: 1,
+		reverseId: 3,
+		maxFusions: 0,
 		BeginningColor: Color3.fromRGB(255, 255, 255),
 		EndingColor: Color3.fromRGB(148, 148, 148),
 		SpecialColor: undefined,
 	},
 	void: {
 		id: 2,
+		reverseId: 2,
+		maxFusions: 0,
 		BeginningColor: Color3.fromRGB(98, 37, 209),
 		EndingColor: Color3.fromRGB(57, 0, 86),
 		SpecialColor: undefined,
 	},
 	radiant: {
 		id: 3,
+		reverseId: 1,
+		maxFusions: 0,
 		BeginningColor: Color3.fromRGB(255, 255, 255),
 		EndingColor: Color3.fromRGB(250, 196, 61),
 		SpecialColor: undefined,

@@ -279,7 +279,7 @@ const defaultSettings: Settings = {
 	},
 	gameplay: {
 		autoHatch: false,
-		walkSpeed: 80,
+		walkSpeed: 24,
 	},
 	visual: {
 		graphicsQuality: "High",

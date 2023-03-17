@@ -7,13 +7,11 @@ import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { CurrencyIcon } from "client/ui/elements/currencyIcon";
 import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
-import { WeaponViewport } from "client/ui/elements/weaponViewport";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { currencies, Currency } from "shared/configs/currencies";
-import { getWeaponInfo } from "shared/util/getWeaponInfo";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { FullComponentHeader } from "../util/fullComponentHeader";

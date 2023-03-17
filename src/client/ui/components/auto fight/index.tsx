@@ -68,6 +68,7 @@ interface AutoFightMappedProps {
 	currencies: CurrenciesState;
 	walkspeed: number;
 }
+
 /**
  * Maps the Rodux store's state to the props.
  *

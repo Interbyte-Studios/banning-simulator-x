@@ -10,6 +10,7 @@ import { CurrencyGainAnimation } from "./components/currencyGainAnimation";
 import { DatastoreEvents } from "./components/datastoreEvents";
 import { EggsUI } from "./components/eggs";
 import { WeaponEquip } from "./components/equip/weaponEquip";
+import { Fusing } from "./components/fusing";
 import { Hud } from "./components/hud";
 import { ItemInventory } from "./components/items";
 import { PetMastery } from "./components/petMastery";
@@ -203,6 +204,18 @@ export const app = hooks((props: AppProps, { useState }) => {
 				/>
 				<AutoFight enabled={autoFightVisibility} hideMenu={(): void => setAutoFightVisibility(false)} />
 				<AccountHub enabled={accountHubVisibility} hideMenu={(): void => setAccountHubVisibility(false)} />
+				<Fusing
+					enabled={
+						!isHatching &&
+						!questsVisible &&
+						!weaponShopVisibility &&
+						!talismanTowerVisibility &&
+						!spinWheelVisibility &&
+						!itemsVisibility &&
+						!autoFightVisibility &&
+						!accountHubVisibility
+					}
+				/>
 			</>
 		</RoactRodux.StoreProvider>
 	);

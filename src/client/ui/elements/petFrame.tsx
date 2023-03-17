@@ -15,6 +15,7 @@ interface PetFrameProps {
 	displayBackground: boolean;
 	isBillboard: boolean;
 	shouldBlackout: boolean;
+	shouldEquipBackgrund?: boolean;
 	onActivated?: () => void;
 }
 
@@ -105,7 +106,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 				<imagebutton
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={0}
-					BackgroundColor3={Color3.fromRGB(46, 115, 179)}
+					BackgroundColor3={props.shouldEquipBackgrund ? Color3.fromRGB(85, 255, 127) : Color3.fromRGB(46, 115, 179)}
 					Position={UDim2.fromScale(0.5, 0.5)}
 					Size={UDim2.fromScale(0.925, 0.925)}
 					Image={""}
