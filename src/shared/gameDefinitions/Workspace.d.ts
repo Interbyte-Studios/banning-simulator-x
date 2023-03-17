@@ -15,6 +15,12 @@ declare global {
 			};
 		};
 		interactions: Folder & {
+			radiantMachines: Folder & {
+				interactions: Folder;
+			};
+			voidMachines: Folder & {
+				interactions: Folder;
+			};
 			teleports: Folder & {
 				[P in ZoneNames]: BasePart;
 			};

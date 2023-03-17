@@ -81,6 +81,7 @@ onStoreCreated(player)
 					admin_ModifyCurrency: remotes.Client.GetNamespace("admin").Get("admin_ModifyCurrency"),
 					admin_ShutdownServer: remotes.Client.GetNamespace("admin").Get("admin_ShutdownServer"),
 					admin_KickPlayer: remotes.Client.GetNamespace("admin").Get("admin_KickPlayer"),
+					requestFusion: remotes.Client.Get("requestFusion"),
 				}}
 			>
 				<AnnouncementAPI>

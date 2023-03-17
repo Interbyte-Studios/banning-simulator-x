@@ -5,6 +5,7 @@ import { admin } from "./admin";
 import { damageNPCDefinition } from "./damageNPC";
 import { eggs } from "./eggs";
 import { equipTitleDefinition } from "./equipTitle";
+import { fusionRequestDefinition } from "./fusing";
 import { media } from "./media";
 import { petMastery } from "./petMastery";
 import { pets } from "./pets";
@@ -37,4 +38,5 @@ export const remotes = Net.Definitions.Create({
 	unlockRank: unlockRankDefinition,
 	spinWheel: spinWheelDefinition,
 	spinWheelInfo: spinWheelInfoDefinition,
+	requestFusion: fusionRequestDefinition,
 });
