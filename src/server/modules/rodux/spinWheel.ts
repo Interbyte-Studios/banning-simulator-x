@@ -1,5 +1,11 @@
+import { HttpService } from "@rbxts/services";
+import { spinRewards } from "shared/configs/spinWheel";
 import { Store } from "shared/rodux";
+import { claimBoost } from "shared/rodux/boosts";
+import { awardCurrency } from "shared/rodux/currencies";
+import { addPets, ConfirmedPet } from "shared/rodux/pets";
 import { updateWheelTime, updateWheelUses } from "shared/rodux/spinWheel";
+import { getPetData } from "shared/util/getPetData";
 
 // Values
 const spinWaitTime = 60 * 60;
@@ -32,6 +38,46 @@ export function updateSpinWheelInfo(store: Store): void {
 /**
  *
  * @param store The current store of the player.
+ * @param rewardIndex The index of the reward won.
+ */
+export function spinWheelReward(store: Store, rewardIndex: number): void {
+	const rewardData = spinRewards[rewardIndex];
+	if (rewardData === undefined) {
+		warn(`Could not find data for spin reward of index ${rewardIndex}`);
+		return;
+	}
+
+	if (rewardData.rewardType === "boosts") {
+		store.dispatch(
+			claimBoost(rewardData.rewardData.boostName ?? "x2 Currency", rewardData.rewardData.boostAmount ?? 15, 0),
+		);
+	} else if (rewardData.rewardType === "pet") {
+		if (rewardData.rewardData.petId === undefined) {
+			return;
+		}
+
+		const petData = getPetData(rewardData.rewardData.petId);
+		const selectedPets: Array<ConfirmedPet> = [];
+
+		selectedPets.push({
+			autoDeleted: false,
+			id: petData.id,
+			guid: HttpService.GenerateGUID(false),
+			rarity: petData.rarity,
+			variant: "regular",
+			method: "hatch",
+			egg: "Starter",
+		});
+
+		store.dispatch(addPets(0, "coins", selectedPets));
+	} else if (rewardData.rewardType === "currency") {
+		store.dispatch(awardCurrency(rewardData.rewardData.name ?? "coins", rewardData.rewardData.amount ?? 1));
+	}
+}
+
+/**
+ *
+ * @param store The current store of the player.
  * @returns The reward of the player.
  */
 export function spinWheel(store: Store): { reward: number | undefined } {
@@ -52,5 +98,6 @@ export function spinWheel(store: Store): { reward: number | undefined } {
 	store.dispatch(updateWheelTime(currentTime, currentTime + spinWaitTime, spinWheel.dayEndTime));
 	store.dispatch(updateWheelUses(spinWheel.spinsDone + 1));
 
+	spinWheelReward(store, prizeWon);
 	return { reward: prizeWon };
 }
