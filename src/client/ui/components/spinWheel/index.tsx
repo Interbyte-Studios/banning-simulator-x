@@ -56,14 +56,14 @@ for (const [index, rewardInfo] of pairs(spinRewards)) {
 	if (rewardInfo.rewardType === "currency" && rewardInfo.rewardData.name !== undefined) {
 		slotsData[index] = {
 			image: getCurrencyIcon(rewardInfo.rewardData.name),
-			amount: rewardInfo.rewardData.amount,
+			amount: rewardInfo.rewardData.amount ?? 1,
 		};
 	} else if (rewardInfo.rewardType === "boosts") {
-		slotsData[index] = { image: assetIds.images.vectors.Clover, amount: rewardInfo.rewardData.amount };
+		slotsData[index] = { image: assetIds.images.vectors.Clover, amount: rewardInfo.rewardData.boostAmount ?? 1 };
 	} else if (rewardInfo.rewardType === "pet" && rewardInfo.rewardData.petId !== undefined) {
 		slotsData[index] = {
 			image: getPetImage(rewardInfo.rewardData.petId, "regular"),
-			amount: rewardInfo.rewardData.amount,
+			amount: rewardInfo.rewardData.amount ?? 1,
 		};
 	}
 }
