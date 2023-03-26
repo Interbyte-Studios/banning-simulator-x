@@ -15,6 +15,7 @@ declare global {
 			};
 		};
 		interactions: Folder & {
+			leaderboards: Folder;
 			radiantMachines: Folder & {
 				interactions: Folder;
 			};
