@@ -389,6 +389,10 @@ declare namespace assetIds {
 			};
 		};
 		ui: {
+			trading: {
+				background: string;
+				playerSelectionBackground: string;
+			};
 			account: {
 				Accolades: string;
 				accountMastery: string;

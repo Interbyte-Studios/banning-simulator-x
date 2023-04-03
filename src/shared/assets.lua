@@ -518,6 +518,10 @@ return {
 				background = "rbxassetid://11702120380",
 				go = "rbxassetid://11702142633",
 			},
+			trading = {
+				TradeBackground = "rbxassetid://12921311196",
+				playerSelection = "rbxassetid://12921311319",
+			},
 			["update log"] = {
 				background = "rbxassetid://11585613205",
 				["update log"] = "rbxassetid://11585642192",
