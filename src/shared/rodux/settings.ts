@@ -45,6 +45,7 @@ export interface Settings {
 	privacy: {
 		publicInventory: boolean;
 		publicTradeHistory: boolean;
+		tradesEnabled: boolean;
 	};
 }
 
@@ -63,7 +64,8 @@ export type SettingsActions =
 	| TogglePetsDisplayed
 	| TogglePetsStudsOfDistance
 	| TogglePublicInventory
-	| TogglePublicTradeHistory;
+	| TogglePublicTradeHistory
+	| ToggleTradesEnabled;
 
 export interface ToggleRarityDelete extends Rodux.Action<"toggleRarityDelete"> {
 	rarity: Exclude<Rarities, ImmuneRarities>;
@@ -111,6 +113,7 @@ interface TogglePetsStudsOfDistance extends Rodux.Action<"togglePetsStudsOfDista
 
 interface TogglePublicInventory extends Rodux.Action<"togglePublicInventory"> {}
 interface TogglePublicTradeHistory extends Rodux.Action<"togglePublicTradeHistory"> {}
+interface ToggleTradesEnabled extends Rodux.Action<"toggleTradesEnabled"> {}
 
 /**
  * Toggles the auto delete status of a specified rarity.
@@ -262,6 +265,15 @@ export function togglePublicTradeHistory(): TogglePublicTradeHistory & Rodux.Any
 	};
 }
 
+/**
+ * @returns The Rodux action to dispatch.
+ */
+export function toggleTradesEnabled(): ToggleTradesEnabled & Rodux.AnyAction {
+	return {
+		type: "toggleTradesEnabled",
+	};
+}
+
 const defaultSettings: Settings = {
 	autoDelete: {
 		rarities: {
@@ -291,6 +303,7 @@ const defaultSettings: Settings = {
 	privacy: {
 		publicInventory: true,
 		publicTradeHistory: true,
+		tradesEnabled: true,
 	},
 };
 
@@ -377,6 +390,12 @@ export const settingsReducer = Rodux.createReducer<SettingsState, SettingsAction
 	togglePublicTradeHistory: (state) => {
 		const newState: Settings = { ...state };
 		newState.privacy = { ...state.privacy, publicTradeHistory: !state.privacy.publicTradeHistory };
+
+		return newState;
+	},
+	toggleTradesEnabled: (state) => {
+		const newState = { ...state };
+		newState.privacy = { ...state.privacy, tradesEnabled: !state.privacy.tradesEnabled };
 
 		return newState;
 	},

@@ -6,6 +6,7 @@ import { WheelSpinIcon } from "./wheelSpingIcon";
 
 interface HUDFooterProps {
 	displaySpinWheel: () => void;
+	displayTradingMenu: () => void;
 }
 
 export const HUDFooter = hooks((props: HUDFooterProps) => {
@@ -22,7 +23,7 @@ export const HUDFooter = hooks((props: HUDFooterProps) => {
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>
-			<TradingIcon />
+			<TradingIcon displayTrading={props.displayTradingMenu} />
 			<WheelSpinIcon displayWheelSpinMenu={props.displaySpinWheel} />
 		</frame>
 	);

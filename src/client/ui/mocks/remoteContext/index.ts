@@ -41,6 +41,8 @@ import { SpinWheelInfoDefinition } from "shared/remotes/spinWheelnfo";
 import { EquipTalismanDefinition } from "shared/remotes/talismans/equipTalisman";
 import { PurchaseTalismanDefinition } from "shared/remotes/talismans/purchaseTalisman";
 import { UnequipTalismanDefinition } from "shared/remotes/talismans/unequipTalisman";
+import { RequestTradeDefinition } from "shared/remotes/trading/requestTrade";
+import { SendTradeRequestDefinition } from "shared/remotes/trading/sendTradeRequest";
 import { UnlockRankDefinition } from "shared/remotes/unlockRank";
 import { ChangeWeaponDefinition } from "shared/remotes/weapons/changeWeapon";
 import { EquipWeaponDefinition } from "shared/remotes/weapons/equipWeapon";
@@ -50,6 +52,7 @@ import { UnequipWeaponDefinition } from "shared/remotes/weapons/unequipWeapon";
 import { fakeHatchEgg } from "../hatchEgg";
 import { fakeFunctionCall } from "./fakeFunctionCall";
 import { fakeRemoteCall } from "./fakeRemoteCall";
+import { fakeServerToClientRemote } from "./fakeServerToClientRemote";
 
 export const fakeRemoteContext = {
 	claimPetMastery: fakeFunctionCall<ClaimPetMasteryDefinition>("claimPetMastery", () => {
@@ -143,6 +146,9 @@ export const fakeRemoteContext = {
 			success: true,
 		};
 	}),
+
+	requestTrading: fakeRemoteCall<RequestTradeDefinition>("requestTrading"),
+	receiveTradeRequest: fakeServerToClientRemote<SendTradeRequestDefinition>("receiveTradeRequest"),
 };
 
 export const remoteContext = createContext(fakeRemoteContext);

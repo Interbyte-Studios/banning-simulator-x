@@ -4,6 +4,7 @@ import { NPCs } from "shared/configs/zones";
 
 declare global {
 	interface ReplicatedStorage extends Instance {
+		activeTrades: Folder;
 		animations: Folder & {
 			weapons: Folder & {
 				[P in WeaponType]: Folder & {

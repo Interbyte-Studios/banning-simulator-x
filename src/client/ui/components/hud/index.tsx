@@ -15,6 +15,7 @@ interface HudProps {
 	displayItems: () => void;
 	displayAutoFight: () => void;
 	displayAccount: () => void;
+	displayTradingMenu: () => void;
 }
 
 export const Hud = hooks((props: HudProps) => {
@@ -39,7 +40,7 @@ export const Hud = hooks((props: HudProps) => {
 			<RanksViewer />
 			<CoinsCurrency />
 			<GemsCurrency />
-			<HUDFooter displaySpinWheel={props.displaySpinWheel} />
+			<HUDFooter displaySpinWheel={props.displaySpinWheel} displayTradingMenu={props.displayTradingMenu} />
 		</frame>
 	);
 });

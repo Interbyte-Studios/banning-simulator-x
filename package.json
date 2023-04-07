@@ -42,6 +42,7 @@
     "@rbxts/roact-rodux": "^0.2.2-ts.5",
     "@rbxts/rodux": "^3.0.0-ts.3",
     "@rbxts/services": "^1.2.2",
+    "@rbxts/signal": "^1.1.1",
     "@rbxts/t": "^3.0.0",
     "@rbxts/testez": "^0.3.1-ts.7"
   },

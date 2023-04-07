@@ -3,13 +3,14 @@ import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 const minimizedSize = 0.8;
 const maximizedSize = 0.9;
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const TradingIcon = hooks((_, { useEffect }) => {
+export const TradingIcon = hooks((props: { displayTrading: () => void }, { useEffect }) => {
 	const minizmizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
 	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
 
@@ -34,6 +35,10 @@ export const TradingIcon = hooks((_, { useEffect }) => {
 			Image={assetIds.images.ui.hud.icons.trading}
 			LayoutOrder={5}
 			Event={{
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.displayTrading();
+				},
 				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
 				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}

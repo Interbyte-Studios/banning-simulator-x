@@ -82,6 +82,9 @@ onStoreCreated(player)
 					admin_ShutdownServer: remotes.Client.GetNamespace("admin").Get("admin_ShutdownServer"),
 					admin_KickPlayer: remotes.Client.GetNamespace("admin").Get("admin_KickPlayer"),
 					requestFusion: remotes.Client.Get("requestFusion"),
+
+					requestTrading: remotes.Client.GetNamespace("trades").Get("requestTrade"),
+					receiveTradeRequest: remotes.Client.GetNamespace("trades").Get("sendTradeRequest"),
 				}}
 			>
 				<AnnouncementAPI>

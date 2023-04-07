@@ -15,6 +15,7 @@ export = (target: GuiBase): (() => void) => {
 				displayItems={(): void => {}}
 				displayAutoFight={(): void => {}}
 				displayAccount={(): void => {}}
+				displayTradingMenu={(): void => {}}
 			/>
 		</RoactRodux.StoreProvider>
 	));
