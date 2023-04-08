@@ -1,7 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { BaseImageLabel } from "client/ui/elements/baseElements/baseImageLabel";
+import { BaseTextLabel } from "client/ui/elements/baseElements/baseTextLabel";
 import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
@@ -47,49 +48,38 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 		}
 
 		return (
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.4, 0.36)}
-				Image={assetIds.images.ui.zones.background}
-				ScaleType={Enum.ScaleType.Fit}
+			<BaseImageLabel
+				native={{
+					Size: UDim2.fromScale(0.4, 0.36),
+					Image: assetIds.images.ui.zones.background,
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1.8} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.5, 0.115)}
-					Size={UDim2.fromScale(0.385, 0.175)}
-					BackgroundTransparency={1}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Text={"Zone Advance"}
-					Font={font}
-				>
-					<BaseUIStroke native={{ Thickness: 2 }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.5, 0.4)}
-					Size={UDim2.fromScale(0.9, 0.275)}
-					BackgroundTransparency={1}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Text={`Would you like to purchase zone ${zoneData.name}?`}
-					Font={font}
-				>
-					<BaseUIStroke native={{ Thickness: 2 }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.7, 0.635)}
-					Size={UDim2.fromScale(0.5, 0.15)}
-					BackgroundTransparency={1}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Text={twoDpAbbreviator.numberToString(zoneData.cost.amount)}
-					TextXAlignment={Enum.TextXAlignment.Left}
-					Font={font}
+
+				<BaseTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.115),
+						Size: UDim2.fromScale(0.385, 0.175),
+						Text: "Zone Advance",
+					}}
+					stroke={{ native: { Thickness: 2 } }}
+				/>
+				<BaseTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.4),
+						Size: UDim2.fromScale(0.9, 0.275),
+						Text: `Would you like to purchase zone ${zoneData.name}?`,
+					}}
+					stroke={{ native: { Thickness: 2 } }}
+				/>
+				<BaseTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.635),
+						Size: UDim2.fromScale(0.5, 0.15),
+						Text: twoDpAbbreviator.numberToString(zoneData.cost.amount),
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{ native: { Thickness: 2 } }}
 				>
 					<CurrencyIcon
 						position={UDim2.fromScale(-0.115, 0.5)}
@@ -101,11 +91,11 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 						size={{ maximizedSize: 1, minimizedSize: 0.9 }}
 						rank={zoneData.cost.requiredRank}
 					/>
-					<BaseUIStroke native={{ Thickness: 2 }} />
-				</textlabel>
+				</BaseTextLabel>
+
 				<PurchaseZoneButton world={props.world} zone={zoneData.name} hideMenu={props.hideMenu} />
 				<CancelZonePurchase hideMenu={props.hideMenu} />
-			</imagelabel>
+			</BaseImageLabel>
 		);
 	}),
 );

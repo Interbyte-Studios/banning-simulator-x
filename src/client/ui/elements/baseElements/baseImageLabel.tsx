@@ -52,7 +52,7 @@ export const BaseImageLabel = hooks((props: BaseImageLabelProps, hooks) => {
 				Position={props.native.Position ?? UDim2.fromScale(0.5, 0.5)}
 				Size={props.native.Size ?? UDim2.fromScale(1, 1)}
 				ScaleType={props.native.ScaleType ?? Enum.ScaleType.Fit}
-				{...props}
+				{...props.native}
 				Event={{ ...props.events }}
 			/>
 		);

@@ -1,7 +1,8 @@
 import Flipper from "@rbxts/flipper";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, vec2Middle } from "client/ui/commonValues";
+import { vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
@@ -11,6 +12,8 @@ import { StoreState } from "shared/rodux";
 import { CurrentTalismanState } from "shared/rodux/currentTalisman";
 import { TalismansState } from "shared/rodux/talismans";
 
+import { BaseFrame } from "../elements/baseElements/baseFrame";
+import { BaseTextLabel } from "../elements/baseElements/baseTextLabel";
 import { TalismanGradient } from "../elements/gradients/talismanGradient";
 import { TalismanViewport } from "../elements/viewports/talismanViewport";
 
@@ -109,8 +112,7 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 			>
 				<uiaspectratioconstraint AspectRatio={2.2} />
 
-				<frame
-					AnchorPoint={vec2Middle}
+				<BaseFrame
 					BackgroundTransparency={0}
 					Position={UDim2.fromScale(0.15, 0.675)}
 					Size={UDim2.fromScale(0.25, 0.6)}
@@ -118,49 +120,43 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 					<uicorner CornerRadius={new UDim(0.175, 0)} />
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 					<TalismanViewport talismanId={props.currentTalisman} phase={storedTalisman.phase} />
-				</frame>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.185)}
-					Size={UDim2.fromScale(0.6, 0.3)}
-					Font={font}
-					Text={"Congratulations"}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(185, 81, 1) }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.635, 0.55)}
-					Size={UDim2.fromScale(0.685, 0.25)}
-					Font={font}
-					Text={"Talisman Upgrade!"}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(0, 100, 163) }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.635, 0.775)}
-					Size={UDim2.fromScale(0.685, 0.2)}
-					Font={font}
-					Text={`${
-						storedTalisman.phase === "artifact" ? "Artifact" : storedTalisman.phase === "awakend" ? "Awakend" : "Normal"
-					} Phase`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
+				</BaseFrame>
+
+				<BaseTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.185),
+						Size: UDim2.fromScale(0.6, 0.3),
+						Text: "Congratulations",
+					}}
+					stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(185, 81, 1) } }}
+				/>
+				<BaseTextLabel
+					native={{
+						Position: UDim2.fromScale(0.635, 0.55),
+						Size: UDim2.fromScale(0.685, 0.25),
+						Text: "Talisman Upgrade!",
+					}}
+					stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(0, 100, 163) } }}
+				/>
+				<BaseTextLabel
+					native={{
+						Position: UDim2.fromScale(0.635, 0.775),
+						Size: UDim2.fromScale(0.685, 0.2),
+						Text: `${
+							storedTalisman.phase === "artifact"
+								? "Artifact"
+								: storedTalisman.phase === "awakend"
+								? "Awakend"
+								: "Normal"
+						} Phase`,
+					}}
+					stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(0, 100, 163) } }}
 				>
 					<TalismanGradient phase={storedTalisman.phase} />
-					<BaseUIStroke native={{ Thickness: 3, Color: Color3.fromRGB(0, 100, 163) }} />
-				</textlabel>
+				</BaseTextLabel>
 			</imagelabel>
 		);
 	}),

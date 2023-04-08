@@ -44,7 +44,6 @@ export const ZonesUI = RoactRodux.connect(mapStateToProps)(
 		}
 
 		const elements: Array<Roact.Element> = [];
-
 		for (const [worldName, worldData] of pairs(WORLDS)) {
 			const worldFolder = Workspace.decoration[worldName];
 
