@@ -3,7 +3,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
@@ -11,7 +11,7 @@ import { CurrentWeaponState } from "shared/rodux/currentWeapon";
 import { WeaponsState } from "shared/rodux/weapons";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
-import { WeaponViewport } from "../elements/weaponViewport";
+import { WeaponViewport } from "../elements/viewports/weaponViewport";
 
 interface WeaponLevelUpAnimationProps extends WeaponLevelUpAnimationMappedProps {
 	enabled: boolean;

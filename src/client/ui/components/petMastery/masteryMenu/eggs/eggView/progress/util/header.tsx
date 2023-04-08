@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { VariantGradient } from "client/ui/elements/variantGradient";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { VariantGradient } from "client/ui/elements/gradients/variantGradient";
 import { Variants } from "shared/configs/pets";
 
 interface ProgressHeaderProps {

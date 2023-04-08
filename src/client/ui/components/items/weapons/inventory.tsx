@@ -2,7 +2,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
 import { vec2Middle } from "client/ui/commonValues";
-import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
+import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import { StoreState } from "shared/rodux";
 import { CurrentWeaponState } from "shared/rodux/currentWeapon";

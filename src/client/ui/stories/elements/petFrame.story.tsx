@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { PetFrame } from "client/ui/elements/petFrame";
+import { PetFrame } from "client/ui/elements/common/petFrame";
 
 import { createMockStory } from "../createMockStory";
 

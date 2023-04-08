@@ -2,11 +2,11 @@ import Roact from "@rbxts/roact";
 import { CollectionService } from "@rbxts/services";
 import { Currency } from "shared/configs/currencies";
 
-import { hooks } from "../hooks";
-import { CurrencyGradient } from "./currencyGradient";
-import { RankGradient } from "./rankGradient";
+import { hooks } from "../../hooks";
+import { CurrencyGradient } from "../gradients/currencyGradient";
+import { RankGradient } from "../gradients/rankGradient";
 
-interface BaseUIStrokeProps {
+export interface BaseUIStrokeProps {
 	native: Partial<UIStroke>;
 	isBillboard?: boolean;
 	rankGradient?: number;

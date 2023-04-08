@@ -1,8 +1,8 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { TalismanGradient } from "client/ui/elements/talismanGradient";
-import { TalismanViewport } from "client/ui/elements/talismanViewport";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { TalismanGradient } from "client/ui/elements/gradients/talismanGradient";
+import { TalismanViewport } from "client/ui/elements/viewports/talismanViewport";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import { Talisman } from "shared/rodux/talismans";

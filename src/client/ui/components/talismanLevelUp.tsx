@@ -3,7 +3,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { TalismanPhases } from "shared/configs/talismans";
@@ -11,8 +11,8 @@ import { StoreState } from "shared/rodux";
 import { CurrentTalismanState } from "shared/rodux/currentTalisman";
 import { TalismansState } from "shared/rodux/talismans";
 
-import { TalismanGradient } from "../elements/talismanGradient";
-import { TalismanViewport } from "../elements/talismanViewport";
+import { TalismanGradient } from "../elements/gradients/talismanGradient";
+import { TalismanViewport } from "../elements/viewports/talismanViewport";
 
 interface TalismanLevelUpAnimationProps extends TalismanLevelUpAnimationMappedProps {
 	enabled: boolean;

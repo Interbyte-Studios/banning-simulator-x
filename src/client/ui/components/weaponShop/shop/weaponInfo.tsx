@@ -1,11 +1,11 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { CurrencyGradient } from "client/ui/elements/currencyGradient";
-import { CurrencyIcon } from "client/ui/elements/currencyIcon";
-import { DamageIcon } from "client/ui/elements/damageIcon";
-import { RankIcon } from "client/ui/elements/rankIcon";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { CurrencyGradient } from "client/ui/elements/gradients/currencyGradient";
+import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
+import { DamageIcon } from "client/ui/elements/icons/damageIcon";
+import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";

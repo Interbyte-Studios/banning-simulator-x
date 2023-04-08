@@ -148,7 +148,6 @@ export const fakeRemoteContext = {
 	}),
 
 	requestTrading: fakeRemoteCall<RequestTradeDefinition>("requestTrading"),
-	receiveTradeRequest: fakeServerToClientRemote<SendTradeRequestDefinition>("receiveTradeRequest"),
 };
 
 export const remoteContext = createContext(fakeRemoteContext);

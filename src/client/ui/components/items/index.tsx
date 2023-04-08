@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { ExitButton } from "client/ui/elements/exitButton";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 

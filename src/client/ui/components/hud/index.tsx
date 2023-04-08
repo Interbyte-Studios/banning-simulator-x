@@ -9,7 +9,6 @@ import { RanksViewer } from "./rankViewer";
 
 interface HudProps {
 	visible: boolean;
-	displayQuests: () => void;
 	displayTeleportation: () => void;
 	displaySpinWheel: () => void;
 	displayItems: () => void;

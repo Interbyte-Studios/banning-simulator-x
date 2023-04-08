@@ -5,8 +5,7 @@ import { VARIANT_GRADIENTS, Variants } from "shared/configs/pets";
  * A ui gradient component which has its gradient colors set depending on the specified variant.
  *
  * @param props The properties of the rarity gradient.
- * @param props.Rarity The rarity gradient to be displayed.
- * @param props.variant
+ * @param props.variant The variant gradient to be displayed.
  * @returns A roact component.
  */
 export function VariantGradient(props: { variant: Variants }): Roact.Element {

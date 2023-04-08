@@ -2,7 +2,7 @@ import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { Players, Workspace } from "@rbxts/services";
 import { vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { getRankProgress } from "client/util/getRankProgress";
 import { playSFX, UIEngagement } from "client/util/playSound";

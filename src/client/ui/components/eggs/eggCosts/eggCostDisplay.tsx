@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
-import { BaseImageLabel } from "client/ui/elements/baseImageLabel";
-import { BaseTextLabel } from "client/ui/elements/baseTextLabel";
+import { BaseImageLabel } from "client/ui/elements/baseElements/baseImageLabel";
+import { BaseTextLabel } from "client/ui/elements/baseElements/baseTextLabel";
 import { getCurrencyIcon } from "client/util/getCurrencyIcon";
 import { Currency } from "shared/configs/currencies";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
@@ -33,16 +33,20 @@ export function EggCostDisplay(props: eggCostDisplayProps): Roact.Element {
 			PixelsPerStud={50}
 		>
 			<BaseTextLabel
-				Position={UDim2.fromScale(0.65, 0.5)}
-				Size={UDim2.fromScale(0.7, 0.7)}
-				Text={twoDpAbbreviator.numberToString(props.cost)}
-				TextColor3={props.isVoid ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0)}
+				native={{
+					Position: UDim2.fromScale(0.65, 0.5),
+					Size: UDim2.fromScale(0.7, 0.7),
+					Text: twoDpAbbreviator.numberToString(props.cost),
+					TextColor3: props.isVoid ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0),
+				}}
 			>
 				<BaseImageLabel
-					AnchorPoint={new Vector2(1, 0.5)}
-					Position={UDim2.fromScale(-0.05, 0.5)}
-					Size={UDim2.fromScale(0.35, 1.1)}
-					Image={getCurrencyIcon(props.currency)}
+					native={{
+						AnchorPoint: new Vector2(1, 0.5),
+						Position: UDim2.fromScale(-0.05, 0.5),
+						Size: UDim2.fromScale(0.35, 1.1),
+						Image: getCurrencyIcon(props.currency),
+					}}
 				/>
 			</BaseTextLabel>
 		</surfacegui>

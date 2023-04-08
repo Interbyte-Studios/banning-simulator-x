@@ -1,9 +1,9 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { ExitButton } from "client/ui/elements/exitButton";
-import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { ExitButton } from "client/ui/elements/common/exitButton";
+import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { WorldName, WORLDS } from "shared/configs/worlds";

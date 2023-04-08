@@ -2,7 +2,7 @@ import Roact from "@rbxts/roact";
 import { ReplicatedStorage } from "@rbxts/services";
 
 import { font, vec2Middle } from "../commonValues";
-import { BaseUIStroke } from "../elements/baseUIStroke";
+import { BaseUIStroke } from "../elements/baseElements/baseUIStroke";
 import { hooks } from "../hooks";
 
 type DatastoreEventType = "luck" | "currency" | "experience";

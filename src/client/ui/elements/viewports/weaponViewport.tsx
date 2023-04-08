@@ -1,8 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { getWeaponDecal } from "client/util/getWeaponDecal";
 
-import { vec2Middle } from "../commonValues";
-import { hooks } from "../hooks";
+import { hooks } from "../../hooks";
+import { BaseImageLabel } from "../baseElements/baseImageLabel";
 
 interface WeaponViewportProps {
 	weaponId: number;
@@ -16,14 +17,17 @@ interface WeaponViewportProps {
  * @param props.weaponId The id of the weapon being displayed.
  */
 export const WeaponViewport = hooks((props: WeaponViewportProps) => {
+	const weaponImage = getWeaponDecal(props.weaponId);
+
 	return (
-		<imagelabel
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Size={UDim2.fromScale(0.75, 0.75)}
-			Position={UDim2.fromScale(0.5, 0.5)}
-			Image={getWeaponDecal(props.weaponId)}
-			ScaleType={Enum.ScaleType.Fit}
-		/>
+		<BaseImageLabel
+			native={{
+				Size: UDim2.fromScale(0.75, 0.75),
+				Position: UDim2.fromScale(0.5, 0.5),
+				Image: weaponImage,
+			}}
+		>
+			<uiaspectratioconstraint AspectRatio={1} />
+		</BaseImageLabel>
 	);
 });

@@ -1,8 +1,8 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { RarityGradient } from "client/ui/elements/rarityGradient";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { RarityGradient } from "client/ui/elements/gradients/rarityGradient";
 import { hooks } from "client/ui/hooks";
 import { Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";

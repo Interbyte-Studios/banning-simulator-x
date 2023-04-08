@@ -1,8 +1,8 @@
 import Roact from "@rbxts/roact";
 import { retrieveStore } from "client/clientStores";
 import { vec2Middle } from "client/ui/commonValues";
-import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
-import { TitleGradient } from "client/ui/elements/titleGradient";
+import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
+import { TitleGradient } from "client/ui/elements/gradients/titleGradient";
 import { hooks } from "client/ui/hooks";
 import { formatTime } from "client/util/formatTime";
 import { GROUP_ROLES } from "shared/configs/game";

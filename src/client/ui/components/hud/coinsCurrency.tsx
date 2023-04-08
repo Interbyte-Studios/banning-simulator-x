@@ -1,8 +1,8 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { CurrencyIcon } from "client/ui/elements/currencyIcon";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";

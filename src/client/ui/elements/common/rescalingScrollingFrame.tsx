@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 
-import { hooks } from "../hooks";
+import { hooks } from "../../hooks";
 
 /**
  * Updates the size of the ScrollingFrame's CanvasSize every time AbsoluteContentSize is changed.

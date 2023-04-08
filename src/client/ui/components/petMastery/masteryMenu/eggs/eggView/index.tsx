@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";

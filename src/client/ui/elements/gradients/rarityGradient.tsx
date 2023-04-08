@@ -1,8 +1,8 @@
 import Roact from "@rbxts/roact";
-import { CollectionService, RunService } from "@rbxts/services";
+import { RunService } from "@rbxts/services";
 import { RARITIES, Rarities } from "shared/configs/rarities";
 
-import { hooks } from "../hooks";
+import { hooks } from "../../hooks";
 
 /**
  * A ui gradient component which has its gradient colors set depending on the specified rarity.

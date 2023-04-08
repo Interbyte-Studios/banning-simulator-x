@@ -1,9 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { getTalismanDecal } from "client/util/getTalismanDecal";
 import { TalismanPhases } from "shared/configs/talismans";
 
-import { vec2Middle } from "../commonValues";
-import { hooks } from "../hooks";
+import { hooks } from "../../hooks";
+import { BaseImageLabel } from "../baseElements/baseImageLabel";
 
 interface TalismanViewportProp {
 	talismanId: number;
@@ -19,14 +20,17 @@ interface TalismanViewportProp {
  * @param props.phase The phase of the talisman being displayed.
  */
 export const TalismanViewport = hooks((props: TalismanViewportProp) => {
+	const talismanImage = getTalismanDecal(props.talismanId, props.phase);
+
 	return (
-		<imagelabel
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Size={UDim2.fromScale(0.9, 0.9)}
-			Position={UDim2.fromScale(0.5, 0.5)}
-			Image={getTalismanDecal(props.talismanId, props.phase)}
-			ScaleType={Enum.ScaleType.Fit}
-		/>
+		<BaseImageLabel
+			native={{
+				Size: UDim2.fromScale(0.9, 0.9),
+				Position: UDim2.fromScale(0.5, 0.5),
+				Image: talismanImage,
+			}}
+		>
+			<uiaspectratioconstraint AspectRatio={1} />
+		</BaseImageLabel>
 	);
 });
