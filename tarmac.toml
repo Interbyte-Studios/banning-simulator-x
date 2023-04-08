@@ -1,7 +1,6 @@
 name = "Banning Simulator X"
 upload-to-group-id = 5126818
 
-
 [[inputs]]
 glob = "images/**/*.{png,jpg}"
 codegen = true
