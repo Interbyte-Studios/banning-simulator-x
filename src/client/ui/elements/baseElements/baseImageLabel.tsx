@@ -19,7 +19,7 @@ interface BaseImageLabelProps {
  * @returns An image label roact component with preset properties.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const BaseImageLabel = hooks((props: BaseImageLabelProps, hooks) => {
+export const BaseImageLabel = hooks((props: Roact.PropsWithChildren<BaseImageLabelProps>, hooks) => {
 	if (props.size !== undefined) {
 		const minimizedSize = props.size.minSize;
 		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
@@ -42,7 +42,9 @@ export const BaseImageLabel = hooks((props: BaseImageLabelProps, hooks) => {
 					MouseEnter: (): void => motor.motor.setGoal(minimizedSpring),
 					MouseLeave: (): void => motor.motor.setGoal(maximizedSpring),
 				}}
-			/>
+			>
+				{props[Roact.Children]}
+			</imagelabel>
 		);
 	} else {
 		return (
@@ -54,7 +56,9 @@ export const BaseImageLabel = hooks((props: BaseImageLabelProps, hooks) => {
 				ScaleType={props.native.ScaleType ?? Enum.ScaleType.Fit}
 				{...props.native}
 				Event={{ ...props.events }}
-			/>
+			>
+				{props[Roact.Children]}
+			</imagelabel>
 		);
 	}
 });
