@@ -1,7 +1,9 @@
-import { Players, ReplicatedStorage } from "@rbxts/services";
+import { ReplicatedStorage } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { retrieveStore } from "server/playerStore";
 import { remotes } from "shared/remotes";
+
+import { createTrade, getTradeStatus } from "./trades";
 
 const sendTradeRequestRemote = remotes.Server.GetNamespace("trades").Create("sendTradeRequest");
 
@@ -9,29 +11,26 @@ remotes.Server.GetNamespace("trades")
 	.Create("requestTrade")
 	.Connect(
 		withPlayerStore((player, store, targetPlayer) => {
-			const playerIsActivelyTrading = ReplicatedStorage.activeTrades.FindFirstChild(player.Name);
-			if (playerIsActivelyTrading !== undefined) {
+			// ensure that both players aren't currently trading
+			const hasPlayerTrading = [player, targetPlayer].mapFiltered(getTradeStatus).size() !== 0;
+			if (hasPlayerTrading) {
 				return;
 			}
 
-			if (store.getState().settings.privacy.tradesEnabled === false) {
+			const playerStores = [store, retrieveStore(targetPlayer)];
+
+			// make sure both players have trades enabled
+			const hasPrivateTrader =
+				playerStores
+					.map((store) => store.getState().settings.privacy.tradesEnabled)
+					.filter((hasTradesEnabled) => !hasTradesEnabled)
+					.size() !== 0;
+			if (hasPrivateTrader) {
 				return;
 			}
 
-			const targetPlayerIsActivelyTrading = ReplicatedStorage.activeTrades.FindFirstChild(targetPlayer.Name);
-			if (targetPlayerIsActivelyTrading !== undefined) {
-				return;
-			}
-
-			const targetPlayerStore = retrieveStore(targetPlayer);
-			if (targetPlayerStore.getState().settings.privacy.tradesEnabled === false) {
-				return;
-			}
-
-			const verifiedTargetPlayer = Players.FindFirstChild(targetPlayer.Name);
-			if (verifiedTargetPlayer === undefined) {
-				return;
-			}
+			// indicate that both players are now trading
+			createTrade(player, targetPlayer);
 
 			const playerTradingCache = new Instance("ObjectValue");
 			playerTradingCache.Name = player.Name;
