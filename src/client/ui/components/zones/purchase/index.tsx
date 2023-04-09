@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { BaseImageLabel } from "client/ui/elements/baseElements/baseImageLabel";
 import { BaseTextLabel } from "client/ui/elements/baseElements/baseTextLabel";
+import { Image } from "client/ui/elements/baseElements/image";
 import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
@@ -48,7 +48,7 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 		}
 
 		return (
-			<BaseImageLabel
+			<Image
 				native={{
 					Size: UDim2.fromScale(0.4, 0.36),
 					Image: assetIds.images.ui.zones.background,
@@ -95,7 +95,7 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 
 				<PurchaseZoneButton world={props.world} zone={zoneData.name} hideMenu={props.hideMenu} />
 				<CancelZonePurchase hideMenu={props.hideMenu} />
-			</BaseImageLabel>
+			</Image>
 		);
 	}),
 );

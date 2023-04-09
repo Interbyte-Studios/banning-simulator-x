@@ -3,7 +3,8 @@ import Roact from "@rbxts/roact";
 import assetIds from "shared/assets";
 
 import { hooks } from "../../hooks";
-import { BaseImageLabel } from "../baseElements/baseImageLabel";
+import { Image } from "../baseElements/image";
+import { SpringImage } from "../baseElements/springImage";
 
 interface DamageIconProps {
 	anchorPoint?: Vector2;
@@ -20,7 +21,7 @@ interface DamageIconProps {
 export const DamageIcon = hooks((props: DamageIconProps) => {
 	if (typeIs(props.size, "UDim2")) {
 		return (
-			<BaseImageLabel
+			<Image
 				native={{
 					AnchorPoint: props.anchorPoint,
 					Size: props.size,
@@ -29,11 +30,11 @@ export const DamageIcon = hooks((props: DamageIconProps) => {
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-			</BaseImageLabel>
+			</Image>
 		);
 	} else {
 		return (
-			<BaseImageLabel
+			<SpringImage
 				native={{
 					AnchorPoint: props.anchorPoint,
 					Position: props.position,
@@ -42,7 +43,7 @@ export const DamageIcon = hooks((props: DamageIconProps) => {
 				size={{ minSize: props.size.minimizedSize, maxSize: props.size.maximizedSize }}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-			</BaseImageLabel>
+			</SpringImage>
 		);
 	}
 });

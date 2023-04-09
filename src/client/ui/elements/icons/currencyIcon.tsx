@@ -4,7 +4,8 @@ import { getCurrencyIcon } from "client/util/getCurrencyIcon";
 import { Currency } from "shared/configs/currencies";
 
 import { hooks } from "../../hooks";
-import { BaseImageLabel } from "../baseElements/baseImageLabel";
+import { Image } from "../baseElements/image";
+import { SpringImage } from "../baseElements/springImage";
 
 interface CurrencyIconProps {
 	anchorPoint?: Vector2;
@@ -24,7 +25,7 @@ export const CurrencyIcon = hooks((props: CurrencyIconProps) => {
 
 	if (typeIs(props.size, "UDim2")) {
 		return (
-			<BaseImageLabel
+			<Image
 				native={{
 					AnchorPoint: props.anchorPoint,
 					Size: props.size,
@@ -33,11 +34,11 @@ export const CurrencyIcon = hooks((props: CurrencyIconProps) => {
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-			</BaseImageLabel>
+			</Image>
 		);
 	} else {
 		return (
-			<BaseImageLabel
+			<SpringImage
 				native={{
 					AnchorPoint: props.anchorPoint,
 					Position: props.position,
@@ -46,7 +47,7 @@ export const CurrencyIcon = hooks((props: CurrencyIconProps) => {
 				size={{ minSize: props.size.minimizedSize, maxSize: props.size.maximizedSize }}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-			</BaseImageLabel>
+			</SpringImage>
 		);
 	}
 });

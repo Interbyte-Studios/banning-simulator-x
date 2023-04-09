@@ -3,7 +3,7 @@ import Roact from "@rbxts/roact";
 import { getWeaponDecal } from "client/util/getWeaponDecal";
 
 import { hooks } from "../../hooks";
-import { BaseImageLabel } from "../baseElements/baseImageLabel";
+import { Image } from "../baseElements/image";
 
 interface WeaponViewportProps {
 	weaponId: number;
@@ -20,7 +20,7 @@ export const WeaponViewport = hooks((props: WeaponViewportProps) => {
 	const weaponImage = getWeaponDecal(props.weaponId);
 
 	return (
-		<BaseImageLabel
+		<Image
 			native={{
 				Size: UDim2.fromScale(0.75, 0.75),
 				Position: UDim2.fromScale(0.5, 0.5),
@@ -28,6 +28,6 @@ export const WeaponViewport = hooks((props: WeaponViewportProps) => {
 			}}
 		>
 			<uiaspectratioconstraint AspectRatio={1} />
-		</BaseImageLabel>
+		</Image>
 	);
 });

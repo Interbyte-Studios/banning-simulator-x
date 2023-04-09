@@ -2,8 +2,8 @@
 import Roact from "@rbxts/roact";
 import assetIds from "shared/assets";
 
-import { hooks } from "../../hooks";
-import { BaseImageLabel } from "../baseElements/baseImageLabel";
+import { Image } from "../baseElements/image";
+import { SpringImage } from "../baseElements/springImage";
 
 interface ExperienceIconProps {
 	anchorPoint?: Vector2;
@@ -17,10 +17,10 @@ interface ExperienceIconProps {
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const ExperienceIcon = hooks((props: ExperienceIconProps) => {
+export const ExperienceIcon = (props: ExperienceIconProps): Roact.Element => {
 	if (typeIs(props.size, "UDim2")) {
 		return (
-			<BaseImageLabel
+			<Image
 				native={{
 					AnchorPoint: props.anchorPoint,
 					Size: props.size,
@@ -29,11 +29,11 @@ export const ExperienceIcon = hooks((props: ExperienceIconProps) => {
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-			</BaseImageLabel>
+			</Image>
 		);
 	} else {
 		return (
-			<BaseImageLabel
+			<SpringImage
 				native={{
 					AnchorPoint: props.anchorPoint,
 					Position: props.position,
@@ -42,8 +42,8 @@ export const ExperienceIcon = hooks((props: ExperienceIconProps) => {
 				size={{ minSize: props.size.minimizedSize, maxSize: props.size.maximizedSize }}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-			</BaseImageLabel>
+			</SpringImage>
 		);
 	}
-});
+};
 /* eslint-enable jsdoc/require-jsdoc */
