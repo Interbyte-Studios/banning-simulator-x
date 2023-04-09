@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
-import { BaseImageLabel } from "client/ui/elements/baseElements/baseImageLabel";
 import { BaseTextLabel } from "client/ui/elements/baseElements/baseTextLabel";
+import { Image } from "client/ui/elements/baseElements/image";
 import { getCurrencyIcon } from "client/util/getCurrencyIcon";
 import { Currency } from "shared/configs/currencies";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
@@ -40,7 +40,7 @@ export function EggCostDisplay(props: eggCostDisplayProps): Roact.Element {
 					TextColor3: props.isVoid ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0),
 				}}
 			>
-				<BaseImageLabel
+				<Image
 					native={{
 						AnchorPoint: new Vector2(1, 0.5),
 						Position: UDim2.fromScale(-0.05, 0.5),

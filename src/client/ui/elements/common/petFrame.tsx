@@ -5,9 +5,9 @@ import { getPetData } from "shared/util/getPetData";
 
 import { BaseFrame } from "../baseElements/baseFrame";
 import { BaseImageButton } from "../baseElements/baseImageButton";
-import { BaseImageLabel } from "../baseElements/baseImageLabel";
 import { BaseTextLabel } from "../baseElements/baseTextLabel";
 import { BaseUIStroke } from "../baseElements/baseUIStroke";
+import { Image } from "../baseElements/image";
 import { RarityGradient } from "../gradients/rarityGradient";
 import { PetViewport } from "../viewports/petViewport";
 
@@ -123,7 +123,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 	} else {
 		return (
 			<BaseFrame Size={UDim2.fromScale(0.9, 0.9)} LayoutOrder={props.petId}>
-				<BaseImageLabel
+				<Image
 					native={{
 						BackgroundTransparency: 0,
 						BackgroundColor3: Color3.fromRGB(46, 115, 179),
@@ -138,7 +138,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 					<PetViewport petId={props.petId} variant={props.variant} shouldBlackout={props.shouldBlackout} />
 
 					{elementsToDisplay}
-				</BaseImageLabel>
+				</Image>
 			</BaseFrame>
 		);
 	}
