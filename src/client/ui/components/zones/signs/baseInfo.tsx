@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
-import { BaseTextLabel } from "client/ui/elements/baseElements/baseTextLabel";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
@@ -18,14 +18,14 @@ export const BaseZoneInfo = hooks((props: { zoneData: Zone; adornee: BasePart })
 	return (
 		<surfacegui Adornee={props.adornee} LightInfluence={0} SizingMode={Enum.SurfaceGuiSizingMode.FixedSize}>
 			<RankIcon
-				position={UDim2.fromScale(0.5, 0.5)}
-				size={{ minimizedSize: 0.4, maximizedSize: 0.5 }}
+				position={UDim2.fromScale(0.1, 0.25)}
+				size={{ minimizedSize: 0.3, maximizedSize: 0.35 }}
 				rank={props.zoneData.cost.requiredRank}
 			/>
-			<BaseTextLabel
+			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.59, 0.85),
-					Size: UDim2.fromScale(0.3, 0.2),
+					Position: UDim2.fromScale(0.75, 0.575),
+					Size: UDim2.fromScale(0.5, 0.2),
 					Text: twoDpAbbreviator.numberToString(props.zoneData.cost.amount),
 					TextXAlignment: Enum.TextXAlignment.Left,
 				}}
@@ -40,7 +40,7 @@ export const BaseZoneInfo = hooks((props: { zoneData: Zone; adornee: BasePart })
 					size={{ minimizedSize: 0.9, maximizedSize: 1 }}
 					currency={props.zoneData.cost.currency}
 				/>
-			</BaseTextLabel>
+			</StrokeTextLabel>
 		</surfacegui>
 	);
 });

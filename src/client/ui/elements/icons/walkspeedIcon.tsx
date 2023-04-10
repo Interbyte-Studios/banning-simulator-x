@@ -2,8 +2,8 @@
 import Roact from "@rbxts/roact";
 import assetIds from "shared/assets";
 
-import { Image } from "../baseElements/image";
-import { SpringImage } from "../baseElements/springImage";
+import { ImageLabel } from "../baseElements/imagelabels/image";
+import { SpringImageLabel } from "../baseElements/imagelabels/springImage";
 
 interface WalkSpeedIconProps {
 	anchorPoint?: Vector2;
@@ -20,7 +20,7 @@ interface WalkSpeedIconProps {
 export const WalkSpeedIcon = (props: WalkSpeedIconProps): Roact.Element => {
 	if (typeIs(props.size, "UDim2")) {
 		return (
-			<Image
+			<ImageLabel
 				native={{
 					AnchorPoint: props.anchorPoint,
 					Size: props.size,
@@ -29,11 +29,11 @@ export const WalkSpeedIcon = (props: WalkSpeedIconProps): Roact.Element => {
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-			</Image>
+			</ImageLabel>
 		);
 	} else {
 		return (
-			<SpringImage
+			<SpringImageLabel
 				native={{
 					AnchorPoint: props.anchorPoint,
 					Position: props.position,
@@ -42,7 +42,7 @@ export const WalkSpeedIcon = (props: WalkSpeedIconProps): Roact.Element => {
 				size={{ minSize: props.size.minimizedSize, maxSize: props.size.maximizedSize }}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-			</SpringImage>
+			</SpringImageLabel>
 		);
 	}
 };

@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 
-import { vec2Middle } from "../../commonValues";
+import { vec2Middle } from "../../../commonValues";
 
 interface ImageProps {
 	native: Partial<{
@@ -17,7 +17,7 @@ interface ImageProps {
  * @returns An image label roact component with preset properties.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const Image = (props: Roact.PropsWithChildren<ImageProps>): Roact.Element => {
+export const ImageLabel = (props: Roact.PropsWithChildren<ImageProps>): Roact.Element => {
 	return (
 		<imagelabel
 			AnchorPoint={vec2Middle}

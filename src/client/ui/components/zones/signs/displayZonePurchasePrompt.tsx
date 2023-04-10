@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { BaseImageButton } from "client/ui/elements/baseElements/baseImageButton";
-import { BaseTextLabel } from "client/ui/elements/baseElements/baseTextLabel";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
@@ -49,12 +49,12 @@ export const DisplayZonePurchasePrompt = RoactRodux.connect(mapStateToProps)(
 		const ownsWorld = worldData.zones.find((zone) => zone === props.zoneName);
 		if (ownsWorld === undefined) {
 			return (
-				<BaseImageButton
+				<SpringImageButton
 					native={{
 						Position: UDim2.fromScale(0.5, 0.85),
-						Image: assetIds.images.buttons["green toggle button"],
+						Image: assetIds.images.ui.index.Claim,
 					}}
-					size={{ minSize: 0.21, maxSize: 0.25 }}
+					size={{ minSize: 0.35, maxSize: 0.4 }}
 					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MinorEngagement);
@@ -62,36 +62,36 @@ export const DisplayZonePurchasePrompt = RoactRodux.connect(mapStateToProps)(
 						},
 					}}
 				>
-					<BaseTextLabel
+					<StrokeTextLabel
 						native={{
 							Size: UDim2.fromScale(0.8, 0.7),
 							Text: "Purchase",
 							TextXAlignment: Enum.TextXAlignment.Left,
 						}}
-						stroke={{ native: { Thickness: 2 } }}
+						stroke={{ native: { Thickness: 4 } }}
 					/>
-				</BaseImageButton>
+				</SpringImageButton>
 			);
 		} else {
 			return (
-				<BaseImageButton
+				<SpringImageButton
 					native={{
 						Position: UDim2.fromScale(0.5, 0.85),
-						Image: assetIds.images.buttons["green toggle button"],
+						Image: assetIds.images.ui.index.Claim,
 					}}
-					size={{ minSize: 0.21, maxSize: 0.25 }}
+					size={{ minSize: 0.35, maxSize: 0.4 }}
 				>
-					<BaseTextLabel
+					<StrokeTextLabel
 						native={{
 							Size: UDim2.fromScale(0.8, 0.7),
 							Text: "Owned",
 							TextXAlignment: Enum.TextXAlignment.Left,
 						}}
 						stroke={{
-							native: { Thickness: 2 },
+							native: { Thickness: 4 },
 						}}
 					/>
-				</BaseImageButton>
+				</SpringImageButton>
 			);
 		}
 	}),

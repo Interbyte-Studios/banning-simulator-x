@@ -13,7 +13,7 @@ import { CurrentTalismanState } from "shared/rodux/currentTalisman";
 import { TalismansState } from "shared/rodux/talismans";
 
 import { BaseFrame } from "../elements/baseElements/baseFrame";
-import { BaseTextLabel } from "../elements/baseElements/baseTextLabel";
+import { StrokeTextLabel } from "../elements/baseElements/textlabels/strokeTextLabel";
 import { TalismanGradient } from "../elements/gradients/talismanGradient";
 import { TalismanViewport } from "../elements/viewports/talismanViewport";
 
@@ -125,7 +125,7 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					<TalismanViewport talismanId={props.currentTalisman} phase={storedTalisman.phase} />
 				</BaseFrame>
 
-				<BaseTextLabel
+				<StrokeTextLabel
 					native={{
 						Position: UDim2.fromScale(0.5, 0.185),
 						Size: UDim2.fromScale(0.6, 0.3),
@@ -133,7 +133,7 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					}}
 					stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(185, 81, 1) } }}
 				/>
-				<BaseTextLabel
+				<StrokeTextLabel
 					native={{
 						Position: UDim2.fromScale(0.635, 0.55),
 						Size: UDim2.fromScale(0.685, 0.25),
@@ -141,7 +141,7 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					}}
 					stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(0, 100, 163) } }}
 				/>
-				<BaseTextLabel
+				<StrokeTextLabel
 					native={{
 						Position: UDim2.fromScale(0.635, 0.775),
 						Size: UDim2.fromScale(0.685, 0.2),
@@ -156,7 +156,7 @@ export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(0, 100, 163) } }}
 				>
 					<TalismanGradient phase={storedTalisman.phase} />
-				</BaseTextLabel>
+				</StrokeTextLabel>
 			</imagelabel>
 		);
 	}),

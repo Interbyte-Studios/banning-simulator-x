@@ -13,7 +13,7 @@ import { WeaponsState } from "shared/rodux/weapons";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 import { BaseFrame } from "../elements/baseElements/baseFrame";
-import { BaseTextLabel } from "../elements/baseElements/baseTextLabel";
+import { StrokeTextLabel } from "../elements/baseElements/textlabels/strokeTextLabel";
 import { WeaponViewport } from "../elements/viewports/weaponViewport";
 
 interface WeaponLevelUpAnimationProps extends WeaponLevelUpAnimationMappedProps {
@@ -119,7 +119,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					<WeaponViewport weaponId={weaponData.data.id} />
 				</BaseFrame>
 
-				<BaseTextLabel
+				<StrokeTextLabel
 					native={{
 						Position: UDim2.fromScale(0.5, 0.185),
 						Size: UDim2.fromScale(0.6, 0.3),
@@ -127,7 +127,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					}}
 					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(185, 81, 1) } }}
 				/>
-				<BaseTextLabel
+				<StrokeTextLabel
 					native={{
 						Position: UDim2.fromScale(0.635, 0.55),
 						Size: UDim2.fromScale(0.685, 0.25),
@@ -135,7 +135,7 @@ export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
 					}}
 					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(0, 100, 163) } }}
 				/>
-				<BaseTextLabel
+				<StrokeTextLabel
 					native={{
 						Position: UDim2.fromScale(0.635, 0.775),
 						Size: UDim2.fromScale(0.685, 0.2),

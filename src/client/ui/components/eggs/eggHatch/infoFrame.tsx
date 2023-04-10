@@ -1,9 +1,10 @@
 import Roact from "@rbxts/roact";
-import { font, udim2TopMiddle, vec2Middle } from "client/ui/commonValues";
-import { BaseTextLabel } from "client/ui/elements/baseElements/baseTextLabel";
+import { font, vec2Middle } from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
-import { PetViewport } from "client/ui/elements/viewports/petViewport";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { RarityGradient } from "client/ui/elements/gradients/rarityGradient";
+import { PetViewport } from "client/ui/elements/viewports/petViewport";
 import { EggName } from "shared/configs/eggs";
 import { getPetData } from "shared/util/getPetData";
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
@@ -37,72 +38,55 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 
 	const autoDelete: Array<Roact.Element> = [];
 	if (props.autoDeleted) {
-		autoDelete.push(
-			<textlabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.65, 0)}
-				Size={UDim2.fromScale(0.7, 0.3)}
-				Text={"(Auto Deleted)"}
-				TextColor3={Color3.fromRGB(230, 112, 112)}
-				TextScaled={true}
-				TextXAlignment={Enum.TextXAlignment.Left}
-				Font={font}
-			>
-				<BaseUIStroke native={{ Thickness: 2 }} />
-			</textlabel>,
+		const autoDeletedMessage = (
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.65, 0),
+					Size: UDim2.fromScale(0.7, 0.3),
+					Text: "(Auto Deleted)",
+					TextColor3: Color3.fromRGB(230, 112, 112),
+					TextXAlignment: Enum.TextXAlignment.Left,
+				}}
+				stroke={{ native: { Thickness: 2 } }}
+			/>
 		);
+
+		autoDelete.push(autoDeletedMessage);
 	}
 
 	return (
-		<frame
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Position={infoFramePositions[props.id]}
-			Size={UDim2.fromScale(0.175, 0.12)}
-		>
+		<BaseFrame Position={infoFramePositions[props.id]} Size={UDim2.fromScale(0.175, 0.12)}>
 			<uiaspectratioconstraint AspectRatio={2.2} />
 
-			<frame
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.125, 0.3)}
-				Size={UDim2.fromScale(0.25, 0.625)}
-			>
+			<BaseFrame Position={UDim2.fromScale(0.125, 0.3)} Size={UDim2.fromScale(0.25, 0.625)}>
 				<PetViewport petId={props.pet} variant={props.isVoid ? "void" : "regular"} shouldBlackout={false}>
 					<uiaspectratioconstraint AspectRatio={1} />
 				</PetViewport>
-			</frame>
+			</BaseFrame>
 
-			<textlabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.7, 0.45)}
-				Position={UDim2.fromScale(0.65, 0.375)}
-				Font={font}
-				Text={string.upper(petInfo.name)}
-				TextScaled={true}
-				TextXAlignment={Enum.TextXAlignment.Left}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-			>
-				<BaseUIStroke native={{ Thickness: 2 }} />
-			</textlabel>
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.65, 0.375),
+					Size: UDim2.fromScale(0.7, 0.45),
+					Text: string.upper(petInfo.name),
+					TextXAlignment: Enum.TextXAlignment.Left,
+				}}
+				stroke={{ native: { Thickness: 2 } }}
+			/>
 
-			<textlabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.7, 0.35)}
-				Position={UDim2.fromScale(0.65, 0.75)}
-				Font={font}
-				Text={string.upper(petInfo.rarity)}
-				TextScaled={true}
-				TextXAlignment={Enum.TextXAlignment.Left}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.65, 0.75),
+					Size: UDim2.fromScale(0.7, 0.35),
+					Text: string.upper(props.eggName),
+					TextXAlignment: Enum.TextXAlignment.Left,
+				}}
+				stroke={{ native: { Thickness: 2 } }}
 			>
 				<RarityGradient Rarity={petInfo.rarity} />
-				<BaseUIStroke native={{ Thickness: 2 }} />
-			</textlabel>
+			</StrokeTextLabel>
+
 			{autoDelete}
-		</frame>
+		</BaseFrame>
 	);
 }

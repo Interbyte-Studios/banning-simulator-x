@@ -4,7 +4,7 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 import { hooks } from "../../hooks";
-import { BaseImageButton } from "../baseElements/baseImageButton";
+import { SpringImageButton } from "../baseElements/imagebuttons/springImage";
 
 interface ExitButtonProps extends Partial<WritableInstanceProperties<ImageButton>> {
 	minimizedSize: number;
@@ -23,7 +23,7 @@ interface ExitButtonProps extends Partial<WritableInstanceProperties<ImageButton
 /* eslint-disable jsdoc/require-jsdoc */
 export const ExitButton = hooks((props: ExitButtonProps) => {
 	return (
-		<BaseImageButton
+		<SpringImageButton
 			size={{ minSize: props.minimizedSize, maxSize: props.maximizedSize }}
 			native={{
 				Position: props.Position,
@@ -37,7 +37,7 @@ export const ExitButton = hooks((props: ExitButtonProps) => {
 			}}
 		>
 			<uiaspectratioconstraint AspectRatio={1} />
-		</BaseImageButton>
+		</SpringImageButton>
 	);
 });
 /* eslint-enable jsdoc/require-jsdoc */

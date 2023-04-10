@@ -2,7 +2,7 @@
 import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
-import { BaseTextLabel } from "client/ui/elements/baseElements/baseTextLabel";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
@@ -37,7 +37,7 @@ export const ZoneSign = hooks((props: ZoneSignProps) => {
 				Position={UDim2.fromScale(0.5, 0.5)}
 				Size={UDim2.fromScale(0.95, 0.95)}
 			>
-				<BaseTextLabel
+				<StrokeTextLabel
 					native={{
 						Position: UDim2.fromScale(0.5, 0.15),
 						Size: UDim2.fromScale(1, 0.25),
@@ -48,7 +48,7 @@ export const ZoneSign = hooks((props: ZoneSignProps) => {
 						native: { Thickness: 5 },
 					}}
 				/>
-				<BaseTextLabel
+				<StrokeTextLabel
 					native={{
 						Position: UDim2.fromScale(0.5, 0.325),
 						Size: UDim2.fromScale(1, 0.15),
@@ -58,24 +58,25 @@ export const ZoneSign = hooks((props: ZoneSignProps) => {
 						native: { Thickness: 5 },
 					}}
 				/>
-				<BaseTextLabel
+				<StrokeTextLabel
 					native={{
-						Position: UDim2.fromScale(0.66, 0.575),
+						Position: UDim2.fromScale(0.75, 0.575),
 						Size: UDim2.fromScale(0.5, 0.2),
 						Text: twoDpAbbreviator.numberToString(props.zoneData.cost.amount),
 						TextXAlignment: Enum.TextXAlignment.Left,
 					}}
 					stroke={{
-						native: { Thickness: 5 },
+						native: { Thickness: 5, Color: Color3.fromRGB(255, 255, 255) },
+						currencyGradient: props.zoneData.cost.currency,
 					}}
 				>
 					<CurrencyIcon
 						anchorPoint={new Vector2(0, 0.5)}
 						position={UDim2.fromScale(-0.35, 0.5)}
-						size={{ maximizedSize: 1, minimizedSize: 0.9 }}
+						size={{ minimizedSize: 0.9, maximizedSize: 1 }}
 						currency={props.zoneData.cost.currency}
 					/>
-				</BaseTextLabel>
+				</StrokeTextLabel>
 
 				<DisplayZonePurchasePrompt
 					worldName={props.worldName}
@@ -85,8 +86,8 @@ export const ZoneSign = hooks((props: ZoneSignProps) => {
 				/>
 
 				<RankIcon
-					position={UDim2.fromScale(0.1, 0.5)}
-					size={{ maximizedSize: 0.35, minimizedSize: 0.25 }}
+					position={UDim2.fromScale(0.1, 0.25)}
+					size={{ minimizedSize: 0.3, maximizedSize: 0.35 }}
 					rank={props.zoneData.cost.requiredRank}
 				/>
 			</BaseFrame>

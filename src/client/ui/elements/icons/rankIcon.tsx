@@ -3,8 +3,8 @@ import Roact from "@rbxts/roact";
 import { getRankIcon } from "client/util/getRankIcon";
 
 import { hooks } from "../../hooks";
-import { Image } from "../baseElements/image";
-import { SpringImage } from "../baseElements/springImage";
+import { ImageLabel } from "../baseElements/imagelabels/image";
+import { SpringImageLabel } from "../baseElements/imagelabels/springImage";
 
 interface RankIconProps {
 	position: UDim2;
@@ -23,7 +23,7 @@ export const RankIcon = hooks((props: RankIconProps) => {
 
 	if (typeIs(props.size, "UDim2")) {
 		return (
-			<Image
+			<ImageLabel
 				native={{
 					Size: props.size,
 					Position: props.position,
@@ -31,11 +31,11 @@ export const RankIcon = hooks((props: RankIconProps) => {
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-			</Image>
+			</ImageLabel>
 		);
 	} else {
 		return (
-			<SpringImage
+			<SpringImageLabel
 				native={{
 					Position: props.position,
 					Image: rank,
@@ -43,7 +43,7 @@ export const RankIcon = hooks((props: RankIconProps) => {
 				size={{ minSize: props.size.minimizedSize, maxSize: props.size.maximizedSize }}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-			</SpringImage>
+			</SpringImageLabel>
 		);
 	}
 });

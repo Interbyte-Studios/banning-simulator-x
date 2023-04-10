@@ -1,8 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { BaseTextLabel } from "client/ui/elements/baseElements/baseTextLabel";
-import { Image } from "client/ui/elements/baseElements/image";
+import { uiHeaderStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
@@ -48,7 +49,7 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 		}
 
 		return (
-			<Image
+			<ImageLabel
 				native={{
 					Size: UDim2.fromScale(0.4, 0.36),
 					Image: assetIds.images.ui.zones.background,
@@ -56,46 +57,47 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 			>
 				<uiaspectratioconstraint AspectRatio={1.8} />
 
-				<BaseTextLabel
+				<StrokeTextLabel
 					native={{
 						Position: UDim2.fromScale(0.5, 0.115),
 						Size: UDim2.fromScale(0.385, 0.175),
 						Text: "Zone Advance",
 					}}
-					stroke={{ native: { Thickness: 2 } }}
+					stroke={{ native: { Thickness: 2, Color: uiHeaderStrokeColor } }}
 				/>
-				<BaseTextLabel
+				<StrokeTextLabel
 					native={{
 						Position: UDim2.fromScale(0.5, 0.4),
 						Size: UDim2.fromScale(0.9, 0.275),
 						Text: `Would you like to purchase zone ${zoneData.name}?`,
 					}}
-					stroke={{ native: { Thickness: 2 } }}
+					stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
 				/>
-				<BaseTextLabel
+				<StrokeTextLabel
 					native={{
-						Position: UDim2.fromScale(0.5, 0.635),
-						Size: UDim2.fromScale(0.5, 0.15),
+						Position: UDim2.fromScale(0.65, 0.635),
+						Size: UDim2.fromScale(0.3, 0.15),
 						Text: twoDpAbbreviator.numberToString(zoneData.cost.amount),
 						TextXAlignment: Enum.TextXAlignment.Left,
 					}}
-					stroke={{ native: { Thickness: 2 } }}
+					stroke={{ native: { Thickness: 2 }, currencyGradient: zoneData.cost.currency }}
 				>
 					<CurrencyIcon
-						position={UDim2.fromScale(-0.115, 0.5)}
+						anchorPoint={new Vector2(0.5, 0.5)}
+						position={UDim2.fromScale(-0.2, 0.5)}
 						size={{ maximizedSize: 1, minimizedSize: 0.9 }}
 						currency={zoneData.cost.currency}
 					/>
 					<RankIcon
-						position={UDim2.fromScale(-0.325, 0.5)}
+						position={UDim2.fromScale(-0.475, 0.5)}
 						size={{ maximizedSize: 1, minimizedSize: 0.9 }}
 						rank={zoneData.cost.requiredRank}
 					/>
-				</BaseTextLabel>
+				</StrokeTextLabel>
 
 				<PurchaseZoneButton world={props.world} zone={zoneData.name} hideMenu={props.hideMenu} />
 				<CancelZonePurchase hideMenu={props.hideMenu} />
-			</Image>
+			</ImageLabel>
 		);
 	}),
 );

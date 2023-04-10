@@ -3,7 +3,7 @@ import Roact from "@rbxts/roact";
 import { getTalismanDecal } from "client/util/getTalismanDecal";
 import { TalismanPhases } from "shared/configs/talismans";
 
-import { Image } from "../baseElements/image";
+import { ImageLabel } from "../baseElements/imagelabels/image";
 
 interface TalismanViewportProp {
 	talismanId: number;
@@ -23,7 +23,7 @@ export const TalismanViewport = (props: TalismanViewportProp): Roact.Element => 
 	const talismanImage = getTalismanDecal(props.talismanId, props.phase);
 
 	return (
-		<Image
+		<ImageLabel
 			native={{
 				Size: UDim2.fromScale(0.9, 0.9),
 				Position: UDim2.fromScale(0.5, 0.5),
@@ -31,6 +31,6 @@ export const TalismanViewport = (props: TalismanViewportProp): Roact.Element => 
 			}}
 		>
 			<uiaspectratioconstraint AspectRatio={1} />
-		</Image>
+		</ImageLabel>
 	);
 };

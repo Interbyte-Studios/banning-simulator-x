@@ -2,7 +2,7 @@ import Roact from "@rbxts/roact";
 import { ReplicatedStorage } from "@rbxts/services";
 
 import { BaseFrame } from "../elements/baseElements/baseFrame";
-import { BaseTextLabel } from "../elements/baseElements/baseTextLabel";
+import { StrokeTextLabel } from "../elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "../hooks";
 
 type DatastoreEventType = "luck" | "currency" | "experience";
@@ -87,7 +87,7 @@ export const DatastoreEvents = hooks((props: { enabled: boolean }, { useState, u
 
 	if (currencyEvent !== undefined) {
 		const currencyMessage = (
-			<BaseTextLabel
+			<StrokeTextLabel
 				native={{
 					Text: `🤑${currencyEvent.multiplier} Currency Event🤑`,
 					TextColor3: Color3.fromRGB(255, 141, 1),
@@ -102,7 +102,7 @@ export const DatastoreEvents = hooks((props: { enabled: boolean }, { useState, u
 
 	if (experienceEvent !== undefined) {
 		const experienceMessage = (
-			<BaseTextLabel
+			<StrokeTextLabel
 				native={{
 					Text: `⭐${experienceEvent.multiplier} Experience Event⭐`,
 					TextColor3: Color3.fromRGB(195, 255, 0),
@@ -117,7 +117,7 @@ export const DatastoreEvents = hooks((props: { enabled: boolean }, { useState, u
 
 	if (luckEvent !== undefined) {
 		const luckMessage = (
-			<BaseTextLabel
+			<StrokeTextLabel
 				native={{
 					Text: `🍀x2 Luck Event🍀`,
 					TextColor3: Color3.fromRGB(0, 178, 42),

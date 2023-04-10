@@ -4,10 +4,10 @@ import { Variants } from "shared/configs/pets";
 import { getPetData } from "shared/util/getPetData";
 
 import { BaseFrame } from "../baseElements/baseFrame";
-import { BaseImageButton } from "../baseElements/baseImageButton";
-import { BaseTextLabel } from "../baseElements/baseTextLabel";
 import { BaseUIStroke } from "../baseElements/baseUIStroke";
-import { Image } from "../baseElements/image";
+import { ImageButton } from "../baseElements/imagebuttons/image";
+import { ImageLabel } from "../baseElements/imagelabels/image";
+import { StrokeTextLabel } from "../baseElements/textlabels/strokeTextLabel";
 import { RarityGradient } from "../gradients/rarityGradient";
 import { PetViewport } from "../viewports/petViewport";
 
@@ -38,7 +38,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 	const elementsToDisplay: Array<Roact.Element> = [];
 	if (props.petLevel === undefined) {
 		const petChance = (
-			<BaseTextLabel
+			<StrokeTextLabel
 				native={{
 					Position: UDim2.fromScale(0.5, 0.9),
 					Size: UDim2.fromScale(0.9, 0.3),
@@ -51,11 +51,11 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 				}}
 			>
 				<RarityGradient Rarity={petData.rarity} />
-			</BaseTextLabel>
+			</StrokeTextLabel>
 		);
 
 		const petRarity = (
-			<BaseTextLabel
+			<StrokeTextLabel
 				native={{
 					Position: UDim2.fromScale(0.5, 0),
 					Size: UDim2.fromScale(0.9, 0.3),
@@ -67,13 +67,13 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 				}}
 			>
 				<RarityGradient Rarity={petData.rarity} />
-			</BaseTextLabel>
+			</StrokeTextLabel>
 		);
 
 		elementsToDisplay.push(petChance, petRarity);
 	} else {
 		const petLevel = (
-			<BaseTextLabel
+			<StrokeTextLabel
 				native={{
 					Position: UDim2.fromScale(0.5, 0.9),
 					Size: UDim2.fromScale(0.9, 0.3),
@@ -93,7 +93,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 	if (props.onActivated !== undefined) {
 		return (
 			<BaseFrame Size={UDim2.fromScale(0.85, 0.85)} LayoutOrder={props.petId}>
-				<BaseImageButton
+				<ImageButton
 					native={{
 						BackgroundTransparency: 0,
 						BackgroundColor3: props.shouldEquipBackgrund ? Color3.fromRGB(85, 255, 127) : Color3.fromRGB(46, 115, 179),
@@ -117,13 +117,13 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 					<PetViewport petId={props.petId} variant={props.variant} shouldBlackout={props.shouldBlackout} />
 
 					{elementsToDisplay}
-				</BaseImageButton>
+				</ImageButton>
 			</BaseFrame>
 		);
 	} else {
 		return (
 			<BaseFrame Size={UDim2.fromScale(0.9, 0.9)} LayoutOrder={props.petId}>
-				<Image
+				<ImageLabel
 					native={{
 						BackgroundTransparency: 0,
 						BackgroundColor3: Color3.fromRGB(46, 115, 179),
@@ -138,7 +138,7 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 					<PetViewport petId={props.petId} variant={props.variant} shouldBlackout={props.shouldBlackout} />
 
 					{elementsToDisplay}
-				</Image>
+				</ImageLabel>
 			</BaseFrame>
 		);
 	}

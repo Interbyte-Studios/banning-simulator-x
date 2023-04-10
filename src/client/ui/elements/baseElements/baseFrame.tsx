@@ -1,11 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
-import { hooks } from "client/ui/hooks";
 
 interface BaseImageButtonProps extends Partial<WritableInstanceProperties<Frame>> {}
 
-export const BaseFrame = hooks((props: BaseImageButtonProps) => {
+/**
+ * A base frame with preset properties.
+ *
+ * @param props The properties of the frame.
+ * @returns A frame roact component with preset properties.
+ */
+export const BaseFrame = (props: Roact.PropsWithChildren<BaseImageButtonProps>): Roact.Element => {
 	return (
 		<frame
 			AnchorPoint={props.AnchorPoint ?? vec2Middle}
@@ -13,6 +18,8 @@ export const BaseFrame = hooks((props: BaseImageButtonProps) => {
 			Size={props.Size ?? UDim2.fromScale(0.5, 0.5)}
 			BackgroundTransparency={props.BackgroundTransparency ?? 1}
 			{...props}
-		/>
+		>
+			{props[Roact.Children]}
+		</frame>
 	);
-});
+};

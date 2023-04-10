@@ -2,9 +2,10 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { tryPurchaseZone } from "client/modules/tryPurchaseZone";
+import { uiClaimButtonStrokeColor } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
-import { BaseImageButton } from "client/ui/elements/baseElements/baseImageButton";
-import { BaseTextLabel } from "client/ui/elements/baseElements/baseTextLabel";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -52,12 +53,12 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		return (
-			<BaseImageButton
+			<SpringImageButton
 				native={{
 					Position: UDim2.fromScale(0.75, 0.85),
-					Image: assetIds.images.ui.zones.purchase,
+					Image: assetIds.images.ui.index.Claim,
 				}}
-				size={{ minSize: 0.15, maxSize: 0.175 }}
+				size={{ minSize: 0.175, maxSize: 0.2 }}
 				events={{
 					Activated: async (): Promise<void> => {
 						playSFX(UIEngagement.MajorEngagement);
@@ -139,14 +140,15 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 					},
 				}}
 			>
-				<BaseTextLabel
+				<uiaspectratioconstraint AspectRatio={2} />
+				<StrokeTextLabel
 					native={{
-						Size: UDim2.fromScale(0.85, 0.6),
+						Size: UDim2.fromScale(0.8, 0.8),
 						Text: "Purchase",
 					}}
-					stroke={{ native: { Thickness: 2 } }}
+					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
 				/>
-			</BaseImageButton>
+			</SpringImageButton>
 		);
 	}),
 );

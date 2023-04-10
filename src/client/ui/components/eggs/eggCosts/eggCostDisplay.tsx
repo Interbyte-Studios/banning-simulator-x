@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
-import { BaseTextLabel } from "client/ui/elements/baseElements/baseTextLabel";
-import { Image } from "client/ui/elements/baseElements/image";
+import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
+import { TextLabel } from "client/ui/elements/baseElements/textlabels/textlabel";
 import { getCurrencyIcon } from "client/util/getCurrencyIcon";
 import { Currency } from "shared/configs/currencies";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
@@ -32,7 +32,7 @@ export function EggCostDisplay(props: eggCostDisplayProps): Roact.Element {
 			SizingMode={"PixelsPerStud"}
 			PixelsPerStud={50}
 		>
-			<BaseTextLabel
+			<TextLabel
 				native={{
 					Position: UDim2.fromScale(0.65, 0.5),
 					Size: UDim2.fromScale(0.7, 0.7),
@@ -40,7 +40,7 @@ export function EggCostDisplay(props: eggCostDisplayProps): Roact.Element {
 					TextColor3: props.isVoid ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0),
 				}}
 			>
-				<Image
+				<ImageButton
 					native={{
 						AnchorPoint: new Vector2(1, 0.5),
 						Position: UDim2.fromScale(-0.05, 0.5),
@@ -48,7 +48,7 @@ export function EggCostDisplay(props: eggCostDisplayProps): Roact.Element {
 						Image: getCurrencyIcon(props.currency),
 					}}
 				/>
-			</BaseTextLabel>
+			</TextLabel>
 		</surfacegui>
 	);
 }

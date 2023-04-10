@@ -4,7 +4,7 @@ import { getPetImage } from "client/util/getPetImage";
 import { Variants } from "shared/configs/pets";
 
 import { hooks } from "../../hooks";
-import { Image } from "../baseElements/image";
+import { ImageLabel } from "../baseElements/imagelabels/image";
 
 interface PetViewportProps {
 	petId: number;
@@ -24,7 +24,7 @@ export const PetViewport = hooks((props: PetViewportProps) => {
 	const petColor = props.shouldBlackout ? Color3.fromRGB(0, 0, 0) : Color3.fromRGB(255, 255, 255);
 
 	return (
-		<Image
+		<ImageLabel
 			native={{
 				Size: UDim2.fromScale(0.9, 0.9),
 				Position: UDim2.fromScale(0.5, 0.5),
@@ -33,6 +33,6 @@ export const PetViewport = hooks((props: PetViewportProps) => {
 			}}
 		>
 			<uiaspectratioconstraint AspectRatio={1} />
-		</Image>
+		</ImageLabel>
 	);
 });
