@@ -58,7 +58,7 @@ export = (): void => {
 			const [aTrade, bTrade] = [getTrade(a.player), getTrade(b.player)];
 
 			const createdTrade = {
-				status: TradeStatus.TradeSent,
+				status: identity<TradeStatus.TradeSent>(TradeStatus.TradeSent),
 				sender: a.player,
 				receiver: b.player,
 			};
@@ -86,7 +86,7 @@ export = (): void => {
 			// the trade should still exist between a and b
 			const [aTrade, bTrade] = [getTrade(a.player), getTrade(b.player)];
 			const createdTrade = {
-				status: TradeStatus.TradeSent,
+				status: identity<TradeStatus.TradeSent>(TradeStatus.TradeSent),
 				sender: a.player,
 				receiver: b.player,
 			};

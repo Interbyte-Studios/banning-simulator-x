@@ -16,16 +16,47 @@ interface PendingTrade {
 	receiver: Player;
 }
 
+export interface Trading {
+	/**
+	 * The current status of the trade.
+	 */
+	status: TradeStatus.Trading;
+
+	items: [
+		{
+			/**
+			 * The first player involved in the trade.
+			 */
+			player: Player;
+			/**
+			 * All the IDs of pets that are on offer.
+			 */
+			items: Array<string>;
+		},
+		{
+			/**
+			 * The second player involved in the trade.
+			 */
+			player: Player;
+			/**
+			 * All the IDs of pets that are on offer.
+			 */
+			items: Array<string>;
+		},
+	];
+}
+
 /**
  * All the types of trades possible.
  */
-type Trade = PendingTrade;
+type Trade = PendingTrade | Trading;
 
 /**
  * The statuses possible of a `Trade`.
  */
 export enum TradeStatus {
 	TradeSent,
+	Trading,
 }
 
 /**
@@ -43,6 +74,46 @@ export function createTrade(sender: Player, receiver: Player): void {
 
 	for (const player of [sender, receiver]) {
 		currentTrades.set(player, trade);
+	}
+}
+
+/**
+ * Converts a trade request into an active trade.
+ *
+ * @param receiver The receiver of the trade request who is accepting it.
+ * @param creator The creator of the trade.
+ */
+export function acceptTrade(receiver: Player, creator: Player): void {
+	const [receiverTrade, creatorTrade] = [currentTrades.get(receiver), currentTrades.get(creator)];
+
+	// the creator and receiver should have a trade request together
+	// receiver should be the receiver in the trade (to prevent creator attempting to accept on receiver's behalf)
+	if (
+		receiverTrade !== creatorTrade ||
+		receiverTrade === undefined ||
+		receiverTrade.status !== TradeStatus.TradeSent ||
+		receiverTrade.receiver !== receiver
+	) {
+		return;
+	}
+
+	const newTradeStatus: Trading = {
+		status: TradeStatus.Trading,
+		items: [
+			{
+				player: creator,
+				items: [],
+			},
+			{
+				player: receiver,
+				items: [],
+			},
+		],
+	};
+
+	// update status to the trading status
+	for (const player of [receiver, creator]) {
+		currentTrades.set(player, newTradeStatus);
 	}
 }
 

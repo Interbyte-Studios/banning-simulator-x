@@ -2,9 +2,13 @@ import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
 
 import { requestTrade } from "./tradeRequests";
+import { acceptTrade } from "./trades";
 
-const requestTradeRemote = remotes.Server.GetNamespace("trades").Create("requestTrade");
-const sendTradeRequestRemote = remotes.Server.GetNamespace("trades").Create("sendTradeRequest");
+const tradesNamespace = remotes.Server.GetNamespace("trades");
+
+const requestTradeRemote = tradesNamespace.Create("requestTrade");
+const sendTradeRequestRemote = tradesNamespace.Create("sendTradeRequest");
+const acceptTradeRequestRemote = tradesNamespace.Create("acceptTradeRequest");
 
 requestTradeRemote.Connect(
 	withPlayerStore((player, store, targetPlayer) => {
@@ -14,3 +18,7 @@ requestTradeRemote.Connect(
 		sendTradeRequestRemote.SendToPlayer(targetPlayer);
 	}),
 );
+
+acceptTradeRequestRemote.Connect((receiver, creator) => {
+	acceptTrade(receiver, creator);
+});
