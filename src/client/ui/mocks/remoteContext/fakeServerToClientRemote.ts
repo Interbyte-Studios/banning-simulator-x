@@ -10,12 +10,26 @@ import Signal from "@rbxts/signal";
 export function fakeServerToClientRemote<T extends ServerToClientEventDeclaration<Array<unknown>>>(
 	name: string,
 ): {
-	OnClientEvent: Signal<(...args: T extends ServerToClientEventDeclaration<infer U> ? U : never) => void>;
+	Connect: (
+		callback: (...args: T extends ServerToClientEventDeclaration<infer U> ? U : never) => RBXScriptSignal,
+	) => void;
 } {
-	// Create a new Signal instance to simulate OnClientEvent
-	const onClientEvent = new Signal<(...args: T extends ServerToClientEventDeclaration<infer U> ? U : never) => void>();
-
 	return {
-		OnClientEvent: onClientEvent,
+		/**
+		 * Connects to a fake signal.
+		 *
+		 * @param callback The callback to run whenever the signal is triggered.
+		 * @returns The connection to disconnect from the callback calls.
+		 */
+		Connect: (
+			callback: (...args: T extends ServerToClientEventDeclaration<infer U> ? U : never) => void,
+		): RBXScriptConnection => {
+			// Create a new Signal instance to simulate OnClientEvent
+			const signal = new Signal<(...args: T extends ServerToClientEventDeclaration<infer U> ? U : never) => void>();
+
+			// todo: expose signal.Fire
+
+			return signal.Connect(callback);
+		},
 	};
 }

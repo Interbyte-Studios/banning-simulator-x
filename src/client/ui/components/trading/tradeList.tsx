@@ -1,6 +1,6 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
-import { Players, ReplicatedStorage } from "@rbxts/services";
+import { Players } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
@@ -10,6 +10,7 @@ import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFr
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
+import { TRADING_ATTRIBUTE } from "shared/trading/tradingAttributes";
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const TradeButton = hooks(
@@ -53,10 +54,10 @@ export const TradeButton = hooks(
 							return;
 						}
 
-						const activelyTrading =
-							ReplicatedStorage.activeTrades.FindFirstChild(props.player.Name) ??
-							ReplicatedStorage.activeTrades.FindFirstChild(Players.LocalPlayer.Name);
-						if (activelyTrading !== undefined) {
+						const isActivelyTrading =
+							props.player.GetAttribute(TRADING_ATTRIBUTE) !== undefined ||
+							Players.LocalPlayer.GetAttribute(TRADING_ATTRIBUTE) !== undefined;
+						if (isActivelyTrading) {
 							props.displayTradeWarning(props.player);
 							return;
 						}

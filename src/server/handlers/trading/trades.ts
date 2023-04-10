@@ -24,7 +24,7 @@ type Trade = PendingTrade;
 /**
  * The statuses possible of a `Trade`.
  */
-enum TradeStatus {
+export enum TradeStatus {
 	TradeSent,
 }
 
@@ -44,6 +44,24 @@ export function createTrade(sender: Player, receiver: Player): void {
 	for (const player of [sender, receiver]) {
 		currentTrades.set(player, trade);
 	}
+}
+
+/**
+ * Retrieves the trade of a specific player.
+ *
+ * This should ONLY be called during tests.
+ *
+ * @param player The player to retrieve the trade status of.
+ * @returns The player's current trade, if it exists.
+ */
+export function getTrade(player: Player): Readonly<Trade | undefined> {
+	// check we are running tests
+	assert(
+		(_G as { ["__TESTEZ_RUNNING_TEST__"]: unknown | undefined })["__TESTEZ_RUNNING_TEST__"] !== undefined,
+		"Running `getTrade` outside of test allows for uncontrolled mutation",
+	);
+
+	return currentTrades.get(player);
 }
 
 /**

@@ -39,7 +39,12 @@ function onPlayerAdded(player: Player): void {
  */
 export function retrieveStore(player: Player): Store {
 	const store = stores.get(player);
-	assert(store, `Failed to retrieve rodux store for player ${player.Name}`);
+
+	// we don't use `assert` here as luau will early evaluate player.Name
+	// which is not set for mock players
+	if (store === undefined) {
+		throw `Failed to retrieve rodux store for player ${player.Name}`;
+	}
 
 	return store;
 }
