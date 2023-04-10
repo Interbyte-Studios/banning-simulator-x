@@ -3,15 +3,14 @@ import { remotes } from "shared/remotes";
 
 import { requestTrade } from "./tradeRequests";
 
-remotes.Server.GetNamespace("trades")
-	.Create("requestTrade")
-	.Connect(
-		withPlayerStore((player, store, targetPlayer) => {
-			requestTrade(player, store, targetPlayer);
+const requestTradeRemote = remotes.Server.GetNamespace("trades").Create("requestTrade");
+const sendTradeRequestRemote = remotes.Server.GetNamespace("trades").Create("sendTradeRequest");
 
-			const sendTradeRequestRemote = remotes.Server.GetNamespace("trades").Create("sendTradeRequest");
+requestTradeRemote.Connect(
+	withPlayerStore((player, store, targetPlayer) => {
+		requestTrade(player, store, targetPlayer);
 
-			// alert targetPlayer that a trade request was made
-			sendTradeRequestRemote.SendToPlayer(targetPlayer);
-		}),
-	);
+		// alert targetPlayer that a trade request was made
+		sendTradeRequestRemote.SendToPlayer(targetPlayer);
+	}),
+);
