@@ -62,7 +62,7 @@ export = (): void => {
 				cleanup,
 			} = createPlayers();
 
-			expect(acceptTrade(a.player, b.player)).to.never.throw();
+			expect(() => acceptTrade(a.player, b.player)).to.never.throw();
 
 			cleanup();
 		});
