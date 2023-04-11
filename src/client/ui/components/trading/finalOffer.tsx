@@ -1,13 +1,30 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
-import { font, vec2Middle } from "client/ui/commonValues";
+import {
+	uiClaimButtonStrokeColor,
+	uiOffButtonStrokeColor,
+	uiTextStrokeColor,
+	vec2Middle,
+} from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
-import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { Currency } from "shared/configs/currencies";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
-export const CurrencyDisplay = hooks((props: { position: UDim2; currencyType: Currency; amount: number }) => {
+/**
+ * Displays a currency icon and amount.
+ *
+ * @param props The props for the component.
+ * @param props.position The position of the component.
+ * @param props.currencyType The type of currency to display.
+ * @param props.amount The amount of currency to display.
+ * @returns The component.
+ */
+export const CurrencyDisplay = (props: { position: UDim2; currencyType: Currency; amount: number }): Roact.Element => {
 	return (
 		<frame
 			AnchorPoint={vec2Middle}
@@ -37,9 +54,16 @@ export const CurrencyDisplay = hooks((props: { position: UDim2; currencyType: Cu
 			</textlabel>
 		</frame>
 	);
-});
+};
 
-export const OfferDisplay = hooks((props: { position: UDim2 }) => {
+/**
+ * Displays an offer.
+ *
+ * @param props The props for the component.
+ * @param props.position The position of the component.
+ * @returns The component.
+ */
+export const OfferDisplay = (props: { position: UDim2 }): Roact.Element => {
 	return (
 		<frame
 			AnchorPoint={vec2Middle}
@@ -59,93 +83,78 @@ export const OfferDisplay = hooks((props: { position: UDim2 }) => {
 			></scrollingframe>
 		</frame>
 	);
-});
+};
 
-export const FinalOffer = hooks(() => {
+/**
+ * Displays the final offer.
+ *
+ * @returns The component.
+ */
+export const FinalOffer = (): Roact.Element => {
 	return (
-		<frame
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Position={UDim2.fromScale(0.5, 0.5)}
-			Size={UDim2.fromScale(1, 1)}
-		>
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.615, 0.89)}
-				Size={UDim2.fromScale(0.2, 0.2)}
-				Image={assetIds.images.ui.index.Claim}
-				ScaleType={Enum.ScaleType.Fit}
+		<BaseFrame Size={UDim2.fromScale(1, 1)}>
+			<ImageButton
+				native={{
+					Position: UDim2.fromScale(0.615, 0.89),
+					Size: UDim2.fromScale(0.2, 0.2),
+					Image: assetIds.images.ui.index.Claim,
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={2} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.9, 0.9)}
-					TextScaled={true}
-					Font={font}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Text={"Confirm"}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(21, 167, 61) }} />
-				</textlabel>
-			</imagebutton>
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.384, 0.89)}
-				Size={UDim2.fromScale(0.2, 0.2)}
-				Image={assetIds.images.ui.index.Off}
-				ScaleType={Enum.ScaleType.Fit}
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.9, 0.9),
+						Text: "Confirm",
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
+				/>
+			</ImageButton>
+
+			<ImageButton
+				native={{
+					Position: UDim2.fromScale(0.384, 0.89),
+					Size: UDim2.fromScale(0.2, 0.2),
+					Image: assetIds.images.ui.index.Off,
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={2} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.9, 0.9)}
-					TextScaled={true}
-					Font={font}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Text={"Cancel"}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(147, 21, 101) }} />
-				</textlabel>
-			</imagebutton>
-			<textlabel
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.085, 0)}
-				Size={UDim2.fromScale(0.35, 1)}
-				Font={font}
-				TextScaled={true}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-				Text={"Your Offer"}
-			>
-				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(12, 134, 211) }} />
-			</textlabel>
-			<textlabel
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.585, 0)}
-				Size={UDim2.fromScale(0.35, 1)}
-				Font={font}
-				TextScaled={true}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-				Text={"Their Offer"}
-			>
-				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(12, 134, 211) }} />
-			</textlabel>
-			<textlabel
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.785)}
-				Size={UDim2.fromScale(0.96, 0.048)}
-				Font={font}
-				TextScaled={true}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-				Text={"Once you click Confirm, the trade is final! You cannot undo a trade. Careful!"}
-			>
-				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(12, 134, 211) }} />
-			</textlabel>
-		</frame>
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.9, 0.9),
+						Text: "Cancel",
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiOffButtonStrokeColor } }}
+				/>
+			</ImageButton>
+
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.085, 0),
+					Size: UDim2.fromScale(0.35, 1),
+					Text: "Your Offer",
+				}}
+				stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
+			/>
+
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.585, 0),
+					Size: UDim2.fromScale(0.35, 1),
+					Text: "Their Offer",
+				}}
+				stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
+			/>
+
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.5, 0.785),
+					Size: UDim2.fromScale(0.96, 0.048),
+					Text: "Once you click Confirm, the trade is final! You cannot undo a trade. Careful!",
+				}}
+				stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
+			/>
+		</BaseFrame>
 	);
-});
+};
