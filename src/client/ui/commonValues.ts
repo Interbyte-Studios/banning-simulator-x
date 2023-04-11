@@ -17,3 +17,4 @@ export const uiHeaderStrokeColor = Color3.fromRGB(184, 80, 0);
 export const uiTextStrokeColor = Color3.fromRGB(12, 134, 211);
 export const uiOffButtonStrokeColor = Color3.fromRGB(166, 31, 97);
 export const uiClaimButtonStrokeColor = Color3.fromRGB(28, 171, 64);
+export const uiTealButtonStrokeColor = Color3.fromRGB(44, 149, 169);
