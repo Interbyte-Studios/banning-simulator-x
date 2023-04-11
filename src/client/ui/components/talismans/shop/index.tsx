@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { TweenService, Workspace } from "@rbxts/services";
 import { ExitButton } from "client/ui/elements/common/exitButton";
