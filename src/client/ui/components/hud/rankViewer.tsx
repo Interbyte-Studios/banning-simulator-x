@@ -1,8 +1,8 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { RankIcon } from "client/ui/elements/rankIcon";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
 import { getRankProgress } from "client/util/getRankProgress";
 import assetIds from "shared/assets";

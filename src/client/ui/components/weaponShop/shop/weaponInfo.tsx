@@ -1,11 +1,11 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { CurrencyGradient } from "client/ui/elements/currencyGradient";
-import { CurrencyIcon } from "client/ui/elements/currencyIcon";
-import { DamageIcon } from "client/ui/elements/damageIcon";
-import { RankIcon } from "client/ui/elements/rankIcon";
+import { uiTextStrokeColor } from "client/ui/commonValues";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
+import { DamageIcon } from "client/ui/elements/icons/damageIcon";
+import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
@@ -42,89 +42,92 @@ export const WeaponShopWeaponInfo = RoactRodux.connect(mapStateToProps)(
 		const rankRequiredWarning: Array<Roact.Element> = [];
 		if (weaponData.data.cost !== undefined && weaponData.data.cost.requiredRank !== undefined) {
 			if (props.rank < weaponData.data.cost.requiredRank) {
-				rankRequiredWarning.push(
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.45, -0.15)}
-						Size={UDim2.fromScale(0.5, 0.3)}
-						Text={"REQUIRES"}
-						TextColor3={Color3.fromRGB(237, 61, 61)}
-						TextScaled={true}
-						Font={font}
+				const rankRequiredElement = (
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.45, -0.15),
+							Size: UDim2.fromScale(0.5, 0.3),
+							Text: "REQUIRES",
+							TextColor3: Color3.fromRGB(237, 61, 61),
+						}}
+						stroke={{ native: { Thickness: 2 } }}
 					>
-						<BaseUIStroke native={{ Thickness: 2 }} />
 						<RankIcon
 							position={UDim2.fromScale(1.15, 0.5)}
 							size={{ maximizedSize: 1, minimizedSize: 0.9 }}
-							rank={weaponData.data.cost ? weaponData.data.cost.requiredRank ?? 1 : 1}
+							rank={weaponData.data.cost.requiredRank}
 						/>
-					</textlabel>,
+					</StrokeTextLabel>
 				);
+
+				rankRequiredWarning.push(rankRequiredElement);
 			}
 		}
 
 		return (
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.8)}
-				Size={UDim2.fromScale(0.2, 0.16)}
-				Image={assetIds.images.ui["weapon shop"]["weapon info background"]}
-				ScaleType={Enum.ScaleType.Fit}
+			<ImageLabel
+				native={{
+					Position: UDim2.fromScale(0.5, 0.8),
+					Size: UDim2.fromScale(0.2, 0.16),
+					Image: assetIds.images.ui["weapon shop"]["weapon info background"],
+				}}
 			>
-				{rankRequiredWarning}
 				<uiaspectratioconstraint AspectRatio={2.2} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.2)}
-					Size={UDim2.fromScale(0.9, 0.4)}
-					Text={weaponData.name}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-					Font={font}
+
+				{rankRequiredWarning}
+
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.2),
+						Size: UDim2.fromScale(0.9, 0.4),
+						Text: weaponData.name,
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
+				/>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.325, 0.7),
+						Size: UDim2.fromScale(0.3, 0.3),
+						Text: twoDpAbbreviator.numberToString(weaponData.data.damage),
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{
+						native: {
+							Thickness: 1.5,
+							Color: Color3.fromRGB(255, 255, 255),
+						},
+						currencyGradient: "gems",
+					}}
 				>
-					<BaseUIStroke native={{ Thickness: 2 }} />
-				</textlabel>
-				<textlabel
-					BackgroundTransparency={1}
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.325, 0.7)}
-					Size={UDim2.fromScale(0.3, 0.3)}
-					Font={font}
-					Text={twoDpAbbreviator.numberToString(weaponData.data.damage)}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-					TextXAlignment={Enum.TextXAlignment.Left}
-				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }} currencyGradient={"gems"} />
 					<DamageIcon
 						anchorPoint={new Vector2(1, 0.5)}
 						position={UDim2.fromScale(-0.03, 0.5)}
 						size={{ minimizedSize: 0.9, maximizedSize: 1 }}
 					/>
-				</textlabel>
-				<textlabel
-					BackgroundTransparency={1}
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.84, 0.7)}
-					Size={UDim2.fromScale(0.3, 0.3)}
-					Font={font}
-					Text={twoDpAbbreviator.numberToString(weaponData.data.cost ? weaponData.data.cost.amount : 0)}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-					TextXAlignment={Enum.TextXAlignment.Left}
+				</StrokeTextLabel>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.84, 0.7),
+						Size: UDim2.fromScale(0.3, 0.3),
+						Text: twoDpAbbreviator.numberToString(weaponData.data.cost ? weaponData.data.cost.amount : 0),
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{
+						native: {
+							Thickness: 1.5,
+							Color: Color3.fromRGB(255, 255, 255),
+						},
+						currencyGradient: "coins",
+					}}
 				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }} currencyGradient={"coins"} />
 					<CurrencyIcon
 						anchorPoint={new Vector2(1, 0.5)}
 						position={UDim2.fromScale(-0.03, 0.5)}
 						size={{ minimizedSize: 0.9, maximizedSize: 1 }}
 						currency={weaponData.data.cost ? weaponData.data.cost.currency : "gems"}
 					/>
-				</textlabel>
-			</imagelabel>
+				</StrokeTextLabel>
+			</ImageLabel>
 		);
 	}),
 );

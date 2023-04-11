@@ -12,3 +12,10 @@ export const color3White = Color3.fromRGB(255, 255, 255);
 export const strokeColor3 = Color3.fromRGB(20, 46, 47);
 
 export const font = Enum.Font.FredokaOne;
+
+export const uiHeaderStrokeColor = Color3.fromRGB(184, 80, 0);
+export const uiTextStrokeColor = Color3.fromRGB(12, 134, 211);
+export const uiDarkStrokeColor = Color3.fromRGB(0, 75, 122);
+export const uiOffButtonStrokeColor = Color3.fromRGB(166, 31, 97);
+export const uiClaimButtonStrokeColor = Color3.fromRGB(28, 171, 64);
+export const uiTealButtonStrokeColor = Color3.fromRGB(44, 149, 169);

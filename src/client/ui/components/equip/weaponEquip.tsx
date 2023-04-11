@@ -2,7 +2,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { ReplicatedStorage } from "@rbxts/services";
 import { vec2Middle } from "client/ui/commonValues";
-import { WeaponViewport } from "client/ui/elements/weaponViewport";
+import { WeaponViewport } from "client/ui/elements/viewports/weaponViewport";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { WeaponIndex } from "shared/configs/weapons";

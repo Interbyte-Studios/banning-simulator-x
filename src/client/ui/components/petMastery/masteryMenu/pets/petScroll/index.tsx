@@ -1,7 +1,7 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
-import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
+import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";

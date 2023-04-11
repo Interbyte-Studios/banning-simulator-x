@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import { TweenService, Workspace } from "@rbxts/services";
-import { ExitButton } from "client/ui/elements/exitButton";
+import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
 
 import { PurchaseTalisman } from "./purchase";

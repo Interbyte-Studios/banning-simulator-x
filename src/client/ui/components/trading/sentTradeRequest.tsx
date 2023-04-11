@@ -1,92 +1,90 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { hooks } from "client/ui/hooks";
+import { uiClaimButtonStrokeColor, uiDarkStrokeColor } from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import assetIds from "shared/assets";
 
-/* eslint-disable jsdoc/require-jsdoc */
-export const SentTradeRequest = hooks((props: { player: Player; hideMenu: () => void }) => {
+/**
+ * A component that displays a message to the user that they've sent a trade request to another player.
+ *
+ * @param props The properties of the component.
+ * @param props.player The player that the trade request was sent to.
+ * @param props.hideMenu A function that hides the menu.
+ * @returns A roact component.
+ */
+export const SentTradeRequest = (props: { player: Player; hideMenu: () => void }): Roact.Element => {
 	const thumbnailType = Enum.ThumbnailType.HeadShot;
 	const thumbnailSize = Enum.ThumbnailSize.Size420x420;
 	const [content, isReady] = Players.GetUserThumbnailAsync(props.player.UserId, thumbnailType, thumbnailSize);
 
 	return (
-		<frame
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Position={UDim2.fromScale(0.5, 0.5)}
-			Size={UDim2.fromScale(0.975, 0.9)}
-		>
-			<frame
-				AnchorPoint={vec2Middle}
+		<BaseFrame Size={UDim2.fromScale(0.975, 0.9)}>
+			<BaseFrame
+				BackgroundTransparency={0}
 				BackgroundColor3={Color3.fromRGB(44, 170, 249)}
 				Position={UDim2.fromScale(0.5, 0.115)}
 				Size={UDim2.fromScale(0.215, 0.275)}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
 				<uicorner CornerRadius={new UDim(1, 0)} />
-				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 75, 122) }} />
-				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 75, 122) }} />
-				<imagelabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.5, 0.5)}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={isReady && content ? content : ""}
+
+				<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
+
+				<ImageLabel
+					native={{
+						Size: UDim2.fromScale(0.5, 0.5),
+						Image: isReady && content ? content : "",
+					}}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
-				</imagelabel>
-			</frame>
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.9)}
-				Size={UDim2.fromScale(0.3, 0.3)}
-				Image={assetIds.images.ui.index.Claim}
-				ScaleType={Enum.ScaleType.Fit}
+				</ImageLabel>
+			</BaseFrame>
+
+			<ImageButton
+				native={{
+					Position: UDim2.fromScale(0.5, 0.9),
+					Size: UDim2.fromScale(0.3, 0.3),
+					Image: assetIds.images.ui.index.Claim,
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={2} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.8, 0.8)}
-					Text={"Ok!"}
-					Font={font}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(27, 156, 91) }} />
-				</textlabel>
-			</imagebutton>
-			<textlabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.6)}
-				Size={UDim2.fromScale(0.95, 0.132)}
-				Font={font}
-				Text={"(If they accept, you'll be automatically entered into a trade)"}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-				TextScaled={true}
-			>
-				<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 75, 122) }} />
-			</textlabel>
-			<textlabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.4)}
-				Size={UDim2.fromScale(0.95, 0.23)}
-				Font={font}
-				Text={"You've sent a trade request to (Player Name)."}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-				TextScaled={true}
-			>
-				<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 75, 122) }} />
-			</textlabel>
-		</frame>
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.8, 0.8),
+						Text: "Ok!",
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
+				/>
+
+				<StrokeTextLabel
+					native={{ Size: UDim2.fromScale(0.8, 0.8), Text: "Ok!" }}
+					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
+				/>
+			</ImageButton>
+
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.5, 0.6),
+					Size: UDim2.fromScale(0.95, 0.132),
+					Text: "(If they accept, you'll be automatically entered into a trade)",
+				}}
+				stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+			/>
+
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.5, 0.4),
+					Size: UDim2.fromScale(0.95, 0.23),
+					Text: "You've sent a trade request to (Player Name).",
+				}}
+				stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+			/>
+		</BaseFrame>
 	);
-});
-/* eslint-enable jsdoc/require-jsdoc */
+};

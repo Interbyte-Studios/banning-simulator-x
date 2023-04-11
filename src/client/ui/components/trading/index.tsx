@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
@@ -46,17 +47,16 @@ export const Trading = hooks((props: { enabled: boolean; visible: boolean; hideM
 
 	if (!isTrading) {
 		return (
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.28, 0.4)}
-				Image={assetIds.images.ui.trading.playerSelection}
-				ScaleType={Enum.ScaleType.Fit}
+			<ImageLabel
+				native={{
+					Size: UDim2.fromScale(0.28, 0.4),
+					Image: assetIds.images.ui.trading.playerSelection,
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1.2} />
+
 				<TradeListDisplay hideMenu={props.hideMenu} />
-			</imagelabel>
+			</ImageLabel>
 		);
 	} else {
 		return <></>;

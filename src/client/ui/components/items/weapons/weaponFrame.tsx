@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { WeaponViewport } from "client/ui/elements/weaponViewport";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { WeaponViewport } from "client/ui/elements/viewports/weaponViewport";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import { Weapon } from "shared/rodux/weapons";

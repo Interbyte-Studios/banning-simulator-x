@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactHooks from "@rbxts/roact-hooks";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { formatTime } from "client/util/formatTime";
 import assetIds from "shared/assets";
