@@ -771,7 +771,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 	},
 ] as const);
 /* eslint-enable jsdoc/require-jsdoc */
-export type ValidTitle = typeof TITLES[number]["name"];
+export type ValidTitle = (typeof TITLES)[number]["name"];
 
 /**
  * Checks if a given title is a valid title name.
