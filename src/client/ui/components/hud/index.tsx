@@ -10,7 +10,6 @@ import { RanksViewer } from "./rankViewer";
 interface HudProps {
 	visible: boolean;
 	displayTeleportation: () => void;
-	displaySpinWheel: () => void;
 	displayItems: () => void;
 	displayAutoFight: () => void;
 	displayAccount: () => void;
@@ -39,7 +38,7 @@ export const Hud = hooks((props: HudProps) => {
 			<RanksViewer />
 			<CoinsCurrency />
 			<GemsCurrency />
-			<HUDFooter displaySpinWheel={props.displaySpinWheel} displayTradingMenu={props.displayTradingMenu} />
+			<HUDFooter displayTradingMenu={props.displayTradingMenu} />
 		</frame>
 	);
 });
