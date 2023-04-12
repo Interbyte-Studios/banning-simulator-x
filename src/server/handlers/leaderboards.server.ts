@@ -13,6 +13,8 @@ const eggStore = DataStoreService.GetOrderedDataStore(STORE_NAME, "eggs");
 
 type leaderboardCurrencies = "bans" | "eggs";
 
+type collectedData = Map<string, { rank: number; id: string; amount: number }>;
+
 type leaderboardFrameInterface = Frame & {
 	PlayerIcon: Frame & { Pos: Frame & { Label: TextLabel }; Icon: ImageLabel };
 	NameLabel: TextLabel;
@@ -29,6 +31,10 @@ type leaderboardUI = SurfaceGui & {
 };
 
 const leaderboards = Workspace.interactions.leaderboards;
+
+const cachedLeaderboards = new Map<leaderboardCurrencies, Map<string, { id: string; rank: number; amount: number }>>();
+cachedLeaderboards.set("bans", new Map());
+cachedLeaderboards.set("eggs", new Map());
 
 /**
  * Updates The leaderboard that matches the currency name with players currency amount.
@@ -75,7 +81,7 @@ function updateLeaderboardPlayerAmount(
  * @param currencyName String The name of the currency that is being retrieved.
  * @returns Players data for the selected leaderboard.
  */
-function getStores(currencyName: leaderboardCurrencies): Map<string, { rank: number; id: string; amount: number }> {
+function getStores(currencyName: leaderboardCurrencies): collectedData {
 	let selectedStore: OrderedDataStore | undefined;
 
 	if (currencyName === "bans") {
@@ -96,6 +102,24 @@ function getStores(currencyName: leaderboardCurrencies): Map<string, { rank: num
 	});
 
 	return collectedData;
+}
+
+/**
+ *  Updates stored cache for the leaderboard.
+ *
+ * @param currencyName String the name of the currency for which cache is being updated.
+ * @param leaderboardData Table.
+ */
+function updateCachedStore(currencyName: leaderboardCurrencies, leaderboardData: collectedData): void {
+	const cacheMap = cachedLeaderboards.get(currencyName);
+	if (cacheMap === undefined) {
+		warn(`Could not find cache map for ${currencyName}`);
+		return;
+	}
+
+	leaderboardData.forEach((playerData) => {
+		cacheMap.set(playerData.id, { rank: playerData.rank, id: playerData.id, amount: playerData.amount });
+	});
 }
 
 /**
@@ -122,7 +146,8 @@ function updateStore(currencyName: leaderboardCurrencies): void {
 		}
 	});
 
-	getStores("bans");
+	const leaderboardData = getStores("bans");
+	updateCachedStore(currencyName, leaderboardData);
 }
 
 /**
@@ -130,7 +155,11 @@ function updateStore(currencyName: leaderboardCurrencies): void {
  * @param currencyName The name of the currency which gets its leaderboard Updated.
  */
 function updateLeaderboardUI(currencyName: leaderboardCurrencies): void {
-	const storeData = getStores(currencyName);
+	const cachedData = cachedLeaderboards.get(currencyName);
+	if (cachedData === undefined) {
+		return;
+	}
+
 	const lbFrame = ReplicatedStorage.FindFirstChild("ui")?.FindFirstChild("LeaderboardFrame");
 	assert(lbFrame, `Could not find leaderboard frame`);
 
@@ -144,7 +173,7 @@ function updateLeaderboardUI(currencyName: leaderboardCurrencies): void {
 	}
 
 	const clonedframe = lbFrame.Clone() as leaderboardFrameInterface;
-	for (const [playerId, playerData] of pairs(storeData)) {
+	for (const [playerId, playerData] of pairs(cachedData)) {
 		const plrId = tonumber(playerId);
 		if (plrId !== undefined) {
 			const playerName = Players.GetNameFromUserIdAsync(plrId);
