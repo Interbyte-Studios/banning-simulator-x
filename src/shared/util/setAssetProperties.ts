@@ -15,8 +15,8 @@ export type ValidAssetType = "egg" | "pet" | "talisman" | "weapon";
 export function setAssetProperties(assetType: ValidAssetType, assetObject: Model | Tool, variant?: Variants): void {
 	switch (assetType) {
 		case "egg": {
-			if (assetObject.ClassName !== "Model") {
-				throw `Expected egg: "${assetObject.Name}" to be a Model`;
+			if (!assetObject.IsA("Model")) {
+				throw `Expected pet: "${assetObject.Name}" to be a Model`;
 			}
 
 			for (const child of assetObject.GetChildren()) {
@@ -37,7 +37,7 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 			break;
 		}
 		case "pet": {
-			if (assetObject.ClassName !== "Model") {
+			if (!assetObject.IsA("Model")) {
 				throw `Expected pet: "${assetObject.Name}" to be a Model`;
 			}
 
@@ -92,8 +92,8 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 			break;
 		}
 		case "talisman": {
-			if (assetObject.ClassName !== "Model") {
-				throw `Expected talisman: "${assetObject.Name}" to be a Model`;
+			if (!assetObject.IsA("Model")) {
+				throw `Expected pet: "${assetObject.Name}" to be a Model`;
 			}
 
 			const primaryPart = assetObject.FindFirstChild("Primary") as BasePart;
