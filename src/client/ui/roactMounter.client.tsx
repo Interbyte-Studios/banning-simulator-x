@@ -84,6 +84,7 @@ onStoreCreated(player)
 					requestFusion: remotes.Client.Get("requestFusion"),
 
 					requestTrading: remotes.Client.GetNamespace("trades").Get("requestTrade"),
+					receiveTradeRequest: remotes.Client.GetNamespace("trades").Get("sendTradeRequest"),
 				}}
 			>
 				<AnnouncementAPI>
