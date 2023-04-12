@@ -1,4 +1,5 @@
 import Flipper from "@rbxts/flipper";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
@@ -10,8 +11,14 @@ import { Variants } from "shared/configs/pets";
 
 /**
  * A decal of the pet being viewed in the pet mastery component.
+ *
+ * @param props The props for the component.
+ * @param props.pet The pet being viewed.
+ * @param props.currentVariant The current variant of the pet being viewed.
+ * @param props.isDiscovered Whether the pet has been discovered.
+ * @param props.hideInfo The function to call when the button is pressed.
+ * @returns The element to render.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 export const PetView = hooks(
 	(
 		props: { pet: number; currentVariant: Variants | undefined; isDiscovered: boolean; hideInfo: () => void },
@@ -34,12 +41,14 @@ export const PetView = hooks(
 				BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 				Image={""}
 				Event={{
+					/* eslint-disable jsdoc/require-jsdoc */
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
 						props.hideInfo();
 					},
 					MouseEnter: (): void => motor.setGoal(raisedSpring),
 					MouseLeave: (): void => motor.setGoal(normalSpring),
+					/* eslint-enable jsdoc/require-jsdoc */
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
@@ -61,4 +70,3 @@ export const PetView = hooks(
 		);
 	},
 );
-/* eslint-enable jsdoc/require-jsdoc */
