@@ -23,6 +23,7 @@ import { WeaponLevelUpAnimation } from "./components/weaponLevelUp";
 import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
 import { hooks } from "./hooks";
+import { remoteContext } from "./mocks/remoteContext";
 
 interface AppProps {
 	player: Player;
@@ -37,7 +38,7 @@ interface AppProps {
  * @param props.store The store to create the app with.
  * @returns The Roact app to mount.
  */
-export const app = hooks((props: AppProps, { useState }) => {
+export const app = hooks((props: AppProps, { useState, useContext, useEffect }) => {
 	const [teleportationVisible, setTeleportationVisibility] = useState(false);
 	const [weaponShopVisibility, setWeaponShopVisibility] = useState(false);
 	const [talismanTowerVisibility, setTalismanTowerVisibility] = useState(false);
@@ -45,8 +46,16 @@ export const app = hooks((props: AppProps, { useState }) => {
 	const [autoFightVisibility, setAutoFightVisibility] = useState(false);
 	const [accountHubVisibility, setAccountHubVisibility] = useState(false);
 	const [tradingVisibility, setTradingVisibility] = useState(false);
+	const [tradeRequestInbound, setTradeRequestInbound] = useState<Player | undefined>(undefined);
 
 	const [isHatching, setHatchingStatus] = useState(false);
+
+	const { receiveTradeRequest } = useContext(remoteContext);
+	useEffect(() => {
+		const connection = receiveTradeRequest.Connect((playerWhoSent) => setTradeRequestInbound(playerWhoSent));
+
+		return (): void => connection.Disconnect();
+	});
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
@@ -59,7 +68,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!itemsVisibility &&
 						!autoFightVisibility &&
 						!accountHubVisibility &&
-						!tradingVisibility
+						!tradingVisibility &&
+						tradeRequestInbound !== undefined
 					}
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
@@ -72,7 +82,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!itemsVisibility &&
 						!autoFightVisibility &&
 						!accountHubVisibility &&
-						!tradingVisibility
+						!tradingVisibility &&
+						tradeRequestInbound !== undefined
 					}
 					displayTeleportation={(): void => setTeleportationVisibility(true)}
 					displayItems={(): void => setItemsVisibility(true)}
@@ -92,7 +103,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!itemsVisibility &&
 						!autoFightVisibility &&
 						!accountHubVisibility &&
-						!tradingVisibility
+						!tradingVisibility &&
+						tradeRequestInbound !== undefined
 					}
 				/>
 				<WeaponEquip
@@ -104,7 +116,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!itemsVisibility &&
 						!autoFightVisibility &&
 						!accountHubVisibility &&
-						!tradingVisibility
+						!tradingVisibility &&
+						tradeRequestInbound !== undefined
 					}
 				/>
 				<RankUpgrade
@@ -116,7 +129,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!itemsVisibility &&
 						!autoFightVisibility &&
 						!accountHubVisibility &&
-						!tradingVisibility
+						!tradingVisibility &&
+						tradeRequestInbound !== undefined
 					}
 				/>
 				<WeaponShopHandle
@@ -127,7 +141,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!itemsVisibility &&
 						!autoFightVisibility &&
 						!accountHubVisibility &&
-						!tradingVisibility
+						!tradingVisibility &&
+						tradeRequestInbound !== undefined
 					}
 					weaponShopVisible={weaponShopVisibility}
 					setWeaponShopVisibility={(value: boolean): void => setWeaponShopVisibility(value)}
@@ -140,7 +155,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!itemsVisibility &&
 						!autoFightVisibility &&
 						!accountHubVisibility &&
-						!tradingVisibility
+						!tradingVisibility &&
+						tradeRequestInbound !== undefined
 					}
 					talismanTowerVisible={talismanTowerVisibility}
 					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
@@ -154,7 +170,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!itemsVisibility &&
 						!autoFightVisibility &&
 						!accountHubVisibility &&
-						!tradingVisibility
+						!tradingVisibility &&
+						tradeRequestInbound !== undefined
 					}
 				/>
 				<Teleportation
@@ -165,7 +182,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!itemsVisibility &&
 						!autoFightVisibility &&
 						!accountHubVisibility &&
-						!tradingVisibility
+						!tradingVisibility &&
+						tradeRequestInbound !== undefined
 					}
 					visible={teleportationVisible}
 					hideMenu={(): void => setTeleportationVisibility(false)}
@@ -178,7 +196,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!talismanTowerVisibility &&
 						!autoFightVisibility &&
 						!accountHubVisibility &&
-						!tradingVisibility
+						!tradingVisibility &&
+						tradeRequestInbound !== undefined
 					}
 					visible={itemsVisibility}
 					hideMenu={(): void => setItemsVisibility(false)}
@@ -198,7 +217,8 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!itemsVisibility &&
 						!autoFightVisibility &&
 						!accountHubVisibility &&
-						!tradingVisibility
+						!tradingVisibility &&
+						tradeRequestInbound !== undefined
 					}
 				/>
 				<Trading
@@ -208,10 +228,13 @@ export const app = hooks((props: AppProps, { useState }) => {
 						!talismanTowerVisibility &&
 						!itemsVisibility &&
 						!autoFightVisibility &&
-						!accountHubVisibility
+						!accountHubVisibility &&
+						tradeRequestInbound !== undefined
 					}
 					visible={tradingVisibility}
 					hideMenu={(): void => setTradingVisibility(false)}
+					activelyRequestingPlayer={tradeRequestInbound}
+					declineTrade={(): void => setTradeRequestInbound(undefined)}
 				/>
 			</>
 		</RoactRodux.StoreProvider>

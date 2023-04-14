@@ -18,8 +18,6 @@ export const BaseFrame = (props: Roact.PropsWithChildren<BaseImageButtonProps>):
 			Size={props.Size ?? UDim2.fromScale(0.5, 0.5)}
 			BackgroundTransparency={props.BackgroundTransparency ?? 1}
 			{...props}
-		>
-			{props[Roact.Children]}
-		</frame>
+		/>
 	);
 };

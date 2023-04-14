@@ -7,6 +7,9 @@ import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { hooks } from "client/ui/hooks";
+import { remoteContext } from "client/ui/mocks/remoteContext";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 /**
@@ -14,13 +17,15 @@ import assetIds from "shared/assets";
  *
  * @param props - The props for the TradeRequest component.
  * @param props.player - The player that sent the trade request.
- * @param props.hideMenu - A function that hides the menu.
+ * @param props.declineTrade - A function that declines the trade.
  * @returns A Roact element that displays a trade request.
  */
-export const TradeRequest = (props: { player: Player; hideMenu: () => void }): Roact.Element => {
+export const TradeRequest = hooks((props: { player: Player; declineTrade: () => void }, { useContext }) => {
 	const thumbnailType = Enum.ThumbnailType.HeadShot;
 	const thumbnailSize = Enum.ThumbnailSize.Size420x420;
 	const [content, isReady] = Players.GetUserThumbnailAsync(props.player.UserId, thumbnailType, thumbnailSize);
+
+	const declineTradeRemote = useContext(remoteContext).declineTradeRequest;
 
 	return (
 		<BaseFrame Size={UDim2.fromScale(0.975, 0.9)}>
@@ -69,6 +74,14 @@ export const TradeRequest = (props: { player: Player; hideMenu: () => void }): R
 					Size: UDim2.fromScale(0.3, 0.3),
 					Image: assetIds.images.ui.index.Off,
 				}}
+				events={{
+					// eslint-disable-next-line jsdoc/require-jsdoc
+					Activated: (): void => {
+						playSFX(UIEngagement.MinorEngagement);
+						props.declineTrade();
+						declineTradeRemote.SendToServer();
+					},
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={2} />
 
@@ -100,4 +113,4 @@ export const TradeRequest = (props: { player: Player; hideMenu: () => void }): R
 			/>
 		</BaseFrame>
 	);
-};
+});
