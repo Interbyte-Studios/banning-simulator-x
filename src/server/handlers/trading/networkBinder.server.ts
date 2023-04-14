@@ -6,10 +6,10 @@ import { acceptTrade } from "./trades";
 
 const tradesNamespace = remotes.Server.GetNamespace("trades");
 
-const requestTradeRemote = tradesNamespace.Create("requestTrade");
-const sendTradeRequestRemote = tradesNamespace.Create("sendTradeRequest");
-const acceptTradeRequestRemote = tradesNamespace.Create("acceptTradeRequest");
-const declineTradeRequestRemote = tradesNamespace.Create("declineTradeRequest");
+const requestTradeRemote = tradesNamespace.Get("requestTrade");
+const sendTradeRequestRemote = tradesNamespace.Get("sendTradeRequest");
+const acceptTradeRequestRemote = tradesNamespace.Get("acceptTradeRequest");
+const declineTradeRequestRemote = tradesNamespace.Get("declineTradeRequest");
 
 requestTradeRemote.Connect(
 	withPlayerStore((player, store, targetPlayer) => {

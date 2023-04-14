@@ -6,9 +6,9 @@ type NetServerToClient = ServerToClientEventDeclaration<Array<unknown>>;
 const isFakeRemote: unique symbol = {} as never;
 
 interface FakeServerToClientRemote<T extends NetServerToClient> {
-	Connect: (
+	Connect(
 		callback: (...args: T extends ServerToClientEventDeclaration<infer U> ? U : never) => void,
-	) => RBXScriptConnection;
+	): RBXScriptConnection;
 }
 
 /**
@@ -43,9 +43,9 @@ export function fakeServerToClientRemote<
 		 * @param callback The callback to run whenever the signal is triggered.
 		 * @returns The connection to disconnect from the callback calls.
 		 */
-		Connect: (
+		Connect(
 			callback: (...args: T extends ServerToClientEventDeclaration<infer U> ? U : never) => void,
-		): RBXScriptConnection => {
+		): RBXScriptConnection {
 			return signal.Connect(callback);
 		},
 
