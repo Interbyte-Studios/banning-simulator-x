@@ -15,7 +15,7 @@ export type ValidAssetType = "egg" | "pet" | "talisman" | "weapon";
 export function setAssetProperties(assetType: ValidAssetType, assetObject: Model | Tool, variant?: Variants): void {
 	switch (assetType) {
 		case "egg": {
-			if (!assetObject.IsA("Model")) {
+			if (assetObject.ClassName !== "Model") {
 				throw `Expected pet: "${assetObject.Name}" to be a Model`;
 			}
 
@@ -37,7 +37,7 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 			break;
 		}
 		case "pet": {
-			if (!assetObject.IsA("Model")) {
+			if (assetObject.ClassName !== "Model") {
 				throw `Expected pet: "${assetObject.Name}" to be a Model`;
 			}
 
@@ -92,7 +92,7 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 			break;
 		}
 		case "talisman": {
-			if (!assetObject.IsA("Model")) {
+			if (assetObject.ClassName !== "Model") {
 				throw `Expected pet: "${assetObject.Name}" to be a Model`;
 			}
 

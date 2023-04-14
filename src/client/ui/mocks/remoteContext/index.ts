@@ -41,6 +41,8 @@ import { SpinWheelInfoDefinition } from "shared/remotes/spinWheelnfo";
 import { EquipTalismanDefinition } from "shared/remotes/talismans/equipTalisman";
 import { PurchaseTalismanDefinition } from "shared/remotes/talismans/purchaseTalisman";
 import { UnequipTalismanDefinition } from "shared/remotes/talismans/unequipTalisman";
+import { AcceptTradeRequestDefinition } from "shared/remotes/trading/acceptTradeRequest";
+import { DeclineTradeRequestDefinition } from "shared/remotes/trading/declineTradeRequest";
 import { RequestTradeDefinition } from "shared/remotes/trading/requestTrade";
 import { SendTradeRequestDefinition } from "shared/remotes/trading/sendTradeRequest";
 import { UnlockRankDefinition } from "shared/remotes/unlockRank";
@@ -149,6 +151,8 @@ export const fakeRemoteContext = {
 
 	requestTrading: fakeRemoteCall<RequestTradeDefinition>("requestTrading"),
 	receiveTradeRequest: fakeServerToClientRemote<SendTradeRequestDefinition>(),
+	acceptTradeRequest: fakeRemoteCall<AcceptTradeRequestDefinition>("acceptTradeRequest"),
+	declineTradeRequest: fakeRemoteCall<DeclineTradeRequestDefinition>("declineTradeRequest"),
 };
 
 export const remoteContext = createContext(fakeRemoteContext);

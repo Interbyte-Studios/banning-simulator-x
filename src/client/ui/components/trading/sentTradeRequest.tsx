@@ -7,6 +7,7 @@ import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 /**
@@ -51,16 +52,15 @@ export const SentTradeRequest = (props: { player: Player; hideMenu: () => void }
 					Size: UDim2.fromScale(0.3, 0.3),
 					Image: assetIds.images.ui.index.Claim,
 				}}
+				events={{
+					// eslint-disable-next-line jsdoc/require-jsdoc
+					Activated: (): void => {
+						playSFX(UIEngagement.MinorEngagement);
+						props.hideMenu();
+					},
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={2} />
-
-				<StrokeTextLabel
-					native={{
-						Size: UDim2.fromScale(0.8, 0.8),
-						Text: "Ok!",
-					}}
-					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
-				/>
 
 				<StrokeTextLabel
 					native={{ Size: UDim2.fromScale(0.8, 0.8), Text: "Ok!" }}
@@ -81,7 +81,7 @@ export const SentTradeRequest = (props: { player: Player; hideMenu: () => void }
 				native={{
 					Position: UDim2.fromScale(0.5, 0.4),
 					Size: UDim2.fromScale(0.95, 0.23),
-					Text: "You've sent a trade request to (Player Name).",
+					Text: `You've sent a trade request to ${props.player.Name}.`,
 				}}
 				stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
 			/>
