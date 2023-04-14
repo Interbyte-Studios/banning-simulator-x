@@ -77,7 +77,7 @@ export const TalismanTowerInteractPrompt = hooks((props: { visible: boolean; dis
 					Size: UDim2.fromScale(1.5, 0.4),
 					Text: "Talisman Tower",
 				}}
-				stroke={{ native: { Thickness: 2 } }}
+				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(25, 147, 170) } }}
 			/>
 			<SpringImageButton
 				native={{
@@ -98,7 +98,7 @@ export const TalismanTowerInteractPrompt = hooks((props: { visible: boolean; dis
 						Size: UDim2.fromScale(0.9, 0.9),
 						Text: "X",
 					}}
-					stroke={{ native: { Thickness: 2 } }}
+					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(25, 147, 170) } }}
 				/>
 			</SpringImageButton>
 		</billboardgui>

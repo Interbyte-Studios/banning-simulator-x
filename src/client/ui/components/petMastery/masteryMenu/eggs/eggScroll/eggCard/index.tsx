@@ -1,9 +1,14 @@
 import Flipper from "@rbxts/flipper";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, vec2Middle } from "client/ui/commonValues";
+import { vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { getEggImage } from "client/util/getEggImage";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -51,15 +56,15 @@ export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
 		const { motor, binding } = useBindingMotor(hooks, normalPosition);
 
 		return (
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={0}
-				Size={UDim2.fromScale(0.9, 0.125)}
-				BackgroundColor3={Color3.fromRGB(0, 131, 213)}
-				LayoutOrder={props.layoutOrder}
-				Image={""}
-				Event={{
-					Activated: (): void => {
+			<ImageButton
+				native={{
+					Size: UDim2.fromOffset(0.9, 0.125),
+					BackgroundColor3: Color3.fromRGB(0, 131, 213),
+					LayoutOrder: props.layoutOrder,
+					Image: "",
+				}}
+				events={{
+					/* eslint-disable jsdoc/require-jsdoc */ Activated: (): void => {
 						playSFX(UIEngagement.MajorEngagement);
 
 						if (props.currentEgg !== undefined && props.currentEgg === props.egg) {
@@ -71,25 +76,22 @@ export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
 					},
 					MouseEnter: (): void => motor.setGoal(raisedSpring),
 					MouseLeave: (): void => motor.setGoal(normalSpring),
+					/* eslint-enable jsdoc/require-jsdoc */
 				}}
 			>
 				<uicorner CornerRadius={new UDim(1, 0)} />
 				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
-				<textlabel
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.55, 0.5)}
-					Size={UDim2.fromScale(0.8, 0.9)}
-					BackgroundTransparency={1}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Text={isDiscovered ? props.egg : "???"}
-					Font={font}
-				>
-					<BaseUIStroke native={{ Thickness: 3 }} />
-				</textlabel>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.55, 0.5),
+						Size: UDim2.fromScale(0.8, 0.9),
+						Text: isDiscovered ? props.egg : "???",
+					}}
+					stroke={{ native: { Thickness: 3 } }}
+				/>
 
-				<frame
+				<BaseFrame
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={0}
 					Position={UDim2.fromScale(0, 0.5)}
@@ -100,20 +102,16 @@ export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
 					<uicorner CornerRadius={new UDim(1, 0)} />
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
-					<imagelabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Size={UDim2.fromScale(0.9, 0.9)}
-						Position={binding.map((value) => {
-							return UDim2.fromScale(0.5, value);
-						})}
-						Image={getEggImage(props.egg)}
-						ImageColor3={isDiscovered ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0)}
-						ScaleType={Enum.ScaleType.Fit}
+					<ImageLabel
+						native={{
+							Size: UDim2.fromScale(0.9, 0.9),
+							Position: binding.map((value) => UDim2.fromScale(0.5, value)),
+							Image: getEggImage(props.egg),
+							ImageColor3: isDiscovered ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0),
+						}}
 					/>
-				</frame>
-			</imagebutton>
+				</BaseFrame>
+			</ImageButton>
 		);
 	}),
 );
-/* eslint-enable jsdoc/require-jsdoc */

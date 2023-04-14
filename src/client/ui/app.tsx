@@ -57,6 +57,8 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 		return (): void => connection.Disconnect();
 	});
 
+	const noActiveTradeRequests = tradeRequestInbound === undefined;
+
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
@@ -69,7 +71,7 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						tradeRequestInbound !== undefined
+						noActiveTradeRequests
 					}
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
@@ -83,7 +85,7 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						tradeRequestInbound !== undefined
+						noActiveTradeRequests
 					}
 					displayTeleportation={(): void => setTeleportationVisibility(true)}
 					displayItems={(): void => setItemsVisibility(true)}
@@ -104,7 +106,7 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						tradeRequestInbound !== undefined
+						noActiveTradeRequests
 					}
 				/>
 				<WeaponEquip
@@ -117,7 +119,7 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						tradeRequestInbound !== undefined
+						noActiveTradeRequests
 					}
 				/>
 				<RankUpgrade
@@ -130,7 +132,7 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						tradeRequestInbound !== undefined
+						noActiveTradeRequests
 					}
 				/>
 				<WeaponShopHandle
@@ -142,7 +144,7 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						tradeRequestInbound !== undefined
+						noActiveTradeRequests
 					}
 					weaponShopVisible={weaponShopVisibility}
 					setWeaponShopVisibility={(value: boolean): void => setWeaponShopVisibility(value)}
@@ -156,7 +158,7 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						tradeRequestInbound !== undefined
+						noActiveTradeRequests
 					}
 					talismanTowerVisible={talismanTowerVisibility}
 					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
@@ -171,7 +173,7 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						tradeRequestInbound !== undefined
+						noActiveTradeRequests
 					}
 				/>
 				<Teleportation
@@ -183,7 +185,7 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						tradeRequestInbound !== undefined
+						noActiveTradeRequests
 					}
 					visible={teleportationVisible}
 					hideMenu={(): void => setTeleportationVisibility(false)}
@@ -197,14 +199,15 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						tradeRequestInbound !== undefined
+						noActiveTradeRequests
 					}
 					visible={itemsVisibility}
 					hideMenu={(): void => setItemsVisibility(false)}
 				/>
 				<DatastoreEvents
 					enabled={
-						!isHatching && !weaponShopVisibility && !talismanTowerVisibility && !itemsVisibility && !tradingVisibility
+						!isHatching && !weaponShopVisibility && !talismanTowerVisibility && !itemsVisibility && !tradingVisibility && !autoFightVisibility && !accountHubVisibility &&
+						noActiveTradeRequests && !teleportationVisible
 					}
 				/>
 				<AutoFight enabled={autoFightVisibility} hideMenu={(): void => setAutoFightVisibility(false)} />
@@ -218,7 +221,7 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						tradeRequestInbound !== undefined
+						noActiveTradeRequests
 					}
 				/>
 				<Trading
@@ -229,7 +232,7 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!itemsVisibility &&
 						!autoFightVisibility &&
 						!accountHubVisibility &&
-						tradeRequestInbound !== undefined
+						noActiveTradeRequests
 					}
 					visible={tradingVisibility}
 					hideMenu={(): void => setTradingVisibility(false)}

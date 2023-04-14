@@ -2,7 +2,12 @@ import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
 
 interface ImageButtonProps {
-	native: Partial<WritableInstanceProperties<ImageButton>>;
+	native: Partial<{
+		// allow both the normal type and the binding variant
+		[K in keyof WritableInstanceProperties<ImageButton>]:
+			| WritableInstanceProperties<ImageButton>[K]
+			| Roact.Binding<WritableInstanceProperties<ImageButton>[K]>;
+	}>;
 	events?: Roact.JsxInstanceEvents<ImageButton>;
 }
 

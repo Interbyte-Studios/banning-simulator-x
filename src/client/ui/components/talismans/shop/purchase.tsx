@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { uiClaimButtonStrokeColor } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
@@ -57,10 +58,10 @@ export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 		return (
 			<SpringImageButton
 				native={{
-					Position: UDim2.fromScale(0.5, 0.925),
+					Position: UDim2.fromScale(0.475, 0.925),
 					Image: assetIds.images.ui["weapon shop"]["purchase button"],
 				}}
-				size={{ minSize: 0.07, maxSize: 0.08 }}
+				size={{ minSize: 0.145, maxSize: 0.155 }}
 				events={{
 					/* eslint-disable jsdoc/require-jsdoc */
 					Activated: (): void => {
@@ -106,7 +107,7 @@ export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 						Size: UDim2.fromScale(0.9, 0.9),
 						Text: "Purchase",
 					}}
-					stroke={{ native: { Thickness: 2 } }}
+					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
 				/>
 			</SpringImageButton>
 		);

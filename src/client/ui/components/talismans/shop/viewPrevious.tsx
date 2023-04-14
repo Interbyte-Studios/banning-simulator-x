@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
+import { uiOffButtonStrokeColor } from "client/ui/commonValues";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -35,7 +36,7 @@ export const ViewPreviousTalisman = (props: { onActivated: () => void }): Roact.
 					Size: UDim2.fromScale(0.9, 0.9),
 					Text: "<",
 				}}
-				stroke={{ native: { Thickness: 2 } }}
+				stroke={{ native: { Thickness: 2, Color: uiOffButtonStrokeColor } }}
 			/>
 		</SpringImageButton>
 	);

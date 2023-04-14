@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { uiOffButtonStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
+import { uiDarkStrokeColor, uiOffButtonStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
@@ -83,7 +83,7 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 							Size: UDim2.fromScale(0.9, 0.4),
 							Text: talismanInfo.name,
 						}}
-						stroke={{ native: { Thickness: 2 } }}
+						stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
 					/>
 					<StrokeTextLabel
 						native={{
@@ -92,7 +92,7 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 							Text: twoDpAbbreviator.numberToString(talismanInfo.cost.amount),
 							TextXAlignment: Enum.TextXAlignment.Left,
 						}}
-						stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) } }}
+						stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }, currencyGradient: talismanInfo.cost.currency }}
 					>
 						<CurrencyIcon
 							anchorPoint={new Vector2(1, 0.5)}
@@ -118,7 +118,7 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 							Size: UDim2.fromScale(0.9, 0.25),
 							Text: talismanInfo.name,
 						}}
-						stroke={{ native: { Thickness: 2 } }}
+						stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
 					/>
 					<StrokeTextLabel
 						native={{
@@ -128,7 +128,7 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 							Text: twoDpAbbreviator.numberToString(talismanInfo.stats.damage),
 							TextXAlignment: Enum.TextXAlignment.Left,
 						}}
-						stroke={{ native: { Thickness: 1.5, Color: uiOffButtonStrokeColor } }}
+						stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(126, 24, 75) } }}
 					>
 						<DamageIcon
 							anchorPoint={new Vector2(0, 0.5)}
@@ -144,7 +144,7 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 							Text: `+${twoDpAbbreviator.numberToString(talismanInfo.stats.walkspeed)}`,
 							TextXAlignment: Enum.TextXAlignment.Left,
 						}}
-						stroke={{ native: { Thickness: 1.5, Color: uiTextStrokeColor } }}
+						stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
 					>
 						<WalkSpeedIcon
 							anchorPoint={new Vector2(0, 0.5)}

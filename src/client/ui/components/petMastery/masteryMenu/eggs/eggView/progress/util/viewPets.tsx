@@ -1,8 +1,7 @@
-import Flipper from "@rbxts/flipper";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
@@ -12,50 +11,37 @@ import { Variants } from "shared/configs/pets";
 /**
  * A button that allows the player to view the pets of a specified variant of a specified egg.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 export const ViewPets = hooks(
-	(props: { egg: EggName; variant: Variants; position: UDim2; displayPets: (variant: Variants) => void }, hooks) => {
-		const minimizedSize = 0.09;
-		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-		const maximizedSize = 0.1;
-		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-		const { motor, binding } = useBindingMotor(hooks, maximizedSize);
-
+	(props: {
+		egg: EggName;
+		variant: Variants;
+		position: UDim2;
+		displayPets: (variant: Variants) => void;
+	}): Roact.Element => {
 		return (
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={binding.map((value) => {
-					return UDim2.fromScale(0.3, value);
-				})}
-				Position={props.position}
-				Image={assetIds.images.ui.index.view}
-				ScaleType={Enum.ScaleType.Fit}
-				Event={{
+			<SpringImageButton
+				native={{
+					Position: props.position,
+					Image: assetIds.images.ui.index.view,
+				}}
+				size={{ minSize: 0.09, maxSize: 0.1 }}
+				events={{
+					/* eslint-disable jsdoc/require-jsdoc */
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
 						props.displayPets(props.variant);
 					},
-					MouseEnter: (): void => motor.setGoal(minimizedSpring),
-					MouseLeave: (): void => motor.setGoal(maximizedSpring),
+					/* eslint-enable jsdoc/require-jsdoc */
 				}}
 			>
-				<textlabel
-					BackgroundTransparency={1}
-					AnchorPoint={vec2Middle}
-					Size={UDim2.fromScale(1, 1)}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Font={font}
-					Text={"Pets"}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-				>
-					<BaseUIStroke native={{ Thickness: 2 }} />
-				</textlabel>
-			</imagebutton>
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(1, 1),
+						Text: "Pets",
+					}}
+					stroke={{ native: { Thickness: 2 } }}
+				/>
+			</SpringImageButton>
 		);
 	},
 );
-/* eslint-enable jsdoc/require-jsdoc */

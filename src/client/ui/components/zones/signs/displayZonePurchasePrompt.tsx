@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { uiClaimButtonStrokeColor } from "client/ui/commonValues";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
@@ -68,7 +69,7 @@ export const DisplayZonePurchasePrompt = RoactRodux.connect(mapStateToProps)(
 							Text: "Purchase",
 							TextXAlignment: Enum.TextXAlignment.Left,
 						}}
-						stroke={{ native: { Thickness: 4 } }}
+						stroke={{ native: { Thickness: 4, Color: uiClaimButtonStrokeColor } }}
 					/>
 				</SpringImageButton>
 			);
