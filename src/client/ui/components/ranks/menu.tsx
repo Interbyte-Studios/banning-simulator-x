@@ -1,7 +1,14 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService, Workspace } from "@rbxts/services";
-import { font, uiHeaderStrokeColor, uiTextStrokeColor, vec2Middle } from "client/ui/commonValues";
+import {
+	font,
+	uiClaimButtonStrokeColor,
+	uiDarkStrokeColor,
+	uiHeaderStrokeColor,
+	uiTextStrokeColor,
+	vec2Middle,
+} from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
@@ -10,6 +17,7 @@ import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { ExitButton } from "client/ui/elements/common/exitButton";
 import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
+import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
@@ -154,7 +162,6 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 					<uiaspectratioconstraint AspectRatio={4.7} />
 
 					<BaseFrame
-						AnchorPoint={vec2Middle}
 						BackgroundTransparency={0}
 						BackgroundColor3={Color3.fromRGB(1, 109, 177)}
 						Position={UDim2.fromScale(0.5, 0.5)}
@@ -163,7 +170,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 						<uiaspectratioconstraint AspectRatio={5} />
 						<uicorner CornerRadius={new UDim(0.07, 0)} />
 
-						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+						<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
 
 						<RankIcon
 							position={UDim2.fromScale(0.1, 0.5)}
@@ -178,7 +185,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 								Text: rankData.name,
 								TextXAlignment: Enum.TextXAlignment.Left,
 							}}
-							stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
+							stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
 						/>
 
 						<StrokeTextLabel
@@ -190,7 +197,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 								)}%)`,
 								TextXAlignment: Enum.TextXAlignment.Left,
 							}}
-							stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
+							stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
 						/>
 
 						<BaseFrame
@@ -203,6 +210,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 							<BaseUIStroke native={{ Thickness: 2, Color: uiTextStrokeColor }} />
 
 							<BaseFrame
+								AnchorPoint={new Vector2(0, 0)}
 								BackgroundTransparency={0}
 								BackgroundColor3={Color3.fromRGB(85, 255, 127)}
 								Position={UDim2.fromScale(0, 0)}
@@ -216,7 +224,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 									Size: UDim2.fromScale(0.95, 0.95),
 									Text: `${math.floor(progressToRank * 100)}%`,
 								}}
-								stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
+								stroke={{ native: { Thickness: 2 } }}
 							/>
 						</BaseFrame>
 
@@ -285,7 +293,14 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 								native: { Thickness: 2, Color: Color3.fromRGB(255, 255, 255) },
 								currencyGradient: rankData.cost.currency,
 							}}
-						/>
+						>
+							<CurrencyIcon
+								anchorPoint={new Vector2(1, 0.5)}
+								position={UDim2.fromScale(-0.03, 0.5)}
+								size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+								currency={rankData.cost.currency}
+							/>
+						</StrokeTextLabel>
 					</BaseFrame>
 				</BaseFrame>
 			);
