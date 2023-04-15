@@ -1,10 +1,10 @@
-import Flipper from "@rbxts/flipper";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, vec2Middle } from "client/ui/commonValues";
+import { uiClaimButtonStrokeColor } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -42,7 +42,6 @@ function mapStateToProps(state: StoreState): PurchaseTalismanMappedProps {
 /**
  * A button which allows the user to purchase the talisman they're viewing.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 	hooks((props: PurchaseTalismanProps, hooks) => {
 		const storedTalisman = props.talismans.find((talisman) => talisman.id === props.currentTalisman);
@@ -54,27 +53,17 @@ export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 		const { purchaseTalisman } = useContext(remoteContext);
 		const { addAnnouncement } = useContext(AnnouncementContext);
 
-		const maximizedSize = 0.08;
-		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-		const minimizedSize = 0.07;
-		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-		const { motor, binding } = useBindingMotor(hooks, maximizedSize);
-
 		const talismanInfo = getTalismanData(props.currentTalisman);
 
 		return (
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.925)}
-				Size={binding.map((value) => {
-					return UDim2.fromScale(0.15, value);
-				})}
-				Image={assetIds.images.ui["weapon shop"]["purchase button"]}
-				ScaleType={Enum.ScaleType.Fit}
-				Event={{
+			<SpringImageButton
+				native={{
+					Position: UDim2.fromScale(0.475, 0.925),
+					Image: assetIds.images.ui["weapon shop"]["purchase button"],
+				}}
+				size={{ minSize: 0.145, maxSize: 0.155 }}
+				events={{
+					/* eslint-disable jsdoc/require-jsdoc */
 					Activated: (): void => {
 						playSFX(UIEngagement.MajorEngagement);
 
@@ -110,24 +99,17 @@ export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 
 						purchaseTalisman.SendToServer(props.currentTalisman);
 					},
-					MouseEnter: (): void => motor.setGoal(minimizedSpring),
-					MouseLeave: (): void => motor.setGoal(maximizedSpring),
+					/* eslint-enable jsdoc/require-jsdoc */
 				}}
 			>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.9, 0.9)}
-					Text={"Purchase"}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-					Font={font}
-				>
-					<BaseUIStroke native={{ Thickness: 2 }} />
-				</textlabel>
-			</imagebutton>
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.9, 0.9),
+						Text: "Purchase",
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
+				/>
+			</SpringImageButton>
 		);
 	}),
 );
-/* eslint-enable jsdoc/require-jsdoc */

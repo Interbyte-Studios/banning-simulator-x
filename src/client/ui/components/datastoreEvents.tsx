@@ -1,4 +1,4 @@
-import Roact from "@rbxts/roact";
+import Roact, { update } from "@rbxts/roact";
 import { ReplicatedStorage } from "@rbxts/services";
 
 import { BaseFrame } from "../elements/baseElements/baseFrame";
@@ -11,6 +11,39 @@ interface DatastoreEventCache {
 	multiplier: number;
 }
 
+const checkForEvent = (eventName: DatastoreEventType, isEnabled: boolean, cachedState: ReadonlyArray<DatastoreEventCache>, updateState: (events: Array<DatastoreEventCache>) => void): void => {
+	if (!isEnabled) {
+		const cachedEventIndex = cachedState.findIndex((eventData) => eventData.eventName === "currency");
+		if (cachedEventIndex === undefined) {
+			return;
+		}
+
+		const newCachedState = [...cachedState];
+		newCachedState.unorderedRemove(cachedEventIndex);
+		updateState(newCachedState);
+		return;
+	}
+
+	const cachedEvent = cachedState.find((eventData) => eventData.eventName === "currency");
+	if (cachedEvent !== undefined) {
+		return;
+	}
+
+	if (eventName === 'luck') {
+		updateState([{ eventName: "luck", multiplier: 2 }]);
+		return;
+	}
+
+	const multiplierIntValue = ReplicatedStorage.events[eventName].FindFirstChildOfClass("IntValue");
+	if (multiplierIntValue === undefined) {
+		warn(`Failed to display event for ${eventName} because multiplier IntValue was undefined.`);
+		return;
+	}
+
+	warn(`Displaying event for ${eventName} with multiplier ${multiplierIntValue.Value}.`)
+	updateState([{ eventName, multiplier: multiplierIntValue.Value }]);
+}
+
 // Displays active events.
 export const DatastoreEvents = hooks((props: { enabled: boolean }, { useState, useEffect }) => {
 	const [eventsEnabled, setEventsEnabled] = useState<Array<DatastoreEventCache>>([]);
@@ -20,76 +53,64 @@ export const DatastoreEvents = hooks((props: { enabled: boolean }, { useState, u
 	}
 
 	useEffect(() => {
+		const eventsToEnable: Array<DatastoreEventCache> = [];
+		if (ReplicatedStorage.events.luck.enabled.Value) {
+			eventsToEnable.push({ eventName: "luck", multiplier: 2 });
+		}
+
+		if (ReplicatedStorage.events.currency.enabled.Value) {
+			eventsToEnable.push({ eventName: "currency", multiplier: ReplicatedStorage.events.currency.multiplier.Value });
+		}
+
+		if (ReplicatedStorage.events.experience.enabled.Value) {
+			eventsToEnable.push({ eventName: "experience", multiplier: ReplicatedStorage.events.experience.multiplier.Value });
+		}
+
+		setEventsEnabled(eventsToEnable);
+	}, []);
+
+	useEffect(() => {
 		const connections: Array<RBXScriptConnection> = [];
 
 		const currencyConnection = ReplicatedStorage.events.currency.enabled
 			.GetPropertyChangedSignal("Value")
-			.Connect(() => {
-				if (ReplicatedStorage.events.currency.enabled.Value) {
-					const cachedEvent = eventsEnabled.find((eventData) => eventData.eventName === "currency");
-					if (cachedEvent !== undefined) {
-						return;
-					}
-
-					if (ReplicatedStorage.events.currency.multiplier.Value < 2) {
-						return;
-					}
-
-					setEventsEnabled([
-						...eventsEnabled,
-						{ eventName: "currency", multiplier: ReplicatedStorage.events.currency.multiplier.Value },
-					]);
-				}
-			});
+			.Connect(() => checkForEvent(
+				"currency",
+				ReplicatedStorage.events.currency.enabled.Value,
+				eventsEnabled,
+				setEventsEnabled
+			));
 		connections.push(currencyConnection);
 
 		const experienceConnection = ReplicatedStorage.events.experience.enabled
 			.GetPropertyChangedSignal("Value")
-			.Connect(() => {
-				if (ReplicatedStorage.events.experience.enabled.Value) {
-					const cachedEvent = eventsEnabled.find((eventData) => eventData.eventName === "experience");
-					if (cachedEvent !== undefined) {
-						return;
-					}
-
-					if (ReplicatedStorage.events.experience.multiplier.Value < 2) {
-						return;
-					}
-
-					setEventsEnabled([
-						...eventsEnabled,
-						{ eventName: "experience", multiplier: ReplicatedStorage.events.experience.multiplier.Value },
-					]);
-				}
-			});
+			.Connect(() => checkForEvent(
+				"experience",
+				ReplicatedStorage.events.experience.enabled.Value,
+				eventsEnabled,
+				setEventsEnabled
+			));
 		connections.push(experienceConnection);
 
-		const luckConnection = ReplicatedStorage.events.luck.enabled.GetPropertyChangedSignal("Value").Connect(() => {
-			if (ReplicatedStorage.events.luck.enabled.Value) {
-				const cachedEvent = eventsEnabled.find((eventData) => eventData.eventName === "luck");
-				if (cachedEvent !== undefined) {
-					return;
-				}
-
-				setEventsEnabled([...eventsEnabled, { eventName: "luck", multiplier: 2 }]);
-			}
-		});
+		const luckConnection = ReplicatedStorage.events.luck.enabled.GetPropertyChangedSignal("Value").Connect(() => checkForEvent(
+				"luck",
+				ReplicatedStorage.events.luck.enabled.Value,
+				eventsEnabled,
+				setEventsEnabled
+			));
 		connections.push(luckConnection);
 
 		return (): void => connections.forEach((conn) => conn.Disconnect());
-	});
+	}, [props.enabled]);
 
 	const messagesToDisplay: Array<Roact.Element> = [];
 
 	const currencyEvent = eventsEnabled.find((eventData) => eventData.eventName === "currency");
-	const experienceEvent = eventsEnabled.find((eventData) => eventData.eventName === "experience");
-	const luckEvent = eventsEnabled.find((eventData) => eventData.eventName === "luck");
-
 	if (currencyEvent !== undefined) {
 		const currencyMessage = (
 			<StrokeTextLabel
 				native={{
-					Text: `🤑${currencyEvent.multiplier} Currency Event🤑`,
+					Text: `🤑x${currencyEvent.multiplier} Currency Event🤑`,
 					TextColor3: Color3.fromRGB(255, 141, 1),
 					LayoutOrder: 1,
 				}}
@@ -100,11 +121,12 @@ export const DatastoreEvents = hooks((props: { enabled: boolean }, { useState, u
 		messagesToDisplay.push(currencyMessage);
 	}
 
+	const experienceEvent = eventsEnabled.find((eventData) => eventData.eventName === "experience");
 	if (experienceEvent !== undefined) {
 		const experienceMessage = (
 			<StrokeTextLabel
 				native={{
-					Text: `⭐${experienceEvent.multiplier} Experience Event⭐`,
+					Text: `⭐x${experienceEvent.multiplier} Experience Event⭐`,
 					TextColor3: Color3.fromRGB(195, 255, 0),
 					LayoutOrder: 3,
 				}}
@@ -115,6 +137,7 @@ export const DatastoreEvents = hooks((props: { enabled: boolean }, { useState, u
 		messagesToDisplay.push(experienceMessage);
 	}
 
+	const luckEvent = eventsEnabled.find((eventData) => eventData.eventName === "luck");
 	if (luckEvent !== undefined) {
 		const luckMessage = (
 			<StrokeTextLabel

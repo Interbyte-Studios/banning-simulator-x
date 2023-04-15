@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { ContextActionService, Players, Workspace } from "@rbxts/services";
 import { hooks } from "client/ui/hooks";

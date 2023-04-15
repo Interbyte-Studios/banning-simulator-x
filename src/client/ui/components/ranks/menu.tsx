@@ -1,15 +1,16 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService, Workspace } from "@rbxts/services";
-import { font, vec2Middle } from "client/ui/commonValues";
+import { font, uiHeaderStrokeColor, uiTextStrokeColor, vec2Middle } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
-import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { ExitButton } from "client/ui/elements/common/exitButton";
-import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
+import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -137,14 +138,6 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 		});
 
 		const ranksUIs: Array<Roact.Element> = RANKS.map((rankData) => {
-			const maxSize = 0.5;
-			const minSize = 0.45;
-
-			const maxSpring = new Flipper.Spring(maxSize, { frequency: 5 });
-			const minSpring = new Flipper.Spring(minSize, { frequency: 5 });
-
-			const motor = useBindingMotor(hooks, maxSize);
-
 			const progressToRank =
 				rankData.id > props.currentRank + 1
 					? 0
@@ -157,14 +150,10 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 					: 1;
 
 			return (
-				<frame
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(1, 0.3)}
-					LayoutOrder={rankData.id}
-				>
+				<BaseFrame Size={UDim2.fromScale(1, 0.3)} LayoutOrder={rankData.id}>
 					<uiaspectratioconstraint AspectRatio={4.7} />
-					<frame
+
+					<BaseFrame
 						AnchorPoint={vec2Middle}
 						BackgroundTransparency={0}
 						BackgroundColor3={Color3.fromRGB(1, 109, 177)}
@@ -173,84 +162,72 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 					>
 						<uiaspectratioconstraint AspectRatio={5} />
 						<uicorner CornerRadius={new UDim(0.07, 0)} />
+
 						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+
 						<RankIcon
 							position={UDim2.fromScale(0.1, 0.5)}
 							size={{ minimizedSize: 0.9, maximizedSize: 1 }}
 							rank={rankData.id}
 						/>
 
-						<textlabel
-							AnchorPoint={vec2Middle}
-							Position={UDim2.fromScale(0.575, 0.15)}
-							Size={UDim2.fromScale(0.7, 0.3)}
-							BackgroundTransparency={1}
-							TextScaled={true}
-							TextColor3={Color3.fromRGB(255, 255, 255)}
-							Text={rankData.name}
-							TextXAlignment={Enum.TextXAlignment.Left}
-							Font={font}
-						>
-							<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-						</textlabel>
-						<textlabel
-							AnchorPoint={vec2Middle}
-							Position={UDim2.fromScale(0.575, 0.4)}
-							Size={UDim2.fromScale(0.7, 0.2)}
-							BackgroundTransparency={1}
-							TextScaled={true}
-							TextColor3={Color3.fromRGB(255, 255, 255)}
-							Text={`Required Exp: ${twoDpAbbreviator.numberToString(rankData.requiredExperience)} (${math.floor(
-								progressToRank * 100,
-							)}%)`}
-							TextXAlignment={Enum.TextXAlignment.Left}
-							Font={font}
-						>
-							<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-						</textlabel>
-						<frame
-							AnchorPoint={vec2Middle}
+						<StrokeTextLabel
+							native={{
+								Position: UDim2.fromScale(0.575, 0.15),
+								Size: UDim2.fromScale(0.7, 0.3),
+								Text: rankData.name,
+								TextXAlignment: Enum.TextXAlignment.Left,
+							}}
+							stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
+						/>
+
+						<StrokeTextLabel
+							native={{
+								Position: UDim2.fromScale(0.575, 0.4),
+								Size: UDim2.fromScale(0.7, 0.2),
+								Text: `Required Exp: ${twoDpAbbreviator.numberToString(rankData.requiredExperience)} (${math.floor(
+									progressToRank * 100,
+								)}%)`,
+								TextXAlignment: Enum.TextXAlignment.Left,
+							}}
+							stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
+						/>
+
+						<BaseFrame
 							BackgroundTransparency={0}
 							BackgroundColor3={Color3.fromRGB(255, 144, 144)}
 							Position={UDim2.fromScale(0.475, 0.85)}
 							Size={UDim2.fromScale(0.5, 0.2)}
 						>
-							<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
 							<uicorner CornerRadius={new UDim(0.5)} />
-							<frame
+							<BaseUIStroke native={{ Thickness: 2, Color: uiTextStrokeColor }} />
+
+							<BaseFrame
 								BackgroundTransparency={0}
 								BackgroundColor3={Color3.fromRGB(85, 255, 127)}
 								Position={UDim2.fromScale(0, 0)}
 								Size={UDim2.fromScale(progressToRank, 1)}
 							>
 								<uicorner CornerRadius={new UDim(0.5)} />
-							</frame>
-							<textlabel
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.5, 0.5)}
-								Size={UDim2.fromScale(0.95, 0.95)}
-								Font={font}
-								Text={`${math.floor(progressToRank * 100)}%`}
-								TextScaled={true}
-								TextColor3={Color3.fromRGB(255, 255, 255)}
-							>
-								<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-							</textlabel>
-						</frame>
-						<imagebutton
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.875, 0.7)}
-							Size={motor.binding.map((value) => {
-								return UDim2.fromScale(0.5, value);
-							})}
-							Image={progressToRank === 1 ? assetIds.images.ui.index.Claim : assetIds.images.ui.index.Off}
-							ScaleType={Enum.ScaleType.Fit}
-							Event={{
+							</BaseFrame>
+
+							<StrokeTextLabel
+								native={{
+									Size: UDim2.fromScale(0.95, 0.95),
+									Text: `${math.floor(progressToRank * 100)}%`,
+								}}
+								stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
+							/>
+						</BaseFrame>
+
+						<SpringImageButton
+							native={{
+								Position: UDim2.fromScale(0.875, 0.7),
+								Image: progressToRank === 1 ? assetIds.images.ui.index.Claim : assetIds.images.ui.index.Off,
+							}}
+							size={{ maxSize: 0.5, minSize: 0.45 }}
+							events={{
 								/* eslint-disable jsdoc/require-jsdoc */
-								MouseEnter: (): void => motor.motor.setGoal(minSpring),
-								MouseLeave: (): void => motor.motor.setGoal(maxSpring),
 								Activated: (): void => {
 									playSFX(UIEngagement.MinorEngagement);
 
@@ -295,56 +272,42 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 									}}
 								/>
 							</textlabel>
-						</imagebutton>
-						<textlabel
-							BackgroundTransparency={1}
-							AnchorPoint={vec2Middle}
-							Position={UDim2.fromScale(0.905, 0.225)}
-							Size={UDim2.fromScale(0.125, 0.3)}
-							Font={font}
-							Text={twoDpAbbreviator.numberToString(rankData.cost.amount)}
-							TextColor3={Color3.fromRGB(255, 255, 255)}
-							TextScaled={true}
-							TextXAlignment={Enum.TextXAlignment.Left}
-						>
-							<BaseUIStroke
-								native={{ Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }}
-								currencyGradient={rankData.cost.currency}
-							/>
-							<CurrencyIcon
-								anchorPoint={new Vector2(1, 0.5)}
-								position={UDim2.fromScale(-0.03, 0.5)}
-								size={{ minimizedSize: 0.9, maximizedSize: 1 }}
-								currency={rankData.cost.currency}
-							/>
-						</textlabel>
-					</frame>
-				</frame>
+						</SpringImageButton>
+
+						<StrokeTextLabel
+							native={{
+								Position: UDim2.fromScale(0.905, 0.225),
+								Size: UDim2.fromScale(0.125, 0.3),
+								Text: twoDpAbbreviator.numberToString(rankData.cost.amount),
+								TextXAlignment: Enum.TextXAlignment.Left,
+							}}
+							stroke={{
+								native: { Thickness: 2, Color: Color3.fromRGB(255, 255, 255) },
+								currencyGradient: rankData.cost.currency,
+							}}
+						/>
+					</BaseFrame>
+				</BaseFrame>
 			);
 		});
 
 		return (
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.5, 0.75)}
-				Image={assetIds.images.ui["rank upgrade"].background}
-				ScaleType={Enum.ScaleType.Fit}
+			<ImageLabel
+				native={{
+					Size: UDim2.fromScale(0.5, 0.75),
+					Image: assetIds.images.ui["rank upgrade"].background,
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.5, 0.058)}
-					Size={UDim2.fromScale(0.4, 0.1)}
-					BackgroundTransparency={1}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Text={"Ranks"}
-					Font={font}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(148, 94, 15) }} />
-				</textlabel>
+
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.058),
+						Size: UDim2.fromScale(0.4, 0.1),
+						Text: "Ranks",
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiHeaderStrokeColor } }}
+				/>
 				<RescalingScrollingFrame
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
@@ -371,7 +334,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 						setVisibility(false);
 					}}
 				/>
-			</imagelabel>
+			</ImageLabel>
 		);
 	}),
 );

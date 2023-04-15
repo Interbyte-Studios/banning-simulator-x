@@ -80,7 +80,7 @@ export const PurchaseZoneUI = RoactRodux.connect(mapStateToProps)(
 						Text: twoDpAbbreviator.numberToString(zoneData.cost.amount),
 						TextXAlignment: Enum.TextXAlignment.Left,
 					}}
-					stroke={{ native: { Thickness: 2 }, currencyGradient: zoneData.cost.currency }}
+					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(255, 255, 255) }, currencyGradient: zoneData.cost.currency }}
 				>
 					<CurrencyIcon
 						anchorPoint={new Vector2(0.5, 0.5)}

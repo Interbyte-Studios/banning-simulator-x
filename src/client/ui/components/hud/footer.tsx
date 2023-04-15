@@ -2,10 +2,8 @@ import Roact from "@rbxts/roact";
 import { hooks } from "client/ui/hooks";
 
 import { TradingIcon } from "./tradingIcon";
-import { WheelSpinIcon } from "./wheelSpingIcon";
 
 interface HUDFooterProps {
-	displaySpinWheel: () => void;
 	displayTradingMenu: () => void;
 }
 
@@ -24,7 +22,6 @@ export const HUDFooter = hooks((props: HUDFooterProps) => {
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>
 			<TradingIcon displayTrading={props.displayTradingMenu} />
-			<WheelSpinIcon displayWheelSpinMenu={props.displaySpinWheel} />
 		</frame>
 	);
 });
