@@ -1,4 +1,5 @@
 import Roact from "@rbxts/roact";
+import RoactRodux from "@rbxts/roact-rodux";
 import { Players } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
 import { uiClaimButtonStrokeColor, uiDarkStrokeColor, uiTextStrokeColor, vec2Middle } from "client/ui/commonValues";
@@ -12,37 +13,53 @@ import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScro
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
+import { StoreState } from "shared/rodux";
 import { TRADING_ATTRIBUTE } from "shared/trading/tradingAttributes";
 
-export const TradeButton = hooks(
-	(
-		props: {
-			player: Player;
-			displayTradeWarning: (player: Player) => void;
-			displaySentRequest: (player: Player) => void;
-		},
-		hooks,
-	) => {
+interface TradeButtonProps extends TradeButtonMappedProps {
+	player: Player;
+	displayTradeWarning: (player: Player) => void;
+	displaySentRequest: (player: Player) => void;
+}
+
+interface TradeButtonMappedProps {
+	tradesEnabled: boolean;
+}
+
+/**
+ * Maps the Rodux store's state to the props.
+ *
+ * @param state The current state of the store.
+ * @returns The mapped props to render with.
+ */
+function mapStateToProps(state: StoreState): TradeButtonMappedProps {
+	return {
+		tradesEnabled: state.settings.privacy.tradesEnabled,
+	};
+}
+
+export const TradeButton = RoactRodux.connect(mapStateToProps)(
+	hooks((props: TradeButtonProps, hooks) => {
 		const playerStore = retrieveStore(props.player);
 
 		const { useContext } = hooks;
 		const { requestTrading } = useContext(remoteContext);
+
+		const hasPrivateTrader =
+			!props.tradesEnabled || (playerStore !== undefined && !playerStore.getState().settings.privacy.tradesEnabled);
 
 		return (
 			<SpringImageButton
 				native={{
 					Position: UDim2.fromScale(0.85, 0.5),
 					Image: assetIds.images.ui.index.Claim,
-					ImageColor3:
-						playerStore !== undefined && playerStore.getState().settings.privacy.tradesEnabled
-							? Color3.fromRGB(255, 255, 255)
-							: Color3.fromRGB(129, 129, 129),
+					ImageColor3: !hasPrivateTrader ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(129, 129, 129),
 				}}
 				size={{ maxSize: 0.7, minSize: 0.6 }}
 				events={{
 					/* eslint-disable jsdoc/require-jsdoc */
 					Activated: (): void => {
-						if (playerStore !== undefined && !playerStore.getState().settings.privacy.tradesEnabled) {
+						if (hasPrivateTrader) {
 							return;
 						}
 
@@ -67,16 +84,13 @@ export const TradeButton = hooks(
 						Position: UDim2.fromScale(0.5, 0.5),
 						Size: UDim2.fromScale(0.8, 0.8),
 						Text: "Trade",
-						TextColor3:
-							playerStore !== undefined && playerStore.getState().settings.privacy.tradesEnabled
-								? Color3.fromRGB(255, 255, 255)
-								: Color3.fromRGB(175, 175, 175),
+						TextColor3: !hasPrivateTrader ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(175, 175, 175),
 					}}
 					stroke={{ native: { Thickness: 1.5, Color: uiClaimButtonStrokeColor } }}
 				/>
 			</SpringImageButton>
 		);
-	},
+	}),
 );
 
 /**

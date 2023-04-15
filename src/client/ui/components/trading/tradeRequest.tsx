@@ -78,8 +78,8 @@ export const TradeRequest = hooks((props: { player: Player; declineTrade: () => 
 					// eslint-disable-next-line jsdoc/require-jsdoc
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
-						props.declineTrade();
 						declineTradeRemote.SendToServer();
+						props.declineTrade();
 					},
 				}}
 			>

@@ -27,7 +27,7 @@ export function requestTrade(player: Player, store: Store, targetPlayer: Player)
 		playerStores
 			.map((store) => store.getState().settings.privacy.tradesEnabled)
 			.filter((hasTradesEnabled) => hasTradesEnabled)
-			.size() !== 0;
+			.size() === 0;
 	if (hasPrivateTrader) {
 		return;
 	}

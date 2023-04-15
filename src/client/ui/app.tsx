@@ -232,15 +232,16 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 				/>
 				<Trading
 					enabled={
-						!isHatching &&
-						!weaponShopVisibility &&
-						!talismanTowerVisibility &&
-						!itemsVisibility &&
-						!autoFightVisibility &&
-						!accountHubVisibility &&
-						!hasActiveTrade
+						hasActiveTrade ||
+						(!isHatching &&
+							!weaponShopVisibility &&
+							!talismanTowerVisibility &&
+							!itemsVisibility &&
+							!autoFightVisibility &&
+							!accountHubVisibility &&
+							!teleportationVisible)
 					}
-					visible={tradingVisibility}
+					visible={tradingVisibility || hasActiveTrade}
 					hideMenu={(): void => setTradingVisibility(false)}
 					activelyRequestingPlayer={tradeRequestInbound}
 					declineTrade={(): void => setTradeRequestInbound(undefined)}

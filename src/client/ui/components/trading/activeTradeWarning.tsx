@@ -4,6 +4,7 @@ import { uiClaimButtonStrokeColor, uiTextStrokeColor } from "client/ui/commonVal
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 /**
@@ -23,6 +24,13 @@ export const ActiveTradeWarning = (props: { player: Player; hideMenu: () => void
 					Size: UDim2.fromScale(0.3, 0.3),
 					Image: assetIds.images.ui.index.Claim,
 				}}
+				events={{
+					// eslint-disable-next-line jsdoc/require-jsdoc
+					Activated: (): void => {
+						playSFX(UIEngagement.MajorEngagement);
+						props.hideMenu();
+					},
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={2} />
 
@@ -39,7 +47,7 @@ export const ActiveTradeWarning = (props: { player: Player; hideMenu: () => void
 				native={{
 					Position: UDim2.fromScale(0.5, 0.426),
 					Size: UDim2.fromScale(0.95, 0.311),
-					Text: `That player is currently in an active trade, or someone else has requested to trade with them. Please wait until they are done trading.`,
+					Text: `${props.player.Name} is currently in an active trade, or someone else has requested to trade with them. Please wait until they are done trading.`,
 				}}
 				stroke={{ native: { Thickness: 1.5, Color: uiTextStrokeColor } }}
 			/>
