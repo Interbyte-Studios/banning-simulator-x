@@ -20,16 +20,16 @@ const LocalMessage = hooks((props: LocalMessageProps, hooks) => {
 	const [transparency, setTransparency] = useBinding(0);
 
 	useEffect(() => {
-		task.spawn(() =>
-			task.delay(3, () => {
-				while (transparency.getValue() < 1) {
-					task.wait(0.03);
-					setTransparency(transparency.getValue() + 0.1);
-				}
+		const increaseTransparency = task.delay(3, () => {
+			while (transparency.getValue() < 1) {
+				task.wait(0.03);
+				setTransparency(transparency.getValue() + 0.1);
+			}
 
-				cachedAnnouncements.push(props.id);
-			}),
-		);
+			cachedAnnouncements.push(props.id);
+		});
+
+		return (): void => task.cancel(increaseTransparency);
 	}, []);
 
 	const maxSize = 1;
