@@ -1,5 +1,6 @@
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
+import { TRADING_ATTRIBUTE } from "shared/trading/tradingAttributes";
 
 import { requestTrade } from "./tradeRequests";
 import { acceptTrade, rejectTrade } from "./trades";
@@ -30,5 +31,8 @@ declineTradeRequest.Connect((receiver, creator) => {
 	if (rejectTrade(receiver, creator)) {
 		// alert `creator` that the trade got cancelled
 		tradeRequestDeclined.SendToPlayer(creator);
+
+		receiver.SetAttribute(TRADING_ATTRIBUTE, undefined);
+		creator.SetAttribute(TRADING_ATTRIBUTE, undefined);
 	}
 });
