@@ -46,6 +46,7 @@ import { AcceptTradeRequestDefinition } from "shared/remotes/trading/acceptTrade
 import { DeclineTradeRequestDefinition } from "shared/remotes/trading/declineTradeRequest";
 import { RequestTradeDefinition } from "shared/remotes/trading/requestTrade";
 import { SendTradeRequestDefinition } from "shared/remotes/trading/sendTradeRequest";
+import { TradeRequestDeclinedDefinition } from "shared/remotes/trading/tradeRequestDeclined";
 import { UnlockRankDefinition } from "shared/remotes/unlockRank";
 import { ChangeWeaponDefinition } from "shared/remotes/weapons/changeWeapon";
 import { EquipWeaponDefinition } from "shared/remotes/weapons/equipWeapon";
@@ -155,6 +156,7 @@ export const fakeRemoteContext = {
 	receiveTradeRequest: fakeServerToClientRemote<SendTradeRequestDefinition>(),
 	acceptTradeRequest: fakeRemoteCall<AcceptTradeRequestDefinition>("acceptTradeRequest"),
 	declineTradeRequest: fakeRemoteCall<DeclineTradeRequestDefinition>("declineTradeRequest"),
+	tradeRequestDeclined: fakeServerToClientRemote<TradeRequestDeclinedDefinition>(),
 };
 
 export const remoteContext = createContext(fakeRemoteContext);

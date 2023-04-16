@@ -1,3 +1,5 @@
+import { UnreachableCaseError } from "shared/util/unreachableCaseError";
+
 const currentTrades: Map<Player, Trade> = new Map();
 
 interface PendingTrade {
@@ -115,6 +117,66 @@ export function acceptTrade(receiver: Player, creator: Player): void {
 	for (const player of [receiver, creator]) {
 		currentTrades.set(player, newTradeStatus);
 	}
+}
+
+/**
+ * Removes a trade from a player, and all related parties.
+ *
+ * @param player A player associated with the trade who is removing the trade.
+ * @returns The players involved in the trade.
+ */
+export function removeTrade(player: Player): Array<Player> {
+	const trade = currentTrades.get(player);
+
+	let players;
+	if (trade !== undefined) {
+		// remove the trade if it exists
+		switch (trade.status) {
+			case TradeStatus.TradeSent: {
+				players = [trade.receiver, trade.sender];
+				break;
+			}
+			case TradeStatus.Trading: {
+				players = [trade.items[0].player, trade.items[1].player];
+				break;
+			}
+			default:
+				throw new UnreachableCaseError(trade);
+		}
+
+		for (const trader of players) {
+			currentTrades.delete(trader);
+		}
+	}
+
+	return players ?? [];
+}
+
+/**
+ * Rejects a trade sent from `creator` to `receiver`, deleting the trade status for both players.
+ *
+ * @param receiver The receiver of the trade request who is reject the trade.
+ * @param creator The creator of the trade (initiated the trade request).
+ * @returns If the trade request was rejected. If `false`, then there was no trade request between the two players.
+ */
+export function rejectTrade(receiver: Player, creator: Player): boolean {
+	const [receiverTrade, creatorTrade] = [currentTrades.get(receiver), currentTrades.get(creator)];
+
+	// the creator and receiver should have a trade request together
+	// receiver should be the receiver in the trade (to prevent creator attempting to reject on receiver's behalf)
+	if (
+		receiverTrade !== creatorTrade ||
+		receiverTrade === undefined ||
+		receiverTrade.status !== TradeStatus.TradeSent ||
+		receiverTrade.receiver !== receiver
+	) {
+		return false;
+	}
+
+	// delete the trade
+	removeTrade(receiver);
+
+	return true;
 }
 
 /**

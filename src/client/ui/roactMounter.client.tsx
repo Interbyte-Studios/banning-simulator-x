@@ -88,6 +88,7 @@ onStoreCreated(player)
 					receiveTradeRequest: remotes.Client.GetNamespace("trades").Get("sendTradeRequest"),
 					acceptTradeRequest: remotes.Client.GetNamespace("trades").Get("acceptTradeRequest"),
 					declineTradeRequest: remotes.Client.GetNamespace("trades").Get("declineTradeRequest"),
+					tradeRequestDeclined: remotes.Client.GetNamespace("trades").Get("tradeRequestDeclined"),
 				}}
 			>
 				<AnnouncementAPI>

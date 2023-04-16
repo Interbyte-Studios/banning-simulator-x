@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
-import { Players } from "@rbxts/services";
 import { uiClaimButtonStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
@@ -16,11 +15,7 @@ import assetIds from "shared/assets";
  * @param props.hideMenu The function to hide the menu.
  * @returns The Roact element to render.
  */
-export const ActiveTradeWarning = (props: { player: Player; hideMenu: () => void }): Roact.Element => {
-	const localActiveTradeMessage =
-		"You currently have an active trade request. Please wait until it is accepted or declined.";
-	const remoteActiveTradeMessage = `${props.player.Name} is currently in an active trade, or someone else has requested to trade with them. Please wait until they are done trading.`;
-
+export const DeclinedTradeWarning = (props: { player: Player; hideMenu: () => void }): Roact.Element => {
 	return (
 		<BaseFrame Size={UDim2.fromScale(0.975, 0.9)}>
 			<ImageButton
@@ -52,7 +47,7 @@ export const ActiveTradeWarning = (props: { player: Player; hideMenu: () => void
 				native={{
 					Position: UDim2.fromScale(0.5, 0.426),
 					Size: UDim2.fromScale(0.95, 0.311),
-					Text: props.player === Players.LocalPlayer ? localActiveTradeMessage : remoteActiveTradeMessage,
+					Text: `${props.player.Name} declined your trade request. You can try again, or try trading with someone else.`,
 				}}
 				stroke={{ native: { Thickness: 1.5, Color: uiTextStrokeColor } }}
 			/>

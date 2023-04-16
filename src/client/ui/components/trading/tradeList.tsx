@@ -20,6 +20,7 @@ interface TradeButtonProps extends TradeButtonMappedProps {
 	player: Player;
 	displayTradeWarning: (player: Player) => void;
 	displaySentRequest: (player: Player) => void;
+	displayLocalActiveTradeWarning: () => void;
 }
 
 interface TradeButtonMappedProps {
@@ -63,11 +64,13 @@ export const TradeButton = RoactRodux.connect(mapStateToProps)(
 							return;
 						}
 
-						const isActivelyTrading =
-							props.player.GetAttribute(TRADING_ATTRIBUTE) !== undefined ||
-							Players.LocalPlayer.GetAttribute(TRADING_ATTRIBUTE) !== undefined;
-						if (isActivelyTrading) {
+						if (props.player.GetAttribute(TRADING_ATTRIBUTE) !== undefined) {
 							props.displayTradeWarning(props.player);
+							return;
+						}
+
+						if (Players.LocalPlayer.GetAttribute(TRADING_ATTRIBUTE) !== undefined) {
+							props.displayLocalActiveTradeWarning();
 							return;
 						}
 
@@ -100,12 +103,14 @@ export const TradeButton = RoactRodux.connect(mapStateToProps)(
  * @param props.player The player to display.
  * @param props.displayTradeWarning A function that displays a warning when the player is already trading with someone.
  * @param props.displaySentRequest A function that displays a message when a trade request has been sent.
+ * @param props.displayLocalActiveTradeWarning A function that displays a warning when the local player is already trading with someone.
  * @returns The element.
  */
 export const TradeCard = (props: {
 	player: Player;
 	displayTradeWarning: (player: Player) => void;
 	displaySentRequest: (player: Player) => void;
+	displayLocalActiveTradeWarning: () => void;
 }): Roact.Element => {
 	const thumbnailType = Enum.ThumbnailType.HeadShot;
 	const thumbnailSize = Enum.ThumbnailSize.Size420x420;
@@ -156,6 +161,7 @@ export const TradeCard = (props: {
 					player={props.player}
 					displaySentRequest={props.displaySentRequest}
 					displayTradeWarning={props.displayTradeWarning}
+					displayLocalActiveTradeWarning={props.displayLocalActiveTradeWarning}
 				/>
 			</BaseFrame>
 		</BaseFrame>
@@ -168,6 +174,7 @@ export const TradeList = hooks(
 			hideMenu: () => void;
 			displayTradeWarning: (player: Player) => void;
 			displaySentRequest: (player: Player) => void;
+			displayLocalActiveTradeWarning: () => void;
 		},
 		{ useValue, useEffect, useState },
 	) => {
@@ -232,6 +239,7 @@ export const TradeList = hooks(
 					player={player}
 					displayTradeWarning={props.displayTradeWarning}
 					displaySentRequest={props.displaySentRequest}
+					displayLocalActiveTradeWarning={props.displayLocalActiveTradeWarning}
 				/>
 			);
 		});
