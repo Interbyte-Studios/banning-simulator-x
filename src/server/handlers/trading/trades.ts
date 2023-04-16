@@ -118,6 +118,34 @@ export function acceptTrade(receiver: Player, creator: Player): void {
 }
 
 /**
+ * Rejects a trade sent from `creator` to `receiver`, deleting the trade status for both players.
+ *
+ * @param receiver The receiver of the trade request who is reject the trade.
+ * @param creator The creator of the trade (initiated the trade request).
+ * @returns If the trade request was rejected. If `false`, then there was no trade request between the two players.
+ */
+export function rejectTrade(receiver: Player, creator: Player): boolean {
+	const [receiverTrade, creatorTrade] = [currentTrades.get(receiver), currentTrades.get(creator)];
+
+	// the creator and receiver should have a trade request together
+	// receiver should be the receiver in the trade (to prevent creator attempting to reject on receiver's behalf)
+	if (
+		receiverTrade !== creatorTrade ||
+		receiverTrade === undefined ||
+		receiverTrade.status !== TradeStatus.TradeSent ||
+		receiverTrade.receiver !== receiver
+	) {
+		return false;
+	}
+
+	// delete the trade
+	currentTrades.delete(receiver);
+	currentTrades.delete(creator);
+
+	return true;
+}
+
+/**
  * Retrieves the trade of a specific player.
  *
  * This should ONLY be called during tests.
