@@ -12,6 +12,7 @@ const player = Players.LocalPlayer;
 
 interface PetMasteryProps {
 	enabled: boolean;
+	setPetMasteryVisibility: (visible: boolean) => void;
 }
 
 /**
@@ -85,6 +86,7 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 
 				setWorldViewing(worldToOpen);
 				setInterfaceVisibility(true);
+				props.setPetMasteryVisibility(true);
 			},
 			false,
 			Enum.KeyCode.C,
@@ -127,6 +129,7 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 							displayPetMastery={(): void => {
 								setWorldViewing(worldName);
 								setInterfaceVisibility(true);
+								props.setPetMasteryVisibility(true);
 							}}
 						/>
 					);

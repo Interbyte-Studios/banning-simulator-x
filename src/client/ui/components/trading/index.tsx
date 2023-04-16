@@ -1,10 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
+import { Players } from "@rbxts/services";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
 import { ActiveTradeWarning } from "./activeTradeWarning";
+import { DeclinedTradeWarning } from "./declinedTradeWarning";
 import { SentTradeRequest } from "./sentTradeRequest";
 import { TradeList } from "./tradeList";
 import { TradeRequest } from "./tradeRequest";
@@ -13,16 +15,23 @@ interface TradeListDisplayProps {
 	hideMenu: () => void;
 	activelyRequestingPlayer: Player | undefined;
 	declineTrade: () => void;
+	tradeWasDeclined: Player | undefined;
+	resetTradeDeclined: () => void;
 }
 
 export const TradeListDisplay = hooks((props: TradeListDisplayProps, { useState }) => {
 	const [sentTradeNotification, displaySentTradeNotification] = useState<Player | undefined>(undefined);
 	const [activeTrade, setActiveTrade] = useState<Player | undefined>(undefined);
+	const [localActiveTrade, setLocalActiveTrade] = useState(false);
 
 	if (sentTradeNotification) {
 		return (
 			<SentTradeRequest player={sentTradeNotification} hideMenu={(): void => displaySentTradeNotification(undefined)} />
 		);
+	} else if (props.tradeWasDeclined) {
+		return <DeclinedTradeWarning player={props.tradeWasDeclined} hideMenu={(): void => props.resetTradeDeclined()} />;
+	} else if (localActiveTrade) {
+		return <ActiveTradeWarning player={Players.LocalPlayer} hideMenu={(): void => setActiveTrade(undefined)} />;
 	} else if (props.activelyRequestingPlayer) {
 		return <TradeRequest player={props.activelyRequestingPlayer} declineTrade={(): void => props.declineTrade()} />;
 	} else if (activeTrade) {
@@ -33,17 +42,15 @@ export const TradeListDisplay = hooks((props: TradeListDisplayProps, { useState 
 				hideMenu={props.hideMenu}
 				displayTradeWarning={(player: Player): void => setActiveTrade(player)}
 				displaySentRequest={(player: Player): void => displaySentTradeNotification(player)}
+				displayLocalActiveTradeWarning={(): void => setLocalActiveTrade(true)}
 			/>
 		);
 	}
 });
 
-interface TradeProps {
+interface TradeProps extends TradeListDisplayProps {
 	enabled: boolean;
 	visible: boolean;
-	hideMenu: () => void;
-	activelyRequestingPlayer: Player | undefined;
-	declineTrade: () => void;
 }
 
 export const Trading = hooks((props: TradeProps, { useState }) => {
@@ -67,6 +74,8 @@ export const Trading = hooks((props: TradeProps, { useState }) => {
 					hideMenu={props.hideMenu}
 					activelyRequestingPlayer={props.activelyRequestingPlayer}
 					declineTrade={props.declineTrade}
+					tradeWasDeclined={props.tradeWasDeclined}
+					resetTradeDeclined={props.resetTradeDeclined}
 				/>
 			</ImageLabel>
 		);

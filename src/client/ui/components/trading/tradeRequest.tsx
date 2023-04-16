@@ -78,7 +78,7 @@ export const TradeRequest = hooks((props: { player: Player; declineTrade: () => 
 					// eslint-disable-next-line jsdoc/require-jsdoc
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
-						declineTradeRemote.SendToServer();
+						declineTradeRemote.SendToServer(props.player);
 						props.declineTrade();
 					},
 				}}
@@ -107,7 +107,7 @@ export const TradeRequest = hooks((props: { player: Player; declineTrade: () => 
 				native={{
 					Position: UDim2.fromScale(0.5, 0.4),
 					Size: UDim2.fromScale(0.95, 0.23),
-					Text: "You've received a trade request from (Player Name).",
+					Text: `You've received a trade request from ${props.player.Name}.`,
 				}}
 				stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
 			/>

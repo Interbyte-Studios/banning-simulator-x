@@ -31,7 +31,7 @@ const tradeRequestDeclined = tradesNamespace.Get("tradeRequestDeclined");
 declineTradeRequest.Connect((receiver, creator) => {
 	if (rejectTrade(receiver, creator)) {
 		// alert `creator` that the trade got cancelled
-		tradeRequestDeclined.SendToPlayer(creator);
+		tradeRequestDeclined.SendToPlayer(creator, receiver);
 
 		receiver.SetAttribute(TRADING_ATTRIBUTE, undefined);
 		creator.SetAttribute(TRADING_ATTRIBUTE, undefined);

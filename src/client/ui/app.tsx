@@ -46,18 +46,25 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 	const [autoFightVisibility, setAutoFightVisibility] = useState(false);
 	const [accountHubVisibility, setAccountHubVisibility] = useState(false);
 	const [tradingVisibility, setTradingVisibility] = useState(false);
+	const [petMasteryVisibility, setPetMasteryVisibility] = useState(false);
+
 	const [tradeRequestInbound, setTradeRequestInbound] = useState<Player | undefined>(undefined);
+	const [tradeDeclined, setTradeDeclined] = useState<Player | undefined>(undefined);
 
 	const [isHatching, setHatchingStatus] = useState(false);
 
-	const { receiveTradeRequest } = useContext(remoteContext);
+	const { receiveTradeRequest, tradeRequestDeclined } = useContext(remoteContext);
 	useEffect(() => {
-		const connection = receiveTradeRequest.Connect((playerWhoSent) => setTradeRequestInbound(playerWhoSent));
+		const connections = [
+			receiveTradeRequest.Connect((playerWhoSent) => setTradeRequestInbound(playerWhoSent)),
+			tradeRequestDeclined.Connect((playerWhoSent) => setTradeDeclined(playerWhoSent)),
+		];
 
-		return (): void => connection.Disconnect();
+		return (): void => connections.forEach((conn) => conn.Disconnect());
 	});
 
 	const hasActiveTrade = tradeRequestInbound !== undefined;
+	const hasTradeDeclined = tradeDeclined !== undefined;
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
@@ -71,7 +78,9 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						!hasActiveTrade
+						!petMasteryVisibility &&
+						!hasActiveTrade &&
+						!hasTradeDeclined
 					}
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
@@ -85,7 +94,9 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						!hasActiveTrade
+						!petMasteryVisibility &&
+						!hasActiveTrade &&
+						!hasTradeDeclined
 					}
 					displayTeleportation={(): void => setTeleportationVisibility(true)}
 					displayItems={(): void => setItemsVisibility(true)}
@@ -106,7 +117,9 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						!hasActiveTrade
+						!petMasteryVisibility &&
+						!hasActiveTrade &&
+						!hasTradeDeclined
 					}
 				/>
 				<WeaponEquip
@@ -119,7 +132,9 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						!hasActiveTrade
+						!petMasteryVisibility &&
+						!hasActiveTrade &&
+						!hasTradeDeclined
 					}
 				/>
 				<RankUpgrade
@@ -132,7 +147,9 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						!hasActiveTrade
+						!petMasteryVisibility &&
+						!hasActiveTrade &&
+						!hasTradeDeclined
 					}
 				/>
 				<WeaponShopHandle
@@ -144,7 +161,9 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						!hasActiveTrade
+						!petMasteryVisibility &&
+						!hasActiveTrade &&
+						!hasTradeDeclined
 					}
 					weaponShopVisible={weaponShopVisibility}
 					setWeaponShopVisibility={(value: boolean): void => setWeaponShopVisibility(value)}
@@ -158,7 +177,9 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						!hasActiveTrade
+						!petMasteryVisibility &&
+						!hasActiveTrade &&
+						!hasTradeDeclined
 					}
 					talismanTowerVisible={talismanTowerVisibility}
 					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
@@ -173,8 +194,11 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						!hasActiveTrade
+						!petMasteryVisibility &&
+						!hasActiveTrade &&
+						!hasTradeDeclined
 					}
+					setPetMasteryVisibility={(value: boolean): void => setPetMasteryVisibility(value)}
 				/>
 				<Teleportation
 					enabled={
@@ -185,7 +209,9 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						!hasActiveTrade
+						!petMasteryVisibility &&
+						!hasActiveTrade &&
+						!hasTradeDeclined
 					}
 					visible={teleportationVisible}
 					hideMenu={(): void => setTeleportationVisibility(false)}
@@ -199,7 +225,9 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						!hasActiveTrade
+						!petMasteryVisibility &&
+						!hasActiveTrade &&
+						!hasTradeDeclined
 					}
 					visible={itemsVisibility}
 					hideMenu={(): void => setItemsVisibility(false)}
@@ -213,7 +241,10 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!tradingVisibility &&
 						!autoFightVisibility &&
 						!accountHubVisibility &&
-						!teleportationVisible
+						!teleportationVisible &&
+						!petMasteryVisibility &&
+						!hasActiveTrade &&
+						!hasTradeDeclined
 					}
 				/>
 				<AutoFight enabled={autoFightVisibility} hideMenu={(): void => setAutoFightVisibility(false)} />
@@ -227,24 +258,30 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect }) 
 						!autoFightVisibility &&
 						!accountHubVisibility &&
 						!tradingVisibility &&
-						!hasActiveTrade
+						!petMasteryVisibility &&
+						!hasActiveTrade &&
+						!hasTradeDeclined
 					}
 				/>
 				<Trading
 					enabled={
 						hasActiveTrade ||
+						hasTradeDeclined ||
 						(!isHatching &&
 							!weaponShopVisibility &&
 							!talismanTowerVisibility &&
 							!itemsVisibility &&
 							!autoFightVisibility &&
 							!accountHubVisibility &&
-							!teleportationVisible)
+							!teleportationVisible &&
+							!petMasteryVisibility)
 					}
-					visible={tradingVisibility || hasActiveTrade}
+					visible={tradingVisibility || hasActiveTrade || hasTradeDeclined}
 					hideMenu={(): void => setTradingVisibility(false)}
 					activelyRequestingPlayer={tradeRequestInbound}
 					declineTrade={(): void => setTradeRequestInbound(undefined)}
+					tradeWasDeclined={tradeDeclined}
+					resetTradeDeclined={(): void => setTradeDeclined(undefined)}
 				/>
 			</>
 		</RoactRodux.StoreProvider>
