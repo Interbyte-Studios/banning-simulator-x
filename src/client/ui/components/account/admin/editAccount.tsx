@@ -35,16 +35,13 @@ export const EditAccount = RoactRodux.connect(editAccountMapProps)(
 			return <></>;
 		}
 
-		const minimizedSize = 0.085;
-		const maximizedSize = 0.1;
-
 		return (
 			<SpringImageButton
 				native={{
 					Position: UDim2.fromScale(0.225, 0.95),
 					Image: assetIds.images.ui.inventory.pets["function button"],
 				}}
-				size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+				size={{ maxSize: 0.2, minSize: 0.175 }}
 				events={{
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
@@ -52,6 +49,7 @@ export const EditAccount = RoactRodux.connect(editAccountMapProps)(
 					},
 				}}
 			>
+				<uiaspectratioconstraint AspectRatio={3} />
 				<StrokeTextLabel
 					native={{
 						Size: UDim2.fromScale(0.9, 0.9),

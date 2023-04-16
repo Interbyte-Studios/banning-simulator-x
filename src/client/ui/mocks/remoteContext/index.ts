@@ -28,6 +28,7 @@ import { ToggleAutoHatchDefinition } from "shared/remotes/settings/gameplay/togg
 import { ToggleWalkSpeedDefinition } from "shared/remotes/settings/gameplay/toggleWalkSpeed";
 import { TogglePublicInventoryDefinition } from "shared/remotes/settings/privacy/publicInventory";
 import { TogglePublicTradeHistoryDefinition } from "shared/remotes/settings/privacy/publicTradeHistory";
+import { ToggleTradesEnabledDefinition } from "shared/remotes/settings/privacy/tradesEnabled";
 import { ToggleButtonClickDefinition } from "shared/remotes/settings/sound/toggleButtonClick";
 import { ToggleMusicVolumeDefinition } from "shared/remotes/settings/sound/toggleMusicVolume";
 import { ToggleSoundEffectsVolumeDefinition } from "shared/remotes/settings/sound/toggleSoundEffectsVolume";
@@ -136,6 +137,7 @@ export const fakeRemoteContext = {
 
 	togglePublicInventory: fakeRemoteCall<TogglePublicInventoryDefinition>("togglePublicInventory"),
 	togglePublicTradeHistory: fakeRemoteCall<TogglePublicTradeHistoryDefinition>("togglePublicTradeHistory"),
+	tradesEnabled: fakeRemoteCall<ToggleTradesEnabledDefinition>("tradesEnabled"),
 
 	claimAccolade: fakeFunctionCall<ClaimAccoladeDefinition>("claimAccolade", () => {
 		return {

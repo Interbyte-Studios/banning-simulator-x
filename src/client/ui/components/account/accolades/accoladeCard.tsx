@@ -17,7 +17,6 @@ import { ClaimAccoladeFailKind } from "shared/remotes/accolades/claimAccolade";
 import { ValidBoostTime } from "shared/rodux/boosts";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
-/* eslint-disable jsdoc/require-jsdoc */
 export const AccoladeCard = hooks(
 	(
 		props: {
@@ -84,7 +83,7 @@ export const AccoladeCard = hooks(
 							stroke={{
 								native: { Thickness: 1.5, Color: Color3.fromRGB(15, 51, 70) },
 							}}
-						></StrokeTextLabel>
+						/>
 					</BaseFrame>
 
 					<StrokeTextLabel
@@ -97,7 +96,7 @@ export const AccoladeCard = hooks(
 									: `${props.accoladeData.reward.rewardType} Boost`,
 						}}
 						stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(15, 51, 70) } }}
-					></StrokeTextLabel>
+					/>
 
 					<StrokeTextLabel
 						native={{
@@ -107,7 +106,7 @@ export const AccoladeCard = hooks(
 							TextXAlignment: Enum.TextXAlignment.Left,
 						}}
 						stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(15, 51, 70) } }}
-					></StrokeTextLabel>
+					/>
 
 					<SpringImageButton
 						native={{
@@ -116,6 +115,7 @@ export const AccoladeCard = hooks(
 							ScaleType: Enum.ScaleType.Fit,
 						}}
 						events={{
+							/* eslint-disable jsdoc/require-jsdoc */
 							Activated: async (): Promise<void> => {
 								playSFX(UIEngagement.MinorEngagement);
 								if (props.playerViewing.UserId !== Players.LocalPlayer.UserId) {
@@ -148,6 +148,7 @@ export const AccoladeCard = hooks(
 								}
 							},
 						}}
+						/* eslint-enable jsdoc/require-jsdoc */
 						size={{ maxSize: 0.6, minSize: 0.5 }}
 					>
 						<uiaspectratioconstraint AspectRatio={2} />
@@ -162,7 +163,7 @@ export const AccoladeCard = hooks(
 									: "Unclaimed",
 							}}
 							stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(91, 153, 79) } }}
-						></StrokeTextLabel>
+						/>
 					</SpringImageButton>
 
 					<ImageLabel
@@ -187,4 +188,3 @@ export const AccoladeCard = hooks(
 		);
 	},
 );
-/* eslint-enable jsdoc/require-jsdoc */

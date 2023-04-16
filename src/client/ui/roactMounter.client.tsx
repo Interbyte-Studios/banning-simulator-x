@@ -70,6 +70,7 @@ onStoreCreated(player)
 					togglePublicTradeHistory: remotes.Client.GetNamespace("settings")
 						.GetNamespace("privacy")
 						.Get("publicTradeHistory"),
+					tradesEnabled: remotes.Client.GetNamespace('settings').GetNamespace("privacy").Get("tradesEnabled"),
 
 					claimAccolade: remotes.Client.GetNamespace("accolades").Get("claimAccolade"),
 
