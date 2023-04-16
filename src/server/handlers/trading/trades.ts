@@ -1,3 +1,5 @@
+import { UnreachableCaseError } from "shared/util/unreachableCaseError";
+
 const currentTrades: Map<Player, Trade> = new Map();
 
 interface PendingTrade {
@@ -118,6 +120,39 @@ export function acceptTrade(receiver: Player, creator: Player): void {
 }
 
 /**
+ * Removes a trade from a player, and all related parties.
+ *
+ * @param player A player associated with the trade who is removing the trade.
+ * @returns The players involved in the trade.
+ */
+export function removeTrade(player: Player): Array<Player> {
+	const trade = currentTrades.get(player);
+
+	let players;
+	if (trade !== undefined) {
+		// remove the trade if it exists
+		switch (trade.status) {
+			case TradeStatus.TradeSent: {
+				players = [trade.receiver, trade.sender];
+				break;
+			}
+			case TradeStatus.Trading: {
+				players = [trade.items[0].player, trade.items[1].player];
+				break;
+			}
+			default:
+				throw new UnreachableCaseError(trade);
+		}
+
+		for (const trader of players) {
+			currentTrades.delete(trader);
+		}
+	}
+
+	return players ?? [];
+}
+
+/**
  * Rejects a trade sent from `creator` to `receiver`, deleting the trade status for both players.
  *
  * @param receiver The receiver of the trade request who is reject the trade.
@@ -139,8 +174,7 @@ export function rejectTrade(receiver: Player, creator: Player): boolean {
 	}
 
 	// delete the trade
-	currentTrades.delete(receiver);
-	currentTrades.delete(creator);
+	removeTrade(receiver);
 
 	return true;
 }

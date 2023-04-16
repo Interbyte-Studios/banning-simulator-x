@@ -1,9 +1,10 @@
+import { Players } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
 import { TRADING_ATTRIBUTE } from "shared/trading/tradingAttributes";
 
 import { requestTrade } from "./tradeRequests";
-import { acceptTrade, rejectTrade } from "./trades";
+import { acceptTrade, rejectTrade, removeTrade } from "./trades";
 
 const tradesNamespace = remotes.Server.GetNamespace("trades");
 
@@ -34,5 +35,13 @@ declineTradeRequest.Connect((receiver, creator) => {
 
 		receiver.SetAttribute(TRADING_ATTRIBUTE, undefined);
 		creator.SetAttribute(TRADING_ATTRIBUTE, undefined);
+	}
+});
+
+Players.PlayerRemoving.Connect((player) => {
+	// remove a trade if it exists
+	const traders = removeTrade(player);
+	for (const trader of traders) {
+		trader.SetAttribute(TRADING_ATTRIBUTE, undefined);
 	}
 });
