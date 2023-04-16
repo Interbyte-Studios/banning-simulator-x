@@ -40,7 +40,7 @@ export const EggCostView = RoactRodux.connect(mapStateToProps)((props: EggCostVi
 	return (
 		<StrokeTextLabel
 			native={{
-				Size: UDim2.fromScale(0.4, 0.1),
+				Size: UDim2.fromScale(0.3, 0.1),
 				Position: UDim2.fromScale(0.8, 0.2),
 				Text: twoDpAbbreviator.numberToString(eggCost.amount),
 				TextXAlignment: Enum.TextXAlignment.Left,
@@ -52,7 +52,7 @@ export const EggCostView = RoactRodux.connect(mapStateToProps)((props: EggCostVi
 		>
 			<CurrencyIcon
 				anchorPoint={new Vector2(0.5, 0.5)}
-				position={UDim2.fromScale(-0.175, 0.5)}
+				position={UDim2.fromScale(-0.25, 0.5)}
 				size={{ maximizedSize: 1, minimizedSize: 0.9 }}
 				currency={eggCost.currencyType}
 			/>

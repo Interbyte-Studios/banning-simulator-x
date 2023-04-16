@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { uiHeaderStrokeColor, uiOffButtonStrokeColor } from "client/ui/commonValues";
+import { uiDarkStrokeColor, uiHeaderStrokeColor } from "client/ui/commonValues";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
@@ -75,7 +75,7 @@ function HatchChance(props: { pet: PetData; variant: Variants }): Roact.Element 
 				Size: UDim2.fromScale(0.5, 0.1),
 				Text: props.variant !== "radiant" ? `${tostring(props.pet.chance)}% Hatch Chance` : `Cannot be hatched.`,
 			}}
-			stroke={{ native: { Thickness: 1.75 } }}
+			stroke={{ native: { Thickness: 1.75, Color: uiDarkStrokeColor } }}
 		/>
 	);
 }
@@ -122,12 +122,10 @@ function HatchedCounter(props: { hatches: number | undefined }): Roact.Element {
 				Position: UDim2.fromScale(0.5, 0.6),
 				Size: UDim2.fromScale(0.9, 0.18),
 				Text:
-					props.hatches !== undefined
-						? `Hatches: ${twoDpAbbreviator.numberToString(props.hatches)}`
-						: "Hatches: Unavailable",
+					props.hatches !== undefined ? `Hatches: ${twoDpAbbreviator.numberToString(props.hatches)}` : "Hatches: N/A",
 				TextXAlignment: Enum.TextXAlignment.Left,
 			}}
-			stroke={{ native: { Thickness: 1.75 } }}
+			stroke={{ native: { Thickness: 1.75, Color: uiDarkStrokeColor } }}
 		/>
 	);
 }
@@ -143,11 +141,10 @@ function FuseCounter(props: { fuses: number | undefined }): Roact.Element {
 			native={{
 				Position: UDim2.fromScale(0.5, 0.8),
 				Size: UDim2.fromScale(0.9, 0.18),
-				Text:
-					props.fuses !== undefined ? `Fuses: ${twoDpAbbreviator.numberToString(props.fuses)}` : "Fuses: Unavailable",
+				Text: props.fuses !== undefined ? `Fuses: ${twoDpAbbreviator.numberToString(props.fuses)}` : "Fuses: N/A",
 				TextXAlignment: Enum.TextXAlignment.Left,
 			}}
-			stroke={{ native: { Thickness: 1.75 } }}
+			stroke={{ native: { Thickness: 1.75, Color: uiDarkStrokeColor } }}
 		/>
 	);
 }
@@ -166,10 +163,10 @@ function MaxLevelsCounter(props: { maxLevels: number }): Roact.Element {
 				Text:
 					props.maxLevels !== undefined
 						? `Max Levels: ${twoDpAbbreviator.numberToString(props.maxLevels)}`
-						: "Max Levels: Unavailable",
+						: "Max Levels: N/A",
 				TextXAlignment: Enum.TextXAlignment.Left,
 			}}
-			stroke={{ native: { Thickness: 1.75 } }}
+			stroke={{ native: { Thickness: 1.75, Color: uiDarkStrokeColor } }}
 		/>
 	);
 }
@@ -294,17 +291,17 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
 					Size: UDim2.fromScale(0.4, 0.1),
 					Text: `Level 1:`,
 				}}
-				stroke={{ native: { Thickness: 1.5 } }}
+				stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
 			/>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.315, 0.425),
+					Position: UDim2.fromScale(0.8, 0.425),
 					Size: UDim2.fromScale(0.35, 0.1),
 					TextColor3: Color3.fromRGB(230, 64, 64),
 					Text: twoDpAbbreviator.numberToString(props.pet.stats.additionalDamage * variantMultiplier),
 					TextXAlignment: Enum.TextXAlignment.Left,
 				}}
-				stroke={{ native: { Thickness: 1.5, Color: uiOffButtonStrokeColor } }}
+				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(126, 24, 75) } }}
 			>
 				<DamageIcon
 					anchorPoint={new Vector2(0, 0.5)}
@@ -318,7 +315,7 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
 					Size: UDim2.fromScale(0.4, 0.1),
 					Text: `Level ${maxLevel}:`,
 				}}
-				stroke={{ native: { Thickness: 1.5 } }}
+				stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
 			/>
 			<StrokeTextLabel
 				native={{
@@ -328,7 +325,7 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
 					Text: twoDpAbbreviator.numberToString(maximumDamage),
 					TextXAlignment: Enum.TextXAlignment.Left,
 				}}
-				stroke={{ native: { Thickness: 1.5, Color: uiOffButtonStrokeColor } }}
+				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(126, 24, 75) } }}
 			>
 				<DamageIcon
 					anchorPoint={new Vector2(0, 0.5)}

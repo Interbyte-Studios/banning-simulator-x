@@ -89,6 +89,7 @@ const MasteryChallengeFrame = hooks(
 
 		return (
 			<BaseFrame
+				BackgroundTransparency={0}
 				Size={UDim2.fromScale(1, 0.3)}
 				LayoutOrder={props.number}
 				BackgroundColor3={Color3.fromRGB(0, 131, 213)}
@@ -99,6 +100,7 @@ const MasteryChallengeFrame = hooks(
 
 				{/* The number index of the mastery challenge. */}
 				<BaseFrame
+					BackgroundTransparency={0}
 					BackgroundColor3={challengeColor}
 					Position={UDim2.fromScale(0.08, 0.5)}
 					Size={UDim2.fromScale(0.175, 1)}
@@ -272,6 +274,8 @@ const MasteryChallengeFrame = hooks(
 					<BaseUIStroke native={{ Thickness: 2.4, Color: Color3.fromRGB(163, 70, 72) }} />
 
 					<BaseFrame
+						AnchorPoint={new Vector2(0, 0)}
+						Position={UDim2.fromScale(0, 0)}
 						BackgroundTransparency={0}
 						BackgroundColor3={Color3.fromRGB(130, 245, 166)}
 						Size={UDim2.fromScale(props.progress, 1)}
