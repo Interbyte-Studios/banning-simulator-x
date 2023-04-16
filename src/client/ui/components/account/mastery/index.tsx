@@ -1,6 +1,7 @@
 import Roact from "@rbxts/roact";
 import { retrieveStore } from "client/clientStores";
 import { vec2Middle } from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
@@ -137,12 +138,7 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 	} else if (masteryDisplayed === undefined) {
 		masteryElements.push(
 			<>
-				<frame
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.625)}
-					Size={UDim2.fromScale(0.9, 0.7)}
-				>
+				<BaseFrame Position={UDim2.fromScale(0.5, 0.625)} Size={UDim2.fromScale(0.9, 0.7)}>
 					<uigridlayout
 						CellPadding={UDim2.fromScale(-0.095, 0.1)}
 						CellSize={UDim2.fromScale(0.275, 0.26)}
@@ -188,7 +184,7 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 						layoutOrder={5}
 						onPressed={(): void => setMasteryDisplayed("Pet Experience")}
 					/>
-				</frame>
+				</BaseFrame>
 			</>,
 		);
 	}
