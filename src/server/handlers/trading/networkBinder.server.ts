@@ -4,7 +4,15 @@ import { remotes } from "shared/remotes";
 import { TRADING_ATTRIBUTE } from "shared/trading/tradingAttributes";
 
 import { requestTrade } from "./tradeRequests";
-import { acceptTrade, rejectTrade, removeTrade } from "./trades";
+import {
+	acceptTrade,
+	getTradeItems,
+	getTradeStatus,
+	getTradingCounterParty,
+	rejectTrade,
+	removeTrade,
+	TradeStatus,
+} from "./trades";
 
 const tradesNamespace = remotes.Server.GetNamespace("trades");
 
@@ -37,6 +45,34 @@ declineTradeRequest.Connect((receiver, creator) => {
 		creator.SetAttribute(TRADING_ATTRIBUTE, undefined);
 	}
 });
+
+const modifyOffer = tradesNamespace.Get("modifyOffer");
+const offerChanged = tradesNamespace.Get("offerChanged");
+modifyOffer.Connect(
+	withPlayerStore((player, store, offer) => {
+		// first, ensure a player is in a trade
+		if (getTradeStatus(player) !== TradeStatus.Trading) {
+			return;
+		}
+
+		// ensure the player owns all the items in the offer
+		const ownsEveryPet = offer.every(
+			(offerPet) => store.getState().pets.find((p) => p.guid === offerPet) !== undefined,
+		);
+		if (!ownsEveryPet) {
+			offerChanged.SendToPlayer(player, player, getTradeItems(player));
+			return;
+		}
+		// ensure that the pet guids are unique
+		if (new Set(offer).size() !== offer.size()) {
+			offerChanged.SendToPlayer(player, player, getTradeItems(player));
+			return;
+		}
+
+		// alert the other player that the offer changed
+		offerChanged.SendToPlayer(getTradingCounterParty(player), player, offer);
+	}),
+);
 
 Players.PlayerRemoving.Connect((player) => {
 	// remove a trade if it exists

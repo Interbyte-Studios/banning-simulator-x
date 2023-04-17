@@ -180,6 +180,29 @@ export function rejectTrade(receiver: Player, creator: Player): boolean {
 }
 
 /**
+ * Modifies the items on offer from a player for a specific trade.
+ *
+ * @param player The player who is modifying their trade.
+ * @param newOffer The new items they want to put in the trade.
+ * @returns If the attempt to modify items was accepted.
+ */
+export function modifyTrade(player: Player, newOffer: Trading["items"][number]["items"]): boolean {
+	const trade = currentTrades.get(player);
+	if (trade === undefined || trade.status !== TradeStatus.Trading) {
+		return false;
+	}
+
+	const playerItems = trade.items.find((playerItems) => playerItems.player === player);
+	if (!playerItems) {
+		// this case should never happen
+		return false;
+	}
+
+	playerItems.items = newOffer;
+	return true;
+}
+
+/**
  * Retrieves the trade of a specific player.
  *
  * This should ONLY be called during tests.
@@ -205,4 +228,44 @@ export function getTrade(player: Player): Readonly<Trade | undefined> {
  */
 export function getTradeStatus(player: Player): TradeStatus | undefined {
 	return currentTrades.get(player)?.status;
+}
+
+/**
+ * Retrieves the current items of a player in a trade.
+ *
+ * @param player The player who we want to retrieve their items.
+ * @returns The player's items.
+ */
+export function getTradeItems(player: Player): Readonly<Trading["items"][number]["items"]> {
+	const trade = currentTrades.get(player);
+	if (trade === undefined || trade.status !== TradeStatus.Trading) {
+		throw `Attempt to call getTradeItems on ${player} who is not in a trade.`;
+	}
+
+	const playerItems = trade.items.find((playerItems) => playerItems.player === player);
+	if (playerItems === undefined) {
+		throw `reached impossible case where ${player} had currentTrade but not in trade`;
+	}
+
+	return playerItems.items;
+}
+
+/**
+ * Gets the counter-party involved in a trade.
+ *
+ * @param player The first player involved in a trade.
+ * @returns The counter-party in the trade.
+ */
+export function getTradingCounterParty(player: Player): Player {
+	const trade = currentTrades.get(player);
+	if (trade === undefined || trade.status !== TradeStatus.Trading) {
+		throw `Attempt to getTradingCounterParty for player ${player} who does not have an active trade`;
+	}
+
+	const counterParty = trade.items.find((p) => p.player !== player);
+	if (counterParty === undefined) {
+		throw `reached impossible case where ${player} is the player in both parts of a trade`;
+	}
+
+	return counterParty.player;
 }
