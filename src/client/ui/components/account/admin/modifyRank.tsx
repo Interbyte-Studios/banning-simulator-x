@@ -156,6 +156,7 @@ export const ModifyRank = hooks((props: { playerViewing: Player; setActiveAction
 								<ImageButton
 									native={{
 										BackgroundTransparency: 0,
+										BackgroundColor3: Color3.fromRGB(0, 131, 213),
 										Size: UDim2.fromScale(0.925, 0.925),
 										Image: "",
 									}}

@@ -133,6 +133,7 @@ declare global {
 			talismans: Folder;
 		};
 		events: Folder & {
+			timeUpdated: NumberValue;
 			currency: Configuration & {
 				enabled: BoolValue;
 				multiplier: IntValue;

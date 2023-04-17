@@ -2,6 +2,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { ReplicatedStorage } from "@rbxts/services";
 import { vec2Middle } from "client/ui/commonValues";
+import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
 import { WeaponViewport } from "client/ui/elements/viewports/weaponViewport";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
@@ -45,18 +46,17 @@ export const WeaponEquip = RoactRodux.connect(mapStateToProps)(
 		assert(weapon, `Expected to find weapon with id: "${props.weaponId}"`);
 
 		return (
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.925)}
-				Size={UDim2.fromScale(0.0615, 0.1)}
-				Image={assetIds.images.ui.equip.background}
-				ScaleType={Enum.ScaleType.Fit}
+			<ImageButton
+				native={{
+					Position: UDim2.fromScale(0.5, 0.925),
+					Size: UDim2.fromScale(0.0615, 0.1),
+					Image: assetIds.images.ui.equip.background,
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
 				<WeaponViewport weaponId={props.weaponId} />
 				<FakeWeaponEquip weaponName={weapon.Name as WeaponIndex} />
-			</imagebutton>
+			</ImageButton>
 		);
 	}),
 );

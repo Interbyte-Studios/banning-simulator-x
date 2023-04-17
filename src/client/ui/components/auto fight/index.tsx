@@ -1,14 +1,16 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { MarketplaceService, Players, RunService, Workspace } from "@rbxts/services";
+import { MarketplaceService, Players, ReplicatedStorage, RunService, Workspace } from "@rbxts/services";
 import { toggleAutoFight } from "client/modules/autoFightWalkspeedHandler";
-import { font, vec2Middle } from "client/ui/commonValues";
+import { uiClaimButtonStrokeColor, uiDarkStrokeColor, uiHeaderStrokeColor, vec2Middle } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
-import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { ExitButton } from "client/ui/elements/common/exitButton";
+import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
@@ -405,7 +407,13 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 								continue;
 							}
 
-							cachedCurrency.amount += npcData.reward.currency;
+							if (ReplicatedStorage.events.currency.enabled.Value) {
+								if (ReplicatedStorage.events.currency.multiplier.Value > 2) {
+									cachedCurrency.amount += npcData.reward.currency * ReplicatedStorage.events.currency.multiplier.Value;
+								}
+							} else {
+								cachedCurrency.amount += npcData.reward.currency;
+							}
 						}
 					}
 
@@ -424,130 +432,97 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 
 		if (!isEnabled) {
 			if (!props.gamepasses["Auto Fight"]) {
-				const minimizedSize = 0.6;
-				const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-				const maximizedSize = 0.7;
-				const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-				const { motor, binding } = useBindingMotor(hooks, maximizedSize);
-
 				return (
-					<imagelabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.5, 0.675)}
-						Image={assetIds.images.ui.teleportation.background}
-						ScaleType={Enum.ScaleType.Fit}
+					<ImageLabel
+						native={{
+							Size: UDim2.fromScale(0.5, 0.675),
+							Image: assetIds.images.ui.teleportation.background,
+						}}
 					>
 						<uiaspectratioconstraint AspectRatio={1.163} />
 
-						<textlabel
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.5, 0.063)}
-							Size={UDim2.fromScale(0.425, 0.11)}
-							Font={font}
-							Text={`Auto Fight`}
-							TextScaled={true}
-							TextColor3={Color3.fromRGB(255, 255, 255)}
-						>
-							<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(165, 90, 7) }} />
-						</textlabel>
-						<textlabel
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.5, 0.2)}
-							Size={UDim2.fromScale(0.85, 0.11)}
-							Font={font}
-							Text={`You do not own Auto Fight!`}
-							TextScaled={true}
-							TextColor3={Color3.fromRGB(255, 255, 255)}
-						>
-							<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 79, 130) }} />
-						</textlabel>
+						<StrokeTextLabel
+							native={{
+								Position: UDim2.fromScale(0.5, 0.063),
+								Size: UDim2.fromScale(0.425, 0.11),
+								Text: "Auto Fight",
+							}}
+							stroke={{ native: { Thickness: 2, Color: uiHeaderStrokeColor } }}
+						/>
 
-						<textlabel
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.5, 0.3)}
-							Size={UDim2.fromScale(0.85, 0.05)}
-							Font={font}
-							Text={`You can unlock Auto Fight by purchasing the gamepass:`}
-							TextScaled={true}
-							TextColor3={Color3.fromRGB(255, 255, 255)}
-						>
-							<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 79, 130) }} />
-						</textlabel>
-						<frame
-							AnchorPoint={vec2Middle}
+						<StrokeTextLabel
+							native={{
+								Position: UDim2.fromScale(0.5, 0.2),
+								Size: UDim2.fromScale(0.85, 0.11),
+								Text: "You do not own Auto Fight!",
+							}}
+							stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+						/>
+
+						<StrokeTextLabel
+							native={{
+								Position: UDim2.fromScale(0.5, 0.35),
+								Size: UDim2.fromScale(0.85, 0.11),
+								Text: "You can unlock Auto Fight by purchasing the gamepass:",
+							}}
+							stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+						/>
+
+						<BaseFrame
 							BackgroundTransparency={0}
 							BackgroundColor3={Color3.fromRGB(13, 147, 230)}
 							Position={UDim2.fromScale(0.5, 0.45)}
 							Size={UDim2.fromScale(0.6, 0.175)}
 						>
 							<uicorner CornerRadius={new UDim(0.15, 0)} />
-							<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 79, 130) }} />
+							<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
 
-							<textlabel
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.4, 0.5)}
-								Size={UDim2.fromScale(0.2, 0.4)}
-								Font={font}
-								Text={`R$699`}
-								TextScaled={true}
-								TextColor3={Color3.fromRGB(85, 255, 127)}
-							>
-								<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 79, 130) }} />
-							</textlabel>
-							<imagebutton
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.8, 0.5)}
-								Size={binding.map((value) => {
-									return UDim2.fromScale(0.35, value);
-								})}
-								Image={assetIds.images.ui.index.Claim}
-								ScaleType={Enum.ScaleType.Fit}
-								Event={{
+							<StrokeTextLabel
+								native={{
+									Position: UDim2.fromScale(0.4, 0.5),
+									Size: UDim2.fromScale(0.2, 0.4),
+									Text: "R$699",
+									TextColor3: Color3.fromRGB(85, 255, 127),
+								}}
+								stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+							/>
+
+							<SpringImageButton
+								native={{
+									Position: UDim2.fromScale(0.8, 0.5),
+									Image: assetIds.images.ui.index.Claim,
+								}}
+								size={{ minSize: 0.6, maxSize: 0.7 }}
+								events={{
 									/* eslint-disable jsdoc/require-jsdoc */
 									Activated: (): void => {
 										playSFX(UIEngagement.MinorEngagement);
 										MarketplaceService.PromptProductPurchase(Players.LocalPlayer, GAMEPASSES["Auto Fight"]);
 									},
-									MouseEnter: (): void => motor.setGoal(minimizedSpring),
-									MouseLeave: (): void => motor.setGoal(maximizedSpring),
 									/* eslint-enable jsdoc/require-jsdoc */
 								}}
 							>
 								<uiaspectratioconstraint AspectRatio={2} />
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.5, 0.5)}
-									Size={UDim2.fromScale(0.8, 0.8)}
-									Font={font}
-									Text={`Buy`}
-									TextScaled={true}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
-								>
-									<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(41, 120, 31) }} />
-								</textlabel>
-							</imagebutton>
 
-							<frame // todo: Convert to image label of auto fight gamepass
-								AnchorPoint={vec2Middle}
+								<StrokeTextLabel
+									native={{
+										Size: UDim2.fromScale(0.8, 0.8),
+										Text: "Buy",
+									}}
+									stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(41, 120, 31) } }}
+								/>
+							</SpringImageButton>
+
+							<BaseFrame // todo: Convert to image label of auto fight gamepass
 								BackgroundColor3={Color3.fromRGB(14, 165, 253)}
 								Position={UDim2.fromScale(0.135, 0.5)}
 								Size={UDim2.fromScale(0.9, 0.9)}
 							>
 								<uiaspectratioconstraint AspectRatio={1} />
 								<uicorner CornerRadius={new UDim(1, 0)} />
-								<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 79, 130) }} />
-							</frame>
-						</frame>
+								<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
+							</BaseFrame>
+						</BaseFrame>
 
 						<ExitButton
 							Position={UDim2.fromScale(0.975, 0.125)}
@@ -555,51 +530,35 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 							maximizedSize={0.1}
 							onClosed={(): void => props.hideMenu()}
 						/>
-					</imagelabel>
+					</ImageLabel>
 				);
 			} else {
-				const minimizedSize = 0.35;
-				const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-				const maximizedSize = 0.4;
-				const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-				const { motor, binding } = useBindingMotor(hooks, maximizedSize);
-
 				return (
-					<imagelabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Size={UDim2.fromScale(0.35, 0.4)}
-						Position={UDim2.fromScale(0.5, 0.75)}
-						Image={assetIds.images.ui.autoFight.minimized}
-						ScaleType={Enum.ScaleType.Fit}
+					<ImageLabel
+						native={{
+							Position: UDim2.fromScale(0.5, 0.75),
+							Size: UDim2.fromScale(0.35, 0.4),
+							Image: assetIds.images.ui.autoFight.minimized,
+						}}
 					>
 						<uiaspectratioconstraint AspectRatio={3.2} />
 
-						<textlabel
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.5, 0.4)}
-							Size={UDim2.fromScale(0.9, 0.3)}
-							Font={font}
-							Text={`Auto fight is not enabled.`}
-							TextScaled={true}
-							TextColor3={Color3.fromRGB(255, 255, 255)}
-						>
-							<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 79, 130) }} />
-						</textlabel>
+						<StrokeTextLabel
+							native={{
+								Position: UDim2.fromScale(0.5, 0.4),
+								Size: UDim2.fromScale(0.9, 0.3),
+								Text: "Auto fight is not enabled.",
+							}}
+							stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+						/>
 
-						<imagebutton
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.5, 0.9)}
-							Size={binding.map((value) => {
-								return UDim2.fromScale(0.4, value);
-							})}
-							Image={assetIds.images.ui.index.Claim}
-							ScaleType={Enum.ScaleType.Fit}
-							Event={{
+						<SpringImageButton
+							native={{
+								Position: UDim2.fromScale(0.5, 0.9),
+								Image: assetIds.images.ui.index.Claim,
+							}}
+							size={{ minSize: 0.35, maxSize: 0.4 }}
+							events={{
 								/* eslint-disable jsdoc/require-jsdoc */
 								Activated: (): void => {
 									playSFX(UIEngagement.MinorEngagement);
@@ -657,25 +616,17 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 									setSelectedZone(landingFolder.Name);
 									setIsEnabled(true);
 								},
-								MouseEnter: (): void => motor.setGoal(minimizedSpring),
-								MouseLeave: (): void => motor.setGoal(maximizedSpring),
 								/* eslint-enable jsdoc/require-jsdoc */
 							}}
 						>
-							<uiaspectratioconstraint AspectRatio={2} />
-							<textlabel
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.51, 0.5)}
-								Size={UDim2.fromScale(0.9, 0.9)}
-								Font={font}
-								Text={`Enable`}
-								TextScaled={true}
-								TextColor3={Color3.fromRGB(255, 255, 255)}
-							>
-								<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(43, 150, 61) }} />
-							</textlabel>
-						</imagebutton>
+							<StrokeTextLabel
+								native={{
+									Size: UDim2.fromScale(0.85, 0.85),
+									Text: "Start",
+								}}
+								stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
+							/>
+						</SpringImageButton>
 
 						<ExitButton
 							Position={UDim2.fromScale(0.975, 0.05)}
@@ -683,252 +634,180 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 							maximizedSize={0.3}
 							onClosed={(): void => props.hideMenu()}
 						/>
-					</imagelabel>
+					</ImageLabel>
 				);
 			}
 		} else {
 			if (!viewingRewards) {
-				const rewardsMinSize = 0.35;
-				const rewardsMinSpring = new Flipper.Spring(rewardsMinSize, { frequency: 5 });
-
-				const rewardsMaxSize = 0.4;
-				const rewardsMaxSpring = new Flipper.Spring(rewardsMaxSize, { frequency: 5 });
-
-				const rewardsMotor = useBindingMotor(hooks, rewardsMaxSize);
-
-				const minimizedSize = 0.2;
-				const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-				const maximizedSize = 0.25;
-				const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-				const weaponsMotor = useBindingMotor(hooks, maximizedSize);
-				const ranksMotor = useBindingMotor(hooks, maximizedSize);
-
 				return (
-					<imagelabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Size={UDim2.fromScale(0.35, 0.4)}
-						Position={UDim2.fromScale(0.5, 0.75)}
-						Image={assetIds.images.ui.autoFight.minimized}
-						ScaleType={Enum.ScaleType.Fit}
+					<ImageLabel
+						native={{
+							Position: UDim2.fromScale(0.5, 0.75),
+							Size: UDim2.fromScale(0.35, 0.4),
+							Image: assetIds.images.ui.autoFight.minimized,
+						}}
 					>
 						<uiaspectratioconstraint AspectRatio={3.2} />
 
-						<textlabel
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.5, 0.15)}
-							Size={UDim2.fromScale(0.9, 0.2)}
-							Font={font}
-							Text={`Auto Fight has been active for: ${formatTime(timeElapsed)}`}
-							TextScaled={true}
-							TextColor3={Color3.fromRGB(255, 255, 255)}
-						>
-							<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 79, 130) }} />
-						</textlabel>
+						<StrokeTextLabel
+							native={{
+								Position: UDim2.fromScale(0.5, 0.15),
+								Size: UDim2.fromScale(0.9, 0.2),
+								Text: `Auto Fight has been active for: ${formatTime(timeElapsed)}`,
+							}}
+							stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+						/>
 
-						<imagelabel
-							AnchorPoint={vec2Middle}
-							Position={UDim2.fromScale(0.25, 0.5)}
-							Size={UDim2.fromScale(0.475, 0.3)}
-							BackgroundTransparency={1}
-							Image={assetIds.images.ui.settings["setting background"]}
+						<StrokeTextLabel
+							native={{
+								Position: UDim2.fromScale(0.5, 0.335),
+								Size: UDim2.fromScale(0.975, 0.15),
+								Text: "(Make sure to interact every 20 minutes so you don't get kicked!)",
+							}}
+							stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+						/>
+
+						<ImageLabel
+							native={{
+								Position: UDim2.fromScale(0.25, 0.65),
+								Size: UDim2.fromScale(0.475, 0.3),
+								Image: assetIds.images.ui.settings["setting background"],
+							}}
 						>
-							<textlabel
-								AnchorPoint={vec2Middle}
-								Position={UDim2.fromScale(0.35, 0.5)}
-								Size={UDim2.fromScale(0.6, 0.8)}
-								BackgroundTransparency={1}
-								TextScaled={true}
-								TextColor3={Color3.fromRGB(255, 255, 255)}
-								TextXAlignment={Enum.TextXAlignment.Left}
-								Font={font}
-								Text={"Buy Weapons"}
-							>
-								<BaseUIStroke native={{ Thickness: 2 }} />
-							</textlabel>
-							<imagebutton
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.85, 0.5)}
-								Size={weaponsMotor.binding.map((value) => {
-									return UDim2.fromScale(value, 0.9);
-								})}
-								Image={purchaseWeaponsEnabled ? assetIds.images.ui.index.Claim : assetIds.images.ui.index.Off}
-								ScaleType={Enum.ScaleType.Fit}
-								Event={{
+							<StrokeTextLabel
+								native={{
+									Position: UDim2.fromScale(0.35, 0.5),
+									Size: UDim2.fromScale(0.6, 0.8),
+									TextXAlignment: Enum.TextXAlignment.Left,
+									Text: "Buy Weapons",
+								}}
+								stroke={{ native: { Thickness: 2 } }}
+							/>
+
+							<SpringImageButton
+								native={{
+									Position: UDim2.fromScale(0.85, 0.5),
+									Image: purchaseWeaponsEnabled ? assetIds.images.ui.index.Claim : assetIds.images.ui.index.Off,
+								}}
+								size={{ minSize: 0.55, maxSize: 0.6 }}
+								events={{
 									// eslint-disable-next-line jsdoc/require-jsdoc
 									Activated: (): void => {
 										playSFX(UIEngagement.MinorEngagement);
 										setPurchaseWeaponsEnabled(!purchaseWeaponsEnabled);
 									},
-									// eslint-disable-next-line jsdoc/require-jsdoc
-									MouseEnter: (): void => weaponsMotor.motor.setGoal(minimizedSpring),
-									// eslint-disable-next-line jsdoc/require-jsdoc
-									MouseLeave: (): void => weaponsMotor.motor.setGoal(maximizedSpring),
 								}}
 							>
 								<uiaspectratioconstraint AspectRatio={2} />
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.5, 0.5)}
-									Size={UDim2.fromScale(0.9, 0.9)}
-									Text={purchaseWeaponsEnabled ? "On" : "Off"}
-									TextScaled={true}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
-									Font={font}
-								>
-									<BaseUIStroke
-										native={{
+								<StrokeTextLabel
+									native={{
+										Size: UDim2.fromScale(0.9, 0.9),
+										Text: purchaseWeaponsEnabled ? "On" : "Off",
+									}}
+									stroke={{
+										native: {
 											Thickness: 1.5,
 											Color: purchaseWeaponsEnabled ? Color3.fromRGB(36, 159, 66) : Color3.fromRGB(106, 14, 46),
-										}}
-									/>
-								</textlabel>
-							</imagebutton>
-						</imagelabel>
+										},
+									}}
+								/>
+							</SpringImageButton>
+						</ImageLabel>
 
-						<imagelabel
-							AnchorPoint={vec2Middle}
-							Position={UDim2.fromScale(0.75, 0.5)}
-							Size={UDim2.fromScale(0.475, 0.3)}
-							BackgroundTransparency={1}
-							Image={assetIds.images.ui.settings["setting background"]}
+						<ImageLabel
+							native={{
+								Position: UDim2.fromScale(0.75, 0.65),
+								Size: UDim2.fromScale(0.475, 0.3),
+								Image: assetIds.images.ui.settings["setting background"],
+							}}
 						>
-							<textlabel
-								AnchorPoint={vec2Middle}
-								Position={UDim2.fromScale(0.35, 0.5)}
-								Size={UDim2.fromScale(0.6, 0.8)}
-								BackgroundTransparency={1}
-								TextScaled={true}
-								TextColor3={Color3.fromRGB(255, 255, 255)}
-								TextXAlignment={Enum.TextXAlignment.Left}
-								Font={font}
-								Text={"Buy Ranks"}
-							>
-								<BaseUIStroke native={{ Thickness: 2 }} />
-							</textlabel>
-							<imagebutton
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.85, 0.5)}
-								Size={ranksMotor.binding.map((value) => {
-									return UDim2.fromScale(value, 0.9);
-								})}
-								Image={autoRankEnabled ? assetIds.images.ui.index.Claim : assetIds.images.ui.index.Off}
-								ScaleType={Enum.ScaleType.Fit}
-								Event={{
+							<StrokeTextLabel
+								native={{
+									Position: UDim2.fromScale(0.35, 0.5),
+									Size: UDim2.fromScale(0.6, 0.8),
+									TextXAlignment: Enum.TextXAlignment.Left,
+									Text: "Buy Ranks",
+								}}
+								stroke={{ native: { Thickness: 2 } }}
+							/>
+
+							<SpringImageButton
+								native={{
+									Position: UDim2.fromScale(0.85, 0.5),
+									Image: autoRankEnabled ? assetIds.images.ui.index.Claim : assetIds.images.ui.index.Off,
+								}}
+								size={{ minSize: 0.55, maxSize: 0.6 }}
+								events={{
 									// eslint-disable-next-line jsdoc/require-jsdoc
 									Activated: (): void => {
 										playSFX(UIEngagement.MinorEngagement);
 										setAutoRankEnabled(!autoRankEnabled);
 									},
-									// eslint-disable-next-line jsdoc/require-jsdoc
-									MouseEnter: (): void => ranksMotor.motor.setGoal(minimizedSpring),
-									// eslint-disable-next-line jsdoc/require-jsdoc
-									MouseLeave: (): void => ranksMotor.motor.setGoal(maximizedSpring),
 								}}
 							>
 								<uiaspectratioconstraint AspectRatio={2} />
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.5, 0.5)}
-									Size={UDim2.fromScale(0.9, 0.9)}
-									Text={autoRankEnabled ? "On" : "Off"}
-									TextScaled={true}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
-									Font={font}
-								>
-									<BaseUIStroke
-										native={{
+								<StrokeTextLabel
+									native={{
+										Size: UDim2.fromScale(0.9, 0.9),
+										Text: autoRankEnabled ? "On" : "Off",
+									}}
+									stroke={{
+										native: {
 											Thickness: 1.5,
 											Color: autoRankEnabled ? Color3.fromRGB(36, 159, 66) : Color3.fromRGB(106, 14, 46),
-										}}
-									/>
-								</textlabel>
-							</imagebutton>
-						</imagelabel>
+										},
+									}}
+								/>
+							</SpringImageButton>
+						</ImageLabel>
 
-						<imagebutton
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.5, 0.9)}
-							Size={rewardsMotor.binding.map((value) => {
-								if (value < rewardsMinSize) {
-									return UDim2.fromScale(rewardsMinSize, rewardsMaxSize);
-								}
-
-								return UDim2.fromScale(value, value);
-							})}
-							Image={assetIds.images.ui.index.Claim}
-							ScaleType={Enum.ScaleType.Fit}
-							Event={{
+						<SpringImageButton
+							native={{
+								Position: UDim2.fromScale(0.5, 1.05),
+								Image: assetIds.images.ui.index.Claim,
+							}}
+							size={{ minSize: 0.35, maxSize: 0.4 }}
+							events={{
 								/* eslint-disable jsdoc/require-jsdoc */
 								Activated: (): void => {
 									playSFX(UIEngagement.MinorEngagement);
 									setViewingRewards(true);
 								},
-								MouseEnter: (): void => rewardsMotor.motor.setGoal(rewardsMaxSpring),
-								MouseLeave: (): void => rewardsMotor.motor.setGoal(rewardsMinSpring),
-								/* eslint-enable jsdoc/require-jsdoc */
 							}}
 						>
 							<uiaspectratioconstraint AspectRatio={2} />
-							<textlabel
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.51, 0.5)}
-								Size={UDim2.fromScale(0.9, 0.9)}
-								Font={font}
-								Text={`Rewards`}
-								TextScaled={true}
-								TextColor3={Color3.fromRGB(255, 255, 255)}
-							>
-								<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(43, 150, 61) }} />
-							</textlabel>
-						</imagebutton>
-					</imagelabel>
+							<StrokeTextLabel
+								native={{
+									Position: UDim2.fromScale(0.51, 0.5),
+									Size: UDim2.fromScale(0.9, 0.9),
+									Text: "Rewards",
+								}}
+								stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(43, 150, 61) } }}
+							/>
+						</SpringImageButton>
+					</ImageLabel>
 				);
 			} else {
 				const cachedWeaponData = getWeaponInfo(autoFightCache.startingWeapon);
 				const storedWeaponData = getWeaponInfo(props.currentWeapon.id);
 
-				const minimizedSize = 0.2;
-				const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-				const maximizedSize = 0.25;
-				const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-				const continueMotor = useBindingMotor(hooks, maximizedSize);
-				const disableMotor = useBindingMotor(hooks, maximizedSize);
-
 				return (
-					<imagelabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.5, 0.675)}
-						Image={assetIds.images.ui.teleportation.background}
-						ScaleType={Enum.ScaleType.Fit}
+					<ImageLabel
+						native={{
+							Size: UDim2.fromScale(0.5, 0.675),
+							Image: assetIds.images.ui.teleportation.background,
+						}}
 					>
 						<uiaspectratioconstraint AspectRatio={1.163} />
 
-						<textlabel
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.5, 0.063)}
-							Size={UDim2.fromScale(0.425, 0.11)}
-							Font={font}
-							Text={`Auto Fight`}
-							TextScaled={true}
-							TextColor3={Color3.fromRGB(255, 255, 255)}
-						>
-							<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(165, 90, 7) }} />
-						</textlabel>
+						<StrokeTextLabel
+							native={{
+								Position: UDim2.fromScale(0.5, 0.063),
+								Size: UDim2.fromScale(0.425, 0.11),
+								Text: "Auto Fight",
+							}}
+							stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(165, 90, 7) } }}
+						/>
 
 						<scrollingframe
 							AnchorPoint={vec2Middle}
@@ -943,8 +822,8 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 
 							{autoFightCache.obtainedCurrency.map((currencyData) => {
 								return (
-									<frame
-										AnchorPoint={vec2Middle}
+									<BaseFrame
+										BackgroundTransparency={0}
 										BackgroundColor3={Color3.fromRGB(26, 116, 172)}
 										Size={UDim2.fromScale(1, 0.12)}
 									>
@@ -955,216 +834,169 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 											size={{ minimizedSize: 0.8, maximizedSize: 0.9 }}
 											currency={currencyData.name}
 										/>
-										<textlabel
-											AnchorPoint={vec2Middle}
-											BackgroundTransparency={1}
-											Position={UDim2.fromScale(0.4, 0.5)}
-											Size={UDim2.fromScale(0.5, 0.5)}
-											Font={font}
-											Text={`${
-												currencyData.name === "coins" ? "Coins" : currencyData.name === "gems" ? "Gems" : "Currency"
-											} Earned:`}
-											TextScaled={true}
-											TextColor3={Color3.fromRGB(255, 255, 255)}
-											TextXAlignment={Enum.TextXAlignment.Left}
-										>
-											<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 79, 130) }} />
-										</textlabel>
-										<textlabel
-											AnchorPoint={vec2Middle}
-											BackgroundTransparency={1}
-											Position={UDim2.fromScale(0.825, 0.5)}
-											Size={UDim2.fromScale(0.3, 0.7)}
-											Font={font}
-											Text={twoDpAbbreviator.numberToString(currencyData.amount)}
-											TextScaled={true}
-											TextColor3={Color3.fromRGB(255, 255, 255)}
-											TextXAlignment={Enum.TextXAlignment.Right}
-										>
-											<BaseUIStroke
-												native={{ Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }}
-												currencyGradient={currencyData.name}
-											/>
-										</textlabel>
-									</frame>
+
+										<StrokeTextLabel
+											native={{
+												Position: UDim2.fromScale(0.4, 0.5),
+												Size: UDim2.fromScale(0.5, 0.8),
+												Text: `${
+													currencyData.name === "coins" ? "Coins" : currencyData.name === "gems" ? "Gems" : "Currency"
+												} Earned ${
+													ReplicatedStorage.events.currency.enabled.Value &&
+													ReplicatedStorage.events.currency.multiplier.Value > 2
+														? "(event)"
+														: ""
+												}:`,
+												TextXAlignment: Enum.TextXAlignment.Left,
+											}}
+											stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+										/>
+
+										<StrokeTextLabel
+											native={{
+												Position: UDim2.fromScale(0.825, 0.5),
+												Size: UDim2.fromScale(0.3, 0.7),
+												Text: twoDpAbbreviator.numberToString(currencyData.amount),
+												TextXAlignment: Enum.TextXAlignment.Right,
+											}}
+											stroke={{
+												native: { Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) },
+												currencyGradient: currencyData.name,
+											}}
+										/>
+									</BaseFrame>
 								);
 							})}
 
-							<frame
-								AnchorPoint={vec2Middle}
+							<BaseFrame
+								BackgroundTransparency={0}
 								BackgroundColor3={Color3.fromRGB(26, 116, 172)}
 								Size={UDim2.fromScale(1, 0.12)}
 							>
 								<uicorner CornerRadius={new UDim(0.3, 0)} />
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.265, 0.5)}
-									Size={UDim2.fromScale(0.5, 0.5)}
-									Font={font}
-									Text={"Starting Rank:"}
-									TextScaled={true}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
-									TextXAlignment={Enum.TextXAlignment.Left}
-								>
-									<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 79, 130) }} />
-								</textlabel>
+								<StrokeTextLabel
+									native={{
+										Position: UDim2.fromScale(0.265, 0.5),
+										Size: UDim2.fromScale(0.5, 0.8),
+										Text: "Starting Rank:",
+										TextXAlignment: Enum.TextXAlignment.Left,
+									}}
+									stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+								/>
 								<RankIcon
 									rank={autoFightCache.startingRank}
 									position={UDim2.fromScale(0.925, 0.5)}
 									size={{ minimizedSize: 0.8, maximizedSize: 0.9 }}
 								/>
-							</frame>
+							</BaseFrame>
 
-							<frame
-								AnchorPoint={vec2Middle}
+							<BaseFrame
+								BackgroundTransparency={0}
 								BackgroundColor3={Color3.fromRGB(26, 116, 172)}
 								Size={UDim2.fromScale(1, 0.12)}
 							>
 								<uicorner CornerRadius={new UDim(0.3, 0)} />
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.265, 0.5)}
-									Size={UDim2.fromScale(0.5, 0.5)}
-									Font={font}
-									Text={"Ending Rank:"}
-									TextScaled={true}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
-									TextXAlignment={Enum.TextXAlignment.Left}
-								>
-									<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 79, 130) }} />
-								</textlabel>
+								<StrokeTextLabel
+									native={{
+										Position: UDim2.fromScale(0.265, 0.5),
+										Size: UDim2.fromScale(0.5, 0.8),
+										Text: "Ending Rank:",
+										TextXAlignment: Enum.TextXAlignment.Left,
+									}}
+									stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+								/>
 								<RankIcon
 									rank={props.rank}
 									position={UDim2.fromScale(0.925, 0.5)}
 									size={{ minimizedSize: 0.8, maximizedSize: 0.9 }}
 								/>
-							</frame>
+							</BaseFrame>
 
-							<frame
-								AnchorPoint={vec2Middle}
+							<BaseFrame
+								BackgroundTransparency={0}
 								BackgroundColor3={Color3.fromRGB(26, 116, 172)}
 								Size={UDim2.fromScale(1, 0.12)}
 							>
 								<uicorner CornerRadius={new UDim(0.3, 0)} />
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.265, 0.5)}
-									Size={UDim2.fromScale(0.5, 0.5)}
-									Font={font}
-									Text={"Starting Weapon:"}
-									TextScaled={true}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
-									TextXAlignment={Enum.TextXAlignment.Left}
-								>
-									<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 79, 130) }} />
-								</textlabel>
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.825, 0.5)}
-									Size={UDim2.fromScale(0.3, 0.7)}
-									Font={font}
-									Text={cachedWeaponData.name}
-									TextScaled={true}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
-									TextXAlignment={Enum.TextXAlignment.Right}
-								>
-									<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 79, 130) }} />
-								</textlabel>
-							</frame>
+								<StrokeTextLabel
+									native={{
+										Position: UDim2.fromScale(0.265, 0.5),
+										Size: UDim2.fromScale(0.5, 0.8),
+										Text: "Starting Weapon:",
+										TextXAlignment: Enum.TextXAlignment.Left,
+									}}
+									stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+								/>
+								<StrokeTextLabel
+									native={{
+										Position: UDim2.fromScale(0.825, 0.5),
+										Size: UDim2.fromScale(0.3, 0.7),
+										Text: cachedWeaponData.name,
+										TextXAlignment: Enum.TextXAlignment.Right,
+									}}
+									stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+								/>
+							</BaseFrame>
 
-							<frame
-								AnchorPoint={vec2Middle}
+							<BaseFrame
+								BackgroundTransparency={0}
 								BackgroundColor3={Color3.fromRGB(26, 116, 172)}
 								Size={UDim2.fromScale(1, 0.12)}
 							>
 								<uicorner CornerRadius={new UDim(0.3, 0)} />
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.265, 0.5)}
-									Size={UDim2.fromScale(0.5, 0.5)}
-									Font={font}
-									Text={"Ending Weapon:"}
-									TextScaled={true}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
-									TextXAlignment={Enum.TextXAlignment.Left}
-								>
-									<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 79, 130) }} />
-								</textlabel>
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.825, 0.5)}
-									Size={UDim2.fromScale(0.3, 0.7)}
-									Font={font}
-									Text={storedWeaponData.name}
-									TextScaled={true}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
-									TextXAlignment={Enum.TextXAlignment.Right}
-								>
-									<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 79, 130) }} />
-								</textlabel>
-							</frame>
+								<StrokeTextLabel
+									native={{
+										Position: UDim2.fromScale(0.265, 0.5),
+										Size: UDim2.fromScale(0.5, 0.8),
+										Text: "Ending Weapon:",
+										TextXAlignment: Enum.TextXAlignment.Left,
+									}}
+									stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+								/>
+								<StrokeTextLabel
+									native={{
+										Position: UDim2.fromScale(0.825, 0.5),
+										Size: UDim2.fromScale(0.3, 0.7),
+										Text: storedWeaponData.name,
+										TextXAlignment: Enum.TextXAlignment.Right,
+									}}
+									stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+								/>
+							</BaseFrame>
 						</scrollingframe>
 
-						<imagebutton
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.7, 1.1)}
-							Size={continueMotor.binding.map((value) => {
-								if (value > maximizedSize) {
-									return UDim2.fromScale(maximizedSize, maximizedSize);
-								}
-
-								return UDim2.fromScale(value, value);
-							})}
-							Image={assetIds.images.ui.index.Claim}
-							ScaleType={Enum.ScaleType.Fit}
-							Event={{
+						<SpringImageButton
+							native={{
+								Position: UDim2.fromScale(0.7, 1.1),
+								Image: assetIds.images.ui.index.Claim,
+							}}
+							size={{ minSize: 0.2, maxSize: 0.25 }}
+							events={{
 								/* eslint-disable jsdoc/require-jsdoc */
 								Activated: (): void => {
 									playSFX(UIEngagement.MinorEngagement);
 									setViewingRewards(false);
 								},
-								MouseEnter: (): void => continueMotor.motor.setGoal(minimizedSpring),
-								MouseLeave: (): void => continueMotor.motor.setGoal(maximizedSpring),
-								/* eslint-enable jsdoc/require-jsdoc */
 							}}
 						>
 							<uiaspectratioconstraint AspectRatio={2} />
 
-							<textlabel
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.5, 0.5)}
-								Size={UDim2.fromScale(0.9, 0.9)}
-								Font={font}
-								Text={"Continue"}
-								TextColor3={Color3.fromRGB(255, 255, 255)}
-								TextScaled={true}
-							>
-								<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(43, 150, 61) }} />
-							</textlabel>
-						</imagebutton>
+							<StrokeTextLabel
+								native={{
+									Size: UDim2.fromScale(0.9, 0.9),
+									Text: "Continue",
+								}}
+								stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(43, 150, 61) } }}
+							/>
+						</SpringImageButton>
 
-						<imagebutton
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Position={UDim2.fromScale(0.3, 1.1)}
-							Size={disableMotor.binding.map((value) => {
-								if (value > maximizedSize) {
-									return UDim2.fromScale(maximizedSize, maximizedSize);
-								}
-
-								return UDim2.fromScale(value, value);
-							})}
-							Image={assetIds.images.ui.index.Off}
-							ScaleType={Enum.ScaleType.Fit}
-							Event={{
+						<SpringImageButton
+							native={{
+								Position: UDim2.fromScale(0.3, 1.1),
+								Image: assetIds.images.ui.index.Off,
+							}}
+							size={{ minSize: 0.2, maxSize: 0.25 }}
+							events={{
 								/* eslint-disable jsdoc/require-jsdoc */
 								Activated: (): void => {
 									playSFX(UIEngagement.MinorEngagement);
@@ -1172,27 +1004,19 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 									setViewingRewards(false);
 									setIsEnabled(false);
 								},
-								MouseEnter: (): void => disableMotor.motor.setGoal(minimizedSpring),
-								MouseLeave: (): void => disableMotor.motor.setGoal(maximizedSpring),
-								/* eslint-enable jsdoc/require-jsdoc */
 							}}
 						>
 							<uiaspectratioconstraint AspectRatio={2} />
 
-							<textlabel
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.5, 0.5)}
-								Size={UDim2.fromScale(0.9, 0.9)}
-								Font={font}
-								Text={"Disable"}
-								TextColor3={Color3.fromRGB(255, 255, 255)}
-								TextScaled={true}
-							>
-								<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(150, 43, 43) }} />
-							</textlabel>
-						</imagebutton>
-					</imagelabel>
+							<StrokeTextLabel
+								native={{
+									Size: UDim2.fromScale(0.9, 0.9),
+									Text: "Disable",
+								}}
+								stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(150, 43, 43) } }}
+							/>
+						</SpringImageButton>
+					</ImageLabel>
 				);
 			}
 		}

@@ -11,52 +11,6 @@ interface DatastoreEventCache {
 	multiplier: number;
 }
 
-/**
- * Checks for an event and updates the cached state.
- *
- * @param eventName The name of the event to check for.
- * @param isEnabled Whether the event is enabled.
- * @param cachedState The cached state of the events.
- * @param updateState The function to update the cached state.
- */
-const checkForEvent = (
-	eventName: DatastoreEventType,
-	isEnabled: boolean,
-	cachedState: ReadonlyArray<DatastoreEventCache>,
-	updateState: (events: Array<DatastoreEventCache>) => void,
-): void => {
-	if (!isEnabled) {
-		const cachedEventIndex = cachedState.findIndex((eventData) => eventData.eventName === "currency");
-		if (cachedEventIndex === undefined) {
-			return;
-		}
-
-		const newCachedState = [...cachedState];
-		newCachedState.unorderedRemove(cachedEventIndex);
-		updateState(newCachedState);
-		return;
-	}
-
-	const cachedEvent = cachedState.find((eventData) => eventData.eventName === "currency");
-	if (cachedEvent !== undefined) {
-		return;
-	}
-
-	if (eventName === "luck") {
-		updateState([{ eventName: "luck", multiplier: 2 }]);
-		return;
-	}
-
-	const multiplierIntValue = ReplicatedStorage.events[eventName].FindFirstChildOfClass("IntValue");
-	if (multiplierIntValue === undefined) {
-		warn(`Failed to display event for ${eventName} because multiplier IntValue was undefined.`);
-		return;
-	}
-
-	warn(`Displaying event for ${eventName} with multiplier ${multiplierIntValue.Value}.`);
-	updateState([{ eventName, multiplier: multiplierIntValue.Value }]);
-};
-
 // Displays active events.
 export const DatastoreEvents = hooks((props: { enabled: boolean }, { useState, useEffect }) => {
 	const [eventsEnabled, setEventsEnabled] = useState<Array<DatastoreEventCache>>([]);
@@ -86,31 +40,36 @@ export const DatastoreEvents = hooks((props: { enabled: boolean }, { useState, u
 	}, []);
 
 	useEffect(() => {
-		const connections: Array<RBXScriptConnection> = [];
+		const connection = ReplicatedStorage.events.timeUpdated.GetPropertyChangedSignal("Value").Connect(() => {
+			const eventsToEnable: Array<DatastoreEventCache> = [];
 
-		const currencyConnection = ReplicatedStorage.events.currency.enabled
-			.GetPropertyChangedSignal("Value")
-			.Connect(() =>
-				checkForEvent("currency", ReplicatedStorage.events.currency.enabled.Value, eventsEnabled, setEventsEnabled),
-			);
-		connections.push(currencyConnection);
+			if (ReplicatedStorage.events.luck.enabled.Value) {
+				eventsToEnable.push({ eventName: "luck", multiplier: 2 });
+			}
 
-		const experienceConnection = ReplicatedStorage.events.experience.enabled
-			.GetPropertyChangedSignal("Value")
-			.Connect(() =>
-				checkForEvent("experience", ReplicatedStorage.events.experience.enabled.Value, eventsEnabled, setEventsEnabled),
-			);
-		connections.push(experienceConnection);
+			if (ReplicatedStorage.events.currency.enabled.Value) {
+				if (ReplicatedStorage.events.currency.multiplier.Value > 2) {
+					eventsToEnable.push({
+						eventName: "currency",
+						multiplier: ReplicatedStorage.events.currency.multiplier.Value,
+					});
+				}
+			}
 
-		const luckConnection = ReplicatedStorage.events.luck.enabled
-			.GetPropertyChangedSignal("Value")
-			.Connect(() =>
-				checkForEvent("luck", ReplicatedStorage.events.luck.enabled.Value, eventsEnabled, setEventsEnabled),
-			);
-		connections.push(luckConnection);
+			if (ReplicatedStorage.events.experience.enabled.Value) {
+				if (ReplicatedStorage.events.experience.multiplier.Value > 2) {
+					eventsToEnable.push({
+						eventName: "experience",
+						multiplier: ReplicatedStorage.events.experience.multiplier.Value,
+					});
+				}
+			}
 
-		return (): void => connections.forEach((conn) => conn.Disconnect());
-	}, [props.enabled]);
+			setEventsEnabled(eventsToEnable);
+		});
+
+		return (): void => connection.Disconnect();
+	});
 
 	const messagesToDisplay: Array<Roact.Element> = [];
 

@@ -17,7 +17,8 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { FullComponentHeader } from "../util/fullComponentHeader";
 
-const MAX_ADMIN_CURRENCY = 500000000000000;
+const MAX_ADMIN_CURRENCY = 5e18;
+const MIN_ADMIN_CURRENCY = -5e18;
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAction: () => void }, hooks) => {
@@ -148,6 +149,7 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 					}}
 				/>
 				<BaseFrame
+					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 					Position={UDim2.fromScale(0.5, 0.615)}
 					Size={UDim2.fromScale(0.4, 0.125)}
@@ -185,6 +187,12 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 									}
 
 									setModifiedAmount(MAX_ADMIN_CURRENCY);
+								} else if (roundedNumber < MIN_ADMIN_CURRENCY) {
+									if (modifiedAmount === MIN_ADMIN_CURRENCY) {
+										return;
+									}
+
+									setModifiedAmount(MIN_ADMIN_CURRENCY);
 								} else setModifiedAmount(roundedNumber);
 							},
 						}}
