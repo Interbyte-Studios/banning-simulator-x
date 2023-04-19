@@ -43,6 +43,8 @@ import { PurchaseTalismanDefinition } from "shared/remotes/talismans/purchaseTal
 import { UnequipTalismanDefinition } from "shared/remotes/talismans/unequipTalisman";
 import { AcceptTradeRequestDefinition } from "shared/remotes/trading/acceptTradeRequest";
 import { DeclineTradeRequestDefinition } from "shared/remotes/trading/declineTradeRequest";
+import { ModifyOfferDefinition } from "shared/remotes/trading/modifyOffer";
+import { OfferChangedDefinition } from "shared/remotes/trading/offerChanged";
 import { RequestTradeDefinition } from "shared/remotes/trading/requestTrade";
 import { SendTradeRequestDefinition } from "shared/remotes/trading/sendTradeRequest";
 import { TradeRequestDeclinedDefinition } from "shared/remotes/trading/tradeRequestDeclined";
@@ -155,6 +157,8 @@ export const fakeRemoteContext = {
 	acceptTradeRequest: fakeRemoteCall<AcceptTradeRequestDefinition>("acceptTradeRequest"),
 	declineTradeRequest: fakeRemoteCall<DeclineTradeRequestDefinition>("declineTradeRequest"),
 	tradeRequestDeclined: fakeServerToClientRemote<TradeRequestDeclinedDefinition>(),
+	modifyOffer: fakeRemoteCall<ModifyOfferDefinition>("modifyOffer"),
+	offerChanged: fakeServerToClientRemote<OfferChangedDefinition>(),
 };
 
 export const remoteContext = createContext(fakeRemoteContext);
