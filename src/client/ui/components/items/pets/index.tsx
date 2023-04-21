@@ -1,11 +1,17 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { setPetItemRowSize } from "client/handlers/item inventory/inventoryLayoutHandler";
-import { font, vec2Middle } from "client/ui/commonValues";
+import { font, uiDarkStrokeColor, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { Pet } from "shared/rodux/pets";
 
@@ -21,7 +27,6 @@ export interface PetInventoryData extends Pet {
 	isRendered: boolean;
 }
 
-/* eslint-disable jsdoc/require-jsdoc */
 export const ToggleShrink = hooks((_, hooks) => {
 	const { useState, useEffect } = hooks;
 	const [isExpanded, setExpanded] = useState(true);
@@ -31,110 +36,91 @@ export const ToggleShrink = hooks((_, hooks) => {
 	}, [isExpanded]);
 
 	return (
-		<imagebutton
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Position={UDim2.fromScale(0.765, 0.05)}
-			Size={UDim2.fromScale(0.09, 0.09)}
-			Image={isExpanded ? assetIds.images.ui.inventory.pets.shrink : assetIds.images.ui.inventory.pets.maximize}
-			ScaleType={Enum.ScaleType.Fit}
-			Event={{
-				Activated: (): void => setExpanded(!isExpanded),
+		<ImageButton
+			native={{
+				Position: UDim2.fromScale(0.765, 0.05),
+				Size: UDim2.fromScale(0.09, 0.09),
+				Image: isExpanded ? assetIds.images.ui.inventory.pets.shrink : assetIds.images.ui.inventory.pets.maximize,
 			}}
-		>
-			<uiaspectratioconstraint AspectRatio={1} />
-		</imagebutton>
+			events={{
+				// eslint-disable-next-line jsdoc/require-jsdoc
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					setExpanded(!isExpanded);
+				},
+			}}
+		/>
 	);
 });
-/* eslint-enable jsdoc/require-jsdoc */
 
-/* eslint-disable jsdoc/require-jsdoc */
-export const CancelMultiDeleteSelection = hooks((props: { completeMultiDelete: () => void }, hooks) => {
-	const minimizedSize = 0.35;
-	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-	const maximizedSize = 0.4;
-	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-	const { motor, binding } = useBindingMotor(hooks, maximizedSize);
-
+/**
+ * A button that leads to prompt the user to delete the selected pets.
+ *
+ * @param props - The props for the component.
+ * @param props.completeMultiDelete - A function that will complete the multi delete.
+ * @returns The component.
+ */
+export const CancelMultiDeleteSelection = (props: { completeMultiDelete: () => void }): Roact.Element => {
 	return (
-		<imagebutton
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Position={UDim2.fromScale(0.25, 0.75)}
-			Size={binding.map((value) => {
-				return UDim2.fromScale(value, 0.35);
-			})}
-			Image={assetIds.images.buttons["red toggle button"]}
-			ScaleType={Enum.ScaleType.Fit}
-			Event={{
-				Activated: (): void => props.completeMultiDelete(),
-				MouseEnter: (): void => motor.setGoal(minimizedSpring),
-				MouseLeave: (): void => motor.setGoal(maximizedSpring),
+		<SpringImageButton
+			native={{
+				Position: UDim2.fromScale(0.25, 0.75),
+				Image: assetIds.images.buttons["red toggle button"],
+			}}
+			size={{ minSize: 0.35, maxSize: 0.4 }}
+			events={{
+				// eslint-disable-next-line jsdoc/require-jsdoc
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.completeMultiDelete();
+				},
 			}}
 		>
-			<textlabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.7, 0.8)}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Text={"Cancel"}
-				Font={font}
-				TextScaled={true}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-			>
-				<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(122, 0, 0) }} />
-			</textlabel>
-		</imagebutton>
+			<StrokeTextLabel
+				native={{
+					Size: UDim2.fromScale(0.7, 0.8),
+					Text: "Cancel",
+				}}
+				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(122, 0, 0) } }}
+			/>
+		</SpringImageButton>
 	);
-});
-/* eslint-enable jsdoc/require-jsdoc */
+};
 
-/* eslint-disable jsdoc/require-jsdoc */
-export const AcceptMultiDeleteSelection = hooks((props: { completeMultiDelete: () => void }, hooks) => {
-	const minimizedSize = 0.35;
-	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-	const maximizedSize = 0.4;
-	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-	const { motor, binding } = useBindingMotor(hooks, maximizedSize);
-
+/**
+ * The final confirmation button for the multi delete.
+ *
+ * @param props - The props for the component.
+ * @param props.completeMultiDelete - A function that will complete the multi delete.
+ * @returns The component.
+ */
+export const AcceptMultiDeleteSelection = (props: { completeMultiDelete: () => void }): Roact.Element => {
 	return (
-		<imagebutton
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Position={UDim2.fromScale(0.75, 0.75)}
-			Size={binding.map((value) => {
-				return UDim2.fromScale(value, 0.35);
-			})}
-			Image={assetIds.images.buttons["green toggle button"]}
-			ScaleType={Enum.ScaleType.Fit}
-			Event={{
-				Activated: (): void => props.completeMultiDelete(),
-				MouseEnter: (): void => motor.setGoal(minimizedSpring),
-				MouseLeave: (): void => motor.setGoal(maximizedSpring),
+		<SpringImageButton
+			native={{
+				Position: UDim2.fromScale(0.75, 0.75),
+				Image: assetIds.images.buttons["green toggle button"],
+			}}
+			size={{ minSize: 0.35, maxSize: 0.4 }}
+			events={{
+				// eslint-disable-next-line jsdoc/require-jsdoc
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.completeMultiDelete();
+				},
 			}}
 		>
-			<textlabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.7, 0.8)}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Text={"Accept"}
-				Font={font}
-				TextScaled={true}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-			>
-				<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(5, 89, 0) }} />
-			</textlabel>
-		</imagebutton>
+			<StrokeTextLabel
+				native={{
+					Size: UDim2.fromScale(0.7, 0.8),
+					Text: "Accept",
+				}}
+				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(5, 89, 0) } }}
+			/>
+		</SpringImageButton>
 	);
-});
-/* eslint-enable jsdoc/require-jsdoc */
+};
 
-/* eslint-disable jsdoc/require-jsdoc */
 export const ToggleMultiDelete = hooks(
 	(
 		props: { isEnabled: boolean; setDeletion: (enabled: boolean) => void; petsToDelete: ReadonlyArray<string> },
@@ -147,26 +133,21 @@ export const ToggleMultiDelete = hooks(
 		const additionalElements: Array<Roact.Element> = [];
 		if (props.isEnabled) {
 			additionalElements.push(
-				<imagelabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(1.225, 0.175)}
-					Size={UDim2.fromScale(0.4, 0.35)}
-					Image={assetIds.images.ui.inventory.pets["delete-sidebar"]}
-					ScaleType={Enum.ScaleType.Fit}
+				<ImageLabel
+					native={{
+						Position: UDim2.fromScale(1.225, 0.175),
+						Size: UDim2.fromScale(0.4, 0.35),
+						Image: assetIds.images.ui.inventory.pets["delete-sidebar"],
+					}}
 				>
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Size={UDim2.fromScale(1, 0.3)}
-						Position={UDim2.fromScale(0.5, 0.25)}
-						Text={`Delete ${props.petsToDelete.size()} pets?`}
-						Font={font}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 74, 122) }} />
-					</textlabel>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(1, 0.3),
+							Position: UDim2.fromScale(0.5, 0.25),
+							Text: `Delete ${props.petsToDelete.size()} pets?`,
+						}}
+						stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+					/>
 					<CancelMultiDeleteSelection
 						completeMultiDelete={(): void => {
 							props.setDeletion(false);
@@ -176,36 +157,33 @@ export const ToggleMultiDelete = hooks(
 						completeMultiDelete={(): void => {
 							props.setDeletion(false);
 
-							print(props.petsToDelete);
-
 							deletePets.SendToServer(props.petsToDelete);
 						}}
 					/>
-				</imagelabel>,
+				</ImageLabel>,
 			);
 		}
 
 		return (
 			<>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.825, 0.05)}
-					Size={UDim2.fromScale(0.1, 0.1)}
-					Image={
-						props.isEnabled
+				<ImageButton
+					native={{
+						Position: UDim2.fromScale(0.825, 0.05),
+						Size: UDim2.fromScale(0.1, 0.1),
+						Image: props.isEnabled
 							? assetIds.images.ui.inventory.pets["multi-delete enabled"]
-							: assetIds.images.ui.inventory.pets["multi-delete disabled"]
-					}
-					ScaleType={Enum.ScaleType.Fit}
-					Event={{
+							: assetIds.images.ui.inventory.pets["multi-delete disabled"],
+					}}
+					events={{
+						// eslint-disable-next-line jsdoc/require-jsdoc
 						Activated: (): void => {
+							playSFX(UIEngagement.MinorEngagement);
 							props.setDeletion(!props.isEnabled);
 						},
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
-				</imagebutton>
+				</ImageButton>
 				{additionalElements}
 			</>
 		);
@@ -258,18 +236,14 @@ export const PetInventory = hooks((_, { useState, useCallback, useEffect }) => {
 	if (teamsEnabled) {
 		return (
 			<>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.2)}
-					Size={UDim2.fromScale(0.95, 0.05)}
-					Text={`Pet Teams allow you to functionally control multiple pets at once.`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Font={font}
-				>
-					<BaseUIStroke native={{ Thickness: 1, Color: Color3.fromRGB(0, 93, 150) }} />
-				</textlabel>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.2),
+						Size: UDim2.fromScale(0.95, 0.05),
+						Text: "Pet Teams allow you to functionally control multiple pets at once.",
+					}}
+					stroke={{ native: { Thickness: 1, Color: uiDarkStrokeColor } }}
+				/>
 				<PetTeams />
 				<ReturnToPetInventory returnToSelection={(): void => setTeamsEnabled(false)} />
 			</>
@@ -293,12 +267,7 @@ export const PetInventory = hooks((_, { useState, useCallback, useEffect }) => {
 		}
 
 		return (
-			<frame
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.975, 0.785)}
-				Position={UDim2.fromScale(0.5, 0.565)}
-			>
+			<BaseFrame Size={UDim2.fromScale(0.975, 0.785)} Position={UDim2.fromScale(0.5, 0.565)}>
 				<PetInventoryCounterTopBar />
 				<PetInventorySearch
 					setSearch={(text: string): void => {
@@ -326,7 +295,7 @@ export const PetInventory = hooks((_, { useState, useCallback, useEffect }) => {
 				/>
 				<PetInventoryBottomControl enableTeams={(): void => setTeamsEnabled(true)} />
 				{petInfoDisplay}
-			</frame>
+			</BaseFrame>
 		);
 	}
 });

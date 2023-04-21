@@ -2,12 +2,15 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
 import { sortPets } from "client/modules/pets/sort";
-import { font, vec2Middle } from "client/ui/commonValues";
+import { uiDarkStrokeColor, vec2Middle } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
-import { PetViewport } from "client/ui/elements/viewports/petViewport";
-import { RarityGradient } from "client/ui/elements/gradients/rarityGradient";
+import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { updateContentSize } from "client/ui/elements/common/rescalingScrollingFrame";
+import { RarityGradient } from "client/ui/elements/gradients/rarityGradient";
+import { PetViewport } from "client/ui/elements/viewports/petViewport";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { RARITIES } from "shared/configs/rarities";
@@ -72,13 +75,11 @@ const PetFrame = hooks(
 		if (isSelectedForDelete) {
 			if (props.multiDeleteEnabled) {
 				additionalDisplayedElements.push(
-					<imagelabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.925, 0.925)}
-						Image={assetIds.images.ui.inventory.pets.deleteIndicator}
-						ScaleType={Enum.ScaleType.Fit}
+					<ImageLabel
+						native={{
+							Size: UDim2.fromScale(0.925, 0.925),
+							Image: assetIds.images.ui.inventory.pets.deleteIndicator,
+						}}
 					/>,
 				);
 			}
@@ -91,58 +92,50 @@ const PetFrame = hooks(
 		if (props.storedPetData.locked) {
 			if (petLevel > 1) {
 				additionalDisplayedElements.push(
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.95)}
-						Size={UDim2.fromScale(0.7, 0.2)}
-						Font={font}
-						Text={`Level: ${petLevel}`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.5, 0.95),
+							Size: UDim2.fromScale(0.7, 0.2),
+							Text: `Level: ${petLevel}`,
+						}}
+						stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
 					>
 						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-						<imagelabel
-							AnchorPoint={vec2Middle}
-							BackgroundTransparency={1}
-							Size={UDim2.fromScale(1, 1)}
-							Position={UDim2.fromScale(-0.15, 0.5)}
-							Image={assetIds.images.ui.inventory.locked}
-							ScaleType={Enum.ScaleType.Fit}
+						<ImageLabel
+							native={{
+								Size: UDim2.fromScale(1, 1),
+								Position: UDim2.fromScale(-0.15, 0.5),
+								Image: assetIds.images.ui.inventory.locked,
+							}}
 						>
 							<uiaspectratioconstraint AspectRatio={1} />
-						</imagelabel>
-					</textlabel>,
+						</ImageLabel>
+					</StrokeTextLabel>,
 				);
 			} else {
 				additionalDisplayedElements.push(
-					<imagelabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Size={UDim2.fromScale(0.25, 0.25)}
-						Position={UDim2.fromScale(0.5, 0.95)}
-						Image={assetIds.images.ui.inventory.locked}
-						ScaleType={Enum.ScaleType.Fit}
+					<ImageLabel
+						native={{
+							Size: UDim2.fromScale(0.25, 0.25),
+							Position: UDim2.fromScale(0.5, 0.95),
+							Image: assetIds.images.ui.inventory.locked,
+						}}
 					>
 						<uiaspectratioconstraint AspectRatio={1} />
-					</imagelabel>,
+					</ImageLabel>,
 				);
 			}
 		} else {
 			if (petLevel > 1) {
 				additionalDisplayedElements.push(
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.95)}
-						Size={UDim2.fromScale(0.7, 0.2)}
-						Font={font}
-						Text={`Level: ${petLevel}`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-					</textlabel>,
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.5, 0.95),
+							Size: UDim2.fromScale(0.7, 0.2),
+							Text: `Level: ${petLevel}`,
+						}}
+						stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+					/>,
 				);
 			}
 		}
@@ -193,17 +186,17 @@ const PetFrame = hooks(
 
 		return (
 			<frame BackgroundTransparency={1} LayoutOrder={props.layoutOrderIndex} Ref={petFrameRef.value} ZIndex={zindex}>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={0}
-					BackgroundColor3={props.storedPetData.equipped ? Color3.fromRGB(85, 255, 127) : Color3.fromRGB(46, 115, 179)}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.925, 0.925)}
-					Image={""}
-					Event={{
-						/**
-						 * Triggered when the pet frame is clicked.
-						 */
+				<ImageButton
+					native={{
+						BackgroundTransparency: 0,
+						BackgroundColor3: props.storedPetData.equipped
+							? Color3.fromRGB(85, 255, 127)
+							: Color3.fromRGB(46, 115, 179),
+						Size: UDim2.fromScale(0.925, 0.925),
+						Image: "",
+					}}
+					events={{
+						// eslint-disable-next-line jsdoc/require-jsdoc
 						Activated: (): void => {
 							if (props.multiDeleteEnabled) {
 								if (props.storedPetData.locked) {
@@ -221,28 +214,25 @@ const PetFrame = hooks(
 					<uicorner CornerRadius={new UDim(1, 0)} />
 					<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} />
 					<PetViewport petId={props.storedPetData.id} variant={props.storedPetData.variant} shouldBlackout={false} />
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Size={UDim2.fromScale(1, 0.2)}
-						Position={UDim2.fromScale(0.5, 0.1)}
-						Text={petData.name}
-						TextScaled={true}
-						Font={font}
-						TextColor3={
-							petData.rarity === "Epic" ||
-							petData.rarity === "Legendary" ||
-							petData.rarity === "Primordial" ||
-							petData.rarity === "Prismatic"
-								? Color3.fromRGB(255, 255, 255)
-								: rarityData.BeginningColor
-						}
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(1, 0.2),
+							Position: UDim2.fromScale(0.5, 0.1),
+							Text: petData.name,
+							TextColor3:
+								petData.rarity === "Epic" ||
+								petData.rarity === "Legendary" ||
+								petData.rarity === "Primordial" ||
+								petData.rarity === "Prismatic"
+									? Color3.fromRGB(255, 255, 255)
+									: rarityData.BeginningColor,
+						}}
+						stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
 					>
 						<RarityGradient Rarity={petData.rarity} />
-						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-					</textlabel>
+					</StrokeTextLabel>
 					{additionalDisplayedElements}
-				</imagebutton>
+				</ImageButton>
 			</frame>
 		);
 	},

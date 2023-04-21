@@ -1,13 +1,13 @@
 import Roact from "@rbxts/roact";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
 /**
  * Displays the counters of equipped pets and inventory size.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 export const PetInventorySearch = hooks((props: { setSearch: (text: string) => void }, { useValue, useEffect }) => {
 	const textboxRef = useValue(Roact.createRef<TextBox>());
 	useEffect(() => {
@@ -19,13 +19,12 @@ export const PetInventorySearch = hooks((props: { setSearch: (text: string) => v
 	});
 
 	return (
-		<imagelabel
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Size={UDim2.fromScale(0.3, 0.1)}
-			Position={UDim2.fromScale(0.165, 0.055)}
-			Image={assetIds.images.ui.inventory.pets.search}
-			ScaleType={Enum.ScaleType.Fit}
+		<ImageLabel
+			native={{
+				Size: UDim2.fromScale(0.3, 0.1),
+				Position: UDim2.fromScale(0.165, 0.055),
+				Image: assetIds.images.ui.inventory.pets.search,
+			}}
 		>
 			<textbox
 				BackgroundTransparency={1}
@@ -42,7 +41,6 @@ export const PetInventorySearch = hooks((props: { setSearch: (text: string) => v
 			>
 				<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 108, 176) }} />
 			</textbox>
-		</imagelabel>
+		</ImageLabel>
 	);
 });
-/* eslint-enable jsdoc/require-jsdoc */
