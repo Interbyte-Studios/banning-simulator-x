@@ -1,11 +1,16 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, vec2Middle } from "client/ui/commonValues";
+import { uiDarkStrokeColor } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
-import { DamageIcon } from "client/ui/elements/icons/damageIcon";
+import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { ExitButton } from "client/ui/elements/common/exitButton";
+import { DamageIcon } from "client/ui/elements/icons/damageIcon";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { getWeaponDecal } from "client/util/getWeaponDecal";
@@ -22,7 +27,6 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 /**
  * A decal of the weapon being viewed in the weapon info display.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 const WeaponView = hooks((props: { storedWeapon: Weapon }, hooks) => {
 	const raisedPosition = 0.4;
 	const raisedSpring = new Flipper.Spring(raisedPosition, { frequency: 5 });
@@ -33,16 +37,19 @@ const WeaponView = hooks((props: { storedWeapon: Weapon }, hooks) => {
 	const { motor, binding } = useBindingMotor(hooks, normalPosition);
 
 	return (
-		<imagebutton
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={0}
-			Position={UDim2.fromScale(0.5, 0.165)}
-			Size={UDim2.fromScale(0.5, 0.5)}
-			BackgroundColor3={Color3.fromRGB(0, 131, 213)}
-			Image={""}
-			Event={{
+		<ImageButton
+			native={{
+				BackgroundTransparency: 0,
+				Position: UDim2.fromScale(0.5, 0.165),
+				BackgroundColor3: Color3.fromRGB(0, 131, 213),
+				Image: "",
+			}}
+			events={{
+				// eslint-disable-next-line jsdoc/require-jsdoc
 				Activated: (): void => playSFX(UIEngagement.MinorEngagement),
+				// eslint-disable-next-line jsdoc/require-jsdoc
 				MouseEnter: (): void => motor.setGoal(raisedSpring),
+				// eslint-disable-next-line jsdoc/require-jsdoc
 				MouseLeave: (): void => motor.setGoal(normalSpring),
 			}}
 		>
@@ -50,21 +57,16 @@ const WeaponView = hooks((props: { storedWeapon: Weapon }, hooks) => {
 			<uicorner CornerRadius={new UDim(1, 0)} />
 			<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.775, 0.775)}
-				Position={binding.map((value) => {
-					return UDim2.fromScale(0.5, value);
-				})}
-				Image={getWeaponDecal(props.storedWeapon.id)}
-				ScaleType={Enum.ScaleType.Fit}
-				ImageColor3={Color3.fromRGB(255, 255, 255)}
+			<ImageLabel
+				native={{
+					Size: UDim2.fromScale(0.775, 0.775),
+					Position: binding.map((value) => UDim2.fromScale(0.5, value)),
+					Image: getWeaponDecal(props.storedWeapon.id),
+				}}
 			/>
-		</imagebutton>
+		</ImageButton>
 	);
 });
-/* eslint-enable jsdoc/require-jsdoc */
 
 interface WeaponInfoDisplayProps extends WeaponInfoDisplayMappedProps {
 	id: number;
@@ -95,35 +97,23 @@ function mapStateToProps(state: StoreState): WeaponInfoDisplayMappedProps {
 /**
  * Equips/Unequips the weapon being viewed.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 const EquipWeapon = RoactRodux.connect(mapStateToProps)(
 	hooks((props: EquipWeaponProps, hooks) => {
-		const maxSize = 0.5;
-		const maxSpring = new Flipper.Spring(maxSize, { frequency: 5 });
-
-		const minSize = 0.425;
-		const minSpring = new Flipper.Spring(minSize, { frequency: 5 });
-
-		const { motor, binding } = useBindingMotor(hooks, maxSize);
-
 		const { useContext } = hooks;
 		const { changeWeapon, equipWeapon, unequipWeapon } = useContext(remoteContext);
 
 		return (
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.9)}
-				Size={binding.map((value) => {
-					return UDim2.fromScale(value, 0.08);
-				})}
-				Image={
-					props.storedWeapon.id === props.currentWeapon.id
-						? assetIds.images.ui["weapon shop"].locked
-						: assetIds.images.ui["weapon shop"]["purchase button"]
-				}
-				ScaleType={Enum.ScaleType.Fit}
-				Event={{
+			<SpringImageButton
+				native={{
+					Position: UDim2.fromScale(0.5, 0.9),
+					Image:
+						props.storedWeapon.id === props.currentWeapon.id
+							? assetIds.images.ui["weapon shop"].locked
+							: assetIds.images.ui["weapon shop"]["purchase button"],
+				}}
+				size={{ minSize: 0.425, maxSize: 0.5 }}
+				events={{
+					// eslint-disable-next-line jsdoc/require-jsdoc
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
 
@@ -139,42 +129,34 @@ const EquipWeapon = RoactRodux.connect(mapStateToProps)(
 
 						changeWeapon.SendToServer(props.storedWeapon.id);
 					},
-					MouseEnter: (): void => motor.setGoal(minSpring),
-					MouseLeave: (): void => motor.setGoal(maxSpring),
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={3.45} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.95)}
-					Font={font}
-					Text={
-						props.storedWeapon.id === props.currentWeapon.id
-							? props.currentWeapon.equipped
-								? "Sheath"
-								: "Unsheath"
-							: "Equip"
-					}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-				>
-					<BaseUIStroke
-						native={{
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.95, 0.95),
+						Text:
+							props.storedWeapon.id === props.currentWeapon.id
+								? props.currentWeapon.equipped
+									? "Sheath"
+									: "Unsheath"
+								: "Equip",
+					}}
+					stroke={{
+						native: {
 							Thickness: 1.5,
 							Color:
 								props.storedWeapon.id === props.currentWeapon.id
 									? Color3.fromRGB(137, 150, 35)
 									: Color3.fromRGB(18, 176, 13),
-						}}
-					/>
-				</textlabel>
-			</imagebutton>
+						},
+					}}
+				/>
+			</SpringImageButton>
 		);
 	}),
 );
-/* eslint-enable jsdoc/require-jsdoc */
 
 /**
  * Displays all the information about a stored weapon.
@@ -215,93 +197,81 @@ export const WeaponInfoDisplay = RoactRodux.connect(mapStateToProps)(
 		});
 
 		return (
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(-0.2, 0.5)}
-				Size={binding.map((value) => {
-					return UDim2.fromScale(0.4, value);
-				})}
-				Image={assetIds.images.ui.inventory["info sidebar"]}
-				ScaleType={Enum.ScaleType.Fit}
+			<ImageButton
+				native={{
+					Size: binding.map((value) => UDim2.fromScale(value, 0.08)),
+					Position: UDim2.fromScale(-0.2, 0.5),
+					Image: assetIds.images.ui.inventory["info sidebar"],
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={0.56} />
 
 				<WeaponView storedWeapon={storedWeapon} />
 
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.9, 0.08)}
-					Position={UDim2.fromScale(0.5, 0.35)}
-					Text={weaponData.name}
-					TextScaled={true}
-					Font={font}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.9, 0.07)}
-					Position={UDim2.fromScale(0.5, 0.45)}
-					Text={`Level: ${storedWeapon.level}`}
-					TextScaled={true}
-					Font={font}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.7, 0.65)}
-					Size={UDim2.fromScale(0.45, 0.08)}
-					BackgroundTransparency={1}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(230, 64, 64)}
-					Text={twoDpAbbreviator.numberToString(getWeaponDamage(storedWeapon))}
-					TextXAlignment={Enum.TextXAlignment.Left}
-					Font={font}
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.9, 0.08),
+						Position: UDim2.fromScale(0.5, 0.35),
+						Text: weaponData.name,
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+				/>
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.9, 0.07),
+						Position: UDim2.fromScale(0.5, 0.45),
+						Text: `Level: ${storedWeapon.level}`,
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+				/>
+
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.7, 0.65),
+						Size: UDim2.fromScale(0.45, 0.08),
+						TextColor3: Color3.fromRGB(230, 64, 64),
+						Text: twoDpAbbreviator.numberToString(getWeaponDamage(storedWeapon)),
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(105, 0, 0) } }}
 				>
 					<DamageIcon
 						anchorPoint={new Vector2(0, 0.5)}
 						position={UDim2.fromScale(-0.35, 0.5)}
 						size={{ minimizedSize: 0.9, maximizedSize: 1 }}
 					/>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(105, 0, 0) }} />
-				</textlabel>
-				<frame
-					AnchorPoint={vec2Middle}
+				</StrokeTextLabel>
+
+				<BaseFrame
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(255, 144, 144)}
 					Position={UDim2.fromScale(0.5, 0.525)}
 					Size={UDim2.fromScale(0.9, 0.05)}
 				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
+					<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
 					<uicorner CornerRadius={new UDim(0.5)} />
-					<frame
+
+					<BaseFrame
 						BackgroundTransparency={0}
 						BackgroundColor3={Color3.fromRGB(85, 255, 127)}
 						Position={UDim2.fromScale(0, 0)}
 						Size={UDim2.fromScale(progress, 1)}
 					>
 						<uicorner CornerRadius={new UDim(0.5)} />
-					</frame>
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.95, 0.95)}
-						Font={font}
-						Text={storedWeapon.level === 10 ? "Max Level" : `${progress * 100}%`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-					</textlabel>
-				</frame>
+					</BaseFrame>
+
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.95, 0.95),
+							Text: storedWeapon.level === 10 ? "Max Level" : `${progress * 100}%`,
+						}}
+						stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+					/>
+				</BaseFrame>
+
 				<EquipWeapon storedWeapon={storedWeapon} />
+
 				<ExitButton
 					Position={UDim2.fromScale(0.965, 0.025)}
 					minimizedSize={0.125}
@@ -311,7 +281,7 @@ export const WeaponInfoDisplay = RoactRodux.connect(mapStateToProps)(
 						task.spawn(() => task.delay(0.3, () => props.hideDisplay()));
 					}}
 				/>
-			</imagelabel>
+			</ImageButton>
 		);
 	}),
 );

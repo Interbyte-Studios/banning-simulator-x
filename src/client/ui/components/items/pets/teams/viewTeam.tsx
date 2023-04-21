@@ -1,9 +1,10 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { PetFrame } from "client/ui/elements/common/petFrame";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
@@ -15,30 +16,19 @@ import { PetsState } from "shared/rodux/pets";
 /**
  * Equips all the pets in the team.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 const EquipPetTeam = hooks((props: { pets: Array<string> }, hooks) => {
 	const { useContext } = hooks;
 	const { equipPets } = useContext(remoteContext);
 
-	const maximizedSize = 0.3;
-	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-	const minimizedSize = 0.25;
-	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-	const { motor, binding } = useBindingMotor(hooks, maximizedSize);
-
 	return (
-		<imagebutton
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Position={UDim2.fromScale(0.59, 0.215)}
-			Size={binding.map((value) => {
-				return UDim2.fromScale(0.15, value);
-			})}
-			Image={assetIds.images.ui["weapon shop"]["purchase button"]}
-			ScaleType={Enum.ScaleType.Fit}
-			Event={{
+		<SpringImageButton
+			native={{
+				Position: UDim2.fromScale(0.59, 0.215),
+				Image: assetIds.images.ui["weapon shop"]["purchase button"],
+			}}
+			size={{ minSize: 0.25, maxSize: 0.3 }}
+			events={{
+				// eslint-disable-next-line jsdoc/require-jsdoc
 				Activated: (): void => {
 					playSFX(UIEngagement.MinorEngagement);
 
@@ -51,55 +41,36 @@ const EquipPetTeam = hooks((props: { pets: Array<string> }, hooks) => {
 
 					equipPets.SendToServer(petsToEquip, true);
 				},
-				MouseEnter: (): void => motor.setGoal(minimizedSpring),
-				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
 		>
 			<uiaspectratioconstraint AspectRatio={3.45} />
-			<textlabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.95, 0.95)}
-				Font={font}
-				Text={"Equip"}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-				TextScaled={true}
-			>
-				<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(18, 176, 13) }} />
-			</textlabel>
-		</imagebutton>
+			<StrokeTextLabel
+				native={{
+					Size: UDim2.fromScale(0.95, 0.95),
+					Text: "Equip",
+				}}
+				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(18, 176, 13) } }}
+			/>
+		</SpringImageButton>
 	);
 });
-/* eslint-enable jsdoc/require-jsdoc */
 
 /**
  * Locks all the pets in the team.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 const LockPetTeam = hooks((props: { pets: Array<string> }, hooks) => {
 	const { useContext } = hooks;
 	const { lockPets } = useContext(remoteContext);
 
-	const maximizedSize = 0.3;
-	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-	const minimizedSize = 0.25;
-	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-	const { motor, binding } = useBindingMotor(hooks, maximizedSize);
-
 	return (
-		<imagebutton
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Position={UDim2.fromScale(0.75, 0.215)}
-			Size={binding.map((value) => {
-				return UDim2.fromScale(0.15, value);
-			})}
-			Image={assetIds.images.ui["weapon shop"].locked}
-			ScaleType={Enum.ScaleType.Fit}
-			Event={{
+		<SpringImageButton
+			native={{
+				Position: UDim2.fromScale(0.75, 0.215),
+				Image: assetIds.images.ui["weapon shop"].locked,
+			}}
+			size={{ minSize: 0.25, maxSize: 0.3 }}
+			events={{
+				// eslint-disable-next-line jsdoc/require-jsdoc
 				Activated: (): void => {
 					playSFX(UIEngagement.MinorEngagement);
 
@@ -112,80 +83,53 @@ const LockPetTeam = hooks((props: { pets: Array<string> }, hooks) => {
 
 					lockPets.SendToServer(petsToLock);
 				},
-				MouseEnter: (): void => motor.setGoal(minimizedSpring),
-				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
 		>
 			<uiaspectratioconstraint AspectRatio={3.45} />
-			<textlabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.95, 0.95)}
-				Font={font}
-				Text={"Lock"}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-				TextScaled={true}
-			>
-				<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(137, 150, 35) }} />
-			</textlabel>
-		</imagebutton>
+			<StrokeTextLabel
+				native={{
+					Size: UDim2.fromScale(0.95, 0.95),
+					Text: "Lock",
+				}}
+				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(137, 150, 35) } }}
+			/>
+		</SpringImageButton>
 	);
 });
-/* eslint-enable jsdoc/require-jsdoc */
 
 /**
  * Deletes the pet team.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 const DeletePetTeam = hooks((props: { teamId: number }, hooks) => {
 	const { useContext } = hooks;
 	const { deletePetTeam } = useContext(remoteContext);
 
-	const maximizedSize = 0.3;
-	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-	const minimizedSize = 0.25;
-	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-	const { motor, binding } = useBindingMotor(hooks, maximizedSize);
-
 	return (
-		<imagebutton
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Position={UDim2.fromScale(0.91, 0.215)}
-			Size={binding.map((value) => {
-				return UDim2.fromScale(0.15, value);
-			})}
-			Image={assetIds.images.ui["weapon shop"].delete}
-			ScaleType={Enum.ScaleType.Fit}
-			Event={{
+		<SpringImageButton
+			native={{
+				Position: UDim2.fromScale(0.91, 0.215),
+				Image: assetIds.images.ui["weapon shop"].delete,
+			}}
+			size={{ minSize: 0.25, maxSize: 0.3 }}
+			events={{
+				// eslint-disable-next-line jsdoc/require-jsdoc
 				Activated: (): void => {
 					playSFX(UIEngagement.MinorEngagement);
 					deletePetTeam.SendToServer(props.teamId);
 				},
-				MouseEnter: (): void => motor.setGoal(minimizedSpring),
-				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
 		>
 			<uiaspectratioconstraint AspectRatio={3.45} />
-			<textlabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.95, 0.95)}
-				Font={font}
-				Text={"Delete"}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-				TextScaled={true}
-			>
-				<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(141, 32, 42) }} />
-			</textlabel>
-		</imagebutton>
+			<StrokeTextLabel
+				native={{
+					Size: UDim2.fromScale(0.95, 0.95),
+					Text: "Delete",
+				}}
+				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(141, 32, 42) } }}
+			/>
+		</SpringImageButton>
 	);
 });
-/* eslint-enable jsdoc/require-jsdoc */
 
 interface ViewPetTeamProps extends ViewPetTeamMappedProps {
 	pets: Array<string>;
@@ -216,8 +160,7 @@ export const ViewPetTeam = RoactRodux.connect(mapStateToProps)(
 		const { changePetTeamName } = useContext(remoteContext);
 
 		return (
-			<frame
-				AnchorPoint={vec2Middle}
+			<BaseFrame
 				BackgroundTransparency={0}
 				BackgroundColor3={Color3.fromRGB(0, 131, 212)}
 				Size={UDim2.fromScale(0.975, 0.25)}
@@ -248,12 +191,8 @@ export const ViewPetTeam = RoactRodux.connect(mapStateToProps)(
 				>
 					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 93, 150) }} />
 				</textbox>
-				<frame
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.7)}
-					Size={UDim2.fromScale(0.975, 0.5)}
-				>
+
+				<BaseFrame Position={UDim2.fromScale(0.5, 0.7)} Size={UDim2.fromScale(0.975, 0.5)}>
 					<uigridlayout
 						CellPadding={UDim2.fromScale(0.004, 0)}
 						CellSize={UDim2.fromScale(0.08, 1)}
@@ -276,11 +215,12 @@ export const ViewPetTeam = RoactRodux.connect(mapStateToProps)(
 							/>
 						);
 					})}
-				</frame>
+				</BaseFrame>
+
 				<EquipPetTeam pets={props.pets} />
 				<LockPetTeam pets={props.pets} />
 				<DeletePetTeam teamId={props.id} />
-			</frame>
+			</BaseFrame>
 		);
 	}),
 );

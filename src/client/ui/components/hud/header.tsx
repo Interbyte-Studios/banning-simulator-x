@@ -1,4 +1,5 @@
 import Roact from "@rbxts/roact";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { hooks } from "client/ui/hooks";
 
 import { AccountIcon } from "./accountIcon";
@@ -15,8 +16,7 @@ interface HUDHeaderProps {
 
 export const HUDHeader = hooks((props: HUDHeaderProps) => {
 	return (
-		<frame
-			BackgroundTransparency={1}
+		<BaseFrame
 			AnchorPoint={new Vector2(0, 0.5)}
 			Size={UDim2.fromScale(0.9, 0.15)}
 			Position={UDim2.fromScale(0.03, 0.15)}
@@ -32,6 +32,6 @@ export const HUDHeader = hooks((props: HUDHeaderProps) => {
 			<AccountIcon dispayAccount={props.displayAccount} />
 			<AutoFightIcon displayAutoFightIcon={props.displayAutoFight} />
 			<TeleportIcon displayTeleportationMenu={props.displayTeleportation} />
-		</frame>
+		</BaseFrame>
 	);
 });

@@ -1,10 +1,8 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { ContextActionService, Players, Workspace } from "@rbxts/services";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -37,17 +35,8 @@ const player = Players.LocalPlayer;
 /**
  * Roact imagebutton component to enable/disable auto hatch feature.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 export const ToggleAutoHatchButton = RoactRodux.connect(mapStateToProps)(
 	hooks((props: ToggleAutoHatchButtonProps, hooks) => {
-		const maxButtonSize = 0.1;
-		const minButtonSize = 0.08;
-
-		const maximizedSpring = new Flipper.Spring(maxButtonSize, { frequency: 5 });
-		const minimizedSpring = new Flipper.Spring(minButtonSize, { frequency: 5 });
-
-		const { motor, binding } = useBindingMotor(hooks, maxButtonSize);
-
 		const { useContext, useEffect } = hooks;
 		const { toggleAuto } = useContext(remoteContext);
 
@@ -104,62 +93,49 @@ export const ToggleAutoHatchButton = RoactRodux.connect(mapStateToProps)(
 		});
 
 		return (
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={props.petsSize <= 6 ? UDim2.fromScale(0.825, 0.435) : UDim2.fromScale(0.825, 0.4)}
-				Size={binding.map((value) => {
-					return UDim2.fromScale(0.15, value);
-				})}
-				Image={props.autoActive ? assetIds.images.buttons["green button"] : assetIds.images.buttons["red button"]}
-				ScaleType={Enum.ScaleType.Fit}
-				Event={{
+			<SpringImageButton
+				native={{
+					Position: props.petsSize <= 6 ? UDim2.fromScale(0.825, 0.435) : UDim2.fromScale(0.825, 0.4),
+					Image: props.autoActive ? assetIds.images.buttons["green button"] : assetIds.images.buttons["red button"],
+				}}
+				size={{ minSize: 0.08, maxSize: 0.1 }}
+				events={{
+					// eslint-disable-next-line jsdoc/require-jsdoc
 					Activated: async (): Promise<void> => {
 						playSFX(UIEngagement.MajorEngagement);
 						toggleAuto.SendToServer();
 					},
-					MouseEnter: (): void => motor.setGoal(minimizedSpring),
-					MouseLeave: (): void => motor.setGoal(maximizedSpring),
 				}}
 			>
-				<textlabel
-					BackgroundTransparency={1}
-					AnchorPoint={vec2Middle}
-					Size={UDim2.fromScale(1, 1)}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Text={"R"}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Font={font}
-				>
-					<BaseUIStroke
-						isBillboard={true}
-						native={{
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(1, 1),
+						Text: "R",
+					}}
+					stroke={{
+						native: {
 							Thickness: 2,
 							Color: props.autoActive ? Color3.fromRGB(28, 107, 46) : Color3.fromRGB(122, 54, 133),
+						},
+						isBillboard: true,
+					}}
+				>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(1, 0.4),
+							Position: UDim2.fromScale(0.5, 0.95),
+							Text: "Auto",
 						}}
-					/>
-					<textlabel
-						BackgroundTransparency={1}
-						AnchorPoint={vec2Middle}
-						Size={UDim2.fromScale(1, 0.4)}
-						Position={UDim2.fromScale(0.5, 0.95)}
-						Text={"Auto"}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						Font={font}
-					>
-						<BaseUIStroke
-							isBillboard={true}
-							native={{
+						stroke={{
+							native: {
 								Thickness: 2,
 								Color: props.autoActive ? Color3.fromRGB(28, 107, 46) : Color3.fromRGB(122, 54, 133),
-							}}
-						/>
-					</textlabel>
-				</textlabel>
-			</imagebutton>
+							},
+							isBillboard: true,
+						}}
+					/>
+				</StrokeTextLabel>
+			</SpringImageButton>
 		);
 	}),
 );
-/* eslint-enable jsdoc/require-jsdoc */

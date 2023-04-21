@@ -1,4 +1,5 @@
 import Roact from "@rbxts/roact";
+import { uiDarkStrokeColor } from "client/ui/commonValues";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 
 interface ProgressHeaderProps {
@@ -20,7 +21,7 @@ export function ProgressHeader(props: ProgressHeaderProps): Roact.Element {
 				Text: props.text,
 				TextXAlignment: Enum.TextXAlignment.Left,
 			}}
-			stroke={{ native: { Thickness: 2 } }}
+			stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
 		/>
 	);
 }

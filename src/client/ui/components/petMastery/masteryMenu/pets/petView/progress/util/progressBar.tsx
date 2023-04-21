@@ -85,7 +85,9 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 		if (completionPercentage > 0) {
 			completionBarComponent.push(
 				<BaseFrame
+					AnchorPoint={new Vector2(0, 0)}
 					BackgroundTransparency={0}
+					Position={UDim2.fromScale(0, 0)}
 					BackgroundColor3={Color3.fromRGB(130, 245, 166)}
 					Size={UDim2.fromScale(completionPercentage, 1)}
 				>

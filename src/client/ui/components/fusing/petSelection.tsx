@@ -1,11 +1,11 @@
-import Flipper from "@rbxts/flipper";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { vec2Middle } from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { PetFrame } from "client/ui/elements/common/petFrame";
 import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
@@ -78,46 +78,38 @@ export const PetSelection = RoactRodux.connect(mapStateToProps)(
 		});
 
 		const minimizedSize = 0.07;
-		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
 		const maximizedSize = 0.08;
-		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-		const { motor, binding } = useBindingMotor(hooks, maximizedSize);
 
 		return (
 			<>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.765, 0.1)}
-					Position={UDim2.fromScale(0.5, 0.225)}
-					Text={"Select a pet that you own to begin fusing"}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Font={font}
-				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 56, 125) }} />
-				</textlabel>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.012, 0.104)}
-					Size={binding.map((value) => {
-						return UDim2.fromScale(0.1, value);
-					})}
-					Image={assetIds.images.ui.index.returnToSelection}
-					Event={{
-						Activated: (): void => {
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.225),
+						Size: UDim2.fromScale(0.765, 0.1),
+						Text: "Select a pet that you own to begin fusing",
+					}}
+					stroke={{
+						native: { Thickness: 1.5, Color: Color3.fromRGB(0, 56, 125) },
+					}}
+				/>
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.012, 0.104),
+						Image: assetIds.images.ui.index.returnToSelection,
+					}}
+					size={{
+						minSize: minimizedSize,
+						maxSize: maximizedSize,
+					}}
+					events={{
+						Activated: async (): Promise<void> => {
 							playSFX(UIEngagement.MinorEngagement);
 							props.returnToSelection();
 						},
-						MouseEnter: (): void => motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
-				</imagebutton>
+				</SpringImageButton>
 				<RescalingScrollingFrame
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
@@ -135,7 +127,7 @@ export const PetSelection = RoactRodux.connect(mapStateToProps)(
 					/>
 					{petsSelection.map((petData) => {
 						return (
-							<frame BackgroundTransparency={1} LayoutOrder={petData.id}>
+							<BaseFrame LayoutOrder={petData.id}>
 								<PetFrame
 									petId={petData.id}
 									variant={petData.variant}
@@ -147,7 +139,7 @@ export const PetSelection = RoactRodux.connect(mapStateToProps)(
 										props.setPetSelected(petData.id);
 									}}
 								/>
-							</frame>
+							</BaseFrame>
 						);
 					})}
 				</RescalingScrollingFrame>

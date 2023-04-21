@@ -2,7 +2,13 @@
 import Roact from "@rbxts/roact";
 import { vec2Middle } from "client/ui/commonValues";
 
-interface BaseImageButtonProps extends Partial<WritableInstanceProperties<Frame>> {}
+interface BaseFrameProps
+	extends Partial<{
+		// allow both the normal type and the binding variant
+		[K in keyof WritableInstanceProperties<Frame>]:
+			| WritableInstanceProperties<Frame>[K]
+			| Roact.Binding<WritableInstanceProperties<Frame>[K]>;
+	}> {}
 
 /**
  * A base frame with preset properties.
@@ -10,7 +16,7 @@ interface BaseImageButtonProps extends Partial<WritableInstanceProperties<Frame>
  * @param props The properties of the frame.
  * @returns A frame roact component with preset properties.
  */
-export const BaseFrame = (props: Roact.PropsWithChildren<BaseImageButtonProps>): Roact.Element => {
+export const BaseFrame = (props: Roact.PropsWithChildren<BaseFrameProps>): Roact.Element => {
 	return (
 		<frame
 			AnchorPoint={props.AnchorPoint ?? vec2Middle}

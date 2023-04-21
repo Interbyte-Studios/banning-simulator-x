@@ -1,6 +1,7 @@
 import Roact from "@rbxts/roact";
 import { t } from "@rbxts/t";
-import { udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
+import { udim2BottomRight, udim2Middle } from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { EggName } from "shared/configs/eggs";
 import { ConfirmedPet } from "shared/rodux/pets";
 
@@ -35,8 +36,8 @@ export function EggHatch(props: EggHatchProps): Roact.Element {
 	}
 
 	return (
-		<frame AnchorPoint={vec2Middle} Position={udim2Middle} Size={udim2BottomRight} BackgroundTransparency={1}>
+		<BaseFrame Position={udim2Middle} Size={udim2BottomRight}>
 			{infoFrames}
-		</frame>
+		</BaseFrame>
 	);
 }

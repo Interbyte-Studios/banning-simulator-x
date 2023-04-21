@@ -1,4 +1,5 @@
 import Roact from "@rbxts/roact";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { hooks } from "client/ui/hooks";
 
 import { TradingIcon } from "./tradingIcon";
@@ -9,8 +10,7 @@ interface HUDFooterProps {
 
 export const HUDFooter = hooks((props: HUDFooterProps) => {
 	return (
-		<frame
-			BackgroundTransparency={1}
+		<BaseFrame
 			AnchorPoint={new Vector2(0, 0.5)}
 			Size={UDim2.fromScale(0.9, 0.15)}
 			Position={UDim2.fromScale(0.03, 0.84)}
@@ -22,6 +22,6 @@ export const HUDFooter = hooks((props: HUDFooterProps) => {
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>
 			<TradingIcon displayTrading={props.displayTradingMenu} />
-		</frame>
+		</BaseFrame>
 	);
 });

@@ -1,7 +1,6 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
@@ -14,53 +13,36 @@ interface ItemsIconProps {
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const ItemsIcon = hooks((props: ItemsIconProps, { useEffect }) => {
-	const minizmizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-	const motor = new Flipper.SingleMotor(maximizedSize);
-	const [binding, setBinding] = Roact.createBinding(motor.getValue());
-
-	motor.onStep(setBinding);
-
-	useEffect(() => {
-		return (): void => {
-			motor.destroy();
-		};
-	}, []);
-
+export const ItemsIcon = hooks((props: ItemsIconProps) => {
 	return (
-		<imagebutton
-			BackgroundTransparency={1}
-			AnchorPoint={vec2Middle}
-			Size={binding.map((value) => {
-				return UDim2.fromScale(value, value);
-			})}
-			Image={assetIds.images.ui.hud.icons.items}
-			LayoutOrder={1}
-			Event={{
-				Activated: (): void => {
+		<SpringImageButton
+			native={{
+				Image: assetIds.images.ui.hud.icons.items,
+				LayoutOrder: 1,
+			}}
+			size={{
+				maxSize: maximizedSize,
+				minSize: minimizedSize,
+			}}
+			events={{
+				Activated: async (): Promise<void> => {
 					playSFX(UIEngagement.MinorEngagement);
 					props.displayItems();
 				},
-				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
-				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
 		>
-			<textlabel
-				BackgroundTransparency={1}
-				AnchorPoint={vec2Middle}
-				Size={UDim2.fromScale(0.9, 0.35)}
-				Position={UDim2.fromScale(0.5, 1)}
-				Text={"Items"}
-				Font={font}
-				TextScaled={true}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-			>
-				<BaseUIStroke native={{ Thickness: 1, Color: Color3.fromRGB(0, 108, 176) }} />
-			</textlabel>
+			<StrokeTextLabel
+				native={{
+					Size: UDim2.fromScale(0.9, 0.35),
+					Position: UDim2.fromScale(0.5, 1),
+					Text: "Items",
+				}}
+				stroke={{
+					native: { Thickness: 1, Color: Color3.fromRGB(0, 108, 176) },
+				}}
+			/>
 			<uiaspectratioconstraint AspectRatio={1} />
-		</imagebutton>
+		</SpringImageButton>
 	);
 });
 /* eslint-enable jsdoc/require-jsdoc */

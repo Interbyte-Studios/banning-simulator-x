@@ -1,12 +1,14 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { CollectionService } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { vec2Middle } from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
-import { RankIcon } from "client/ui/elements/icons/rankIcon";
+import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
+import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -35,13 +37,7 @@ export const ModifyRank = hooks((props: { playerViewing: Player; setActiveAction
 	const { admin_ModifyRank } = useContext(remoteContext);
 
 	const minimizedSize = 0.115;
-	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
 	const maximizedSize = 0.15;
-	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-	const continueMotor = useBindingMotor(hooks, maximizedSize);
-	const retractMotor = useBindingMotor(hooks, maximizedSize);
 
 	if (rankSelected !== undefined) {
 		const rankData = RANKS.find((rankData) => rankData.id === rankSelected);
@@ -55,86 +51,71 @@ export const ModifyRank = hooks((props: { playerViewing: Player; setActiveAction
 					returnToSelection={(): void => setRankSelected(undefined)}
 					displayReturn={true}
 				/>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.2)}
-					Font={font}
-					Text={`Are you sure you want to modify ${props.playerViewing.Name}'s rank to to: ${rankData.name}?`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) }} />
-				</textlabel>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.75, 0.675)}
-					Size={continueMotor.binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={assetIds.images.ui.index.Claim}
-					Event={{
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.95, 0.2),
+						Text: `Are you sure you want to modify ${props.playerViewing.Name}'s rank to to: ${rankData.name}?`,
+					}}
+					stroke={{
+						native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+					}}
+				/>
+
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.75, 0.675),
+						Image: assetIds.images.ui.index.Claim,
+					}}
+					size={{
+						maxSize: maximizedSize,
+						minSize: minimizedSize,
+					}}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setRankSelected(undefined);
 							props.setActiveAction();
 							admin_ModifyRank.SendToServer(props.playerViewing.UserId, rankSelected);
 						},
-						MouseEnter: (): void => continueMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => continueMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={`Yes!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) }} />
-					</textlabel>
-				</imagebutton>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.25, 0.675)}
-					Size={retractMotor.binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={assetIds.images.ui.index.Off}
-					Event={{
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "Yes!",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) },
+						}}
+					/>
+				</SpringImageButton>
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.25, 0.675),
+						Image: assetIds.images.ui.index.Off,
+					}}
+					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setRankSelected(undefined);
 						},
-						MouseEnter: (): void => retractMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => retractMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={`No!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(140, 28, 104) }} />
-					</textlabel>
-				</imagebutton>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "No!",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(140, 28, 104) },
+						}}
+					/>
+				</SpringImageButton>
 			</>
 		);
 	} else {
@@ -171,15 +152,15 @@ export const ModifyRank = hooks((props: { playerViewing: Player; setActiveAction
 					/>
 					{RANKS.map((rankData) => {
 						return (
-							<frame BackgroundTransparency={1} LayoutOrder={rankData.id}>
-								<imagebutton
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={0}
-									BackgroundColor3={Color3.fromRGB(46, 115, 179)}
-									Position={UDim2.fromScale(0.5, 0.5)}
-									Size={UDim2.fromScale(0.925, 0.925)}
-									Image={""}
-									Event={{
+							<BaseFrame LayoutOrder={rankData.id}>
+								<ImageButton
+									native={{
+										BackgroundTransparency: 0,
+										BackgroundColor3: Color3.fromRGB(0, 131, 213),
+										Size: UDim2.fromScale(0.925, 0.925),
+										Image: "",
+									}}
+									events={{
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
 											setRankSelected(rankData.id);
@@ -190,20 +171,18 @@ export const ModifyRank = hooks((props: { playerViewing: Player; setActiveAction
 									<uicorner CornerRadius={new UDim(1, 0)} />
 									<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} />
 									<RankIcon rank={rankData.id} position={UDim2.fromScale(0.5, 0.5)} size={UDim2.fromScale(0.9, 0.9)} />
-									<textlabel
-										AnchorPoint={vec2Middle}
-										BackgroundTransparency={1}
-										Size={UDim2.fromScale(1, 0.2)}
-										Position={UDim2.fromScale(0.5, 0.1)}
-										Text={rankData.name}
-										TextScaled={true}
-										Font={font}
-										TextColor3={Color3.fromRGB(255, 255, 255)}
-									>
-										<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-									</textlabel>
-								</imagebutton>
-							</frame>
+									<StrokeTextLabel
+										native={{
+											Position: UDim2.fromScale(0.5, 0.1),
+											Size: UDim2.fromScale(1, 0.2),
+											Text: rankData.name,
+										}}
+										stroke={{
+											native: { Thickness: 2, Color: Color3.fromRGB(0, 74, 122) },
+										}}
+									/>
+								</ImageButton>
+							</BaseFrame>
 						);
 					})}
 				</RescalingScrollingFrame>

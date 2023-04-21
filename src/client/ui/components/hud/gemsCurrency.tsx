@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
@@ -27,13 +27,13 @@ function mapStateToProps(state: StoreState): GemsCurrencyMappedProps {
 export const GemsCurrency = RoactRodux.connect(mapStateToProps)(
 	hooks((props: GemsCurrencyMappedProps) => {
 		return (
-			<imagelabel
-				BackgroundTransparency={1}
-				AnchorPoint={new Vector2(0, 0.5)}
-				Image={assetIds.images.ui.hud["viewer background"]}
-				ScaleType={Enum.ScaleType.Fit}
-				Size={UDim2.fromScale(0.95, 0.155)}
-				Position={UDim2.fromScale(0.03, 0.675)}
+			<ImageLabel
+				native={{
+					AnchorPoint: new Vector2(0, 0.5),
+					Image: assetIds.images.ui.hud["viewer background"],
+					Size: UDim2.fromScale(0.95, 0.155),
+					Position: UDim2.fromScale(0.03, 0.675),
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={4.8} />
 				<OpenShop minimizedSize={0.8} maximizedSize={0.9} position={UDim2.fromScale(0.95, 0.5)} />
@@ -42,22 +42,17 @@ export const GemsCurrency = RoactRodux.connect(mapStateToProps)(
 					size={{ minimizedSize: 0.9, maximizedSize: 1.05 }}
 					currency={"gems"}
 				/>
-				<textlabel
-					BackgroundTransparency={1}
-					AnchorPoint={vec2Middle}
-					Size={UDim2.fromScale(0.65, 0.9)}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Font={font}
-					Text={twoDpAbbreviator.numberToString(props.gems)}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-				>
-					<BaseUIStroke
-						currencyGradient={"gems"}
-						native={{ Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }}
-					/>
-				</textlabel>
-			</imagelabel>
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.65, 0.9),
+						Text: twoDpAbbreviator.numberToString(props.gems),
+					}}
+					stroke={{
+						currencyGradient: "gems",
+						native: { Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) },
+					}}
+				/>
+			</ImageLabel>
 		);
 	}),
 );

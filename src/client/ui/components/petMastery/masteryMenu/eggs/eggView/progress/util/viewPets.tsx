@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
+import { uiClaimButtonStrokeColor } from "client/ui/commonValues";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
@@ -24,7 +25,7 @@ export const ViewPets = hooks(
 					Position: props.position,
 					Image: assetIds.images.ui.index.view,
 				}}
-				size={{ minSize: 0.09, maxSize: 0.1 }}
+				size={{ minSize: 0.25, maxSize: 0.285 }}
 				events={{
 					/* eslint-disable jsdoc/require-jsdoc */
 					Activated: (): void => {
@@ -34,12 +35,13 @@ export const ViewPets = hooks(
 					/* eslint-enable jsdoc/require-jsdoc */
 				}}
 			>
+				<uiaspectratioconstraint AspectRatio={2} />
 				<StrokeTextLabel
 					native={{
-						Size: UDim2.fromScale(1, 1),
+						Size: UDim2.fromScale(0.8, 0.8),
 						Text: "Pets",
 					}}
-					stroke={{ native: { Thickness: 2 } }}
+					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
 				/>
 			</SpringImageButton>
 		);

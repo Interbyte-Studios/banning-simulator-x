@@ -1,8 +1,8 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { Players, Workspace } from "@rbxts/services";
-import { vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
 import { getRankProgress } from "client/util/getRankProgress";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -36,48 +36,35 @@ export const UpgradeNotification = hooks((props: UpgradeNotificationProps) => {
 	}
 
 	return (
-		<imagelabel
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={0}
-			Position={UDim2.fromScale(0.85, 0.2)}
-			Size={UDim2.fromScale(0.3, 0.3)}
-			BackgroundColor3={Color3.fromRGB(250, 112, 112)}
+		<ImageLabel
+			native={{
+				BackgroundTransparency: 0,
+				Position: UDim2.fromScale(0.85, 0.2),
+				Size: UDim2.fromScale(0.3, 0.3),
+				BackgroundColor3: Color3.fromRGB(250, 112, 112),
+			}}
 		>
 			<uiaspectratioconstraint AspectRatio={1} />
 			<uicorner CornerRadius={new UDim(1, 0)} />
 			<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(107, 33, 33) }} />
-		</imagelabel>
+		</ImageLabel>
 	);
 });
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const UpgradeRankTeleport = hooks((props: UpgradeRankTeleportProps, { useEffect }) => {
-	const minizmizedSpring = new Flipper.Spring(props.minimizedSize, { frequency: 5 });
-	const maximizedSpring = new Flipper.Spring(props.maximizedSize, { frequency: 5 });
-
-	const motor = new Flipper.SingleMotor(props.maximizedSize);
-	const [binding, setBinding] = Roact.createBinding(motor.getValue());
-
-	motor.onStep(setBinding);
-
-	useEffect(() => {
-		return (): void => {
-			motor.destroy();
-		};
-	}, []);
-
+export const UpgradeRankTeleport = hooks((props: UpgradeRankTeleportProps) => {
 	return (
-		<imagebutton
-			BackgroundTransparency={1}
-			AnchorPoint={vec2Middle}
-			Size={binding.map((value) => {
-				return UDim2.fromScale(value, value);
-			})}
-			Position={props.position}
-			Image={assetIds.images.ui.hud.upgrade}
-			ScaleType={Enum.ScaleType.Fit}
-			Event={{
-				Activated: (): void => {
+		<SpringImageButton
+			native={{
+				Position: props.position,
+				Image: assetIds.images.ui.hud.upgrade,
+			}}
+			size={{
+				maxSize: props.maximizedSize,
+				minSize: props.minimizedSize,
+			}}
+			events={{
+				Activated: async (): Promise<void> => {
 					playSFX(UIEngagement.MinorEngagement);
 
 					const character = player.Character;
@@ -91,13 +78,11 @@ export const UpgradeRankTeleport = hooks((props: UpgradeRankTeleportProps, { use
 
 					humanoidRootPart.CFrame = new CFrame(Workspace.interactions.rankUpgrade.teleport.Position);
 				},
-				MouseEnter: (): void => motor.setGoal(minizmizedSpring),
-				MouseLeave: (): void => motor.setGoal(maximizedSpring),
 			}}
 		>
 			<uiaspectratioconstraint AspectRatio={1} />
 			<UpgradeNotification rank={props.rank} experience={props.experience} />
-		</imagebutton>
+		</SpringImageButton>
 	);
 });
 /* eslint-enable jsdoc/require-jsdoc */

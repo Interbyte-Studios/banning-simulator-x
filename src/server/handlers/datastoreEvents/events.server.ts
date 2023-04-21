@@ -46,9 +46,11 @@ function updateDatastoreEventCache(): void {
 	ReplicatedStorage.events.experience.multiplier.Value = datastoreEventCache.experienceEvent.multiplier;
 
 	ReplicatedStorage.events.luck.enabled.Value = datastoreEventCache.luckEvent;
+
+	ReplicatedStorage.events.timeUpdated.Value = time();
 }
 
-task.spawn(() => {
+task.defer(() => {
 	// eslint-disable-next-line no-constant-condition
 	while (true) {
 		updateDatastoreEventCache();

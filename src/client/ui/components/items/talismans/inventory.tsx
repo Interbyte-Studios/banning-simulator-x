@@ -1,8 +1,10 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
-import { font, vec2Middle } from "client/ui/commonValues";
+import { font, uiDarkStrokeColor, vec2Middle } from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import { StoreState } from "shared/rodux";
@@ -47,15 +49,17 @@ export const TalismanItems = RoactRodux.connect(mapStateToProps)(
 
 		const talismanInfoDisplay: Array<Roact.Element> = [];
 		if (displayingInfo !== undefined) {
-			talismanInfoDisplay.push(
+			const talismanElement = (
 				<TalismanInfoDisplay
 					id={displayingInfo}
 					shouldAnimate={talismanInfoDisplayOldState === undefined && displayingInfo !== undefined}
 					hideDisplay={(): void => {
 						displayTalismanInfo(undefined);
 					}}
-				/>,
+				/>
 			);
+
+			talismanInfoDisplay.push(talismanElement);
 		}
 
 		if (talismanInfoDisplayOldState !== displayingInfo) {
@@ -64,27 +68,18 @@ export const TalismanItems = RoactRodux.connect(mapStateToProps)(
 
 		if (props.talismans.isEmpty()) {
 			return (
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.55)}
-					Size={UDim2.fromScale(0.9, 0.2)}
-					Font={font}
-					Text={"You don't own any talismans."}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(6, 63, 98) }} />
-				</textlabel>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.55),
+						Size: UDim2.fromScale(0.9, 0.2),
+						Text: "You don't own any talismans.",
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+				/>
 			);
 		} else {
 			return (
-				<frame
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.975, 0.785)}
-					Position={UDim2.fromScale(0.5, 0.565)}
-				>
+				<BaseFrame Size={UDim2.fromScale(0.975, 0.785)} Position={UDim2.fromScale(0.5, 0.565)}>
 					<RescalingScrollingFrame
 						AnchorPoint={vec2Middle}
 						BackgroundTransparency={1}
@@ -110,7 +105,7 @@ export const TalismanItems = RoactRodux.connect(mapStateToProps)(
 						})}
 					</RescalingScrollingFrame>
 					{talismanInfoDisplay}
-				</frame>
+				</BaseFrame>
 			);
 		}
 	}),

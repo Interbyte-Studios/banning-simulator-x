@@ -18,7 +18,7 @@ export const ViewPetChallenges = (props: { displayChallenges: () => void }): Roa
 				Position: UDim2.fromScale(0.5, 0.925),
 				Image: assetIds.images.ui.index["view challenges"],
 			}}
-			size={{ minSize: 0.09, maxSize: 0.1 }}
+			size={{ minSize: 0.9, maxSize: 0.95 }}
 			events={{
 				/* eslint-disable jsdoc/require-jsdoc */
 				Activated: (): void => {
@@ -28,6 +28,7 @@ export const ViewPetChallenges = (props: { displayChallenges: () => void }): Roa
 				/* eslint-enable jsdoc/require-jsdoc */
 			}}
 		>
+			<uiaspectratioconstraint AspectRatio={7.57} />
 			<StrokeTextLabel
 				native={{
 					Size: UDim2.fromScale(0.9, 0.9),

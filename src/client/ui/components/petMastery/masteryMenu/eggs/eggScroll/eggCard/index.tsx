@@ -58,7 +58,8 @@ export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
 		return (
 			<ImageButton
 				native={{
-					Size: UDim2.fromOffset(0.9, 0.125),
+					Size: UDim2.fromScale(0.9, 0.125),
+					BackgroundTransparency: 0,
 					BackgroundColor3: Color3.fromRGB(0, 131, 213),
 					LayoutOrder: props.layoutOrder,
 					Image: "",

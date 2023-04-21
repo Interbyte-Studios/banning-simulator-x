@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { vec2Middle } from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { hooks } from "client/ui/hooks";
 import { currencies, Currency } from "shared/configs/currencies";
 import { StoreState } from "shared/rodux";
@@ -65,15 +65,6 @@ export const CurrencyGainAnimation = RoactRodux.connect(mapStateToProps)(
 			unpackedCurrencyIcons.push(slot.component);
 		});
 
-		return (
-			<frame
-				Size={UDim2.fromScale(1, 1)}
-				BackgroundTransparency={1}
-				AnchorPoint={vec2Middle}
-				Position={UDim2.fromScale(0.5, 0.5)}
-			>
-				{unpackedCurrencyIcons}
-			</frame>
-		);
+		return <BaseFrame Size={UDim2.fromScale(1, 1)}>{unpackedCurrencyIcons}</BaseFrame>;
 	}),
 );

@@ -14,6 +14,7 @@ import {
 	voidVariantMasteryData,
 } from "shared/rodux/petMastery";
 import { getEggData } from "shared/util/getEggData";
+import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
 interface ProgressBarProps extends RegularEggProgressMappedProps {
 	egg: EggName;
@@ -119,16 +120,17 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 		const completionBarComponent: Array<Roact.Element> = [];
 
 		if (completionPercentage > 0) {
-			if (completionPercentage < 1) {
+			if (completionPercentage > 1) {
 				completionPercentage = 1;
 			}
 
 			const completionElement = (
 				<BaseFrame
+					AnchorPoint={new Vector2(0, 0)}
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(130, 245, 166)}
 					Size={UDim2.fromScale(completionPercentage, 1)}
-					Position={UDim2.fromScale(0, 0.5)}
+					Position={UDim2.fromScale(0, 0)}
 				>
 					<uicorner CornerRadius={new UDim(0.4, 0)} />
 				</BaseFrame>
@@ -152,7 +154,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 				<StrokeTextLabel
 					native={{
 						Size: UDim2.fromScale(1, 1),
-						Text: `${completionPercentage * 100}%`,
+						Text: `${statsAbbreviator.numberToString(completionPercentage * 100)}%`,
 					}}
 					stroke={{ native: { Thickness: 2 } }}
 				/>
