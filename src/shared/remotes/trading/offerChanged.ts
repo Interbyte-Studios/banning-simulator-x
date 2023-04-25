@@ -1,5 +1,5 @@
 import Net from "@rbxts/net";
-import type { Trading } from "server/handlers/trading/trades";
+import type { PlayerTradeItem } from "server/handlers/trading/trades";
 
 /**
  * `player` references the player that had their offer changed.
@@ -9,5 +9,5 @@ import type { Trading } from "server/handlers/trading/trades";
  * `newOffer` contains the player's offer.
  */
 export const offerChangedDefinition =
-	Net.Definitions.ServerToClientEvent<[player: Player, newOffer: Readonly<Trading["items"][number]["items"]>]>();
+	Net.Definitions.ServerToClientEvent<[player: Player, newOffer: Readonly<PlayerTradeItem>]>();
 export type OfferChangedDefinition = typeof offerChangedDefinition;

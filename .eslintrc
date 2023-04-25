@@ -21,7 +21,6 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:roblox-ts/recommended",
     "plugin:prettier/recommended",
-    "prettier",
     "plugin:jsdoc/recommended",
     "plugin:promise/recommended"
   ],

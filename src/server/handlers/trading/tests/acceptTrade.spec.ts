@@ -97,11 +97,11 @@ export = (): void => {
 				items: [
 					{
 						player: a.player,
-						items: [],
+						pets: [],
 					},
 					{
 						player: b.player,
-						items: [],
+						pets: [],
 					},
 				],
 			};

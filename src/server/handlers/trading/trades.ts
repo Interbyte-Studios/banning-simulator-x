@@ -1,3 +1,5 @@
+import { Currency } from "shared/configs/currencies";
+import { Store } from "shared/rodux";
 import { UnreachableCaseError } from "shared/util/unreachableCaseError";
 
 const currentTrades: Map<Player, Trade> = new Map();
@@ -18,6 +20,20 @@ interface PendingTrade {
 	receiver: Player;
 }
 
+export interface PlayerTradeItem {
+	/**
+	 * All the IDs of pets that are on offer.
+	 */
+	pets: Array<string>;
+	/**
+	 * The currency the player has put on trade.
+	 */
+	currency?: {
+		type: Currency;
+		amount: number;
+	};
+}
+
 export interface Trading {
 	/**
 	 * The current status of the trade.
@@ -25,25 +41,17 @@ export interface Trading {
 	status: TradeStatus.Trading;
 
 	items: [
-		{
+		PlayerTradeItem & {
 			/**
 			 * The first player involved in the trade.
 			 */
 			player: Player;
-			/**
-			 * All the IDs of pets that are on offer.
-			 */
-			items: Array<string>;
 		},
-		{
+		PlayerTradeItem & {
 			/**
 			 * The second player involved in the trade.
 			 */
 			player: Player;
-			/**
-			 * All the IDs of pets that are on offer.
-			 */
-			items: Array<string>;
 		},
 	];
 }
@@ -104,11 +112,11 @@ export function acceptTrade(receiver: Player, creator: Player): void {
 		items: [
 			{
 				player: creator,
-				items: [],
+				pets: [],
 			},
 			{
 				player: receiver,
-				items: [],
+				pets: [],
 			},
 		],
 	};
@@ -183,10 +191,11 @@ export function rejectTrade(receiver: Player, creator: Player): boolean {
  * Modifies the items on offer from a player for a specific trade.
  *
  * @param player The player who is modifying their trade.
+ * @param store The player's store.
  * @param newOffer The new items they want to put in the trade.
  * @returns If the attempt to modify items was accepted.
  */
-export function modifyTrade(player: Player, newOffer: Trading["items"][number]["items"]): boolean {
+export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeItem): boolean {
 	const trade = currentTrades.get(player);
 	if (trade === undefined || trade.status !== TradeStatus.Trading) {
 		return false;
@@ -198,7 +207,27 @@ export function modifyTrade(player: Player, newOffer: Trading["items"][number]["
 		return false;
 	}
 
-	playerItems.items = newOffer;
+	// ensure if currency was specified, the player has enough
+	if (
+		newOffer.currency !== undefined &&
+		newOffer.currency.amount < store.getState().currencies[newOffer.currency.type]
+	) {
+		return false;
+	}
+
+	// validate player has the pets they own
+	if (!newOffer.pets.every((pet) => store.getState().pets.find((storePet) => storePet.guid === pet) !== undefined)) {
+		return false;
+	}
+
+	// ensure that the pet guids are unique
+	if (new Set(newOffer.pets).size() !== newOffer.pets.size()) {
+		return false;
+	}
+
+	playerItems.pets = newOffer.pets;
+	playerItems.currency = newOffer.currency;
+
 	return true;
 }
 
@@ -236,7 +265,7 @@ export function getTradeStatus(player: Player): TradeStatus | undefined {
  * @param player The player who we want to retrieve their items.
  * @returns The player's items.
  */
-export function getTradeItems(player: Player): Readonly<Trading["items"][number]["items"]> {
+export function getTradeItems(player: Player): Readonly<PlayerTradeItem> {
 	const trade = currentTrades.get(player);
 	if (trade === undefined || trade.status !== TradeStatus.Trading) {
 		throw `Attempt to call getTradeItems on ${player} who is not in a trade.`;
@@ -247,7 +276,10 @@ export function getTradeItems(player: Player): Readonly<Trading["items"][number]
 		throw `reached impossible case where ${player} had currentTrade but not in trade`;
 	}
 
-	return playerItems.items;
+	return {
+		pets: playerItems.pets,
+		currency: playerItems.currency,
+	};
 }
 
 /**

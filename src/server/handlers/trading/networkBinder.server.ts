@@ -9,6 +9,7 @@ import {
 	getTradeItems,
 	getTradeStatus,
 	getTradingCounterParty,
+	modifyTrade,
 	rejectTrade,
 	removeTrade,
 	TradeStatus,
@@ -55,18 +56,10 @@ modifyOffer.Connect(
 			return;
 		}
 
-		// ensure the player owns all the items in the offer
-		const ownsEveryPet = offer.every(
-			(offerPet) => store.getState().pets.find((p) => p.guid === offerPet) !== undefined,
-		);
-		if (!ownsEveryPet) {
-			offerChanged.SendToPlayer(player, player, getTradeItems(player));
-			return;
-		}
-		// ensure that the pet guids are unique
-		if (new Set(offer).size() !== offer.size()) {
-			offerChanged.SendToPlayer(player, player, getTradeItems(player));
-			return;
+		if (!modifyTrade(player, store, offer)) {
+			// failed to modify trade
+			// we should tell the player to not modify
+			return offerChanged.SendToPlayer(player, player, getTradeItems(player));
 		}
 
 		// alert the other player that the offer changed
