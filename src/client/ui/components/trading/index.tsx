@@ -5,11 +5,11 @@ import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
-import { ActiveTradeWarning } from "./activeTradeWarning";
-import { DeclinedTradeWarning } from "./declinedTradeWarning";
-import { SentTradeRequest } from "./sentTradeRequest";
-import { TradeList } from "./tradeList";
-import { TradeRequest } from "./tradeRequest";
+import { ActiveTradeWarning } from "./tradeList/activeTradeWarning";
+import { DeclinedTradeWarning } from "./tradeList/declinedTradeWarning";
+import { SentTradeRequest } from "./tradeList/sentTradeRequest";
+import { TradeList } from "./tradeList/tradeList";
+import { TradeRequest } from "./tradeList/tradeRequest";
 
 interface TradeListDisplayProps {
 	hideMenu: () => void;
