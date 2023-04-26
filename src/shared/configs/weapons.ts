@@ -1,5 +1,4 @@
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
-import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { Currency } from "./currencies";
 import { WorldName } from "./worlds";
@@ -26,12 +25,13 @@ export interface Weapon {
 	isBossWeapon: boolean;
 }
 
-export const MAX_WEAPON_ID = 24;
+export const MAX_WEAPON_ID = 35;
 export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
+	/* First Zone */
 	"Stone Hammer": {
 		id: 1,
 		cost: undefined,
-		damage: 18,
+		damage: 10,
 		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
@@ -40,9 +40,9 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		id: 2,
 		cost: {
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("1.1k"),
+			amount: 100,
 		},
-		damage: 35,
+		damage: 12,
 		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
@@ -52,9 +52,9 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		cost: {
 			requiredRank: 1,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("2.2k"),
+			amount: 150,
 		},
-		damage: 90,
+		damage: 14,
 		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
@@ -64,243 +64,406 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		cost: {
 			requiredRank: 1,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("3.4k"),
+			amount: 200,
 		},
-		damage: 200,
+		damage: 16,
 		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
-	"Spark Plug": {
+
+	/* Desert */
+	"Blade Of Mastery": {
 		id: 5,
 		cost: {
 			requiredRank: 1,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("8.3k"),
+			amount: 300,
 		},
-		damage: 450,
-		world: "Ban Land",
-		weaponType: "Lance",
-		isBossWeapon: false,
-	},
-	"Bomba Bomber": {
-		id: 6,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("10.2k"),
-		},
-		damage: 800,
-		world: "Ban Land",
-		weaponType: "Hammer",
-		isBossWeapon: false,
-	},
-	"Forest Slammer": {
-		id: 7,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("20k"),
-		},
-		damage: twoDpAbbreviator.stringToNumber("2.2k"),
+		damage: 20,
 		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
-	"Honey Whacker": {
-		id: 8,
+	"Machine Masher": {
+		id: 6,
 		cost: {
 			requiredRank: 1,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("30.4k"),
+			amount: 600,
 		},
-		damage: twoDpAbbreviator.stringToNumber("3.8k"),
-		world: "Ban Land",
-		weaponType: "Lance",
-		isBossWeapon: false,
-	},
-	"Darkest Desires": {
-		id: 9,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("81k"),
-		},
-		damage: twoDpAbbreviator.stringToNumber("9k"),
+		damage: 24,
 		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
-	"Gooey Brawler": {
+	Taliscythe: {
+		id: 7,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 900,
+		},
+		damage: 28,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Starry Lance": {
+		id: 8,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 1_200,
+		},
+		damage: 32,
+		world: "Ban Land",
+		weaponType: "Lance",
+		isBossWeapon: false,
+	},
+
+	/* Sunflower Zone */
+	"Sunflower Sword": {
+		id: 9,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 1_500,
+		},
+		damage: 40,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Sunflower Basher": {
 		id: 10,
 		cost: {
 			requiredRank: 1,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("122k"),
+			amount: 2_275,
 		},
-		damage: twoDpAbbreviator.stringToNumber("16.5k"),
+		damage: 48,
+		world: "Ban Land",
+		weaponType: "Hammer",
+		isBossWeapon: false,
+	},
+	"Sunflower Slicer": {
+		id: 11,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 3_000,
+		},
+		damage: 56,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Sunflower Spear": {
+		id: 12,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 4_500,
+		},
+		damage: 64,
+		world: "Ban Land",
+		weaponType: "Lance",
+		isBossWeapon: false,
+	},
+
+	/* Honeycomb Zone */
+	"Buzz Blade": {
+		id: 13,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 2_500,
+		},
+		damage: 80,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Bumble Basher": {
+		id: 14,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 5_000,
+		},
+		damage: 96,
+		world: "Ban Land",
+		weaponType: "Hammer",
+		isBossWeapon: false,
+	},
+	"Stinger Scythe": {
+		id: 15,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 7_500,
+		},
+		damage: 112,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Buzz Lance": {
+		id: 16,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 10_000,
+		},
+		damage: 128,
+		world: "Ban Land",
+		weaponType: "Lance",
+		isBossWeapon: false,
+	},
+
+	/* Iceland Zone */
+	"Atlantis Blade": {
+		id: 17,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 12_500,
+		},
+		damage: 160,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Atlantis Basher": {
+		id: 18,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 15_000,
+		},
+		damage: 192,
 		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
 	"Lime Lance": {
-		id: 11,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("305k"),
-		},
-		damage: twoDpAbbreviator.stringToNumber("55k"),
-		world: "Ban Land",
-		weaponType: "Lance",
-		isBossWeapon: false,
-	},
-	"Carnival Mallet": {
-		id: 12,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("455k"),
-		},
-		damage: twoDpAbbreviator.stringToNumber("102k"),
-		world: "Ban Land",
-		weaponType: "Hammer",
-		isBossWeapon: false,
-	},
-	"Samurai Smasher": {
-		id: 13,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("920k"),
-		},
-		damage: twoDpAbbreviator.stringToNumber("155k"),
-		world: "Ban Land",
-		weaponType: "Hammer",
-		isBossWeapon: false,
-	},
-	"Atlantis Blade": {
-		id: 14,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("1.3M"),
-		},
-		damage: twoDpAbbreviator.stringToNumber("210k"),
-		world: "Ban Land",
-		weaponType: "Sword",
-		isBossWeapon: false,
-	},
-	"Sunflower Slammer": {
-		id: 15,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("2M"),
-		},
-		damage: twoDpAbbreviator.stringToNumber("475k"),
-		world: "Ban Land",
-		weaponType: "Sword",
-		isBossWeapon: false,
-	},
-	"Dune Glass": {
-		id: 16,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("3.9M"),
-		},
-		damage: twoDpAbbreviator.stringToNumber("600k"),
-		world: "Ban Land",
-		weaponType: "Hammer",
-		isBossWeapon: false,
-	},
-	"Atlantis Basher": {
-		id: 17,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("4.7M"),
-		},
-		damage: twoDpAbbreviator.stringToNumber("1.1M"),
-		world: "Ban Land",
-		weaponType: "Hammer",
-		isBossWeapon: false,
-	},
-	"Infernal Staff": {
-		id: 18,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("5.9M"),
-		},
-		damage: twoDpAbbreviator.stringToNumber("1.8M"),
-		world: "Ban Land",
-		weaponType: "Lance",
-		isBossWeapon: false,
-	},
-	"Galactic Blade": {
 		id: 19,
 		cost: {
 			requiredRank: 1,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("11.6M"),
+			amount: 20_000,
 		},
-		damage: twoDpAbbreviator.stringToNumber("2.4M"),
+		damage: 256,
 		world: "Ban Land",
-		weaponType: "Sword",
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
-	"Crimson Jewel": {
+
+	/* Beach Zone */
+	"Aquatic Omegablade": {
 		id: 20,
 		cost: {
 			requiredRank: 1,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("25M"),
+			amount: 25_000,
 		},
-		damage: twoDpAbbreviator.stringToNumber("3M"),
+		damage: 320,
 		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
-	"Twilight Blade": {
+	"Tropical Thrasher": {
 		id: 21,
 		cost: {
 			requiredRank: 1,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("37.5M"),
+			amount: 30_000,
 		},
-		damage: twoDpAbbreviator.stringToNumber("3.7M"),
-		world: "Ban Land",
-		weaponType: "Sword",
-		isBossWeapon: false,
-	},
-	"Hellfire Slasher": {
-		id: 22,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("75M"),
-		},
-		damage: twoDpAbbreviator.stringToNumber("8M"),
-		world: "Ban Land",
-		weaponType: "Sword",
-		isBossWeapon: false,
-	},
-	"Pillar Slammer": {
-		id: 23,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("150M"),
-		},
-		damage: twoDpAbbreviator.stringToNumber("14M"),
+		damage: 384,
 		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
-	"Haunted Blade": {
+	"Beach Scythe": {
+		id: 22,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 35_000,
+		},
+		damage: 448,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Tropical Lance": {
+		id: 23,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 40_000,
+		},
+		damage: 512,
+		world: "Ban Land",
+		weaponType: "Lance",
+		isBossWeapon: false,
+	},
+
+	/* Candy Zone */
+	"Candy Omegablade": {
 		id: 24,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 50_000,
+		},
+		damage: 640,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Gumdrop Dropper": {
+		id: 25,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 60_000,
+		},
+		damage: 768,
+		world: "Ban Land",
+		weaponType: "Hammer",
+		isBossWeapon: false,
+	},
+	"Peppermint Scythe": {
+		id: 26,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 70_000,
+		},
+		damage: 896,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Candy Lance": {
+		id: 27,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 85_000,
+		},
+		damage: 1_024,
+		world: "Ban Land",
+		weaponType: "Lance",
+		isBossWeapon: false,
+	},
+
+	/* The Mines Zone */
+	"Amethyst Greatblade": {
+		id: 28,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 100_000,
+		},
+		damage: 1_280,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Crystalized Hammer": {
+		id: 29,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 125_000,
+		},
+		damage: 1_536,
+		world: "Ban Land",
+		weaponType: "Hammer",
+		isBossWeapon: false,
+	},
+	"Crystalized Scythe": {
+		id: 30,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 175_000,
+		},
+		damage: 1_792,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Amethyst Lance ": {
+		id: 31,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 225_000,
+		},
+		damage: 2_048,
+		world: "Ban Land",
+		weaponType: "Lance",
+		isBossWeapon: false,
+	},
+
+	/* Lavaland Zone */
+	"Molten Slasher": {
+		id: 32,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 250_000,
+		},
+		damage: 2_560,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Molten Thrasher": {
+		id: 33,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 500_000,
+		},
+		damage: 3_072,
+		world: "Ban Land",
+		weaponType: "Hammer",
+		isBossWeapon: false,
+	},
+	"Molten Scythe": {
+		id: 34,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 750_000,
+		},
+		damage: 3_584,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Lava Lance": {
+		id: 35,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 1_000_000,
+		},
+		damage: 4_096,
+		world: "Ban Land",
+		weaponType: "Lance",
+		isBossWeapon: false,
+	},
+
+	/*
+	// Enchanted Forest Zone
+	"Enchanted Greatsword": {
+		id: 36,
 		cost: {
 			requiredRank: 1,
 			currency: "coins",
@@ -311,6 +474,143 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
+	"Enchanted Hammer": {
+		id: 37,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: twoDpAbbreviator.stringToNumber("350M"),
+		},
+		damage: twoDpAbbreviator.stringToNumber("20M"),
+		world: "Ban Land",
+		weaponType: "Hammer",
+		isBossWeapon: false,
+	},
+	"Enchanted Scythe": {
+		id: 38,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: twoDpAbbreviator.stringToNumber("350M"),
+		},
+		damage: twoDpAbbreviator.stringToNumber("20M"),
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Enchanted Lance": {
+		id: 39,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: twoDpAbbreviator.stringToNumber("350M"),
+		},
+		damage: twoDpAbbreviator.stringToNumber("20M"),
+		world: "Ban Land",
+		weaponType: "Lance",
+		isBossWeapon: false,
+	},
+
+	// Radioactive Zone
+	"Radioactive Smasher": {
+		id: 40,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: twoDpAbbreviator.stringToNumber("350M"),
+		},
+		damage: twoDpAbbreviator.stringToNumber("20M"),
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Radioactive Greatsword": {
+		id: 41,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: twoDpAbbreviator.stringToNumber("350M"),
+		},
+		damage: twoDpAbbreviator.stringToNumber("20M"),
+		world: "Ban Land",
+		weaponType: "Hammer",
+		isBossWeapon: false,
+	},
+	"Radioactive Scythe": {
+		id: 42,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: twoDpAbbreviator.stringToNumber("350M"),
+		},
+		damage: twoDpAbbreviator.stringToNumber("20M"),
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Radioactive Lance": {
+		id: 43,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: twoDpAbbreviator.stringToNumber("350M"),
+		},
+		damage: twoDpAbbreviator.stringToNumber("20M"),
+		world: "Ban Land",
+		weaponType: "Lance",
+		isBossWeapon: false,
+	},
+
+	// Castle Zone
+	"Radiant Smaher": {
+		id: 44,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: twoDpAbbreviator.stringToNumber("350M"),
+		},
+		damage: twoDpAbbreviator.stringToNumber("20M"),
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Radiant Greatsword": {
+		id: 45,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: twoDpAbbreviator.stringToNumber("350M"),
+		},
+		damage: twoDpAbbreviator.stringToNumber("20M"),
+		world: "Ban Land",
+		weaponType: "Hammer",
+		isBossWeapon: false,
+	},
+	"Radiant  Scythe": {
+		id: 46,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: twoDpAbbreviator.stringToNumber("350M"),
+		},
+		damage: twoDpAbbreviator.stringToNumber("20M"),
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Radiant Lance": {
+		id: 47,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: twoDpAbbreviator.stringToNumber("350M"),
+		},
+		damage: twoDpAbbreviator.stringToNumber("20M"),
+		world: "Ban Land",
+		weaponType: "Lance",
+		isBossWeapon: false,
+	},
+	*/
 });
 
 export const WEAPON_LEVELS: Array<{ level: number; requiredBans: number }> = [
