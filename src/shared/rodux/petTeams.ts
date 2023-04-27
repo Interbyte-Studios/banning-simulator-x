@@ -78,13 +78,13 @@ export function updateTeamName(teamId: number, name: string): UpdateTeamName & R
 	};
 }
 
-const petTeams: PetTeamsState = {
+export const defaultPetTeamsState: PetTeamsState = {
 	maxTeams: 1,
 	teams: [],
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const petTeamsReducer = Rodux.createReducer<PetTeamsState, PetTeamsActions | DeletePet>(petTeams, {
+export const petTeamsReducer = Rodux.createReducer<PetTeamsState, PetTeamsActions | DeletePet>(defaultPetTeamsState, {
 	createPetTeam: (state, action) => {
 		if (state.teams.size() >= state.maxTeams) {
 			return state;

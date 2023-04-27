@@ -1,6 +1,6 @@
 /// <reference types="@rbxts/testez/globals" />
 
-import { createDummyStore } from "server/playerStore";
+import { dataClass } from "server/classes/dataClass";
 import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 import { useMockPlayer } from "shared/mocks/player";
 import { equipWeapon } from "shared/rodux/currentWeapon";
@@ -14,7 +14,7 @@ export = (): void => {
 			};
 
 			const player = useMockPlayer();
-			const { store, dispatchedActions, cleanup } = createDummyStore(player, {
+			const { store, dispatchedActions, cleanup } = dataClass.createDummyStore(player, {
 				currentWeapon: {
 					id: 1,
 					equipped: false,

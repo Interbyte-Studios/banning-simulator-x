@@ -1,11 +1,12 @@
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
-import { stores } from "server/playerStore";
+import { dataClass } from "server/classes/dataClass";
 import { WORLDS } from "shared/configs/worlds";
 import { NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 import { killNpc } from "shared/rodux/currencies";
 import { getBanningMastery } from "shared/util/getBanningMastery";
 import { getPetExperienceMastery } from "shared/util/getPetExperienceMastery";
+import { getPetStrength } from "shared/util/getPetStrength";
 import { getTalismanStatEffect } from "shared/util/getTalismanDamage";
 import { getWeaponDamage } from "shared/util/getWeaponDamage";
 
@@ -141,14 +142,21 @@ export function runStep(
 			storeState.talismans.find((talisman) => talisman.id === storeState.currentTalisman)?.phase,
 		);
 
-		const damageAmount = weaponDamage + talismanStatEffects.damage;
+		let petDamageEffects = 0;
+		const equippedPets = store.getState().pets.filter((pet) => pet.equipped);
+		equippedPets.forEach((pet) => {
+			const petStrength = getPetStrength(pet);
+			petDamageEffects += petStrength;
+		});
+
+		const damageAmount = weaponDamage + talismanStatEffects.damage + petDamageEffects;
 
 		npc.instance.Humanoid.TakeDamage(damageAmount);
 
 		// check if npc is dead
 		if (npc.instance.Humanoid.Health <= 0) {
 			// reward player
-			const store = stores.get(player);
+			const store = dataClass.retrieveStore(player);
 			if (store === undefined) {
 				warn(`Could not get store for "${player.GetFullName()}" when rewarding them for killing NPC`);
 				continue;

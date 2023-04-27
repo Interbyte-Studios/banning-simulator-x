@@ -78,7 +78,7 @@ export function addTimePlayed(): AddTimePlayed & Rodux.AnyAction {
 	};
 }
 
-const defaultPlayerIndex: PlayerIndexState = {
+export const defaultPlayerIndex: PlayerIndexState = {
 	pets: new Map(),
 	eggs: new Map(),
 	timePlayed: 0,

@@ -19,7 +19,7 @@ export function claimAccolade(id: number): ClaimAccolade & Rodux.AnyAction {
 	};
 }
 
-const defaultAccoladeState: AccoladeState = [];
+export const defaultAccoladeState: AccoladeState = [];
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const accoladeReducer = Rodux.createReducer<AccoladeState, AccoladeActions>(defaultAccoladeState, {

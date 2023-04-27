@@ -262,7 +262,7 @@ export function togglePublicTradeHistory(): TogglePublicTradeHistory & Rodux.Any
 	};
 }
 
-const defaultSettings: Settings = {
+export const defaultSettings: Settings = {
 	autoDelete: {
 		rarities: {
 			Basic: false,

@@ -9,7 +9,7 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 		id: 1,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 2,
 		},
 	},
 	Bunny: {
@@ -17,7 +17,7 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 		id: 2,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 2,
 		},
 	},
 	Kitty: {
@@ -25,7 +25,7 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 		id: 3,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 2,
 		},
 	},
 	Piggy: {
@@ -33,7 +33,7 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 		id: 4,
 		rarity: "Ordinary",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 4,
 		},
 	},
 	Deer: {
@@ -41,7 +41,7 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 		id: 5,
 		rarity: "Rare",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 6,
 		},
 	},
 	"Royal Bunny": {
@@ -49,7 +49,7 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 		id: 6,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 8,
 		},
 	},
 };

@@ -1,5 +1,5 @@
+import { dataClass } from "server/classes/dataClass";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
-import { retrieveStore } from "server/playerStore";
 import { ADMIN_RANK } from "shared/configs/admin";
 import { GROUP_ID } from "shared/configs/game";
 import { remotes } from "shared/remotes";
@@ -15,7 +15,7 @@ remotes.Server.GetNamespace("admin")
 			const targetPlayer = game.GetService("Players").GetPlayerByUserId(targetPlayerId);
 			if (targetPlayer === undefined) return;
 
-			const targetPlayerStore = retrieveStore(targetPlayer);
+			const targetPlayerStore = dataClass.retrieveStore(targetPlayer);
 			if (targetPlayerStore === undefined) return;
 
 			const ownsTalisman = targetPlayerStore

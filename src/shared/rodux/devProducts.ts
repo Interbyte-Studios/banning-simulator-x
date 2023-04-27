@@ -21,7 +21,7 @@ export function claimDevProduct(productId: number, purchaseId: string): ClaimDev
 	};
 }
 
-const defaultDevProductState: DevProductState = [];
+export const defaultDevProductState: DevProductState = [];
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const devProductReducer = Rodux.createReducer<DevProductState, DevProductActions>(defaultDevProductState, {

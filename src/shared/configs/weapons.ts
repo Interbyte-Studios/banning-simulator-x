@@ -50,7 +50,6 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Flower Blade": {
 		id: 3,
 		cost: {
-			requiredRank: 1,
 			currency: "coins",
 			amount: 150,
 		},
@@ -62,7 +61,6 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Stone Smacker": {
 		id: 4,
 		cost: {
-			requiredRank: 1,
 			currency: "coins",
 			amount: 200,
 		},
@@ -76,7 +74,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Blade Of Mastery": {
 		id: 5,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 2,
 			currency: "coins",
 			amount: 300,
 		},
@@ -88,7 +86,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Machine Masher": {
 		id: 6,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 2,
 			currency: "coins",
 			amount: 600,
 		},
@@ -100,7 +98,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	Taliscythe: {
 		id: 7,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 2,
 			currency: "coins",
 			amount: 900,
 		},
@@ -112,7 +110,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Starry Lance": {
 		id: 8,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 2,
 			currency: "coins",
 			amount: 1_200,
 		},
@@ -126,7 +124,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Sunflower Sword": {
 		id: 9,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 3,
 			currency: "coins",
 			amount: 1_500,
 		},
@@ -138,7 +136,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Sunflower Basher": {
 		id: 10,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 3,
 			currency: "coins",
 			amount: 2_275,
 		},
@@ -150,7 +148,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Sunflower Slicer": {
 		id: 11,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 3,
 			currency: "coins",
 			amount: 3_000,
 		},
@@ -162,7 +160,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Sunflower Spear": {
 		id: 12,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 3,
 			currency: "coins",
 			amount: 4_500,
 		},
@@ -176,9 +174,9 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Buzz Blade": {
 		id: 13,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 4,
 			currency: "coins",
-			amount: 2_500,
+			amount: 5_000,
 		},
 		damage: 80,
 		world: "Ban Land",
@@ -188,9 +186,9 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Bumble Basher": {
 		id: 14,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 4,
 			currency: "coins",
-			amount: 5_000,
+			amount: 6_500,
 		},
 		damage: 96,
 		world: "Ban Land",
@@ -200,7 +198,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Stinger Scythe": {
 		id: 15,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 4,
 			currency: "coins",
 			amount: 7_500,
 		},
@@ -212,7 +210,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Buzz Lance": {
 		id: 16,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 4,
 			currency: "coins",
 			amount: 10_000,
 		},
@@ -226,7 +224,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Atlantis Blade": {
 		id: 17,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 4,
 			currency: "coins",
 			amount: 12_500,
 		},
@@ -238,7 +236,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Atlantis Basher": {
 		id: 18,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 4,
 			currency: "coins",
 			amount: 15_000,
 		},
@@ -250,7 +248,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Lime Lance": {
 		id: 19,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 4,
 			currency: "coins",
 			amount: 20_000,
 		},
@@ -264,7 +262,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Aquatic Omegablade": {
 		id: 20,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 5,
 			currency: "coins",
 			amount: 25_000,
 		},
@@ -276,7 +274,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Tropical Thrasher": {
 		id: 21,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 5,
 			currency: "coins",
 			amount: 30_000,
 		},
@@ -288,7 +286,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Beach Scythe": {
 		id: 22,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 5,
 			currency: "coins",
 			amount: 35_000,
 		},
@@ -300,7 +298,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Tropical Lance": {
 		id: 23,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 5,
 			currency: "coins",
 			amount: 40_000,
 		},
@@ -314,7 +312,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Candy Omegablade": {
 		id: 24,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 5,
 			currency: "coins",
 			amount: 50_000,
 		},
@@ -326,7 +324,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Gumdrop Dropper": {
 		id: 25,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 5,
 			currency: "coins",
 			amount: 60_000,
 		},
@@ -338,7 +336,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Peppermint Scythe": {
 		id: 26,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 5,
 			currency: "coins",
 			amount: 70_000,
 		},
@@ -350,7 +348,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Candy Lance": {
 		id: 27,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 5,
 			currency: "coins",
 			amount: 85_000,
 		},
@@ -364,7 +362,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Amethyst Greatblade": {
 		id: 28,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 6,
 			currency: "coins",
 			amount: 100_000,
 		},
@@ -376,7 +374,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Crystalized Hammer": {
 		id: 29,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 6,
 			currency: "coins",
 			amount: 125_000,
 		},
@@ -388,7 +386,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Crystalized Scythe": {
 		id: 30,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 6,
 			currency: "coins",
 			amount: 175_000,
 		},
@@ -397,10 +395,10 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
-	"Amethyst Lance ": {
+	"Amethyst Lance": {
 		id: 31,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 6,
 			currency: "coins",
 			amount: 225_000,
 		},
@@ -414,7 +412,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Molten Slasher": {
 		id: 32,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 6,
 			currency: "coins",
 			amount: 250_000,
 		},
@@ -426,7 +424,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Molten Thrasher": {
 		id: 33,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 6,
 			currency: "coins",
 			amount: 500_000,
 		},
@@ -438,7 +436,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Molten Scythe": {
 		id: 34,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 7,
 			currency: "coins",
 			amount: 750_000,
 		},
@@ -450,7 +448,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Lava Lance": {
 		id: 35,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 7,
 			currency: "coins",
 			amount: 1_000_000,
 		},

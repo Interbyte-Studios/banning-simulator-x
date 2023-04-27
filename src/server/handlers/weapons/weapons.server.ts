@@ -1,11 +1,11 @@
 import { Players, ReplicatedStorage } from "@rbxts/services";
+import { dataClass } from "server/classes/dataClass";
 import { remotes } from "shared/remotes";
 import { changeWeapon, equipWeapon, unequipWeapon } from "shared/rodux/currentWeapon";
 import { getItemById } from "shared/util/getItemById";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
 import { withPlayerStore } from "../../modules/net/withPlayerStore";
-import { onStoreCreated } from "../../playerStore";
 
 remotes.Server.GetNamespace("weapons")
 	.Create("changeWeapon")
@@ -28,7 +28,7 @@ remotes.Server.GetNamespace("weapons")
 	.Connect(withPlayerStore((_, store) => store.dispatch(unequipWeapon())));
 
 Players.PlayerAdded.Connect(async (player) => {
-	const store = await onStoreCreated(player);
+	const store = await dataClass.onStoreCreated(player);
 
 	{
 		// backpack is deleted each time the player spawns

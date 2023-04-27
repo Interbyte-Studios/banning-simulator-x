@@ -1,6 +1,6 @@
 /// <reference types="@rbxts/testez/globals" />
 
-import { createDummyStore } from "server/playerStore";
+import { dataClass } from "server/classes/dataClass";
 import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 import { useMockPlayer } from "shared/mocks/player";
 
@@ -10,7 +10,7 @@ export = (): void => {
 	describe("redeemQuest", () => {
 		it("should redeem a title quest", () => {
 			const player = useMockPlayer();
-			const { store, dispatchedActions, cleanup } = createDummyStore(player, {});
+			const { store, dispatchedActions, cleanup } = dataClass.createDummyStore(player, {});
 
 			redeemQuest(store, "Kill 30 mobs");
 			assertDeepEqual(dispatchedActions, [
@@ -32,7 +32,7 @@ export = (): void => {
 
 		it("should throw if quest was not valid", () => {
 			const player = useMockPlayer();
-			const { store, dispatchedActions, cleanup } = createDummyStore(player, {});
+			const { store, dispatchedActions, cleanup } = dataClass.createDummyStore(player, {});
 
 			expect(() => redeemQuest(store, "a random quest name")).to.throw();
 			assertDeepEqual(dispatchedActions, []);
@@ -42,7 +42,7 @@ export = (): void => {
 
 		it("should not redeem a quest a user has not completed all progress for", () => {
 			const player = useMockPlayer();
-			const { store, dispatchedActions, cleanup } = createDummyStore(player, {});
+			const { store, dispatchedActions, cleanup } = dataClass.createDummyStore(player, {});
 
 			redeemQuest(store, "Kill 15 mobs");
 			assertDeepEqual(dispatchedActions, []);
