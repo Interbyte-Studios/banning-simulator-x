@@ -116,7 +116,6 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 		.catch((e) => {
 			throw `Failed to get store for player ${player.Name} | ${e}`;
 		});
-
 Players.GetPlayers().forEach((player) => cachePlayerPetanimation(player));
 Players.PlayerAdded.Connect((player) => cachePlayerPetanimation(player));
 Players.PlayerRemoving.Connect((player) => removePetAnimationCache(player));

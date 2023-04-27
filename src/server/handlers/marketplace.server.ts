@@ -1,5 +1,5 @@
 import { DataStoreService, MarketplaceService, Players } from "@rbxts/services";
-import { dataClass } from "server/classes/dataClass";
+import { retrieveStore } from "server/playerStore";
 import { BOOST_PRODUCTS, PURCHASE_PET_TEAM_PRODUCT } from "shared/configs/game";
 import { claimBoost } from "shared/rodux/boosts";
 import { claimDevProduct } from "shared/rodux/devProducts";
@@ -24,7 +24,7 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 		return Enum.ProductPurchaseDecision.NotProcessedYet;
 	}
 
-	const store = dataClass.retrieveStore(player);
+	const store = retrieveStore(player);
 	const boostMasteryExtendedDuration = getBoostMastery(store.getState().boosts).extendedDurationMultiplier;
 
 	let purchaseProcessed = false;

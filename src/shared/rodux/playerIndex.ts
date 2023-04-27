@@ -94,6 +94,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 			const newState = { ...state };
 
 			for (const petToIndex of action.pets) {
+				print(petToIndex.id);
 				let pet = newState.pets.get(petToIndex.id);
 				if (pet === undefined) {
 					newState.pets.set(petToIndex.id, {

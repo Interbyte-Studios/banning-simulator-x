@@ -1,6 +1,6 @@
 /// <reference types="@rbxts/testez/globals" />
 
-import { dataClass } from "server/classes/dataClass";
+import { createDummyStore } from "server/playerStore";
 import { WEAPONS } from "shared/configs/weapons";
 import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 import { useMockPlayer } from "shared/mocks/player";
@@ -15,7 +15,7 @@ export = (): void => {
 
 			const player = useMockPlayer();
 			// give us enough coins to purchase the weapon
-			const { store, dispatchedActions, cleanup } = dataClass.createDummyStore(player, {
+			const { store, dispatchedActions, cleanup } = createDummyStore(player, {
 				currencies: {
 					coins: getWeaponInfo(weaponId).data.cost?.amount,
 				},
@@ -40,7 +40,7 @@ export = (): void => {
 			};
 
 			const player = useMockPlayer();
-			const { store, dispatchedActions, cleanup } = dataClass.createDummyStore(player, {
+			const { store, dispatchedActions, cleanup } = createDummyStore(player, {
 				weapons: [weaponData],
 			});
 
@@ -58,7 +58,7 @@ export = (): void => {
 			expect(weaponInfo.data.cost).to.equal(undefined);
 
 			const player = useMockPlayer();
-			const { store, dispatchedActions, cleanup } = dataClass.createDummyStore(player, {});
+			const { store, dispatchedActions, cleanup } = createDummyStore(player, {});
 
 			purchaseWeapon(store, weaponId);
 			assertDeepEqual(dispatchedActions, []);
@@ -70,7 +70,7 @@ export = (): void => {
 			const weaponId = 2;
 
 			const player = useMockPlayer();
-			const { store, dispatchedActions, cleanup } = dataClass.createDummyStore(player, { currencies: { coins: 500 } });
+			const { store, dispatchedActions, cleanup } = createDummyStore(player, { currencies: { coins: 500 } });
 			purchaseWeapon(store, weaponId);
 			assertDeepEqual(dispatchedActions, []);
 

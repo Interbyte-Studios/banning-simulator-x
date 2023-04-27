@@ -16,13 +16,11 @@ const storeCreationCallbacks: Map<Player, Array<(store: Store) => void>> = new M
 export function onStoreCreated(player: Player): Promise<Store> {
 	const store = stores.get(player);
 	if (store) {
-		print("Store exists");
 		return Promise.resolve(store);
 	}
 
 	// wait until the store has been created
 	return new Promise((resolve) => {
-		print("Store creation promise");
 		getOrSetDefault(storeCreationCallbacks, player, () => []).push(resolve);
 	});
 }
@@ -74,7 +72,6 @@ remotes.Client.GetNamespace("rodux")
 		// call creation callbacks
 		const callbacks = storeCreationCallbacks.get(player) ?? [];
 		for (const callback of callbacks) {
-			warn("Looking at store creation callback");
 			task.spawn(callback, store);
 		}
 
@@ -89,8 +86,13 @@ Players.GetPlayers().forEach(async (player) => {
 		throw `Failed to retrieve server state for ${player.Name}`;
 	}
 
+	if (stores.get(player)) {
+		return;
+	}
+
 	const store = new Rodux.Store(storeReducer, storeState.state);
 	stores.set(player, store);
+	warn("Store created for", player.Name);
 
 	// call creation callbacks
 	const callbacks = storeCreationCallbacks.get(player) ?? [];

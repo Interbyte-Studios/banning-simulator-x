@@ -6,10 +6,11 @@ import { RedeemQuest } from "./quests";
 import { UnlockRank } from "./rank";
 
 export type ExperienceState = number;
+export const defaultExperienceState = 0;
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const experienceReducer = Rodux.createReducer<ExperienceState, KillNpc | RedeemQuest | RedeemCode | UnlockRank>(
-	0,
+	defaultExperienceState,
 	{
 		killNpc: (state, action) => {
 			return state + action.experience;

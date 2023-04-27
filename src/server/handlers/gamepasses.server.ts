@@ -1,11 +1,11 @@
 import { MarketplaceService, Players } from "@rbxts/services";
-import { dataClass } from "server/classes/dataClass";
+import { onStoreCreated } from "server/playerStore";
 import { GAMEPASSES, GROUP_ID } from "shared/configs/game";
 import { claimGamepass } from "shared/rodux/gamepasses";
 import { setGroupRank } from "shared/rodux/playerIndex";
 
 Players.PlayerAdded.Connect(async (player) => {
-	const store = await dataClass.onStoreCreated(player);
+	const store = await onStoreCreated(player);
 
 	const currentState = store.getState();
 	const playerRankInGroup = player.GetRankInGroup(GROUP_ID);

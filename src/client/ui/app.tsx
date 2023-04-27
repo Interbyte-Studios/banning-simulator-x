@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { ContextActionService } from "@rbxts/services";
 import { Store } from "shared/rodux";
 
 import { AccountHub } from "./components/account";
@@ -24,6 +25,7 @@ import { WeaponLevelUpAnimation } from "./components/weaponLevelUp";
 import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
 import { hooks } from "./hooks";
+import { remoteContext } from "./mocks/remoteContext";
 
 interface AppProps {
 	player: Player;
@@ -38,7 +40,7 @@ interface AppProps {
  * @param props.store The store to create the app with.
  * @returns The Roact app to mount.
  */
-export const app = hooks((props: AppProps, { useState }) => {
+export const app = hooks((props: AppProps, { useState, useEffect, useContext }) => {
 	const [questsVisible, setQuestsVisibility] = useState(false);
 	const [teleportationVisible, setTeleportationVisibility] = useState(false);
 	const [weaponShopVisibility, setWeaponShopVisibility] = useState(false);
@@ -49,6 +51,27 @@ export const app = hooks((props: AppProps, { useState }) => {
 	const [accountHubVisibility, setAccountHubVisibility] = useState(false);
 
 	const [isHatching, setHatchingStatus] = useState(false);
+
+	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
+
+	useEffect(() => {
+		ContextActionService.BindAction(
+			"equipWeapon",
+			async (_, state) => {
+				if (state !== Enum.UserInputState.Begin) {
+					return;
+				}
+
+				if (props.store.getState().currentWeapon.equipped) {
+					unequipWeapon.SendToServer();
+				} else {
+					equipWeapon.SendToServer();
+				}
+			},
+			false,
+			Enum.KeyCode.Z,
+		);
+	});
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>

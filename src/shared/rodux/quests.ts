@@ -79,7 +79,7 @@ export function redeemWorldQuest(
 	};
 }
 
-const defaultState: QuestsState = Object.fromEntries(
+export const defaultQuestsState: QuestsState = Object.fromEntries(
 	Object.entries(WORLDS).map(
 		([name]) =>
 			[
@@ -93,7 +93,7 @@ const defaultState: QuestsState = Object.fromEntries(
 );
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const questsReducer = Rodux.createReducer<QuestsState, QuestsAction>(defaultState, {
+export const questsReducer = Rodux.createReducer<QuestsState, QuestsAction>(defaultQuestsState, {
 	redeemQuest: (state, action) => {
 		if (isZoneQuest(action.questType)) {
 			return {

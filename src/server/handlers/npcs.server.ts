@@ -14,7 +14,7 @@ const _lastAttack: Map<number, number> = new Map();
 const attackDownTime = 0.5;
 
 let npcAttacks: Array<{ player: Player; store: Store; character: NpcCharacter }> = [];
-remotes.Server.Create("damageNPC").Connect(
+remotes.Server.Get("damageNPC").Connect(
 	withPlayerStore((player, store, character) => {
 		const currentState = store.getState();
 		for (const [worldName, worldData] of pairs(UniversalWorldData)) {

@@ -1,15 +1,87 @@
+import ProfileService from "@rbxts/profileservice";
+import { Profile } from "@rbxts/profileservice/globals";
 import Rodux from "@rbxts/rodux";
 import { Players } from "@rbxts/services";
 import { createSpyMiddleware } from "shared/mocks/middleware/spyMiddleware";
 import { remotes } from "shared/remotes";
 import { Store, StoreActions, storeReducer, StoreState } from "shared/rodux";
+import { defaultAccoladeState } from "shared/rodux/accolade";
+import { defaultBansState } from "shared/rodux/bans";
+import { defaultBoosts } from "shared/rodux/boosts";
+import { defaultCurrencies } from "shared/rodux/currencies";
+import { defaultTalismanId } from "shared/rodux/currentTalisman";
+import { defaultCurrentWeaponState } from "shared/rodux/currentWeapon";
+import { defaultDevProductState } from "shared/rodux/devProducts";
+import { defaultEggs } from "shared/rodux/eggs";
+import { defaultExperienceState } from "shared/rodux/experience";
+import { defaultGamepasses } from "shared/rodux/gamepasses";
+import { defaultMediaState } from "shared/rodux/media";
+import { defaultPetMasteryState } from "shared/rodux/petMastery";
+import { defaultPets } from "shared/rodux/pets";
+import { defaultPetTeamsState } from "shared/rodux/petTeams";
+import { defaultPlayerIndex } from "shared/rodux/playerIndex";
+import { defaultQuestsState } from "shared/rodux/quests";
+import { defaultRank } from "shared/rodux/rank";
+import { defaultSettings } from "shared/rodux/settings";
+import { defaultSpinWheel } from "shared/rodux/spinWheel";
+import { defaultTalismans } from "shared/rodux/talismans";
+import { defaultWeaponsState } from "shared/rodux/weapons";
+import { defaultWorlds } from "shared/rodux/worlds";
 import { getOrSetDefault } from "shared/util/getOrSetDefault";
 
 import { replicationMiddleware } from "./modules/rodux/middlewares/replicationMiddleware";
 
 type DeepPartial<T> = { [K in keyof T]?: DeepPartial<T[K]> };
 
+/**
+ * Template object representing the initial state for a player's profile.
+ * Each property corresponds to a specific slice of the store's state.
+ * Default values are assigned to each property based on their respective default state objects/constants.
+ */
+const profileTemplate: StoreState = {
+	accolades: defaultAccoladeState,
+	bans: defaultBansState,
+	boosts: defaultBoosts,
+	currencies: defaultCurrencies,
+	currentWeapon: defaultCurrentWeaponState,
+	eggs: defaultEggs,
+	experience: defaultExperienceState,
+	gamepasses: defaultGamepasses,
+	media: defaultMediaState,
+	pets: defaultPets,
+	quests: defaultQuestsState,
+	rank: defaultRank,
+	settings: defaultSettings,
+	title: undefined,
+	weapons: defaultWeaponsState,
+	worlds: defaultWorlds,
+	talismans: defaultTalismans,
+	currentTalisman: defaultTalismanId,
+	petMastery: defaultPetMasteryState,
+	spinWheel: defaultSpinWheel,
+	petTeams: defaultPetTeamsState,
+	index: defaultPlayerIndex,
+	devProducts: defaultDevProductState,
+};
+
+/**
+ * The ProfileService profile store.
+ */
+const profileStore = ProfileService.GetProfileStore("mainstore", profileTemplate);
+
+/**
+ * A collection of all player profiles.
+ */
+const playerProfiles: Map<number, Profile<StoreState>> = new Map();
+
+/**
+ * Collection of rodux stores.
+ */
 export const stores: Map<Player, Store> = new Map();
+
+/**
+ * Map containing creation callbacks for stores associated with each player.
+ */
 const storeCreationCallbacks: Map<Player, Array<(store: Store) => void>> = new Map();
 
 /**
@@ -18,14 +90,37 @@ const storeCreationCallbacks: Map<Player, Array<(store: Store) => void>> = new M
  * @param player The player that is joining.
  */
 function onPlayerAdded(player: Player): void {
-	const store = new Rodux.Store(storeReducer, {}, [replicationMiddleware(player)]);
+	const playerProfile = profileStore.LoadProfileAsync(tostring(player.UserId));
 
-	stores.set(player, store);
+	if (playerProfile === undefined) {
+		player.Kick(`There was an issue while loading your data. Please rejoin in a few minutes.`);
+		return;
+	}
+
+	playerProfile.AddUserId(player.UserId);
+	playerProfile.Reconcile();
+
+	playerProfile.ListenToRelease(() => {
+		playerProfiles.delete(player.UserId);
+
+		player.Kick(`There were cross-server conflicts while loading your data. Please rejoin in a few minutes.`);
+		return;
+	});
+
+	if (!player.IsDescendantOf(Players)) {
+		playerProfile.Release();
+	}
+
+	const playerStore = new Rodux.Store(storeReducer, playerProfile.Data, [replicationMiddleware(player)]);
+
+	playerProfiles.set(player.UserId, playerProfile);
+	stores.set(player, playerStore);
+	remotes.Server.GetNamespace("rodux").Get("storeStateCreated").SendToAllPlayers(player, playerStore.getState());
 
 	// call creation callbacks
 	const callbacks = storeCreationCallbacks.get(player) ?? [];
 	for (const callback of callbacks) {
-		task.spawn(callback, store);
+		task.spawn(callback, playerStore);
 	}
 
 	storeCreationCallbacks.delete(player);
@@ -98,6 +193,14 @@ function onPlayerRemoving(player: Player): void {
 		throw `No store existed for ${player}`;
 	}
 
+	const profile = playerProfiles.get(player.UserId);
+	if (profile === undefined) {
+		throw `No profile existed for ${player}`;
+	}
+
+	profile.Data = store.getState();
+	profile.Release();
+
 	store.destruct();
 	stores.delete(player);
 
@@ -109,16 +212,20 @@ function onPlayerRemoving(player: Player): void {
 	}
 }
 
-// connect to getStoreState event
-remotes.Server.GetNamespace("rodux")
-	.Create("getStoreState")
-	.SetCallback(async (_, player) => {
-		const storeState = stores.get(player);
-
-		return storeState?.getState();
-	});
-
 Players.PlayerAdded.Connect(onPlayerAdded);
 Players.GetPlayers().forEach(onPlayerAdded);
 
 Players.PlayerRemoving.Connect(onPlayerRemoving);
+
+remotes.Server.GetNamespace("rodux")
+	.Get("requestStoreState")
+	.SetCallback((player: Player) => {
+		const store = stores.get(player);
+		if (store === undefined) {
+			return undefined;
+		}
+
+		return {
+			state: store.getState(),
+		};
+	});
