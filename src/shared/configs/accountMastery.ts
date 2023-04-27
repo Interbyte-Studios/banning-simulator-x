@@ -94,7 +94,7 @@ export const AccountMastery: _AccountMastery = {
 		{
 			level: 1,
 			requiredBans: 0,
-			currencyGainedMultiplier: 1,
+			currencyGainedMultiplier: 0,
 		},
 		{
 			level: 2,
