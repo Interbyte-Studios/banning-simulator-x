@@ -137,10 +137,9 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 				switch (petToIndex.method) {
 					case "admin":
 					case "hatch": {
-						assert(
-							isValidIndexHatch(petToIndex.variant),
-							`Attempted to index a pet hatch of unsupported variant "${petToIndex.variant}".`,
-						);
+						if (!isValidIndexHatch(petToIndex.variant)) {
+							continue;
+						}
 
 						newState.pets.set(stringId, {
 							fused: pet.fused,
