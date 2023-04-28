@@ -128,6 +128,11 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 					egg = newState.eggs.get(petToIndex.egg);
 					assert(egg, `Failed to set index data for egg "${petToIndex.egg}".`);
 				}
+				if (petToIndex.variant === "regular") {
+					newState.eggs.set(petToIndex.egg, { ...egg, regular: egg.regular + 1 });
+				} else if (petToIndex.variant === "void") {
+					newState.eggs.set(petToIndex.egg, { ...egg, void: egg.void + 1 });
+				}
 
 				switch (petToIndex.method) {
 					case "admin":

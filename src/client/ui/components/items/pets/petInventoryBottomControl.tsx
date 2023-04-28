@@ -68,7 +68,7 @@ export const EquipBestPets = RoactRodux.connect(mapStateToProps)(
 
 						const maxPetsEquipped = getMaxPetEquip(props.gamepasses);
 						const petsToEquip: Array<{ guid: string; enabled: boolean }> = [];
-						for (let i = 0; i <= maxPetsEquipped; i++) {
+						for (let i = 0; i < maxPetsEquipped; i++) {
 							const petToEquip = props.pets[i];
 							if (petToEquip !== undefined) {
 								petsToEquip.push({

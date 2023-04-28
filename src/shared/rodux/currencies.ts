@@ -113,12 +113,7 @@ export const currenciesReducer = Rodux.createReducer<
 		return { ...state, [action.currency.type]: purchasedCurrency };
 	},
 	addPet: (state, action) => {
-		let purchasedCurrency = state[action.currencyType];
-
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		for (const pet of action.pets) {
-			purchasedCurrency -= action.cost;
-		}
+		const purchasedCurrency = state[action.currencyType] - action.cost;
 
 		return { ...state, [action.currencyType]: purchasedCurrency };
 	},
