@@ -58,6 +58,10 @@ export const AccountPlayerSelection = hooks(
 
 						const { motor, binding } = useBindingMotor(hooks, maximizedSize);
 
+						const thumbnailType = Enum.ThumbnailType.HeadShot;
+						const thumbnailSize = Enum.ThumbnailSize.Size420x420;
+						const [content, isReady] = Players.GetUserThumbnailAsync(oPlayer.UserId, thumbnailType, thumbnailSize);
+
 						return (
 							<frame
 								AnchorPoint={vec2Middle}
@@ -83,6 +87,7 @@ export const AccountPlayerSelection = hooks(
 										BackgroundTransparency={1}
 										Position={UDim2.fromScale(0.5, 0.5)}
 										Size={UDim2.fromScale(1, 1)}
+										Image={isReady && content ? content : ""}
 										ScaleType={Enum.ScaleType.Fit}
 									>
 										<uicorner CornerRadius={new UDim(1, 0)} />

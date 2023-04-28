@@ -192,12 +192,10 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 					);
 
 					if (rayCast === undefined) {
-						warn("No Raycast");
 						return;
 					}
 
 					if (rayCast.Instance.CanCollide === false) {
-						warn("Cancollide enabled");
 						return;
 					}
 

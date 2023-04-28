@@ -7,7 +7,7 @@ import { getPetData } from "shared/util/getPetData";
 import { withPlayerStore } from "../../modules/net/withPlayerStore";
 
 remotes.Server.GetNamespace("petMastery")
-	.Create("claimMastery")
+	.Get("claimMastery")
 	.SetCallback(
 		withPlayerStore((_, store, id, variant, method) => {
 			const state = store.getState();
@@ -21,8 +21,16 @@ remotes.Server.GetNamespace("petMastery")
 				};
 			}
 
+			const stringId = tostring(id);
+			if (stringId === undefined) {
+				return {
+					success: false,
+					reason: ClaimPetMasteryFailKind.InternalError,
+				};
+			}
+
 			// Check to be sure they've discovered the pet.
-			const petsIndex = state.index.pets.get(id);
+			const petsIndex = state.index.pets.get(stringId);
 			if (petsIndex === undefined) {
 				return {
 					success: false,

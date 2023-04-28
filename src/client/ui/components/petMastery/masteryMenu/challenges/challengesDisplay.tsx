@@ -371,7 +371,11 @@ const MasteryChallengeFrame = hooks(
  */
 export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 	hooks((props: PetMasteryChallengesProps) => {
-		const petsIndex = props.index.pets.get(props.pet);
+		const stringId = tostring(props.pet);
+		if (stringId === undefined) {
+			throw `Failed to get pet string id for pet ${props.pet}.`;
+		}
+		const petsIndex = props.index.pets.get(stringId);
 		const petsMasteryIndex = props.petMastery.get(props.pet);
 
 		const petData = getPetData(props.pet);

@@ -165,7 +165,12 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 
 							let hasHatchedVariant = false;
 
-							const ownsPetInIndex = props.index.pets.get(petInfo.id);
+							const stringId = tostring(petInfo.id);
+							if (stringId === undefined) {
+								throw `Failed to get pet id for pet ${petInfo.id} because it could not be converted to a string`;
+							}
+
+							const ownsPetInIndex = props.index.pets.get(stringId);
 							if (ownsPetInIndex !== undefined) {
 								if (props.isVoid) {
 									hasHatchedVariant = ownsPetInIndex.hatched.void > 0;

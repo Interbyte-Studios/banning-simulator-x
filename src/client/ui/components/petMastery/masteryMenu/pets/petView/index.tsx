@@ -61,7 +61,11 @@ export const IndexPetView = RoactRodux.connect(mapStateToProps)(
 			);
 		}
 
-		const petsIndex = props.index.pets.get(props.pet);
+		const stringId = tostring(props.pet);
+		if (stringId === undefined) {
+			throw `Failed to convert pet id to string. Pet id: ${props.pet}`;
+		}
+		const petsIndex = props.index.pets.get(stringId);
 
 		return (
 			<frame
