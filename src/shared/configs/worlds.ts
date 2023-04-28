@@ -29,6 +29,7 @@ export const WORLDS = preserveWithConstraint<Record<string, World>>()({
 		reward: "coins",
 		id: 1,
 		music: {
+			Smooth: 1837111764,
 			Paradise: 1837879082,
 			Leisure: 1836057733,
 			//Arcade: 1842976958, -- for cyber world
