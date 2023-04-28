@@ -1,5 +1,4 @@
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
-import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { Currency } from "./currencies";
 

@@ -13,7 +13,7 @@ export = (): void => {
 			};
 
 			const player = useMockPlayer();
-			const { store, dispatchedActions, cleanup } =createDummyStore(player, {
+			const { store, dispatchedActions, cleanup } = createDummyStore(player, {
 				currentWeapon: {
 					id: 1,
 					equipped: false,
