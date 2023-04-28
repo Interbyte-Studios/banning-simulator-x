@@ -227,10 +227,8 @@ function equipWeapon(weaponName: WeaponIndex): void {
 }
 
 onStoreCreated(player)
+	.timeout(120)
 	.andThen((store) => {
-		const backpack = player.FindFirstChildWhichIsA("Backpack");
-		assert(backpack, `Failed to get backpack for ${player.Name}`);
-
 		/**
 		 * Checks to see if the player's current weapon should be equipped or not.
 		 */
@@ -257,6 +255,14 @@ onStoreCreated(player)
 				return;
 			}
 
+			const backpack = player.FindFirstChildWhichIsA("Backpack");
+			assert(backpack, `Failed to get backpack for ${player.Name}`);
+
+			if (backpack.GetChildren().isEmpty()) {
+				warn("Player has no weapons in backpack to equip.");
+				return;
+			}
+
 			for (const connection of connections) {
 				const connectionIndex = connections.findIndex((x) => x === connection);
 				if (connectionIndex !== undefined) {
@@ -267,6 +273,9 @@ onStoreCreated(player)
 
 			equipWeapon(weapon.Name as WeaponIndex);
 		}
+
+		const backpack = player.FindFirstChildWhichIsA("Backpack");
+		assert(backpack, `Failed to get backpack for ${player.Name}`);
 
 		if (player.Character) {
 			checkToEquipWeapon();

@@ -1,9 +1,11 @@
 import Net from "@rbxts/net";
 
-import { getStoreStateDefinition } from "./getStoreState";
+import { requestStoreStateDefinition } from "./requestStoreState";
 import { storeChangeDefinition } from "./storeChange";
+import { storeStateCreatedDefinition } from "./storeStateCreated";
 
 export const roduxDefinitions = Net.Definitions.Namespace({
 	storeChange: storeChangeDefinition,
-	getStoreState: getStoreStateDefinition,
+	storeStateCreated: storeStateCreatedDefinition,
+	requestStoreState: requestStoreStateDefinition,
 });

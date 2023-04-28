@@ -51,7 +51,7 @@ export function updateWheelUses(timesSpinned: number): UpdateWheelUses & Rodux.A
 	};
 }
 
-const defaultSpinWheel: SpinWheelState = {
+export const defaultSpinWheel: SpinWheelState = {
 	startTime: 0,
 	endTime: 0,
 	spinsDone: 0,

@@ -1,14 +1,14 @@
 import { Players, ReplicatedStorage } from "@rbxts/services";
+import { onStoreCreated } from "server/playerStore";
 import { remotes } from "shared/remotes";
 import { changeWeapon, equipWeapon, unequipWeapon } from "shared/rodux/currentWeapon";
 import { getItemById } from "shared/util/getItemById";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
 import { withPlayerStore } from "../../modules/net/withPlayerStore";
-import { onStoreCreated } from "../../playerStore";
 
 remotes.Server.GetNamespace("weapons")
-	.Create("changeWeapon")
+	.Get("changeWeapon")
 	.Connect(
 		withPlayerStore((_, store, weaponId) => {
 			if (!store.getState().weapons.find((weapon) => weapon.id === weaponId)) {
@@ -20,11 +20,11 @@ remotes.Server.GetNamespace("weapons")
 	);
 
 remotes.Server.GetNamespace("weapons")
-	.Create("equipWeapon")
+	.Get("equipWeapon")
 	.Connect(withPlayerStore((_, store) => store.dispatch(equipWeapon())));
 
 remotes.Server.GetNamespace("weapons")
-	.Create("unequipWeapon")
+	.Get("unequipWeapon")
 	.Connect(withPlayerStore((_, store) => store.dispatch(unequipWeapon())));
 
 Players.PlayerAdded.Connect(async (player) => {

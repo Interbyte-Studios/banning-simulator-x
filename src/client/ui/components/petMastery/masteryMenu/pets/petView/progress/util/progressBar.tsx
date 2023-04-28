@@ -38,7 +38,12 @@ function mapStateToProps(state: StoreState): RegularEggProgressMappedProps {
  */
 export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 	hooks((props: ProgressBarProps) => {
-		const petsIndex = props.index.pets.get(props.pet);
+		const stringId = tostring(props.pet);
+		if (stringId === undefined) {
+			throw `Failed to get pet mastery data for pet ${props.pet}.`;
+		}
+
+		const petsIndex = props.index.pets.get(stringId);
 
 		const petData = getPetData(props.pet);
 		const masteryRequirements = PET_MASTERY_REQUIREMENTS[petData.rarity][props.variant];

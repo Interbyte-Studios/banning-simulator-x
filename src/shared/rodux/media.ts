@@ -67,13 +67,13 @@ export function redeemCode(
 	};
 }
 
-const defaultState = {
+export const defaultMediaState = {
 	discordVerified: false,
 	codes: [],
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const mediaReducer = Rodux.createReducer<MediaState, MediaActions>(defaultState, {
+export const mediaReducer = Rodux.createReducer<MediaState, MediaActions>(defaultMediaState, {
 	verifyDiscord: (state) => {
 		const newState = { ...state };
 		newState.discordVerified = true;

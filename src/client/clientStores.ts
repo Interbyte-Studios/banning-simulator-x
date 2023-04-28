@@ -16,13 +16,11 @@ const storeCreationCallbacks: Map<Player, Array<(store: Store) => void>> = new M
 export function onStoreCreated(player: Player): Promise<Store> {
 	const store = stores.get(player);
 	if (store) {
-		print("Store exists");
 		return Promise.resolve(store);
 	}
 
 	// wait until the store has been created
 	return new Promise((resolve) => {
-		print("Store created");
 		getOrSetDefault(storeCreationCallbacks, player, () => []).push(resolve);
 	});
 }
@@ -41,35 +39,6 @@ export function retrieveStore(player: Player): Store | undefined {
 	assert(store, `Expected client store to exist for player ${player.Name}.`);
 
 	return store;
-}
-
-/**
- * Handles the store creation for a player when they join the game.
- *
- * This involves a network request out to retrieve their state from the server.
- *
- * @param player The player that joined the game.
- */
-async function onPlayerAdded(player: Player): Promise<void> {
-	const getStoreState = remotes.Client.GetNamespace("rodux").Get("getStoreState");
-
-	const storeState = await getStoreState.CallServerAsync(player);
-	if (!storeState) {
-		// server did not have a store for the player when we requested in
-		// this likely needs some investigation to solve
-		throw `Failed to retrieve server state for ${player.Name}`;
-	}
-
-	const store = new Rodux.Store(storeReducer, storeState);
-	stores.set(player, store);
-
-	// call creation callbacks
-	const callbacks = storeCreationCallbacks.get(player) ?? [];
-	for (const callback of callbacks) {
-		task.spawn(callback, store);
-	}
-
-	storeCreationCallbacks.delete(player);
 }
 
 /**
@@ -94,7 +63,44 @@ function onPlayerRemoving(player: Player): void {
 	}
 }
 
-Players.PlayerAdded.Connect(onPlayerAdded);
-Players.GetPlayers().forEach(onPlayerAdded);
+remotes.Client.GetNamespace("rodux")
+	.Get("storeStateCreated")
+	.Connect((player, state) => {
+		const store = new Rodux.Store(storeReducer, state);
+		stores.set(player, store);
+
+		// call creation callbacks
+		const callbacks = storeCreationCallbacks.get(player) ?? [];
+		for (const callback of callbacks) {
+			task.spawn(callback, store);
+		}
+
+		storeCreationCallbacks.delete(player);
+	});
+
+Players.GetPlayers().forEach(async (player) => {
+	const storeState = await remotes.Client.GetNamespace("rodux").Get("requestStoreState").CallServerAsync(player);
+	if (storeState === undefined) {
+		// server did not have a store for the player when we requested in
+		// this likely needs some investigation to solve
+		throw `Failed to retrieve server state for ${player.Name}`;
+	}
+
+	if (stores.get(player)) {
+		return;
+	}
+
+	const store = new Rodux.Store(storeReducer, storeState.state);
+	stores.set(player, store);
+	warn("Store created for", player.Name);
+
+	// call creation callbacks
+	const callbacks = storeCreationCallbacks.get(player) ?? [];
+	for (const callback of callbacks) {
+		task.spawn(callback, store);
+	}
+
+	storeCreationCallbacks.delete(player);
+});
 
 Players.PlayerRemoving.Connect(onPlayerRemoving);

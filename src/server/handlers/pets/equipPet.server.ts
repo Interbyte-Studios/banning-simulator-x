@@ -22,7 +22,7 @@ remotes.Server.GetNamespace("pets")
 
 			// verify that they have space
 			if (!unequipAll) {
-				const currentAmountEquipped = currentState.pets.filter((pet) => pet.equipped).size();
+				const currentAmountEquipped = petsToEquip.size();
 				const maxEquipAmount = getMaxPetEquip(currentState.gamepasses);
 
 				if (currentAmountEquipped >= maxEquipAmount) {

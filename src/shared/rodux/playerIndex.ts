@@ -28,7 +28,7 @@ export const validMaxLevelIndex = t.strictInterface({
 
 export interface PlayerIndexState {
 	pets: Map<
-		number,
+		string,
 		{
 			hatched: {
 				regular: number;
@@ -78,7 +78,7 @@ export function addTimePlayed(): AddTimePlayed & Rodux.AnyAction {
 	};
 }
 
-const defaultPlayerIndex: PlayerIndexState = {
+export const defaultPlayerIndex: PlayerIndexState = {
 	pets: new Map(),
 	eggs: new Map(),
 	timePlayed: 0,
@@ -94,9 +94,14 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 			const newState = { ...state };
 
 			for (const petToIndex of action.pets) {
-				let pet = newState.pets.get(petToIndex.id);
+				const stringId = tostring(petToIndex.id);
+				if (stringId === undefined) {
+					throw `Failed to get string id for pet with id ${petToIndex.id}`;
+				}
+
+				let pet = newState.pets.get(stringId);
 				if (pet === undefined) {
-					newState.pets.set(petToIndex.id, {
+					newState.pets.set(stringId, {
 						hatched: {
 							regular: 0,
 							void: 0,
@@ -112,8 +117,8 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 						},
 					});
 
-					pet = newState.pets.get(petToIndex.id);
-					assert(pet, `Failed to set index data for pet with id "${petToIndex.id}".`);
+					pet = newState.pets.get(stringId);
+					assert(pet, `Failed to set index data for pet with id "${stringId}".`);
 				}
 
 				let egg = newState.eggs.get(petToIndex.egg);
@@ -122,6 +127,11 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 
 					egg = newState.eggs.get(petToIndex.egg);
 					assert(egg, `Failed to set index data for egg "${petToIndex.egg}".`);
+				}
+				if (petToIndex.variant === "regular") {
+					newState.eggs.set(petToIndex.egg, { ...egg, regular: egg.regular + 1 });
+				} else if (petToIndex.variant === "void") {
+					newState.eggs.set(petToIndex.egg, { ...egg, void: egg.void + 1 });
 				}
 
 				switch (petToIndex.method) {
@@ -132,7 +142,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 							`Attempted to index a pet hatch of unsupported variant "${petToIndex.variant}".`,
 						);
 
-						newState.pets.set(petToIndex.id, {
+						newState.pets.set(stringId, {
 							fused: pet.fused,
 							maxLevel: pet.maxLevel,
 							hatched: {
@@ -148,7 +158,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 							`Attempted to index a pet fusion of unsupported variant "${petToIndex.variant}".`,
 						);
 
-						newState.pets.set(petToIndex.id, {
+						newState.pets.set(stringId, {
 							fused: {
 								...pet.fused,
 								[petToIndex.variant]: pet.fused[petToIndex.variant] + 1,
@@ -177,7 +187,12 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 			const newState = { ...state };
 
 			for (const pet of action.equippedPets) {
-				const masteryData = newState.pets.get(pet.id);
+				const stringId = tostring(pet.id);
+				if (stringId === undefined) {
+					throw `Failed to get string id for pet with id ${pet.id}`;
+				}
+
+				const masteryData = newState.pets.get(stringId);
 				assert(masteryData, `Failed to get mastery data for pet with id ${pet.id}`);
 
 				const maxLevel = PET_MAX_LEVELS[pet.variant];
@@ -187,7 +202,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 					continue;
 				}
 
-				newState.pets.set(pet.id, {
+				newState.pets.set(stringId, {
 					hatched: masteryData.hatched,
 					fused: masteryData.fused,
 					maxLevel: {
@@ -202,12 +217,17 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 		admin_ModifyPetLevel: (state, action) => {
 			const newState = { ...state };
 
-			const petIndex = newState.pets.get(action.id);
-			assert(petIndex, `Admin: Failed to get pet index for pet with id ${action.id}`);
+			const stringId = tostring(action.id);
+			if (stringId === undefined) {
+				throw `Failed to get string id for pet with id ${action.id}`;
+			}
+
+			const petIndex = newState.pets.get(stringId);
+			assert(petIndex, `Admin: Failed to get pet index for pet with id ${stringId}`);
 
 			const maxLevel = PET_MAX_LEVELS[action.variant];
 			if (action.level >= maxLevel) {
-				newState.pets.set(action.id, {
+				newState.pets.set(stringId, {
 					hatched: petIndex.hatched,
 					fused: petIndex.fused,
 					maxLevel: {

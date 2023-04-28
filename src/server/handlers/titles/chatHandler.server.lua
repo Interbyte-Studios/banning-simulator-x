@@ -5,16 +5,16 @@ local ChatService = require(ServerScriptService:WaitForChild("ChatServiceRunner"
 
 local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
 local TITLES = TS.import(script, game:GetService("ReplicatedStorage"), "bsx_shared", "configs", "titles").TITLES
-local retrieveStore = TS.import(script, game:GetService("ServerScriptService"), "playerStore").retrieveStore
+local onStoreCreated = TS.import(script, game:GetService("ServerScriptService"), "playerStore").onStoreCreated
 
-ChatService.SpeakerAdded:Connect(function(playerName)
+ChatService.SpeakerAdded:Connect(TS.async(function(playerName)
 	local speaker = ChatService:GetSpeaker(playerName)
 	assert(speaker, string.format('Expected to find speaker object for chat speaker "%s"', playerName))
 
 	local player = Players:FindFirstChild(playerName)
 	assert(player, string.format('Expected to find player object for chat speaker "%s"', playerName))
 
-	local store = retrieveStore(player)
+	local store = TS.await(onStoreCreated(player))
 	local title = store:getState().title
 
 	if title then
@@ -70,4 +70,4 @@ ChatService.SpeakerAdded:Connect(function(playerName)
 			},
 		})
 	end)
-end)
+end))

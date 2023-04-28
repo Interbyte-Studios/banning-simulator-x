@@ -83,7 +83,7 @@ export function useBoosts(boosts: ValidBoostUseRecord): UseBoosts & Rodux.AnyAct
 	};
 }
 
-const defaultBoosts: BoostsState = {
+export const defaultBoosts: BoostsState = {
 	storage: {
 		["x2 Currency"]: {
 			"15": 0,
