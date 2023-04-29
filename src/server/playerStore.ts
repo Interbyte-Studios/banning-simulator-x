@@ -67,7 +67,7 @@ const profileTemplate: StoreState = {
 /**
  * The ProfileService profile store.
  */
-const profileStore = ProfileService.GetProfileStore("mainstore", profileTemplate);
+const profileStore = ProfileService.GetProfileStore("testStore", profileTemplate);
 
 /**
  * A collection of all player profiles.

@@ -19,7 +19,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 1_000,
-			requiredRank: 2,
+			requiredRank: 1,
 		},
 		color: Color3.fromRGB(154, 106, 79),
 	},
@@ -31,7 +31,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 3_000,
-			requiredRank: 3,
+			requiredRank: 1,
 		},
 		color: Color3.fromRGB(61, 163, 90),
 	},
@@ -43,7 +43,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 9_000,
-			requiredRank: 4,
+			requiredRank: 2,
 		},
 		color: Color3.fromRGB(175, 128, 99),
 	},
@@ -55,7 +55,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 27_000,
-			requiredRank: 4,
+			requiredRank: 3,
 		},
 		color: Color3.fromRGB(152, 166, 175),
 	},
@@ -67,7 +67,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 81_000,
-			requiredRank: 5,
+			requiredRank: 4,
 		},
 		color: Color3.fromRGB(7, 113, 170),
 	},
@@ -103,7 +103,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 1_500_000,
-			requiredRank: 6,
+			requiredRank: 7,
 		},
 		color: Color3.fromRGB(213, 115, 61),
 	},
