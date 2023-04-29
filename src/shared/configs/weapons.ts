@@ -74,7 +74,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Blade Of Mastery": {
 		id: 5,
 		cost: {
-			requiredRank: 2,
+			requiredRank: 1,
 			currency: "coins",
 			amount: 300,
 		},
@@ -86,7 +86,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Machine Masher": {
 		id: 6,
 		cost: {
-			requiredRank: 2,
+			requiredRank: 1,
 			currency: "coins",
 			amount: 600,
 		},
@@ -95,28 +95,28 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
-	Taliscythe: {
+	"Starry Lance": {
 		id: 7,
 		cost: {
-			requiredRank: 2,
+			requiredRank: 1,
 			currency: "coins",
 			amount: 900,
 		},
 		damage: 28,
 		world: "Ban Land",
-		weaponType: "Sword",
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
-	"Starry Lance": {
+	Taliscythe: {
 		id: 8,
 		cost: {
-			requiredRank: 2,
+			requiredRank: 1,
 			currency: "coins",
 			amount: 1_200,
 		},
 		damage: 32,
 		world: "Ban Land",
-		weaponType: "Lance",
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 
@@ -124,7 +124,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Sunflower Sword": {
 		id: 9,
 		cost: {
-			requiredRank: 3,
+			requiredRank: 1,
 			currency: "coins",
 			amount: 1_500,
 		},
@@ -136,7 +136,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Sunflower Basher": {
 		id: 10,
 		cost: {
-			requiredRank: 3,
+			requiredRank: 1,
 			currency: "coins",
 			amount: 2_275,
 		},
@@ -145,28 +145,28 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
-	"Sunflower Slicer": {
+	"Sunflower Spear": {
 		id: 11,
 		cost: {
-			requiredRank: 3,
+			requiredRank: 1,
 			currency: "coins",
 			amount: 3_000,
 		},
 		damage: 56,
 		world: "Ban Land",
-		weaponType: "Sword",
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
-	"Sunflower Spear": {
+	"Sunflower Slicer": {
 		id: 12,
 		cost: {
-			requiredRank: 3,
+			requiredRank: 1,
 			currency: "coins",
 			amount: 4_500,
 		},
 		damage: 64,
 		world: "Ban Land",
-		weaponType: "Lance",
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 
@@ -174,7 +174,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Buzz Blade": {
 		id: 13,
 		cost: {
-			requiredRank: 4,
+			requiredRank: 2,
 			currency: "coins",
 			amount: 5_000,
 		},
@@ -186,7 +186,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Bumble Basher": {
 		id: 14,
 		cost: {
-			requiredRank: 4,
+			requiredRank: 2,
 			currency: "coins",
 			amount: 6_500,
 		},
@@ -195,28 +195,28 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
-	"Stinger Scythe": {
+	"Buzz Lance": {
 		id: 15,
 		cost: {
-			requiredRank: 4,
+			requiredRank: 2,
 			currency: "coins",
 			amount: 7_500,
 		},
 		damage: 112,
 		world: "Ban Land",
-		weaponType: "Sword",
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
-	"Buzz Lance": {
+	"Stinger Scythe": {
 		id: 16,
 		cost: {
-			requiredRank: 4,
+			requiredRank: 2,
 			currency: "coins",
 			amount: 10_000,
 		},
 		damage: 128,
 		world: "Ban Land",
-		weaponType: "Lance",
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 
@@ -224,7 +224,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Atlantis Blade": {
 		id: 17,
 		cost: {
-			requiredRank: 4,
+			requiredRank: 3,
 			currency: "coins",
 			amount: 12_500,
 		},
@@ -233,28 +233,28 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
-	"Atlantis Basher": {
+	"Lime Lance": {
 		id: 18,
 		cost: {
-			requiredRank: 4,
+			requiredRank: 3,
 			currency: "coins",
 			amount: 15_000,
 		},
 		damage: 192,
 		world: "Ban Land",
-		weaponType: "Hammer",
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
-	"Lime Lance": {
+	"Atlantis Basher": {
 		id: 19,
 		cost: {
-			requiredRank: 4,
+			requiredRank: 3,
 			currency: "coins",
 			amount: 20_000,
 		},
 		damage: 256,
 		world: "Ban Land",
-		weaponType: "Lance",
+		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
 
@@ -262,7 +262,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Aquatic Omegablade": {
 		id: 20,
 		cost: {
-			requiredRank: 5,
+			requiredRank: 4,
 			currency: "coins",
 			amount: 25_000,
 		},
@@ -274,7 +274,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Tropical Thrasher": {
 		id: 21,
 		cost: {
-			requiredRank: 5,
+			requiredRank: 4,
 			currency: "coins",
 			amount: 30_000,
 		},
@@ -283,28 +283,28 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
-	"Beach Scythe": {
+	"Tropical Lance": {
 		id: 22,
 		cost: {
-			requiredRank: 5,
+			requiredRank: 4,
 			currency: "coins",
 			amount: 35_000,
 		},
 		damage: 448,
 		world: "Ban Land",
-		weaponType: "Sword",
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
-	"Tropical Lance": {
+	"Beach Scythe": {
 		id: 23,
 		cost: {
-			requiredRank: 5,
+			requiredRank: 4,
 			currency: "coins",
 			amount: 40_000,
 		},
 		damage: 512,
 		world: "Ban Land",
-		weaponType: "Lance",
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 
@@ -333,7 +333,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
-	"Peppermint Scythe": {
+	"Candy Lance": {
 		id: 26,
 		cost: {
 			requiredRank: 5,
@@ -342,10 +342,10 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		},
 		damage: 896,
 		world: "Ban Land",
-		weaponType: "Sword",
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
-	"Candy Lance": {
+	"Peppermint Scythe": {
 		id: 27,
 		cost: {
 			requiredRank: 5,
@@ -354,7 +354,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		},
 		damage: 1_024,
 		world: "Ban Land",
-		weaponType: "Lance",
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 
@@ -383,7 +383,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
-	"Crystalized Scythe": {
+	"Amethyst Lance": {
 		id: 30,
 		cost: {
 			requiredRank: 6,
@@ -392,10 +392,10 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		},
 		damage: 1_792,
 		world: "Ban Land",
-		weaponType: "Sword",
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
-	"Amethyst Lance": {
+	"Crystalized Scythe": {
 		id: 31,
 		cost: {
 			requiredRank: 6,
@@ -404,7 +404,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		},
 		damage: 2_048,
 		world: "Ban Land",
-		weaponType: "Lance",
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 
@@ -412,7 +412,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Molten Slasher": {
 		id: 32,
 		cost: {
-			requiredRank: 6,
+			requiredRank: 7,
 			currency: "coins",
 			amount: 250_000,
 		},
@@ -424,7 +424,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Molten Thrasher": {
 		id: 33,
 		cost: {
-			requiredRank: 6,
+			requiredRank: 7,
 			currency: "coins",
 			amount: 500_000,
 		},
@@ -433,7 +433,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
-	"Molten Scythe": {
+	"Lava Lance": {
 		id: 34,
 		cost: {
 			requiredRank: 7,
@@ -442,10 +442,10 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		},
 		damage: 3_584,
 		world: "Ban Land",
-		weaponType: "Sword",
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
-	"Lava Lance": {
+	"Molten Scythe": {
 		id: 35,
 		cost: {
 			requiredRank: 7,
@@ -454,7 +454,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		},
 		damage: 4_096,
 		world: "Ban Land",
-		weaponType: "Lance",
+		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 
