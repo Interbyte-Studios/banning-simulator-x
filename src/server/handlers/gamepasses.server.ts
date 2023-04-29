@@ -23,7 +23,7 @@ Players.PlayerAdded.Connect(async (player) => {
 			}
 
 			if (userOwnsGamepass) {
-				store.dispatch(claimGamepass(name));
+				//store.dispatch(claimGamepass(name));
 			}
 		}
 	}
