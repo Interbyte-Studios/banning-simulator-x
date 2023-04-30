@@ -95,7 +95,7 @@ export const Fusing = hooks((props: { enabled: boolean }, hooks) => {
 				}
 			},
 			false,
-			Enum.KeyCode.Z,
+			Enum.KeyCode.J,
 		);
 
 		return (): void => {
@@ -211,7 +211,7 @@ export const Fusing = hooks((props: { enabled: boolean }, hooks) => {
 									BackgroundTransparency={1}
 									Position={UDim2.fromScale(0.5, 0.5)}
 									Size={UDim2.fromScale(0.9, 0.9)}
-									Text={"Z"}
+									Text={"J"}
 									TextColor3={Color3.fromRGB(255, 255, 255)}
 									TextScaled={true}
 									Font={font}
@@ -285,7 +285,7 @@ export const Fusing = hooks((props: { enabled: boolean }, hooks) => {
 									BackgroundTransparency={1}
 									Position={UDim2.fromScale(0.5, 0.5)}
 									Size={UDim2.fromScale(0.9, 0.9)}
-									Text={"Z"}
+									Text={"J"}
 									TextColor3={Color3.fromRGB(255, 255, 255)}
 									TextScaled={true}
 									Font={font}
