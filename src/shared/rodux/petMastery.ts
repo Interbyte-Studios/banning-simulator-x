@@ -46,7 +46,7 @@ export type PetMasteryState = Map<
 >;
 export type PetMasteryActions = ClaimMastery | ToggleMasteryCosmetic;
 
-const defaultPlayerIndex: PetMasteryState = new Map();
+export const defaultPetMasteryState: PetMasteryState = new Map();
 
 interface ClaimMastery extends Rodux.Action<"claimMastery"> {
 	petId: number;
@@ -88,7 +88,7 @@ export function toggleMasteryCosmetic(petId: number, variant: Variants): ToggleM
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMasteryActions>(defaultPlayerIndex, {
+export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMasteryActions>(defaultPetMasteryState, {
 	claimMastery: (state, action) => {
 		const newState = new Map([...state]);
 

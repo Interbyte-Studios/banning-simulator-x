@@ -1,5 +1,4 @@
 /// <reference types="@rbxts/testez/globals" />
-
 import { createDummyStore } from "server/playerStore";
 import { assertDeepEqual } from "shared/mocks/assertDeepEqual";
 import { useMockPlayer } from "shared/mocks/player";

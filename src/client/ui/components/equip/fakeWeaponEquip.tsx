@@ -1,7 +1,6 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { ContextActionService } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
@@ -35,7 +34,7 @@ function mapStateToProps(state: StoreState): FakeWeaponEquipMappedProps {
 /* eslint-disable jsdoc/require-jsdoc */
 export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 	hooks((props: FakeWeaponEquipProps, hooks) => {
-		const { useState, useContext, useEffect } = hooks;
+		const { useState, useContext } = hooks;
 		const [isHovering, setHovering] = useState(false);
 		const { equipWeapon, unequipWeapon } = useContext(remoteContext);
 
@@ -47,25 +46,6 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 
 		const { motor, binding } = useBindingMotor(hooks, minimizedSize);
 
-		useEffect(() => {
-			ContextActionService.BindAction(
-				"equipWeapon",
-				async (_, state) => {
-					if (state !== Enum.UserInputState.Begin) {
-						return;
-					}
-
-					if (props.weaponEquipped) {
-						unequipWeapon.SendToServer();
-					} else {
-						equipWeapon.SendToServer();
-					}
-				},
-				false,
-				Enum.KeyCode.Z,
-			);
-		});
-
 		return (
 			<imagebutton
 				AnchorPoint={vec2Middle}
@@ -75,6 +55,8 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 				Event={{
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
+
+						print(props.weaponEquipped);
 
 						if (props.weaponEquipped) {
 							unequipWeapon.SendToServer();

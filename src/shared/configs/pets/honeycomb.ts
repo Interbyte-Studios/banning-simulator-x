@@ -9,7 +9,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		id: 15,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 10,
 		},
 	},
 	"Doggy Bee": {
@@ -17,7 +17,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		id: 16,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 10,
 		},
 	},
 	"Dinosaur Bee": {
@@ -25,7 +25,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		id: 17,
 		rarity: "Ordinary",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 20,
 		},
 	},
 	"Evil Bee": {
@@ -33,7 +33,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		id: 18,
 		rarity: "Ordinary",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 20,
 		},
 	},
 	"Bunny Bee": {
@@ -41,7 +41,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		id: 19,
 		rarity: "Rare",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 30,
 		},
 	},
 	"Honey Bee": {
@@ -49,7 +49,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		id: 20,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 40,
 		},
 	},
 	"Pegasus Bee": {
@@ -57,7 +57,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		id: 21,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 50,
 		},
 	},
 	"Queen Bee": {
@@ -65,7 +65,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		id: 22,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 60,
 		},
 	},
 	"Mystical Bee": {
@@ -73,7 +73,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		id: 23,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 70,
 		},
 	},
 };

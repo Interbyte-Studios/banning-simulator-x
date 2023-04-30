@@ -21,7 +21,7 @@ export interface Admin_ModifyTalismanLevel extends Rodux.Action<"admin_modifyTal
 	phase: TalismanPhases;
 }
 
-const defaultTalismans: TalismansState = [];
+export const defaultTalismans: TalismansState = [];
 
 /**
  * Purchases a talisman from the stor, saving it to players talisman inventory.

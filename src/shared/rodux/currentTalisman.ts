@@ -33,7 +33,7 @@ export function unequipTalisman(): UnequipTalisman & Rodux.AnyAction {
 	};
 }
 
-const defaultTalismanId = undefined;
+export const defaultTalismanId = undefined;
 
 /*eslint-disable jsdoc/require-jsdoc */
 export const currentTalismanReducer = Rodux.createReducer<

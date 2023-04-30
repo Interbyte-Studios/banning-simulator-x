@@ -1,26 +1,15 @@
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
-import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { Npc } from "..";
-
-/**
- * Abbreviates a number.
- *
- * @param x The item to shorten.
- * @returns The abbreviated number, to two decimal places.
- */
-function shorten(x: string): number {
-	return twoDpAbbreviator.stringToNumber(x);
-}
 
 export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 	bronzePiece: {
 		name: "BronzePiece",
-		health: 50,
+		health: 100,
 		reward: {
-			currency: 250,
+			currency: 20,
 			currencyType: "coins",
-			experience: 7.5,
+			experience: 40,
 		},
 		rank: 1,
 		isBoss: false,
@@ -29,98 +18,99 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		name: "Nyxun",
 		health: 200,
 		reward: {
-			currency: 750,
+			currency: 40,
 			currencyType: "coins",
-			experience: 26,
+			experience: 80,
 		},
 		rank: 1,
 		isBoss: false,
 	},
 	onett: identity<Npc>({
 		name: "Onett",
-		health: 800,
+		health: 400,
 		reward: {
-			currency: shorten("3k"),
+			currency: 80,
 			currencyType: "coins",
-			experience: 45,
+			experience: 160,
 		},
-		rank: 2,
+		rank: 1,
 		isBoss: false,
 	}),
 	rellhub: identity<Npc>({
 		name: "RELLhub",
-		health: shorten("3.2k"),
+		health: 800,
 		reward: {
-			currency: shorten("12.5k"),
+			currency: 160,
 			currencyType: "coins",
-			experience: 83,
+			experience: 315,
 		},
 		rank: 2,
 		isBoss: false,
 	}),
 	buildIntoGames: identity<Npc>({
 		name: "BuildIntoGames",
-		health: shorten("12.8k"),
+		health: 1_600,
 		reward: {
-			currency: shorten("50k"),
+			currency: 640,
 			currencyType: "coins",
-			experience: 136,
+			experience: 625,
 		},
 		rank: 3,
 		isBoss: false,
 	}),
 	foreverDev: identity<Npc>({
 		name: "ForeverDev",
-		health: shorten("51.2k"),
+		health: 3_200,
 		reward: {
-			currency: shorten("250k"),
+			currency: 640,
 			currencyType: "coins",
-			experience: shorten("1.1k"),
+			experience: 1_250,
 		},
-		rank: 3,
+		rank: 4,
 		isBoss: false,
 	}),
 	snickTrix: identity<Npc>({
 		name: "SnickTrix",
-		health: shorten("204.8k"),
+		health: 6_400,
 		reward: {
-			currency: shorten("1.25M"),
+			currency: 1_280,
 			currencyType: "coins",
-			experience: shorten("3.7k"),
-		},
-		rank: 4,
-		isBoss: false,
-	}),
-	mygame43: identity<Npc>({
-		name: "mygame43",
-		health: shorten("819.2k"),
-		reward: {
-			currency: shorten("7M"),
-			currencyType: "coins",
-			experience: shorten("14k"),
-		},
-		rank: 4,
-		isBoss: false,
-	}),
-	gamesReborn: identity<Npc>({
-		name: "GamesReborn",
-		health: shorten("3.277M"),
-		reward: {
-			currency: shorten("35M"),
-			currencyType: "coins",
-			experience: shorten("30k"),
+			experience: 2_500,
 		},
 		rank: 5,
 		isBoss: false,
 	}),
+	mygame43: identity<Npc>({
+		name: "mygame43",
+		health: 12_800,
+		reward: {
+			currency: 2_560,
+			currencyType: "coins",
+			experience: 5_000,
+		},
+		rank: 6,
+		isBoss: false,
+	}),
+	gamesReborn: identity<Npc>({
+		name: "GamesReborn",
+		health: 25_600,
+		reward: {
+			currency: 5_120,
+			currencyType: "coins",
+			experience: 10_000,
+		},
+		rank: 7,
+		isBoss: false,
+	}),
 
+	// Bosses
 	russoTalks: identity<Npc>({
 		name: "RussoTalks",
-		health: 150,
+		health: 300,
 		reward: {
-			currency: 500,
+			currency: 60,
 			currencyType: "coins",
-			experience: 50,
+			experience: 120,
 		},
 		rank: 1,
 		isBoss: true,
@@ -129,88 +119,88 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		name: "SonsofFun_YT",
 		health: 600,
 		reward: {
-			currency: shorten("1.5k"),
+			currency: 120,
 			currencyType: "coins",
-			experience: 175,
+			experience: 240,
 		},
 		rank: 1,
 		isBoss: true,
 	}),
 	carbonMeister: identity<Npc>({
 		name: "CarbonMeister",
-		health: shorten("2.4k"),
+		health: 1_200,
 		reward: {
-			currency: shorten("6k"),
+			currency: 240,
 			currencyType: "coins",
-			experience: 300,
+			experience: 480,
 		},
-		rank: 2,
+		rank: 1,
 		isBoss: true,
 	}),
 	sabrinaBrite: identity<Npc>({
 		name: "SabrinaBrite",
-		health: shorten("9.6k"),
+		health: 2_400,
 		reward: {
-			currency: shorten("25k"),
+			currency: 480,
 			currencyType: "coins",
-			experience: 550,
+			experience: 945,
 		},
 		rank: 2,
 		isBoss: true,
 	}),
 	djMonopoli: identity<Npc>({
 		name: "DJMonopoli",
-		health: shorten("38.4k"),
+		health: 4_800,
 		reward: {
-			currency: shorten("100k"),
+			currency: 960,
 			currencyType: "coins",
-			experience: 900,
+			experience: 1_875,
 		},
 		rank: 3,
 		isBoss: true,
 	}),
 	merely: identity<Npc>({
 		name: "Merely",
-		health: shorten("153.6k"),
+		health: 9_600,
 		reward: {
-			currency: shorten("500k"),
+			currency: 1_920,
 			currencyType: "coins",
-			experience: shorten("7.5k"),
+			experience: 3_750,
 		},
-		rank: 3,
+		rank: 4,
 		isBoss: true,
 	}),
 	alvin_Blox: identity<Npc>({
 		name: "Alvin_Blox",
-		health: shorten("614.4k"),
+		health: 19_200,
 		reward: {
-			currency: shorten("2.5M"),
+			currency: 3_840,
 			currencyType: "coins",
-			experience: shorten("25k"),
+			experience: 7_500,
 		},
-		rank: 4,
+		rank: 5,
 		isBoss: true,
 	}),
 	deeterPlays: identity<Npc>({
 		name: "DeeterPlays",
-		health: shorten("2.458M"),
+		health: 38_400,
 		reward: {
-			currency: shorten("14M"),
+			currency: 7_680,
 			currencyType: "coins",
-			experience: shorten("95k"),
+			experience: 15_000,
 		},
-		rank: 4,
+		rank: 6,
 		isBoss: true,
 	}),
 	beeism: identity<Npc>({
 		name: "Beeism",
-		health: shorten("9.83M"),
+		health: 76_800,
 		reward: {
-			currency: shorten("70M"),
+			currency: 15_360,
 			currencyType: "coins",
-			experience: shorten("200k"),
+			experience: 30_000,
 		},
-		rank: 5,
+		rank: 7,
 		isBoss: true,
 	}),
 });

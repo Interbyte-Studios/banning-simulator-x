@@ -56,10 +56,10 @@ const defaulWeapon = {
 	level: 1,
 };
 
-const defaultState: WeaponsState = [defaulWeapon];
+export const defaultWeaponsState: WeaponsState = [defaulWeapon];
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions | KillNpc>(defaultState, {
+export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions | KillNpc>(defaultWeaponsState, {
 	purchaseWeapon: (state, action) => {
 		const newWeapon = {
 			id: action.id,

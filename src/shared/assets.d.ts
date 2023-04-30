@@ -277,30 +277,70 @@ declare namespace assetIds {
 				"Ban Land": string;
 			};
 			weapons: {
-				"Samurai Smasher": string;
+				"Bumble Basher": string;
+				"Lava Lance": string;
+				"Molten Thrasher": string;
+				"Aquatic Omegablade": string;
+				"Twilight Blade": string;
 				"Spark Plug": string;
-				"Infernal Staff": string;
+				"Stone Smacker": string;
+				"Tropical Thrasher": string;
 				"Atlantis Basher": string;
-				"Gooey Brawler": string;
+				"Stone Hammer": string;
+				Taliscythe: string;
+				"Sunflower Sword": string;
+				"Peppermint Scythe": string;
 				"Crimson Jewel": string;
 				"Galactic Blade": string;
-				"Twilight Blade": string;
-				"Bomba Bomber": string;
+				"Machine Masher": string;
+				"Buzz Blade": string;
+				"Starry Lance": string;
 				"Sunflower Slammer": string;
-				"Stone Smacker": string;
-				"Stone Hammer": string;
-				"Hellfire Slasher": string;
+				"Radiant Lance": string;
 				"Haunted Blade": string;
+				"Tropical Lance": string;
 				"Carnival Mallet": string;
 				"Honey Whacker": string;
-				"Lime Lance": string;
-				"Pillar Slammer": string;
-				"Atlantis Blade": string;
+				"Buzz Lance": string;
+				"Sunflower Slicer": string;
+				"Samurai Smasher": string;
 				"Flower Blade": string;
-				"Darkest Desires": string;
-				"Forest Slammer": string;
-				"Dune Glass": string;
+				"Radioactive Smasher": string;
+				"Beach Scythe": string;
+				"Crystalized Scythe": string;
+				"Radioactive Lance": string;
+				"Molten Slasher": string;
+				"Radioactive Scythe": string;
 				"Basic Blade": string;
+				"Radiant Greatsword": string;
+				"Infernal Staff": string;
+				"Candy Omegablade": string;
+				"Enchanted Scythe": string;
+				"Pillar Slammer": string;
+				"Dune Glass": string;
+				"Sunflower Spear": string;
+				"Gooey Brawler": string;
+				"Molten Scythe": string;
+				"Amethyst Lance": string;
+				"Lime Lance": string;
+				"Amethyst Greatblade": string;
+				"Radiant  Scythe": string;
+				"Bomba Bomber": string;
+				"Candy Lance": string;
+				"Hellfire Slasher": string;
+				"Sunflower Basher": string;
+				"Gumdrop Dropper": string;
+				"Blade Of Mastery": string;
+				"Forest Slammer": string;
+				"Enchanted Lance": string;
+				"Enchanted Greatsword": string;
+				"Enchanted Hammer": string;
+				"Atlantis Blade": string;
+				"Crystalized Hammer": string;
+				"Darkest Desires": string;
+				"Radioactive Greatsword": string;
+				"Stinger Scythe": string;
+				"Radiant Smaher": string;
 			};
 			boosts: {
 				luck: string;
@@ -340,81 +380,59 @@ declare namespace assetIds {
 			};
 		};
 		vectors: {
-			Announcement: string;
-			Clover: string;
-			Codes: string;
-			Coin: string;
-			CyberToken: string;
-			Error: string;
-			Experience: string;
-			FewGems: string;
-			Gem: string;
-			GemBag: string;
-			GemChest: string;
-			GemVault: string;
 			Inventory: string;
-			Lock: string;
 			Medal: string;
-			PetPaw: string;
-			Rewards: string;
-			Settings: string;
+			FewGems: string;
 			Shield: string;
-			SpinWheel: string;
-			StarCoin: string;
 			Sword: string;
-			Teleport: string;
-			Trading: string;
+			GemBag: string;
+			Settings: string;
+			Codes: string;
 			WalkSpeed: string;
+			PetPaw: string;
+			CyberToken: string;
+			Announcement: string;
+			Coin: string;
+			Teleport: string;
+			SpinWheel: string;
+			Rewards: string;
 			boosts: {
-				BlueTriple: string;
-				blueCrate: string;
 				blueDouble: string;
-				blueSingle: string;
-				greenCrate: string;
-				greenDouble: string;
-				greenSingle: string;
-				greenTriple: string;
-				orangeCrate: string;
-				orangeDouble: string;
 				orangeSingle: string;
 				orangeTriple: string;
-				purpleCrate: string;
+				greenSingle: string;
+				blueSingle: string;
+				redTriple: string;
+				blueCrate: string;
+				redDouble: string;
+				orangeDouble: string;
 				purpleDouble: string;
+				redCrate: string;
+				greenTriple: string;
 				purpleSingle: string;
 				purpleTriple: string;
-				redCrate: string;
-				redDouble: string;
+				orangeCrate: string;
 				redSingle: string;
-				redTriple: string;
+				BlueTriple: string;
+				purpleCrate: string;
+				greenDouble: string;
+				greenCrate: string;
 			};
+			Trading: string;
+			StarCoin: string;
+			GemVault: string;
+			Experience: string;
+			GemChest: string;
+			Lock: string;
+			Gem: string;
+			Clover: string;
+			Error: string;
 		};
 		ui: {
-			account: {
-				Accolades: string;
-				accountMastery: string;
-				background: string;
-				banMastery: string;
-				boostsMastery: string;
-				editCharacter: string;
-				fusingMastery: string;
-				hatchingMastery: string;
-				rankMastery: string;
-				statsBackground: string;
-				tradeHistory: string;
-			};
-			autoFight: {
-				minimized: string;
-			};
 			egg: {
 				background: string;
 				"pet frame": string;
 				delete: string;
-			};
-			"weapon shop": {
-				locked: string;
-				delete: string;
-				"weapon info background": string;
-				"purchase button": string;
 			};
 			index: {
 				view: string;
@@ -453,41 +471,8 @@ declare namespace assetIds {
 				"Sunflower Field Locked": string;
 				go: string;
 			};
-			zones: {
-				background: string;
-				purchase: string;
-				cancel: string;
-			};
 			levelup: {
 				LevelUp: string;
-			};
-			"rank upgrade": {
-				background: string;
-			};
-			"update log": {
-				"update log": string;
-				background: string;
-			};
-			talismanTower: {
-				sidebar: string;
-				background: string;
-			};
-			hud: {
-				"interface button": string;
-				shop: string;
-				upgrade: string;
-				"viewer background": string;
-				icons: {
-					"auto fight": string;
-					items: string;
-					options: string;
-					codes: string;
-					wheel: string;
-					rewards: string;
-					teleport: string;
-					trading: string;
-				};
-				"rank fill": string;
 			};
 			autoDelete: {
 				background: string;
@@ -498,22 +483,58 @@ declare namespace assetIds {
 				input: string;
 				background: string;
 			};
+			autoFight: {
+				minimized: string;
+			};
+			zones: {
+				background: string;
+				purchase: string;
+				cancel: string;
+			};
+			"weapon shop": {
+				locked: string;
+				delete: string;
+				"weapon info background": string;
+				"purchase button": string;
+			};
+			"rank upgrade": {
+				background: string;
+			};
+			"update log": {
+				"update log": string;
+				background: string;
+			};
+			hud: {
+				"interface button": string;
+				shop: string;
+				upgrade: string;
+				"viewer background": string;
+				icons: {
+					items: string;
+					wheel: string;
+					options: string;
+					codes: string;
+					rewards: string;
+					"auto fight": string;
+					teleport: string;
+					trading: string;
+				};
+				"rank fill": string;
+			};
+			talismanTower: {
+				sidebar: string;
+				background: string;
+			};
+			settings: {
+				"setting background": string;
+				background: string;
+			};
 			equip: {
 				unequipped: string;
 				keybind: string;
 				toolTp: string;
 				background: string;
 				equipped: string;
-			};
-			settings: {
-				"setting background": string;
-				background: string;
-			};
-			quests: {
-				"world background": string;
-				"world entry background": string;
-				"quests background": string;
-				"entry background": string;
 			};
 			inventory: {
 				pets: {
@@ -546,6 +567,25 @@ declare namespace assetIds {
 					talismans: string;
 				};
 				"info sidebar": string;
+			};
+			quests: {
+				"world background": string;
+				"world entry background": string;
+				"quests background": string;
+				"entry background": string;
+			};
+			account: {
+				boostsMastery: string;
+				tradeHistory: string;
+				editCharacter: string;
+				background: string;
+				banMastery: string;
+				Accolades: string;
+				statsBackground: string;
+				fusingMastery: string;
+				accountMastery: string;
+				hatchingMastery: string;
+				rankMastery: string;
 			};
 		};
 		ranks: {
