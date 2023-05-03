@@ -1,6 +1,9 @@
 import assetIds from "shared/assets";
 
 export const MAIN_GROUP = 5126818;
+export const BANS_LEADERBOARD_ODS = "bans";
+export const EGGS_LEADERBOARD_ODS = "eggs";
+export const LEADERBOARD_UPDATE_INTERVAL = 60;
 
 export type Gamepasses = keyof typeof GAMEPASSES;
 export const GAMEPASSES = {
