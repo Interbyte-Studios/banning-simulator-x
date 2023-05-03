@@ -35,11 +35,11 @@ interface AnimatedPet {
 	currentCFrame: CFrameValue;
 	flareDisplayed: boolean;
 	raritySparklesDisplayed: boolean;
-	flare?: typeof ReplicatedStorage.assetObjects.emitters["hatching emitters"]["flare"];
+	flare?: (typeof ReplicatedStorage.assetObjects.emitters)["hatching emitters"]["flare"];
 	raritySparkles?:
-		| typeof ReplicatedStorage.assetObjects.emitters["hatching emitters"]["legendary"]
-		| typeof ReplicatedStorage.assetObjects.emitters["hatching emitters"]["prismatic"]
-		| typeof ReplicatedStorage.assetObjects.emitters["hatching emitters"]["primordial"];
+		| (typeof ReplicatedStorage.assetObjects.emitters)["hatching emitters"]["legendary"]
+		| (typeof ReplicatedStorage.assetObjects.emitters)["hatching emitters"]["prismatic"]
+		| (typeof ReplicatedStorage.assetObjects.emitters)["hatching emitters"]["primordial"];
 	petModel: Model;
 }
 
