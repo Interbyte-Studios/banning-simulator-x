@@ -31,7 +31,7 @@ export const CurrencyGainAnimation = RoactRodux.connect(mapStateToProps)(
 	hooks((props: CurrencyGainAnimationProps) => {
 		cachedCurrency.forEach((currencyData, currencyIndex) => {
 			const currentCurrencyAmount = props.currencies[currencyData.name];
-			if (currencyData.amount !== currentCurrencyAmount && currencyData.amount < currentCurrencyAmount) {
+			if (currencyData.amount !== currentCurrencyAmount && currentCurrencyAmount > currencyData.amount) {
 				cachedCurrency[currencyIndex].amount = currentCurrencyAmount;
 
 				for (let i = 0; i < 4; i++) {
@@ -57,6 +57,8 @@ export const CurrencyGainAnimation = RoactRodux.connect(mapStateToProps)(
 
 					cachedCurrencyImages.push(element);
 				}
+			} else {
+				cachedCurrency[currencyIndex].amount = currentCurrencyAmount;
 			}
 		});
 
