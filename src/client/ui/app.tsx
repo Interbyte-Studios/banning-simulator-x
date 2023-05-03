@@ -14,6 +14,7 @@ import { WeaponEquip } from "./components/equip/weaponEquip";
 import { Fusing } from "./components/fusing";
 import { Hud } from "./components/hud";
 import { ItemInventory } from "./components/items";
+import { Leaderboards } from "./components/leaderboards";
 import { PetMastery } from "./components/petMastery";
 import { Quests } from "./components/quests";
 import { RankUpgrade } from "./components/ranks/menu";
@@ -239,6 +240,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext }) 
 						!accountHubVisibility
 					}
 				/>
+				<Leaderboards />
 			</>
 		</RoactRodux.StoreProvider>
 	);
