@@ -1,9 +1,8 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
-import { font, uiDarkStrokeColor, vec2Middle } from "client/ui/commonValues";
+import { uiDarkStrokeColor, vec2Middle } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
-import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";

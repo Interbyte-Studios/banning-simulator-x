@@ -125,11 +125,6 @@ export const PetSummary = hooks(
 			});
 			connections.push(mouseConnection);
 
-			if (UserInputService.TouchEnabled) {
-				const touchConnection = UserInputService.TouchPan.Connect((touchPositions) => {});
-				connections.push(touchConnection);
-			}
-
 			return (): void => connections.forEach((conn) => conn.Disconnect());
 		}, []);
 

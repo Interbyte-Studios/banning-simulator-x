@@ -1,10 +1,7 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { setPetItemRowSize } from "client/handlers/item inventory/inventoryLayoutHandler";
-import { font, uiDarkStrokeColor, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { uiDarkStrokeColor } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
-import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
@@ -13,7 +10,6 @@ import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { Pet } from "shared/rodux/pets";
 
 import { PetItems } from "./inventory";
 import { PetInventoryCounterTopBar } from "./inventoryCounter";
@@ -22,10 +18,6 @@ import { PetInventoryBottomControl } from "./petInventoryBottomControl";
 import { PetInventorySearch } from "./search";
 import { PetTeams } from "./teams";
 import { ReturnToPetInventory } from "./teams/returnToInventory";
-
-export interface PetInventoryData extends Pet {
-	isRendered: boolean;
-}
 
 export const ToggleShrink = hooks((_, hooks) => {
 	const { useState, useEffect } = hooks;

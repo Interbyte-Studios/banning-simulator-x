@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { font, uiDarkStrokeColor, vec2Middle } from "client/ui/commonValues";
+import { uiDarkStrokeColor } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
