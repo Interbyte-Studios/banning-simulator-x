@@ -67,6 +67,7 @@ export function spinWheelReward(store: Store, rewardIndex: number): void {
 			variant: "regular",
 			method: "hatch",
 			egg: "Starter",
+			tradeLocked: false,
 		});
 
 		store.dispatch(addPets(0, "coins", selectedPets));

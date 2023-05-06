@@ -395,6 +395,7 @@ declare namespace assetIds {
 			Coin: string;
 			Teleport: string;
 			SpinWheel: string;
+			SmallSword: string;
 			Rewards: string;
 			boosts: {
 				blueDouble: string;
