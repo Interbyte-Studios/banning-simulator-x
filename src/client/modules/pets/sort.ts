@@ -1,4 +1,5 @@
 import { PetInventoryData } from "client/ui/components/items/pets/inventory";
+import { RARITIES } from "shared/configs/rarities";
 import { Pet, PetsState } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 import { getPetStrength } from "shared/util/getPetStrength";
@@ -35,8 +36,10 @@ export function sortPets(
 		const pet2Data = getPetData(pet2.id);
 
 		// Sort by rarity
+		const pet1RarityData = RARITIES[pet1Data.rarity];
+		const pet2RarityData = RARITIES[pet2Data.rarity];
 		if (pet1Data.rarity !== pet2Data.rarity) {
-			return pet1Data.rarity > pet2Data.rarity;
+			return pet1RarityData.id > pet2RarityData.id;
 		}
 
 		// Sort by name

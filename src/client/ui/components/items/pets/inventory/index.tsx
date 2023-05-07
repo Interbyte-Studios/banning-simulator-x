@@ -33,11 +33,7 @@ function petItemsMapStateToProps(state: StoreState): PetItemsMappedProps {
 export const PetItems = RoactRodux.connect(petItemsMapStateToProps)((props: PetItemsProps) => {
 	return (
 		<VirtualScroll
-			pets={props.pets.map((pet, index) => {
-				if (index < 15) {
-					return { ...pet, isRendered: true };
-				}
-
+			pets={props.pets.map((pet) => {
 				return { ...pet, isRendered: false };
 			})}
 			searchText={props.searchText}
