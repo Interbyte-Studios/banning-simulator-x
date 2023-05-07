@@ -99,15 +99,6 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		 * @param scroll The scrolling frame.
 		 */
 		const updateItems = (scroll: ScrollingFrame): void => {
-			/* debounce
-			let lastUpdate = 0; ^ Move outside of function
-			const now = time();
-			if (now - lastUpdate < 0.15) {
-				return;
-			}
-			lastUpdate = now;
-			*/
-
 			// update pets
 			const updatedRenderedPets = checkRenderedPets(scroll, renderedPets, searchText);
 			sortPets(updatedRenderedPets, true, true);
