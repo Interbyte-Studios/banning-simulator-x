@@ -82,7 +82,7 @@ export const TitlesItems = RoactRodux.connect(mapStateToProps)(
 							LayoutOrder: 1,
 							Image: "",
 						}}
-						size={{ minSize: 0.275, maxSize: 0.3 }}
+						size={{ minSize: 0.6, maxSize: 0.7 }}
 						events={{
 							/* eslint-disable jsdoc/require-jsdoc */
 							Activated: (): void => {
@@ -94,6 +94,7 @@ export const TitlesItems = RoactRodux.connect(mapStateToProps)(
 					>
 						<uicorner CornerRadius={new UDim(0.12, 0)} />
 						<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
+						<uiaspectratioconstraint AspectRatio={8} />
 
 						<StrokeTextLabel
 							native={{
@@ -111,7 +112,7 @@ export const TitlesItems = RoactRodux.connect(mapStateToProps)(
 							LayoutOrder: 2,
 							Image: "",
 						}}
-						size={{ minSize: 0.275, maxSize: 0.3 }}
+						size={{ minSize: 0.6, maxSize: 0.7 }}
 						events={{
 							/* eslint-disable jsdoc/require-jsdoc */ Activated: (): void => {
 								playSFX(UIEngagement.MinorEngagement);
@@ -122,6 +123,7 @@ export const TitlesItems = RoactRodux.connect(mapStateToProps)(
 					>
 						<uicorner CornerRadius={new UDim(0.12, 0)} />
 						<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
+						<uiaspectratioconstraint AspectRatio={8} />
 
 						<StrokeTextLabel
 							native={{
@@ -139,7 +141,7 @@ export const TitlesItems = RoactRodux.connect(mapStateToProps)(
 							LayoutOrder: 3,
 							Image: "",
 						}}
-						size={{ minSize: 0.275, maxSize: 0.3 }}
+						size={{ minSize: 0.6, maxSize: 0.7 }}
 						events={{
 							/* eslint-disable jsdoc/require-jsdoc */
 							Activated: (): void => {
@@ -151,6 +153,7 @@ export const TitlesItems = RoactRodux.connect(mapStateToProps)(
 					>
 						<uicorner CornerRadius={new UDim(0.12, 0)} />
 						<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
+						<uiaspectratioconstraint AspectRatio={8} />
 
 						<StrokeTextLabel
 							native={{
@@ -201,6 +204,7 @@ export const TitlesItems = RoactRodux.connect(mapStateToProps)(
 									<StrokeTextLabel
 										native={{
 											Position: UDim2.fromScale(0.26, 0.25),
+											Size: UDim2.fromScale(0.5, 0.5),
 											Text: title.name,
 											TextColor3: titleColor,
 											TextXAlignment: Enum.TextXAlignment.Left,
@@ -225,7 +229,7 @@ export const TitlesItems = RoactRodux.connect(mapStateToProps)(
 											Position: UDim2.fromScale(0.9, 0.5),
 											Image: meetsCondition ? assetIds.images.ui.index.Claim : assetIds.images.ui.index.Off,
 										}}
-										size={{ minSize: 0.125, maxSize: 0.15 }}
+										size={{ minSize: 0.7, maxSize: 0.8 }}
 										events={{
 											/* eslint-disable jsdoc/require-jsdoc */
 											Activated: (): void => {

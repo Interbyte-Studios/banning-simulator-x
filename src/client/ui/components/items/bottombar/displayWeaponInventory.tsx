@@ -35,7 +35,7 @@ export const DisplayWeaponsInventory = (props: DisplayWeaponsInventoryProps): Ro
 				native={{
 					Position: UDim2.fromScale(0.5, 1),
 					Size: UDim2.fromScale(0.9, 0.35),
-					Text: "Titles",
+					Text: "Weapons",
 				}}
 				stroke={{ native: { Thickness: 1.25, Color: uiTextStrokeColor } }}
 			/>

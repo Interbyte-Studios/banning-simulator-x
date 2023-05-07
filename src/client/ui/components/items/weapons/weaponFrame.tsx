@@ -56,8 +56,8 @@ export const WeaponItemFrame = hooks(
 
 					<StrokeTextLabel
 						native={{
-							Position: UDim2.fromScale(1, 0.2),
-							Size: UDim2.fromScale(0.5, 0.1),
+							Size: UDim2.fromScale(1, 0.2),
+							Position: UDim2.fromScale(0.5, 0.1),
 							Text: weaponData.name,
 						}}
 						stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}

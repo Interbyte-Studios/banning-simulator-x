@@ -1,5 +1,6 @@
 import { PetInventoryData } from "client/ui/components/items/pets/inventory";
 import { Pet, PetsState } from "shared/rodux/pets";
+import { getPetData } from "shared/util/getPetData";
 import { getPetStrength } from "shared/util/getPetStrength";
 
 /**
@@ -27,6 +28,20 @@ export function sortPets(
 			if (pet1.locked !== pet2.locked) {
 				return pet1.locked;
 			}
+		}
+
+		// Get pet data
+		const pet1Data = getPetData(pet1.id);
+		const pet2Data = getPetData(pet2.id);
+
+		// Sort by rarity
+		if (pet1Data.rarity !== pet2Data.rarity) {
+			return pet1Data.rarity > pet2Data.rarity;
+		}
+
+		// Sort by name
+		if (pet1Data.name !== pet2Data.name) {
+			return pet1Data.name > pet2Data.name;
 		}
 
 		// Sort by strength
