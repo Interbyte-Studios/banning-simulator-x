@@ -22,13 +22,16 @@ interface VirtualScrollProps {
  * A virtual scrolling component for pets.
  *
  * @param props The properties of the virtual scroll.
- * @param props.pets The items to be rendered.
- * @param props.renderedPet The item to be rendered.
- * @param props.layoutProps The layout properties of the virtual scroll.
+ * @param props.pets The pets to be displayed in the virtual scroll.
+ * @param props.searchText The text to be searched for in the pet names.
+ * @param props.multiDeleteEnabled Whether or not multi delete is enabled.
+ * @param props.addPetToDeletionRegistry A function to add a pet to the deletion registry.
+ * @param props.removePetFromDeletionRegistry A function to remove a pet from the deletion registry.
+ * @param props.displayPetInfo A function to display the pet info of a pet.
  */
 export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 	const { pets, searchText } = props;
-	const { useValue, useEffect, useState, useCallback } = hooks;
+	const { useEffect, useState, useCallback, useMemo, useValue } = hooks;
 
 	const scrollingFrameRef = useValue(Roact.createRef<ScrollingFrame>());
 	const layoutRef = useValue(Roact.createRef<UIGridLayout>());
@@ -37,13 +40,14 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 	const [renderedPets, setRenderedPets] = useState<Array<PetInventoryData>>(pets);
 
 	const checkRenderedPets = useCallback(
-		(scrollingFrame: ScrollingFrame, pets: ReadonlyArray<PetInventoryData>, search?: string) => {
+		(scrollingFrame: ScrollingFrame, petsToIterate: ReadonlyArray<PetInventoryData>, search?: string) => {
 			const gridLayout = scrollingFrame.FindFirstChildWhichIsA("UIGridLayout");
 			assert(gridLayout, `No UIGridLayout was found for PetItems component.`);
 
 			const searchText = search?.lower();
 
-			const renderedPets = pets.map((pet, index) => {
+			for (let index = 0; index < petsToIterate.size(); index++) {
+				const pet = petsToIterate[index];
 				const y = math.floor(index / gridLayout.FillDirectionMaxCells);
 				const yPos = y * gridLayout.CellSize.Y.Offset + y * gridLayout.CellPadding.Y.Offset;
 
@@ -58,24 +62,28 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 				// check against search text props
 				if (searchText !== undefined && shouldBeRendered) {
 					const petData = getPetData(pet.id);
-					if (petData.name.lower().find(searchText, 1, true)[0] === undefined) {
+					if (petData.name.lower().match(searchText) !== undefined) {
 						shouldBeRendered = false;
 					}
 				}
 
 				if (shouldBeRendered !== pet.isRendered) {
-					return {
-						...pet,
-						isRendered: shouldBeRendered,
-					};
+					pet.isRendered = shouldBeRendered;
 				}
+			}
 
-				return pet;
-			});
-
-			return renderedPets;
+			return [...petsToIterate];
 		},
 		[],
+	);
+
+	const updateItems = useCallback(
+		(scroll: ScrollingFrame): void => {
+			const updatedRenderedPets = checkRenderedPets(scroll, renderedPets, searchText);
+			sortPets(updatedRenderedPets, true, true);
+			setRenderedPets(updatedRenderedPets);
+		},
+		[renderedPets, searchText],
 	);
 
 	useEffect(() => {
@@ -93,33 +101,55 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		const gridLayout = layoutRef.value.getValue();
 		assert(gridLayout, `No UIGridLayout was found for Virtual Scroll`);
 
-		/**
-		 * Updates the rendered items.
-		 *
-		 * @param scroll The scrolling frame.
-		 */
-		const updateItems = (scroll: ScrollingFrame): void => {
-			// update pets
-			const updatedRenderedPets = checkRenderedPets(scroll, renderedPets, searchText);
-			sortPets(updatedRenderedPets, true, true);
-			setRenderedPets(updatedRenderedPets);
-		};
-
 		const connections: Array<RBXScriptConnection> = [
 			gridLayout.GetPropertyChangedSignal("FillDirectionMaxCells"),
 			scrollingFrame.GetPropertyChangedSignal("CanvasPosition"),
-			scrollingFrame.GetPropertyChangedSignal("AbsoluteCanvasSize"),
 		].map((conn) => conn.Connect(() => updateItems(scrollingFrame)));
-
-		const resizeConnection = updateContentSize(scrollingFrame, gridLayout);
-		connections.push(resizeConnection);
-
-		// Initial update
-		updateItems(scrollingFrame);
 
 		// Cleanup function to disconnect all connections when the component is unmounted.
 		return (): void => connections.forEach((connection) => connection.Disconnect());
-	}, [scrollingFrameRef, layoutRef, pets, searchText, checkRenderedPets]);
+	}, [scrollingFrameRef, updateItems]);
+
+	useEffect(() => {
+		const scrollingFrame = scrollingFrameRef.value.getValue();
+		assert(scrollingFrame, `No ScrollingFrame was found for Virtual Scroll`);
+
+		// Initial update
+		updateItems(scrollingFrame);
+	}, []);
+
+	useEffect(() => {
+		const scrollingFrame = scrollingFrameRef.value.getValue();
+		assert(scrollingFrame, `No ScrollingFrame was found for Virtual Scroll`);
+
+		const gridLayout = layoutRef.value.getValue();
+		assert(gridLayout, `No UIGridLayout was found for Virtual Scroll`);
+
+		const resizeConnection = updateContentSize(scrollingFrame, gridLayout);
+		return (): void => resizeConnection.Disconnect();
+	}, [scrollingFrameRef]);
+
+	const elementsToDisplay: Array<Roact.Element> = useMemo(() => {
+		const result: Array<Roact.Element> = [];
+		for (let index = 0; index < renderedPets.size(); index++) {
+			const pet = renderedPets[index];
+
+			result.push(
+				<PetFrame
+					Key={pet.guid}
+					isRendered={pet.isRendered}
+					storedPetData={pet}
+					multiDeleteEnabled={props.multiDeleteEnabled ?? false}
+					addPetToDeletionRegistry={props.addPetToDeletionRegistry ?? ((): void => undefined)}
+					removePetFromDeletionRegistry={props.removePetFromDeletionRegistry ?? ((): void => undefined)}
+					layoutOrderIndex={index}
+					displayPetInfo={props.displayPetInfo ?? ((): void => undefined)}
+					inventoryFrame={scrollingFrameRef.value}
+				/>,
+			);
+		}
+		return result;
+	}, [renderedPets, props]);
 
 	return (
 		<scrollingframe
@@ -137,21 +167,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 				FillDirectionMaxCells={5}
 				Ref={layoutRef.value}
 			/>
-			{renderedPets.map((pet, index) => {
-				return (
-					<PetFrame
-						Key={pet.guid}
-						isRendered={pet.isRendered}
-						storedPetData={pet}
-						multiDeleteEnabled={props.multiDeleteEnabled ?? false}
-						addPetToDeletionRegistry={props.addPetToDeletionRegistry ?? ((): void => undefined)}
-						removePetFromDeletionRegistry={props.removePetFromDeletionRegistry ?? ((): void => undefined)}
-						layoutOrderIndex={index}
-						displayPetInfo={props.displayPetInfo ?? ((): void => undefined)}
-						inventoryFrame={scrollingFrameRef.value}
-					/>
-				);
-			})}
+			{elementsToDisplay}
 		</scrollingframe>
 	);
 });
