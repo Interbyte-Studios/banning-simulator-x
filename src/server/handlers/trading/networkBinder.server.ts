@@ -29,10 +29,12 @@ requestTradeRemote.Connect(
 );
 
 const acceptTradeRequestRemote = tradesNamespace.Get("acceptTradeRequest");
+const tradeRequestAccepted = tradesNamespace.Get("tradeRequestAccepted");
 acceptTradeRequestRemote.Connect((receiver, creator) => {
 	acceptTrade(receiver, creator);
 
-	// todo: alert creator that the trade request was accepted
+	// alert creator that the trade request was accepted
+	tradeRequestAccepted.SendToPlayer(creator, receiver);
 });
 
 const declineTradeRequest = tradesNamespace.Get("declineTradeRequest");

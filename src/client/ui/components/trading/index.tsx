@@ -17,6 +17,7 @@ interface TradeListDisplayProps {
 	declineTrade: () => void;
 	tradeWasDeclined: Player | undefined;
 	resetTradeDeclined: () => void;
+	tradeWasAccepted: Player | undefined;
 }
 
 export const TradeListDisplay = hooks((props: TradeListDisplayProps, { useState }) => {
@@ -58,9 +59,9 @@ export const Trading = hooks((props: TradeProps, { useState }) => {
 		return <></>;
 	}
 
-	const [isTrading, setIsTrading] = useState(false);
+	const [isTrading, setIsTrading] = useState<Player | undefined>(undefined);
 
-	if (!isTrading) {
+	if (isTrading === undefined) {
 		return (
 			<ImageLabel
 				native={{
@@ -76,6 +77,7 @@ export const Trading = hooks((props: TradeProps, { useState }) => {
 					declineTrade={props.declineTrade}
 					tradeWasDeclined={props.tradeWasDeclined}
 					resetTradeDeclined={props.resetTradeDeclined}
+					tradeWasAccepted={props.tradeWasAccepted}
 				/>
 			</ImageLabel>
 		);

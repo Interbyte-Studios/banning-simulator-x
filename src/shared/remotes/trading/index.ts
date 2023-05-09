@@ -6,6 +6,7 @@ import { modifyOfferDefinition } from "./modifyOffer";
 import { offerChangedDefinition } from "./offerChanged";
 import { requestTradeDefinition } from "./requestTrade";
 import { sendTradeRequestDefinition } from "./sendTradeRequest";
+import { tradeRequestAcceptedDefinition } from "./tradeRequestAccepted";
 import { tradeRequestDeclinedDefinition } from "./tradeRequestDeclined";
 
 export const trading = Net.Definitions.Namespace({
@@ -16,6 +17,7 @@ export const trading = Net.Definitions.Namespace({
 	declineTradeRequest: declineTradeRequestDefinition,
 
 	tradeRequestDeclined: tradeRequestDeclinedDefinition,
+	tradeRequestAccepted: tradeRequestAcceptedDefinition,
 
 	modifyOffer: modifyOfferDefinition,
 	offerChanged: offerChangedDefinition,
