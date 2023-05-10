@@ -3,19 +3,34 @@ import { CollectionService } from "@rbxts/services";
 import { sortPets } from "client/modules/pets/sort";
 import { vec2Middle } from "client/ui/commonValues";
 import { PetFrame } from "client/ui/components/items/pets/inventory/petFrame";
+import { PetsState } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 
 import { PetInventoryData } from "../../components/items/pets/inventory";
 import { hooks } from "../../hooks";
 import { updateContentSize } from "../common/rescalingScrollingFrame";
 
+interface InventoryPetFrameProps {
+	multiDeleteEnabled: boolean;
+	addPetToDeletionRegistry: (guid: string) => void;
+	removePetFromDeletionRegistry: (guid: string) => void;
+	displayPetInfo: (guid: string) => void;
+}
+
+interface NativePetFrameProps {
+	onActivated: (guid: string) => void;
+	selectedPets?: Array<string>;
+}
+
 interface VirtualScrollProps {
-	pets: Array<PetInventoryData>;
+	pets: PetsState;
 	searchText?: string;
-	multiDeleteEnabled?: boolean;
-	addPetToDeletionRegistry?: (guid: string) => void;
-	removePetFromDeletionRegistry?: (guid: string) => void;
-	displayPetInfo?: (guid: string) => void;
+	size: UDim2;
+	position: UDim2;
+	scrollBarThickness?: number;
+	scrollBarImageColor?: Color3;
+	inventoryFrame?: InventoryPetFrameProps;
+	nativeFrame?: NativePetFrameProps;
 }
 
 /**
@@ -37,7 +52,9 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 	const layoutRef = useValue(Roact.createRef<UIGridLayout>());
 
 	// State for managing the rendered pets
-	const [renderedPets, setRenderedPets] = useState<Array<PetInventoryData>>(pets);
+	const [renderedPets, setRenderedPets] = useState<Array<PetInventoryData>>(
+		pets.map((pet, index) => ({ ...pet, isRendered: index <= 20 })),
+	);
 
 	const checkRenderedPets = useCallback(
 		(scrollingFrame: ScrollingFrame, petsToIterate: ReadonlyArray<PetInventoryData>, search?: string) => {
@@ -134,19 +151,50 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		for (let index = 0; index < renderedPets.size(); index++) {
 			const pet = renderedPets[index];
 
-			result.push(
-				<PetFrame
-					Key={pet.guid}
-					isRendered={pet.isRendered}
-					storedPetData={pet}
-					multiDeleteEnabled={props.multiDeleteEnabled ?? false}
-					addPetToDeletionRegistry={props.addPetToDeletionRegistry ?? ((): void => undefined)}
-					removePetFromDeletionRegistry={props.removePetFromDeletionRegistry ?? ((): void => undefined)}
-					layoutOrderIndex={index}
-					displayPetInfo={props.displayPetInfo ?? ((): void => undefined)}
-					inventoryFrame={scrollingFrameRef.value}
-				/>,
-			);
+			let layoutOrder = index;
+			if (props.nativeFrame?.selectedPets !== undefined) {
+				if (props.nativeFrame.selectedPets.includes(pet.guid)) {
+					layoutOrder = 1;
+				} else {
+					layoutOrder = index + props.nativeFrame.selectedPets.size();
+				}
+			}
+
+			print(props.nativeFrame?.selectedPets?.includes(pet.guid));
+
+			if (props.inventoryFrame !== undefined) {
+				result.push(
+					<PetFrame
+						Key={pet.guid}
+						native={{
+							isRendered: pet.isRendered,
+							storedPetData: pet,
+							layoutOrderIndex: layoutOrder,
+							displayFrame: scrollingFrameRef.value,
+							isSelected: props.nativeFrame?.selectedPets?.includes(pet.guid) ?? false,
+						}}
+						inventory={{
+							multiDeleteEnabled: props.inventoryFrame.multiDeleteEnabled,
+							addPetToDeletionRegistry: props.inventoryFrame.addPetToDeletionRegistry,
+							removePetFromDeletionRegistry: props.inventoryFrame.removePetFromDeletionRegistry,
+							displayPetInfo: props.inventoryFrame.displayPetInfo,
+						}}
+					/>,
+				);
+			} else if (props.nativeFrame !== undefined) {
+				result.push(
+					<PetFrame
+						Key={pet.guid}
+						native={{
+							isRendered: pet.isRendered,
+							storedPetData: pet,
+							layoutOrderIndex: layoutOrder,
+							onActivated: props.nativeFrame.onActivated,
+							displayFrame: scrollingFrameRef.value,
+						}}
+					/>,
+				);
+			} else warn(`Failed to generate pet frame | Inventory or native was unspecified.`);
 		}
 		return result;
 	}, [renderedPets, props]);
@@ -155,9 +203,10 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		<scrollingframe
 			AnchorPoint={vec2Middle}
 			BackgroundTransparency={1}
-			Size={UDim2.fromScale(0.965, 0.74)}
-			Position={UDim2.fromScale(0.5, 0.495)}
-			ScrollBarThickness={0}
+			Size={props.size}
+			Position={props.position}
+			ScrollBarThickness={props.scrollBarThickness ?? 0}
+			ScrollBarImageColor3={props.scrollBarImageColor ?? Color3.fromRGB(0, 0, 0)}
 			Ref={scrollingFrameRef.value}
 		>
 			<uigridlayout

@@ -16,15 +16,25 @@ import { PetSummary } from "../../petSummary";
 import { PetDeletionIndicator } from "./deletionIndicator";
 import { PetLevelAndLockIndicator } from "./petLevel";
 
-interface PetFrameProps {
-	isRendered: boolean;
-	storedPetData: Pet;
+interface InventoryProps {
 	multiDeleteEnabled: boolean;
 	addPetToDeletionRegistry: (guid: string) => void;
 	removePetFromDeletionRegistry: (guid: string) => void;
-	layoutOrderIndex: number;
 	displayPetInfo: (guid: string) => void;
-	inventoryFrame: Roact.Ref<ScrollingFrame>;
+}
+
+interface NativeProps {
+	isRendered: boolean;
+	storedPetData: Pet;
+	layoutOrderIndex: number;
+	onActivated?: (guid: string) => void;
+	displayFrame?: Roact.Ref<ScrollingFrame>;
+	isSelected?: boolean;
+}
+
+interface PetFrameProps {
+	native: NativeProps;
+	inventory?: InventoryProps;
 }
 
 /**
@@ -33,12 +43,8 @@ interface PetFrameProps {
  * @param props The component props.
  * @param props.isRendered Whether the pet should be rendered.
  * @param props.storedPetData The pet data.
- * @param props.multiDeleteEnabled Whether multi-delete is enabled.
- * @param props.addPetToDeletionRegistry Adds the pet to the deletion registry.
- * @param props.removePetFromDeletionRegistry Removes the pet from the deletion registry.
  * @param props.layoutOrderIndex The layout order index.
- * @param props.displayPetInfo Displays the pet info.
- * @param props.inventoryFrame The inventory frame.
+ * @param props.onActivated The function to call when the pet is activated.
  * @returns The rendered pet frame.
  */
 export const PetFrame = hooks(
@@ -46,22 +52,17 @@ export const PetFrame = hooks(
 		const [displayingSummary, setDisplayingSummary] = useState(false);
 		const [isSelectedForDelete, setSelectedForDelete] = useState(false);
 
-		const petData = useMemo(() => getPetData(props.storedPetData.id), [props.storedPetData.id]);
-		const petLevel = getPetLevel(props.storedPetData);
+		const { isRendered, storedPetData, layoutOrderIndex, onActivated } = props.native;
+
+		const petData = useMemo(() => getPetData(storedPetData.id), [storedPetData.id]);
+		const petLevel = getPetLevel(storedPetData);
 
 		const rarityData = useMemo(() => RARITIES[petData.rarity], [petData.rarity]);
 
 		const { addAnnouncement } = useContext(AnnouncementContext);
 
-		if (!props.isRendered) {
-			return <frame BackgroundTransparency={0} LayoutOrder={props.layoutOrderIndex} />;
-		}
-
-		const petSummary: Array<Roact.Element> = [];
-		let zindex = 1;
-		if (displayingSummary) {
-			petSummary.push(<PetSummary storedPet={props.storedPetData} inventoryFrame={props.inventoryFrame} />);
-			zindex = 2;
+		if (!isRendered) {
+			return <frame BackgroundTransparency={0} LayoutOrder={layoutOrderIndex} />;
 		}
 
 		const petFrameRef = useValue(Roact.createRef<Frame>());
@@ -81,55 +82,79 @@ export const PetFrame = hooks(
 		}, []);
 
 		useEffect(() => {
-			if (isSelectedForDelete) {
-				if (!props.multiDeleteEnabled) {
-					setSelectedForDelete(false);
-				}
+			if (props.inventory !== undefined && isSelectedForDelete && !props.inventory.multiDeleteEnabled) {
+				setSelectedForDelete(false);
 			}
-		});
+		}, [isSelectedForDelete]);
 
 		useEffect(() => {
-			if (props.multiDeleteEnabled) {
+			if (props.inventory === undefined) {
+				return;
+			}
+
+			if (props.inventory.multiDeleteEnabled) {
 				if (isSelectedForDelete) {
-					props.addPetToDeletionRegistry(props.storedPetData.guid);
+					props.inventory.addPetToDeletionRegistry(storedPetData.guid);
 				}
 			}
 
 			if (!isSelectedForDelete) {
-				props.removePetFromDeletionRegistry(props.storedPetData.guid);
+				props.inventory.removePetFromDeletionRegistry(storedPetData.guid);
 			}
-		}, [isSelectedForDelete, props.multiDeleteEnabled]);
+		}, [isSelectedForDelete, props.inventory?.multiDeleteEnabled]);
+
+		const inventoryElements: Array<Roact.Element> = [];
+		if (props.inventory !== undefined && props.inventory.multiDeleteEnabled) {
+			inventoryElements.push(
+				<PetDeletionIndicator
+					isSelectedForDeletion={isSelectedForDelete}
+					multiDeleteEnabled={props.inventory.multiDeleteEnabled}
+				/>,
+			);
+		}
+
+		let zindex = 1;
+		if (props.native.displayFrame !== undefined && displayingSummary) {
+			inventoryElements.push(<PetSummary storedPet={storedPetData} inventoryFrame={props.native.displayFrame} />);
+			zindex = 2;
+		}
 
 		return (
-			<frame BackgroundTransparency={1} LayoutOrder={props.layoutOrderIndex} Ref={petFrameRef.value} ZIndex={zindex}>
+			<frame BackgroundTransparency={1} LayoutOrder={layoutOrderIndex} Ref={petFrameRef.value} ZIndex={zindex}>
 				<ImageButton
 					native={{
 						BackgroundTransparency: 0,
-						BackgroundColor3: props.storedPetData.equipped
-							? Color3.fromRGB(85, 255, 127)
-							: Color3.fromRGB(46, 115, 179),
+						BackgroundColor3:
+							storedPetData.equipped || (props.native.isSelected !== undefined && props.native.isSelected)
+								? Color3.fromRGB(85, 255, 127)
+								: Color3.fromRGB(46, 115, 179),
 						Size: UDim2.fromScale(0.925, 0.925),
 						Image: "",
 					}}
 					events={{
 						// eslint-disable-next-line jsdoc/require-jsdoc
 						Activated: (): void => {
-							if (props.multiDeleteEnabled) {
-								if (props.storedPetData.locked) {
-									addAnnouncement("That pet is locked.", AnnouncementType.Error);
-								} else {
-									setSelectedForDelete(!isSelectedForDelete);
+							if (props.inventory !== undefined) {
+								if (props.inventory.multiDeleteEnabled) {
+									if (storedPetData.locked) {
+										addAnnouncement("That pet is locked.", AnnouncementType.Error);
+									} else {
+										setSelectedForDelete(!isSelectedForDelete);
+									}
 								}
+
+								props.inventory.displayPetInfo(storedPetData.guid);
+								return;
 							}
 
-							props.displayPetInfo(props.storedPetData.guid);
+							onActivated?.(storedPetData.guid);
 						},
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 					<uicorner CornerRadius={new UDim(1, 0)} />
 					<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} />
-					<PetViewport petId={props.storedPetData.id} variant={props.storedPetData.variant} shouldBlackout={false} />
+					<PetViewport petId={storedPetData.id} variant={storedPetData.variant} shouldBlackout={false} />
 					<StrokeTextLabel
 						native={{
 							Size: UDim2.fromScale(1, 0.2),
@@ -147,12 +172,8 @@ export const PetFrame = hooks(
 					>
 						<RarityGradient Rarity={petData.rarity} />
 					</StrokeTextLabel>
-					<PetDeletionIndicator
-						isSelectedForDeletion={isSelectedForDelete}
-						multiDeleteEnabled={props.multiDeleteEnabled}
-					/>
-					<PetLevelAndLockIndicator isLocked={props.storedPetData.locked} petLevel={petLevel} />
-					{petSummary}
+					<PetLevelAndLockIndicator isLocked={storedPetData.locked} petLevel={petLevel} />
+					{inventoryElements}
 				</ImageButton>
 			</frame>
 		);

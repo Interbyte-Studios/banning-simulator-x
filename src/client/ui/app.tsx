@@ -159,7 +159,9 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect, us
 					declineTrade={(): void => setTradeRequest((prev) => ({ ...prev, inbound: undefined }))}
 					tradeWasDeclined={tradeRequest.declined}
 					resetTradeDeclined={(): void => setTradeRequest((prev) => ({ ...prev, declined: undefined }))}
+					acceptTrade={(): void => setTradeRequest((prev) => ({ ...prev, inbound: undefined, accepted: prev.inbound }))}
 					tradeWasAccepted={tradeRequest.accepted}
+					resetTradeAccepted={(): void => setTradeRequest((prev) => ({ ...prev, accepted: undefined }))}
 				/>
 			</>
 		</RoactRodux.StoreProvider>

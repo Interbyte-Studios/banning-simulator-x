@@ -1,14 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService, Workspace } from "@rbxts/services";
-import {
-	font,
-	uiClaimButtonStrokeColor,
-	uiDarkStrokeColor,
-	uiHeaderStrokeColor,
-	uiTextStrokeColor,
-	vec2Middle,
-} from "client/ui/commonValues";
+import { font, uiDarkStrokeColor, uiHeaderStrokeColor, uiTextStrokeColor, vec2Middle } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";

@@ -33,14 +33,16 @@ function petItemsMapStateToProps(state: StoreState): PetItemsMappedProps {
 export const PetItems = RoactRodux.connect(petItemsMapStateToProps)((props: PetItemsProps) => {
 	return (
 		<VirtualScroll
-			pets={props.pets.map((pet) => {
-				return { ...pet, isRendered: false };
-			})}
+			pets={props.pets}
 			searchText={props.searchText}
-			multiDeleteEnabled={props.multiDeleteEnabled}
-			addPetToDeletionRegistry={props.addPetToDeletionRegistry}
-			removePetFromDeletionRegistry={props.removePetFromDeletionRegistry}
-			displayPetInfo={props.displayPetInfo}
+			size={UDim2.fromScale(0.965, 0.74)}
+			position={UDim2.fromScale(0.5, 0.495)}
+			inventoryFrame={{
+				multiDeleteEnabled: props.multiDeleteEnabled,
+				addPetToDeletionRegistry: props.addPetToDeletionRegistry,
+				removePetFromDeletionRegistry: props.removePetFromDeletionRegistry,
+				displayPetInfo: props.displayPetInfo,
+			}}
 		/>
 	);
 });

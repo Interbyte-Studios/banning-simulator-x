@@ -2,6 +2,8 @@ import assetIds from "shared/assets";
 
 export const MAIN_GROUP = 5126818;
 
+export const MAX_TRADE_OFFER_SIZE = 10;
+
 export type Gamepasses = keyof typeof GAMEPASSES;
 export const GAMEPASSES = {
 	//["Auto Hatch"]: 27753255,

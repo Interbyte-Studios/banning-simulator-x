@@ -12,7 +12,9 @@ import { PetsState } from "shared/rodux/pets";
 import { LocalCurrency } from "./offerUtil/localCurrency";
 import { Offer } from "./offerUtil/offer";
 
-interface TradeWindowProps extends TradeWindowMappedProps {}
+interface TradeWindowProps extends TradeWindowMappedProps {
+	otherPlayer: Player;
+}
 
 interface TradeWindowMappedProps {
 	pets: PetsState;
@@ -33,7 +35,7 @@ function mapStateToProps(state: StoreState): TradeWindowMappedProps {
 export const TradeWindow = RoactRodux.connect(mapStateToProps)(
 	hooks((props: TradeWindowProps) => {
 		return (
-			<BaseFrame Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1}>
+			<BaseFrame Size={UDim2.fromScale(1, 1)}>
 				<LocalCurrency />
 				<Offer offerType={"Local"} />
 				<Offer offerType={"Foreign"} />
