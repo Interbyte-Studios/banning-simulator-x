@@ -125,7 +125,8 @@ export const PetFrame = hooks(
 					native={{
 						BackgroundTransparency: 0,
 						BackgroundColor3:
-							storedPetData.equipped || (props.native.isSelected !== undefined && props.native.isSelected)
+							(storedPetData.equipped && props.native.isSelected === undefined) ||
+							(props.native.isSelected !== undefined && props.native.isSelected)
 								? Color3.fromRGB(85, 255, 127)
 								: Color3.fromRGB(46, 115, 179),
 						Size: UDim2.fromScale(0.925, 0.925),
@@ -137,10 +138,21 @@ export const PetFrame = hooks(
 							if (props.inventory !== undefined) {
 								if (props.inventory.multiDeleteEnabled) {
 									if (storedPetData.locked) {
-										addAnnouncement("That pet is locked.", AnnouncementType.Error);
-									} else {
-										setSelectedForDelete(!isSelectedForDelete);
+										addAnnouncement("You cannot delete a locked pet.", AnnouncementType.Error);
+										return;
 									}
+
+									if (storedPetData.equipped) {
+										addAnnouncement("You cannot delete an equipped pet.", AnnouncementType.Error);
+										return;
+									}
+
+									if (petData.rarity === "Primordial" || petData.rarity === "Prismatic") {
+										addAnnouncement("You cannot delete a Primordial or Prismatic pet.", AnnouncementType.Error);
+										return;
+									}
+
+									setSelectedForDelete(!isSelectedForDelete);
 								}
 
 								props.inventory.displayPetInfo(storedPetData.guid);

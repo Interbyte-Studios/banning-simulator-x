@@ -168,6 +168,7 @@ export function admin_ModifyPetLevel(
 }
 
 const defaultPets: PetsState = [];
+
 /*
 for (let i = 1; i <= 43; i++) {
 	const pet: Pet = {

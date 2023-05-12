@@ -98,10 +98,12 @@ export = (): void => {
 					{
 						player: a.player,
 						pets: [],
+						currency: undefined,
 					},
 					{
 						player: b.player,
 						pets: [],
+						currency: undefined,
 					},
 				],
 			};

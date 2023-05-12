@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { Players } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
 import {
 	font,
@@ -20,10 +21,9 @@ import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import assetIds from "shared/assets";
 import { MAX_TRADE_OFFER_SIZE } from "shared/configs/game";
+import { PlayerTradeItem } from "shared/configs/trading";
 import { StoreState } from "shared/rodux";
 import { Pet, PetsState } from "shared/rodux/pets";
-
-import { PlayerTradeItem } from "..";
 
 /**
  * Displays the offer for the currency being traded.
@@ -91,10 +91,7 @@ function mapStateToProps(state: StoreState): LocalOfferMappedProps {
 export const LocalOffer = RoactRodux.connect(mapStateToProps)(
 	hooks((props: LocalOfferMappedProps, { useContext, useState, useEffect }) => {
 		const [currentOffer, setOffer] = useState<PlayerTradeItem>({
-			currency: {
-				type: "coins",
-				amount: 0,
-			},
+			currency: undefined,
 			pets: [],
 		});
 		const modifyOfferRemote = useContext(remoteContext).modifyOffer;
@@ -103,7 +100,11 @@ export const LocalOffer = RoactRodux.connect(mapStateToProps)(
 
 		useEffect(() => {
 			// Something failed so we need to rest our previously made offer
-			const connection = offerModified.Connect((localPlayer, newOffer) => setOffer(newOffer));
+			const connection = offerModified.Connect((localPlayer, newOffer) => {
+				if (localPlayer.UserId === Players.LocalPlayer.UserId) {
+					setOffer(newOffer);
+				}
+			});
 			return (): void => connection.Disconnect();
 		}, [offerModified]);
 
@@ -128,38 +129,51 @@ export const LocalOffer = RoactRodux.connect(mapStateToProps)(
 						size={UDim2.fromScale(0.98, 0.915)}
 						position={UDim2.fromScale(0.508, 0.52)}
 						scrollBarImageColor={Color3.fromRGB(8, 82, 129)}
-						nativeFrame={{
-							/**
-							 * Adds/removes a pet from the offer.
-							 *
-							 * @param guid The guid of the pet.
-							 */
-							onActivated: (guid: string): void => {
-								if (currentOffer.pets.includes(guid)) {
-									warn("Removing from offer");
-									const newOffer = { ...currentOffer };
+						fillDirectionMaxCells={4}
+						onActivated={(guid: string): void => {
+							if (currentOffer.pets.includes(guid)) {
+								warn(`Removing pet ${guid} to trade!`);
+								const newPets = [...currentOffer.pets];
+								const petIndex = newPets.indexOf(guid);
+								newPets.unorderedRemove(petIndex);
 
-									const petIndex = newOffer.pets.indexOf(guid);
-									newOffer.pets.unorderedRemove(petIndex);
+								const newOffer = { ...currentOffer, pets: newPets };
 
-									modifyOfferRemote.SendToServer(newOffer);
-									setOffer(newOffer);
-								} else {
-									print("Adding to offer");
-									if (currentOffer.pets.size() >= MAX_TRADE_OFFER_SIZE) {
-										addAnnouncement(`You can only offer ${MAX_TRADE_OFFER_SIZE} pets!`, AnnouncementType.Error);
-										return;
-									}
-
-									const newOffer = { ...currentOffer };
-									newOffer.pets.push(guid);
-
-									modifyOfferRemote.SendToServer(newOffer);
-									setOffer(newOffer);
+								modifyOfferRemote.SendToServer(newOffer);
+								setOffer(newOffer);
+							} else {
+								if (currentOffer.pets.size() >= MAX_TRADE_OFFER_SIZE) {
+									addAnnouncement(`You can only offer ${MAX_TRADE_OFFER_SIZE} pets!`, AnnouncementType.Error);
+									return;
 								}
-							},
-							selectedPets: currentOffer.pets,
+
+								const storedPetData = props.pets.find((pet) => pet.guid === guid);
+								if (storedPetData === undefined) {
+									addAnnouncement(`There was an issue adding that pet to the trade!	`, AnnouncementType.Error);
+									return;
+								}
+
+								if (storedPetData.equipped) {
+									addAnnouncement(`You cannot trade an equipped pet!`, AnnouncementType.Error);
+									return;
+								}
+
+								if (storedPetData.locked) {
+									addAnnouncement(`You cannot trade a locked pet!`, AnnouncementType.Error);
+									return;
+								}
+								warn(`Added pet ${guid} to trade!`);
+
+								const newPets = [...currentOffer.pets];
+								newPets.push(guid);
+
+								const newOffer = { ...currentOffer, pets: newPets };
+
+								modifyOfferRemote.SendToServer(newOffer);
+								setOffer(newOffer);
+							}
 						}}
+						selectedPets={...currentOffer.pets}
 					/>
 				</BaseFrame>
 			</>
@@ -174,10 +188,7 @@ export const LocalOffer = RoactRodux.connect(mapStateToProps)(
  */
 export const TheirOffer = hooks((props: { otherPlayer: Player }, { useContext, useState, useEffect }) => {
 	const [currentOffer, setOffer] = useState<PlayerTradeItem>({
-		currency: {
-			type: "coins",
-			amount: 0,
-		},
+		currency: undefined,
 		pets: [],
 	});
 	const offerModified = useContext(remoteContext).offerChanged;
@@ -185,7 +196,9 @@ export const TheirOffer = hooks((props: { otherPlayer: Player }, { useContext, u
 
 	useEffect(() => {
 		const connection = offerModified.Connect((otherPlayer, newOffer) => {
-			setOffer(newOffer);
+			if (otherPlayer.UserId === props.otherPlayer.UserId) {
+				setOffer(newOffer);
+			}
 		});
 		return (): void => connection.Disconnect();
 	}, [offerModified]);
@@ -225,6 +238,7 @@ export const TheirOffer = hooks((props: { otherPlayer: Player }, { useContext, u
 					position={UDim2.fromScale(0.5, 0.52)}
 					scrollBarThickness={12}
 					scrollBarImageColor={Color3.fromRGB(8, 82, 129)}
+					fillDirectionMaxCells={4}
 				/>
 			</BaseFrame>
 		</>

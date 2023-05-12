@@ -352,6 +352,7 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 			);
 		} else if (deleteConfirm) {
 			const { deletePets } = useContext(remoteContext);
+			const { addAnnouncement } = useContext(AnnouncementContext);
 
 			controlElements.push(
 				<StrokeTextLabel
@@ -364,6 +365,21 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 				/>,
 				<ConfirmAction
 					onActivated={(): void => {
+						if (storedPet.equipped) {
+							addAnnouncement(`You cannot delete an equipped pet.`, AnnouncementType.Error);
+							return;
+						}
+
+						if (storedPet.locked) {
+							addAnnouncement(`You cannot delete a locked pet.`, AnnouncementType.Error);
+							return;
+						}
+
+						if (petData.rarity === "Prismatic" || petData.rarity === "Primordial") {
+							addAnnouncement(`You cannot delete a ${petData.rarity} pet.`, AnnouncementType.Error);
+							return;
+						}
+
 						motor.setGoal(minimizedSpring);
 
 						task.delay(0.3, () => {

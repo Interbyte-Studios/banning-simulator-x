@@ -4,7 +4,6 @@ import { Players } from "@rbxts/services";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
-import { Currency } from "shared/configs/currencies";
 
 import { ActiveOffer } from "./tradeList/activeOffer";
 import { ActiveTradeWarning } from "./tradeList/activeTradeWarning";
@@ -12,20 +11,6 @@ import { DeclinedTradeWarning } from "./tradeList/declinedTradeWarning";
 import { SentTradeRequest } from "./tradeList/sentTradeRequest";
 import { TradeList } from "./tradeList/tradeList";
 import { TradeRequest } from "./tradeList/tradeRequest";
-
-export interface PlayerTradeItem {
-	/**
-	 * All the IDs of pets that are on offer.
-	 */
-	pets: Array<string>;
-	/**
-	 * The currency the player has put on trade.
-	 */
-	currency?: {
-		type: Currency;
-		amount: number;
-	};
-}
 
 interface TradeAcceptedProps {
 	tradeWasAccepted: Player | undefined;

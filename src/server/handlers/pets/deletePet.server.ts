@@ -1,6 +1,7 @@
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
 import { deletePets } from "shared/rodux/pets";
+import { getPetData } from "shared/util/getPetData";
 
 remotes.Server.GetNamespace("pets")
 	.Create("deletePets")
@@ -17,6 +18,15 @@ remotes.Server.GetNamespace("pets")
 				}
 
 				if (storedPet.locked) {
+					continue;
+				}
+
+				if (storedPet.equipped) {
+					continue;
+				}
+
+				const petData = getPetData(storedPet.id);
+				if (petData.rarity === "Prismatic" || petData.rarity === "Primordial") {
 					continue;
 				}
 

@@ -17,11 +17,6 @@ interface InventoryPetFrameProps {
 	displayPetInfo: (guid: string) => void;
 }
 
-interface NativePetFrameProps {
-	onActivated: (guid: string) => void;
-	selectedPets?: Array<string>;
-}
-
 interface VirtualScrollProps {
 	pets: PetsState;
 	searchText?: string;
@@ -29,9 +24,13 @@ interface VirtualScrollProps {
 	position: UDim2;
 	scrollBarThickness?: number;
 	scrollBarImageColor?: Color3;
+	fillDirectionMaxCells?: number;
 	inventoryFrame?: InventoryPetFrameProps;
-	nativeFrame?: NativePetFrameProps;
+	onActivated?: (guid: string) => void;
+	selectedPets?: Array<string>;
 }
+
+const preDisplayedRows = 5;
 
 /**
  * A virtual scrolling component for pets.
@@ -52,8 +51,9 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 	const layoutRef = useValue(Roact.createRef<UIGridLayout>());
 
 	// State for managing the rendered pets
+	sortPets(pets, true, true);
 	const [renderedPets, setRenderedPets] = useState<Array<PetInventoryData>>(
-		pets.map((pet, index) => ({ ...pet, isRendered: index <= 20 })),
+		pets.map((pet) => ({ ...pet, isRendered: false })),
 	);
 
 	const checkRenderedPets = useCallback(
@@ -63,33 +63,38 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 
 			const searchText = search?.lower();
 
-			for (let index = 0; index < petsToIterate.size(); index++) {
-				const pet = petsToIterate[index];
-				const y = math.floor(index / gridLayout.FillDirectionMaxCells);
-				const yPos = y * gridLayout.CellSize.Y.Offset + y * gridLayout.CellPadding.Y.Offset;
+			const newPets = [...petsToIterate];
+			if (newPets.size() <= gridLayout.FillDirectionMaxCells * preDisplayedRows) {
+				newPets.forEach((pet) => (pet.isRendered = true));
+			} else {
+				for (let index = 0; index < newPets.size(); index++) {
+					const pet = newPets[index];
+					const y = math.floor(index / gridLayout.FillDirectionMaxCells);
+					const yPos = y * gridLayout.CellSize.Y.Offset + y * gridLayout.CellPadding.Y.Offset;
 
-				// the frame can be visible if we are half way from the previous y coordinate
-				// so we need to go from the previous y coordinate position + padding
-				// equivalent to the current CanvasPosition - CellSize
-				const belowTop = yPos >= scrollingFrame.CanvasPosition.Y - gridLayout.CellSize.Y.Offset;
-				const aboveBottom = yPos <= scrollingFrame.CanvasPosition.Y + scrollingFrame.AbsoluteWindowSize.Y;
+					// the frame can be visible if we are half way from the previous y coordinate
+					// so we need to go from the previous y coordinate position + padding
+					// equivalent to the current CanvasPosition - CellSize
+					const belowTop = yPos >= scrollingFrame.CanvasPosition.Y - gridLayout.CellSize.Y.Offset;
+					const aboveBottom = yPos <= scrollingFrame.CanvasPosition.Y + scrollingFrame.AbsoluteWindowSize.Y;
 
-				let shouldBeRendered = belowTop && aboveBottom;
+					let shouldBeRendered = belowTop && aboveBottom;
 
-				// check against search text props
-				if (searchText !== undefined && shouldBeRendered) {
-					const petData = getPetData(pet.id);
-					if (petData.name.lower().match(searchText) !== undefined) {
-						shouldBeRendered = false;
+					// check against search text props
+					if (searchText !== undefined && shouldBeRendered) {
+						const petData = getPetData(pet.id);
+						if (petData.name.lower().match(searchText) !== undefined) {
+							shouldBeRendered = false;
+						}
 					}
-				}
 
-				if (shouldBeRendered !== pet.isRendered) {
-					pet.isRendered = shouldBeRendered;
+					if (shouldBeRendered !== pet.isRendered) {
+						pet.isRendered = shouldBeRendered;
+					}
 				}
 			}
 
-			return [...petsToIterate];
+			return newPets;
 		},
 		[],
 	);
@@ -103,11 +108,16 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		[renderedPets, searchText],
 	);
 
+	// automatic grid layout connection
 	useEffect(() => {
 		const uiGridLayout = layoutRef.value.getValue();
 		assert(uiGridLayout, "Failed to get UIGridLayout for pet item inventory.");
 
-		CollectionService.AddTag(uiGridLayout, `InventoryGridLayout`);
+		if (props.inventoryFrame !== undefined) {
+			CollectionService.AddTag(uiGridLayout, `InventoryGridLayout`);
+		} else {
+			CollectionService.AddTag(uiGridLayout, `UnscaledInventoryGridLayout`);
+		}
 	}, [layoutRef]);
 
 	// useEffect to handle canvas position changes
@@ -127,6 +137,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		return (): void => connections.forEach((connection) => connection.Disconnect());
 	}, [scrollingFrameRef, updateItems]);
 
+	// initial populating of scrolling frame
 	useEffect(() => {
 		const scrollingFrame = scrollingFrameRef.value.getValue();
 		assert(scrollingFrame, `No ScrollingFrame was found for Virtual Scroll`);
@@ -135,6 +146,19 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		updateItems(scrollingFrame);
 	}, []);
 
+	// props.pets change update
+	useEffect(() => {
+		const scrollingFrame = scrollingFrameRef.value.getValue();
+		assert(scrollingFrame, `No ScrollingFrame was found for Virtual Scroll`);
+
+		const newPets = [...props.pets].map((pet) => ({ ...pet, isRendered: false }));
+
+		const updatedRenderedPets = checkRenderedPets(scrollingFrame, newPets, searchText);
+		sortPets(updatedRenderedPets, true, true);
+		setRenderedPets(updatedRenderedPets);
+	}, [props.pets]);
+
+	// resize connection
 	useEffect(() => {
 		const scrollingFrame = scrollingFrameRef.value.getValue();
 		assert(scrollingFrame, `No ScrollingFrame was found for Virtual Scroll`);
@@ -148,19 +172,17 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 
 	const elementsToDisplay: Array<Roact.Element> = useMemo(() => {
 		const result: Array<Roact.Element> = [];
-		for (let index = 0; index < renderedPets.size(); index++) {
-			const pet = renderedPets[index];
-
+		renderedPets.forEach((pet, index) => {
 			let layoutOrder = index;
-			if (props.nativeFrame?.selectedPets !== undefined) {
-				if (props.nativeFrame.selectedPets.includes(pet.guid)) {
-					layoutOrder = 1;
+			if (props.selectedPets !== undefined) {
+				if (props.selectedPets.includes(pet.guid)) {
+					layoutOrder = 1 + index;
 				} else {
-					layoutOrder = index + props.nativeFrame.selectedPets.size();
+					layoutOrder = index + renderedPets.size();
 				}
 			}
 
-			print(props.nativeFrame?.selectedPets?.includes(pet.guid));
+			const isSelected = props.selectedPets?.includes(pet.guid);
 
 			if (props.inventoryFrame !== undefined) {
 				result.push(
@@ -171,7 +193,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 							storedPetData: pet,
 							layoutOrderIndex: layoutOrder,
 							displayFrame: scrollingFrameRef.value,
-							isSelected: props.nativeFrame?.selectedPets?.includes(pet.guid) ?? false,
+							isSelected: isSelected,
 						}}
 						inventory={{
 							multiDeleteEnabled: props.inventoryFrame.multiDeleteEnabled,
@@ -181,7 +203,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 						}}
 					/>,
 				);
-			} else if (props.nativeFrame !== undefined) {
+			} else if (props.onActivated !== undefined) {
 				result.push(
 					<PetFrame
 						Key={pet.guid}
@@ -189,15 +211,28 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 							isRendered: pet.isRendered,
 							storedPetData: pet,
 							layoutOrderIndex: layoutOrder,
-							onActivated: props.nativeFrame.onActivated,
+							onActivated: props.onActivated,
+							displayFrame: scrollingFrameRef.value,
+							isSelected: isSelected,
+						}}
+					/>,
+				);
+			} else {
+				result.push(
+					<PetFrame
+						Key={pet.guid}
+						native={{
+							isRendered: pet.isRendered,
+							storedPetData: pet,
+							layoutOrderIndex: layoutOrder,
 							displayFrame: scrollingFrameRef.value,
 						}}
 					/>,
 				);
-			} else warn(`Failed to generate pet frame | Inventory or native was unspecified.`);
-		}
+			}
+		});
 		return result;
-	}, [renderedPets, props]);
+	}, [renderedPets, props.selectedPets, props.pets]);
 
 	return (
 		<scrollingframe
@@ -213,7 +248,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 				CellPadding={UDim2.fromOffset(6, 6)}
 				CellSize={UDim2.fromOffset(110, 110)}
 				SortOrder={Enum.SortOrder.LayoutOrder}
-				FillDirectionMaxCells={5}
+				FillDirectionMaxCells={props.fillDirectionMaxCells ?? 5}
 				Ref={layoutRef.value}
 			/>
 			{elementsToDisplay}

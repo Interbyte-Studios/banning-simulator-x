@@ -1,5 +1,5 @@
 import Net from "@rbxts/net";
-import type { PlayerTradeItem } from "server/handlers/trading/trades";
+import { PlayerTradeItem } from "shared/configs/trading";
 
 /**
  * `player` references the player that had their offer changed.

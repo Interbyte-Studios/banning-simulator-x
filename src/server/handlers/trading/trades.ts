@@ -1,4 +1,4 @@
-import { Currency } from "shared/configs/currencies";
+import { PlayerTradeItem } from "shared/configs/trading";
 import { Store } from "shared/rodux";
 import { UnreachableCaseError } from "shared/util/unreachableCaseError";
 
@@ -18,20 +18,6 @@ interface PendingTrade {
 	 * The receiver of the trade request.
 	 */
 	receiver: Player;
-}
-
-export interface PlayerTradeItem {
-	/**
-	 * All the IDs of pets that are on offer.
-	 */
-	pets: Array<string>;
-	/**
-	 * The currency the player has put on trade.
-	 */
-	currency?: {
-		type: Currency;
-		amount: number;
-	};
 }
 
 export interface Trading {
@@ -113,10 +99,12 @@ export function acceptTrade(receiver: Player, creator: Player): void {
 			{
 				player: creator,
 				pets: [],
+				currency: undefined,
 			},
 			{
 				player: receiver,
 				pets: [],
+				currency: undefined,
 			},
 		],
 	};

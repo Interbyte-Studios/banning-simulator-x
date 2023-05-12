@@ -22,9 +22,9 @@ Players.PlayerAdded.Connect(async (player) => {
 				userOwnsGamepass = playerRankInGroup > 249;
 			}
 
-			if (userOwnsGamepass) {
-				store.dispatch(claimGamepass(name));
-			}
+			//if (userOwnsGamepass) {
+			store.dispatch(claimGamepass(name));
+			//}
 		}
 	}
 });

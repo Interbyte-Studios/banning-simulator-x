@@ -61,10 +61,12 @@ modifyOffer.Connect(
 		if (!modifyTrade(player, store, offer)) {
 			// failed to modify trade
 			// we should tell the player to not modify
+			print("Issue with modified trade. Not finalizing the modification.");
 			return offerChanged.SendToPlayer(player, player, getTradeItems(player));
 		}
 
 		// alert the other player that the offer changed
+		print("Offer was changed. Alerting other player.");
 		offerChanged.SendToPlayer(getTradingCounterParty(player), player, offer);
 	}),
 );
