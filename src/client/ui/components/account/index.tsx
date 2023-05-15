@@ -276,7 +276,9 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 						storeFound={false}
 						headerText={`Error: No data found for ${playerViewing.Name}.`}
 						displayReturn={false}
-						returnToSelection={(): void => {}}
+						returnToSelection={(): void => {
+							warn("No data found for player, but return to selection callback is not implemented.");
+						}}
 					/>,
 				);
 			} else {

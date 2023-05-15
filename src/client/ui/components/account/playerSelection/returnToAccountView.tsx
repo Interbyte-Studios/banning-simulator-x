@@ -1,11 +1,16 @@
 import Roact from "@rbxts/roact";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
-import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
-/* eslint-disable jsdoc/require-jsdoc */
-export const ReturnToAccountView = hooks((props: { returnToSelection: () => void }, hooks) => {
+/**
+ * Roact imagebutton component to return to the account selection.
+ *
+ * @param props The props for the component.
+ * @param props.returnToSelection The function to call when the button is activated.
+ * @returns The Roact component.
+ */
+export const ReturnToAccountView = (props: { returnToSelection: () => void }): Roact.Element => {
 	const minimizedSize = 0.07;
 	const maximizedSize = 0.08;
 
@@ -17,14 +22,15 @@ export const ReturnToAccountView = hooks((props: { returnToSelection: () => void
 			}}
 			size={{ maxSize: maximizedSize, minSize: minimizedSize }}
 			events={{
+				/* eslint-disable jsdoc/require-jsdoc */
 				Activated: (): void => {
 					playSFX(UIEngagement.MinorEngagement);
 					props.returnToSelection();
 				},
+				/* eslint-enable jsdoc/require-jsdoc */
 			}}
 		>
 			<uiaspectratioconstraint AspectRatio={1} />
 		</SpringImageButton>
 	);
-});
-/* eslint-enable jsdoc/require-jsdoc */
+};

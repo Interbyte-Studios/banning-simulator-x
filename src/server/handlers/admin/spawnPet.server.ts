@@ -34,10 +34,8 @@ remotes.Server.GetNamespace("admin")
 				autoDeleted: false,
 				id: isValidPet.id,
 				guid: HttpService.GenerateGUID(false),
-				rarity: isValidPet.rarity,
 				variant: petData.variant,
 				method: "admin",
-				egg: eggName,
 				enhancements: {},
 				tradeLocked: true,
 			};

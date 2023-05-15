@@ -1,10 +1,31 @@
+import { retrieveStore } from "server/playerStore";
 import { PlayerTradeItem } from "shared/configs/trading";
 import { Store } from "shared/rodux";
+import { awardCurrency } from "shared/rodux/currencies";
+import { addPets, ConfirmedPet, deletePets } from "shared/rodux/pets";
 import { UnreachableCaseError } from "shared/util/unreachableCaseError";
 
 const currentTrades: Map<Player, Trade> = new Map();
 
-interface PendingTrade {
+interface BaseTrade {
+	status: TradeStatus;
+	items?: [
+		PlayerTradeItem & {
+			/**
+			 * The first player involved in the trade.
+			 */
+			player: Player;
+		},
+		PlayerTradeItem & {
+			/**
+			 * The second player involved in the trade.
+			 */
+			player: Player;
+		},
+	];
+}
+
+interface PendingTrade extends BaseTrade {
 	/**
 	 * The current status of the trade.
 	 */
@@ -20,12 +41,7 @@ interface PendingTrade {
 	receiver: Player;
 }
 
-export interface Trading {
-	/**
-	 * The current status of the trade.
-	 */
-	status: TradeStatus.Trading;
-
+interface ActiveTrade extends BaseTrade {
 	items: [
 		PlayerTradeItem & {
 			/**
@@ -42,10 +58,38 @@ export interface Trading {
 	];
 }
 
+export interface Trading extends ActiveTrade {
+	/**
+	 * The current status of the trade.
+	 */
+	status: TradeStatus.Trading;
+}
+
+interface ConfirmedTradeOffer extends ActiveTrade {
+	/**
+	 * The current status of the trade.
+	 */
+	status: TradeStatus.ConfirmedOffer;
+}
+
+interface ViewingFinalTrade extends ActiveTrade {
+	/**
+	 * The current status of the trade.
+	 */
+	status: TradeStatus.ViewingFinalizedTrade;
+}
+
+interface FinalizedTrade extends ActiveTrade {
+	/**
+	 * The current status of the trade.
+	 */
+	status: TradeStatus.Finalized;
+}
+
 /**
  * All the types of trades possible.
  */
-type Trade = PendingTrade | Trading;
+type Trade = PendingTrade | Trading | ConfirmedTradeOffer | ViewingFinalTrade | FinalizedTrade;
 
 /**
  * The statuses possible of a `Trade`.
@@ -53,6 +97,30 @@ type Trade = PendingTrade | Trading;
 export enum TradeStatus {
 	TradeSent,
 	Trading,
+	ConfirmedOffer,
+	ViewingFinalizedTrade,
+	Finalized,
+}
+
+type ActiveTradeStatus = {
+	[K in keyof typeof TradeStatus]: (typeof TradeStatus)[K] extends "TradeSent" ? never : TradeStatus;
+}[keyof typeof TradeStatus];
+
+const activeTradeStatus: Set<ActiveTradeStatus> = new Set([
+	TradeStatus.Trading,
+	TradeStatus.ConfirmedOffer,
+	TradeStatus.ViewingFinalizedTrade,
+	TradeStatus.Finalized,
+]);
+
+/**
+ * A type guard for the ActiveTrade interface.
+ *
+ * @param trade The trade to check.
+ * @returns If the trade is an active trade.
+ */
+function isActiveTrade(trade: BaseTrade): trade is ActiveTrade {
+	return activeTradeStatus.has(trade.status);
 }
 
 /**
@@ -132,7 +200,10 @@ export function removeTrade(player: Player): Array<Player> {
 				players = [trade.receiver, trade.sender];
 				break;
 			}
-			case TradeStatus.Trading: {
+			case TradeStatus.Trading:
+			case TradeStatus.ConfirmedOffer:
+			case TradeStatus.ViewingFinalizedTrade:
+			case TradeStatus.Finalized: {
 				players = [trade.items[0].player, trade.items[1].player];
 				break;
 			}
@@ -185,37 +256,69 @@ export function rejectTrade(receiver: Player, creator: Player): boolean {
  */
 export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeItem): boolean {
 	const trade = currentTrades.get(player);
-	if (trade === undefined || trade.status !== TradeStatus.Trading) {
+	if (trade === undefined) {
+		warn("Attempt to modify trade when not in a trade");
+		return false;
+	}
+
+	if (trade.status === TradeStatus.ConfirmedOffer) {
+		const otherPlayer = trade.items.find((playerItems) => playerItems.player !== player);
+		if (otherPlayer === undefined) {
+			return false;
+		}
+
+		// check to be sure other player is still in trading status, otherwise, cannot modify
+		const otherPlayerTrade = currentTrades.get(otherPlayer.player);
+		if (otherPlayerTrade === undefined || otherPlayerTrade.status !== TradeStatus.Trading) {
+			return false;
+		}
+
+		// update the trade status to trading for both players
+		const newTradeStatus: Trading = {
+			status: TradeStatus.Trading,
+			items: trade.items,
+		};
+
+		currentTrades.set(player, newTradeStatus);
+	}
+
+	if (trade.status !== TradeStatus.Trading && trade.status !== TradeStatus.ConfirmedOffer) {
+		warn(`Attempt to modify trade when not in a trade | Incorrect Status: ${trade.status}`);
 		return false;
 	}
 
 	const playerItems = trade.items.find((playerItems) => playerItems.player === player);
 	if (!playerItems) {
 		// this case should never happen
+		warn("Did not find player items");
 		return false;
 	}
 
 	// ensure if currency was specified, the player has enough
 	if (
-		newOffer.currency !== undefined &&
-		newOffer.currency.amount < store.getState().currencies[newOffer.currency.type]
+		newOffer.currency === undefined ||
+		newOffer.currency.amount > store.getState().currencies[newOffer.currency.type]
 	) {
+		warn("Player does not have enough currency");
 		return false;
 	}
 
 	// validate player has the pets they own
 	if (!newOffer.pets.every((pet) => store.getState().pets.find((storePet) => storePet.guid === pet) !== undefined)) {
+		warn("Player does not own all pets");
 		return false;
 	}
 
 	// ensure that the pet guids are unique
 	if (new Set(newOffer.pets).size() !== newOffer.pets.size()) {
+		warn("Player has duplicate pets");
 		return false;
 	}
 
 	playerItems.pets = newOffer.pets;
 	playerItems.currency = newOffer.currency;
 
+	warn("should have trade");
 	return true;
 }
 
@@ -255,7 +358,7 @@ export function getTradeStatus(player: Player): TradeStatus | undefined {
  */
 export function getTradeItems(player: Player): Readonly<PlayerTradeItem> {
 	const trade = currentTrades.get(player);
-	if (trade === undefined || trade.status !== TradeStatus.Trading) {
+	if (trade === undefined || !isActiveTrade(trade)) {
 		throw `Attempt to call getTradeItems on ${player} who is not in a trade.`;
 	}
 
@@ -278,7 +381,7 @@ export function getTradeItems(player: Player): Readonly<PlayerTradeItem> {
  */
 export function getTradingCounterParty(player: Player): Player {
 	const trade = currentTrades.get(player);
-	if (trade === undefined || trade.status !== TradeStatus.Trading) {
+	if (trade === undefined || !isActiveTrade(trade)) {
 		throw `Attempt to getTradingCounterParty for player ${player} who does not have an active trade`;
 	}
 
@@ -288,4 +391,258 @@ export function getTradingCounterParty(player: Player): Player {
 	}
 
 	return counterParty.player;
+}
+
+/**
+ * Confirms a trade offer from a player.
+ *
+ * @param player The player who is confirming their trade offer.
+ * @returns If the trade offer was confirmed.
+ */
+export function confirmTradeOffer(player: Player): boolean {
+	const trade = currentTrades.get(player);
+	if (trade === undefined || trade.status !== TradeStatus.Trading) {
+		return false;
+	}
+
+	// check if other player has confirmed their trade as well
+	const otherPlayer = trade.items.find((playerItems) => playerItems.player !== player);
+	if (otherPlayer === undefined) {
+		return false;
+	}
+
+	const otherPlayerTrade = currentTrades.get(otherPlayer.player);
+	if (otherPlayerTrade === undefined) {
+		return false;
+	}
+
+	// set the status of both player's trades to "ViewingFinalizedTrade"
+	if (otherPlayerTrade.status === TradeStatus.ConfirmedOffer) {
+		const newTradeStatus: ViewingFinalTrade = {
+			status: TradeStatus.ViewingFinalizedTrade,
+			items: trade.items,
+		};
+		currentTrades.set(player, newTradeStatus);
+		currentTrades.set(otherPlayer.player, newTradeStatus);
+		return true;
+	}
+
+	// show the other player that this player has confirmed their trade offer
+	if (otherPlayerTrade.status === TradeStatus.Trading) {
+		const newTradeStatus: ConfirmedTradeOffer = {
+			status: TradeStatus.ConfirmedOffer,
+			items: trade.items,
+		};
+		currentTrades.set(player, newTradeStatus);
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Declines a trade offer from a player (exits the trade similarly to if they'd rejected it in the first place).
+ *
+ * @param player The player who is declining the trade offer.
+ * @returns If the trade offer was declined.
+ */
+export function declineTradeOffer(player: Player): boolean {
+	const trade = currentTrades.get(player);
+	if (trade === undefined) {
+		throw `Attempt to call declineTradeOffer on ${player} who is not in a trade.`;
+	}
+
+	// make sure they're in a trade
+	// this shouldn't work if they're viewing the finalized offer (that'd be a different remote)
+	if (trade.status !== TradeStatus.Trading && trade.status !== TradeStatus.ConfirmedOffer) {
+		warn("Incorrect trade status");
+		return false;
+	}
+
+	// get other player's trade as well
+	const otherPlayer = trade.items.find((playerItems) => playerItems.player !== player);
+	if (otherPlayer === undefined) {
+		throw `reached impossible case where ${player} is the player in both parts of a trade`;
+	}
+
+	const otherPlayerTrade = currentTrades.get(otherPlayer.player);
+	if (otherPlayerTrade === undefined) {
+		throw `${player} attempted to decline trade offer, but other player ${otherPlayer.player} did not have a trade`;
+	}
+
+	if (otherPlayerTrade.status !== TradeStatus.Trading && otherPlayerTrade.status !== TradeStatus.ConfirmedOffer) {
+		warn("Other player has an incorrect trade status");
+		return false;
+	}
+
+	// remove the trade
+	warn("Declined and removed the trade from registry");
+	removeTrade(player);
+	return true;
+}
+
+/**
+ *  Confirms a finalized trade from a player.
+ *
+ * @param player The player who is confirming their finalized trade.
+ * @param store The player's store.
+ * @returns If the finalized trade was confirmed.
+ */
+export function confirmFinalizedTradeOffer(player: Player, store: Store): boolean {
+	const trade = currentTrades.get(player);
+	if (trade === undefined || trade.status !== TradeStatus.ViewingFinalizedTrade) {
+		return false;
+	}
+
+	// check if other player has finalized their trade as well
+	const otherPlayer = trade.items.find((playerItems) => playerItems.player !== player);
+	if (otherPlayer === undefined) {
+		return false;
+	}
+
+	const otherPlayerTrade = currentTrades.get(otherPlayer.player);
+	if (otherPlayerTrade === undefined) {
+		return false;
+	}
+
+	// update the trade status for the player who is finalizing their offer
+	const newTradeStatus: FinalizedTrade = {
+		status: TradeStatus.Finalized,
+		items: trade.items,
+	};
+	currentTrades.set(player, newTradeStatus);
+
+	// if the other player is still viewing their offer, then we have to wait for them to finalize it to complete the trade
+	if (otherPlayerTrade.status === TradeStatus.ViewingFinalizedTrade) {
+		return true;
+	}
+
+	// if they aren't viewing the offer, they should have finalized their trade. otherwise, there was an issue.
+	if (otherPlayerTrade.status !== TradeStatus.Finalized) {
+		warn(
+			`Player ${otherPlayer.player.Name} did not have a finalized trade, but wasn't viewing the final trade either.`,
+		);
+		return false;
+	}
+
+	// need to get the other players store here
+	const otherPlayerStore = retrieveStore(otherPlayer.player);
+	if (otherPlayerStore === undefined) {
+		// this should never happen
+		warn(`Player ${otherPlayer.player} did not have a store when finalizing trade`);
+		return false;
+	}
+
+	// transfer the items and currency between the players
+	const playerOffer = trade.items.find((item) => item.player === player);
+	const otherPlayerOffer = trade.items.find((item) => item.player === otherPlayer.player);
+
+	if (playerOffer && otherPlayerOffer) {
+		// create tables of pets to transfer between players
+		const playerOfferPets: Array<ConfirmedPet> = [];
+		for (const pet of playerOffer.pets) {
+			const storedPet = store.getState().pets.find((storedPet) => storedPet.guid === pet);
+
+			// we have to simply return in this case and not finish dispatching the trade, so nobody get's scammed
+			if (storedPet === undefined) {
+				warn(`Player ${player} attempted to finalize trade with pet ${pet} that they do not own`);
+				return false;
+			}
+
+			playerOfferPets.push({ ...storedPet, autoDeleted: false, method: "trade" });
+		}
+
+		const otherPlayerOfferPets: Array<ConfirmedPet> = [];
+		for (const pet of otherPlayerOffer.pets) {
+			const storedPet = otherPlayerStore.getState().pets.find((storedPet) => storedPet.guid === pet);
+
+			// we have to simply return in this case and not finish dispatching the trade, so nobody get's scammed
+			if (storedPet === undefined) {
+				warn(`Player ${otherPlayer.player} attempted to finalize trade with pet ${pet} that they do not own`);
+				return false;
+			}
+
+			otherPlayerOfferPets.push({ ...storedPet, autoDeleted: false, method: "trade" });
+		}
+
+		// remove the pets from the players
+		store.dispatch(deletePets(playerOffer.pets));
+		otherPlayerStore.dispatch(deletePets(otherPlayerOffer.pets));
+
+		// add the new pets to the players
+		store.dispatch(addPets(0, "coins", otherPlayerOfferPets));
+		otherPlayerStore.dispatch(addPets(0, "coins", playerOfferPets));
+
+		if (playerOffer.currency !== undefined) {
+			// remove the currency from the player
+			store.dispatch(awardCurrency(playerOffer.currency.type, -playerOffer.currency.amount));
+
+			// add the currency to the other player
+			otherPlayerStore.dispatch(awardCurrency(playerOffer.currency.type, playerOffer.currency.amount));
+		}
+
+		if (otherPlayerOffer.currency !== undefined) {
+			// remove the currency from the other player
+			otherPlayerStore.dispatch(awardCurrency(otherPlayerOffer.currency.type, -otherPlayerOffer.currency.amount));
+
+			// add the currency to the player
+			store.dispatch(awardCurrency(otherPlayerOffer.currency.type, otherPlayerOffer.currency.amount));
+		}
+
+		// todo: remove the trade, and let the player's know it's been completed
+		return true;
+	}
+
+	// there was an issue somewhere. throw an error since reverting the players back to trading status might cause issues
+	// in this case (which should never happen), the clients will be unable to do anything, and therefore, should be reported to devs
+	throw `There was an issue with finalizing the trade between ${player} and ${otherPlayer.player}`;
+}
+
+/**
+ * Declines a finalized trade from a player.
+ * Sends both players back to "Trading" status, where they must reconfirm their trade offer from the beginning.
+ *
+ * Important to note that once a player has finalized their offer, they're unable to decline the trade from then on.
+ * This is to prevent players from scamming each other by accepting the trade, then declining it after the other player has finalized their offer.
+ * This is also to prevent potential known issues such as duping.
+ *
+ * The exception to the case above is that, a player can decline the finalized offer if the other player has finalized their offer.
+ * Only a player who has finalized their offer is unable to decline the finalized offer and send both players back to the Trading.
+ * If neither player has finalized their offer, either player should be afforded the right to send the trade back to "Trading" status.
+ *
+ * @param player The player who is declining their finalized trade.
+ * @returns If the finalized trade was declined.
+ */
+export function declineFinalizedTradeOffer(player: Player): boolean {
+	const trade = currentTrades.get(player);
+	if (trade === undefined || trade.status !== TradeStatus.ViewingFinalizedTrade) {
+		return false;
+	}
+
+	// Update the trade status to trading for both players
+	const otherPlayer = trade.items.find((playerItems) => playerItems.player !== player);
+	if (otherPlayer === undefined) {
+		return false;
+	}
+
+	// need to be sure the opposite player has either finalized their offer or is viewing the final offer. otherwise, there was an issue.
+	// this case should never happen. it would require some investigation if it did
+	const otherPlayerTrade = currentTrades.get(otherPlayer.player);
+	if (
+		otherPlayerTrade === undefined ||
+		(otherPlayerTrade.status !== TradeStatus.ViewingFinalizedTrade && otherPlayerTrade.status !== TradeStatus.Finalized)
+	) {
+		return false;
+	}
+
+	// update the trade status to trading for both players
+	const newTradeStatus: Trading = {
+		status: TradeStatus.Trading,
+		items: trade.items,
+	};
+
+	currentTrades.set(player, newTradeStatus);
+	currentTrades.set(otherPlayer.player, newTradeStatus);
+
+	return true;
 }

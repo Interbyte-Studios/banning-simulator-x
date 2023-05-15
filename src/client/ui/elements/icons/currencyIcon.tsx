@@ -4,8 +4,8 @@ import { getCurrencyIcon } from "client/util/getCurrencyIcon";
 import { Currency } from "shared/configs/currencies";
 
 import { hooks } from "../../hooks";
-import { ImageLabel } from "../baseElements/imagelabels/image";
-import { SpringImageLabel } from "../baseElements/imagelabels/springImage";
+import { ImageButton } from "../baseElements/imagebuttons/image";
+import { SpringImageButton } from "../baseElements/imagebuttons/springImage";
 
 interface CurrencyIconProps {
 	anchorPoint?: Vector2;
@@ -17,6 +17,7 @@ interface CurrencyIconProps {
 		  }
 		| UDim2;
 	currency: Currency;
+	events?: Roact.JsxInstanceEvents<ImageButton>;
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
@@ -25,29 +26,31 @@ export const CurrencyIcon = hooks((props: CurrencyIconProps) => {
 
 	if (typeIs(props.size, "UDim2")) {
 		return (
-			<ImageLabel
+			<ImageButton
 				native={{
 					AnchorPoint: props.anchorPoint,
 					Size: props.size,
 					Position: props.position,
 					Image: currency,
 				}}
+				events={props.events}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-			</ImageLabel>
+			</ImageButton>
 		);
 	} else {
 		return (
-			<SpringImageLabel
+			<SpringImageButton
 				native={{
 					AnchorPoint: props.anchorPoint,
 					Position: props.position,
 					Image: currency,
 				}}
 				size={{ minSize: props.size.minimizedSize, maxSize: props.size.maximizedSize }}
+				events={props.events}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-			</SpringImageLabel>
+			</SpringImageButton>
 		);
 	}
 });

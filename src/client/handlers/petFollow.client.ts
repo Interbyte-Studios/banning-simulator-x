@@ -34,7 +34,6 @@ function getXandZ(angle: number, totalPets: number, settingsDistance: number): {
 const cachePlayerPetanimation = (player: Player): Promise<void> =>
 	onStoreCreated(player)
 		.andThen((store) => {
-			print("Caching player pet animation");
 			const initialState = store.getState();
 
 			const playerCache = createPetAnimationCache(player);
@@ -127,19 +126,16 @@ RunService.BindToRenderStep("PETS", Enum.RenderPriority.Character.Value, () => {
 	for (const playerCache of currentCacheState) {
 		const character = playerCache.player.Character;
 		if (character === undefined) {
-			warn("No Character");
 			continue;
 		}
 
 		const humanoid = character.FindFirstChildOfClass("Humanoid");
 		if (humanoid === undefined) {
-			warn("No humanoid");
 			continue;
 		}
 
 		const humanoidRootPart = humanoid.RootPart;
 		if (humanoidRootPart === undefined) {
-			warn("No root");
 			continue;
 		}
 

@@ -6,6 +6,10 @@ import { TRADING_ATTRIBUTE } from "shared/trading/tradingAttributes";
 import { requestTrade } from "./tradeRequests";
 import {
 	acceptTrade,
+	confirmFinalizedTradeOffer,
+	confirmTradeOffer,
+	declineFinalizedTradeOffer,
+	declineTradeOffer,
 	getTradeItems,
 	getTradeStatus,
 	getTradingCounterParty,
@@ -54,8 +58,8 @@ const offerChanged = tradesNamespace.Get("offerChanged");
 modifyOffer.Connect(
 	withPlayerStore((player, store, offer) => {
 		// first, ensure a player is in a trade
-		if (getTradeStatus(player) !== TradeStatus.Trading) {
-			return;
+		if (getTradeStatus(player) !== TradeStatus.Trading && getTradeStatus(player) !== TradeStatus.ConfirmedOffer) {
+			return warn("Not in a trade");
 		}
 
 		if (!modifyTrade(player, store, offer)) {
@@ -70,6 +74,76 @@ modifyOffer.Connect(
 		offerChanged.SendToPlayer(getTradingCounterParty(player), player, offer);
 	}),
 );
+
+const confirmOffer = tradesNamespace.Get("confirmTradeOffer");
+const offerConfirmed = tradesNamespace.Get("tradeOfferConfirmed");
+confirmOffer.Connect((player) => {
+	// first, ensure a player is in a trade
+	if (getTradeStatus(player) !== TradeStatus.Trading) {
+		return;
+	}
+
+	// confirm the trade
+	if (!confirmTradeOffer(player)) {
+		// failed to confirm trade
+		// we should tell the player to not confirm
+		print("Issue with confirming trade. Not finalizing the trade.");
+		return offerConfirmed.SendToPlayer(player, player, getTradeItems(player));
+	}
+
+	// alert the other player that the offer changed
+	print("Offer was confirmed. Alerting other player.");
+	offerConfirmed.SendToPlayer(getTradingCounterParty(player), player, getTradeItems(player));
+});
+
+const declineOffer = tradesNamespace.Get("declineTradeOffer");
+const offerDeclined = tradesNamespace.Get("tradeOfferDeclined");
+declineOffer.Connect((player) => {
+	// first, ensure a player is in a trade
+	if (getTradeStatus(player) !== TradeStatus.Trading && getTradeStatus(player) !== TradeStatus.ConfirmedOffer) {
+		return warn(`Player ${player.Name} attempted to decline a trade offer, but they are not in a trade`);
+	}
+
+	const otherPlayer = getTradingCounterParty(player);
+	if (declineTradeOffer(player)) {
+		// alert the other player that the trade got cancelled
+		offerDeclined.SendToPlayer(otherPlayer, player);
+
+		player.SetAttribute(TRADING_ATTRIBUTE, undefined);
+		otherPlayer.SetAttribute(TRADING_ATTRIBUTE, undefined);
+	}
+});
+
+const confirmFinalizedTrade = tradesNamespace.Get("confirmFinalizedTrade");
+const finalizedTradeConfirmed = tradesNamespace.Get("finalizedTradeConfirmed");
+confirmFinalizedTrade.Connect(
+	withPlayerStore((player, store) => {
+		// first, ensure a player is in a trade
+		if (getTradeStatus(player) !== TradeStatus.ViewingFinalizedTrade) {
+			return warn("Not viewing finalized trade, cannot confirm finalized trade");
+		}
+
+		// confirm the trade
+		if (!confirmFinalizedTradeOffer(player, store)) {
+			// failed to confirm trade
+			// we should tell the player to not confirm
+			print("Issue with confirming trade. Not finalizing the trade.");
+			return finalizedTradeConfirmed.SendToPlayer(player, player, getTradeItems(player));
+		}
+
+		// alert the other player that the offer changed
+		print("Offer was confirmed. Alerting other player.");
+		finalizedTradeConfirmed.SendToPlayer(getTradingCounterParty(player), player, getTradeItems(player));
+	}),
+);
+
+const declineFinalizedTrade = tradesNamespace.Get("declineFinalizedTrade");
+const finalizedTradeDeclined = tradesNamespace.Get("finalizedTradeDeclined");
+declineFinalizedTrade.Connect((player) => {
+	if (declineFinalizedTradeOffer(player)) {
+		finalizedTradeDeclined.SendToPlayer(getTradingCounterParty(player), player, getTradeItems(player));
+	}
+});
 
 Players.PlayerRemoving.Connect((player) => {
 	// remove a trade if it exists

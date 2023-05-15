@@ -1,9 +1,7 @@
 import Rodux from "@rbxts/rodux";
 import { Currency } from "shared/configs/currencies";
-import { EggName } from "shared/configs/eggs";
 import { EnhancePetMetadata } from "shared/configs/enchantments";
 import { PET_LEVEL_REQUIREMENTS, PET_MAX_LEVELS, Variants } from "shared/configs/pets";
-import { Rarities } from "shared/configs/rarities";
 
 import { KillNpc } from "./currencies";
 import { RedeemCode } from "./media";
@@ -28,13 +26,11 @@ export interface ConfirmedPet extends PetData {
 	guid: string;
 }
 
-export type PetAttainMethod = "maxLevel" | "fuse" | "hatch" | "admin";
+export type PetAttainMethod = "maxLevel" | "fuse" | "hatch" | "admin" | "trade";
 export interface PetData {
 	id: number;
-	rarity: Rarities;
 	variant: Variants;
 	enhancements?: { [slot in Variants]?: Omit<EnhancePetMetadata, "variant"> };
-	egg: EggName;
 	method: PetAttainMethod;
 	tradeLocked: boolean;
 }

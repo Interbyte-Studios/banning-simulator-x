@@ -1,7 +1,5 @@
 import Roact from "@rbxts/roact";
-import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
-import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { RarityGradient } from "client/ui/elements/gradients/rarityGradient";
 import { PetViewport } from "client/ui/elements/viewports/petViewport";

@@ -1,6 +1,7 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { Players } from "@rbxts/services";
 import { Store } from "shared/rodux";
 
 import { AccountHub } from "./components/account";
@@ -161,7 +162,13 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect, us
 					resetTradeDeclined={(): void => setTradeRequest((prev) => ({ ...prev, declined: undefined }))}
 					acceptTrade={(): void => setTradeRequest((prev) => ({ ...prev, inbound: undefined, accepted: prev.inbound }))}
 					tradeWasAccepted={tradeRequest.accepted}
-					resetTradeAccepted={(): void => setTradeRequest((prev) => ({ ...prev, accepted: undefined }))}
+					resetTradeAccepted={(player?: Player): void =>
+						setTradeRequest((prev) => ({
+							...prev,
+							accepted: undefined,
+							declined: player ?? prev.accepted,
+						}))
+					}
 				/>
 			</>
 		</RoactRodux.StoreProvider>

@@ -1,8 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { MarketplaceService, Players, RunService } from "@rbxts/services";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { getIsTrading } from "client/modules/isTradingCache";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -87,6 +86,11 @@ export const TripleHatchEggButton = RoactRodux.connect(mapStateToProps)((props: 
 								return;
 							}
 
+							if (getIsTrading()) {
+								RunService.UnbindFromRenderStep("autoHatch");
+								return;
+							}
+
 							const character = player.Character;
 							if (character === undefined) {
 								RunService.UnbindFromRenderStep("autoHatch");
@@ -113,6 +117,10 @@ export const TripleHatchEggButton = RoactRodux.connect(mapStateToProps)((props: 
 						});
 					} else {
 						if (!AnimateEggs.canHatchEgg()) {
+							return;
+						}
+
+						if (getIsTrading()) {
 							return;
 						}
 

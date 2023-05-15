@@ -16,6 +16,8 @@ import { getEggsMastery } from "shared/util/getEggsMastery";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
 import { withinDistanceToHatch } from "shared/util/withinDistanceToHatch";
 
+import { getTradeStatus } from "./trading/trades";
+
 const hatchEgg = remotes.Server.GetNamespace("eggs").Create("hatchEgg");
 const hatchTimeCache: Map<Player, number> = new Map();
 const randomGenerator = new Random();
@@ -33,6 +35,14 @@ hatchEgg.SetCallback(
 			};
 		}
 
+		const isTrading = getTradeStatus(player) !== undefined;
+		if (isTrading) {
+			warn("Player is trading, cannot hatch an egg");
+			return {
+				success: false,
+			};
+		}
+
 		// verify that the user can hatch the eggs
 		const currentState = store.getState();
 		const eggData = getEggData(eggName);
@@ -40,7 +50,6 @@ hatchEgg.SetCallback(
 		// find reduced egg cost provided by player mastery
 		const eggMasteryReducedMultiplier = getEggsMastery(store.getState().eggs).reducedEggCostMultiplier;
 		const eggCost = getEggCost(eggName, isVoid, eggMasteryReducedMultiplier);
-		print(eggCost.amount);
 
 		// check that user owns world
 		const ownsWorld = currentState.worlds.find((x) => x.name === eggData.world);
@@ -167,10 +176,8 @@ hatchEgg.SetCallback(
 				autoDeleted,
 				id: pet.id,
 				guid: HttpService.GenerateGUID(false),
-				rarity: pet.rarity,
 				variant: isVoid ? "void" : "regular",
 				method: "hatch",
-				egg: eggName,
 				enhancements: { [pet.rarity]: selectedEnhancement },
 				tradeLocked: false,
 			});

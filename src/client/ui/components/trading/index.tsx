@@ -4,6 +4,7 @@ import { Players } from "@rbxts/services";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
+import { PlayerTradeItem } from "shared/configs/trading";
 
 import { ActiveOffer } from "./tradeList/activeOffer";
 import { ActiveTradeWarning } from "./tradeList/activeTradeWarning";
@@ -14,7 +15,7 @@ import { TradeRequest } from "./tradeList/tradeRequest";
 
 interface TradeAcceptedProps {
 	tradeWasAccepted: Player | undefined;
-	resetTradeAccepted: () => void;
+	resetTradeAccepted: (player?: Player) => void;
 }
 
 interface TradeListDisplayProps {
@@ -66,13 +67,17 @@ interface TradeProps extends TradeListDisplayProps, TradeAcceptedProps {
 	visible: boolean;
 }
 
+export type ConfirmedTrade = { localOffer: PlayerTradeItem; theirOffer: PlayerTradeItem };
+
 /**
  * A component that displays the trading menu or various trading options.
  */
-export const Trading = hooks((props: TradeProps) => {
+export const Trading = hooks((props: TradeProps, { useState }) => {
 	if (!props.enabled || !props.visible) {
 		return <></>;
 	}
+
+	const [viewingFinalizedTrade, setFinalizedTrade] = useState(false);
 
 	if (props.tradeWasAccepted === undefined) {
 		return (
@@ -95,17 +100,26 @@ export const Trading = hooks((props: TradeProps) => {
 			</ImageLabel>
 		);
 	} else {
-		return (
-			<ImageLabel
-				native={{
-					Size: UDim2.fromScale(0.7, 0.7),
-					Image: assetIds.images.ui.trading.TradeBackground,
-				}}
-			>
-				<uiaspectratioconstraint AspectRatio={1.36} />
+		if (viewingFinalizedTrade) {
+			return <></>;
+		} else {
+			return (
+				<ImageLabel
+					native={{
+						Size: UDim2.fromScale(0.7, 0.7),
+						Image: assetIds.images.ui.trading.TradeBackground,
+					}}
+				>
+					<uiaspectratioconstraint AspectRatio={1.36} />
 
-				<ActiveOffer otherPlayer={props.tradeWasAccepted} />
-			</ImageLabel>
-		);
+					<ActiveOffer
+						otherPlayer={props.tradeWasAccepted}
+						resetTradeAccepted={props.resetTradeAccepted}
+						bothConfirmed={(): void => setFinalizedTrade(true)}
+						resetConfirmed={!viewingFinalizedTrade}
+					/>
+				</ImageLabel>
+			);
+		}
 	}
 });

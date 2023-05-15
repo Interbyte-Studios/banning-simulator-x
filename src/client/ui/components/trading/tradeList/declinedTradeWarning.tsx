@@ -1,5 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
+import { Players } from "@rbxts/services";
+import { setIsTrading } from "client/modules/isTradingCache";
 import { uiClaimButtonStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
@@ -8,7 +10,7 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 /**
- * Displays a warning that the player is currently in an active trade.
+ * Displays a warning when a trade is declined.
  *
  * @param props The props for the component.
  * @param props.player The player to display the warning for.
@@ -28,6 +30,7 @@ export const DeclinedTradeWarning = (props: { player: Player; hideMenu: () => vo
 					// eslint-disable-next-line jsdoc/require-jsdoc
 					Activated: (): void => {
 						playSFX(UIEngagement.MajorEngagement);
+						setIsTrading(false);
 						props.hideMenu();
 					},
 				}}
@@ -47,7 +50,9 @@ export const DeclinedTradeWarning = (props: { player: Player; hideMenu: () => vo
 				native={{
 					Position: UDim2.fromScale(0.5, 0.426),
 					Size: UDim2.fromScale(0.95, 0.311),
-					Text: `${props.player.Name} declined your trade request. You can try again, or try trading with someone else.`,
+					Text: `${props.player === Players.LocalPlayer ? "You've" : props.player.Name} declined ${
+						props.player === Players.LocalPlayer ? "/ cancelled" : ""
+					} your trade request. You can try again, or try trading with someone else.`,
 				}}
 				stroke={{ native: { Thickness: 1.5, Color: uiTextStrokeColor } }}
 			/>

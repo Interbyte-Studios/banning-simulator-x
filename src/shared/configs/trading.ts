@@ -7,7 +7,7 @@ export const isPlayerTradeItem = t.strictInterface({
 	currency: t.optional(
 		t.strictInterface({
 			type: isCurrency,
-			amount: t.numberPositive,
+			amount: t.number,
 		}),
 	),
 });

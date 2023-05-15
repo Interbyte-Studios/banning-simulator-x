@@ -2,6 +2,7 @@ import Rodux from "@rbxts/rodux";
 import { t } from "@rbxts/t";
 import { EggName } from "shared/configs/eggs";
 import { PET_MAX_LEVELS } from "shared/configs/pets";
+import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetLevel } from "shared/util/getPetLevel";
 
 import { KillNpc } from "./currencies";
@@ -116,16 +117,18 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 					assert(pet, `Failed to set index data for pet with id "${petToIndex.id}".`);
 				}
 
-				let egg = newState.eggs.get(petToIndex.egg);
+				const eggFromPetId = getEggNameFromPetId(petToIndex.id);
+				let egg = newState.eggs.get(eggFromPetId);
 				if (egg === undefined) {
-					newState.eggs.set(petToIndex.egg, { regular: 0, void: 0 });
+					newState.eggs.set(eggFromPetId, { regular: 0, void: 0 });
 
-					egg = newState.eggs.get(petToIndex.egg);
-					assert(egg, `Failed to set index data for egg "${petToIndex.egg}".`);
+					egg = newState.eggs.get(eggFromPetId);
+					assert(egg, `Failed to set index data for egg "${eggFromPetId}".`);
 				}
 
 				switch (petToIndex.method) {
 					case "admin":
+					case "trade":
 					case "hatch": {
 						assert(
 							isValidIndexHatch(petToIndex.variant),

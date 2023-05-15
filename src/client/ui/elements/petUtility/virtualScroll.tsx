@@ -44,16 +44,15 @@ const preDisplayedRows = 5;
  * @param props.displayPetInfo A function to display the pet info of a pet.
  */
 export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
-	const { pets, searchText } = props;
 	const { useEffect, useState, useCallback, useMemo, useValue } = hooks;
 
 	const scrollingFrameRef = useValue(Roact.createRef<ScrollingFrame>());
 	const layoutRef = useValue(Roact.createRef<UIGridLayout>());
 
 	// State for managing the rendered pets
-	sortPets(pets, true, true);
+	sortPets(props.pets, true, true);
 	const [renderedPets, setRenderedPets] = useState<Array<PetInventoryData>>(
-		pets.map((pet) => ({ ...pet, isRendered: false })),
+		props.pets.map((pet) => ({ ...pet, isRendered: false })),
 	);
 
 	const checkRenderedPets = useCallback(
@@ -96,16 +95,16 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 
 			return newPets;
 		},
-		[],
+		[props.searchText],
 	);
 
 	const updateItems = useCallback(
 		(scroll: ScrollingFrame): void => {
-			const updatedRenderedPets = checkRenderedPets(scroll, renderedPets, searchText);
+			const updatedRenderedPets = checkRenderedPets(scroll, renderedPets, props.searchText);
 			sortPets(updatedRenderedPets, true, true);
 			setRenderedPets(updatedRenderedPets);
 		},
-		[renderedPets, searchText],
+		[renderedPets, props.searchText],
 	);
 
 	// automatic grid layout connection
@@ -151,12 +150,25 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		const scrollingFrame = scrollingFrameRef.value.getValue();
 		assert(scrollingFrame, `No ScrollingFrame was found for Virtual Scroll`);
 
-		const newPets = [...props.pets].map((pet) => ({ ...pet, isRendered: false }));
+		let newPets: Array<PetInventoryData> = [];
+		if (props.searchText !== undefined) {
+			const searchText = props.searchText;
+			print(searchText);
 
-		const updatedRenderedPets = checkRenderedPets(scrollingFrame, newPets, searchText);
+			newPets = props.pets
+				.filter((pet) => {
+					const petData = getPetData(pet.id);
+					return petData.name.lower().match(searchText) !== undefined;
+				})
+				.map((pet) => ({ ...pet, isRendered: false }));
+		} else {
+			newPets = props.pets.map((pet) => ({ ...pet, isRendered: false }));
+		}
+
+		const updatedRenderedPets = checkRenderedPets(scrollingFrame, newPets, props.searchText);
 		sortPets(updatedRenderedPets, true, true);
 		setRenderedPets(updatedRenderedPets);
-	}, [props.pets]);
+	}, [props.pets, props.searchText]);
 
 	// resize connection
 	useEffect(() => {
@@ -178,7 +190,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 				if (props.selectedPets.includes(pet.guid)) {
 					layoutOrder = 1 + index;
 				} else {
-					layoutOrder = index + renderedPets.size();
+					layoutOrder = index + renderedPets.size() + 1;
 				}
 			}
 
