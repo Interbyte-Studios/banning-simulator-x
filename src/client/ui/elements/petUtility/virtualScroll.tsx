@@ -80,9 +80,9 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 					let shouldBeRendered = belowTop && aboveBottom;
 
 					// check against search text props
-					if (searchText !== undefined && shouldBeRendered) {
+					if (searchText !== undefined && searchText !== "" && shouldBeRendered) {
 						const petData = getPetData(pet.id);
-						if (petData.name.lower().match(searchText) !== undefined) {
+						if (petData.name.lower().match(searchText).size() !== 0) {
 							shouldBeRendered = false;
 						}
 					}
@@ -151,14 +151,13 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		assert(scrollingFrame, `No ScrollingFrame was found for Virtual Scroll`);
 
 		let newPets: Array<PetInventoryData> = [];
-		if (props.searchText !== undefined) {
-			const searchText = props.searchText;
-			print(searchText);
+		if (props.searchText !== undefined && props.searchText !== "") {
+			const searchText = props.searchText.lower();
 
 			newPets = props.pets
 				.filter((pet) => {
 					const petData = getPetData(pet.id);
-					return petData.name.lower().match(searchText) !== undefined;
+					return petData.name.lower().match(searchText).size() !== 0;
 				})
 				.map((pet) => ({ ...pet, isRendered: false }));
 		} else {

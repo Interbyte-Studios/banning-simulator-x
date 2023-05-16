@@ -13,6 +13,7 @@ import { offerChangedDefinition } from "./offerChanged";
 import { tradeOfferConfirmedDefinition } from "./offerConfirmed";
 import { tradeOfferDeclinedDefinition } from "./offerDeclined";
 import { requestTradeDefinition } from "./requestTrade";
+import { retrieveTradeOffersDefinition } from "./retrieveTradeOffers";
 import { sendTradeRequestDefinition } from "./sendTradeRequest";
 import { tradeRequestAcceptedDefinition } from "./tradeRequestAccepted";
 import { tradeRequestDeclinedDefinition } from "./tradeRequestDeclined";
@@ -29,6 +30,7 @@ export const trading = Net.Definitions.Namespace({
 
 	modifyOffer: modifyOfferDefinition,
 	offerChanged: offerChangedDefinition,
+	retrieveOffer: retrieveTradeOffersDefinition,
 
 	confirmTradeOffer: confirmTradeOfferDefinition,
 	tradeOfferConfirmed: tradeOfferConfirmedDefinition,

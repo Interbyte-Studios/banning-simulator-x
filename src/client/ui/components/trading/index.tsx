@@ -6,8 +6,10 @@ import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { PlayerTradeItem } from "shared/configs/trading";
 
+import { ConfirmedOffer } from "./confirmedOffer";
 import { ActiveOffer } from "./tradeList/activeOffer";
 import { ActiveTradeWarning } from "./tradeList/activeTradeWarning";
+import { CompletedTrade } from "./tradeList/completedTrade";
 import { DeclinedTradeWarning } from "./tradeList/declinedTradeWarning";
 import { SentTradeRequest } from "./tradeList/sentTradeRequest";
 import { TradeList } from "./tradeList/tradeList";
@@ -65,6 +67,7 @@ export const TradeListDisplay = hooks((props: TradeListDisplayProps, { useState 
 interface TradeProps extends TradeListDisplayProps, TradeAcceptedProps {
 	enabled: boolean;
 	visible: boolean;
+	finishTrade: () => void;
 }
 
 export type ConfirmedTrade = { localOffer: PlayerTradeItem; theirOffer: PlayerTradeItem };
@@ -77,9 +80,33 @@ export const Trading = hooks((props: TradeProps, { useState }) => {
 		return <></>;
 	}
 
-	const [viewingFinalizedTrade, setFinalizedTrade] = useState(false);
+	const [viewingFinalizedTrade, setFinalizedTrade] = useState<
+		| {
+				localOffer: PlayerTradeItem;
+				theirOffer: PlayerTradeItem;
+		  }
+		| undefined
+	>(undefined);
 
-	if (props.tradeWasAccepted === undefined) {
+	const [tradeCompleted, setTradeCompleted] = useState(false);
+
+	if (tradeCompleted) {
+		return (
+			<ImageLabel
+				native={{
+					Size: UDim2.fromScale(0.7, 0.7),
+					Image: assetIds.images.ui.trading.TradeBackground,
+				}}
+			>
+				<CompletedTrade
+					finishTrade={(): void => {
+						setTradeCompleted(false);
+						props.finishTrade();
+					}}
+				/>
+			</ImageLabel>
+		);
+	} else if (props.tradeWasAccepted === undefined) {
 		return (
 			<ImageLabel
 				native={{
@@ -100,26 +127,39 @@ export const Trading = hooks((props: TradeProps, { useState }) => {
 			</ImageLabel>
 		);
 	} else {
-		if (viewingFinalizedTrade) {
-			return <></>;
-		} else {
-			return (
-				<ImageLabel
-					native={{
-						Size: UDim2.fromScale(0.7, 0.7),
-						Image: assetIds.images.ui.trading.TradeBackground,
-					}}
-				>
-					<uiaspectratioconstraint AspectRatio={1.36} />
+		return (
+			<ImageLabel
+				native={{
+					Size: UDim2.fromScale(0.7, 0.7),
+					Image: assetIds.images.ui.trading.TradeBackground,
+				}}
+			>
+				<uiaspectratioconstraint AspectRatio={1.36} />
 
+				{viewingFinalizedTrade !== undefined ? (
+					<ConfirmedOffer
+						otherPlayer={props.tradeWasAccepted}
+						backToTrade={(): void => setFinalizedTrade(undefined)}
+						localOffer={viewingFinalizedTrade.localOffer}
+						otherOffer={viewingFinalizedTrade.theirOffer}
+						finishTrade={(): void => setTradeCompleted(true)}
+					/>
+				) : undefined}
+
+				{viewingFinalizedTrade === undefined ? (
 					<ActiveOffer
 						otherPlayer={props.tradeWasAccepted}
 						resetTradeAccepted={props.resetTradeAccepted}
-						bothConfirmed={(): void => setFinalizedTrade(true)}
+						bothConfirmed={(localOffer: PlayerTradeItem, theirOffer: PlayerTradeItem): void =>
+							setFinalizedTrade({
+								localOffer,
+								theirOffer,
+							})
+						}
 						resetConfirmed={!viewingFinalizedTrade}
 					/>
-				</ImageLabel>
-			);
-		}
+				) : undefined}
+			</ImageLabel>
+		);
 	}
 });

@@ -19,6 +19,7 @@ export const tradingRemotes = {
 	// trade actions
 	modifyOffer: remoteNamespace.Get("modifyOffer"),
 	offerChanged: remoteNamespace.Get("offerChanged"),
+	retrieveOffer: remoteNamespace.Get("retrieveOffer"),
 
 	// confirmation actions
 	confirmOffer: remoteNamespace.Get("confirmTradeOffer"),

@@ -34,7 +34,6 @@ import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
  * Searches for specific pets.
  *
  * @param props The props for the component.
- * @param props.currentQuery The current query to search for.
  * @param props.updateSearch The function to update the search.
  * @returns The Roact element to render.
  */
@@ -126,6 +125,7 @@ export const TheirConfirmed = (): Roact.Element => {
 interface LocalCurrencyProps extends LocalCurrencyMappedProps {
 	pets: Array<string>;
 	changedOffer: () => void;
+	setOffer: (offer: PlayerTradeItem) => void;
 }
 
 interface LocalCurrencyMappedProps {
@@ -166,13 +166,15 @@ export const LocalCurrencyOffer = RoactRodux.connect(mapCurrencyStateToProps)(
 		}, [offeredCurrency]);
 
 		useEffect(() => {
-			modifyOfferRemote.SendToServer({
+			const newOffer = {
 				pets: props.pets,
 				currency: {
 					type: offeredCurrencyType,
 					amount: offeredCurrency,
 				},
-			});
+			};
+			modifyOfferRemote.SendToServer(newOffer);
+			props.setOffer(newOffer);
 			props.changedOffer();
 		}, [updateTime, offeredCurrencyType]);
 
@@ -322,6 +324,8 @@ interface LocalOfferProps extends LocalOfferMappedProps {
 	confirmed: boolean;
 	resetConfirmation: () => void;
 	changedOffer: () => void;
+	offerData: PlayerTradeItem;
+	setOffer: (offer: PlayerTradeItem) => void;
 }
 
 interface LocalOfferMappedProps {
@@ -348,13 +352,6 @@ function mapStateToProps(state: StoreState): LocalOfferMappedProps {
 export const LocalOffer = RoactRodux.connect(mapStateToProps)(
 	hooks((props: LocalOfferProps, { useContext, useState, useEffect }) => {
 		const [currentSearch, setSearch] = useState("");
-		const [currentOffer, setOffer] = useState<PlayerTradeItem>({
-			currency: {
-				type: "coins",
-				amount: 0,
-			},
-			pets: [],
-		});
 		const modifyOfferRemote = useContext(remoteContext).modifyOffer;
 		const offerModified = useContext(remoteContext).offerChanged;
 		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
@@ -363,7 +360,7 @@ export const LocalOffer = RoactRodux.connect(mapStateToProps)(
 			// Something failed so we need to rest our previously made offer
 			const connection = offerModified.Connect((localPlayer, newOffer) => {
 				if (localPlayer.UserId === Players.LocalPlayer.UserId) {
-					setOffer(newOffer);
+					props.setOffer(newOffer);
 				}
 			});
 			return (): void => connection.Disconnect();
@@ -395,18 +392,20 @@ export const LocalOffer = RoactRodux.connect(mapStateToProps)(
 						scrollBarImageColor={Color3.fromRGB(8, 82, 129)}
 						fillDirectionMaxCells={4}
 						onActivated={(guid: string): void => {
-							if (currentOffer.pets.includes(guid)) {
-								const newPets = [...currentOffer.pets];
+							playSFX(UIEngagement.MinorEngagement);
+
+							if (props.offerData.pets.includes(guid)) {
+								const newPets = [...props.offerData.pets];
 								const petIndex = newPets.indexOf(guid);
 								newPets.unorderedRemove(petIndex);
 
-								const newOffer = { ...currentOffer, pets: newPets };
+								const newOffer = { ...props.offerData, pets: newPets };
 
 								modifyOfferRemote.SendToServer(newOffer);
-								setOffer(newOffer);
+								props.setOffer(newOffer);
 								props.changedOffer();
 							} else {
-								if (currentOffer.pets.size() >= MAX_TRADE_OFFER_SIZE) {
+								if (props.offerData.pets.size() >= MAX_TRADE_OFFER_SIZE) {
 									addAnnouncement(`You can only offer ${MAX_TRADE_OFFER_SIZE} pets!`, AnnouncementType.Error);
 									return;
 								}
@@ -427,25 +426,32 @@ export const LocalOffer = RoactRodux.connect(mapStateToProps)(
 									return;
 								}
 
-								const newPets = [...currentOffer.pets];
+								const newPets = [...props.offerData.pets];
 								newPets.push(guid);
 
-								const newOffer = { ...currentOffer, pets: newPets };
+								const newOffer = { ...props.offerData, pets: newPets };
 
 								modifyOfferRemote.SendToServer(newOffer);
-								setOffer(newOffer);
+								props.setOffer(newOffer);
 								props.changedOffer();
 							}
 						}}
-						selectedPets={...currentOffer.pets}
+						selectedPets={...props.offerData.pets}
 					/>
-					<LocalCurrencyOffer pets={currentOffer.pets} changedOffer={props.changedOffer} />
+					<LocalCurrencyOffer pets={props.offerData.pets} changedOffer={props.changedOffer} setOffer={props.setOffer} />
 					{props.confirmed ? <LocalConfirmed /> : undefined}
 				</BaseFrame>
 			</>
 		);
 	}),
 );
+
+interface TheirOfferProps {
+	player: Player;
+	confirmed: boolean;
+	offerData: PlayerTradeItem;
+	setOffer: (offer: PlayerTradeItem) => void;
+}
 
 /**
  * Displays the offer for the other player.
@@ -455,68 +461,62 @@ export const LocalOffer = RoactRodux.connect(mapStateToProps)(
  * @param props.confirmed Whether or not the other player has confirmed their offer.
  * @returns The Roact element to render.
  */
-export const TheirOffer = hooks(
-	(props: { otherPlayer: Player; confirmed: boolean }, { useContext, useState, useEffect }) => {
-		const [currentOffer, setOffer] = useState<PlayerTradeItem>({
-			currency: undefined,
-			pets: [],
-		});
-		const offerModified = useContext(remoteContext).offerChanged;
-		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
+export const TheirOffer = hooks((props: TheirOfferProps, { useContext, useEffect }) => {
+	const offerModified = useContext(remoteContext).offerChanged;
+	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
-		useEffect(() => {
-			const connection = offerModified.Connect((otherPlayer, newOffer) => {
-				if (otherPlayer.UserId === props.otherPlayer.UserId) {
-					setOffer(newOffer);
-				}
-			});
-			return (): void => connection.Disconnect();
-		}, [offerModified]);
-
-		const playerStore = retrieveStore(props.otherPlayer);
-		if (playerStore === undefined) {
-			addAnnouncement(`There was an issue with trading ${props.otherPlayer.Name}!`, AnnouncementType.Error);
-			throw `Failed to get store for player ${props.otherPlayer.Name}!`;
-		}
-
-		const pets: Array<Pet> = [];
-		for (const pet of playerStore.getState().pets) {
-			if (currentOffer.pets.includes(pet.guid)) {
-				pets.push(pet);
+	useEffect(() => {
+		const connection = offerModified.Connect((otherPlayer, newOffer) => {
+			if (otherPlayer.UserId === props.player.UserId) {
+				props.setOffer(newOffer);
 			}
+		});
+		return (): void => connection.Disconnect();
+	}, [offerModified]);
+
+	const playerStore = retrieveStore(props.player);
+	if (playerStore === undefined) {
+		addAnnouncement(`There was an issue with trading ${props.player.Name}!`, AnnouncementType.Error);
+		throw `Failed to get store for player ${props.player.Name}!`;
+	}
+
+	const pets: Array<Pet> = [];
+	for (const pet of playerStore.getState().pets) {
+		if (props.offerData.pets.includes(pet.guid)) {
+			pets.push(pet);
 		}
+	}
 
-		return (
-			<>
-				<StrokeTextLabel
-					native={{
-						Position: UDim2.fromScale(0.76, 0.05),
-						Size: UDim2.fromScale(0.35, 0.1),
-						Text: "Their Offer",
-						ZIndex: 2,
-					}}
-					stroke={{ native: { Color: uiTextStrokeColor, Thickness: 2 } }}
+	return (
+		<>
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.76, 0.05),
+					Size: UDim2.fromScale(0.35, 0.1),
+					Text: "Their Offer",
+					ZIndex: 2,
+				}}
+				stroke={{ native: { Color: uiTextStrokeColor, Thickness: 2 } }}
+			/>
+
+			<BaseFrame Position={UDim2.fromScale(0.76, 0.375)} Size={UDim2.fromScale(0.43, 0.63)}>
+				<uicorner CornerRadius={new UDim(0.125, 0)} />
+				<BaseUIStroke native={{ Thickness: 4, Color: uiTextStrokeColor }} />
+
+				<VirtualScroll
+					pets={pets}
+					size={UDim2.fromScale(0.99, 0.915)}
+					position={UDim2.fromScale(0.5, 0.52)}
+					scrollBarThickness={12}
+					scrollBarImageColor={Color3.fromRGB(8, 82, 129)}
+					fillDirectionMaxCells={4}
 				/>
-
-				<BaseFrame Position={UDim2.fromScale(0.76, 0.375)} Size={UDim2.fromScale(0.43, 0.63)}>
-					<uicorner CornerRadius={new UDim(0.125, 0)} />
-					<BaseUIStroke native={{ Thickness: 4, Color: uiTextStrokeColor }} />
-
-					<VirtualScroll
-						pets={pets}
-						size={UDim2.fromScale(0.99, 0.915)}
-						position={UDim2.fromScale(0.5, 0.52)}
-						scrollBarThickness={12}
-						scrollBarImageColor={Color3.fromRGB(8, 82, 129)}
-						fillDirectionMaxCells={4}
-					/>
-					<TheirCurrencyOffer offer={currentOffer} />
-					{props.confirmed ? <TheirConfirmed /> : undefined}
-				</BaseFrame>
-			</>
-		);
-	},
-);
+				<TheirCurrencyOffer offer={props.offerData} />
+				{props.confirmed ? <TheirConfirmed /> : undefined}
+			</BaseFrame>
+		</>
+	);
+});
 
 /**
  * Displays the active offer.
@@ -531,7 +531,7 @@ export const ActiveOffer = hooks(
 		props: {
 			otherPlayer: Player;
 			resetTradeAccepted: (player?: Player) => void;
-			bothConfirmed: () => void;
+			bothConfirmed: (localOffer: PlayerTradeItem, theirOffer: PlayerTradeItem) => void;
 			resetConfirmed: boolean;
 		},
 		hooks,
@@ -540,6 +540,22 @@ export const ActiveOffer = hooks(
 
 		const [isLocalConfirmed, setLocalConfirmed] = useState(false);
 		const [isTheirConfirmed, setTheirConfirmed] = useState(false);
+
+		const [localOffer, setLocalOffer] = useState<PlayerTradeItem>({
+			currency: {
+				type: "coins",
+				amount: 0,
+			},
+			pets: [],
+		});
+
+		const [otherOffer, setOtherOffer] = useState<PlayerTradeItem>({
+			currency: {
+				type: "coins",
+				amount: 0,
+			},
+			pets: [],
+		});
 
 		const { offerChanged, confirmOffer, declineOffer, tradeOfferConfirmed, tradeOfferDeclined } =
 			useContext(remoteContext);
@@ -578,7 +594,7 @@ export const ActiveOffer = hooks(
 
 		useEffect(() => {
 			if (isLocalConfirmed && isTheirConfirmed) {
-				props.bothConfirmed();
+				props.bothConfirmed(localOffer, otherOffer);
 			}
 		}, [isLocalConfirmed, isTheirConfirmed]);
 
@@ -601,8 +617,15 @@ export const ActiveOffer = hooks(
 						setLocalConfirmed(false);
 						setTheirConfirmed(false);
 					}}
+					offerData={localOffer}
+					setOffer={(offerData: PlayerTradeItem): void => setLocalOffer(offerData)}
 				/>
-				<TheirOffer otherPlayer={props.otherPlayer} confirmed={isTheirConfirmed} />
+				<TheirOffer
+					player={props.otherPlayer}
+					confirmed={isTheirConfirmed}
+					offerData={otherOffer}
+					setOffer={(offerData: PlayerTradeItem): void => setOtherOffer(offerData)}
+				/>
 
 				<StrokeTextLabel
 					native={{
@@ -626,6 +649,10 @@ export const ActiveOffer = hooks(
 						 */
 						Activated: (): void => {
 							playSFX(UIEngagement.MinorEngagement);
+
+							if (isLocalConfirmed) {
+								return;
+							}
 
 							confirmOffer.SendToServer();
 							setLocalConfirmed(true);

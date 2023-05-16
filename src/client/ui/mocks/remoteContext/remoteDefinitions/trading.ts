@@ -11,6 +11,7 @@ import { OfferChangedDefinition } from "shared/remotes/trading/offerChanged";
 import { TradeOfferConfirmedDefinition } from "shared/remotes/trading/offerConfirmed";
 import { TradeOfferDeclinedDefinition } from "shared/remotes/trading/offerDeclined";
 import { RequestTradeDefinition } from "shared/remotes/trading/requestTrade";
+import { RetrieveTradeOffersDefinition } from "shared/remotes/trading/retrieveTradeOffers";
 import { SendTradeRequestDefinition } from "shared/remotes/trading/sendTradeRequest";
 import { TradeRequestAcceptedDefinition } from "shared/remotes/trading/tradeRequestAccepted";
 import { TradeRequestDeclinedDefinition } from "shared/remotes/trading/tradeRequestDeclined";
@@ -35,6 +36,7 @@ export const tradingRemoteContext = {
 	// trade actions
 	modifyOffer: fakeRemoteCall<ModifyOfferDefinition>("modifyOffer"),
 	offerChanged: fakeServerToClientRemote<OfferChangedDefinition>(),
+	retrieveOffer: fakeRemoteCall<RetrieveTradeOffersDefinition>("retrieveOffer"),
 
 	// trade confirmation actions
 	confirmOffer: fakeRemoteCall<ConfirmTradeOfferDefinition>("confirmOffer"),

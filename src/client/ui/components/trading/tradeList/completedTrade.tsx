@@ -1,19 +1,21 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { uiClaimButtonStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
-import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 /**
  * Displays a message that the trade is complete.
  *
+ * @param props The props for the component.
+ * @param props.finishTrade The function to finish the trade.
  * @returns The Roact element to render.
  */
-export const CompletedTrade = (): Roact.Element => {
+export const CompletedTrade = (props: { finishTrade: () => void }): Roact.Element => {
 	return (
-		<BaseFrame Size={UDim2.fromScale(1, 1)}>
+		<BaseFrame Size={UDim2.fromScale(0.8, 1)}>
 			<StrokeTextLabel
 				native={{
 					Position: UDim2.fromScale(0.5, 0.093),
@@ -50,11 +52,20 @@ export const CompletedTrade = (): Roact.Element => {
 				stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
 			/>
 
-			<ImageButton
+			<SpringImageButton
 				native={{
 					Position: UDim2.fromScale(0.5, 0.88),
-					Size: UDim2.fromScale(0.2, 0.2),
 					Image: assetIds.images.ui.index.Claim,
+				}}
+				size={{ minSize: 0.15, maxSize: 0.2 }}
+				events={{
+					/**
+					 * Called when the button is activated.
+					 */
+					Activated: (): void => {
+						playSFX(UIEngagement.MinorEngagement);
+						props.finishTrade();
+					},
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={2} />
@@ -66,7 +77,7 @@ export const CompletedTrade = (): Roact.Element => {
 					}}
 					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
 				/>
-			</ImageButton>
+			</SpringImageButton>
 		</BaseFrame>
 	);
 };

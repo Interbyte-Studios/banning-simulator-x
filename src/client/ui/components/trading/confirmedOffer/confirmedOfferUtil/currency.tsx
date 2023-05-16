@@ -2,8 +2,8 @@ import Roact from "@rbxts/roact";
 import { uiDarkStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
-import { SpringImageLabel } from "client/ui/elements/baseElements/imagelabels/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { Currency } from "shared/configs/currencies";
 import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
@@ -24,6 +24,7 @@ interface CurrencyProps {
 export const ConfirmedCurrencyDisplayed = (props: CurrencyProps): Roact.Element => {
 	return (
 		<BaseFrame
+			AnchorPoint={new Vector2(0, 0)}
 			Position={props.offerType === "Local" ? UDim2.fromScale(0.04, 0.655) : UDim2.fromScale(0.549, 0.655)}
 			Size={UDim2.fromScale(0.42, 0.09)}
 			BackgroundTransparency={0}
@@ -32,22 +33,19 @@ export const ConfirmedCurrencyDisplayed = (props: CurrencyProps): Roact.Element 
 			<uicorner CornerRadius={new UDim(0.2, 0)} />
 			<BaseUIStroke native={{ Thickness: 1.5, Color: uiDarkStrokeColor }} />
 
-			<SpringImageLabel
-				native={{
-					AnchorPoint: new Vector2(0, 0),
-					Position: UDim2.fromScale(0, 0),
-					Image: props.currency,
-				}}
-				size={{ minSize: 0.9, maxSize: 1 }}
-			>
-				<uiaspectratioconstraint AspectRatio={1} />
-			</SpringImageLabel>
+			<CurrencyIcon
+				anchorPoint={new Vector2(0, 0)}
+				position={UDim2.fromScale(0, 0)}
+				size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+				currency={props.currency}
+			/>
 
 			<StrokeTextLabel
 				native={{
 					Position: UDim2.fromScale(0.583, 0.5),
 					Size: UDim2.fromScale(0.769, 0.8),
 					Text: statsAbbreviator.numberToString(props.amount),
+					TextXAlignment: Enum.TextXAlignment.Left,
 				}}
 				stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
 			/>
