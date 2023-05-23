@@ -25,6 +25,7 @@ import { defaultRank } from "shared/rodux/rank";
 import { defaultSettings } from "shared/rodux/settings";
 import { defaultSpinWheel } from "shared/rodux/spinWheel";
 import { defaultTalismans } from "shared/rodux/talismans";
+import { defaultTradeLogs } from "shared/rodux/tradeLogs";
 import { defaultWeaponsState } from "shared/rodux/weapons";
 import { defaultWorlds } from "shared/rodux/worlds";
 import { getOrSetDefault } from "shared/util/getOrSetDefault";
@@ -62,6 +63,7 @@ const profileTemplate: StoreState = {
 	petTeams: defaultPetTeamsState,
 	index: defaultPlayerIndex,
 	devProducts: defaultDevProductState,
+	tradeLogs: defaultTradeLogs,
 };
 
 /**

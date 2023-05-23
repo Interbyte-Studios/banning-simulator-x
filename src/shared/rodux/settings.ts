@@ -265,6 +265,15 @@ export function togglePublicTradeHistory(): TogglePublicTradeHistory & Rodux.Any
 	};
 }
 
+/**
+ * @returns The Rodux action to dispatch.
+ */
+export function toggleTradesEnabled(): ToggleTradesEnabled & Rodux.AnyAction {
+	return {
+		type: "toggleTradesEnabled",
+	};
+}
+
 export const defaultSettings: Settings = {
 	autoDelete: {
 		rarities: {

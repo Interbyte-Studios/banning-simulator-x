@@ -63,10 +63,8 @@ export function spinWheelReward(store: Store, rewardIndex: number): void {
 			autoDeleted: false,
 			id: petData.id,
 			guid: HttpService.GenerateGUID(false),
-			rarity: petData.rarity,
 			variant: "regular",
 			method: "hatch",
-			egg: "Starter",
 			tradeLocked: false,
 		});
 

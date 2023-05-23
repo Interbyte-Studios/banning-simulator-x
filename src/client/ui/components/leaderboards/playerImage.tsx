@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 
 /**
  * A component that displays a player's leaderboard image.

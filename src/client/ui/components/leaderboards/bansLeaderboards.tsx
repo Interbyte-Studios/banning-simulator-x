@@ -1,8 +1,8 @@
 import Roact from "@rbxts/roact";
 import { Players, ReplicatedStorage } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
