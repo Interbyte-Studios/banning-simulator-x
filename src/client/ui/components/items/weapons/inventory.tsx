@@ -2,7 +2,8 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService } from "@rbxts/services";
 import { vec2Middle } from "client/ui/commonValues";
-import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import { StoreState } from "shared/rodux";
 import { CurrentWeaponState } from "shared/rodux/currentWeapon";
@@ -62,12 +63,7 @@ export const WeaponItems = RoactRodux.connect(mapStateToProps)(
 		}
 
 		return (
-			<frame
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.975, 0.785)}
-				Position={UDim2.fromScale(0.5, 0.565)}
-			>
+			<BaseFrame Size={UDim2.fromScale(0.975, 0.785)} Position={UDim2.fromScale(0.5, 0.565)}>
 				<RescalingScrollingFrame
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
@@ -93,7 +89,7 @@ export const WeaponItems = RoactRodux.connect(mapStateToProps)(
 					})}
 				</RescalingScrollingFrame>
 				{weaponInfoDisplay}
-			</frame>
+			</BaseFrame>
 		);
 	}),
 );

@@ -1,7 +1,8 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { uiDarkStrokeColor } from "client/ui/commonValues";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
@@ -33,29 +34,24 @@ export const PetsEquippedCounter = RoactRodux.connect(petInventoryCounterMapStat
 	hooks((props: PetInventoryCounterMappedProps) => {
 		return (
 			<>
-				<imagelabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.5, 0.7)}
-					Position={UDim2.fromScale(0.075, 0.5)}
-					Image={assetIds.images.ui.inventory.pets["pet counter icon"]}
-					ScaleType={Enum.ScaleType.Fit}
+				<ImageLabel
+					native={{
+						Size: UDim2.fromScale(0.5, 0.7),
+						Position: UDim2.fromScale(0.075, 0.5),
+						Image: assetIds.images.ui.inventory.pets["pet counter icon"],
+					}}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
-				</imagelabel>
-				<textlabel
-					BackgroundTransparency={1}
-					AnchorPoint={vec2Middle}
-					Size={UDim2.fromScale(0.3, 0.7)}
-					Position={UDim2.fromScale(0.3, 0.5)}
-					Text={`${props.pets.filter((pet) => pet.equipped).size()}/${getMaxPetEquip(props.gamepassesSize)}`}
-					Font={font}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextXAlignment={Enum.TextXAlignment.Left}
-				>
-					<BaseUIStroke native={{ Thickness: 1.25, Color: Color3.fromRGB(0, 41, 128) }} />
-				</textlabel>
+				</ImageLabel>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.3, 0.5),
+						Size: UDim2.fromScale(0.3, 0.7),
+						Text: `${props.pets.filter((pet) => pet.equipped).size()}/${getMaxPetEquip(props.gamepassesSize)}`,
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{ native: { Thickness: 1.25, Color: uiDarkStrokeColor } }}
+				/>
 			</>
 		);
 	}),
@@ -68,29 +64,24 @@ export const InventorySizeCounter = RoactRodux.connect(petInventoryCounterMapSta
 	hooks((props: PetInventoryCounterMappedProps) => {
 		return (
 			<>
-				<imagelabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.5, 0.7)}
-					Position={UDim2.fromScale(0.55, 0.5)}
-					Image={assetIds.images.ui.inventory.pets["inventory size counter icon"]}
-					ScaleType={Enum.ScaleType.Fit}
+				<ImageLabel
+					native={{
+						Size: UDim2.fromScale(0.5, 0.7),
+						Position: UDim2.fromScale(0.55, 0.5),
+						Image: assetIds.images.ui.inventory.pets["inventory size counter icon"],
+					}}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
-				</imagelabel>
-				<textlabel
-					BackgroundTransparency={1}
-					AnchorPoint={vec2Middle}
-					Size={UDim2.fromScale(0.35, 0.7)}
-					Position={UDim2.fromScale(0.8, 0.5)}
-					Text={`${props.pets.size()}/${getPetInventorySize(props.gamepassesSize)}`}
-					Font={font}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextXAlignment={Enum.TextXAlignment.Left}
-				>
-					<BaseUIStroke native={{ Thickness: 1.25, Color: Color3.fromRGB(0, 41, 128) }} />
-				</textlabel>
+				</ImageLabel>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.775, 0.5),
+						Size: UDim2.fromScale(0.3, 0.7),
+						Text: `${props.pets.size()}/${getPetInventorySize(props.gamepassesSize)}`,
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{ native: { Thickness: 1.25, Color: uiDarkStrokeColor } }}
+				/>
 			</>
 		);
 	}),
@@ -101,16 +92,15 @@ export const InventorySizeCounter = RoactRodux.connect(petInventoryCounterMapSta
  */
 export const PetInventoryCounterTopBar = hooks(() => {
 	return (
-		<imagelabel
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Size={UDim2.fromScale(0.4, 0.115)}
-			Position={UDim2.fromScale(0.525, 0.055)}
-			Image={assetIds.images.ui.inventory.pets.topbar}
-			ScaleType={Enum.ScaleType.Fit}
+		<ImageLabel
+			native={{
+				Position: UDim2.fromScale(0.525, 0.055),
+				Size: UDim2.fromScale(0.4, 0.115),
+				Image: assetIds.images.ui.inventory.pets.topbar,
+			}}
 		>
 			<PetsEquippedCounter />
 			<InventorySizeCounter />
-		</imagelabel>
+		</ImageLabel>
 	);
 });

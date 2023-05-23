@@ -1,12 +1,13 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { CollectionService } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
-import { WeaponViewport } from "client/ui/elements/weaponViewport";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
+import { WeaponViewport } from "client/ui/elements/viewports/weaponViewport";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -38,14 +39,7 @@ export const ModifyWeaponLevel = hooks((props: { playerViewing: Player; setActiv
 	const { admin_ModifyWeaponLevel } = useContext(remoteContext);
 
 	const minimizedSize = 0.115;
-	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
 	const maximizedSize = 0.15;
-	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-	const continueMotor = useBindingMotor(hooks, maximizedSize);
-	const retractMotor = useBindingMotor(hooks, maximizedSize);
-	const levelMotor = useBindingMotor(hooks, maximizedSize);
 
 	if (weaponSelected !== undefined && weaponLevel !== undefined) {
 		const weaponData = getWeaponInfo(weaponSelected.id);
@@ -58,28 +52,22 @@ export const ModifyWeaponLevel = hooks((props: { playerViewing: Player; setActiv
 					returnToSelection={(): void => setWeaponLevel(undefined)}
 					displayReturn={true}
 				/>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.2)}
-					Font={font}
-					Text={`Are you sure you want to change the level of "${weaponData.name}" weapon for player: ${props.playerViewing.Name} to: ${weaponLevel}?`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) }} />
-				</textlabel>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.75, 0.675)}
-					Size={continueMotor.binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={assetIds.images.ui.index.Claim}
-					Event={{
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.95, 0.2),
+						Text: `Are you sure you want to change the level of "${weaponData.name}" weapon for player: ${props.playerViewing.Name} to: ${weaponLevel}?`,
+					}}
+					stroke={{
+						native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+					}}
+				/>
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.75, 0.675),
+						Image: assetIds.images.ui.index.Claim,
+					}}
+					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setWeaponLevel(undefined);
@@ -91,60 +79,47 @@ export const ModifyWeaponLevel = hooks((props: { playerViewing: Player; setActiv
 								level: weaponLevel,
 							});
 						},
-						MouseEnter: (): void => continueMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => continueMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={`Yes!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) }} />
-					</textlabel>
-				</imagebutton>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.25, 0.675)}
-					Size={retractMotor.binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={assetIds.images.ui.index.Off}
-					Event={{
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "Yes!",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) },
+						}}
+					/>
+				</SpringImageButton>
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.25, 0.675),
+						Image: assetIds.images.ui.index.Off,
+					}}
+					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setWeaponSelected(undefined);
 							setWeaponLevel(undefined);
 							setModifiedLevel(undefined);
 						},
-						MouseEnter: (): void => retractMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => retractMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={`No!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(140, 28, 104) }} />
-					</textlabel>
-				</imagebutton>
+					<StrokeTextLabel
+						native={{
+							Text: "No!",
+							Size: UDim2.fromScale(0.8, 0.8),
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(140, 28, 104) },
+						}}
+					/>
+				</SpringImageButton>
 			</>
 		);
 	} else if (weaponSelected !== undefined) {
@@ -161,20 +136,17 @@ export const ModifyWeaponLevel = hooks((props: { playerViewing: Player; setActiv
 					}}
 					displayReturn={true}
 				/>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.075)}
-					Font={font}
-					Text={`Modified Level: ${modifiedLevel ?? "(No Input)"}`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) }} />
-				</textlabel>
-				<frame
-					AnchorPoint={vec2Middle}
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.95, 0.075),
+						Text: `Modified Level: ${modifiedLevel ?? "(No Input)"}`,
+					}}
+					stroke={{
+						native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+					}}
+				/>
+				<BaseFrame
+					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 					Position={UDim2.fromScale(0.5, 0.615)}
 					Size={UDim2.fromScale(0.4, 0.125)}
@@ -218,40 +190,35 @@ export const ModifyWeaponLevel = hooks((props: { playerViewing: Player; setActiv
 					>
 						<BaseUIStroke native={{ Thickness: 1.2 }} />
 					</textbox>
-				</frame>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.75)}
-					Size={levelMotor.binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={assetIds.images.ui.index.Claim}
-					Event={{
+				</BaseFrame>
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.5, 0.75),
+						Image: assetIds.images.ui.index.Claim,
+					}}
+					size={{
+						maxSize: maximizedSize,
+						minSize: minimizedSize,
+					}}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setWeaponLevel(modifiedLevel);
 						},
-						MouseEnter: (): void => levelMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => levelMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={`Ok!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) }} />
-					</textlabel>
-				</imagebutton>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "Ok!",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) },
+						}}
+					/>
+				</SpringImageButton>
 			</>
 		);
 	} else {
@@ -292,31 +259,32 @@ export const ModifyWeaponLevel = hooks((props: { playerViewing: Player; setActiv
 						const additionalElements: Array<Roact.Element> = [];
 						if (storedWeapon.level > 1) {
 							additionalElements.push(
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.5, 0.95)}
-									Size={UDim2.fromScale(0.7, 0.2)}
-									Font={font}
-									Text={`Level: ${storedWeapon.level}`}
-									TextScaled={true}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
-								>
-									<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-								</textlabel>,
+								<StrokeTextLabel
+									native={{
+										Position: UDim2.fromScale(0.5, 0.95),
+										Size: UDim2.fromScale(0.7, 0.2),
+										Text: `Level: ${storedWeapon.level}`,
+									}}
+									stroke={{
+										native: { Thickness: 2, Color: Color3.fromRGB(0, 74, 122) },
+									}}
+								/>,
 							);
 						}
 
 						return (
-							<frame BackgroundTransparency={1} LayoutOrder={storedWeapon.id}>
-								<imagebutton
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={0}
-									BackgroundColor3={Color3.fromRGB(46, 115, 179)}
-									Position={UDim2.fromScale(0.5, 0.5)}
-									Size={UDim2.fromScale(0.925, 0.925)}
-									Image={""}
-									Event={{
+							<BaseFrame LayoutOrder={storedWeapon.id}>
+								<SpringImageButton
+									native={{
+										BackgroundTransparency: 0,
+										BackgroundColor3: Color3.fromRGB(46, 115, 179),
+										Size: UDim2.fromScale(0.925, 0.925),
+									}}
+									size={{
+										maxSize: maximizedSize,
+										minSize: minimizedSize,
+									}}
+									events={{
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
 											setWeaponSelected(storedWeapon);
@@ -327,21 +295,19 @@ export const ModifyWeaponLevel = hooks((props: { playerViewing: Player; setActiv
 									<uicorner CornerRadius={new UDim(1, 0)} />
 									<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} />
 									<WeaponViewport weaponId={storedWeapon.id} />
-									<textlabel
-										AnchorPoint={vec2Middle}
-										BackgroundTransparency={1}
-										Size={UDim2.fromScale(1, 0.2)}
-										Position={UDim2.fromScale(0.5, 0.1)}
-										Text={weaponData.name}
-										TextScaled={true}
-										Font={font}
-										TextColor3={Color3.fromRGB(255, 255, 255)}
-									>
-										<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-									</textlabel>
+									<StrokeTextLabel
+										native={{
+											Size: UDim2.fromScale(1, 0.2),
+											Position: UDim2.fromScale(0.5, 0.1),
+											Text: weaponData.name,
+										}}
+										stroke={{
+											native: { Thickness: 2, Color: Color3.fromRGB(0, 74, 122) },
+										}}
+									/>
 									{additionalElements}
-								</imagebutton>
-							</frame>
+								</SpringImageButton>
+							</BaseFrame>
 						);
 					})}
 				</RescalingScrollingFrame>

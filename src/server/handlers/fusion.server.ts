@@ -71,9 +71,7 @@ remotes.Server.Create("requestFusion").SetCallback(
 
 		const newPet: ConfirmedPet = {
 			id: petData.id,
-			rarity: petData.rarity,
 			variant: variant,
-			egg: eggName,
 			method: "fuse",
 			tradeLocked: false,
 			autoDeleted: false,

@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { ContextActionService } from "@rbxts/services";
@@ -16,12 +16,12 @@ import { Hud } from "./components/hud";
 import { ItemInventory } from "./components/items";
 import { Leaderboards } from "./components/leaderboards";
 import { PetMastery } from "./components/petMastery";
-import { Quests } from "./components/quests";
 import { RankUpgrade } from "./components/ranks/menu";
 import { SpinWheel } from "./components/spinWheel";
 import { TalismanLevelUpAnimation } from "./components/talismanLevelUp";
 import { TalismanTowerHandle } from "./components/talismans";
 import { Teleportation } from "./components/teleportation";
+import { Trading } from "./components/trading";
 import { WeaponLevelUpAnimation } from "./components/weaponLevelUp";
 import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
@@ -33,24 +33,21 @@ interface AppProps {
 	store: Store;
 }
 
-/**
- * Creates the Roact app to display.
- *
- * @param props The props to create the app.
- * @param props.player The player to create the app for.
- * @param props.store The store to create the app with.
- * @returns The Roact app to mount.
- */
-export const app = hooks((props: AppProps, { useState, useEffect, useContext }) => {
-	const [questsVisible, setQuestsVisibility] = useState(false);
-	const [teleportationVisible, setTeleportationVisibility] = useState(false);
-	const [weaponShopVisibility, setWeaponShopVisibility] = useState(false);
-	const [talismanTowerVisibility, setTalismanTowerVisibility] = useState(false);
-	const [spinWheelVisibility, setSpinWheelVisibility] = useState(false);
-	const [itemsVisibility, setItemsVisibility] = useState(false);
-	const [autoFightVisibility, setAutoFightVisibility] = useState(false);
-	const [accountHubVisibility, setAccountHubVisibility] = useState(false);
+const visibilityStates = {
+	teleportationVisible: false,
+	weaponShopVisible: false,
+	talismanTowerVisible: false,
+	itemsVisible: false,
+	autoFightVisible: false,
+	accountHubVisible: false,
+	tradingVisible: false,
+	petMasteryVisible: false,
+	spinWheelVisibility: false,
+};
 
+export const app = hooks((props: AppProps, { useState, useCallback, useEffect, useContext }) => {
+	const [visibility, setVisibility] = useState(visibilityStates);
+	const [activeTrade, setActiveTrade] = useState(false);
 	const [isHatching, setHatchingStatus] = useState(false);
 
 	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
@@ -74,171 +71,87 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext }) 
 		);
 	});
 
+	const isMenuVisible = useCallback(
+		(currentMenu?: keyof typeof visibilityStates) =>
+			Object.entries(visibility)
+				.filter(([menu]) => menu !== currentMenu)
+				.some(([, value]) => value) ||
+			activeTrade ||
+			isHatching,
+		[visibility, activeTrade, isHatching],
+	);
+
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
 				<EggsUI
-					visible={
-						!teleportationVisible &&
-						!questsVisible &&
-						!weaponShopVisibility &&
-						!talismanTowerVisibility &&
-						!spinWheelVisibility &&
-						!itemsVisibility &&
-						!autoFightVisibility &&
-						!accountHubVisibility
-					}
+					visible={!isMenuVisible()}
 					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
 				/>
-				<Quests visible={questsVisible} hideMenu={(): void => setQuestsVisibility(false)} />
 				<Hud
-					visible={
-						!isHatching &&
-						!teleportationVisible &&
-						!questsVisible &&
-						!weaponShopVisibility &&
-						!talismanTowerVisibility &&
-						!spinWheelVisibility &&
-						!itemsVisibility &&
-						!autoFightVisibility &&
-						!accountHubVisibility
-					}
-					displayQuests={(): void => setQuestsVisibility(true)}
-					displayTeleportation={(): void => setTeleportationVisibility(true)}
-					displaySpinWheel={(): void => setSpinWheelVisibility(true)}
-					displayItems={(): void => setItemsVisibility(true)}
-					displayAutoFight={(): void => setAutoFightVisibility(true)}
-					displayAccount={(): void => setAccountHubVisibility(true)}
+					visible={!isMenuVisible()}
+					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportationVisible: true })}
+					displayItems={(): void => setVisibility({ ...visibilityStates, itemsVisible: true })}
+					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFightVisible: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHubVisible: true })}
+					displayTradingMenu={(): void => setVisibility({ ...visibilityStates, tradingVisible: true })}
 				/>
 				<WeaponLevelUpAnimation enabled={true} />
 				<TalismanLevelUpAnimation enabled={true} />
 				<LocalMessages />
-				<ZonesUI
-					enabled={
-						!isHatching &&
-						!teleportationVisible &&
-						!questsVisible &&
-						!weaponShopVisibility &&
-						!talismanTowerVisibility &&
-						!spinWheelVisibility &&
-						!itemsVisibility &&
-						!autoFightVisibility &&
-						!accountHubVisibility
-					}
-				/>
-				<WeaponEquip
-					visible={
-						!isHatching &&
-						!teleportationVisible &&
-						!questsVisible &&
-						!weaponShopVisibility &&
-						!talismanTowerVisibility &&
-						!spinWheelVisibility &&
-						!itemsVisibility &&
-						!autoFightVisibility &&
-						!accountHubVisibility
-					}
-				/>
-				<RankUpgrade
-					enabled={
-						!isHatching &&
-						!teleportationVisible &&
-						!questsVisible &&
-						!weaponShopVisibility &&
-						!talismanTowerVisibility &&
-						!spinWheelVisibility &&
-						!itemsVisibility &&
-						!autoFightVisibility &&
-						!accountHubVisibility
-					}
-				/>
+				<ZonesUI enabled={!isMenuVisible()} />
+				<WeaponEquip visible={!isMenuVisible()} />
+				<RankUpgrade enabled={!isMenuVisible()} />
 				<WeaponShopHandle
-					enabled={
-						!isHatching &&
-						!teleportationVisible &&
-						!questsVisible &&
-						!talismanTowerVisibility &&
-						!spinWheelVisibility &&
-						!itemsVisibility &&
-						!autoFightVisibility &&
-						!accountHubVisibility
+					enabled={!isMenuVisible("weaponShopVisible")}
+					weaponShopVisible={visibility.weaponShopVisible}
+					setWeaponShopVisibility={(value: boolean): void =>
+						setVisibility((prev) => ({ ...prev, weaponShopVisible: value }))
 					}
-					weaponShopVisible={weaponShopVisibility}
-					setWeaponShopVisibility={(value: boolean): void => setWeaponShopVisibility(value)}
 				/>
 				<TalismanTowerHandle
-					enabled={
-						!isHatching &&
-						!teleportationVisible &&
-						!questsVisible &&
-						!weaponShopVisibility &&
-						!spinWheelVisibility &&
-						!itemsVisibility &&
-						!autoFightVisibility &&
-						!accountHubVisibility
+					enabled={!isMenuVisible("talismanTowerVisible")}
+					talismanTowerVisible={visibility.talismanTowerVisible}
+					setTalismanTowerVisibility={(value: boolean): void =>
+						setVisibility((prev) => ({ ...prev, talismanTowerVisible: value }))
 					}
-					talismanTowerVisible={talismanTowerVisibility}
-					setTalismanTowerVisibility={(value: boolean): void => setTalismanTowerVisibility(value)}
 				/>
 				<PetMastery
-					enabled={
-						!isHatching &&
-						!teleportationVisible &&
-						!questsVisible &&
-						!weaponShopVisibility &&
-						!talismanTowerVisibility &&
-						!spinWheelVisibility &&
-						!itemsVisibility &&
-						!autoFightVisibility &&
-						!accountHubVisibility
+					enabled={!isMenuVisible("petMasteryVisible")}
+					setPetMasteryVisibility={(value: boolean): void =>
+						setVisibility((prev) => ({ ...prev, petMasteryVisible: value }))
 					}
 				/>
 				<Teleportation
-					enabled={
-						!isHatching &&
-						!questsVisible &&
-						!weaponShopVisibility &&
-						!talismanTowerVisibility &&
-						!spinWheelVisibility &&
-						!itemsVisibility &&
-						!autoFightVisibility &&
-						!accountHubVisibility
-					}
-					visible={teleportationVisible}
-					hideMenu={(): void => setTeleportationVisibility(false)}
+					enabled={!isMenuVisible("teleportationVisible")}
+					visible={visibility.teleportationVisible}
+					hideMenu={(): void => setVisibility((prev) => ({ ...prev, teleportationVisible: false }))}
 				/>
 				<CurrencyGainAnimation />
-				<SpinWheel visible={spinWheelVisibility} hideMenu={(): void => setSpinWheelVisibility(false)} />
 				<ItemInventory
-					enabled={
-						!isHatching &&
-						!questsVisible &&
-						!weaponShopVisibility &&
-						!talismanTowerVisibility &&
-						!autoFightVisibility &&
-						!accountHubVisibility
-					}
-					visible={itemsVisibility}
-					hideMenu={(): void => setItemsVisibility(false)}
+					enabled={!isMenuVisible("itemsVisible")}
+					visible={visibility.itemsVisible}
+					hideMenu={(): void => setVisibility((prev) => ({ ...prev, itemsVisible: false }))}
 				/>
-				<DatastoreEvents
-					enabled={
-						!isHatching && !questsVisible && !weaponShopVisibility && !talismanTowerVisibility && !itemsVisibility
-					}
+				<DatastoreEvents enabled={!isMenuVisible()} />
+				<AutoFight
+					enabled={visibility.autoFightVisible}
+					hideMenu={(): void => setVisibility((prev) => ({ ...prev, autoFightVisible: false }))}
 				/>
-				<AutoFight enabled={autoFightVisibility} hideMenu={(): void => setAutoFightVisibility(false)} />
-				<AccountHub enabled={accountHubVisibility} hideMenu={(): void => setAccountHubVisibility(false)} />
-				<Fusing
-					enabled={
-						!isHatching &&
-						!questsVisible &&
-						!weaponShopVisibility &&
-						!talismanTowerVisibility &&
-						!spinWheelVisibility &&
-						!itemsVisibility &&
-						!autoFightVisibility &&
-						!accountHubVisibility
-					}
+				<AccountHub
+					enabled={visibility.accountHubVisible}
+					hideMenu={(): void => setVisibility((prev) => ({ ...prev, accountHubVisible: false }))}
+				/>
+				<Fusing enabled={!isMenuVisible()} />
+				<Trading
+					tradeMenusEnabled={!isMenuVisible("tradingVisible")}
+					tradeMenusVisible={visibility.tradingVisible}
+					setActiveTrade={(value: boolean): void => setActiveTrade(value)}
+					hideMenu={(): void => setVisibility((prev) => ({ ...prev, tradingVisible: false }))}
+				/>
+				<SpinWheel
+					visible={visibility.spinWheelVisibility}
+					hideMenu={(): void => setVisibility((prev) => ({ ...prev, spinWheelVisibility: false }))}
 				/>
 				<Leaderboards />
 			</>

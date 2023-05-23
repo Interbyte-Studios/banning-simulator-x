@@ -45,6 +45,7 @@ const defaultSettings: SettingsState = {
 	privacy: {
 		publicInventory: true,
 		publicTradeHistory: true,
+		tradesEnabled: true,
 	},
 };
 

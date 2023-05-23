@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
+import { vec2Middle } from "client/ui/commonValues";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import { WORLDS } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
@@ -52,18 +52,19 @@ export const ZoneSelection = hooks((props: { setZone: (zoneName: ZoneNames) => v
 
 	return (
 		<>
-			<textlabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.6, 0.1)}
-				Position={UDim2.fromScale(0.5, 0.225)}
-				Text={"Pick a zone to select pets for fusion"}
-				TextScaled={true}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
-				Font={font}
-			>
-				<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 56, 125) }} />
-			</textlabel>
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.5, 0.225),
+					Size: UDim2.fromScale(0.6, 0.1),
+					Text: "Pick a zone to select pets for fusion",
+				}}
+				stroke={{
+					native: {
+						Thickness: 1.5,
+						Color: Color3.fromRGB(0, 56, 125),
+					},
+				}}
+			/>
 			<RescalingScrollingFrame
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}

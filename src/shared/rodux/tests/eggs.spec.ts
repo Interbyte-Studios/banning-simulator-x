@@ -35,10 +35,8 @@ export = (): void => {
 					autoDeleted: false,
 					id: petId,
 					guid: petGuid,
-					rarity: "Basic",
 					variant: "regular",
 					method: "hatch",
-					egg: "Starter",
 					tradeLocked: false,
 				},
 			]);

@@ -16,6 +16,7 @@ import { settings } from "./settings";
 import { spinWheelDefinition } from "./spinWheel";
 import { spinWheelInfoDefinition } from "./spinWheelnfo";
 import { talismans } from "./talismans";
+import { trading } from "./trading";
 import { unlockRankDefinition } from "./unlockRank";
 import { weapons } from "./weapons";
 
@@ -30,6 +31,7 @@ export const remotes = Net.Definitions.Create({
 	settings: settings,
 	weapons: weapons,
 	talismans: talismans,
+	trades: trading,
 
 	equipTitle: equipTitleDefinition,
 	damageNPC: damageNPCDefinition,

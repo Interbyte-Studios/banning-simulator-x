@@ -1,11 +1,12 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, PolicyService } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -45,12 +46,6 @@ export const Codes = RoactRodux.connect(mapStateToProps)(
 		const maxSize = 0.125;
 		const minSize = 0.1;
 
-		const maximizedSpring = new Flipper.Spring(maxSize, { frequency: 5 });
-		const minimizedSpring = new Flipper.Spring(minSize, { frequency: 5 });
-
-		const codesMotor = useBindingMotor(hooks, maxSize);
-		const discordMotor = useBindingMotor(hooks, maxSize);
-
 		const { useValue, useContext } = hooks;
 		const { redeemCode, verifyDiscord } = useContext(remoteContext);
 		const { addAnnouncement } = useContext(AnnouncementContext);
@@ -67,23 +62,19 @@ export const Codes = RoactRodux.connect(mapStateToProps)(
 		if (discordAvailable.value) {
 			discordComponents.push(
 				<>
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.72, 0.7)}
-						Size={UDim2.fromScale(0.535, 0.2)}
-						Text={"Join our Discord server [https://discord.gg/interbyte] for a permanent 50% experience boost!"}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						Font={font}
-					>
-						<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 56, 125) }} />
-					</textlabel>
-					<frame
-						AnchorPoint={vec2Middle}
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.72, 0.7),
+							Size: UDim2.fromScale(0.535, 0.2),
+							Text: "Join our Discord server [https://discord.gg/interbyte] for a permanent 50% experience boost!",
+						}}
+						stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(0, 56, 125) } }}
+					/>
+					<BaseFrame
 						BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 						Position={UDim2.fromScale(0.65, 0.85)}
 						Size={UDim2.fromScale(0.4, 0.125)}
+						BackgroundTransparency={0}
 					>
 						<uiaspectratioconstraint AspectRatio={7} />
 						<uicorner CornerRadius={new UDim(0.075, 0)} />
@@ -103,17 +94,16 @@ export const Codes = RoactRodux.connect(mapStateToProps)(
 						>
 							<BaseUIStroke native={{ Thickness: 1.2 }} />
 						</textbox>
-					</frame>
-					<imagebutton
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.925, 0.85)}
-						Size={discordMotor.binding.map((value) => {
-							return UDim2.fromScale(value, 1);
-						})}
-						Image={assetIds.images.ui.index.Claim}
-						ScaleType={Enum.ScaleType.Fit}
-						Event={{
+					</BaseFrame>
+
+					<SpringImageButton
+						native={{
+							Position: UDim2.fromScale(0.925, 0.85),
+							Image: assetIds.images.ui.index.Claim,
+							ScaleType: Enum.ScaleType.Fit,
+						}}
+						size={{ minSize: minSize, maxSize: maxSize }}
+						events={{
 							Activated: async (): Promise<void> => {
 								playSFX(UIEngagement.MajorEngagement);
 
@@ -152,24 +142,19 @@ export const Codes = RoactRodux.connect(mapStateToProps)(
 									}
 								}
 							},
-							MouseEnter: (): void => discordMotor.motor.setGoal(minimizedSpring),
-							MouseLeave: (): void => discordMotor.motor.setGoal(maximizedSpring),
 						}}
 					>
 						<uiaspectratioconstraint AspectRatio={2} />
-						<textlabel
-							AnchorPoint={vec2Middle}
-							Position={UDim2.fromScale(0.5, 0.5)}
-							Size={UDim2.fromScale(0.8, 0.8)}
-							BackgroundTransparency={1}
-							TextScaled={true}
-							TextColor3={Color3.fromRGB(255, 255, 255)}
-							Text={"Verify"}
-							Font={font}
-						>
-							<BaseUIStroke native={{ Thickness: 1.2 }} />
-						</textlabel>
-					</imagebutton>
+						<StrokeTextLabel
+							native={{
+								Size: UDim2.fromScale(0.8, 0.8),
+								Text: "Verify",
+							}}
+							stroke={{
+								native: { Thickness: 1.2 },
+							}}
+						/>
+					</SpringImageButton>
 				</>,
 			);
 		}
@@ -184,20 +169,19 @@ export const Codes = RoactRodux.connect(mapStateToProps)(
 				/>
 
 				{/* Codes */}
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.72, 0.365)}
-					Size={UDim2.fromScale(0.535, 0.2)}
-					Text={"Follow @TenrousR, @RealNotNert, and @InterbyteRBLX on Twitter for exclusive codes!"}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Font={font}
-				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 56, 125) }} />
-				</textlabel>
-				<frame
-					AnchorPoint={vec2Middle}
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.72, 0.365),
+						Size: UDim2.fromScale(0.535, 0.2),
+						Text: "Follow @TenrousR, @RealNotNert, and @InterbyteRBLX on Twitter for exclusive codes!",
+					}}
+					stroke={{
+						native: { Thickness: 1.5, Color: Color3.fromRGB(0, 56, 125) },
+					}}
+				/>
+
+				<BaseFrame
+					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 					Position={UDim2.fromScale(0.65, 0.515)}
 					Size={UDim2.fromScale(0.4, 0.125)}
@@ -220,17 +204,16 @@ export const Codes = RoactRodux.connect(mapStateToProps)(
 					>
 						<BaseUIStroke native={{ Thickness: 1.2 }} />
 					</textbox>
-				</frame>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.925, 0.515)}
-					Size={codesMotor.binding.map((value) => {
-						return UDim2.fromScale(value, 1);
-					})}
-					Image={assetIds.images.ui.index.Claim}
-					ScaleType={Enum.ScaleType.Fit}
-					Event={{
+				</BaseFrame>
+
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.925, 0.515),
+						Image: assetIds.images.ui.index.Claim,
+						ScaleType: Enum.ScaleType.Fit,
+					}}
+					size={{ maxSize: maxSize, minSize: minSize }}
+					events={{
 						Activated: async (): Promise<void> => {
 							playSFX(UIEngagement.MajorEngagement);
 
@@ -257,25 +240,17 @@ export const Codes = RoactRodux.connect(mapStateToProps)(
 								}
 							}
 						},
-						MouseEnter: (): void => codesMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => codesMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
-					<textlabel
-						AnchorPoint={vec2Middle}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						BackgroundTransparency={1}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						Text={"Redeem"}
-						Font={font}
-					>
-						<BaseUIStroke native={{ Thickness: 1.2 }} />
-					</textlabel>
-				</imagebutton>
-
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "Redeem",
+						}}
+						stroke={{ native: { Thickness: 1.2 } }}
+					/>
+				</SpringImageButton>
 				{/* Discord */}
 				{discordComponents}
 			</>

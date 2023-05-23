@@ -1,7 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
@@ -47,8 +48,7 @@ export const IndexEggView = RoactRodux.connect(mapStateToProps)(
 	hooks((props: IndexEggViewProps) => {
 		if (props.egg === undefined) {
 			return (
-				<frame
-					AnchorPoint={vec2Middle}
+				<BaseFrame
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 					Position={UDim2.fromScale(0.725, 0.55)}
@@ -56,15 +56,14 @@ export const IndexEggView = RoactRodux.connect(mapStateToProps)(
 				>
 					<uicorner CornerRadius={new UDim(0.1, 0)} />
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
-				</frame>
+				</BaseFrame>
 			);
 		}
 
 		const eggsIndex = props.index.eggs.get(props.egg);
 
 		return (
-			<frame
-				AnchorPoint={vec2Middle}
+			<BaseFrame
 				BackgroundTransparency={0}
 				BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 				Position={UDim2.fromScale(0.725, 0.55)}
@@ -79,7 +78,7 @@ export const IndexEggView = RoactRodux.connect(mapStateToProps)(
 				<RegularEggProgress egg={props.egg} displayPets={props.displayPets} />
 				<VoidEggProgress egg={props.egg} displayPets={props.displayPets} />
 				<RadiantEggProgress egg={props.egg} displayPets={props.displayPets} />
-			</frame>
+			</BaseFrame>
 		);
 	}),
 );

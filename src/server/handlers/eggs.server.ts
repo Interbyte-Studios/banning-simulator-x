@@ -1,10 +1,8 @@
 import { HttpService, Players, ReplicatedStorage } from "@rbxts/services";
 import { addPetToCache } from "server/modules/datastoreCaches/petExistStore";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
-import { rollEnhancement } from "server/modules/pets/rollEnhancement";
 import { getPetPercentages } from "server/util/getPetPercentages";
 import { hatchDebounce } from "shared/configs/eggs";
-import { EnhancePetMetadata } from "shared/configs/enchantments";
 import { Rarities } from "shared/configs/rarities";
 import { remotes } from "shared/remotes";
 import { addEgg } from "shared/rodux/eggs";
@@ -15,6 +13,8 @@ import { getEggData } from "shared/util/getEggData";
 import { getEggsMastery } from "shared/util/getEggsMastery";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
 import { withinDistanceToHatch } from "shared/util/withinDistanceToHatch";
+
+import { getTradeStatus } from "./trading/trades";
 
 const hatchEgg = remotes.Server.GetNamespace("eggs").Create("hatchEgg");
 const hatchTimeCache: Map<Player, number> = new Map();
@@ -28,6 +28,14 @@ hatchEgg.SetCallback(
 		const now = time();
 		const canHatch = now - lastHatchTime > hatchDebounce;
 		if (!canHatch) {
+			return {
+				success: false,
+			};
+		}
+
+		const isTrading = getTradeStatus(player) !== undefined;
+		if (isTrading) {
+			warn("Player is trading, cannot hatch an egg");
 			return {
 				success: false,
 			};
@@ -141,6 +149,7 @@ hatchEgg.SetCallback(
 			}
 
 			// check to see if we should add an enhancement by default to the pet (random chance)
+			/*
 			let selectedEnhancement: EnhancePetMetadata | undefined;
 
 			const randomNumber = new Random().NextInteger(0, 100);
@@ -156,6 +165,7 @@ hatchEgg.SetCallback(
 					};
 				}
 			}
+			*/
 
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			if (pet.rarity === "Prismatic" || pet.rarity === "Primordial") {
@@ -166,11 +176,9 @@ hatchEgg.SetCallback(
 				autoDeleted,
 				id: pet.id,
 				guid: HttpService.GenerateGUID(false),
-				rarity: pet.rarity,
 				variant: isVoid ? "void" : "regular",
 				method: "hatch",
-				egg: eggName,
-				enhancements: { [pet.rarity]: selectedEnhancement },
+				//enhancements: { [pet.rarity]: selectedEnhancement },
 				tradeLocked: false,
 			});
 		}

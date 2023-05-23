@@ -1,6 +1,5 @@
 import Roact from "@rbxts/roact";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { EggName } from "shared/configs/eggs";
 
 /**
@@ -11,17 +10,13 @@ import { EggName } from "shared/configs/eggs";
  */
 export function EggNameView(props: { egg: EggName; isDiscovered: boolean }): Roact.Element {
 	return (
-		<textlabel
-			AnchorPoint={vec2Middle}
-			Position={UDim2.fromScale(0.7, 0.075)}
-			Size={UDim2.fromScale(0.5, 0.1)}
-			BackgroundTransparency={1}
-			TextScaled={true}
-			TextColor3={Color3.fromRGB(255, 255, 255)}
-			Text={props.isDiscovered ? props.egg : "???"}
-			Font={font}
-		>
-			<BaseUIStroke native={{ Thickness: 3 }} />
-		</textlabel>
+		<StrokeTextLabel
+			native={{
+				Position: UDim2.fromScale(0.7, 0.075),
+				Size: UDim2.fromScale(0.5, 0.1),
+				Text: props.isDiscovered ? props.egg : "???",
+			}}
+			stroke={{ native: { Thickness: 3 } }}
+		/>
 	);
 }

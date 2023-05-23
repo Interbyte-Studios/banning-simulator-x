@@ -34,11 +34,9 @@ remotes.Server.GetNamespace("admin")
 				autoDeleted: false,
 				id: isValidPet.id,
 				guid: HttpService.GenerateGUID(false),
-				rarity: isValidPet.rarity,
 				variant: petData.variant,
 				method: "admin",
-				egg: eggName,
-				enhancements: {},
+				//enhancements: {},
 				tradeLocked: true,
 			};
 			targetPlayerStore.dispatch(addPets(cost, currency, [pet]));

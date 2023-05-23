@@ -1,12 +1,13 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { CollectionService } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { PetFrame } from "client/ui/elements/petFrame";
-import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { PetFrame } from "client/ui/elements/common/petFrame";
+import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -46,14 +47,7 @@ export const ModifyPetLevel = hooks((props: { playerViewing: Player; setActiveAc
 	const { admin_ModifyPetLevel } = useContext(remoteContext);
 
 	const minimizedSize = 0.115;
-	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
 	const maximizedSize = 0.15;
-	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-	const continueMotor = useBindingMotor(hooks, maximizedSize);
-	const retractMotor = useBindingMotor(hooks, maximizedSize);
-	const levelMotor = useBindingMotor(hooks, maximizedSize);
 
 	if (petSelected !== undefined && petLevel !== undefined) {
 		const petData = getPetData(petSelected.id);
@@ -66,32 +60,26 @@ export const ModifyPetLevel = hooks((props: { playerViewing: Player; setActiveAc
 					returnToSelection={(): void => setLevel(undefined)}
 					displayReturn={true}
 				/>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.2)}
-					Font={font}
-					Text={`Are you sure you want to change the level of "${
-						petSelected.variant === "radiant" ? "Radiant" : petSelected.variant === "void" ? "Void" : "Regular"
-					} ${petData.name}" pet for player: ${props.playerViewing.Name} to: ${petLevel}? It's rarity is: ${
-						petData.rarity
-					}.`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) }} />
-				</textlabel>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.75, 0.675)}
-					Size={continueMotor.binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={assetIds.images.ui.index.Claim}
-					Event={{
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.95, 0.2),
+						Text: `Are you sure you want to change the level of "${
+							petSelected.variant === "radiant" ? "Radiant" : petSelected.variant === "void" ? "Void" : "Regular"
+						} ${petData.name}" pet for player: ${props.playerViewing.Name} to: ${petLevel}? It's rarity is: ${
+							petData.rarity
+						}.`,
+					}}
+					stroke={{
+						native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+					}}
+				/>
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.75, 0.675),
+						Image: assetIds.images.ui.index.Claim,
+					}}
+					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setPetSelected(undefined);
@@ -104,60 +92,47 @@ export const ModifyPetLevel = hooks((props: { playerViewing: Player; setActiveAc
 								level: petLevel,
 							});
 						},
-						MouseEnter: (): void => continueMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => continueMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={`Yes!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) }} />
-					</textlabel>
-				</imagebutton>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.25, 0.675)}
-					Size={retractMotor.binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={assetIds.images.ui.index.Off}
-					Event={{
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "Yes!",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) },
+						}}
+					/>
+				</SpringImageButton>
+
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.25, 0.675),
+						Image: assetIds.images.ui.index.Off,
+					}}
+					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setPetSelected(undefined);
 							setLevel(undefined);
 							setModifiedLevel(undefined);
 						},
-						MouseEnter: (): void => retractMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => retractMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
-
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={`No!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(140, 28, 104) }} />
-					</textlabel>
-				</imagebutton>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "No!",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(140, 28, 104) },
+						}}
+					/>
+				</SpringImageButton>
 			</>
 		);
 	} else if (petSelected !== undefined) {
@@ -174,20 +149,17 @@ export const ModifyPetLevel = hooks((props: { playerViewing: Player; setActiveAc
 					}}
 					displayReturn={true}
 				/>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.075)}
-					Font={font}
-					Text={`Modified Level: ${modifiedLevel ?? "(No Input)"}`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) }} />
-				</textlabel>
-				<frame
-					AnchorPoint={vec2Middle}
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.95, 0.075),
+						Text: `Modified Level: ${modifiedLevel ?? "(No Input)"}`,
+					}}
+					stroke={{
+						native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+					}}
+				/>
+				<BaseFrame
+					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 					Position={UDim2.fromScale(0.5, 0.615)}
 					Size={UDim2.fromScale(0.4, 0.125)}
@@ -231,40 +203,32 @@ export const ModifyPetLevel = hooks((props: { playerViewing: Player; setActiveAc
 					>
 						<BaseUIStroke native={{ Thickness: 1.2 }} />
 					</textbox>
-				</frame>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.75)}
-					Size={levelMotor.binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={assetIds.images.ui.index.Claim}
-					Event={{
+				</BaseFrame>
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.5, 0.75),
+						Image: assetIds.images.ui.index.Claim,
+					}}
+					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setLevel(modifiedLevel);
 						},
-						MouseEnter: (): void => levelMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => levelMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={`Ok!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) }} />
-					</textlabel>
-				</imagebutton>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "Ok!",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) },
+						}}
+					/>
+				</SpringImageButton>
 			</>
 		);
 	} else if (zoneSelected === undefined) {
@@ -370,7 +334,7 @@ export const ModifyPetLevel = hooks((props: { playerViewing: Player; setActiveAc
 					/>
 					{petsSelection.map((petData) => {
 						return (
-							<frame BackgroundTransparency={1} LayoutOrder={petData.id}>
+							<BaseFrame LayoutOrder={petData.id}>
 								<PetFrame
 									petId={petData.id}
 									petLevel={getPetLevel(petData)}
@@ -382,7 +346,7 @@ export const ModifyPetLevel = hooks((props: { playerViewing: Player; setActiveAc
 										setPetSelected(petData);
 									}}
 								/>
-							</frame>
+							</BaseFrame>
 						);
 					})}
 				</RescalingScrollingFrame>

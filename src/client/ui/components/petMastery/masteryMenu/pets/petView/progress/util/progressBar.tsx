@@ -1,7 +1,9 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { vec2Middle } from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { PET_MASTERY_REQUIREMENTS } from "shared/configs/petMastery";
 import { Variants } from "shared/configs/pets";
@@ -87,18 +89,20 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 		const completionPercentage = potentiallyFinishedChallenges / totalChallenges ?? 0;
 		if (completionPercentage > 0) {
 			completionBarComponent.push(
-				<frame
+				<BaseFrame
+					AnchorPoint={new Vector2(0, 0)}
 					BackgroundTransparency={0}
+					Position={UDim2.fromScale(0, 0)}
 					BackgroundColor3={Color3.fromRGB(130, 245, 166)}
 					Size={UDim2.fromScale(completionPercentage, 1)}
 				>
 					<uicorner CornerRadius={new UDim(0.4, 0)} />
-				</frame>,
+				</BaseFrame>,
 			);
 		}
 
 		return (
-			<frame
+			<BaseFrame
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={0}
 				BackgroundColor3={Color3.fromRGB(250, 158, 158)}
@@ -110,19 +114,14 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 
 				{completionBarComponent}
 
-				<textlabel
-					BackgroundTransparency={1}
-					AnchorPoint={vec2Middle}
-					Size={UDim2.fromScale(1, 1)}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Font={font}
-					Text={`${completionPercentage * 100}%`}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-				>
-					<BaseUIStroke native={{ Thickness: 2 }} />
-				</textlabel>
-			</frame>
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(1, 1),
+						Text: `${completionPercentage * 100}%`,
+					}}
+					stroke={{ native: { Thickness: 2 } }}
+				/>
+			</BaseFrame>
 		);
 	}),
 );

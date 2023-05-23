@@ -1,11 +1,14 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { ReplicatedStorage, UserInputService } from "@rbxts/services";
-import { font, vec2Middle } from "client/ui/commonValues";
+import { uiDarkStrokeColor } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { DamageIcon } from "client/ui/elements/damageIcon";
-import { RarityGradient } from "client/ui/elements/rarityGradient";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { RarityGradient } from "client/ui/elements/gradients/rarityGradient";
+import { DamageIcon } from "client/ui/elements/icons/damageIcon";
 import { hooks } from "client/ui/hooks";
 import { getPetImage } from "client/util/getPetImage";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -20,7 +23,6 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 /**
  * A decal of the pet being viewed in the pet summary.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 const PetView = hooks((props: { storedPet: Pet }, hooks) => {
 	const raisedPosition = 0.4;
 	const raisedSpring = new Flipper.Spring(raisedPosition, { frequency: 5 });
@@ -31,16 +33,20 @@ const PetView = hooks((props: { storedPet: Pet }, hooks) => {
 	const { motor, binding } = useBindingMotor(hooks, normalPosition);
 
 	return (
-		<imagebutton
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={0}
-			Position={UDim2.fromScale(0.185, 0.145)}
-			Size={UDim2.fromScale(0.25, 0.425)}
-			BackgroundColor3={Color3.fromRGB(0, 131, 213)}
-			Image={""}
-			Event={{
+		<ImageButton
+			native={{
+				BackgroundTransparency: 0,
+				Position: UDim2.fromScale(0.185, 0.145),
+				Size: UDim2.fromScale(0.25, 0.425),
+				BackgroundColor3: Color3.fromRGB(0, 131, 213),
+				Image: "",
+			}}
+			events={{
+				// eslint-disable-next-line jsdoc/require-jsdoc
 				Activated: (): void => playSFX(UIEngagement.MinorEngagement),
+				// eslint-disable-next-line jsdoc/require-jsdoc
 				MouseEnter: (): void => motor.setGoal(raisedSpring),
+				// eslint-disable-next-line jsdoc/require-jsdoc
 				MouseLeave: (): void => motor.setGoal(normalSpring),
 			}}
 		>
@@ -48,21 +54,16 @@ const PetView = hooks((props: { storedPet: Pet }, hooks) => {
 			<uicorner CornerRadius={new UDim(1, 0)} />
 			<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.9, 0.9)}
-				Position={binding.map((value) => {
-					return UDim2.fromScale(0.5, value);
-				})}
-				Image={getPetImage(props.storedPet.id, props.storedPet.variant)}
-				ScaleType={Enum.ScaleType.Fit}
-				ImageColor3={Color3.fromRGB(255, 255, 255)}
+			<ImageLabel
+				native={{
+					Size: UDim2.fromScale(0.9, 0.9),
+					Position: binding.map((value) => UDim2.fromScale(0.5, value)),
+					Image: getPetImage(props.storedPet.id, props.storedPet.variant),
+				}}
 			/>
-		</imagebutton>
+		</ImageButton>
 	);
 });
-/* eslint-enable jsdoc/require-jsdoc */
 
 /**
  * Displays a summary of the pet being viewed in the item inventory.
@@ -124,11 +125,6 @@ export const PetSummary = hooks(
 			});
 			connections.push(mouseConnection);
 
-			if (UserInputService.TouchEnabled) {
-				const touchConnection = UserInputService.TouchPan.Connect((touchPositions) => {});
-				connections.push(touchConnection);
-			}
-
 			return (): void => connections.forEach((conn) => conn.Disconnect());
 		}, []);
 
@@ -137,18 +133,15 @@ export const PetSummary = hooks(
 		if (existAmount !== undefined) {
 			if (typeIs(existAmount, "number")) {
 				existingCounter.push(
-					<textlabel
-						AnchorPoint={vec2Middle}
-						Position={UDim2.fromScale(0.375, 0.6)}
-						Size={UDim2.fromScale(0.675, 0.1)}
-						BackgroundTransparency={1}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 170, 255)}
-						Text={`⭐ ${twoDpAbbreviator.numberToString(existAmount)} Exist`}
-						Font={font}
-					>
-						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(111, 74, 111) }} />
-					</textlabel>,
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.375, 0.6),
+							Size: UDim2.fromScale(0.675, 0.1),
+							TextColor3: Color3.fromRGB(255, 170, 255),
+							Text: `⭐ ${twoDpAbbreviator.numberToString(existAmount)} Exist`,
+						}}
+						stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(111, 74, 111) } }}
+					/>,
 				);
 			}
 		}
@@ -164,122 +157,104 @@ export const PetSummary = hooks(
 			>
 				<uiaspectratioconstraint AspectRatio={0.845} />
 				<PetView storedPet={props.storedPet} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.625, 0.125)}
-					Position={UDim2.fromScale(0.635, 0.075)}
-					Text={petData.name}
-					TextScaled={true}
-					Font={font}
-					TextColor3={
-						petData.rarity === "Epic" ||
-						petData.rarity === "Legendary" ||
-						petData.rarity === "Primordial" ||
-						petData.rarity === "Prismatic"
-							? rarityData.BeginningColor
-							: Color3.fromRGB(255, 255, 255)
-					}
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.625, 0.125),
+						Position: UDim2.fromScale(0.635, 0.075),
+						Text: petData.name,
+						TextColor3:
+							petData.rarity === "Epic" ||
+							petData.rarity === "Legendary" ||
+							petData.rarity === "Primordial" ||
+							petData.rarity === "Prismatic"
+								? rarityData.BeginningColor
+								: Color3.fromRGB(255, 255, 255),
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
 				>
 					<RarityGradient Rarity={petData.rarity} />
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.625, 0.1)}
-					Position={UDim2.fromScale(0.635, 0.2)}
-					Text={petData.rarity}
-					TextScaled={true}
-					Font={font}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
+				</StrokeTextLabel>
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.625, 0.1),
+						Position: UDim2.fromScale(0.635, 0.2),
+						Text: petData.rarity,
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
 				>
 					<RarityGradient Rarity={petData.rarity} />
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.625, 0.1)}
-					Position={UDim2.fromScale(0.35, 0.3)}
-					Text={`Level: ${petLevel >= 1 ? petLevel : 1}`}
-					TextScaled={true}
-					TextXAlignment={Enum.TextXAlignment.Left}
-					Font={font}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.745, 0.4)}
-					Size={UDim2.fromScale(0.35, 0.1)}
-					BackgroundTransparency={1}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(230, 64, 64)}
-					Text={twoDpAbbreviator.numberToString(getPetStrength(props.storedPet))}
-					TextXAlignment={Enum.TextXAlignment.Left}
-					Font={font}
+				</StrokeTextLabel>
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.625, 0.1),
+						Position: UDim2.fromScale(0.35, 0.3),
+						Text: `Level: ${petLevel >= 1 ? petLevel : 1}`,
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+				/>
+
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.735, 0.4),
+						Size: UDim2.fromScale(0.35, 0.1),
+						TextColor3: Color3.fromRGB(230, 64, 64),
+						Text: twoDpAbbreviator.numberToString(getPetStrength(props.storedPet)),
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(105, 0, 0) } }}
 				>
 					<DamageIcon
 						anchorPoint={new Vector2(0, 0.5)}
 						position={UDim2.fromScale(-0.35, 0.5)}
 						size={{ minimizedSize: 0.9, maximizedSize: 1 }}
 					/>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(105, 0, 0) }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.625, 0.1)}
-					Position={UDim2.fromScale(0.35, 0.4)}
-					Text={`Damage:`}
-					TextScaled={true}
-					Font={font}
-					TextXAlignment={Enum.TextXAlignment.Left}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.485, 0.5)}
-					Size={UDim2.fromScale(0.9, 0.08)}
-					BackgroundTransparency={1}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Text={
-						props.storedPet.variant !== "radiant" ? `${tostring(petData.chance)}% Hatch Chance` : `Cannot be hatched.`
-					}
-					TextXAlignment={Enum.TextXAlignment.Left}
-					Font={font}
-				>
-					<BaseUIStroke native={{ Thickness: 1.75 }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.5, 0.8)}
-					Size={UDim2.fromScale(0.675, 0.1)}
-					BackgroundTransparency={1}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(230, 64, 64)}
-					Text={"Enhancement"}
-					Font={font}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(105, 0, 0) }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.5, 0.9)}
-					Size={UDim2.fromScale(0.675, 0.075)}
-					BackgroundTransparency={1}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(252, 252, 252)}
-					Text={"Coming Soon"}
-					Font={font}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>
+				</StrokeTextLabel>
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.625, 0.1),
+						Position: UDim2.fromScale(0.35, 0.4),
+						Text: `Damage:`,
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+				/>
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.9, 0.08),
+						Position: UDim2.fromScale(0.485, 0.5),
+						Text:
+							props.storedPet.variant !== "radiant"
+								? `${tostring(petData.chance)}% Hatch Chance`
+								: `Cannot be hatched.`,
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{ native: { Thickness: 1.75 } }}
+				/>
+
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.8),
+						Size: UDim2.fromScale(0.675, 0.1),
+						TextColor3: Color3.fromRGB(230, 64, 64),
+						Text: "Enhancement",
+					}}
+					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(105, 0, 0) } }}
+				/>
+
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.9),
+						Size: UDim2.fromScale(0.675, 0.075),
+						Text: "Coming Soon",
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+				/>
 				{existingCounter}
 			</imagelabel>
 		);

@@ -1,11 +1,9 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService } from "@rbxts/services";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { hooks } from "client/ui/hooks";
+import { getIsTrading } from "client/modules/isTradingCache";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
@@ -50,113 +48,97 @@ function mapStateToProps(state: StoreState): HatchEggMappedProps {
 /**
  * Roact imagebutton component to hatch an egg.
  */
-/* eslint-disable jsdoc/require-jsdoc */
-export const HatchEggButton = RoactRodux.connect(mapStateToProps)(
-	hooks((props: HatchEggProps, hooks) => {
-		const player = Players.LocalPlayer;
+export const HatchEggButton = RoactRodux.connect(mapStateToProps)((props: HatchEggProps): Roact.Element => {
+	const player = Players.LocalPlayer;
+	return (
+		<SpringImageButton
+			native={{
+				Position: UDim2.fromScale(0.35, 0.75),
+				Image: assetIds.images.buttons["purple button"],
+			}}
+			size={{ minSize: 0.1, maxSize: 0.12 }}
+			events={{
+				// eslint-disable-next-line jsdoc/require-jsdoc
+				Activated: async (): Promise<void> => {
+					playSFX(UIEngagement.MajorEngagement);
 
-		const maxButtonSize = 0.12;
-		const minButtonSize = 0.1;
+					if (props.autoActive) {
+						const character = player.Character;
+						if (character === undefined) {
+							return;
+						}
 
-		const maximizedSpring = new Flipper.Spring(maxButtonSize, { frequency: 5 });
-		const minimizedSpring = new Flipper.Spring(minButtonSize, { frequency: 5 });
+						const humanoid = character.FindFirstChildOfClass("Humanoid");
+						if (humanoid === undefined) {
+							return;
+						}
 
-		const { motor, binding } = useBindingMotor(hooks, maxButtonSize);
+						RunService.BindToRenderStep("autoHatch", Enum.RenderPriority.Last.Value, async () => {
+							if (!AnimateEggs.canHatchEgg()) {
+								return;
+							}
 
-		return (
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.35, 0.75)}
-				Size={binding.map((value) => {
-					return UDim2.fromScale(0.15, value);
-				})}
-				Image={assetIds.images.buttons["purple button"]}
-				ScaleType={Enum.ScaleType.Fit}
-				Event={{
-					Activated: async (): Promise<void> => {
-						playSFX(UIEngagement.MajorEngagement);
+							if (getIsTrading()) {
+								RunService.UnbindFromRenderStep("autoHatch");
+								return;
+							}
 
-						if (props.autoActive) {
 							const character = player.Character;
 							if (character === undefined) {
+								RunService.UnbindFromRenderStep("autoHatch");
 								return;
 							}
 
 							const humanoid = character.FindFirstChildOfClass("Humanoid");
 							if (humanoid === undefined) {
-								return;
-							}
-
-							RunService.BindToRenderStep("autoHatch", Enum.RenderPriority.Last.Value, async () => {
-								if (!AnimateEggs.canHatchEgg()) {
-									return;
-								}
-
-								const character = player.Character;
-								if (character === undefined) {
-									RunService.UnbindFromRenderStep("autoHatch");
-									return;
-								}
-
-								const humanoid = character.FindFirstChildOfClass("Humanoid");
-								if (humanoid === undefined) {
-									RunService.UnbindFromRenderStep("autoHatch");
-									return;
-								}
-
-								await props.initiateHatch(1, props.eggName, props.isVoid);
-							});
-
-							const movementConnection = humanoid.GetPropertyChangedSignal("MoveDirection").Connect(() => {
 								RunService.UnbindFromRenderStep("autoHatch");
-								movementConnection.Disconnect();
-								return;
-							});
-
-							const diedConnection = humanoid.Died.Connect(() => {
-								RunService.UnbindFromRenderStep("autoHatch");
-								diedConnection.Disconnect();
-								return;
-							});
-						} else {
-							if (!AnimateEggs.canHatchEgg()) {
 								return;
 							}
 
 							await props.initiateHatch(1, props.eggName, props.isVoid);
+						});
+
+						const movementConnection = humanoid.GetPropertyChangedSignal("MoveDirection").Connect(() => {
+							RunService.UnbindFromRenderStep("autoHatch");
+							movementConnection.Disconnect();
+							return;
+						});
+
+						const diedConnection = humanoid.Died.Connect(() => {
+							RunService.UnbindFromRenderStep("autoHatch");
+							diedConnection.Disconnect();
+							return;
+						});
+					} else {
+						if (!AnimateEggs.canHatchEgg()) {
+							return;
 						}
-					},
-					MouseEnter: (): void => motor.setGoal(minimizedSpring),
-					MouseLeave: (): void => motor.setGoal(maximizedSpring),
+
+						if (getIsTrading()) {
+							return;
+						}
+
+						await props.initiateHatch(1, props.eggName, props.isVoid);
+					}
+				},
+			}}
+		>
+			<StrokeTextLabel
+				native={{
+					Size: UDim2.fromScale(1, 1),
+					Text: "E",
 				}}
+				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(122, 54, 133) }, isBillboard: true }}
 			>
-				<textlabel
-					BackgroundTransparency={1}
-					AnchorPoint={vec2Middle}
-					Size={UDim2.fromScale(1, 1)}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Text={"E"}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Font={font}
-				>
-					<BaseUIStroke isBillboard={true} native={{ Thickness: 2, Color: Color3.fromRGB(122, 54, 133) }} />
-					<textlabel
-						BackgroundTransparency={1}
-						AnchorPoint={vec2Middle}
-						Size={UDim2.fromScale(1, 0.4)}
-						Position={UDim2.fromScale(0.5, 0.95)}
-						Text={"Hatch"}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						Font={font}
-					>
-						<BaseUIStroke isBillboard={true} native={{ Thickness: 2, Color: Color3.fromRGB(122, 54, 133) }} />
-					</textlabel>
-				</textlabel>
-			</imagebutton>
-		);
-	}),
-);
-/* eslint-enable jsdoc/require-jsdoc */
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.95),
+						Size: UDim2.fromScale(1, 0.4),
+						Text: "Hatch",
+					}}
+					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(122, 54, 133) }, isBillboard: true }}
+				/>
+			</StrokeTextLabel>
+		</SpringImageButton>
+	);
+});

@@ -1,8 +1,10 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Players, PolicyService, RunService } from "@rbxts/services";
-import { udim2BottomRight, udim2Middle, vec2Middle } from "client/ui/commonValues";
+import { Players, PolicyService } from "@rbxts/services";
+import { getIsTrading } from "client/modules/isTradingCache";
+import { udim2BottomRight } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { EggName, hatchDebounce } from "shared/configs/eggs";
 import { StoreState } from "shared/rodux";
@@ -86,17 +88,23 @@ export const EggsUI = RoactRodux.connect(mapStateToProps)(
 			<EggCost />,
 			<EggHud
 				initiateHatch={async (amount: 1 | 2 | 3, egg: EggName, isVoid: boolean): Promise<void> => {
-					if (regionalRegulationsEnforced) {
-						addAnnouncement(`Hatching pets is regulated by your country. Sorry!`, AnnouncementType.Error);
-						return;
-					}
-
 					// verify that player has waited long enough to hatch
 					const lastHatchTime = hatchTimeCache.get(player) ?? 0;
 
 					const now = time();
 					const canHatch = now - lastHatchTime > hatchDebounce;
 					if (!canHatch) {
+						return;
+					}
+
+					// make sure they aren't trading
+					if (getIsTrading()) {
+						return;
+					}
+
+					// make sure their region (country) allows them to hatch eggs!
+					if (regionalRegulationsEnforced) {
+						addAnnouncement(`Hatching pets is regulated by your country. Sorry!`, AnnouncementType.Error);
 						return;
 					}
 
@@ -181,11 +189,7 @@ export const EggsUI = RoactRodux.connect(mapStateToProps)(
 			);
 		}
 
-		return (
-			<frame AnchorPoint={vec2Middle} Position={udim2Middle} Size={udim2BottomRight} BackgroundTransparency={1}>
-				{children}
-			</frame>
-		);
+		return <BaseFrame Size={udim2BottomRight}>{children}</BaseFrame>;
 	}),
 );
 /* eslint-enable jsdoc/require-jsdoc */

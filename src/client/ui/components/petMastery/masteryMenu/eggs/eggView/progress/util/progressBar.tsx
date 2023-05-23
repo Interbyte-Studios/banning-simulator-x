@@ -1,7 +1,8 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
@@ -13,6 +14,7 @@ import {
 	voidVariantMasteryData,
 } from "shared/rodux/petMastery";
 import { getEggData } from "shared/util/getEggData";
+import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
 interface ProgressBarProps extends RegularEggProgressMappedProps {
 	egg: EggName;
@@ -118,26 +120,27 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 		const completionBarComponent: Array<Roact.Element> = [];
 
 		if (completionPercentage > 0) {
-			if (completionPercentage < 1) {
+			if (completionPercentage > 1) {
 				completionPercentage = 1;
 			}
 
-			completionBarComponent.push(
-				<frame
-					AnchorPoint={vec2Middle}
+			const completionElement = (
+				<BaseFrame
+					AnchorPoint={new Vector2(0, 0)}
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(130, 245, 166)}
 					Size={UDim2.fromScale(completionPercentage, 1)}
-					Position={UDim2.fromScale(0, 0.5)}
+					Position={UDim2.fromScale(0, 0)}
 				>
 					<uicorner CornerRadius={new UDim(0.4, 0)} />
-				</frame>,
+				</BaseFrame>
 			);
+
+			completionBarComponent.push(completionElement);
 		}
 
 		return (
-			<frame
-				AnchorPoint={vec2Middle}
+			<BaseFrame
 				BackgroundTransparency={0}
 				BackgroundColor3={Color3.fromRGB(250, 158, 158)}
 				Size={UDim2.fromScale(0.9, 0.06)}
@@ -148,19 +151,14 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 
 				{completionBarComponent}
 
-				<textlabel
-					BackgroundTransparency={1}
-					AnchorPoint={vec2Middle}
-					Size={UDim2.fromScale(1, 1)}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Font={font}
-					Text={`${completionPercentage * 100}%`}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-				>
-					<BaseUIStroke native={{ Thickness: 2 }} />
-				</textlabel>
-			</frame>
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(1, 1),
+						Text: `${statsAbbreviator.numberToString(completionPercentage * 100)}%`,
+					}}
+					stroke={{ native: { Thickness: 2 } }}
+				/>
+			</BaseFrame>
 		);
 	}),
 );

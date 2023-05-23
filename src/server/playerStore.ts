@@ -25,6 +25,7 @@ import { defaultRank } from "shared/rodux/rank";
 import { defaultSettings } from "shared/rodux/settings";
 import { defaultSpinWheel } from "shared/rodux/spinWheel";
 import { defaultTalismans } from "shared/rodux/talismans";
+import { defaultTradeLogs } from "shared/rodux/tradeLogs";
 import { defaultWeaponsState } from "shared/rodux/weapons";
 import { defaultWorlds } from "shared/rodux/worlds";
 import { getOrSetDefault } from "shared/util/getOrSetDefault";
@@ -62,6 +63,7 @@ const profileTemplate: StoreState = {
 	petTeams: defaultPetTeamsState,
 	index: defaultPlayerIndex,
 	devProducts: defaultDevProductState,
+	tradeLogs: defaultTradeLogs,
 };
 
 /**
@@ -134,7 +136,12 @@ function onPlayerAdded(player: Player): void {
  */
 export function retrieveStore(player: Player): Store {
 	const store = stores.get(player);
-	assert(store, `Failed to retrieve rodux store for player ${player.Name}`);
+
+	// we don't use `assert` here as luau will early evaluate player.Name
+	// which is not set for mock players
+	if (store === undefined) {
+		throw `Failed to retrieve rodux store for player ${player.Name}`;
+	}
 
 	return store;
 }

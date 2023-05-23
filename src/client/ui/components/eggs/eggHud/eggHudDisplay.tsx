@@ -2,8 +2,10 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService } from "@rbxts/services";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { CurrencyIcon } from "client/ui/elements/currencyIcon";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
@@ -16,8 +18,7 @@ import { getEggCost } from "shared/util/getEggCost";
 import { getEggsMastery } from "shared/util/getEggsMastery";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
-import { font, vec2Middle } from "../../../commonValues";
-import { PetFrame } from "../../../elements/petFrame";
+import { PetFrame } from "../../../elements/common/petFrame";
 import { HatchEggButton } from "./hatchEgg";
 import { ToggleAutoHatchButton } from "./toggleAutoHatch";
 import { TripleHatchEggButton } from "./tripleHatchEgg";
@@ -124,28 +125,25 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 				<HatchEggButton eggName={props.eggName} isVoid={props.isVoid} initiateHatch={props.initiateHatch} />
 				<TripleHatchEggButton eggName={props.eggName} isVoid={props.isVoid} initiateHatch={props.initiateHatch} />
 				<ToggleAutoHatchButton petsSize={props.pets.size()} />
-				<imagelabel
-					BackgroundTransparency={1}
-					AnchorPoint={vec2Middle}
-					Size={props.pets.size() <= 6 ? UDim2.fromScale(0.5, 0.3) : UDim2.fromScale(0.5, 0.4)}
-					Position={props.pets.size() <= 6 ? UDim2.fromScale(0.5, 0.525) : UDim2.fromScale(0.5, 0.485)}
-					Image={assetIds.images.ui.egg.background}
+
+				<ImageLabel
+					native={{
+						Size: props.pets.size() <= 6 ? UDim2.fromScale(0.5, 0.3) : UDim2.fromScale(0.5, 0.4),
+						Position: props.pets.size() <= 6 ? UDim2.fromScale(0.5, 0.525) : UDim2.fromScale(0.5, 0.485),
+						Image: assetIds.images.ui.egg.background,
+						ScaleType: Enum.ScaleType.Stretch,
+					}}
 				>
-					<textlabel
-						BackgroundTransparency={1}
-						AnchorPoint={vec2Middle}
-						Size={UDim2.fromScale(0.9, 0.175)}
-						Position={UDim2.fromScale(0.5, 0)}
-						Text={`${props.eggName} Egg`}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						TextScaled={true}
-						Font={font}
-					>
-						<BaseUIStroke native={{ Thickness: 2.5 }} />
-					</textlabel>
-					<frame
-						BackgroundTransparency={1}
-						AnchorPoint={vec2Middle}
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.9, 0.175),
+							Position: UDim2.fromScale(0.5, 0),
+							Text: `${props.eggName} Egg`,
+						}}
+						stroke={{ native: { Thickness: 2.5 } }}
+					/>
+
+					<BaseFrame
 						Size={props.pets.size() <= 6 ? UDim2.fromScale(0.925, 0.85) : UDim2.fromScale(0.925, 0.825)}
 						Position={props.pets.size() <= 6 ? UDim2.fromScale(0.5, 0.55) : UDim2.fromScale(0.5, 0.525)}
 					>
@@ -158,6 +156,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 							VerticalAlignment={Enum.VerticalAlignment.Top}
 							SortOrder={Enum.SortOrder.LayoutOrder}
 						/>
+
 						{Object.values(props.pets).map((petInfo) => {
 							if (petInfo.rarity === "Prismatic" || petInfo.rarity === "Primordial") {
 								return <></>;
@@ -189,26 +188,28 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 								/>
 							);
 						})}
-					</frame>
-					<textlabel
-						BackgroundTransparency={1}
-						Position={props.pets.size() <= 6 ? UDim2.fromScale(0.425, 0.825) : UDim2.fromScale(0.425, 0.84)}
-						Size={props.pets.size() <= 6 ? UDim2.fromScale(0.5, 0.15) : UDim2.fromScale(0.5, 0.115)}
-						Text={twoDpAbbreviator.numberToString(eggCost.amount)}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						TextScaled={true}
-						TextXAlignment={Enum.TextXAlignment.Left}
-						Font={font}
+					</BaseFrame>
+
+					<StrokeTextLabel
+						native={{
+							Position: props.pets.size() <= 6 ? UDim2.fromScale(0.65, 0.9) : UDim2.fromScale(0.65, 0.91),
+							Size: props.pets.size() <= 6 ? UDim2.fromScale(0.3, 0.15) : UDim2.fromScale(0.3, 0.125),
+							Text: twoDpAbbreviator.numberToString(eggCost.amount),
+							TextXAlignment: Enum.TextXAlignment.Left,
+						}}
+						stroke={{
+							native: { Thickness: 2.5, Color: Color3.fromRGB(255, 255, 255) },
+							currencyGradient: eggCost.currencyType,
+						}}
 					>
-						<BaseUIStroke native={{ Thickness: 2.5 }} />
 						<CurrencyIcon
 							anchorPoint={new Vector2(1, 0.5)}
 							position={UDim2.fromScale(-0.03, 0.5)}
 							size={{ minimizedSize: 0.9, maximizedSize: 1 }}
 							currency={eggCost.currencyType}
 						/>
-					</textlabel>
-				</imagelabel>
+					</StrokeTextLabel>
+				</ImageLabel>
 			</billboardgui>
 		);
 	}),

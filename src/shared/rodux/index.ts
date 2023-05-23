@@ -21,6 +21,7 @@ import { SettingsActions, settingsReducer, SettingsState } from "./settings";
 import { SpinWheelActions, spinWheelReducer, SpinWheelState } from "./spinWheel";
 import { TalismanActions, talismanReducer, TalismansState } from "./talismans";
 import { TitleActions, titleReducer, TitleState } from "./title";
+import { TradeLogActions, tradeLogsReducer, TradeLogsState } from "./tradeLogs";
 import { WeaponsActions, weaponsReducer, WeaponsState } from "./weapons";
 import { WorldActions, worldsReducer, WorldsState } from "./worlds";
 
@@ -48,6 +49,7 @@ export type StoreState = {
 	spinWheel: SpinWheelState;
 	petTeams: PetTeamsState;
 	devProducts: DevProductState;
+	tradeLogs: TradeLogsState;
 };
 export type StoreActions = (
 	| AccoladeActions
@@ -71,6 +73,7 @@ export type StoreActions = (
 	| PetTeamsActions
 	| PlayerIndexActions
 	| DevProductActions
+	| TradeLogActions
 ) &
 	Rodux.AnyAction;
 
@@ -98,6 +101,7 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	spinWheel: spinWheelReducer,
 	petTeams: petTeamsReducer,
 	devProducts: devProductReducer,
+	tradeLogs: tradeLogsReducer,
 });
 
 export type Store = Rodux.Store<StoreState, StoreActions>;

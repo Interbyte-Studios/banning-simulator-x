@@ -2,6 +2,7 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { ContextActionService, MarketplaceService, Players, RunService, Workspace } from "@rbxts/services";
+import { getIsTrading } from "client/modules/isTradingCache";
 import { hooks } from "client/ui/hooks";
 import { EggName, EGGS } from "shared/configs/eggs";
 import { GAMEPASSES } from "shared/configs/game";
@@ -40,12 +41,10 @@ const player = Players.LocalPlayer;
  *
  * @param amount The amount of eggs to hatch.
  * @param initiateHatch The function to hatch the egg.
- * @param ownsTripleHatch Whether or not the player owns the triple hatch gamepass.
  */
 async function hatchClosestEgg(
 	amount: 1 | 3,
 	initiateHatch: (amount: 1 | 3, egg: EggName, isVoid: boolean) => Promise<void>,
-	ownsTripleHatch: boolean,
 ): Promise<void> {
 	const character = player.Character;
 	if (character === undefined) {
@@ -93,9 +92,7 @@ async function hatchClosestEgg(
 		return;
 	}
 
-	if (amount === 3 && !ownsTripleHatch) {
-		MarketplaceService.PromptGamePassPurchase(player, GAMEPASSES["Triple Hatch"]);
-		RunService.UnbindFromRenderStep("autoHatchAction");
+	if (getIsTrading()) {
 		return;
 	}
 
@@ -127,8 +124,18 @@ async function manageEggHatch(
 			return;
 		}
 
+		if (amount === 3 && !ownsTripleHatch) {
+			MarketplaceService.PromptGamePassPurchase(player, GAMEPASSES["Triple Hatch"]);
+			return;
+		}
+
 		RunService.BindToRenderStep("autoHatchAction", Enum.RenderPriority.Last.Value, async () => {
 			if (!AnimateEggs.canHatchEgg()) {
+				return;
+			}
+
+			if (getIsTrading()) {
+				RunService.UnbindFromRenderStep("autoHatchAction");
 				return;
 			}
 
@@ -144,7 +151,7 @@ async function manageEggHatch(
 				return;
 			}
 
-			await hatchClosestEgg(amount, initiateHatch, ownsTripleHatch);
+			await hatchClosestEgg(amount, initiateHatch);
 		});
 
 		const movementConnection = humanoid.GetPropertyChangedSignal("MoveDirection").Connect(() => {
@@ -163,7 +170,11 @@ async function manageEggHatch(
 			return;
 		}
 
-		await hatchClosestEgg(amount, initiateHatch, ownsTripleHatch);
+		if (getIsTrading()) {
+			return;
+		}
+
+		await hatchClosestEgg(amount, initiateHatch);
 	}
 }
 

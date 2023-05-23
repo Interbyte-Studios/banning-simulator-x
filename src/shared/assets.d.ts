@@ -430,6 +430,10 @@ declare namespace assetIds {
 			Error: string;
 		};
 		ui: {
+			trading: {
+				TradeBackground: string;
+				playerSelection: string;
+			};
 			egg: {
 				background: string;
 				"pet frame": string;
@@ -576,17 +580,17 @@ declare namespace assetIds {
 				"entry background": string;
 			};
 			account: {
-				boostsMastery: string;
-				tradeHistory: string;
-				editCharacter: string;
+				Accolades: string;
+				accountMastery: string;
 				background: string;
 				banMastery: string;
-				Accolades: string;
-				statsBackground: string;
+				boostsMastery: string;
+				editCharacter: string;
 				fusingMastery: string;
-				accountMastery: string;
 				hatchingMastery: string;
 				rankMastery: string;
+				statsBackground: string;
+				tradeHistory: string;
 			};
 		};
 		ranks: {

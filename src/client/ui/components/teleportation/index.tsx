@@ -1,9 +1,10 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { ExitButton } from "client/ui/elements/exitButton";
-import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
+import { uiHeaderStrokeColor, uiTextStrokeColor, vec2Middle } from "client/ui/commonValues";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { ExitButton } from "client/ui/elements/common/exitButton";
+import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { WorldName, WORLDS } from "shared/configs/worlds";
@@ -53,41 +54,31 @@ export const Teleportation = hooks((props: TeleportationProps, { useState, useVa
 		}
 
 		return (
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.5, 0.675)}
-				Image={assetIds.images.ui.teleportation.background}
-				ScaleType={Enum.ScaleType.Fit}
+			<ImageLabel
+				native={{
+					Size: UDim2.fromScale(0.5, 0.675),
+					Image: assetIds.images.ui.teleportation.background,
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1.163} />
 
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.063)}
-					Size={UDim2.fromScale(0.425, 0.11)}
-					Font={font}
-					Text={`Teleport`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(165, 90, 7) }} />
-				</textlabel>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.063),
+						Size: UDim2.fromScale(0.425, 0.11),
+						Text: `Teleport`,
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiHeaderStrokeColor } }}
+				/>
 
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.2)}
-					Size={UDim2.fromScale(0.4, 0.075)}
-					Font={font}
-					Text={`Select a Zone`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 109, 177) }} />
-				</textlabel>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.2),
+						Size: UDim2.fromScale(0.4, 0.075),
+						Text: `Select a Zone`,
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
+				/>
 
 				<RescalingScrollingFrame
 					AnchorPoint={vec2Middle}
@@ -114,45 +105,35 @@ export const Teleportation = hooks((props: TeleportationProps, { useState, useVa
 					maximizedSize={0.1}
 					onClosed={(): void => props.hideMenu()}
 				/>
-			</imagelabel>
+			</ImageLabel>
 		);
 	} else {
 		return (
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.5, 0.675)}
-				Image={assetIds.images.ui.teleportation.background}
-				ScaleType={Enum.ScaleType.Fit}
+			<ImageLabel
+				native={{
+					Size: UDim2.fromScale(0.5, 0.675),
+					Image: assetIds.images.ui.teleportation.background,
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1.163} />
 
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.063)}
-					Size={UDim2.fromScale(0.425, 0.11)}
-					Font={font}
-					Text={`Teleport`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(165, 90, 7) }} />
-				</textlabel>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.063),
+						Size: UDim2.fromScale(0.425, 0.11),
+						Text: `Teleport`,
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiHeaderStrokeColor } }}
+				/>
 
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.2)}
-					Size={UDim2.fromScale(0.4, 0.075)}
-					Font={font}
-					Text={`Select a World`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 109, 177) }} />
-				</textlabel>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.2),
+						Size: UDim2.fromScale(0.4, 0.075),
+						Text: `Select a World`,
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
+				/>
 
 				<RescalingScrollingFrame
 					AnchorPoint={vec2Middle}
@@ -185,7 +166,7 @@ export const Teleportation = hooks((props: TeleportationProps, { useState, useVa
 					maximizedSize={0.1}
 					onClosed={(): void => props.hideMenu()}
 				/>
-			</imagelabel>
+			</ImageLabel>
 		);
 	}
 });

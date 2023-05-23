@@ -1,12 +1,13 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { CollectionService } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
 import { font, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { CurrencyIcon } from "client/ui/elements/currencyIcon";
-import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
+import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -16,7 +17,8 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { FullComponentHeader } from "../util/fullComponentHeader";
 
-const MAX_ADMIN_CURRENCY = 500000000000000;
+const MAX_ADMIN_CURRENCY = 5e18;
+const MIN_ADMIN_CURRENCY = -5e18;
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAction: () => void }, hooks) => {
@@ -40,14 +42,7 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 	const { admin_ModifyCurrency } = useContext(remoteContext);
 
 	const minimizedSize = 0.115;
-	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
 	const maximizedSize = 0.15;
-	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-	const continueMotor = useBindingMotor(hooks, maximizedSize);
-	const retractMotor = useBindingMotor(hooks, maximizedSize);
-	const levelMotor = useBindingMotor(hooks, maximizedSize);
 
 	if (currencySelected !== undefined && currencyAmount !== undefined) {
 		return (
@@ -58,30 +53,28 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 					returnToSelection={(): void => setCurrencyAmount(undefined)}
 					displayReturn={true}
 				/>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.2)}
-					Font={font}
-					Text={`Are you sure you want to change the give ${props.playerViewing.Name} ${twoDpAbbreviator.numberToString(
-						currencyAmount,
-					)} ${currencySelected}?`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.95, 0.2),
+						Text: `Are you sure you want to change the give ${
+							props.playerViewing.Name
+						} ${twoDpAbbreviator.numberToString(currencyAmount)} ${currencySelected}?`,
+					}}
+					stroke={{
+						native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+					}}
 				>
 					<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) }} />
-				</textlabel>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.75, 0.675)}
-					Size={continueMotor.binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={assetIds.images.ui.index.Claim}
-					Event={{
+				</StrokeTextLabel>
+
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.75, 0.675),
+						Image: assetIds.images.ui.index.Claim,
+					}}
+					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setCurrencyAmount(undefined);
@@ -90,60 +83,46 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 							props.setActiveAction();
 							admin_ModifyCurrency.SendToServer(props.playerViewing.UserId, currencySelected, currencyAmount);
 						},
-						MouseEnter: (): void => continueMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => continueMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.95, 0.2),
+							Text: "Yes",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+						}}
+					/>
+				</SpringImageButton>
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={`Yes!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) }} />
-					</textlabel>
-				</imagebutton>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.25, 0.675)}
-					Size={retractMotor.binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={assetIds.images.ui.index.Off}
-					Event={{
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.25, 0.675),
+						Image: assetIds.images.ui.index.footerNotice,
+					}}
+					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setCurrencyAmount(undefined);
 							setCurrencySelected(undefined);
 							setModifiedAmount(undefined);
 						},
-						MouseEnter: (): void => retractMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => retractMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
-
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={`No!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(140, 28, 104) }} />
-					</textlabel>
-				</imagebutton>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.95, 0.2),
+							Text: "No",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+						}}
+					/>
+				</SpringImageButton>
 			</>
 		);
 	} else if (currencySelected !== undefined) {
@@ -158,22 +137,19 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 					}}
 					displayReturn={true}
 				/>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.075)}
-					Font={font}
-					Text={`Currency Amount: ${
-						modifiedAmount !== undefined ? twoDpAbbreviator.numberToString(modifiedAmount) : "(No Input)"
-					}`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) }} />
-				</textlabel>
-				<frame
-					AnchorPoint={vec2Middle}
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.95, 0.075),
+						Text: `Currency Amount: ${
+							modifiedAmount !== undefined ? twoDpAbbreviator.numberToString(modifiedAmount) : "(No Input)"
+						}`,
+					}}
+					stroke={{
+						native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+					}}
+				/>
+				<BaseFrame
+					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 					Position={UDim2.fromScale(0.5, 0.615)}
 					Size={UDim2.fromScale(0.4, 0.125)}
@@ -211,46 +187,43 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 									}
 
 									setModifiedAmount(MAX_ADMIN_CURRENCY);
+								} else if (roundedNumber < MIN_ADMIN_CURRENCY) {
+									if (modifiedAmount === MIN_ADMIN_CURRENCY) {
+										return;
+									}
+
+									setModifiedAmount(MIN_ADMIN_CURRENCY);
 								} else setModifiedAmount(roundedNumber);
 							},
 						}}
 					>
 						<BaseUIStroke native={{ Thickness: 1.2 }} />
 					</textbox>
-				</frame>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.75)}
-					Size={levelMotor.binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={assetIds.images.ui.index.Claim}
-					Event={{
+				</BaseFrame>
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.5, 0.75),
+						Image: assetIds.images.ui.index.Claim,
+					}}
+					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setCurrencyAmount(modifiedAmount);
 						},
-						MouseEnter: (): void => levelMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => levelMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
-
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={`Ok!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) }} />
-					</textlabel>
-				</imagebutton>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "Ok!",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) },
+						}}
+					/>
+				</SpringImageButton>
 			</>
 		);
 	} else {
@@ -287,15 +260,16 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 					/>
 					{currencies.map((currencyName) => {
 						return (
-							<frame BackgroundTransparency={1}>
-								<imagebutton
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={0}
-									BackgroundColor3={Color3.fromRGB(46, 115, 179)}
-									Position={UDim2.fromScale(0.5, 0.5)}
-									Size={UDim2.fromScale(0.925, 0.925)}
-									Image={""}
-									Event={{
+							<BaseFrame>
+								<SpringImageButton
+									native={{
+										BackgroundTransparency: 0,
+										BackgroundColor3: Color3.fromRGB(46, 115, 179),
+										Image: "",
+										Size: UDim2.fromScale(0.925, 0.925),
+									}}
+									size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+									events={{
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
 											setCurrencySelected(currencyName);
@@ -311,20 +285,18 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 										size={UDim2.fromScale(0.9, 0.9)}
 										currency={currencyName}
 									/>
-									<textlabel
-										AnchorPoint={vec2Middle}
-										BackgroundTransparency={1}
-										Size={UDim2.fromScale(1, 0.2)}
-										Position={UDim2.fromScale(0.5, 0.1)}
-										Text={currencyName}
-										TextScaled={true}
-										Font={font}
-										TextColor3={Color3.fromRGB(255, 255, 255)}
-									>
-										<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-									</textlabel>
-								</imagebutton>
-							</frame>
+									<StrokeTextLabel
+										native={{
+											Size: UDim2.fromScale(1, 0.2),
+											Position: UDim2.fromScale(0.5, 0.1),
+											Text: currencyName,
+										}}
+										stroke={{
+											native: { Thickness: 2, Color: Color3.fromRGB(0, 74, 122) },
+										}}
+									/>
+								</SpringImageButton>
+							</BaseFrame>
 						);
 					})}
 				</RescalingScrollingFrame>

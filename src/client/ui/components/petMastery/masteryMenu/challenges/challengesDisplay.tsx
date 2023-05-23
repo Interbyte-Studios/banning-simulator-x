@@ -1,10 +1,11 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, vec2Middle } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -20,33 +21,9 @@ import { PetAttainMethod } from "shared/rodux/pets";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
 import { getPetData } from "shared/util/getPetData";
 
-interface PetMasteryChallengesProps extends PetMasteryChallengesMappedProps {
-	pet: number;
-	variant: Variants;
-}
-
-interface PetMasteryChallengesMappedProps {
-	index: PlayerIndexState;
-	petMastery: PetMasteryState;
-}
-
-/**
- * Maps the Rodux store's state to the props.
- *
- * @param state The current store state.
- * @returns The mapped props to render with.
- */
-function mapStateToProps(state: StoreState): PetMasteryChallengesMappedProps {
-	return {
-		index: state.index,
-		petMastery: state.petMastery,
-	};
-}
-
 /**
  * Displays a mastery challenge.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 const MasteryChallengeFrame = hooks(
 	(
 		props: {
@@ -54,7 +31,7 @@ const MasteryChallengeFrame = hooks(
 			rarity: Rarities;
 			variant: Variants;
 			number: 1 | 2 | 3;
-			challengeType: Exclude<PetAttainMethod, "admin">;
+			challengeType: Exclude<PetAttainMethod, "admin" | "trade">;
 			requirement: number;
 			amount: number;
 			progress: number;
@@ -90,14 +67,6 @@ const MasteryChallengeFrame = hooks(
 				? `Reach max level ${props.requirement} times.`
 				: `Fuse ${props.requirement} times.`;
 
-		const minimizedSize = 0.45;
-		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-		const maximizedSize = 0.5;
-		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-		const { motor, binding } = useBindingMotor(hooks, maximizedSize);
-
 		const { useContext } = hooks;
 		const { claimPetMastery } = useContext(remoteContext);
 		const { addAnnouncement } = useContext(AnnouncementContext);
@@ -119,8 +88,8 @@ const MasteryChallengeFrame = hooks(
 		const boostImage = BOOST_IMAGES[petMasteryReward.boost][petMasteryReward.duration];
 
 		return (
-			<frame
-				AnchorPoint={vec2Middle}
+			<BaseFrame
+				BackgroundTransparency={0}
 				Size={UDim2.fromScale(1, 0.3)}
 				LayoutOrder={props.number}
 				BackgroundColor3={Color3.fromRGB(0, 131, 213)}
@@ -130,8 +99,8 @@ const MasteryChallengeFrame = hooks(
 				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(9, 95, 148) }} />
 
 				{/* The number index of the mastery challenge. */}
-				<frame
-					AnchorPoint={vec2Middle}
+				<BaseFrame
+					BackgroundTransparency={0}
 					BackgroundColor3={challengeColor}
 					Position={UDim2.fromScale(0.08, 0.5)}
 					Size={UDim2.fromScale(0.175, 1)}
@@ -140,33 +109,26 @@ const MasteryChallengeFrame = hooks(
 					<uicorner CornerRadius={new UDim(0.18, 0)} />
 					<BaseUIStroke native={{ Thickness: 1.8, Color: challengeStroke }} />
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.9, 0.9)}
-						Font={font}
-						Text={`${props.number}.`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.5, Color: challengeStroke }} />
-					</textlabel>
-				</frame>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.9, 0.9),
+							Text: `${props.number}.`,
+						}}
+						stroke={{ native: { Thickness: 1.5, Color: challengeStroke } }}
+					/>
+				</BaseFrame>
 
 				{/* The claim button for the mastery. */}
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.9, 0.7)}
-					Size={binding.map((value) => {
-						return UDim2.fromScale(0.2, value);
-					})}
-					Image={assetIds.images.ui.index.Claim}
-					ScaleType={Enum.ScaleType.Fit}
-					ImageColor3={!props.hasBeenClaimed ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(149, 149, 149)}
-					Visible={!props.hasBeenClaimed}
-					Event={{
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.9, 0.7),
+						Image: assetIds.images.ui.index.Claim,
+						ImageColor3: !props.hasBeenClaimed ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(149, 149, 149),
+						Visible: !props.hasBeenClaimed,
+					}}
+					size={{ minSize: 0.45, maxSize: 0.5 }}
+					events={{
+						/* eslint-disable jsdoc/require-jsdoc */
 						Activated: async (): Promise<void> => {
 							playSFX(UIEngagement.MajorEngagement);
 
@@ -234,98 +196,75 @@ const MasteryChallengeFrame = hooks(
 								}
 							}
 						},
-						MouseEnter: (): void => motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => motor.setGoal(maximizedSpring),
+						/* eslint-enable jsdoc/require-jsdoc */
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.9, 0.9)}
-						Font={font}
-						Text={`Claim`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.6, Color: Color3.fromRGB(40, 94, 48) }} />
-					</textlabel>
-				</imagebutton>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.9, 0.9),
+							Text: "Claim",
+						}}
+						stroke={{ native: { Thickness: 1.6, Color: Color3.fromRGB(40, 94, 48) } }}
+					/>
+				</SpringImageButton>
 
-				<imagelabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.85, 0.2)}
-					Size={UDim2.fromScale(0.2, 0.4)}
-					Image={boostImage}
-					ScaleType={Enum.ScaleType.Fit}
-					ImageColor3={!props.hasBeenClaimed ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(149, 149, 149)}
+				<ImageLabel
+					native={{
+						Position: UDim2.fromScale(0.85, 0.2),
+						Size: UDim2.fromScale(0.2, 0.4),
+						Image: boostImage,
+						ImageColor3: !props.hasBeenClaimed ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(149, 149, 149),
+					}}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
-				</imagelabel>
+				</ImageLabel>
 
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.94, 0.2)}
-					Size={UDim2.fromScale(0.1, 0.35)}
-					Font={font}
-					Text={boostRewardTime}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextXAlignment={Enum.TextXAlignment.Left}
-				>
-					<BaseUIStroke native={{ Thickness: 1.5 }} />
-				</textlabel>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.94, 0.2),
+						Size: UDim2.fromScale(0.1, 0.35),
+						Text: boostRewardTime,
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{ native: { Thickness: 1.5 } }}
+				/>
 
 				{/* Informs the player that they've claimed the mastery already. */}
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.9, 0.5)}
-					Size={UDim2.fromScale(0.175, 0.3)}
-					Font={font}
-					Text={"Claimed"}
-					TextScaled={true}
-					Visible={props.hasBeenClaimed}
-					TextColor3={Color3.fromRGB(146, 253, 129)}
-				>
-					<BaseUIStroke native={{ Thickness: 1, Color: Color3.fromRGB(40, 94, 48) }} />
-				</textlabel>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.9, 0.5),
+						Size: UDim2.fromScale(0.175, 0.3),
+						Text: "Claimed",
+						Visible: props.hasBeenClaimed,
+						TextColor3: Color3.fromRGB(146, 253, 129),
+					}}
+					stroke={{ native: { Thickness: 1, Color: Color3.fromRGB(40, 94, 48) } }}
+				/>
 
 				{/* The name of the mastery challenge. */}
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.475, 0.2)}
-					Size={UDim2.fromScale(0.6, 0.35)}
-					Font={font}
-					Text={masteryChallengeName}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 1.6, Color: challengeStroke }} />
-				</textlabel>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.475, 0.2),
+						Size: UDim2.fromScale(0.6, 0.35),
+						Text: masteryChallengeName,
+					}}
+					stroke={{ native: { Thickness: 1.6, Color: challengeStroke } }}
+				/>
 
 				{/* The description of the mastery challenge. */}
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.49, 0.515)}
-					Size={UDim2.fromScale(0.625, 0.3)}
-					Font={font}
-					Text={masteryDescription}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 1.6, Color: challengeStroke }} />
-				</textlabel>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.49, 0.515),
+						Size: UDim2.fromScale(0.625, 0.3),
+						Text: masteryDescription,
+					}}
+					stroke={{ native: { Thickness: 1.6, Color: challengeStroke } }}
+				/>
 
 				{/* The progress bar indicating how close they are to completing the mastery */}
-				<frame
-					AnchorPoint={vec2Middle}
+				<BaseFrame
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(250, 108, 110)}
 					Size={UDim2.fromScale(0.625, 0.2)}
@@ -334,37 +273,56 @@ const MasteryChallengeFrame = hooks(
 					<uicorner CornerRadius={new UDim(0.6, 0)} />
 					<BaseUIStroke native={{ Thickness: 2.4, Color: Color3.fromRGB(163, 70, 72) }} />
 
-					<frame
+					<BaseFrame
+						AnchorPoint={new Vector2(0, 0)}
+						Position={UDim2.fromScale(0, 0)}
 						BackgroundTransparency={0}
 						BackgroundColor3={Color3.fromRGB(130, 245, 166)}
 						Size={UDim2.fromScale(props.progress, 1)}
 					>
 						<uicorner CornerRadius={new UDim(0.4, 0)} />
 						<BaseUIStroke native={{ Thickness: 2.4, Color: Color3.fromRGB(44, 126, 102) }} />
-					</frame>
+					</BaseFrame>
 
-					<textlabel
-						BackgroundTransparency={1}
-						AnchorPoint={vec2Middle}
-						Size={UDim2.fromScale(1, 1)}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Font={font}
-						Text={
-							props.amount < props.requirement
-								? `${props.amount} / ${props.requirement}`
-								: `${props.requirement} / ${props.requirement}`
-						}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						TextScaled={true}
-					>
-						<BaseUIStroke native={{ Thickness: 2 }} />
-					</textlabel>
-				</frame>
-			</frame>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(1, 1),
+							Text:
+								props.amount < props.requirement
+									? `${props.amount} / ${props.requirement}`
+									: `${props.requirement} / ${props.requirement}`,
+						}}
+						stroke={{ native: { Thickness: 2 } }}
+					/>
+				</BaseFrame>
+			</BaseFrame>
 		);
 	},
 );
 /* eslint-enable jsdoc/require-jsdoc */
+
+interface PetMasteryChallengesProps extends PetMasteryChallengesMappedProps {
+	pet: number;
+	variant: Variants;
+}
+
+interface PetMasteryChallengesMappedProps {
+	index: PlayerIndexState;
+	petMastery: PetMasteryState;
+}
+
+/**
+ * Maps the Rodux store's state to the props.
+ *
+ * @param state The current store state.
+ * @returns The mapped props to render with.
+ */
+function mapStateToProps(state: StoreState): PetMasteryChallengesMappedProps {
+	return {
+		index: state.index,
+		petMastery: state.petMastery,
+	};
+}
 
 /**
  * Displays the mastery challenges for the pet.
@@ -385,18 +343,14 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 		const challengesToDisplay: Array<Roact.Element> = [];
 		if (petsIndex === undefined) {
 			return (
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.8, 0.2)}
-					Position={UDim2.fromScale(0.5, 0.55)}
-					Font={font}
-					Text={"You haven't discovered this pet."}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 1 }} />
-				</textlabel>
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.8, 0.2),
+						Position: UDim2.fromScale(0.5, 0.55),
+						Text: "You haven't discovered this pet.",
+					}}
+					stroke={{ native: { Thickness: 1 } }}
+				/>
 			);
 		}
 
@@ -674,19 +628,14 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 		}
 
 		return (
-			<frame
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.63)}
-				Size={UDim2.fromScale(0.975, 0.65)}
-			>
+			<BaseFrame Position={UDim2.fromScale(0.5, 0.63)} Size={UDim2.fromScale(0.975, 0.65)}>
 				<uilistlayout
 					Padding={new UDim(0.05, 0)}
 					SortOrder={Enum.SortOrder.LayoutOrder}
 					HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				/>
 				{challengesToDisplay}
-			</frame>
+			</BaseFrame>
 		);
 	}),
 );

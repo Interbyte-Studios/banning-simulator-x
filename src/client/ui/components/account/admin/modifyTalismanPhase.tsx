@@ -1,13 +1,14 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { CollectionService } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
-import { TalismanGradient } from "client/ui/elements/talismanGradient";
-import { TalismanViewport } from "client/ui/elements/talismanViewport";
+import { vec2Middle } from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
+import { TalismanGradient } from "client/ui/elements/gradients/talismanGradient";
+import { TalismanViewport } from "client/ui/elements/viewports/talismanViewport";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -41,14 +42,7 @@ export const ModifyTalismanPhase = hooks((props: { playerViewing: Player; setAct
 	const { admin_ModifyTalismanLevel } = useContext(remoteContext);
 
 	const minimizedSize = 0.115;
-	const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
 	const maximizedSize = 0.15;
-	const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-	const continueMotor = useBindingMotor(hooks, maximizedSize);
-	const retractMotor = useBindingMotor(hooks, maximizedSize);
-	const levelMotor = useBindingMotor(hooks, maximizedSize);
 
 	if (talismanSelected !== undefined && talismanPhase !== undefined) {
 		const talismanData = getWeaponInfo(talismanSelected.id);
@@ -61,28 +55,22 @@ export const ModifyTalismanPhase = hooks((props: { playerViewing: Player; setAct
 					returnToSelection={(): void => setTalismanPhase(undefined)}
 					displayReturn={true}
 				/>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.2)}
-					Font={font}
-					Text={`Are you sure you want to change the phase of "${talismanData.name}" talisman for player: ${props.playerViewing.Name} to: ${talismanPhase}?`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) }} />
-				</textlabel>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.75, 0.675)}
-					Size={continueMotor.binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={assetIds.images.ui.index.Claim}
-					Event={{
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.95, 0.2),
+						Text: `Are you sure you want to change the phase of "${talismanData.name}" talisman for player: ${props.playerViewing.Name} to: ${talismanPhase}?`,
+					}}
+					stroke={{
+						native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+					}}
+				/>
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.75, 0.675),
+						Image: assetIds.images.ui.index.Claim,
+					}}
+					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setTalismanSelected(undefined);
@@ -94,60 +82,47 @@ export const ModifyTalismanPhase = hooks((props: { playerViewing: Player; setAct
 								phase: talismanPhase,
 							});
 						},
-						MouseEnter: (): void => continueMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => continueMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={`Yes!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) }} />
-					</textlabel>
-				</imagebutton>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.25, 0.675)}
-					Size={retractMotor.binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={assetIds.images.ui.index.Off}
-					Event={{
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "Yes!",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) },
+						}}
+					/>
+				</SpringImageButton>
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.25, 0.675),
+						Image: assetIds.images.ui.index.Off,
+					}}
+					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setModifiedPhase(undefined);
 							setTalismanPhase(undefined);
 							setTalismanSelected(undefined);
 						},
-						MouseEnter: (): void => retractMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => retractMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={`No!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(140, 28, 104) }} />
-					</textlabel>
-				</imagebutton>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "No!",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(140, 28, 104) },
+						}}
+					/>
+				</SpringImageButton>
 			</>
 		);
 	} else if (talismanSelected !== undefined) {
@@ -162,132 +137,135 @@ export const ModifyTalismanPhase = hooks((props: { playerViewing: Player; setAct
 					}}
 					displayReturn={true}
 				/>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.35)}
-					Size={UDim2.fromScale(0.95, 0.075)}
-					Font={font}
-					Text={`Modified Level: ${modifiedPhase ?? "(No Input)"}`}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) }} />
-				</textlabel>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundColor3={Color3.fromRGB(0, 131, 213)}
-					Position={UDim2.fromScale(0.5, 0.465)}
-					Size={UDim2.fromScale(0.4, 0.125)}
-					Image={""}
-					Event={{
-						Activated: (): void => setModifiedPhase("normal"),
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.35),
+						Size: UDim2.fromScale(0.95, 0.075),
+						Text: `Modified Level: ${modifiedPhase ?? "(No Input)"}`,
+					}}
+					stroke={{
+						native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+					}}
+				/>
+				<SpringImageButton
+					native={{
+						BackgroundTransparency: 0,
+						BackgroundColor3: Color3.fromRGB(0, 131, 213),
+						Size: UDim2.fromScale(0.4, 0.125),
+					}}
+					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+					events={{
+						Activated: (): void => {
+							setModifiedPhase("normal");
+						},
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={7} />
 					<uicorner CornerRadius={new UDim(0.075, 0)} />
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(19, 81, 128) }} />
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={"Normal"}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "Normal",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+						}}
 					>
 						<TalismanGradient phase={"normal"} />
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) }} />
-					</textlabel>
-				</imagebutton>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundColor3={Color3.fromRGB(0, 131, 213)}
-					Position={UDim2.fromScale(0.5, 0.58)}
-					Size={UDim2.fromScale(0.4, 0.125)}
-					Image={""}
-					Event={{
-						Activated: (): void => setModifiedPhase("awakend"),
+					</StrokeTextLabel>
+				</SpringImageButton>
+				<SpringImageButton
+					native={{
+						BackgroundTransparency: 0,
+						BackgroundColor3: Color3.fromRGB(0, 131, 213),
+						Size: UDim2.fromScale(0.4, 0.125),
+					}}
+					size={{
+						maxSize: maximizedSize,
+						minSize: minimizedSize,
+					}}
+					events={{
+						Activated: (): void => {
+							setModifiedPhase("awakend");
+						},
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={7} />
 					<uicorner CornerRadius={new UDim(0.075, 0)} />
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(19, 81, 128) }} />
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={"Awakend"}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "Awakend",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+						}}
 					>
 						<TalismanGradient phase={"awakend"} />
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) }} />
-					</textlabel>
-				</imagebutton>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundColor3={Color3.fromRGB(0, 131, 213)}
-					Position={UDim2.fromScale(0.5, 0.695)}
-					Size={UDim2.fromScale(0.4, 0.125)}
-					Image={""}
-					Event={{
-						Activated: (): void => setModifiedPhase("artifact"),
+					</StrokeTextLabel>
+				</SpringImageButton>
+				<SpringImageButton
+					native={{
+						BackgroundTransparency: 0,
+						BackgroundColor3: Color3.fromRGB(0, 131, 213),
+						Position: UDim2.fromScale(0.5, 0.695),
+						Size: UDim2.fromScale(0.4, 0.125),
+					}}
+					size={{
+						maxSize: maximizedSize,
+						minSize: minimizedSize,
+					}}
+					events={{
+						Activated: (): void => {
+							setModifiedPhase("artifact");
+						},
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={7} />
 					<uicorner CornerRadius={new UDim(0.075, 0)} />
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(19, 81, 128) }} />
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={"Artifact"}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "Artifact",
+						}}
+						stroke={{
+							native: {
+								Thickness: 1.755,
+								Color: Color3.fromRGB(0, 56, 125),
+							},
+						}}
 					>
 						<TalismanGradient phase={"artifact"} />
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) }} />
-					</textlabel>
-				</imagebutton>
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.825)}
-					Size={levelMotor.binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					ScaleType={Enum.ScaleType.Fit}
-					Image={assetIds.images.ui.index.Claim}
-					Event={{
+					</StrokeTextLabel>
+				</SpringImageButton>
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.5, 0.825),
+						Image: assetIds.images.ui.index.Claim,
+					}}
+					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setTalismanPhase(modifiedPhase);
 						},
-						MouseEnter: (): void => levelMotor.motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => levelMotor.motor.setGoal(maximizedSpring),
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={2} />
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.8)}
-						Font={font}
-						Text={`Ok!`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) }} />
-					</textlabel>
-				</imagebutton>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "Ok!",
+						}}
+						stroke={{
+							native: { Thickness: 1.755, Color: Color3.fromRGB(23, 154, 77) },
+						}}
+					/>
+				</SpringImageButton>
 			</>
 		);
 	} else {
@@ -327,40 +305,35 @@ export const ModifyTalismanPhase = hooks((props: { playerViewing: Player; setAct
 
 						const additionalElements: Array<Roact.Element> = [];
 						if (storedTalisman.phase !== "normal") {
-							const capitalizedPhaseName =
-								storedTalisman.phase === "artifact"
-									? "Artifact"
-									: storedTalisman.phase === "awakend"
-									? "Awakend"
-									: "Normal";
+							const phaseName = storedTalisman.phase;
+							const capitalizedPhaseName = string.upper(phaseName.sub(1, 1)) + phaseName.sub(2, phaseName.size());
 
 							additionalElements.push(
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.5, 0.95)}
-									Size={UDim2.fromScale(0.7, 0.2)}
-									Font={font}
-									Text={capitalizedPhaseName}
-									TextScaled={true}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
+								<StrokeTextLabel
+									native={{
+										Position: UDim2.fromScale(0.5, 0.95),
+										Size: UDim2.fromScale(0.7, 0.2),
+										Text: capitalizedPhaseName,
+									}}
+									stroke={{
+										native: { Thickness: 2, Color: Color3.fromRGB(0, 74, 122) },
+									}}
 								>
 									<TalismanGradient phase={storedTalisman.phase} />
-									<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-								</textlabel>,
+								</StrokeTextLabel>,
 							);
 						}
 
 						return (
-							<frame BackgroundTransparency={1} LayoutOrder={storedTalisman.id}>
-								<imagebutton
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={0}
-									BackgroundColor3={Color3.fromRGB(46, 115, 179)}
-									Position={UDim2.fromScale(0.5, 0.5)}
-									Size={UDim2.fromScale(0.925, 0.925)}
-									Image={""}
-									Event={{
+							<BaseFrame LayoutOrder={storedTalisman.id}>
+								<SpringImageButton
+									native={{
+										BackgroundTransparency: 0,
+										BackgroundColor3: Color3.fromRGB(46, 115, 179),
+										Size: UDim2.fromScale(0.925, 0.925),
+									}}
+									size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+									events={{
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
 											setTalismanSelected(storedTalisman);
@@ -371,21 +344,19 @@ export const ModifyTalismanPhase = hooks((props: { playerViewing: Player; setAct
 									<uicorner CornerRadius={new UDim(1, 0)} />
 									<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} />
 									<TalismanViewport talismanId={storedTalisman.id} phase={storedTalisman.phase} />
-									<textlabel
-										AnchorPoint={vec2Middle}
-										BackgroundTransparency={1}
-										Size={UDim2.fromScale(1, 0.2)}
-										Position={UDim2.fromScale(0.5, 0.1)}
-										Text={talismanData.name}
-										TextScaled={true}
-										Font={font}
-										TextColor3={Color3.fromRGB(255, 255, 255)}
-									>
-										<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-									</textlabel>
+									<StrokeTextLabel
+										native={{
+											Position: UDim2.fromScale(0.5, 0.1),
+											Size: UDim2.fromScale(1, 0.2),
+											Text: talismanData.name,
+										}}
+										stroke={{
+											native: { Thickness: 2, Color: Color3.fromRGB(0, 74, 122) },
+										}}
+									/>
 									{additionalElements}
-								</imagebutton>
-							</frame>
+								</SpringImageButton>
+							</BaseFrame>
 						);
 					})}
 				</RescalingScrollingFrame>

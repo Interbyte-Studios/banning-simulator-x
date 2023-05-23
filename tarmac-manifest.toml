@@ -2438,6 +2438,16 @@ hash = "480144a08fa8c88e7fd21d3993ea3d1352b57a748a244e3d208fa7fb13f3bb8f"
 id = 11702142633
 packable = false
 
+[inputs."images/ui/trading/TradeBackground.png"]
+hash = "0b746f74550c2d7e5f2ac98043ff67f6d4bb599c05404b96b4878140b24e6d0e"
+id = 12921311196
+packable = false
+
+[inputs."images/ui/trading/playerSelection.png"]
+hash = "e9fbd483aa7be551c4d21c137dfe83631134c5dead916365146afb7153de0155"
+id = 12921311319
+packable = false
+
 [inputs."images/ui/update log/background.png"]
 hash = "83918558c9d3e5e60b1b8905cb9a545684fd35c17913a89e6d5b69b32ba64e4e"
 id = 11585613205

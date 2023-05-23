@@ -1,7 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { hooks } from "client/ui/hooks";
 import { Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
@@ -48,8 +49,7 @@ export const IndexPetView = RoactRodux.connect(mapStateToProps)(
 	hooks((props: IndexEggViewProps) => {
 		if (props.pet === undefined) {
 			return (
-				<frame
-					AnchorPoint={vec2Middle}
+				<BaseFrame
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 					Position={UDim2.fromScale(0.725, 0.55)}
@@ -57,7 +57,7 @@ export const IndexPetView = RoactRodux.connect(mapStateToProps)(
 				>
 					<uicorner CornerRadius={new UDim(0.1, 0)} />
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
-				</frame>
+				</BaseFrame>
 			);
 		}
 
@@ -68,8 +68,7 @@ export const IndexPetView = RoactRodux.connect(mapStateToProps)(
 		const petsIndex = props.index.pets.get(stringId);
 
 		return (
-			<frame
-				AnchorPoint={vec2Middle}
+			<BaseFrame
 				BackgroundTransparency={0}
 				BackgroundColor3={Color3.fromRGB(0, 131, 213)}
 				Position={UDim2.fromScale(0.725, 0.55)}
@@ -95,7 +94,7 @@ export const IndexPetView = RoactRodux.connect(mapStateToProps)(
 					displayChallenges={props.displayChallenges}
 					isDiscovered={petsIndex !== undefined}
 				/>
-			</frame>
+			</BaseFrame>
 		);
 	}),
 );

@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import { retrieveStore } from "client/clientStores";
 import { vec2Middle } from "client/ui/commonValues";
-import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
+import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import { ACCOLADES } from "shared/configs/accolades";
 import { StoreState } from "shared/rodux";

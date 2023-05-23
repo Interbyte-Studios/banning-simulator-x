@@ -16,7 +16,7 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 	switch (assetType) {
 		case "egg": {
 			if (assetObject.ClassName !== "Model") {
-				throw `Expected egg: "${assetObject.Name}" to be a Model`;
+				throw `Expected pet: "${assetObject.Name}" to be a Model`;
 			}
 
 			for (const child of assetObject.GetChildren()) {
@@ -93,7 +93,7 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 		}
 		case "talisman": {
 			if (assetObject.ClassName !== "Model") {
-				throw `Expected talisman: "${assetObject.Name}" to be a Model`;
+				throw `Expected pet: "${assetObject.Name}" to be a Model`;
 			}
 
 			const primaryPart = assetObject.FindFirstChild("Primary") as BasePart;

@@ -2,9 +2,11 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, RunService, UserInputService } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { ExitButton } from "client/ui/elements/exitButton";
+import { vec2Middle } from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
@@ -204,11 +206,11 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 			if (
 				rightComponentDisplayed !== "Accolades" &&
 				rightComponentDisplayed !== "Mastery" &&
-				rightComponentDisplayed !== "Admin"
+				rightComponentDisplayed !== "Admin" &&
+				rightComponentDisplayed !== "TradeHistory"
 			) {
 				leftDisplayedComponents.push(
-					<frame
-						AnchorPoint={vec2Middle}
+					<BaseFrame
 						BackgroundTransparency={0}
 						BackgroundColor3={Color3.fromRGB(19, 81, 128)}
 						Position={UDim2.fromScale(0.23, 0.565)}
@@ -224,7 +226,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 						>
 							<camera CFrame={new CFrame(0, 0, 0)} Ref={cameraRef.value} />
 						</viewportframe>
-					</frame>,
+					</BaseFrame>,
 
 					<EditAccount showAdmin={(): void => setRightComponentDisplayed("Admin")} />,
 					<SelectPlayer setPlayerSelectionVisibility={(): void => setPlayerSelectionVisibility(true)} />,
@@ -275,7 +277,9 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 						storeFound={false}
 						headerText={`Error: No data found for ${playerViewing.Name}.`}
 						displayReturn={false}
-						returnToSelection={(): void => {}}
+						returnToSelection={(): void => {
+							warn("No data found for player, but return to selection callback is not implemented.");
+						}}
 					/>,
 				);
 			} else {
@@ -335,12 +339,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 				}
 
 				rightDisplayedComponents.push(
-					<frame
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.725, 0.565)}
-						Size={UDim2.fromScale(0.5, 0.765)}
-					>
+					<BaseFrame Position={UDim2.fromScale(0.725, 0.565)} Size={UDim2.fromScale(0.5, 0.765)}>
 						<uigridlayout
 							CellPadding={UDim2.fromScale(0.09, 0.09)}
 							CellSize={UDim2.fromScale(0.265, 0.265)}
@@ -348,33 +347,29 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 						/>
 
 						{iconsToDisplay}
-					</frame>,
+					</BaseFrame>,
 				);
 			}
 		}
 
 		return (
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.575, 0.5)}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Image={assetIds.images.ui.account.background}
-				ScaleType={Enum.ScaleType.Fit}
+			<ImageLabel
+				native={{
+					Size: UDim2.fromScale(0.575, 0.5),
+					Image: assetIds.images.ui.account.background,
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1.5} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.4, 0.135)}
-					Position={UDim2.fromScale(0.5, 0.08)}
-					Text={"Account"}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Font={font}
-				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(184, 80, 0) }} />
-				</textlabel>
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.4, 0.135),
+						Position: UDim2.fromScale(0.5, 0.08),
+						Text: "Account",
+					}}
+					stroke={{
+						native: { Thickness: 1.5, Color: Color3.fromRGB(184, 80, 0) },
+					}}
+				/>
 
 				{leftDisplayedComponents}
 				{rightDisplayedComponents}
@@ -385,7 +380,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 					maximizedSize={0.1}
 					onClosed={(): void => props.hideMenu()}
 				/>
-			</imagelabel>
+			</ImageLabel>
 		);
 	}),
 );

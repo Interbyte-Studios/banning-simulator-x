@@ -1,8 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { TweenService, Workspace } from "@rbxts/services";
-import { ExitButton } from "client/ui/elements/exitButton";
+import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
 import { MAX_WEAPON_ID } from "shared/configs/weapons";
+import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 import { PurchaseWeapon } from "./purchase";
 import { ViewNextWeapon } from "./viewNext";
@@ -23,6 +25,33 @@ export const WeaponShop = hooks((props: WeaponShopProps, { useState, useEffect }
 	const [viewedWeapon, setViewedWeapon] = useState(1);
 	const minimumWeaponId = 1;
 	const maximumWeaponId = MAX_WEAPON_ID;
+
+	const exitButton: Array<Roact.Element> = [];
+
+	const weaponInfo = getWeaponInfo(viewedWeapon);
+	if (weaponInfo.data.cost === undefined) {
+		const exitButtonElement = (
+			<ExitButton
+				Position={UDim2.fromScale(0.5, 0.925)}
+				minimizedSize={0.06}
+				maximizedSize={0.07}
+				onClosed={(): void => props.setWeaponShopVisibility(false)}
+			/>
+		);
+
+		exitButton.push(exitButtonElement);
+	} else {
+		const exitButtonElement = (
+			<ExitButton
+				Position={UDim2.fromScale(0.58, 0.925)}
+				minimizedSize={0.06}
+				maximizedSize={0.07}
+				onClosed={(): void => props.setWeaponShopVisibility(false)}
+			/>
+		);
+
+		exitButton.push(exitButtonElement);
+	}
 
 	useEffect(() => {
 		const camera = Workspace.CurrentCamera;
@@ -73,12 +102,7 @@ export const WeaponShop = hooks((props: WeaponShopProps, { useState, useEffect }
 			/>
 			<WeaponShopWeaponInfo currentWeapon={viewedWeapon} />
 			<PurchaseWeapon currentWeapon={viewedWeapon} />
-			<ExitButton
-				Position={UDim2.fromScale(0.65, 0.9)}
-				minimizedSize={0.06}
-				maximizedSize={0.07}
-				onClosed={(): void => props.setWeaponShopVisibility(false)}
-			/>
+			{exitButton}
 		</>
 	);
 });

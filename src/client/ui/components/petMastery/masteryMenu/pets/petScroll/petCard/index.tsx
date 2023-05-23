@@ -1,10 +1,14 @@
 import Flipper from "@rbxts/flipper";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { RarityGradient } from "client/ui/elements/rarityGradient";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { RarityGradient } from "client/ui/elements/gradients/rarityGradient";
 import { hooks } from "client/ui/hooks";
 import { getPetImage } from "client/util/getPetImage";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -39,7 +43,6 @@ function mapStateToProps(state: StoreState): IndexPetCardMappedProps {
 /**
  * A button allowing the player to view information about a specific pet.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 	hooks((props: IndexPetCardProps, hooks) => {
 		const petData = getPetData(props.pet);
@@ -59,22 +62,17 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 		const { motor, binding } = useBindingMotor(hooks, normalPosition);
 
 		return (
-			<frame
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.4, 0.15)}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				LayoutOrder={props.pet}
-			>
+			<BaseFrame Size={UDim2.fromScale(0.4, 0.15)} Position={UDim2.fromScale(0.5, 0.5)} LayoutOrder={props.pet}>
 				<uiaspectratioconstraint AspectRatio={3.3} />
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={0}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(1, 1)}
-					BackgroundColor3={Color3.fromRGB(0, 131, 213)}
-					Image={""}
-					Event={{
+				<ImageButton
+					native={{
+						BackgroundTransparency: 0,
+						Size: UDim2.fromScale(1, 1),
+						BackgroundColor3: Color3.fromRGB(0, 131, 213),
+						Image: "",
+					}}
+					events={{
+						/* eslint-disable jsdoc/require-jsdoc */
 						Activated: (): void => {
 							playSFX(UIEngagement.MinorEngagement);
 
@@ -87,28 +85,25 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 						},
 						MouseEnter: (): void => motor.setGoal(raisedSpring),
 						MouseLeave: (): void => motor.setGoal(normalSpring),
+						/* eslint-enable jsdoc/require-jsdoc */
 					}}
 				>
 					<uicorner CornerRadius={new UDim(1, 0)} />
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 					<uiaspectratioconstraint AspectRatio={4} />
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						Position={UDim2.fromScale(0.575, 0.5)}
-						Size={UDim2.fromScale(0.7, 0.9)}
-						BackgroundTransparency={1}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						Text={isDiscovered ? petData.name : `???`}
-						Font={font}
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.575, 0.5),
+							Size: UDim2.fromScale(0.7, 0.9),
+							Text: isDiscovered ? petData.name : `???`,
+						}}
+						stroke={{ native: { Thickness: 3 } }}
 					>
 						<RarityGradient Rarity={petData.rarity} />
-						<BaseUIStroke native={{ Thickness: 3 }} />
-					</textlabel>
-				</imagebutton>
-				<frame
-					AnchorPoint={vec2Middle}
+					</StrokeTextLabel>
+				</ImageButton>
+				<BaseFrame
 					BackgroundTransparency={0}
 					Position={UDim2.fromScale(0.05, 0.5)}
 					Size={UDim2.fromScale(0.3, 1.2)}
@@ -118,20 +113,16 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 					<uicorner CornerRadius={new UDim(1, 0)} />
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
-					<imagelabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Size={UDim2.fromScale(0.9, 0.9)}
-						Position={binding.map((value) => {
-							return UDim2.fromScale(0.5, value);
-						})}
-						Image={getPetImage(props.pet, props.currentVariant ?? "regular")}
-						ImageColor3={isDiscovered ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0)}
-						ScaleType={Enum.ScaleType.Fit}
+					<ImageLabel
+						native={{
+							Size: UDim2.fromScale(0.9, 0.9),
+							Position: binding.map((value) => UDim2.fromScale(0.5, value)),
+							Image: getPetImage(props.pet, props.currentVariant ?? "regular"),
+							ImageColor3: isDiscovered ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0),
+						}}
 					/>
-				</frame>
-			</frame>
+				</BaseFrame>
+			</BaseFrame>
 		);
 	}),
 );
-/* eslint-enable jsdoc/require-jsdoc */

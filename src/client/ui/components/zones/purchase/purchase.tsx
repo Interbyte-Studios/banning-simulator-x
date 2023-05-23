@@ -1,11 +1,11 @@
-import Flipper from "@rbxts/flipper";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { tryPurchaseZone } from "client/modules/tryPurchaseZone";
-import { font, vec2Middle } from "client/ui/commonValues";
+import { uiClaimButtonStrokeColor } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -52,25 +52,14 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 		const { purchaseZone } = useContext(remoteContext);
 		const { addAnnouncement } = useContext(AnnouncementContext);
 
-		const minimizedSize = 0.15;
-		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-		const maximizedSize = 0.175;
-		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-		const { motor, binding } = useBindingMotor(hooks, maximizedSize);
-
 		return (
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.75, 0.85)}
-				Size={binding.map((value) => {
-					return UDim2.fromScale(0.315, value);
-				})}
-				Image={assetIds.images.ui.zones.purchase}
-				ScaleType={Enum.ScaleType.Fit}
-				Event={{
+			<SpringImageButton
+				native={{
+					Position: UDim2.fromScale(0.75, 0.85),
+					Image: assetIds.images.ui.index.Claim,
+				}}
+				size={{ minSize: 0.175, maxSize: 0.2 }}
+				events={{
 					Activated: async (): Promise<void> => {
 						playSFX(UIEngagement.MajorEngagement);
 
@@ -149,23 +138,17 @@ export const PurchaseZoneButton = RoactRodux.connect(mapStateToProps)(
 							}
 						}
 					},
-					MouseEnter: (): void => motor.setGoal(minimizedSpring),
-					MouseLeave: (): void => motor.setGoal(maximizedSpring),
 				}}
 			>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.85, 0.6)}
-					BackgroundTransparency={1}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Text={"Purchase"}
-					Font={font}
-				>
-					<BaseUIStroke native={{ Thickness: 2 }} />
-				</textlabel>
-			</imagebutton>
+				<uiaspectratioconstraint AspectRatio={2} />
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.8, 0.8),
+						Text: "Purchase",
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
+				/>
+			</SpringImageButton>
 		);
 	}),
 );

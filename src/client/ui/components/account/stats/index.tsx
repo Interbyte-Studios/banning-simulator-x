@@ -1,8 +1,8 @@
 import Roact from "@rbxts/roact";
 import { retrieveStore } from "client/clientStores";
 import { vec2Middle } from "client/ui/commonValues";
-import { RescalingScrollingFrame } from "client/ui/elements/rescalingScrollingFrame";
-import { TitleGradient } from "client/ui/elements/titleGradient";
+import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
+import { TitleGradient } from "client/ui/elements/gradients/titleGradient";
 import { hooks } from "client/ui/hooks";
 import { formatTime } from "client/util/formatTime";
 import { GROUP_ROLES } from "shared/configs/game";
@@ -161,16 +161,17 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 					HorizontalAlignment={Enum.HorizontalAlignment.Center}
 					Padding={new UDim(0.025, 0)}
 					Ref={uiListLayoutRef.value}
+					SortOrder={Enum.SortOrder.LayoutOrder}
 				/>
-				<StatCard header={"Bans:"} stat={statsAbbreviator.numberToString(bans)} />
-				<StatCard header={"Reg. Eggs:"} stat={statsAbbreviator.numberToString(totalRegularEggHatches)} />
-				<StatCard header={"Void Eggs:"} stat={statsAbbreviator.numberToString(totalVoidEggHatches)} />
-				<StatCard header={"Time Played:"} stat={formatTime(timePlayed)} />
-				<StatCard header={"Group Rank:"} stat={groupRankName} textColor={groupRankColor} />
-				<StatCard header={"Rank:"} stat={rank} />
-				<StatCard header={"Title:"} stat={titleName} additionalElements={titleSpecialElement} />
-				<StatCard header={"Weapon:"} stat={weaponName} />
-				<StatCard header={"Talisman:"} stat={talismanName} />
+				<StatCard header={"Bans:"} stat={statsAbbreviator.numberToString(bans)} layoutId={1} />
+				<StatCard header={"Reg. Eggs:"} stat={statsAbbreviator.numberToString(totalRegularEggHatches)} layoutId={2} />
+				<StatCard header={"Void Eggs:"} stat={statsAbbreviator.numberToString(totalVoidEggHatches)} layoutId={3} />
+				<StatCard header={"Time Played:"} stat={formatTime(timePlayed)} layoutId={4} />
+				<StatCard header={"Group Rank:"} stat={groupRankName} textColor={groupRankColor} layoutId={5} />
+				<StatCard header={"Rank:"} stat={rank} layoutId={6} />
+				<StatCard header={"Title:"} stat={titleName} additionalElements={titleSpecialElement} layoutId={7} />
+				<StatCard header={"Weapon:"} stat={weaponName} layoutId={8} />
+				<StatCard header={"Talisman:"} stat={talismanName} layoutId={9} />
 			</RescalingScrollingFrame>
 		</>
 	);

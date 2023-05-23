@@ -187,6 +187,7 @@ export function runStep(
 				currencyMultiplier += booster;
 			});
 			currencyMultiplier = currencyMultiplier > 1 ? currencyMultiplier : 1;
+			print(globalCurrencyEventMultiplier, currencyMultiplier, reward.currency * currencyMultiplier);
 
 			// get experience multiplier
 			const experienceBoosters: Array<number> = [];

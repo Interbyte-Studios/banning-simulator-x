@@ -1,6 +1,8 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
 import { getCurrencyIcon } from "client/util/getCurrencyIcon";
 import { Currency } from "shared/configs/currencies";
@@ -47,26 +49,22 @@ export const Slot = hooks((props: SlotProps, hooks) => {
 	});
 
 	return (
-		<frame
+		<BaseFrame
 			Size={sizeMotor.binding.map((value) => {
 				return UDim2.fromScale(0.045, value);
 			})}
 			Position={positionMotor.binding.map((value) => {
 				return UDim2.fromScale(value.x, value.y);
 			})}
-			AnchorPoint={new Vector2(0.5, 0.5)}
-			BackgroundTransparency={1}
 		>
-			<imagelabel
-				Image={getCurrencyIcon(props.currency)}
-				Size={UDim2.fromScale(1, 1)}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				AnchorPoint={new Vector2(0.5, 0.5)}
-				ScaleType={Enum.ScaleType.Fit}
+			<ImageLabel
+				native={{
+					Size: UDim2.fromScale(1, 1),
+					Image: getCurrencyIcon(props.currency),
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1} />
-			</imagelabel>
-		</frame>
+			</ImageLabel>
+		</BaseFrame>
 	);
 });

@@ -5,6 +5,9 @@ export const BANS_LEADERBOARD_ODS = "bans";
 export const EGGS_LEADERBOARD_ODS = "eggs";
 export const LEADERBOARD_UPDATE_INTERVAL = 60 * 30;
 
+export const MAX_TRADE_OFFER_SIZE = 10;
+export const MAX_TRADE_LOGS = 10;
+
 export type Gamepasses = keyof typeof GAMEPASSES;
 export const GAMEPASSES = {
 	//["Auto Hatch"]: 27753255,

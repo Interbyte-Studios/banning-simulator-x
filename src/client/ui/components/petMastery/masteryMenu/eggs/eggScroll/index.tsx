@@ -1,6 +1,6 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
-import { vec2Middle } from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { EggName, EGGS } from "shared/configs/eggs";
 import { WorldName } from "shared/configs/worlds";
 
@@ -23,12 +23,7 @@ export function IndexEggScroll(props: {
 	const eggs = Object.entries(EGGS).filter((egg) => egg[1].world === props.world);
 
 	return (
-		<frame
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Position={UDim2.fromScale(0.225, 0.55)}
-			Size={UDim2.fromScale(0.4, 0.775)}
-		>
+		<BaseFrame Position={UDim2.fromScale(0.225, 0.55)} Size={UDim2.fromScale(0.4, 0.775)}>
 			<uilistlayout
 				SortOrder={Enum.SortOrder.LayoutOrder}
 				HorizontalAlignment={Enum.HorizontalAlignment.Right}
@@ -44,6 +39,6 @@ export function IndexEggScroll(props: {
 					/>
 				);
 			})}
-		</frame>
+		</BaseFrame>
 	);
 }

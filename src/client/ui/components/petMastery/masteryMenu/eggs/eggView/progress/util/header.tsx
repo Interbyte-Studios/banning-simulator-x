@@ -1,7 +1,6 @@
 import Roact from "@rbxts/roact";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { VariantGradient } from "client/ui/elements/variantGradient";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { VariantGradient } from "client/ui/elements/gradients/variantGradient";
 import { Variants } from "shared/configs/pets";
 
 interface ProgressHeaderProps {
@@ -18,19 +17,16 @@ interface ProgressHeaderProps {
  */
 export function ProgressHeader(props: ProgressHeaderProps): Roact.Element {
 	return (
-		<textlabel
-			BackgroundTransparency={1}
-			AnchorPoint={vec2Middle}
-			Size={UDim2.fromScale(0.6, 0.1)}
-			Position={props.position}
-			Font={font}
-			Text={props.text}
-			TextColor3={Color3.fromRGB(255, 255, 255)}
-			TextScaled={true}
-			TextXAlignment={Enum.TextXAlignment.Left}
+		<StrokeTextLabel
+			native={{
+				Size: UDim2.fromScale(0.6, 0.1),
+				Position: props.position,
+				Text: props.text,
+				TextXAlignment: Enum.TextXAlignment.Left,
+			}}
+			stroke={{ native: { Thickness: 2 } }}
 		>
 			<VariantGradient variant={props.variant} />
-			<BaseUIStroke native={{ Thickness: 2 }} />
-		</textlabel>
+		</StrokeTextLabel>
 	);
 }

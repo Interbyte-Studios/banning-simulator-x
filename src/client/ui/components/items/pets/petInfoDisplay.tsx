@@ -1,13 +1,18 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, vec2Middle } from "client/ui/commonValues";
+import { uiDarkStrokeColor } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { DamageIcon } from "client/ui/elements/damageIcon";
-import { ExitButton } from "client/ui/elements/exitButton";
-import { RarityGradient } from "client/ui/elements/rarityGradient";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { ExitButton } from "client/ui/elements/common/exitButton";
+import { RarityGradient } from "client/ui/elements/gradients/rarityGradient";
+import { DamageIcon } from "client/ui/elements/icons/damageIcon";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { getPetImage } from "client/util/getPetImage";
@@ -27,7 +32,6 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 /**
  * A decal of the pet being viewed in the pet info display.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 const PetView = hooks((props: { storedPet: Pet }, hooks) => {
 	const raisedPosition = 0.4;
 	const raisedSpring = new Flipper.Spring(raisedPosition, { frequency: 5 });
@@ -38,16 +42,18 @@ const PetView = hooks((props: { storedPet: Pet }, hooks) => {
 	const { motor, binding } = useBindingMotor(hooks, normalPosition);
 
 	return (
-		<imagebutton
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={0}
-			Position={UDim2.fromScale(0.5, 0.165)}
-			Size={UDim2.fromScale(0.5, 0.5)}
-			BackgroundColor3={Color3.fromRGB(0, 131, 213)}
-			Image={""}
-			Event={{
+		<ImageButton
+			native={{
+				BackgroundTransparency: 0,
+				BackgroundColor3: Color3.fromRGB(0, 131, 213),
+				Position: UDim2.fromScale(0.5, 0.165),
+			}}
+			events={{
+				// eslint-disable-next-line jsdoc/require-jsdoc
 				Activated: (): void => playSFX(UIEngagement.MinorEngagement),
+				// eslint-disable-next-line jsdoc/require-jsdoc
 				MouseEnter: (): void => motor.setGoal(raisedSpring),
+				// eslint-disable-next-line jsdoc/require-jsdoc
 				MouseLeave: (): void => motor.setGoal(normalSpring),
 			}}
 		>
@@ -55,18 +61,14 @@ const PetView = hooks((props: { storedPet: Pet }, hooks) => {
 			<uicorner CornerRadius={new UDim(1, 0)} />
 			<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.9, 0.9)}
-				Position={binding.map((value) => {
-					return UDim2.fromScale(0.5, value);
-				})}
-				Image={getPetImage(props.storedPet.id, props.storedPet.variant)}
-				ScaleType={Enum.ScaleType.Fit}
-				ImageColor3={Color3.fromRGB(255, 255, 255)}
+			<ImageLabel
+				native={{
+					Size: UDim2.fromScale(0.9, 0.9),
+					Position: binding.map((value) => UDim2.fromScale(0.5, value)),
+					Image: getPetImage(props.storedPet.id, props.storedPet.variant),
+				}}
 			/>
-		</imagebutton>
+		</ImageButton>
 	);
 });
 /* eslint-enable jsdoc/require-jsdoc */
@@ -108,32 +110,21 @@ function mapStateToProps(state: StoreState): PetInfoDisplayMappedProps {
 /**
  * Equips/Unequips the pet being viewed.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 const EquipPet = RoactRodux.connect(mapStateToProps)(
 	hooks((props: EquipPetProps, hooks) => {
-		const maxSize = 0.5;
-		const maxSpring = new Flipper.Spring(maxSize, { frequency: 5 });
-
-		const minSize = 0.425;
-		const minSpring = new Flipper.Spring(minSize, { frequency: 5 });
-
-		const { motor, binding } = useBindingMotor(hooks, maxSize);
-
 		const { useContext } = hooks;
 		const { equipPets } = useContext(remoteContext);
 		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		return (
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.825)}
-				Size={binding.map((value) => {
-					return UDim2.fromScale(value, 0.08);
-				})}
-				Image={assetIds.images.ui["weapon shop"]["purchase button"]}
-				ScaleType={Enum.ScaleType.Fit}
-				Event={{
+			<SpringImageButton
+				native={{
+					Position: UDim2.fromScale(0.5, 0.825),
+					Image: assetIds.images.ui["weapon shop"]["purchase button"],
+				}}
+				size={{ minSize: 0.425, maxSize: 0.5 }}
+				events={{
+					// eslint-disable-next-line jsdoc/require-jsdoc
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
 
@@ -151,57 +142,38 @@ const EquipPet = RoactRodux.connect(mapStateToProps)(
 							equipPets.SendToServer([{ guid: props.storedPet.guid, enabled: true }], false);
 						}
 					},
-					MouseEnter: (): void => motor.setGoal(minSpring),
-					MouseLeave: (): void => motor.setGoal(maxSpring),
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={3.45} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.95)}
-					Font={font}
-					Text={props.storedPet.equipped ? "Unequip" : "Equip"}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(18, 176, 13) }} />
-				</textlabel>
-			</imagebutton>
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.95, 0.95),
+						Text: props.storedPet.equipped ? "Unequip" : "Equip",
+					}}
+					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(18, 176, 13) } }}
+				/>
+			</SpringImageButton>
 		);
 	}),
 );
-/* eslint-enable jsdoc/require-jsdoc */
 
 /**
  * Locks/Unlocks the pet being viewed.
  */
-/* eslint-disable jsdoc/require-jsdoc */
 const LockPet = RoactRodux.connect(mapStateToProps)(
 	hooks((props: LockPetProps, hooks) => {
-		const maxSize = 0.45;
-		const maxSpring = new Flipper.Spring(maxSize, { frequency: 5 });
-
-		const minSize = 0.4;
-		const minSpring = new Flipper.Spring(minSize, { frequency: 5 });
-
-		const { motor, binding } = useBindingMotor(hooks, maxSize);
-
 		const { useContext } = hooks;
 		const { lockPets } = useContext(remoteContext);
 
 		return (
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.265, 0.915)}
-				Size={binding.map((value) => {
-					return UDim2.fromScale(value, 0.08);
-				})}
-				Image={assetIds.images.ui["weapon shop"].locked}
-				ScaleType={Enum.ScaleType.Fit}
-				Event={{
+			<SpringImageButton
+				native={{
+					Position: UDim2.fromScale(0.265, 0.915),
+					Image: assetIds.images.ui["weapon shop"].locked,
+				}}
+				size={{ minSize: 0.4, maxSize: 0.45 }}
+				events={{
+					// eslint-disable-next-line jsdoc/require-jsdoc
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
 
@@ -209,185 +181,113 @@ const LockPet = RoactRodux.connect(mapStateToProps)(
 							props.confirmUnlocking();
 						} else lockPets.SendToServer([{ guid: props.storedPet.guid, enabled: true }]);
 					},
-					MouseEnter: (): void => motor.setGoal(minSpring),
-					MouseLeave: (): void => motor.setGoal(maxSpring),
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={3.45} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.95)}
-					Font={font}
-					Text={props.storedPet.locked ? "Unlock" : "Lock"}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(137, 150, 35) }} />
-				</textlabel>
-			</imagebutton>
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.95, 0.95),
+						Text: props.storedPet.locked ? "Unlock" : "Lock",
+					}}
+					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(137, 150, 35) } }}
+				/>
+			</SpringImageButton>
 		);
 	}),
 );
-/* eslint-enable jsdoc/require-jsdoc */
 
 /**
  * Deletes the pet being viewed.
  */
-/* eslint-disable jsdoc/require-jsdoc */
-const DeletePet = RoactRodux.connect(mapStateToProps)(
-	hooks((props: DeletePetProps, hooks) => {
-		const maxSize = 0.45;
-		const maxSpring = new Flipper.Spring(maxSize, { frequency: 5 });
-
-		const minSize = 0.4;
-		const minSpring = new Flipper.Spring(minSize, { frequency: 5 });
-
-		const { motor, binding } = useBindingMotor(hooks, maxSize);
-
-		return (
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.735, 0.915)}
-				Size={binding.map((value) => {
-					return UDim2.fromScale(value, 0.08);
-				})}
-				Image={assetIds.images.ui["weapon shop"].delete}
-				ScaleType={Enum.ScaleType.Fit}
-				Event={{
-					Activated: (): void => {
-						playSFX(UIEngagement.MinorEngagement);
-						props.confirmDeletion();
-					},
-					MouseEnter: (): void => motor.setGoal(minSpring),
-					MouseLeave: (): void => motor.setGoal(maxSpring),
+const DeletePet = RoactRodux.connect(mapStateToProps)((props: DeletePetProps): Roact.Element => {
+	return (
+		<SpringImageButton
+			native={{
+				Position: UDim2.fromScale(0.735, 0.915),
+				Image: assetIds.images.ui["weapon shop"].delete,
+			}}
+			size={{ minSize: 0.4, maxSize: 0.45 }}
+			events={{
+				// eslint-disable-next-line jsdoc/require-jsdoc
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.confirmDeletion();
+				},
+			}}
+		>
+			<uiaspectratioconstraint AspectRatio={3.45} />
+			<StrokeTextLabel
+				native={{
+					Size: UDim2.fromScale(0.95, 0.95),
+					Text: "Delete",
 				}}
-			>
-				<uiaspectratioconstraint AspectRatio={3.45} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.95)}
-					Font={font}
-					Text={"Delete"}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(141, 32, 42) }} />
-				</textlabel>
-			</imagebutton>
-		);
-	}),
-);
-/* eslint-enable jsdoc/require-jsdoc */
+				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(141, 32, 42) } }}
+			/>
+		</SpringImageButton>
+	);
+});
 
 /**
  * Confirms a given action such as unlocking a pet or deleting a pet.
  */
-/* eslint-disable jsdoc/require-jsdoc */
-const ConfirmAction = RoactRodux.connect(mapStateToProps)(
-	hooks((props: { onActivated: () => void }, hooks) => {
-		const maxSize = 0.45;
-		const maxSpring = new Flipper.Spring(maxSize, { frequency: 5 });
-
-		const minSize = 0.4;
-		const minSpring = new Flipper.Spring(minSize, { frequency: 5 });
-
-		const { motor, binding } = useBindingMotor(hooks, maxSize);
-
-		return (
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.735, 0.915)}
-				Size={binding.map((value) => {
-					return UDim2.fromScale(value, 0.08);
-				})}
-				Image={assetIds.images.ui["weapon shop"]["purchase button"]}
-				ScaleType={Enum.ScaleType.Fit}
-				Event={{
-					Activated: (): void => {
-						playSFX(UIEngagement.MinorEngagement);
-						props.onActivated();
-					},
-					MouseEnter: (): void => motor.setGoal(minSpring),
-					MouseLeave: (): void => motor.setGoal(maxSpring),
+const ConfirmAction = RoactRodux.connect(mapStateToProps)((props: { onActivated: () => void }): Roact.Element => {
+	return (
+		<SpringImageButton
+			native={{
+				Position: UDim2.fromScale(0.735, 0.915),
+				Image: assetIds.images.ui["weapon shop"]["purchase button"],
+			}}
+			size={{ minSize: 0.4, maxSize: 0.45 }}
+			events={{
+				// eslint-disable-next-line jsdoc/require-jsdoc
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.onActivated();
+				},
+			}}
+		>
+			<uiaspectratioconstraint AspectRatio={3.45} />
+			<StrokeTextLabel
+				native={{
+					Size: UDim2.fromScale(0.95, 0.95),
+					Text: "Confirm",
 				}}
-			>
-				<uiaspectratioconstraint AspectRatio={3.45} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.95)}
-					Font={font}
-					Text={"Confirm"}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(18, 176, 13) }} />
-				</textlabel>
-			</imagebutton>
-		);
-	}),
-);
-/* eslint-enable jsdoc/require-jsdoc */
-
+				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(18, 176, 13) } }}
+			/>
+		</SpringImageButton>
+	);
+});
 /**
  * Cancels a given action such as unlocking a pet or deleting a pet.
  */
-/* eslint-disable jsdoc/require-jsdoc */
-const CancelAction = RoactRodux.connect(mapStateToProps)(
-	hooks((props: { onActivated: () => void }, hooks) => {
-		const maxSize = 0.45;
-		const maxSpring = new Flipper.Spring(maxSize, { frequency: 5 });
-
-		const minSize = 0.4;
-		const minSpring = new Flipper.Spring(minSize, { frequency: 5 });
-
-		const { motor, binding } = useBindingMotor(hooks, maxSize);
-
-		return (
-			<imagebutton
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.265, 0.915)}
-				Size={binding.map((value) => {
-					return UDim2.fromScale(value, 0.08);
-				})}
-				Image={assetIds.images.ui["weapon shop"].delete}
-				ScaleType={Enum.ScaleType.Fit}
-				Event={{
-					Activated: (): void => {
-						playSFX(UIEngagement.MinorEngagement);
-						props.onActivated();
-					},
-					MouseEnter: (): void => motor.setGoal(minSpring),
-					MouseLeave: (): void => motor.setGoal(maxSpring),
+const CancelAction = RoactRodux.connect(mapStateToProps)((props: { onActivated: () => void }): Roact.Element => {
+	return (
+		<SpringImageButton
+			native={{
+				Position: UDim2.fromScale(0.265, 0.915),
+				Image: assetIds.images.ui["weapon shop"].delete,
+			}}
+			size={{ minSize: 0.4, maxSize: 0.45 }}
+			events={{
+				// eslint-disable-next-line jsdoc/require-jsdoc
+				Activated: (): void => {
+					playSFX(UIEngagement.MinorEngagement);
+					props.onActivated();
+				},
+			}}
+		>
+			<uiaspectratioconstraint AspectRatio={3.45} />
+			<StrokeTextLabel
+				native={{
+					Size: UDim2.fromScale(0.95, 0.95),
+					Text: "Cancel",
 				}}
-			>
-				<uiaspectratioconstraint AspectRatio={3.45} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={UDim2.fromScale(0.95, 0.95)}
-					Font={font}
-					Text={"Cancel"}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					TextScaled={true}
-				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(141, 32, 42) }} />
-				</textlabel>
-			</imagebutton>
-		);
-	}),
-);
-/* eslint-enable jsdoc/require-jsdoc */
-
+				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(141, 32, 42) } }}
+			/>
+		</SpringImageButton>
+	);
+});
 /**
  * Displays all the information about a stored pet.
  */
@@ -438,18 +338,14 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 			const { lockPets } = useContext(remoteContext);
 
 			controlElements.push(
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.9, 0.1)}
-					Position={UDim2.fromScale(0.5, 0.825)}
-					Text={"Confirm Unlocking?"}
-					TextScaled={true}
-					Font={font}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>,
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.9, 0.1),
+						Position: UDim2.fromScale(0.5, 0.825),
+						Text: "Confirm Unlocking?",
+					}}
+					stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+				/>,
 				<ConfirmAction
 					onActivated={(): void => {
 						lockPets.SendToServer([{ guid: storedPet.guid, enabled: false }]);
@@ -460,22 +356,34 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 			);
 		} else if (deleteConfirm) {
 			const { deletePets } = useContext(remoteContext);
+			const { addAnnouncement } = useContext(AnnouncementContext);
 
 			controlElements.push(
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.9, 0.1)}
-					Position={UDim2.fromScale(0.5, 0.825)}
-					Text={"Confirm Deletion?"}
-					TextScaled={true}
-					Font={font}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>,
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.9, 0.1),
+						Position: UDim2.fromScale(0.5, 0.825),
+						Text: "Confirm Deletion?",
+					}}
+					stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+				/>,
 				<ConfirmAction
 					onActivated={(): void => {
+						if (storedPet.equipped) {
+							addAnnouncement(`You cannot delete an equipped pet.`, AnnouncementType.Error);
+							return;
+						}
+
+						if (storedPet.locked) {
+							addAnnouncement(`You cannot delete a locked pet.`, AnnouncementType.Error);
+							return;
+						}
+
+						if (petData.rarity === "Prismatic" || petData.rarity === "Primordial") {
+							addAnnouncement(`You cannot delete a ${petData.rarity} pet.`, AnnouncementType.Error);
+							return;
+						}
+
 						motor.setGoal(minimizedSpring);
 
 						task.delay(0.3, () => {
@@ -495,86 +403,73 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 		}
 
 		return (
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(-0.2, 0.5)}
-				Size={binding.map((value) => {
-					return UDim2.fromScale(0.4, value);
-				})}
-				Image={assetIds.images.ui.inventory["info sidebar"]}
-				ScaleType={Enum.ScaleType.Fit}
+			<ImageLabel
+				native={{
+					Position: UDim2.fromScale(-0.2, 0.5),
+					Size: binding.map((value) => UDim2.fromScale(0.4, value)),
+					Image: assetIds.images.ui.inventory["info sidebar"],
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={0.56} />
 
 				<PetView storedPet={storedPet} />
 				{controlElements}
 
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.9, 0.08)}
-					Position={UDim2.fromScale(0.5, 0.35)}
-					Text={petData.name}
-					TextScaled={true}
-					Font={font}
-					TextColor3={
-						petData.rarity === "Epic" ||
-						petData.rarity === "Legendary" ||
-						petData.rarity === "Primordial" ||
-						petData.rarity === "Prismatic"
-							? rarityData.BeginningColor
-							: Color3.fromRGB(255, 255, 255)
-					}
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.9, 0.08),
+						Position: UDim2.fromScale(0.5, 0.35),
+						Text: petData.name,
+						TextColor3:
+							petData.rarity === "Epic" ||
+							petData.rarity === "Legendary" ||
+							petData.rarity === "Primordial" ||
+							petData.rarity === "Prismatic"
+								? rarityData.BeginningColor
+								: Color3.fromRGB(255, 255, 255),
+					}}
+					stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
 				>
 					<RarityGradient Rarity={petData.rarity} />
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.9, 0.07)}
-					Position={UDim2.fromScale(0.5, 0.425)}
-					Text={petData.rarity}
-					TextScaled={true}
-					Font={font}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
+				</StrokeTextLabel>
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.9, 0.07),
+						Position: UDim2.fromScale(0.5, 0.425),
+						Text: petData.rarity,
+					}}
+					stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
 				>
 					<RarityGradient Rarity={petData.rarity} />
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.9, 0.07)}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Text={`Level: ${petLevel >= 1 ? petLevel : 1}`}
-					TextScaled={true}
-					Font={font}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-				>
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-				</textlabel>
-				<textlabel
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.7, 0.675)}
-					Size={UDim2.fromScale(0.5, 0.08)}
-					BackgroundTransparency={1}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(230, 64, 64)}
-					Text={twoDpAbbreviator.numberToString(getPetStrength(storedPet))}
-					TextXAlignment={Enum.TextXAlignment.Left}
-					Font={font}
+				</StrokeTextLabel>
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.9, 0.07),
+						Text: `Level: ${petLevel >= 1 ? petLevel : 1}`,
+					}}
+					stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+				/>
+
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.7, 0.675),
+						Size: UDim2.fromScale(0.5, 0.08),
+						TextColor3: Color3.fromRGB(230, 64, 64),
+						Text: twoDpAbbreviator.numberToString(getPetStrength(storedPet)),
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(105, 0, 0) } }}
 				>
 					<DamageIcon
 						anchorPoint={new Vector2(0, 0.5)}
 						position={UDim2.fromScale(-0.35, 0.5)}
 						size={{ minimizedSize: 0.9, maximizedSize: 1 }}
 					/>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(105, 0, 0) }} />
-				</textlabel>
-				<frame
-					AnchorPoint={vec2Middle}
+				</StrokeTextLabel>
+
+				<BaseFrame
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(255, 144, 144)}
 					Position={UDim2.fromScale(0.5, 0.575)}
@@ -582,27 +477,24 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 				>
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
 					<uicorner CornerRadius={new UDim(0.5)} />
-					<frame
+
+					<BaseFrame
 						BackgroundTransparency={0}
 						BackgroundColor3={Color3.fromRGB(85, 255, 127)}
 						Position={UDim2.fromScale(0, 0)}
 						Size={UDim2.fromScale(progressToNextPetLevel, 1)}
 					>
 						<uicorner CornerRadius={new UDim(0.5)} />
-					</frame>
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.95, 0.95)}
-						Font={font}
-						Text={petLevel === maxPetLevel ? `Max Level` : `${math.floor(progressToNextPetLevel * 100)}%`}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 74, 122) }} />
-					</textlabel>
-				</frame>
+					</BaseFrame>
+
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.95, 0.95),
+							Text: petLevel === maxPetLevel ? `Max Level` : `${math.floor(progressToNextPetLevel * 100)}%`,
+						}}
+						stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+					/>
+				</BaseFrame>
 
 				<ExitButton
 					Position={UDim2.fromScale(0.965, 0.025)}
@@ -613,7 +505,7 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 						task.spawn(() => task.delay(0.3, () => props.hideDisplay()));
 					}}
 				/>
-			</imagelabel>
+			</ImageLabel>
 		);
 	}),
 );

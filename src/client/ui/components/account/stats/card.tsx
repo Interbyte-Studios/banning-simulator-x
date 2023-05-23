@@ -1,13 +1,21 @@
 import Roact from "@rbxts/roact";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { RankIcon } from "client/ui/elements/rankIcon";
+import { uiDarkStrokeColor } from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
 import { ValidRank } from "shared/rodux/rank";
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const StatCard = hooks(
-	(props: { header: string; stat: string | number; additionalElements?: Array<Roact.Element>; textColor?: Color3 }) => {
+	(props: {
+		header: string;
+		stat: string | number;
+		additionalElements?: Array<Roact.Element>;
+		textColor?: Color3;
+		layoutId: number;
+	}) => {
 		const statElement: Array<Roact.Element> = [];
 		if (ValidRank(props.stat)) {
 			statElement.push(
@@ -19,56 +27,47 @@ export const StatCard = hooks(
 			);
 		} else if (typeIs(props.stat, "string")) {
 			statElement.push(
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.45, 0.95)}
-					Position={UDim2.fromScale(0.765, 0.5)}
-					Text={props.stat}
-					TextScaled={true}
-					TextColor3={props.textColor ?? Color3.fromRGB(255, 255, 255)}
-					TextXAlignment={Enum.TextXAlignment.Right}
-					Font={font}
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.45, 0.95),
+						Position: UDim2.fromScale(0.765, 0.5),
+						Text: props.stat,
+						TextColor3: props.textColor,
+						TextXAlignment: Enum.TextXAlignment.Right,
+					}}
+					stroke={{
+						native: { Thickness: 1.5, Color: Color3.fromRGB(0, 56, 125) },
+					}}
 				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 56, 125) }} />
 					{props.additionalElements}
-				</textlabel>,
+				</StrokeTextLabel>,
 			);
 		}
 
 		return (
-			<frame
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(1, 0.175)}
-			>
+			<BaseFrame Size={UDim2.fromScale(1, 0.175)} LayoutOrder={props.layoutId}>
 				<uiaspectratioconstraint AspectRatio={6.5} />
-				<frame
-					AnchorPoint={vec2Middle}
+				<BaseFrame
+					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(0, 94, 153)}
-					Position={UDim2.fromScale(0.5, 0.5)}
 					Size={UDim2.fromScale(0.95, 0.95)}
 				>
 					<uicorner CornerRadius={new UDim(0.2, 0)} />
 					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 64, 102) }} />
 
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Size={UDim2.fromScale(0.4, 0.95)}
-						Position={UDim2.fromScale(0.215, 0.5)}
-						Text={props.header}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						TextXAlignment={Enum.TextXAlignment.Left}
-						Font={font}
-					>
-						<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(0, 56, 125) }} />
-					</textlabel>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.4, 0.95),
+							Position: UDim2.fromScale(0.215, 0.5),
+							Text: props.header,
+							TextXAlignment: Enum.TextXAlignment.Left,
+						}}
+						stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+					/>
+
 					{statElement}
-				</frame>
-			</frame>
+				</BaseFrame>
+			</BaseFrame>
 		);
 	},
 );

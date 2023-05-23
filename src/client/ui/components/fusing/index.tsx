@@ -1,11 +1,10 @@
-import Flipper from "@rbxts/flipper";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { ContextActionService, Players, Workspace } from "@rbxts/services";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
-import { ExitButton } from "client/ui/elements/exitButton";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
@@ -109,27 +108,23 @@ export const Fusing = hooks((props: { enabled: boolean }, hooks) => {
 
 	if (isVisible) {
 		return (
-			<imagelabel
-				AnchorPoint={vec2Middle}
-				BackgroundTransparency={1}
-				Size={UDim2.fromScale(0.575, 0.5)}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Image={assetIds.images.ui.account.background}
-				ScaleType={Enum.ScaleType.Fit}
+			<ImageLabel
+				native={{
+					Size: UDim2.fromScale(0.575, 0.5),
+					Image: assetIds.images.ui.account.background,
+				}}
 			>
 				<uiaspectratioconstraint AspectRatio={1.5} />
-				<textlabel
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Size={UDim2.fromScale(0.4, 0.135)}
-					Position={UDim2.fromScale(0.5, 0.08)}
-					Text={"Fusing"}
-					TextScaled={true}
-					TextColor3={Color3.fromRGB(255, 255, 255)}
-					Font={font}
-				>
-					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(184, 80, 0) }} />
-				</textlabel>
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.4, 0.135),
+						Position: UDim2.fromScale(0.5, 0.08),
+						Text: "Fusing",
+					}}
+					stroke={{
+						native: { Thickness: 1.5, Color: Color3.fromRGB(184, 80, 0) },
+					}}
+				/>
 
 				{screenToDisplay}
 
@@ -143,19 +138,14 @@ export const Fusing = hooks((props: { enabled: boolean }, hooks) => {
 						setIsVisible(false);
 					}}
 				/>
-			</imagelabel>
+			</ImageLabel>
 		);
 	} else {
 		return (
 			<>
 				{radiantPrompts.map((promptPart) => {
 					const maximizedSize = 0.7;
-					const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
 					const minimizedSize = 0.6;
-					const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-					const { motor, binding } = useBindingMotor(hooks, maximizedSize);
 
 					return (
 						<billboardgui
@@ -166,29 +156,23 @@ export const Fusing = hooks((props: { enabled: boolean }, hooks) => {
 							Size={UDim2.fromScale(5, 5)}
 							Adornee={promptPart}
 						>
-							<textlabel
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.5, 0)}
-								Size={UDim2.fromScale(1.5, 0.4)}
-								Text={"Radiant Fusion"}
-								TextColor3={Color3.fromRGB(255, 255, 255)}
-								TextScaled={true}
-								Font={font}
-							>
-								<BaseUIStroke native={{ Thickness: 2 }} />
-							</textlabel>
-							<imagebutton
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.5, 0.5)}
-								Size={binding.map((value) => {
-									return UDim2.fromScale(value, value);
-								})}
-								Image={assetIds.images.buttons["teal button"]}
-								ScaleType={Enum.ScaleType.Fit}
-								Event={{
-									Activated: (): void => {
+							<StrokeTextLabel
+								native={{
+									Position: UDim2.fromScale(0.5, 0),
+									Size: UDim2.fromScale(1.5, 0.4),
+									Text: "Radiant Fusion",
+								}}
+								stroke={{
+									native: { Thickness: 2 },
+								}}
+							/>
+							<SpringImageButton
+								native={{
+									Image: assetIds.images.buttons["teal button"],
+								}}
+								size={{ maxSize: maximizedSize, minSize: minimizedSize }}
+								events={{
+									Activated: async (): Promise<void> => {
 										playSFX(UIEngagement.MinorEngagement);
 
 										const character = Players.LocalPlayer.Character;
@@ -202,34 +186,24 @@ export const Fusing = hooks((props: { enabled: boolean }, hooks) => {
 											setIsVisible(true);
 										}
 									},
-									MouseEnter: (): void => motor.setGoal(minimizedSpring),
-									MouseLeave: (): void => motor.setGoal(maximizedSpring),
 								}}
 							>
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.5, 0.5)}
-									Size={UDim2.fromScale(0.9, 0.9)}
-									Text={"J"}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
-									TextScaled={true}
-									Font={font}
-								>
-									<BaseUIStroke native={{ Thickness: 2 }} />
-								</textlabel>
-							</imagebutton>
+								<StrokeTextLabel
+									native={{
+										Size: UDim2.fromScale(0.9, 0.9),
+										Text: "Z",
+									}}
+									stroke={{
+										native: { Thickness: 2 },
+									}}
+								/>
+							</SpringImageButton>
 						</billboardgui>
 					);
 				})}
 				{voidPrompts.map((promptPart) => {
 					const maximizedSize = 0.7;
-					const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
 					const minimizedSize = 0.6;
-					const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-					const { motor, binding } = useBindingMotor(hooks, maximizedSize);
 
 					return (
 						<billboardgui
@@ -240,29 +214,26 @@ export const Fusing = hooks((props: { enabled: boolean }, hooks) => {
 							Size={UDim2.fromScale(5, 5)}
 							Adornee={promptPart}
 						>
-							<textlabel
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.5, 0)}
-								Size={UDim2.fromScale(1.5, 0.4)}
-								Text={"Void Fusion"}
-								TextColor3={Color3.fromRGB(255, 255, 255)}
-								TextScaled={true}
-								Font={font}
-							>
-								<BaseUIStroke native={{ Thickness: 2 }} />
-							</textlabel>
-							<imagebutton
-								AnchorPoint={vec2Middle}
-								BackgroundTransparency={1}
-								Position={UDim2.fromScale(0.5, 0.5)}
-								Size={binding.map((value) => {
-									return UDim2.fromScale(value, value);
-								})}
-								Image={assetIds.images.buttons["teal button"]}
-								ScaleType={Enum.ScaleType.Fit}
-								Event={{
-									Activated: (): void => {
+							<StrokeTextLabel
+								native={{
+									Position: UDim2.fromScale(0.5, 0),
+									Size: UDim2.fromScale(1.5, 0.4),
+									Text: "Void Fusion",
+								}}
+								stroke={{
+									native: { Thickness: 2 },
+								}}
+							/>
+							<SpringImageButton
+								native={{
+									Image: assetIds.images.buttons["teal button"],
+								}}
+								size={{
+									maxSize: maximizedSize,
+									minSize: minimizedSize,
+								}}
+								events={{
+									Activated: async (): Promise<void> => {
 										playSFX(UIEngagement.MinorEngagement);
 
 										const character = Players.LocalPlayer.Character;
@@ -276,23 +247,18 @@ export const Fusing = hooks((props: { enabled: boolean }, hooks) => {
 											setIsVisible(true);
 										}
 									},
-									MouseEnter: (): void => motor.setGoal(minimizedSpring),
-									MouseLeave: (): void => motor.setGoal(maximizedSpring),
 								}}
 							>
-								<textlabel
-									AnchorPoint={vec2Middle}
-									BackgroundTransparency={1}
-									Position={UDim2.fromScale(0.5, 0.5)}
-									Size={UDim2.fromScale(0.9, 0.9)}
-									Text={"J"}
-									TextColor3={Color3.fromRGB(255, 255, 255)}
-									TextScaled={true}
-									Font={font}
-								>
-									<BaseUIStroke native={{ Thickness: 2 }} />
-								</textlabel>
-							</imagebutton>
+								<StrokeTextLabel
+									native={{
+										Size: UDim2.fromScale(0.9, 0.9),
+										Text: "Z",
+									}}
+									stroke={{
+										native: { Thickness: 2 },
+									}}
+								/>
+							</SpringImageButton>
 						</billboardgui>
 					);
 				})}

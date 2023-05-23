@@ -1,9 +1,9 @@
-import Flipper from "@rbxts/flipper";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { font, vec2Middle } from "client/ui/commonValues";
-import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
-import { BaseUIStroke } from "client/ui/elements/baseUIStroke";
+import { uiClaimButtonStrokeColor } from "client/ui/commonValues";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
@@ -38,15 +38,7 @@ function mapStateToProps(state: StoreState): DisplayZonePurchasePromptMappedProp
  */
 /* eslint-disable jsdoc/require-jsdoc */
 export const DisplayZonePurchasePrompt = RoactRodux.connect(mapStateToProps)(
-	hooks((props: DisplayZonePurchasePromptProps, hooks) => {
-		const minimizedSize = 0.21;
-		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
-		const maximizedSize = 0.25;
-		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-		const { motor, binding } = useBindingMotor(hooks, maximizedSize);
-
+	hooks((props: DisplayZonePurchasePromptProps) => {
 		const worldData = props.worlds.find((world) => world.name === props.worldName);
 		if (worldData === undefined) {
 			warn(
@@ -58,69 +50,49 @@ export const DisplayZonePurchasePrompt = RoactRodux.connect(mapStateToProps)(
 		const ownsWorld = worldData.zones.find((zone) => zone === props.zoneName);
 		if (ownsWorld === undefined) {
 			return (
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.85)}
-					Size={binding.map((value) => {
-						return UDim2.fromScale(0.4, value);
-					})}
-					Image={assetIds.images.buttons["green toggle button"]}
-					ScaleType={Enum.ScaleType.Fit}
-					Event={{
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.5, 0.85),
+						Image: assetIds.images.ui.index.Claim,
+					}}
+					size={{ minSize: 0.35, maxSize: 0.4 }}
+					events={{
 						Activated: (): void => {
 							playSFX(UIEngagement.MinorEngagement);
 							props.setViewedZone(props.worldName, props.zoneData.id);
 						},
-						MouseEnter: (): void => motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => motor.setGoal(maximizedSpring),
 					}}
 				>
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.7)}
-						Text={"Purchase"}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						TextScaled={true}
-						TextXAlignment={Enum.TextXAlignment.Left}
-						Font={font}
-					>
-						<BaseUIStroke native={{ Thickness: 2 }} />
-					</textlabel>
-				</imagebutton>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.7),
+							Text: "Purchase",
+							TextXAlignment: Enum.TextXAlignment.Left,
+						}}
+						stroke={{ native: { Thickness: 4, Color: uiClaimButtonStrokeColor } }}
+					/>
+				</SpringImageButton>
 			);
 		} else {
 			return (
-				<imagebutton
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.5, 0.85)}
-					Size={binding.map((value) => {
-						return UDim2.fromScale(0.4, value);
-					})}
-					Image={assetIds.images.buttons["green toggle button"]}
-					ScaleType={Enum.ScaleType.Fit}
-					Event={{
-						MouseEnter: (): void => motor.setGoal(minimizedSpring),
-						MouseLeave: (): void => motor.setGoal(maximizedSpring),
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.5, 0.85),
+						Image: assetIds.images.ui.index.Claim,
 					}}
+					size={{ minSize: 0.35, maxSize: 0.4 }}
 				>
-					<textlabel
-						AnchorPoint={vec2Middle}
-						BackgroundTransparency={1}
-						Position={UDim2.fromScale(0.5, 0.5)}
-						Size={UDim2.fromScale(0.8, 0.7)}
-						Text={"Owned"}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-						TextScaled={true}
-						TextXAlignment={Enum.TextXAlignment.Left}
-						Font={font}
-					>
-						<BaseUIStroke native={{ Thickness: 2 }} />
-					</textlabel>
-				</imagebutton>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.7),
+							Text: "Owned",
+							TextXAlignment: Enum.TextXAlignment.Left,
+						}}
+						stroke={{
+							native: { Thickness: 4 },
+						}}
+					/>
+				</SpringImageButton>
 			);
 		}
 	}),

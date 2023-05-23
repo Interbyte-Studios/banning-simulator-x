@@ -43,6 +43,7 @@ export const PlayerOptions = RoactRodux.connect(mapStateToProps)(
 			toggleWalkSpeed,
 			togglePublicInventory,
 			togglePublicTradeHistory,
+			tradesEnabled,
 			toggleGraphics,
 			toggleTimeOfDay,
 			togglePetAnimationType,
@@ -146,19 +147,25 @@ export const PlayerOptions = RoactRodux.connect(mapStateToProps)(
 						yPos={0.285}
 						onPressed={(): void => togglePublicTradeHistory.SendToServer()}
 					/>
+					<OptionChoice
+						header={"Trades Enabled"}
+						enabled={props.settings.privacy.tradesEnabled}
+						yPos={0.318}
+						onPressed={(): void => tradesEnabled.SendToServer()}
+					/>
 
-					<OptionSectionHeader text={"Visual"} yPos={0.319} />
+					<OptionSectionHeader text={"Visual"} yPos={0.352} />
 					<OptionMultiChoice
 						header={"Graphics"}
 						context={props.settings.visual.graphicsQuality}
-						yPos={0.344}
+						yPos={0.377}
 						onDecrease={(): void => toggleGraphics.SendToServer("Low")}
 						onIncrease={(): void => toggleGraphics.SendToServer("High")}
 					/>
 					<OptionMultiChoice
 						header={"Time of Day"}
 						context={tostring(props.settings.visual.timeOfDay)}
-						yPos={0.377}
+						yPos={0.41}
 						onDecrease={(): void => {
 							const decreasedTimeOfday = props.settings.visual.timeOfDay - 1;
 							if (decreasedTimeOfday <= 0) {
@@ -179,14 +186,14 @@ export const PlayerOptions = RoactRodux.connect(mapStateToProps)(
 					<OptionMultiChoice
 						header={"Pet Animation"}
 						context={props.settings.visual.petAnimationType === "Following" ? "1" : "2"}
-						yPos={0.41}
+						yPos={0.443}
 						onDecrease={(): void => togglePetAnimationType.SendToServer("Following")}
 						onIncrease={(): void => togglePetAnimationType.SendToServer("Surrounding")}
 					/>
 					<OptionMultiChoice
 						header={"Pet Distance"}
 						context={tostring(props.settings.visual.petsStudsOfDistance)}
-						yPos={0.443}
+						yPos={0.476}
 						onDecrease={(): void =>
 							togglePetsStudsOfDistance.SendToServer(props.settings.visual.petsStudsOfDistance - 1)
 						}
@@ -197,33 +204,33 @@ export const PlayerOptions = RoactRodux.connect(mapStateToProps)(
 					<OptionChoice
 						header={"Pets Displayed"}
 						enabled={props.settings.visual.petsDisplayed}
-						yPos={0.476}
+						yPos={0.509}
 						onPressed={(): void => togglePetsDisplayed.SendToServer(!props.settings.visual.petsDisplayed)}
 					/>
 
-					<OptionSectionHeader text={"Auto Delete"} yPos={0.51} />
+					<OptionSectionHeader text={"Auto Delete"} yPos={0.543} />
 					<OptionChoice
 						header={"Basic Rarity"}
 						enabled={props.settings.autoDelete.rarities.Basic}
-						yPos={0.535}
+						yPos={0.568}
 						onPressed={(): void => toggleAutoDelete.SendToServer("Basic")}
 					/>
 					<OptionChoice
 						header={"Ordinary Rarity"}
 						enabled={props.settings.autoDelete.rarities.Ordinary}
-						yPos={0.568}
+						yPos={0.601}
 						onPressed={(): void => toggleAutoDelete.SendToServer("Ordinary")}
 					/>
 					<OptionChoice
 						header={"Rare Rarity"}
 						enabled={props.settings.autoDelete.rarities.Rare}
-						yPos={0.601}
+						yPos={0.634}
 						onPressed={(): void => toggleAutoDelete.SendToServer("Rare")}
 					/>
 					<OptionChoice
 						header={"Epic Rarity"}
 						enabled={props.settings.autoDelete.rarities.Epic}
-						yPos={0.634}
+						yPos={0.667}
 						onPressed={(): void => toggleAutoDelete.SendToServer("Epic")}
 					/>
 				</scrollingframe>
