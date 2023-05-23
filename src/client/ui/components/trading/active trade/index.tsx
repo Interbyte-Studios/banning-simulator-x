@@ -204,7 +204,14 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 					/>
 				);
 			case TradeState.Completed:
-				return <CompletedTradeNotice finishTrade={(): void => finishTrade()} />;
+				return (
+					<CompletedTradeNotice
+						finishTrade={(): void => {
+							finishTrade();
+							props.exitTrade();
+						}}
+					/>
+				);
 		}
 	}
 

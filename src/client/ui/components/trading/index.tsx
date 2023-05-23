@@ -56,6 +56,7 @@ export const Trading = hooks((props: TradingProps, hooks) => {
 					setForeignPlayer(undefined);
 					setTradeState(TradeState.Idle);
 					props.setActiveTrade(false);
+					props.hideMenu();
 				}}
 			/>
 		);

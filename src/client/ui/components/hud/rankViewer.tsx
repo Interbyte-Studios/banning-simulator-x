@@ -6,7 +6,6 @@ import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
-import { getRankProgress } from "client/util/getRankProgress";
 import assetIds from "shared/assets";
 import { MAX_RANK, RANKS } from "shared/configs/ranks";
 import { StoreState } from "shared/rodux";
