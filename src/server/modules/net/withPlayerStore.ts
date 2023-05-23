@@ -1,4 +1,4 @@
-import { stores } from "server/playerStore";
+import { retrieveStore } from "server/playerStore";
 import { Store } from "shared/rodux";
 
 /**
@@ -11,7 +11,7 @@ export function withPlayerStore<T extends Array<unknown>, R>(
 	callback: (player: Player, store: Store, ...args: T) => R,
 ) {
 	return (player: Player, ...args: T): R => {
-		const store = stores.get(player);
+		const store = retrieveStore(player);
 		if (!store) {
 			throw `Store did not exist for ${player.Name}`;
 		}

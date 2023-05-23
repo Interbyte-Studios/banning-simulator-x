@@ -41,78 +41,78 @@ export const RANKS: Array<Rank> = [
 		name: "Silver",
 		id: 2,
 		cost: {
-			amount: 30_000,
+			amount: 2_000,
 			currency: "coins",
 		},
 		gradient: {
 			beginningColor: Color3.fromRGB(86, 100, 107),
 			endingColor: Color3.fromRGB(151, 161, 167),
 		},
-		requiredExperience: 7_000,
+		requiredExperience: 2_000,
 	},
 	{
 		name: "Gold",
 		id: 3,
 		cost: {
-			amount: 750_000,
+			amount: 8_000,
 			currency: "coins",
 		},
 		gradient: {
 			beginningColor: Color3.fromRGB(84, 54, 0),
 			endingColor: Color3.fromRGB(252, 199, 84),
 		},
-		requiredExperience: 22_000,
+		requiredExperience: 4_000,
 	},
 	{
 		name: "Diamond",
 		id: 4,
 		cost: {
-			amount: 15_000_000,
+			amount: 32_000,
 			currency: "coins",
 		},
 		gradient: {
 			beginningColor: Color3.fromRGB(0, 46, 69),
 			endingColor: Color3.fromRGB(82, 181, 245),
 		},
-		requiredExperience: 450_000,
+		requiredExperience: 16_000,
 	},
 	{
 		name: "Emerald",
 		id: 5,
 		cost: {
-			amount: 560_000_000,
+			amount: 128_000,
 			currency: "coins",
 		},
 		gradient: {
 			beginningColor: Color3.fromRGB(5, 61, 3),
 			endingColor: Color3.fromRGB(120, 235, 107),
 		},
-		requiredExperience: 5_700_000,
+		requiredExperience: 93_750,
 	},
 	{
 		name: "Draconic",
 		id: 6,
 		cost: {
-			amount: 25_200_000_000,
+			amount: 512_000,
 			currency: "coins",
 		},
 		gradient: {
 			beginningColor: Color3.fromRGB(51, 0, 0),
 			endingColor: Color3.fromRGB(135, 51, 43),
 		},
-		requiredExperience: 10_000_000,
+		requiredExperience: 500_000,
 	},
 	{
 		name: "Pendulum",
 		id: 7,
 		cost: {
-			amount: 1_008_000_000_000,
+			amount: 2_048_000,
 			currency: "coins",
 		},
 		gradient: {
 			beginningColor: Color3.fromRGB(245, 252, 99),
 			endingColor: Color3.fromRGB(64, 181, 255),
 		},
-		requiredExperience: 2_375_000_000,
+		requiredExperience: 3_000_000,
 	},
 ];

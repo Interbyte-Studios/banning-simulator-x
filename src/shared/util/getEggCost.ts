@@ -42,7 +42,7 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 		// eggs in the first zone of each world (first zones are always free)
 		switch (egg) {
 			case "Starter": {
-				const cost = 500;
+				const cost = 100;
 
 				eggCost.amount = isVoid ? cost * 5 - cost * reducedCost : cost - cost * reducedCost;
 				eggCost.currencyType = "coins";
@@ -53,9 +53,9 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 			}
 		}
 	} else {
-		eggCost.amount = isVoid
-			? zoneData.cost.amount * 5 - zoneData.cost.amount * 5 * reducedCost
-			: zoneData.cost.amount - zoneData.cost.amount * reducedCost;
+		const cost = zoneData.cost.amount / 2;
+
+		eggCost.amount = isVoid ? cost * 5 - cost * 5 * reducedCost : cost - cost * reducedCost;
 		eggCost.currencyType = zoneData.cost.currency;
 	}
 

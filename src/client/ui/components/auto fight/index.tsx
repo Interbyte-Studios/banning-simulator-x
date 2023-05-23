@@ -1,6 +1,7 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { MarketplaceService, Players, ReplicatedStorage, RunService, Workspace } from "@rbxts/services";
+import { getManualAutoFightState, setPurchasedAutoFight } from "client/modules/autoFightCache";
 import { toggleAutoFight } from "client/modules/autoFightWalkspeedHandler";
 import { uiClaimButtonStrokeColor, uiDarkStrokeColor, uiHeaderStrokeColor, vec2Middle } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
@@ -265,7 +266,9 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 					}
 
 					if (humanoidRootPart.Position.sub(root.Position).Magnitude > 4) {
-						humanoid.MoveTo(root.Position);
+						const direction = root.Position.sub(humanoidRootPart.Position).Unit;
+						const targetPosition = root.Position.sub(direction.mul(3));
+						humanoid.MoveTo(targetPosition);
 					}
 					return;
 				} else {
@@ -314,7 +317,9 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				if (humanoidRootPart.Position.sub(npcRootPart.Position).Magnitude > 215) {
 					humanoidRootPart.PivotTo(npcRootPart.CFrame);
 				} else {
-					humanoid.MoveTo(npcRootPart.Position);
+					const direction = npcRootPart.Position.sub(humanoidRootPart.Position).Unit;
+					const targetPosition = npcRootPart.Position.sub(direction.mul(3));
+					humanoid.MoveTo(targetPosition);
 				}
 
 				focusedNpc = npcHumanoid;
@@ -612,6 +617,13 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 										addAnnouncement("There was an issue while enabling auto fight (E-8).", AnnouncementType.Error);
 										return;
 									}
+
+									if (getManualAutoFightState()) {
+										addAnnouncement("You're already fighting an NPC. Try again later.", AnnouncementType.Error);
+										return;
+									}
+
+									setPurchasedAutoFight(true);
 
 									setSelectedZone(landingFolder.Name);
 									setIsEnabled(true);
@@ -1000,6 +1012,9 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 								/* eslint-disable jsdoc/require-jsdoc */
 								Activated: (): void => {
 									playSFX(UIEngagement.MinorEngagement);
+
+									setPurchasedAutoFight(false);
+
 									setTimeElapsed(0);
 									setViewingRewards(false);
 									setIsEnabled(false);

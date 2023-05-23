@@ -146,6 +146,11 @@ declare global {
 				enabled: BoolValue;
 			};
 		};
+		leaderboards: Folder & {
+			bans: Folder;
+			eggs: Folder;
+			timeUpdated: NumberValue;
+		};
 		PetExistStores: ObjectValue;
 		GameVersion: StringValue;
 	}

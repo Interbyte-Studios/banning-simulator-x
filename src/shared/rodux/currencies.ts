@@ -73,8 +73,8 @@ export function awardCurrency(currency: Currency, amount: number): AwardCurrency
 }
 
 // start with 0 currency
-const defaultCurrencyAmount = 5000000;
-const defaultCurrencies = Object.fromEntries(
+const defaultCurrencyAmount = 0;
+export const defaultCurrencies = Object.fromEntries(
 	Object.values(currencies).map((currency) => [currency, defaultCurrencyAmount] as const),
 );
 
@@ -113,12 +113,7 @@ export const currenciesReducer = Rodux.createReducer<
 		return { ...state, [action.currency.type]: purchasedCurrency };
 	},
 	addPet: (state, action) => {
-		let purchasedCurrency = state[action.currencyType];
-
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		for (const pet of action.pets) {
-			purchasedCurrency -= action.cost;
-		}
+		const purchasedCurrency = state[action.currencyType] - action.cost;
 
 		return { ...state, [action.currencyType]: purchasedCurrency };
 	},

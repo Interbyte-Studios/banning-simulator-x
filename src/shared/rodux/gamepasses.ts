@@ -20,7 +20,7 @@ export function claimGamepass(gamepassName: Gamepasses): ClaimGamepass & Rodux.A
 	};
 }
 
-const defaultGamepasses: GamepassesState = {
+export const defaultGamepasses: GamepassesState = {
 	["x2 Luck"]: false,
 	["Triple Hatch"]: false,
 	["Fast Hatch"]: false,

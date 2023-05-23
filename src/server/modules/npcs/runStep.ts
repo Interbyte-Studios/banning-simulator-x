@@ -6,6 +6,7 @@ import { Store } from "shared/rodux";
 import { killNpc } from "shared/rodux/currencies";
 import { getBanningMastery } from "shared/util/getBanningMastery";
 import { getPetExperienceMastery } from "shared/util/getPetExperienceMastery";
+import { getPetStrength } from "shared/util/getPetStrength";
 import { getTalismanStatEffect } from "shared/util/getTalismanDamage";
 import { getWeaponDamage } from "shared/util/getWeaponDamage";
 
@@ -141,7 +142,14 @@ export function runStep(
 			storeState.talismans.find((talisman) => talisman.id === storeState.currentTalisman)?.phase,
 		);
 
-		const damageAmount = weaponDamage + talismanStatEffects.damage;
+		const equippedPets = store.getState().pets.filter((pet) => pet.equipped);
+		let petDamageBonus = 0;
+		for (const pet of equippedPets) {
+			const petStrength = getPetStrength(pet);
+			petDamageBonus += petStrength;
+		}
+
+		const damageAmount = weaponDamage + talismanStatEffects.damage + petDamageBonus;
 
 		npc.instance.Humanoid.TakeDamage(damageAmount);
 

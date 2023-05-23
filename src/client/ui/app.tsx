@@ -1,6 +1,7 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { ContextActionService } from "@rbxts/services";
 import { Store } from "shared/rodux";
 
 import { AccountHub } from "./components/account";
@@ -13,6 +14,7 @@ import { WeaponEquip } from "./components/equip/weaponEquip";
 import { Fusing } from "./components/fusing";
 import { Hud } from "./components/hud";
 import { ItemInventory } from "./components/items";
+import { Leaderboards } from "./components/leaderboards";
 import { PetMastery } from "./components/petMastery";
 import { RankUpgrade } from "./components/ranks/menu";
 import { TalismanLevelUpAnimation } from "./components/talismanLevelUp";
@@ -23,6 +25,7 @@ import { WeaponLevelUpAnimation } from "./components/weaponLevelUp";
 import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
 import { hooks } from "./hooks";
+import { remoteContext } from "./mocks/remoteContext";
 
 interface AppProps {
 	player: Player;
@@ -38,9 +41,10 @@ const visibilityStates = {
 	accountHubVisible: false,
 	tradingVisible: false,
 	petMasteryVisible: false,
+	spinWheelVisibility: false,
 };
 
-export const app = hooks((props: AppProps, { useState, useCallback }) => {
+export const app = hooks((props: AppProps, { useState, useCallback, useContext, useEffect }) => {
 	const [visibility, setVisibility] = useState(visibilityStates);
 	const [activeTrade, setActiveTrade] = useState(false);
 	const [isHatching, setHatchingStatus] = useState(false);
@@ -54,6 +58,26 @@ export const app = hooks((props: AppProps, { useState, useCallback }) => {
 			isHatching,
 		[visibility, activeTrade, isHatching],
 	);
+	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
+
+	useEffect(() => {
+		ContextActionService.BindAction(
+			"equipWeapon",
+			async (_, state) => {
+				if (state !== Enum.UserInputState.Begin) {
+					return;
+				}
+
+				if (props.store.getState().currentWeapon.equipped) {
+					unequipWeapon.SendToServer();
+				} else {
+					equipWeapon.SendToServer();
+				}
+			},
+			false,
+			Enum.KeyCode.Z,
+		);
+	});
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
@@ -122,6 +146,11 @@ export const app = hooks((props: AppProps, { useState, useCallback }) => {
 					tradeMenusVisible={visibility.tradingVisible}
 					setActiveTrade={(value: boolean): void => setActiveTrade(value)}
 					hideMenu={(): void => setVisibility((prev) => ({ ...prev, tradingVisible: false }))}
+				/>
+				<Leaderboards />
+				<SpinWheel
+					visible={visibility.spinWheelVisibility}
+					hideMenu={(): void => setVisibility((prev) => ({ ...prev, spinWheelVisibility: false }))}
 				/>
 			</>
 		</RoactRodux.StoreProvider>

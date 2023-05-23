@@ -9,7 +9,7 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 		id: 7,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 5,
 		},
 	},
 	"Desert Pegasus": {
@@ -17,7 +17,7 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 		id: 8,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 5,
 		},
 	},
 	"Desert Ram": {
@@ -25,7 +25,7 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 		id: 9,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 5,
 		},
 	},
 	"Desert Angel": {
@@ -33,7 +33,7 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 		id: 10,
 		rarity: "Ordinary",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 10,
 		},
 	},
 	"Desert Dragon": {
@@ -41,7 +41,7 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 		id: 11,
 		rarity: "Rare",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 15,
 		},
 	},
 	"Desert Spider": {
@@ -49,7 +49,7 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 		id: 12,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 20,
 		},
 	},
 	"Desert Wraith": {
@@ -57,7 +57,7 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 		id: 13,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 25,
 		},
 	},
 	"Desert Scorpilord": {
@@ -65,7 +65,7 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 		id: 14,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 30,
 		},
 	},
 };

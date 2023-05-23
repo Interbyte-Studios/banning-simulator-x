@@ -94,7 +94,7 @@ export const Fusing = hooks((props: { enabled: boolean }, hooks) => {
 				}
 			},
 			false,
-			Enum.KeyCode.Z,
+			Enum.KeyCode.J,
 		);
 
 		return (): void => {

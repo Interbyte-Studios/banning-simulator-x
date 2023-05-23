@@ -1463,6 +1463,21 @@ hash = "d4ce21366e2374511b8c85d2563c45a157f0a8a9c5176ffa53fde5a60e61417d"
 id = 11827146912
 packable = false
 
+[inputs."images/decals/weapons/Amethyst Greatblade.png"]
+hash = "a10fa81dcaa73693bf776859bded4480bd780c4b32df454d55a215b7632f7928"
+id = 13355553071
+packable = false
+
+[inputs."images/decals/weapons/Amethyst Lance.png"]
+hash = "61a6f2dbcc66ed3f7d3bb13b38cce80e303820c817f7f1852171b2bbdd7e95b6"
+id = 13355553212
+packable = false
+
+[inputs."images/decals/weapons/Aquatic Omegablade.png"]
+hash = "f3700ad973e197e35be0bcaccf4b7bba6a1c76d085bc7e8cd64261322ea04e6c"
+id = 13355553323
+packable = false
+
 [inputs."images/decals/weapons/Atlantis Basher.png"]
 hash = "8adb6175d61e92b4a1cc3a2e0d3d3c69e8b08511781ee73207ae423f3a376b9a"
 id = 11827147014
@@ -1478,9 +1493,44 @@ hash = "2119c62e52c8a5284c5288bbfeff3a989bdd346da58747532541056c75d036c5"
 id = 11827147219
 packable = false
 
+[inputs."images/decals/weapons/Beach Scythe.png"]
+hash = "0cd80bae8d96a376df348c7e8f4eec4afb76ff3ef77c6d48420c5d3fe371129f"
+id = 13355553405
+packable = false
+
+[inputs."images/decals/weapons/Blade Of Mastery.png"]
+hash = "76b9704ae7f6fd84461600ddcc9eced403b082e0860923e07f74eb05fe5bcb60"
+id = 13355553478
+packable = false
+
 [inputs."images/decals/weapons/Bomba Bomber.png"]
 hash = "517da389b3aee193a0cf33801ed968caef13ae6455ff4ca56802b2d2d96c4516"
 id = 11827147315
+packable = false
+
+[inputs."images/decals/weapons/Bumble Basher.png"]
+hash = "a45a68cb47178b9fc66ae01e799045900669eb54b61a2f213b59242f16f7af97"
+id = 13355553555
+packable = false
+
+[inputs."images/decals/weapons/Buzz Blade.png"]
+hash = "90357f58ce5bd128cc117edbcd677b16edcf13da9a421115324fd66de01e5fad"
+id = 13355553646
+packable = false
+
+[inputs."images/decals/weapons/Buzz Lance.png"]
+hash = "438ac78170df933520a9eb0f8450a45bda2d21738df0b6429d46b5f94e925697"
+id = 13355553744
+packable = false
+
+[inputs."images/decals/weapons/Candy Lance.png"]
+hash = "8081c94fde5b8365bf3a8ec004e634e17701be8656a52b4882e8e728ee47cd57"
+id = 13355553817
+packable = false
+
+[inputs."images/decals/weapons/Candy Omegablade.png"]
+hash = "c7d2218161bb57fb327ac1811c0f270ed33b67dbcf07faaf5f17c33c8a69df33"
+id = 13355553926
 packable = false
 
 [inputs."images/decals/weapons/Carnival Mallet.png"]
@@ -1493,6 +1543,16 @@ hash = "7dc5d4175f310c0f30fbd164e592bd9a33f3c7a86be9127fa537c997a82cfe50"
 id = 11827147434
 packable = false
 
+[inputs."images/decals/weapons/Crystalized Hammer.png"]
+hash = "d97c17d6dcb0c90350764ee0daaf75f9bb6e032015890087b51c7a921160ca37"
+id = 13355554131
+packable = false
+
+[inputs."images/decals/weapons/Crystalized Scythe.png"]
+hash = "d4d940da5fa036a778ef2bbbb888088a87e852d613c4e60cab2ef6a4e76a66e5"
+id = 13355554202
+packable = false
+
 [inputs."images/decals/weapons/Darkest Desires.png"]
 hash = "da70368166ce1033197b1531b53132190fc847aed9eb83e3f47ca0aca99b4e59"
 id = 11827147583
@@ -1501,6 +1561,26 @@ packable = false
 [inputs."images/decals/weapons/Dune Glass.png"]
 hash = "5fd56af00cb99bb612e89f2b10f271e4e1b1303e57345e5d50e5760bbf806c01"
 id = 11827147705
+packable = false
+
+[inputs."images/decals/weapons/Enchanted Greatsword.png"]
+hash = "2bafb1de8738d7484364696b737603d38fdf5fa2830eb016159ebbeed7206597"
+id = 13355554298
+packable = false
+
+[inputs."images/decals/weapons/Enchanted Hammer.png"]
+hash = "4619519108faa4849c9bac00309d5b2bbac4fd8e55181410ba28d53ebb6536f7"
+id = 13355554397
+packable = false
+
+[inputs."images/decals/weapons/Enchanted Lance.png"]
+hash = "143006a01dd1d69c023db167b908e2c2ce00f40accab1ae50a475f2573ba61d3"
+id = 13355554478
+packable = false
+
+[inputs."images/decals/weapons/Enchanted Scythe.png"]
+hash = "360a9c29f298f7c8cab9ea4220f502688a27016584c4bd1ce36f78a0abba1fa4"
+id = 13355554595
 packable = false
 
 [inputs."images/decals/weapons/Flower Blade.png"]
@@ -1523,6 +1603,11 @@ hash = "e593d1b8728c86846c212cc472ae7b4cabc07ecc6fa39e26b996b44ee5305d36"
 id = 11827148161
 packable = false
 
+[inputs."images/decals/weapons/Gumdrop Dropper.png"]
+hash = "03c15b25540b31643d5c090e29f38349a94173dc149fa7e52a6b240eeb126947"
+id = 13355554794
+packable = false
+
 [inputs."images/decals/weapons/Haunted Blade.png"]
 hash = "ef02d3ce3458df67f877b52cc8137d3856ef662612aae269e8c8f0d4f168ea16"
 id = 11827148245
@@ -1543,14 +1628,84 @@ hash = "ed756898b51b45bfaf448e1db24e88344e921eed948fd3ed0296ad0a997e0fe6"
 id = 11827148494
 packable = false
 
+[inputs."images/decals/weapons/Lava Lance.png"]
+hash = "de86271b0e3e7209dbbd67944a96003a834ff9cc7d6a819efbcbbc4fb43860ff"
+id = 13355554956
+packable = false
+
 [inputs."images/decals/weapons/Lime Lance.png"]
 hash = "15a7e9f91df83ecd082a012f97714e0bc8865117a125e3611638c6c12f17c3e5"
 id = 11827148552
 packable = false
 
+[inputs."images/decals/weapons/Machine Masher.png"]
+hash = "5b67f0c0b0c6e897ac5eecb976384259aaea3f8b36028b7582982914e1564ed0"
+id = 13355555112
+packable = false
+
+[inputs."images/decals/weapons/Molten Scythe.png"]
+hash = "5133a510b518835e53d3740e52e741d38182d7e60bf7ed7dd05fa5568b04eee9"
+id = 13355555241
+packable = false
+
+[inputs."images/decals/weapons/Molten Slasher.png"]
+hash = "365ac2a9c53edda8161eaa7b028f0007396b66abd2c59798a10111fd03d98a31"
+id = 13355555386
+packable = false
+
+[inputs."images/decals/weapons/Molten Thrasher.png"]
+hash = "4830dcff4f0ba50371b4d552273eec810b091eb24860e7051170d4be904c63f9"
+id = 13355555518
+packable = false
+
+[inputs."images/decals/weapons/Peppermint Scythe.png"]
+hash = "54e173daf595955db2562bf8ddfce7cfc2ffde55317a4226bcaa4c3952c571c3"
+id = 13355555671
+packable = false
+
 [inputs."images/decals/weapons/Pillar Slammer.png"]
 hash = "449a71320444f9d5b6ebd5aeb2e77b795d963e0552097cf27177d9ed278511f7"
 id = 11827148634
+packable = false
+
+[inputs."images/decals/weapons/Radiant  Scythe.png"]
+hash = "ecb2bea3f9f4211760eb380779f9538d69fd3b3070657c1d554559a234841641"
+id = 13355555786
+packable = false
+
+[inputs."images/decals/weapons/Radiant Greatsword.png"]
+hash = "dfc729369a0f5f059903894ffa42b181b9468862146e39c48be8c38d5d0f2c4d"
+id = 13355555918
+packable = false
+
+[inputs."images/decals/weapons/Radiant Lance.png"]
+hash = "582455effd433b4cffd464cab50b72bf9134d08232f738d3854f459a70524cc9"
+id = 13355556075
+packable = false
+
+[inputs."images/decals/weapons/Radiant Smaher.png"]
+hash = "2ab77f906426d5378eb14b0a144e650eed6268bc4eb62a679995126dac9788ea"
+id = 13355556253
+packable = false
+
+[inputs."images/decals/weapons/Radioactive Greatsword.png"]
+hash = "cea14d98f2911750d4572c4a19d5b94f0f6101e7dcb4017cb94959a66a13eb1c"
+id = 13355556403
+packable = false
+
+[inputs."images/decals/weapons/Radioactive Lance.png"]
+hash = "1ea2b76c2d33695a29148be0a53826650103e559dfee11a8ddabf1ef6d659aad"
+id = 13355556499
+packable = false
+
+[inputs."images/decals/weapons/Radioactive Scythe.png"]
+hash = "d613d22be73c034fbcf02714f544c216713ccbbfd892f5f025117fb5ab9a4d79"
+id = 13355556648
+packable = false
+
+[inputs."images/decals/weapons/Radioactive Smasher.png"]
+hash = "dfb7190776fd64652e0cf7097d75b529bcf91365fbe1ba7b2310434c3ae4eb03"
+id = 13355556765
 packable = false
 
 [inputs."images/decals/weapons/Samurai Smasher.png"]
@@ -1563,6 +1718,16 @@ hash = "6783b49221af6a561097fb3fefd2fbe930569c3e465a2afc871bc1fae64c7008"
 id = 11827148775
 packable = false
 
+[inputs."images/decals/weapons/Starry Lance.png"]
+hash = "c139c8112a5a979ff11e4541117d1a607f809be2096290853e880fee609ff411"
+id = 13355556886
+packable = false
+
+[inputs."images/decals/weapons/Stinger Scythe.png"]
+hash = "3729cfca087f4cfde3a83b00ec5498c484528c75517bcc18d7e67b2b6a6b98ee"
+id = 13355556977
+packable = false
+
 [inputs."images/decals/weapons/Stone Hammer.png"]
 hash = "aaee21eeb2d257c7c5aee81de7986fe3f2f03eea791b022a00f2499045c179f9"
 id = 11827148862
@@ -1573,9 +1738,44 @@ hash = "bd9eecf3c412db766013b0990c78ac1e5175f0e2e82a8566bbc07008498884cb"
 id = 11827149002
 packable = false
 
+[inputs."images/decals/weapons/Sunflower Basher.png"]
+hash = "46f443b001ffe9c27b9dce738cf38b5c452b11c814866f95f7b861d9890448c2"
+id = 13355557094
+packable = false
+
 [inputs."images/decals/weapons/Sunflower Slammer.png"]
 hash = "b2a4a70e382b9638315d3dcc523caa1279a34d40de25c4a5608f1007b543e95c"
 id = 11827149119
+packable = false
+
+[inputs."images/decals/weapons/Sunflower Slicer.png"]
+hash = "672e01e0adac9f0b7b966292c8a0d8ad65ddc18145869e308ca246011037ea89"
+id = 13355557193
+packable = false
+
+[inputs."images/decals/weapons/Sunflower Spear.png"]
+hash = "7f26b6d058f42d37c7e577c597465fcb44c6c8fc45f83d22282af1b4165453e5"
+id = 13355557275
+packable = false
+
+[inputs."images/decals/weapons/Sunflower Sword.png"]
+hash = "bcf336a1c43ffa283bf36793fa8fc9d557d473da389808b6f54f50d2d2f33f47"
+id = 13355557341
+packable = false
+
+[inputs."images/decals/weapons/Taliscythe.png"]
+hash = "389b5726479185eaada72ce465811e1cfb6f9279b76e1f856fa8ce2f82ee78b5"
+id = 13355557420
+packable = false
+
+[inputs."images/decals/weapons/Tropical Lance.png"]
+hash = "a9b3b761c857386963a4cb405955a33a0cc58f95e5c563fb9e6a5a0e52b6096e"
+id = 13355557511
+packable = false
+
+[inputs."images/decals/weapons/Tropical Thrasher.png"]
+hash = "9255420146e66e1ca0858b44925018ba36de9e54ba7642e3d6b481f5e80d0daf"
+id = 13355557606
 packable = false
 
 [inputs."images/decals/weapons/Twilight Blade.png"]
@@ -2386,6 +2586,11 @@ packable = false
 [inputs."images/vectors/Shield.png"]
 hash = "e0f152f0346e03659d200de0bfe0889af288cc1c13c38fcd3abeea856737ca9e"
 id = 11591958516
+packable = false
+
+[inputs."images/vectors/SmallSword.png"]
+hash = "7554ed0b96a2fcd5f2db1e1f309b18465b8a4d09d1c0f4be5fbfb0411a37f919"
+id = 13355558047
 packable = false
 
 [inputs."images/vectors/SpinWheel.png"]

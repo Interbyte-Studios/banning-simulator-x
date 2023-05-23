@@ -3,6 +3,7 @@ import Roact from "@rbxts/roact";
 import { TweenService, Workspace } from "@rbxts/services";
 import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
+import { MAX_WEAPON_ID } from "shared/configs/weapons";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 import { PurchaseWeapon } from "./purchase";
@@ -23,7 +24,7 @@ export const WeaponShop = hooks((props: WeaponShopProps, { useState, useEffect }
 
 	const [viewedWeapon, setViewedWeapon] = useState(1);
 	const minimumWeaponId = 1;
-	const maximumWeaponId = 24;
+	const maximumWeaponId = MAX_WEAPON_ID;
 
 	const exitButton: Array<Roact.Element> = [];
 

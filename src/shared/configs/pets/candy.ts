@@ -9,7 +9,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 		id: 24,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 15,
 		},
 	},
 	"Gummy Bunny": {
@@ -17,7 +17,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 		id: 25,
 		rarity: "Ordinary",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 30,
 		},
 	},
 	"Gummy Kitty": {
@@ -25,7 +25,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 		id: 26,
 		rarity: "Ordinary",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 30,
 		},
 	},
 	"Gummy Bear": {
@@ -33,7 +33,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 		id: 27,
 		rarity: "Rare",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 45,
 		},
 	},
 	Gumdrop: {
@@ -41,7 +41,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 		id: 28,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 60,
 		},
 	},
 	"Gummy Bee": {
@@ -49,7 +49,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 		id: 29,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 75,
 		},
 	},
 	"Gummy Dragon": {
@@ -57,7 +57,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 		id: 30,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 90,
 		},
 	},
 	"Gummy Striker": {
@@ -65,7 +65,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 		id: 31,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 105,
 		},
 	},
 	"Gummy Wyvern": {
@@ -73,7 +73,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 		id: 32,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 120,
 		},
 	},
 	"Ice Cream Pop": {
@@ -81,7 +81,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 		id: 33,
 		rarity: "Prismatic",
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 135,
 		},
 	},
 };

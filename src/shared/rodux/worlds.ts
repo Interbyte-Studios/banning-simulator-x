@@ -27,21 +27,10 @@ export interface UnlockZone extends Rodux.Action<"unlockZone"> {
 	zoneName: ZoneNames;
 }
 
-const defaultWorlds: WorldsState = [
+export const defaultWorlds: WorldsState = [
 	{
 		name: "Ban Land",
-		zones: [
-			"Forest",
-			"Beach",
-			"Candy Land",
-			"Desert",
-			"Forest",
-			"Honeycomb",
-			"Ice Land",
-			"Lava Lands",
-			"Sunflower Field",
-			"The Mines",
-		],
+		zones: ["Forest"],
 	},
 ];
 

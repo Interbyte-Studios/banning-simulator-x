@@ -25,7 +25,7 @@ export function addEgg(pets: Array<ConfirmedPet>): AddEgg & Rodux.AnyAction {
 	};
 }
 
-const defaultEggs: EggsState = {
+export const defaultEggs: EggsState = {
 	eggs: 0,
 	rarities: {
 		Basic: 0,

@@ -43,14 +43,14 @@ export function unequipWeapon(): UnequipWeapon & Rodux.AnyAction {
 	};
 }
 
-const defaultWeaponState = {
+export const defaultCurrentWeaponState = {
 	id: 1,
 	equipped: true,
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const currentWeaponReducer = Rodux.createReducer<CurrentWeaponState, CurrentWeaponActions | PurchaseWeapon>(
-	defaultWeaponState,
+	defaultCurrentWeaponState,
 	{
 		changeWeapon: (state, action) => {
 			return {

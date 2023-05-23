@@ -54,6 +54,10 @@ export const AccountPlayerSelection = hooks(
 						const minimizedSize = 0.8;
 						const maximizedSize = 0.9;
 
+						const thumbnailType = Enum.ThumbnailType.HeadShot;
+						const thumbnailSize = Enum.ThumbnailSize.Size420x420;
+						const [content, isReady] = Players.GetUserThumbnailAsync(oPlayer.UserId, thumbnailType, thumbnailSize);
+
 						return (
 							<BaseFrame
 								BackgroundTransparency={0}
@@ -80,6 +84,7 @@ export const AccountPlayerSelection = hooks(
 										native={{
 											Size: UDim2.fromScale(1, 1),
 											ScaleType: Enum.ScaleType.Fit,
+											Image: isReady && content ? content : ""
 										}}
 									>
 										<uicorner CornerRadius={new UDim(1, 0)} />
