@@ -17,6 +17,7 @@ import { ItemInventory } from "./components/items";
 import { Leaderboards } from "./components/leaderboards";
 import { PetMastery } from "./components/petMastery";
 import { RankUpgrade } from "./components/ranks/menu";
+import { SpinWheel } from "./components/spinWheel";
 import { TalismanLevelUpAnimation } from "./components/talismanLevelUp";
 import { TalismanTowerHandle } from "./components/talismans";
 import { Teleportation } from "./components/teleportation";
@@ -44,20 +45,11 @@ const visibilityStates = {
 	spinWheelVisibility: false,
 };
 
-export const app = hooks((props: AppProps, { useState, useCallback, useContext, useEffect }) => {
+export const app = hooks((props: AppProps, { useState, useCallback, useEffect, useContext }) => {
 	const [visibility, setVisibility] = useState(visibilityStates);
 	const [activeTrade, setActiveTrade] = useState(false);
 	const [isHatching, setHatchingStatus] = useState(false);
 
-	const isMenuVisible = useCallback(
-		(currentMenu?: keyof typeof visibilityStates) =>
-			Object.entries(visibility)
-				.filter(([menu]) => menu !== currentMenu)
-				.some(([, value]) => value) ||
-			activeTrade ||
-			isHatching,
-		[visibility, activeTrade, isHatching],
-	);
 	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
 
 	useEffect(() => {
@@ -78,6 +70,16 @@ export const app = hooks((props: AppProps, { useState, useCallback, useContext, 
 			Enum.KeyCode.Z,
 		);
 	});
+
+	const isMenuVisible = useCallback(
+		(currentMenu?: keyof typeof visibilityStates) =>
+			Object.entries(visibility)
+				.filter(([menu]) => menu !== currentMenu)
+				.some(([, value]) => value) ||
+			activeTrade ||
+			isHatching,
+		[visibility, activeTrade, isHatching],
+	);
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
@@ -147,11 +149,11 @@ export const app = hooks((props: AppProps, { useState, useCallback, useContext, 
 					setActiveTrade={(value: boolean): void => setActiveTrade(value)}
 					hideMenu={(): void => setVisibility((prev) => ({ ...prev, tradingVisible: false }))}
 				/>
-				<Leaderboards />
 				<SpinWheel
 					visible={visibility.spinWheelVisibility}
 					hideMenu={(): void => setVisibility((prev) => ({ ...prev, spinWheelVisibility: false }))}
 				/>
+				<Leaderboards />
 			</>
 		</RoactRodux.StoreProvider>
 	);
