@@ -254,6 +254,7 @@ export const WeaponInfoDisplay = RoactRodux.connect(mapStateToProps)(
 					<uicorner CornerRadius={new UDim(0.5)} />
 
 					<BaseFrame
+						AnchorPoint={new Vector2(0, 0)}
 						BackgroundTransparency={0}
 						BackgroundColor3={Color3.fromRGB(85, 255, 127)}
 						Position={UDim2.fromScale(0, 0)}
