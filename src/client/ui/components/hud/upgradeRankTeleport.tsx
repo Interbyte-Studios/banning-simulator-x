@@ -4,7 +4,6 @@ import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
-import { getRankProgress } from "client/util/getRankProgress";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { MAX_RANK, RANKS } from "shared/configs/ranks";

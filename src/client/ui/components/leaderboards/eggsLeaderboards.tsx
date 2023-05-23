@@ -121,13 +121,17 @@ export const EggLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 		if (position === 1 || position === 2 || position === 3) {
 			const element = <PlayerLeaderboardImage position={position} playerId={data.playerId} />;
 			positions.push(element);
-			warn("Pushed element");
 		}
 	});
 
 	const leaderboards: Array<Roact.Element> = [];
 	leaderboardData.forEach((data) => {
-		const playerName = Players.GetNameFromUserIdAsync(data.playerId);
+		const [success, result] = pcall((): string => Players.GetNameFromUserIdAsync(data.playerId));
+
+		let playerName = "unknown";
+		if (success) {
+			playerName = result;
+		}
 
 		leaderboards.push(
 			<frame BackgroundTransparency={1} Size={UDim2.fromScale(1.5, 0.125)}>
