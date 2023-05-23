@@ -39,6 +39,7 @@ const WeaponView = hooks((props: { storedWeapon: Weapon }, hooks) => {
 	return (
 		<ImageButton
 			native={{
+				Size: UDim2.fromScale(0.5, 0.5),
 				BackgroundTransparency: 0,
 				Position: UDim2.fromScale(0.5, 0.165),
 				BackgroundColor3: Color3.fromRGB(0, 131, 213),
@@ -199,7 +200,7 @@ export const WeaponInfoDisplay = RoactRodux.connect(mapStateToProps)(
 		return (
 			<ImageButton
 				native={{
-					Size: binding.map((value) => UDim2.fromScale(value, 0.08)),
+					Size: binding.map((value) => UDim2.fromScale(value, value)),
 					Position: UDim2.fromScale(-0.2, 0.5),
 					Image: assetIds.images.ui.inventory["info sidebar"],
 				}}

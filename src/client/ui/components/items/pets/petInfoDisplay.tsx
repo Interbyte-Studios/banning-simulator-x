@@ -44,6 +44,7 @@ const PetView = hooks((props: { storedPet: Pet }, hooks) => {
 	return (
 		<ImageButton
 			native={{
+				Size: UDim2.fromScale(0.5, 0.5),
 				BackgroundTransparency: 0,
 				BackgroundColor3: Color3.fromRGB(0, 131, 213),
 				Position: UDim2.fromScale(0.5, 0.165),
@@ -479,6 +480,7 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 					<uicorner CornerRadius={new UDim(0.5)} />
 
 					<BaseFrame
+						AnchorPoint={new Vector2(0, 0)}
 						BackgroundTransparency={0}
 						BackgroundColor3={Color3.fromRGB(85, 255, 127)}
 						Position={UDim2.fromScale(0, 0)}

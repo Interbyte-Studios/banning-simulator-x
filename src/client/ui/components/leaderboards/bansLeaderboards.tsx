@@ -92,17 +92,27 @@ export const BanLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 	const uiListLayoutRef = useValue(Roact.createRef<UIListLayout>());
 	useEffect(() => {
 		const uiListLayout = uiListLayoutRef.value.getValue();
-		assert(uiListLayout, `Failed to get Ban Leaderboards's UIListLayout.`);
+		assert(uiListLayout, `Failed to get Ban Leaderboards UIListLayout.`);
 
 		const scrollingFrame = uiListLayout.Parent;
-		assert(scrollingFrame, `Failed to get Ban Leaderboard ScrollingFrame.`);
-		assert(scrollingFrame.IsA("ScrollingFrame"), `Expected Ban Leaderboard to have a ScrollingFrame.`);
+		assert(scrollingFrame, `Failed to get Ban Leaderboards ScrollingFrame.`);
+		assert(scrollingFrame.IsA("ScrollingFrame"), `Expected Ban Leaderboards to have a ScrollingFrame.`);
 
-		scrollingFrame.GetChildren().forEach((leaderboardCard) => {
-			if (leaderboardCard.IsA("ImageLabel")) {
-				leaderboardCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+		scrollingFrame.GetChildren().forEach((card) => {
+			if (card.IsA("Frame")) {
+				card.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
 			}
 		});
+
+		const connection = scrollingFrame.GetPropertyChangedSignal("AbsoluteSize").Connect(() => {
+			scrollingFrame.GetChildren().forEach((card) => {
+				if (card.IsA("Frame")) {
+					card.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+				}
+			});
+		});
+
+		return (): void => connection.Disconnect();
 	});
 
 	const positions: Array<Roact.Element> = [];
@@ -184,6 +194,7 @@ export const BanLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 			<RescalingScrollingFrame
 				AnchorPoint={vec2Middle}
 				BackgroundTransparency={1}
+				BorderSizePixel={0}
 				Position={UDim2.fromScale(0.5, 0.615)}
 				Size={UDim2.fromScale(0.95, 0.735)}
 				ScrollingDirection={Enum.ScrollingDirection.Y}
