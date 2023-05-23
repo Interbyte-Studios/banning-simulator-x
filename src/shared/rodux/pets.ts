@@ -15,7 +15,7 @@ export interface Pet {
 	locked: boolean;
 	variant: Variants;
 	tradeLocked: boolean;
-	enhancements: { [slot in Variants]?: Omit<EnhancePetMetadata, "variant"> };
+	//enhancements: { [slot in Variants]?: Omit<EnhancePetMetadata, "variant"> };
 }
 
 export type PetsState = Array<Pet>;
@@ -30,7 +30,7 @@ export type PetAttainMethod = "maxLevel" | "fuse" | "hatch" | "admin" | "trade";
 export interface PetData {
 	id: number;
 	variant: Variants;
-	enhancements?: { [slot in Variants]?: Omit<EnhancePetMetadata, "variant"> };
+	//enhancements?: { [slot in Variants]?: Omit<EnhancePetMetadata, "variant"> };
 	method: PetAttainMethod;
 	tradeLocked: boolean;
 }
@@ -223,7 +223,7 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 					locked: false,
 					variant: pet.variant,
 					tradeLocked: pet.tradeLocked,
-					enhancements: pet.enhancements ?? {},
+					//enhancements: pet.enhancements ?? {},
 				};
 
 				newState.push(newPet);
@@ -278,7 +278,7 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 
 			const pet = newState.find((pet) => pet.guid === action.guid);
 			if (pet !== undefined) {
-				pet.enhancements[action.enhancementData.variant] = action.enhancementData;
+				//pet.enhancements[action.enhancementData.variant] = action.enhancementData;
 			}
 
 			return newState;

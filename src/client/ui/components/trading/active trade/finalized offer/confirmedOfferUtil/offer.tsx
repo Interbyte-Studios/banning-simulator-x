@@ -1,4 +1,5 @@
 import Roact from "@rbxts/roact";
+import { Players } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
 import { uiTextStrokeColor } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
@@ -13,9 +14,8 @@ import { ConfirmedCurrencyDisplayed } from "./currency";
 
 interface OfferProps {
 	player: Player;
-	offerType: "Local" | "Foreign";
-	isConfirmed: boolean;
 	offerData: PlayerTradeItem;
+	confirmed: boolean;
 }
 
 /**
@@ -37,11 +37,13 @@ export const Offer = (props: OfferProps): Roact.Element => {
 		}
 	}
 
+	const isLocalPlayer = props.player.UserId === Players.LocalPlayer.UserId;
+
 	return (
 		<>
 			<BaseFrame
-				Position={props.offerType === "Local" ? UDim2.fromScale(0.26, 0.34) : UDim2.fromScale(0.75, 0.34)}
-				Size={props.offerType === "Local" ? UDim2.fromScale(0.46, 0.57) : UDim2.fromScale(0.46, 0.57)}
+				Position={isLocalPlayer ? UDim2.fromScale(0.26, 0.34) : UDim2.fromScale(0.75, 0.34)}
+				Size={isLocalPlayer ? UDim2.fromScale(0.46, 0.57) : UDim2.fromScale(0.46, 0.57)}
 				BackgroundTransparency={1}
 			>
 				<uicorner CornerRadius={new UDim(0.125, 0)} />
@@ -53,21 +55,23 @@ export const Offer = (props: OfferProps): Roact.Element => {
 					scrollBarImageColor={Color3.fromRGB(8, 82, 129)}
 					fillDirectionMaxCells={4}
 				/>
-				{props.isConfirmed ? <ConfirmedNotice lower={true} /> : undefined}
+				{props.confirmed ? <ConfirmedNotice lower={true} /> : undefined}
 			</BaseFrame>
+
 			<StrokeTextLabel
 				native={{
 					AnchorPoint: new Vector2(0, 0),
-					Position: props.offerType === "Local" ? UDim2.fromScale(0.085, 0) : UDim2.fromScale(0.585, 0),
+					Position: isLocalPlayer ? UDim2.fromScale(0.085, 0) : UDim2.fromScale(0.585, 0),
 					Size: UDim2.fromScale(0.35, 0.1),
-					Text: props.offerType === "Local" ? "Your Offer" : "Their Offer",
+					Text: isLocalPlayer ? "Your Offer" : "Their Offer",
 				}}
 				stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
 			/>
+
 			<ConfirmedCurrencyDisplayed
+				player={props.player}
 				currency={props.offerData.currency?.type ?? "coins"}
 				amount={props.offerData.currency?.amount ?? 0}
-				offerType={props.offerType}
 			/>
 		</>
 	);

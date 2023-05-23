@@ -206,7 +206,8 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 			if (
 				rightComponentDisplayed !== "Accolades" &&
 				rightComponentDisplayed !== "Mastery" &&
-				rightComponentDisplayed !== "Admin"
+				rightComponentDisplayed !== "Admin" &&
+				rightComponentDisplayed !== "TradeHistory"
 			) {
 				leftDisplayedComponents.push(
 					<BaseFrame

@@ -1,10 +1,8 @@
 import { HttpService, Players, ReplicatedStorage } from "@rbxts/services";
 import { addPetToCache } from "server/modules/datastoreCaches/petExistStore";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
-import { rollEnhancement } from "server/modules/pets/rollEnhancement";
 import { getPetPercentages } from "server/util/getPetPercentages";
 import { hatchDebounce } from "shared/configs/eggs";
-import { EnhancePetMetadata } from "shared/configs/enchantments";
 import { Rarities } from "shared/configs/rarities";
 import { remotes } from "shared/remotes";
 import { addEgg } from "shared/rodux/eggs";
@@ -151,6 +149,7 @@ hatchEgg.SetCallback(
 			}
 
 			// check to see if we should add an enhancement by default to the pet (random chance)
+			/*
 			let selectedEnhancement: EnhancePetMetadata | undefined;
 
 			const randomNumber = new Random().NextInteger(0, 100);
@@ -166,6 +165,7 @@ hatchEgg.SetCallback(
 					};
 				}
 			}
+			*/
 
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			if (pet.rarity === "Prismatic" || pet.rarity === "Primordial") {
@@ -178,7 +178,7 @@ hatchEgg.SetCallback(
 				guid: HttpService.GenerateGUID(false),
 				variant: isVoid ? "void" : "regular",
 				method: "hatch",
-				enhancements: { [pet.rarity]: selectedEnhancement },
+				//enhancements: { [pet.rarity]: selectedEnhancement },
 				tradeLocked: false,
 			});
 		}

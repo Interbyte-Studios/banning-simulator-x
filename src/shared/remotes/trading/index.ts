@@ -1,6 +1,8 @@
 import Net from "@rbxts/net";
 
+import { abandonTradeAssertionDefinition } from "./abandonTradeAssertion";
 import { acceptTradeRequestDefinition } from "./acceptTradeRequest";
+import { clientTradeErrorDefinition } from "./clientTradeError";
 import { confirmFinalizedTradeDefinition } from "./confirmFinalizedTrade";
 import { confirmTradeOfferDefinition } from "./confirmOffer";
 import { declineFinalizedTradeDefinition } from "./declineFinalizedTrade";
@@ -41,4 +43,7 @@ export const trading = Net.Definitions.Namespace({
 	finalizedTradeConfirmed: finalizedTradeConfirmedDefinition,
 	declineFinalizedTrade: declineFinalizedTradeDefinition,
 	finalizedTradeDeclined: finalizedTradeDeclinedDefinition,
+
+	clientTradeError: clientTradeErrorDefinition,
+	abandonTradeAssertion: abandonTradeAssertionDefinition,
 });

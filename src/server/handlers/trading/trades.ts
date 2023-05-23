@@ -1,11 +1,20 @@
 import { retrieveStore } from "server/playerStore";
+import { MAX_TRADE_LOGS } from "shared/configs/game";
 import { PlayerTradeItem } from "shared/configs/trading";
 import { Store } from "shared/rodux";
 import { awardCurrency } from "shared/rodux/currencies";
 import { addPets, ConfirmedPet, deletePets } from "shared/rodux/pets";
+import { removeTradeLog, SavedTrade, saveTrade } from "shared/rodux/tradeLogs";
+import { getPetLevel } from "shared/util/getPetLevel";
 import { UnreachableCaseError } from "shared/util/unreachableCaseError";
 
 const currentTrades: Map<Player, Trade> = new Map();
+
+interface TradedPet extends ConfirmedPet {
+	bans: number;
+	equipped: boolean;
+	locked: boolean;
+}
 
 interface BaseTrade {
 	status: TradeStatus;
@@ -273,13 +282,31 @@ export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeI
 			return false;
 		}
 
-		// update the trade status to trading for both players
+		// update the trade status to trading
 		const newTradeStatus: Trading = {
 			status: TradeStatus.Trading,
 			items: trade.items,
 		};
 
 		currentTrades.set(player, newTradeStatus);
+	} else if (trade.status === TradeStatus.Trading) {
+		const otherPlayer = trade.items.find((playerItems) => playerItems.player !== player);
+		if (otherPlayer === undefined) {
+			return false;
+		}
+
+		// this case is for when the other player has confirmed their offer and we are modifying our offer
+		const otherPlayerTrade = currentTrades.get(otherPlayer.player);
+		if (otherPlayerTrade !== undefined && otherPlayerTrade.status === TradeStatus.ConfirmedOffer) {
+			warn("Set other player to trading status");
+			// update the trade status to trading for other player
+			const newTradeStatus: Trading = {
+				status: TradeStatus.Trading,
+				items: otherPlayerTrade.items,
+			};
+
+			currentTrades.set(otherPlayer.player, newTradeStatus);
+		}
 	}
 
 	if (trade.status !== TradeStatus.Trading && trade.status !== TradeStatus.ConfirmedOffer) {
@@ -290,7 +317,6 @@ export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeI
 	const playerItems = trade.items.find((playerItems) => playerItems.player === player);
 	if (!playerItems) {
 		// this case should never happen
-		warn("Did not find player items");
 		return false;
 	}
 
@@ -299,26 +325,22 @@ export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeI
 		newOffer.currency === undefined ||
 		newOffer.currency.amount > store.getState().currencies[newOffer.currency.type]
 	) {
-		warn("Player does not have enough currency");
 		return false;
 	}
 
 	// validate player has the pets they own
 	if (!newOffer.pets.every((pet) => store.getState().pets.find((storePet) => storePet.guid === pet) !== undefined)) {
-		warn("Player does not own all pets");
 		return false;
 	}
 
 	// ensure that the pet guids are unique
 	if (new Set(newOffer.pets).size() !== newOffer.pets.size()) {
-		warn("Player has duplicate pets");
 		return false;
 	}
 
 	playerItems.pets = newOffer.pets;
 	playerItems.currency = newOffer.currency;
 
-	warn("should have trade");
 	return true;
 }
 
@@ -539,7 +561,7 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 
 	if (playerOffer && otherPlayerOffer) {
 		// create tables of pets to transfer between players
-		const playerOfferPets: Array<ConfirmedPet> = [];
+		const playerOfferPets: Array<TradedPet> = [];
 		for (const pet of playerOffer.pets) {
 			const storedPet = store.getState().pets.find((storedPet) => storedPet.guid === pet);
 
@@ -552,7 +574,7 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 			playerOfferPets.push({ ...storedPet, autoDeleted: false, method: "trade" });
 		}
 
-		const otherPlayerOfferPets: Array<ConfirmedPet> = [];
+		const otherPlayerOfferPets: Array<TradedPet> = [];
 		for (const pet of otherPlayerOffer.pets) {
 			const storedPet = otherPlayerStore.getState().pets.find((storedPet) => storedPet.guid === pet);
 
@@ -589,7 +611,78 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 			store.dispatch(awardCurrency(otherPlayerOffer.currency.type, otherPlayerOffer.currency.amount));
 		}
 
-		// todo: remove the trade, and let the player's know it's been completed
+		// log the trade for both players
+		const tradeTimestamp = DateTime.now();
+		const playerTrade = {
+			currency: {
+				currencyType: playerOffer.currency?.type ?? "coins",
+				amount: playerOffer.currency?.amount ?? 0,
+			},
+			pets: playerOfferPets.map((pet) => {
+				const petLevel = getPetLevel(pet) ?? 1;
+
+				return {
+					id: pet.id,
+					variant: pet.variant,
+					level: petLevel,
+				};
+			}),
+		};
+		const otherPlayerTrade = {
+			currency: {
+				currencyType: otherPlayerOffer.currency?.type ?? "coins",
+				amount: otherPlayerOffer.currency?.amount ?? 0,
+			},
+			pets: otherPlayerOfferPets.map((pet) => {
+				const petLevel = getPetLevel(pet) ?? 1;
+
+				return {
+					id: pet.id,
+					variant: pet.variant,
+					level: petLevel,
+				};
+			}),
+		};
+
+		if (store.getState().tradeLogs.size() >= MAX_TRADE_LOGS) {
+			warn("Player Trade Logs:");
+			let tradeToRemove: SavedTrade | undefined;
+			store.getState().tradeLogs.forEach((trade) => {
+				print(trade.timestamp.UnixTimestampMillis, tradeToRemove?.timestamp.UnixTimestamp);
+				if (
+					tradeToRemove === undefined ||
+					trade.timestamp.UnixTimestampMillis < tradeToRemove.timestamp.UnixTimestampMillis
+				) {
+					tradeToRemove = trade;
+				}
+			});
+
+			if (tradeToRemove) {
+				store.dispatch(removeTradeLog(tradeToRemove));
+			} else warn(`Failed to remove overflowing trade logs for player ${player.Name}`);
+		}
+
+		if (otherPlayerStore.getState().tradeLogs.size() >= MAX_TRADE_LOGS) {
+			warn("Other Player Trade Logs:");
+			let tradeToRemove: SavedTrade | undefined;
+			otherPlayerStore.getState().tradeLogs.forEach((trade) => {
+				print(trade.timestamp.UnixTimestampMillis, tradeToRemove?.timestamp.UnixTimestamp);
+				if (
+					tradeToRemove === undefined ||
+					trade.timestamp.UnixTimestampMillis < tradeToRemove.timestamp.UnixTimestampMillis
+				) {
+					tradeToRemove = trade;
+				}
+			});
+
+			if (tradeToRemove) {
+				otherPlayerStore.dispatch(removeTradeLog(tradeToRemove));
+			} else warn(`Failed to remove overflowing trade logs for player ${player.Name}`);
+		}
+
+		store.dispatch(saveTrade(otherPlayer.player.UserId, tradeTimestamp, otherPlayerTrade, playerTrade));
+		otherPlayerStore.dispatch(saveTrade(player.UserId, tradeTimestamp, playerTrade, otherPlayerTrade));
+
 		return true;
 	}
 

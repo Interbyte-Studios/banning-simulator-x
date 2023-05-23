@@ -13,9 +13,9 @@ import assetIds from "shared/assets";
  * @param props.finishTrade The function to finish the trade.
  * @returns The Roact element to render.
  */
-export const CompletedTrade = (props: { finishTrade: () => void }): Roact.Element => {
+export const CompletedTradeNotice = (props: { finishTrade: () => void }): Roact.Element => {
 	return (
-		<BaseFrame Size={UDim2.fromScale(0.8, 1)}>
+		<BaseFrame Size={UDim2.fromScale(1, 1)}>
 			<StrokeTextLabel
 				native={{
 					Position: UDim2.fromScale(0.5, 0.093),

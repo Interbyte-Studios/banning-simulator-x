@@ -25,13 +25,13 @@ export const BaseUIStroke = hooks((props: BaseUIStrokeProps, hooks) => {
 
 	useEffect(() => {
 		const uiStroke = uiStrokeRef.value.getValue();
-		assert(uiStroke, `Failed to get UIStroke roact ref`);
-
-		CollectionService.AddTag(
-			uiStroke,
-			props.isBillboard !== undefined && props.isBillboard === true ? "Billboard_UIStroke" : "Normal_UIStroke",
-		);
-	});
+		if (uiStroke) {
+			CollectionService.AddTag(
+				uiStroke,
+				props.isBillboard !== undefined && props.isBillboard === true ? "Billboard_UIStroke" : "Normal_UIStroke",
+			);
+		} else warn(`Failed to get BaseUIStroke roact ref`);
+	}, [uiStrokeRef]);
 
 	if (props.rankGradient !== undefined) {
 		return (

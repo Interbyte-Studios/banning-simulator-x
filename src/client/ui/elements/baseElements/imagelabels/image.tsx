@@ -20,11 +20,11 @@ interface ImageProps {
 export const ImageLabel = (props: Roact.PropsWithChildren<ImageProps>): Roact.Element => {
 	return (
 		<imagelabel
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Position={UDim2.fromScale(0.5, 0.5)}
-			Size={UDim2.fromScale(1, 1)}
-			ScaleType={Enum.ScaleType.Fit}
+			AnchorPoint={props.native.AnchorPoint ?? vec2Middle}
+			BackgroundTransparency={props.native.BackgroundTransparency ?? 1}
+			Position={props.native.Position ?? UDim2.fromScale(0.5, 0.5)}
+			Size={props.native.Size ?? UDim2.fromScale(1, 1)}
+			ScaleType={props.native.ScaleType ?? Enum.ScaleType.Fit}
 			{...props.native}
 			Event={{ ...props.events }}
 		>

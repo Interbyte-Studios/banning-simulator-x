@@ -23,7 +23,6 @@ import { WeaponLevelUpAnimation } from "./components/weaponLevelUp";
 import { WeaponShopHandle } from "./components/weaponShop";
 import { ZonesUI } from "./components/zones";
 import { hooks } from "./hooks";
-import { remoteContext } from "./mocks/remoteContext";
 
 interface AppProps {
 	player: Player;
@@ -41,17 +40,9 @@ const visibilityStates = {
 	petMasteryVisible: false,
 };
 
-export const app = hooks((props: AppProps, { useState, useContext, useEffect, useCallback }) => {
+export const app = hooks((props: AppProps, { useState, useCallback }) => {
 	const [visibility, setVisibility] = useState(visibilityStates);
-	const [tradeRequest, setTradeRequest] = useState<{
-		inbound: Player | undefined;
-		declined: Player | undefined;
-		accepted: Player | undefined;
-	}>({
-		inbound: undefined,
-		declined: undefined,
-		accepted: undefined,
-	});
+	const [activeTrade, setActiveTrade] = useState(false);
 	const [isHatching, setHatchingStatus] = useState(false);
 
 	const isMenuVisible = useCallback(
@@ -59,25 +50,10 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect, us
 			Object.entries(visibility)
 				.filter(([menu]) => menu !== currentMenu)
 				.some(([, value]) => value) ||
-			Object.values(tradeRequest).some((value) => value !== undefined) ||
+			activeTrade ||
 			isHatching,
-		[visibility, tradeRequest, isHatching],
+		[visibility, activeTrade, isHatching],
 	);
-
-	const { receiveTradeRequest, tradeRequestDeclined, tradeRequestAccepted } = useContext(remoteContext);
-	useEffect(() => {
-		const connections: Array<RBXScriptConnection> = [
-			receiveTradeRequest.Connect((playerWhoSent) => setTradeRequest((prev) => ({ ...prev, inbound: playerWhoSent }))),
-			tradeRequestDeclined.Connect((playerWhoSent) =>
-				setTradeRequest((prev) => ({ ...prev, declined: playerWhoSent })),
-			),
-			tradeRequestAccepted.Connect((playerWhoSent) =>
-				setTradeRequest((prev) => ({ ...prev, accepted: playerWhoSent })),
-			),
-		];
-
-		return (): void => connections.forEach((conn) => conn.Disconnect());
-	}, []);
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
@@ -142,33 +118,10 @@ export const app = hooks((props: AppProps, { useState, useContext, useEffect, us
 				/>
 				<Fusing enabled={!isMenuVisible()} />
 				<Trading
-					enabled={
-						!isMenuVisible("tradingVisible") ||
-						tradeRequest.inbound !== undefined ||
-						tradeRequest.declined !== undefined ||
-						tradeRequest.accepted !== undefined
-					}
-					visible={
-						visibility.tradingVisible ||
-						tradeRequest.inbound !== undefined ||
-						tradeRequest.declined !== undefined ||
-						tradeRequest.accepted !== undefined
-					}
+					tradeMenusEnabled={!isMenuVisible("tradingVisible")}
+					tradeMenusVisible={visibility.tradingVisible}
+					setActiveTrade={(value: boolean): void => setActiveTrade(value)}
 					hideMenu={(): void => setVisibility((prev) => ({ ...prev, tradingVisible: false }))}
-					activelyRequestingPlayer={tradeRequest.inbound}
-					declineTrade={(): void => setTradeRequest((prev) => ({ ...prev, inbound: undefined }))}
-					tradeWasDeclined={tradeRequest.declined}
-					resetTradeDeclined={(): void => setTradeRequest((prev) => ({ ...prev, declined: undefined }))}
-					acceptTrade={(): void => setTradeRequest((prev) => ({ ...prev, inbound: undefined, accepted: prev.inbound }))}
-					tradeWasAccepted={tradeRequest.accepted}
-					resetTradeAccepted={(player?: Player): void =>
-						setTradeRequest((prev) => ({
-							...prev,
-							accepted: undefined,
-							declined: player ?? prev.accepted,
-						}))
-					}
-					finishTrade={(): void => setTradeRequest({ inbound: undefined, accepted: undefined, declined: undefined })}
 				/>
 			</>
 		</RoactRodux.StoreProvider>

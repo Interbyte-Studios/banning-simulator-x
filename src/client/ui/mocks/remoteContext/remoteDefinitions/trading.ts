@@ -1,4 +1,6 @@
+import { AbandonTradeAssertionDefinition } from "shared/remotes/trading/abandonTradeAssertion";
 import { AcceptTradeRequestDefinition } from "shared/remotes/trading/acceptTradeRequest";
+import { ClientTradeErrorDefinition } from "shared/remotes/trading/clientTradeError";
 import { ConfirmFinalizedTradeDefinition } from "shared/remotes/trading/confirmFinalizedTrade";
 import { ConfirmTradeOfferDefinition } from "shared/remotes/trading/confirmOffer";
 import { DeclineFinalizedTradeDefinition } from "shared/remotes/trading/declineFinalizedTrade";
@@ -50,4 +52,8 @@ export const tradingRemoteContext = {
 
 	declineFinalizedTrade: fakeRemoteCall<DeclineFinalizedTradeDefinition>("declineFinalizedTrade"),
 	finalizedTradeDeclined: fakeServerToClientRemote<FinalizedTradeDeclinedDefinition>(),
+
+	// error handling
+	clientTradeError: fakeRemoteCall<ClientTradeErrorDefinition>("clientTradeError"),
+	abandonTradeAssertion: fakeServerToClientRemote<AbandonTradeAssertionDefinition>(),
 };

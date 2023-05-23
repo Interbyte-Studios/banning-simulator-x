@@ -134,6 +134,13 @@ confirmFinalizedTrade.Connect(
 		// alert the other player that the offer changed
 		print("Offer was confirmed. Alerting other player.");
 		finalizedTradeConfirmed.SendToPlayer(getTradingCounterParty(player), player, getTradeItems(player));
+
+		if (getTradeStatus(getTradingCounterParty(player)) === TradeStatus.Finalized) {
+			player.SetAttribute(TRADING_ATTRIBUTE, undefined);
+			getTradingCounterParty(player).SetAttribute(TRADING_ATTRIBUTE, undefined);
+
+			removeTrade(player);
+		}
 	}),
 );
 
@@ -145,10 +152,25 @@ declineFinalizedTrade.Connect((player) => {
 	}
 });
 
+const clientTradeError = tradesNamespace.Get("clientTradeError");
+const abandonTradeAssertion = tradesNamespace.Get("abandonTradeAssertion");
+clientTradeError.Connect((player) => {
+	player.SetAttribute(TRADING_ATTRIBUTE, undefined);
+	getTradingCounterParty(player).SetAttribute(TRADING_ATTRIBUTE, undefined);
+
+	abandonTradeAssertion.SendToPlayer(getTradingCounterParty(player));
+
+	removeTrade(player);
+});
+
 Players.PlayerRemoving.Connect((player) => {
 	// remove a trade if it exists
 	const traders = removeTrade(player);
 	for (const trader of traders) {
 		trader.SetAttribute(TRADING_ATTRIBUTE, undefined);
+
+		if (trader !== player) {
+			abandonTradeAssertion.SendToPlayer(trader);
+		}
 	}
 });

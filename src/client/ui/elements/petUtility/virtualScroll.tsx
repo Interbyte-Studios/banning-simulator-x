@@ -28,6 +28,7 @@ interface VirtualScrollProps {
 	inventoryFrame?: InventoryPetFrameProps;
 	onActivated?: (guid: string) => void;
 	selectedPets?: Array<string>;
+	noToolTipDispay?: boolean;
 }
 
 const preDisplayedRows = 5;
@@ -203,7 +204,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 							isRendered: pet.isRendered,
 							storedPetData: pet,
 							layoutOrderIndex: layoutOrder,
-							displayFrame: scrollingFrameRef.value,
+							displayFrame: props.noToolTipDispay ? undefined : scrollingFrameRef.value,
 							isSelected: isSelected,
 						}}
 						inventory={{
@@ -223,7 +224,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 							storedPetData: pet,
 							layoutOrderIndex: layoutOrder,
 							onActivated: props.onActivated,
-							displayFrame: scrollingFrameRef.value,
+							displayFrame: props.noToolTipDispay ? undefined : scrollingFrameRef.value,
 							isSelected: isSelected,
 						}}
 					/>,
@@ -236,7 +237,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 							isRendered: pet.isRendered,
 							storedPetData: pet,
 							layoutOrderIndex: layoutOrder,
-							displayFrame: scrollingFrameRef.value,
+							displayFrame: props.noToolTipDispay ? undefined : scrollingFrameRef.value,
 						}}
 					/>,
 				);
@@ -254,6 +255,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 			ScrollBarThickness={props.scrollBarThickness ?? 0}
 			ScrollBarImageColor3={props.scrollBarImageColor ?? Color3.fromRGB(0, 0, 0)}
 			Ref={scrollingFrameRef.value}
+			ScrollingDirection={Enum.ScrollingDirection.Y}
 		>
 			<uigridlayout
 				CellPadding={UDim2.fromOffset(6, 6)}

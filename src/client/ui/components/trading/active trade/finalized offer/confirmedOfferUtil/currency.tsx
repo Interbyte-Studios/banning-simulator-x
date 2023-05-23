@@ -1,4 +1,5 @@
 import Roact from "@rbxts/roact";
+import { Players } from "@rbxts/services";
 import { uiDarkStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
@@ -8,9 +9,9 @@ import { Currency } from "shared/configs/currencies";
 import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
 interface CurrencyProps {
+	player: Player;
 	currency: Currency;
 	amount: number;
-	offerType: "Local" | "Foreign";
 }
 
 /**
@@ -22,10 +23,12 @@ interface CurrencyProps {
  * @returns A Roact element that represents the currency component.
  */
 export const ConfirmedCurrencyDisplayed = (props: CurrencyProps): Roact.Element => {
+	const isLocalPlayer = props.player.UserId === Players.LocalPlayer.UserId;
+
 	return (
 		<BaseFrame
 			AnchorPoint={new Vector2(0, 0)}
-			Position={props.offerType === "Local" ? UDim2.fromScale(0.04, 0.655) : UDim2.fromScale(0.549, 0.655)}
+			Position={isLocalPlayer ? UDim2.fromScale(0.04, 0.655) : UDim2.fromScale(0.549, 0.655)}
 			Size={UDim2.fromScale(0.42, 0.09)}
 			BackgroundTransparency={0}
 			BackgroundColor3={uiTextStrokeColor}

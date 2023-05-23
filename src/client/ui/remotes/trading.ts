@@ -33,4 +33,8 @@ export const tradingRemotes = {
 
 	declineFinalizedTrade: remoteNamespace.Get("declineFinalizedTrade"),
 	finalizedTradeDeclined: remoteNamespace.Get("finalizedTradeDeclined"),
+
+	// error handling
+	clientTradeError: remoteNamespace.Get("clientTradeError"),
+	abandonTradeAssertion: remoteNamespace.Get("abandonTradeAssertion"),
 };

@@ -36,7 +36,7 @@ remotes.Server.GetNamespace("admin")
 				guid: HttpService.GenerateGUID(false),
 				variant: petData.variant,
 				method: "admin",
-				enhancements: {},
+				//enhancements: {},
 				tradeLocked: true,
 			};
 			targetPlayerStore.dispatch(addPets(cost, currency, [pet]));
