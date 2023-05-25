@@ -1,7 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { ReplicatedStorage } from "@rbxts/services";
-import { vec2Middle } from "client/ui/commonValues";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
 import { WeaponViewport } from "client/ui/elements/viewports/weaponViewport";
 import { hooks } from "client/ui/hooks";

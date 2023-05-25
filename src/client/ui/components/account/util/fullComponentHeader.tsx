@@ -49,6 +49,7 @@ export const FullComponentHeader = hooks(
 						Event={{
 							Activated: (): void => {
 								playSFX(UIEngagement.MinorEngagement);
+								warn("Running Return To Selection from Full Component Header");
 								props.returnToSelection();
 							},
 							MouseEnter: (): void => motor.setGoal(minimizedSpring),

@@ -28,7 +28,7 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 
 				child.CanCollide = false;
 				child.Anchored = true;
-				child.Name = "meshPart";
+				child.Name = "MeshPart";
 			}
 
 			assert(assetObject.PrimaryPart, `No PrimaryPart set for ${assetObject.Name}`);
@@ -41,16 +41,14 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 				throw `Expected pet: "${assetObject.Name}" to be a Model`;
 			}
 
+			const primaryPart = assetObject.PrimaryPart;
+			assert(primaryPart, `No PrimaryPart set for ${assetObject.Name}`);
+
 			for (const child of assetObject.GetChildren()) {
 				if (!child.IsA("BasePart")) continue;
 
-				if (assetObject.PrimaryPart === undefined && child.Name === "Primary") {
-					assetObject.PrimaryPart = child;
-				}
-
 				child.CanCollide = false;
 				child.Anchored = false;
-				child.Name = "meshPart";
 
 				if (child.IsA("MeshPart")) {
 					child.Massless = true;
@@ -96,10 +94,8 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 				throw `Expected pet: "${assetObject.Name}" to be a Model`;
 			}
 
-			const primaryPart = assetObject.FindFirstChild("Primary") as BasePart;
-			assert(primaryPart, `Failed to get primary part for ${assetObject.Name}`);
-
-			assetObject.PrimaryPart = primaryPart;
+			const primaryPart = assetObject.PrimaryPart;
+			assert(primaryPart, `No PrimaryPart set for ${assetObject.Name}`);
 
 			for (const child of assetObject.GetChildren()) {
 				if (!child.IsA("BasePart")) continue;
@@ -107,13 +103,9 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 				child.CanCollide = false;
 				child.Anchored = false;
 				child.Massless = true;
-				child.Name = child === assetObject.PrimaryPart ? "Primary" : "meshPart";
 			}
 
-			assert(assetObject.PrimaryPart, `No PrimaryPart set for ${assetObject.Name}`);
-			assetObject.PrimaryPart.Name = "Primary";
-
-			weldObject(assetObject.GetChildren() as Array<BasePart>, assetObject.PrimaryPart);
+			weldObject(assetObject.GetChildren() as Array<BasePart>, primaryPart);
 
 			break;
 		}

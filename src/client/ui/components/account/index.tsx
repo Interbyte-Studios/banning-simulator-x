@@ -1,6 +1,7 @@
+import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Players, RunService, UserInputService } from "@rbxts/services";
+import { Players, UserInputService } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
 import { vec2Middle } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
@@ -9,7 +10,9 @@ import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/stro
 import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
+import { ADMIN_RANK } from "shared/configs/admin";
 import { StoreState } from "shared/rodux";
+import { CurrentWeaponState } from "shared/rodux/currentWeapon";
 
 import { Accolades } from "./accolades";
 import { Admin } from "./admin";
@@ -32,6 +35,7 @@ interface AccountHubProps extends AccountHubMappedProps {
 
 interface AccountHubMappedProps {
 	groupRank: number | undefined;
+	currentWeapon: CurrentWeaponState;
 }
 
 /**
@@ -43,7 +47,18 @@ interface AccountHubMappedProps {
 function mapStateToProps(state: StoreState): AccountHubMappedProps {
 	return {
 		groupRank: state.index.groupRank,
+		currentWeapon: state.currentWeapon,
 	};
+}
+
+enum RightComponent {
+	Accolades = "Accolades",
+	Admin = "Admin",
+	Codes = "Codes",
+	Mastery = "Mastery",
+	Options = "Options",
+	Stats = "Stats",
+	TradeHistory = "TradeHistory",
 }
 
 /**
@@ -51,85 +66,94 @@ function mapStateToProps(state: StoreState): AccountHubMappedProps {
  */
 export const AccountHub = RoactRodux.connect(mapStateToProps)(
 	hooks((props: AccountHubProps, hooks) => {
-		if (!props.enabled) {
-			return <></>;
-		}
-
 		const { useValue, useEffect, useState } = hooks;
 
+		// the player being viewed
 		const [playerViewing, setViewedPlayer] = useState<Player>(Players.LocalPlayer);
-		const [playerSelectionVisible, setPlayerSelectionVisibility] = useState(false);
-		const [rightComponentDisplayed, setRightComponentDisplayed] = useState<
-			"Stats" | "Accolades" | "TradeHistory" | "Options" | "Codes" | "Mastery" | "Admin" | undefined
-		>(undefined);
 
+		// whether or not the player selection dropdown is being viewed
+		const [playerSelectionVisible, setPlayerSelectionVisibility] = useState(false);
+
+		// logs what component is being displayed on the right side of the screen
+		const [rightComponentDisplayed, setRightComponentDisplayed] = useState<RightComponent | undefined>(undefined);
+
+		// this is where we'll get the player store
+		const playerStore = retrieveStore(playerViewing);
+
+		// when the player selection and certain components aren't being displayed, we will display a viewport of the player
 		const viewportFrameRef = useValue(Roact.createRef<ViewportFrame>());
 		const cameraRef = useValue(Roact.createRef<Camera>());
 		useEffect(() => {
+			// make sure ui is actually enabled or it'll break lol
+			if (!props.enabled) {
+				return;
+			}
+
+			// make sure they aren't viewing the player selection drop down
 			if (playerSelectionVisible) {
 				return;
 			}
 
-			if (
-				rightComponentDisplayed === "Accolades" ||
-				rightComponentDisplayed === "Mastery" ||
-				rightComponentDisplayed === "Admin"
-			) {
+			// there are certain components that take up the whole screen. we don't want to display the viewport when those are being displayed
+			const priorityComponents = [
+				RightComponent.Accolades,
+				RightComponent.Mastery,
+				RightComponent.Admin,
+				RightComponent.TradeHistory,
+			];
+			const hasHigherPriorityComponent = Object.entries(priorityComponents).some(
+				([, enumerator]) => enumerator === rightComponentDisplayed,
+			);
+
+			if (hasHigherPriorityComponent) {
 				return;
 			}
 
-			let mouseInDisplay = false;
-			let holdingDisplay = false;
-			let currentX: number | undefined;
-
+			// make sure the roact refs exist
 			const viewportFrame = viewportFrameRef.value.getValue();
 			assert(viewportFrame, `Failed to get viewport frame for account.`);
 
 			const camera = cameraRef.value.getValue();
 			assert(camera, `Failed to get camera for account.`);
 
+			// assign upvalues and get the character of the player being viewed
+			let mouseInDisplay = false;
+			let holdingDisplay = false;
+			let currentX: number | undefined;
+
 			const character = playerViewing.Character;
 			if (character === undefined) {
-				warn("Failed to get player character for account viewport.");
+				warn(`Failed to get character of player ${playerViewing.Name} for account viewport.`);
 				return;
 			}
 
 			viewportFrame.CurrentCamera = camera;
 
+			// gotta be sure character is archivable so we can clone it
 			character.Archivable = true;
 			const viewportChar = character.Clone();
+			const humanoid = viewportChar.FindFirstChildOfClass("Humanoid");
+			if (humanoid === undefined) {
+				warn(`Failed to get humanoid of player ${playerViewing.Name} for account viewport.`);
+				return;
+			}
 
+			// use a world model so we get animations
 			const worldModel = viewportFrame.FindFirstChildOfClass("WorldModel") ?? new Instance("WorldModel");
 			worldModel.Parent = viewportFrame;
 			worldModel.ClearAllChildren();
 
-			const humanoid = viewportChar.FindFirstChildOfClass("Humanoid");
-			if (humanoid === undefined) {
-				warn("Failed to get humanoid of cloned viewport character for account.");
-				return;
-			}
-
-			viewportChar.Parent = worldModel;
 			humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
 			viewportChar.PivotTo(new CFrame(new Vector3(0, 0, -5.5), new Vector3(0, 0, 0)));
+			viewportChar.Parent = worldModel;
 
-			const connections: Array<RBXScriptConnection> = [];
+			const mouseInConnection = viewportFrame.MouseEnter.Connect(() => (mouseInDisplay = true));
+			const mouseOutConnection = viewportFrame.MouseLeave.Connect(() => (mouseInDisplay = false));
 
-			const mouseInConnection = viewportFrame.MouseEnter.Connect(() => {
-				mouseInDisplay = true;
-			});
-			connections.push(mouseInConnection);
-
-			const mouseOutConnection = viewportFrame.MouseLeave.Connect(() => {
-				mouseInDisplay = false;
-			});
-			connections.push(mouseOutConnection);
-
-			const holdEnabled = UserInputService.InputBegan.Connect((input) => {
-				if (
-					input.UserInputType !== Enum.UserInputType.MouseButton1 &&
-					input.UserInputType !== Enum.UserInputType.Touch
-				) {
+			// for when they hold their mouse button down or press their finger down, and move it around, we want to move the character model around (radians)
+			const holdingEnabledConnection = UserInputService.InputBegan.Connect((input) => {
+				const acceptableInputTypes = [Enum.UserInputType.MouseButton1, Enum.UserInputType.Touch];
+				if (!acceptableInputTypes.some((inputType) => inputType === input.UserInputType)) {
 					return;
 				}
 
@@ -140,19 +164,15 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 				holdingDisplay = true;
 				currentX = undefined;
 			});
-			connections.push(holdEnabled);
 
-			const holdReleased = UserInputService.InputEnded.Connect((input) => {
-				if (
-					input.UserInputType !== Enum.UserInputType.MouseButton1 &&
-					input.UserInputType !== Enum.UserInputType.Touch
-				) {
+			const holdingDisabledConnection = UserInputService.InputEnded.Connect((input) => {
+				const acceptableInputTypes = [Enum.UserInputType.MouseButton1, Enum.UserInputType.Touch];
+				if (!acceptableInputTypes.some((inputType) => inputType === input.UserInputType)) {
 					return;
 				}
 
 				holdingDisplay = false;
 			});
-			connections.push(holdReleased);
 
 			const mouseMoved = viewportFrame.MouseMoved.Connect((x) => {
 				if (holdingDisplay === false) {
@@ -172,11 +192,28 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 				viewportChar.PivotTo(characterPrimary.CFrame.mul(CFrame.fromEulerAnglesXYZ(0, (x - currentX) * 0.025, 0)));
 				currentX = x;
 			});
-			connections.push(mouseMoved);
 
-			return (): void => connections.forEach((conn) => conn.Disconnect());
-		}, [viewportFrameRef.value, cameraRef.value, playerViewing, playerSelectionVisible, rightComponentDisplayed]);
+			// for cleanup, we want to disconnect all of these connections
+			return (): void =>
+				[
+					mouseInConnection,
+					mouseOutConnection,
+					holdingEnabledConnection,
+					holdingDisabledConnection,
+					mouseMoved,
+				].forEach((connection) => connection.Disconnect());
+		}, [
+			props.enabled,
+			props.currentWeapon.equipped,
+			props.currentWeapon.id,
+			viewportFrameRef.value,
+			cameraRef.value,
+			playerViewing,
+			playerSelectionVisible,
+			rightComponentDisplayed,
+		]);
 
+		// in chase the player who is being viewed leaves the game, we want to return to the local player to avoid unintentional behavior
 		useEffect(() => {
 			const connection = Players.PlayerRemoving.Connect((oPlayer) => {
 				if (oPlayer.UserId !== playerViewing.UserId) {
@@ -189,27 +226,37 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 			return (): void => connection.Disconnect();
 		});
 
-		const playerStore = retrieveStore(playerViewing);
+		// we put this down here because we want to be sure the use effect callbacks still run regradless
+		if (!props.enabled) {
+			return <></>;
+		}
 
-		const leftDisplayedComponents: Array<Roact.Element> = [];
-		if (playerSelectionVisible) {
-			if (rightComponentDisplayed !== "Accolades" && rightComponentDisplayed !== "Mastery") {
-				leftDisplayedComponents.push(
+		// be sure that the component the player is viewing isn't taking up the whole screen (known as an override component)
+		const overrideComponents = [
+			RightComponent.Accolades,
+			RightComponent.Mastery,
+			RightComponent.Admin,
+			RightComponent.TradeHistory,
+		];
+		const overideComponentVisible = Object.entries(overrideComponents).some(
+			([, enumerator]) => enumerator === rightComponentDisplayed,
+		);
+
+		// determine if the left component is to be displayed, and if so, what to display
+		let leftComponent: Roact.Element | undefined;
+		if (playerSelectionVisible && !overideComponentVisible) {
+			leftComponent = (
+				<>
 					<AccountPlayerSelection
 						setPlayerViewed={(player): void => setViewedPlayer(player)}
 						returnToSelection={(): void => setPlayerSelectionVisibility(false)}
-					/>,
-					<ReturnToAccountView returnToSelection={(): void => setPlayerSelectionVisibility(false)} />,
-				);
-			}
-		} else {
-			if (
-				rightComponentDisplayed !== "Accolades" &&
-				rightComponentDisplayed !== "Mastery" &&
-				rightComponentDisplayed !== "Admin" &&
-				rightComponentDisplayed !== "TradeHistory"
-			) {
-				leftDisplayedComponents.push(
+					/>
+					<ReturnToAccountView returnToSelection={(): void => setPlayerSelectionVisibility(false)} />
+				</>
+			);
+		} else if (!overideComponentVisible) {
+			leftComponent = (
+				<>
 					<BaseFrame
 						BackgroundTransparency={0}
 						BackgroundColor3={Color3.fromRGB(19, 81, 128)}
@@ -226,53 +273,51 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 						>
 							<camera CFrame={new CFrame(0, 0, 0)} Ref={cameraRef.value} />
 						</viewportframe>
-					</BaseFrame>,
-
-					<EditAccount showAdmin={(): void => setRightComponentDisplayed("Admin")} />,
-					<SelectPlayer setPlayerSelectionVisibility={(): void => setPlayerSelectionVisibility(true)} />,
-				);
-			}
+					</BaseFrame>
+					<EditAccount showAdmin={(): void => setRightComponentDisplayed(RightComponent.Admin)} />
+					<SelectPlayer setPlayerSelectionVisibility={(): void => setPlayerSelectionVisibility(true)} />
+				</>
+			);
 		}
 
-		const rightDisplayedComponents: Array<Roact.Element> = [];
-		if (rightComponentDisplayed === "Stats") {
-			rightDisplayedComponents.push(
-				<PlayerStats
-					viewedPlayer={playerViewing}
-					returnToSelection={(): void => setRightComponentDisplayed(undefined)}
-				/>,
-			);
-		} else if (rightComponentDisplayed === "Options") {
-			rightDisplayedComponents.push(
-				<PlayerOptions returnToSelection={(): void => setRightComponentDisplayed(undefined)} />,
-			);
-		} else if (rightComponentDisplayed === "Codes") {
-			rightDisplayedComponents.push(<Codes returnToSelection={(): void => setRightComponentDisplayed(undefined)} />);
-		} else if (rightComponentDisplayed === "Accolades") {
-			rightDisplayedComponents.push(
+		// determine right side of component (or full screen, given that some components take the full screen)
+		const componentMap = {
+			Admin: (
+				<Admin returnToSelection={(): void => setRightComponentDisplayed(undefined)} playerViewing={playerViewing} />
+			),
+			Accolades: (
 				<Accolades
 					returnToSelection={(): void => setRightComponentDisplayed(undefined)}
 					playerViewing={playerViewing}
-				/>,
-			);
-		} else if (rightComponentDisplayed === "Mastery") {
-			rightDisplayedComponents.push(
-				<Mastery returnToSelection={(): void => setRightComponentDisplayed(undefined)} playerViewing={playerViewing} />,
-			);
-		} else if (rightComponentDisplayed === "TradeHistory") {
-			rightDisplayedComponents.push(
+				/>
+			),
+			Codes: <Codes returnToSelection={(): void => setRightComponentDisplayed(undefined)} />,
+			Mastery: (
+				<Mastery returnToSelection={(): void => setRightComponentDisplayed(undefined)} playerViewing={playerViewing} />
+			),
+			Options: <PlayerOptions returnToSelection={(): void => setRightComponentDisplayed(undefined)} />,
+			Stats: (
+				<PlayerStats
+					viewedPlayer={playerViewing}
+					returnToSelection={(): void => setRightComponentDisplayed(undefined)}
+				/>
+			),
+			TradeHistory: (
 				<TradeHistory
 					returnToSelection={(): void => setRightComponentDisplayed(undefined)}
 					playerViewing={playerViewing}
-				/>,
-			);
-		} else if (rightComponentDisplayed === "Admin") {
-			rightDisplayedComponents.push(
-				<Admin returnToSelection={(): void => setRightComponentDisplayed(undefined)} playerViewing={playerViewing} />,
-			);
-		} else if (rightComponentDisplayed === undefined) {
-			if (playerStore === undefined && !RunService.IsStudio()) {
-				rightDisplayedComponents.push(
+				/>
+			),
+		};
+
+		print("Right component displayed: ", rightComponentDisplayed);
+
+		let rightComponent: Roact.Element | undefined;
+		if (rightComponentDisplayed !== undefined && componentMap[rightComponentDisplayed] !== undefined) {
+			rightComponent = componentMap[rightComponentDisplayed];
+		} else {
+			if (playerStore === undefined) {
+				rightComponent = (
 					<RightComponentHeader
 						storeFound={false}
 						headerText={`Error: No data found for ${playerViewing.Name}.`}
@@ -280,65 +325,65 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 						returnToSelection={(): void => {
 							warn("No data found for player, but return to selection callback is not implemented.");
 						}}
-					/>,
+					/>
 				);
 			} else {
-				const iconsToDisplay: Array<Roact.Element> = [
+				const adminAccessToTradeLogs =
+					playerViewing.UserId === Players.LocalPlayer.UserId ||
+					(props.groupRank !== undefined && props.groupRank >= ADMIN_RANK);
+				const publicAccessToTradeLogs = playerStore.getState().settings.privacy.publicTradeHistory;
+
+				const featureIcons: Array<Roact.Element> = [
 					<AccountIconTemplate
 						accessibleFeature={true}
 						image={assetIds.images.ui.account.statsBackground}
 						text={"Stats"}
 						layoutOrder={1}
-						onPressed={(): void => setRightComponentDisplayed("Stats")}
+						onPressed={(): void => setRightComponentDisplayed(RightComponent.Stats)}
 					/>,
 					<AccountIconTemplate
 						accessibleFeature={true}
 						image={assetIds.images.ui.account.Accolades}
 						text={"Accolades"}
-						layoutOrder={4}
-						onPressed={(): void => setRightComponentDisplayed("Accolades")}
+						layoutOrder={2}
+						onPressed={(): void => setRightComponentDisplayed(RightComponent.Accolades)}
 					/>,
 					<AccountIconTemplate
 						accessibleFeature={true}
 						image={assetIds.images.ui.account.accountMastery}
 						text={"Mastery"}
-						layoutOrder={5}
-						onPressed={(): void => setRightComponentDisplayed("Mastery")}
+						layoutOrder={3}
+						onPressed={(): void => setRightComponentDisplayed(RightComponent.Mastery)}
 					/>,
 					<AccountIconTemplate
-						accessibleFeature={
-							((props.groupRank !== undefined && props.groupRank >= 250 && !RunService.IsStudio()) ||
-								playerViewing.UserId === Players.LocalPlayer.UserId ||
-								(playerStore !== undefined && playerStore.getState().settings.privacy.publicTradeHistory)) ??
-							false
-						}
+						accessibleFeature={adminAccessToTradeLogs || publicAccessToTradeLogs}
 						image={assetIds.images.ui.account.tradeHistory}
 						text={"Trade History"}
-						layoutOrder={6}
-						onPressed={(): void => setRightComponentDisplayed("TradeHistory")}
+						layoutOrder={4}
+						onPressed={(): void => setRightComponentDisplayed(RightComponent.TradeHistory)}
 					/>,
 				];
 
 				if (playerViewing.UserId === Players.LocalPlayer.UserId) {
-					iconsToDisplay.push(
+					featureIcons.push(
 						<AccountIconTemplate
 							accessibleFeature={true}
 							image={assetIds.images.ui.hud.icons.options}
 							text={"Options"}
-							layoutOrder={2}
-							onPressed={(): void => setRightComponentDisplayed("Options")}
+							layoutOrder={5}
+							onPressed={(): void => setRightComponentDisplayed(RightComponent.Options)}
 						/>,
 						<AccountIconTemplate
 							accessibleFeature={true}
 							image={assetIds.images.ui.hud.icons.codes}
 							text={"Codes"}
-							layoutOrder={3}
-							onPressed={(): void => setRightComponentDisplayed("Codes")}
+							layoutOrder={6}
+							onPressed={(): void => setRightComponentDisplayed(RightComponent.Codes)}
 						/>,
 					);
 				}
 
-				rightDisplayedComponents.push(
+				rightComponent = (
 					<BaseFrame Position={UDim2.fromScale(0.725, 0.565)} Size={UDim2.fromScale(0.5, 0.765)}>
 						<uigridlayout
 							CellPadding={UDim2.fromScale(0.09, 0.09)}
@@ -346,8 +391,8 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 							SortOrder={Enum.SortOrder.LayoutOrder}
 						/>
 
-						{iconsToDisplay}
-					</BaseFrame>,
+						{featureIcons}
+					</BaseFrame>
 				);
 			}
 		}
@@ -371,8 +416,8 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 					}}
 				/>
 
-				{leftDisplayedComponents}
-				{rightDisplayedComponents}
+				{leftComponent}
+				{rightComponent}
 
 				<ExitButton
 					Position={UDim2.fromScale(0.985, 0.115)}

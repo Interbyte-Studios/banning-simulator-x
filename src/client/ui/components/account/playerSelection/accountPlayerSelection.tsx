@@ -84,7 +84,7 @@ export const AccountPlayerSelection = hooks(
 										native={{
 											Size: UDim2.fromScale(1, 1),
 											ScaleType: Enum.ScaleType.Fit,
-											Image: isReady && content ? content : ""
+											Image: isReady && content ? content : "",
 										}}
 									>
 										<uicorner CornerRadius={new UDim(1, 0)} />

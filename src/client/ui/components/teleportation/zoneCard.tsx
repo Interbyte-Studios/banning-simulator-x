@@ -13,6 +13,7 @@ import assetIds from "shared/assets";
 import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
 import { StoreState } from "shared/rodux";
+import { PetsState } from "shared/rodux/pets";
 import { WorldsState } from "shared/rodux/worlds";
 
 interface ZoneTeleportCardProps extends WorldTeleportCardMappedProps {
@@ -24,6 +25,7 @@ interface ZoneTeleportCardProps extends WorldTeleportCardMappedProps {
 
 interface WorldTeleportCardMappedProps {
 	worlds: WorldsState;
+	pets: PetsState;
 }
 
 /**
@@ -35,6 +37,7 @@ interface WorldTeleportCardMappedProps {
 function mapStateToProps(state: StoreState): WorldTeleportCardMappedProps {
 	return {
 		worlds: state.worlds,
+		pets: state.pets,
 	};
 }
 
@@ -103,7 +106,7 @@ export const ZoneTeleportCard = RoactRodux.connect(mapStateToProps)(
 							const teleport = Workspace.interactions.teleports[props.zone];
 							assert(teleport, `Failed to get teleportation part for "${props.zone}" from "${props.world}".`);
 
-							humanoidRootPart.CFrame = teleport.CFrame;
+							humanoidRootPart.PivotTo(teleport.CFrame);
 						},
 						/* eslint-enable jsdoc/require-jsdoc */
 					}}
