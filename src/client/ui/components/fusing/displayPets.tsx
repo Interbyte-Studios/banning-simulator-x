@@ -218,24 +218,34 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 							const fusion = await requestFusion.CallServerAsync(petsToFuse, props.variant);
 							if (fusion.success) {
 								props.returnToSelection();
-								addAnnouncement(`You've fused a Radiant pet! Congratulations!`, AnnouncementType.Announcement);
+								addAnnouncement(
+									`You've fused a ${
+										props.variant === "regular" ? "Void" : props.variant === "void" ? "Radiant" : "Unknown"
+									} pet! Congratulations!`,
+									AnnouncementType.Announcement,
+								);
+								setSelectedPets([]);
 								return;
 							} else {
 								switch (fusion.reason) {
 									case FusionFailKind.InternalError: {
 										addAnnouncement(`There was an internal error while fusing your pet.`, AnnouncementType.Error);
+										setSelectedPets([]);
 										return;
 									}
 									case FusionFailKind.NotEnoughCurrency: {
 										addAnnouncement(`You don't have enough currency to fuse that pet!`, AnnouncementType.Error);
+										setSelectedPets([]);
 										return;
 									}
 									case FusionFailKind.PetsNotSameId: {
 										addAnnouncement(`There was an internal error while fusing your pet.`, AnnouncementType.Error);
+										setSelectedPets([]);
 										return;
 									}
 									case FusionFailKind.UnsuccesfulFusion: {
 										addAnnouncement(`Your fusion was unsuccesful.`, AnnouncementType.Error);
+										setSelectedPets([]);
 										return;
 									}
 								}

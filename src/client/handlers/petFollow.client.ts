@@ -117,25 +117,23 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 					if (pet.equipped) {
 						const cachedPetIndex = playerCache.pets.find((animatedPet) => animatedPet.guid === pet.guid);
 						if (cachedPetIndex !== undefined) {
-							return warn(`It's already cached, but attempted to add it!`);
+							return;
 						}
 
 						const createdPet = cachePetForAnimation(player, pet.id, pet.guid, pet.variant);
 						createdPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
 						playerCache.pets.push(createdPet);
-						warn(`Added pet ${pet.id} to ${player.Name}'s pet animation cache.`);
 
 						return;
 					}
 
 					const cachedPetIndex = playerCache.pets.findIndex((animatedPet) => animatedPet.guid === pet.guid);
 					if (cachedPetIndex === undefined) {
-						return warn(`It's not cached, but attempted to remove it!`);
+						return;
 					}
 
 					playerCache.pets.unorderedRemove(cachedPetIndex);
 					removePet(pet.guid);
-					warn(`Removed pet ${pet.id} from ${player.Name}'s pet animation cache.`);
 				});
 			});
 

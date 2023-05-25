@@ -94,7 +94,7 @@ export const Fusing = hooks((props: { enabled: boolean }, hooks) => {
 				}
 			},
 			false,
-			Enum.KeyCode.J,
+			Enum.KeyCode.V,
 		);
 
 		return (): void => {
@@ -191,7 +191,7 @@ export const Fusing = hooks((props: { enabled: boolean }, hooks) => {
 								<StrokeTextLabel
 									native={{
 										Size: UDim2.fromScale(0.9, 0.9),
-										Text: "Z",
+										Text: "V",
 									}}
 									stroke={{
 										native: { Thickness: 2 },
@@ -252,7 +252,7 @@ export const Fusing = hooks((props: { enabled: boolean }, hooks) => {
 								<StrokeTextLabel
 									native={{
 										Size: UDim2.fromScale(0.9, 0.9),
-										Text: "Z",
+										Text: "V",
 									}}
 									stroke={{
 										native: { Thickness: 2 },

@@ -134,7 +134,7 @@ export const EggLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 		}
 
 		leaderboards.push(
-			<frame BackgroundTransparency={1} Size={UDim2.fromScale(1.5, 0.125)}>
+			<frame BackgroundTransparency={1} Size={UDim2.fromScale(1.5, 0.125)} LayoutOrder={data.position}>
 				<uiaspectratioconstraint AspectRatio={7.5} />
 
 				<frame
