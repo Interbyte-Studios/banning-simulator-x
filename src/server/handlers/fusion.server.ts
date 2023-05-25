@@ -21,6 +21,13 @@ remotes.Server.Create("requestFusion").SetCallback(
 				};
 			}
 
+			if (storedPet.equipped || storedPet.locked) {
+				return {
+					success: false,
+					reason: FusionFailKind.InternalError,
+				};
+			}
+
 			if (petId === undefined) {
 				petId = storedPet.id;
 			} else {

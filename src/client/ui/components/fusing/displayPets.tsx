@@ -154,6 +154,16 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 													return;
 												}
 
+												if (petData.equipped) {
+													addAnnouncement(`You cannot fuse an equipped pet!`, AnnouncementType.Error);
+													return;
+												}
+
+												if (petData.locked) {
+													addAnnouncement(`You cannot fuse a locked pet!`, AnnouncementType.Error);
+													return;
+												}
+
 												setSelectedPets([...selectedPets, petData.guid]);
 											} else {
 												const index = selectedPets.findIndex((x) => x === petData.guid);
