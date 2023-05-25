@@ -4,6 +4,7 @@ import { retrieveStore } from "client/clientStores";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
+import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
@@ -261,16 +262,16 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 					{currencies.map((currencyName) => {
 						return (
 							<BaseFrame>
-								<SpringImageButton
+								<ImageButton
 									native={{
 										BackgroundTransparency: 0,
-										BackgroundColor3: Color3.fromRGB(46, 115, 179),
-										Image: "",
+										BackgroundColor3: Color3.fromRGB(0, 131, 213),
 										Size: UDim2.fromScale(0.925, 0.925),
+										Image: "",
 									}}
-									size={{ maxSize: maximizedSize, minSize: minimizedSize }}
 									events={{
 										Activated: (): void => {
+											warn("ACTIVATED");
 											playSFX(UIEngagement.MajorEngagement);
 											setCurrencySelected(currencyName);
 										},
@@ -295,7 +296,7 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 											native: { Thickness: 2, Color: Color3.fromRGB(0, 74, 122) },
 										}}
 									/>
-								</SpringImageButton>
+								</ImageButton>
 							</BaseFrame>
 						);
 					})}

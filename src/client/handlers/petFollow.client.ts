@@ -82,7 +82,6 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 				createdPet.model.PivotTo(humanoidRootPart.CFrame);
 
 				playerCache.pets.push(createdPet);
-				warn(`Created pet for ${player.Name} with GUID ${pet.guid}`);
 			});
 
 			store.changed.connect((newState, oldState) => {
@@ -116,10 +115,15 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 
 				newState.pets.forEach((pet) => {
 					if (pet.equipped) {
+						const cachedPetIndex = playerCache.pets.findIndex((animatedPet) => animatedPet.guid === pet.guid);
+						if (cachedPetIndex !== undefined) {
+							return;
+						}
+
 						const createdPet = cachePetForAnimation(player, pet.id, pet.guid, pet.variant);
 						createdPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
 						playerCache.pets.push(createdPet);
-						warn(`[Store Change] Created pet for ${player.Name} with GUID ${pet.guid}`);
+
 						return;
 					}
 
@@ -158,7 +162,7 @@ Players.PlayerAdded.Connect((player) => cachePlayerPetanimation(player));
 Players.PlayerRemoving.Connect((player) => removePetAnimationCache(player));
 
 let lastPrint = 0;
-const debugEnabled = RunService.IsStudio();
+const debugEnabled = false; // RunService.IsStudio();
 RunService.RenderStepped.Connect(() => {
 	// get the players currently equipped pet models
 	const currentCacheState = getPetAnimationCache();

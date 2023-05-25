@@ -310,8 +310,6 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 			),
 		};
 
-		print("Right component displayed: ", rightComponentDisplayed);
-
 		let rightComponent: Roact.Element | undefined;
 		if (rightComponentDisplayed !== undefined && componentMap[rightComponentDisplayed] !== undefined) {
 			rightComponent = componentMap[rightComponentDisplayed];
@@ -400,7 +398,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 		return (
 			<ImageLabel
 				native={{
-					Size: UDim2.fromScale(0.575, 0.5),
+					Size: UDim2.fromScale(0.65, 0.65),
 					Image: assetIds.images.ui.account.background,
 				}}
 			>

@@ -53,7 +53,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 	// State for managing the rendered pets
 	sortPets(props.pets, true, true);
 	const [renderedPets, setRenderedPets] = useState<Array<PetInventoryData>>(
-		props.pets.map((pet) => ({ ...pet, isRendered: false })),
+		props.pets.map((pet, index) => ({ ...pet, isRendered: index < 35 })),
 	);
 
 	const checkRenderedPets = useCallback(
@@ -86,6 +86,10 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 						if (petData.name.lower().match(searchText).size() !== 0) {
 							shouldBeRendered = false;
 						}
+					}
+
+					if (index < 35 && !shouldBeRendered) {
+						shouldBeRendered = true;
 					}
 
 					if (shouldBeRendered !== pet.isRendered) {

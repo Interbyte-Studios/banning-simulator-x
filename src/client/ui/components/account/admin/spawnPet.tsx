@@ -162,6 +162,7 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 				<RescalingScrollingFrame
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
+					CanvasPosition={new Vector2(0, 0)}
 					Position={UDim2.fromScale(0.5, 0.62)}
 					Size={UDim2.fromScale(0.95, 0.675)}
 					ScrollBarThickness={0}
@@ -182,6 +183,12 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 		useEffect(() => {
 			const uiGridLayout = layoutRef.value.getValue();
 			assert(uiGridLayout, "Failed to get UIGridLayout for administrative pet spawning ui.");
+
+			const scrollingFrame = uiGridLayout.Parent;
+			assert(scrollingFrame, "Failed to get ScrollingFrame for administrative pet spawning ui.");
+			assert(scrollingFrame.IsA("ScrollingFrame"), "Expected administrative pet spawning ui to have a ScrollingFrame.");
+
+			scrollingFrame.CanvasPosition = new Vector2(0, 0);
 
 			CollectionService.AddTag(uiGridLayout, `UnscaledInventoryGridLayout`);
 		});
@@ -212,6 +219,7 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 				<RescalingScrollingFrame
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
+					CanvasPosition={new Vector2(0, 0)}
 					Position={UDim2.fromScale(0.5, 0.62)}
 					Size={UDim2.fromScale(0.95, 0.675)}
 					ScrollBarThickness={0}
