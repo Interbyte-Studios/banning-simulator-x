@@ -188,13 +188,15 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 
 	const elementsToDisplay: Array<Roact.Element> = useMemo(() => {
 		const result: Array<Roact.Element> = [];
+		let selectedId = 0;
 		renderedPets.forEach((pet, index) => {
 			let layoutOrder = index;
 			if (props.selectedPets !== undefined) {
 				if (props.selectedPets.includes(pet.guid)) {
-					layoutOrder = 1 + index;
+					selectedId += 1;
+					layoutOrder = selectedId;
 				} else {
-					layoutOrder = index + renderedPets.size() + 1;
+					layoutOrder = index + selectedId;
 				}
 			}
 
