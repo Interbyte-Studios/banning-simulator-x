@@ -165,7 +165,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 			}
 
 			unlockRank.SendToServer();
-		}, [props.experience, props.currencies]);
+		}, [props.experience, props.currencies, isEnabled, autoRankEnabled, unlockRank]);
 
 		useEffect(() => {
 			if (!isEnabled) {
@@ -197,7 +197,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 			}
 
 			purchaseWeapon.SendToServer(nextWeapon.data.id);
-		}, [props.currencies, props.rank]);
+		}, [props.currencies, props.rank, isEnabled, purchaseWeaponsEnabled, purchaseWeapon, props.currentWeapon.id]);
 
 		useEffect(() => {
 			if (!isEnabled) {
@@ -326,7 +326,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 			});
 
 			return (): void => connection.Disconnect();
-		}, [isEnabled, props.worlds]);
+		}, [isEnabled, zoneSelected,  props.worlds]);
 
 		useEffect(() => {
 			if (!isEnabled) {

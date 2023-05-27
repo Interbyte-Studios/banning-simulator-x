@@ -75,6 +75,7 @@ const onNPCInteraction = (player: Player, npc: Model): void => {
 
 	const connection = RunService.RenderStepped.Connect(() => {
 		if (currentConnection === undefined || npc.Parent === undefined) {
+			setManualAutoFight(false);
 			connection.Disconnect();
 			return;
 		}
@@ -162,8 +163,6 @@ const onInputBegan = (input: InputObject, gameProcessedEvent: boolean): void => 
 
 			playSFX(UIEngagement.MajorEngagement);
 			task.defer(() => onNPCInteraction(player, trueNPC ?? (npcParent as Model)));
-		} else {
-			warn("No raycast result");
 		}
 	}
 };
