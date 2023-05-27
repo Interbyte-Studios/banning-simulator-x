@@ -7,7 +7,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		name: "BronzePiece",
 		health: 100,
 		reward: {
-			currency: 50000000, //20,
+			currency: 20,
 			currencyType: "coins",
 			experience: 40,
 		},

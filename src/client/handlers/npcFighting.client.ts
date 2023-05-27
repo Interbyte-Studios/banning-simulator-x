@@ -140,7 +140,17 @@ const onInputBegan = (input: InputObject, gameProcessedEvent: boolean): void => 
 			}
 
 			const npcParent = raycastResult.Instance.Parent;
-			if (npcParent === undefined || !npcParent.IsA("Model")) {
+			if (npcParent === undefined) {
+				return;
+			}
+
+			let trueNPC: Model | undefined;
+			if (npcParent.IsA("Accessory")) {
+				trueNPC = npcParent.Parent as Model;
+				if (trueNPC === undefined || !trueNPC.IsA("Model")) {
+					return;
+				} else;
+			} else if (!npcParent.IsA("Model")) {
 				return;
 			}
 
@@ -151,7 +161,9 @@ const onInputBegan = (input: InputObject, gameProcessedEvent: boolean): void => 
 			}
 
 			playSFX(UIEngagement.MajorEngagement);
-			task.defer(() => onNPCInteraction(player, npcParent));
+			task.defer(() => onNPCInteraction(player, trueNPC ?? (npcParent as Model)));
+		} else {
+			warn("No raycast result");
 		}
 	}
 };
