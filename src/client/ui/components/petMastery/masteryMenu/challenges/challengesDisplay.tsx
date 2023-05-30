@@ -399,7 +399,7 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 			}
 
 			if (!maxLevelCompleted) {
-				let maxLevelProgress = petsIndex.maxLevel.regular / requirements.maxLevel;
+				let maxLevelProgress = petsIndex.maxLevel.regular.masteryCache.size() / requirements.maxLevel;
 				if (maxLevelProgress > 1) {
 					maxLevelProgress = 1;
 				}
@@ -412,7 +412,7 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						number={2}
 						challengeType={"maxLevel"}
 						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.regular}
+						amount={petsIndex.maxLevel.regular.masteryCache.size()}
 						progress={maxLevelProgress}
 						hasBeenClaimed={false}
 					/>,
@@ -426,7 +426,7 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						number={2}
 						challengeType={"maxLevel"}
 						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.regular}
+						amount={petsIndex.maxLevel.regular.masteryCache.size()}
 						progress={1}
 						hasBeenClaimed={true}
 					/>,
@@ -479,7 +479,7 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 			}
 
 			if (!maxLevelCompleted) {
-				let maxLevelProgress = petsIndex.maxLevel.void / requirements.maxLevel;
+				let maxLevelProgress = petsIndex.maxLevel.void.masteryCache.size() / requirements.maxLevel;
 				if (maxLevelProgress > 1) {
 					maxLevelProgress = 1;
 				}
@@ -492,7 +492,7 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						number={2}
 						challengeType={"maxLevel"}
 						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.void}
+						amount={petsIndex.maxLevel.void.masteryCache.size()}
 						progress={maxLevelProgress}
 						hasBeenClaimed={false}
 					/>,
@@ -506,7 +506,7 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						number={2}
 						challengeType={"maxLevel"}
 						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.void}
+						amount={petsIndex.maxLevel.void.masteryCache.size()}
 						progress={1}
 						hasBeenClaimed={true}
 					/>,
@@ -557,7 +557,7 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 			}
 
 			if (!maxLevelCompleted) {
-				let maxLevelProgress = petsIndex.maxLevel.radiant / requirements.maxLevel;
+				let maxLevelProgress = petsIndex.maxLevel.radiant.masteryCache.size() / requirements.maxLevel;
 				if (maxLevelProgress > 1) {
 					maxLevelProgress = 1;
 				}
@@ -570,7 +570,7 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						number={1}
 						challengeType={"maxLevel"}
 						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.radiant}
+						amount={petsIndex.maxLevel.radiant.masteryCache.size()}
 						progress={maxLevelProgress}
 						hasBeenClaimed={false}
 					/>,
@@ -584,7 +584,7 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						number={1}
 						challengeType={"maxLevel"}
 						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.radiant}
+						amount={petsIndex.maxLevel.radiant.masteryCache.size()}
 						progress={1}
 						hasBeenClaimed={true}
 					/>,

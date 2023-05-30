@@ -3,7 +3,7 @@ import { vec2Middle } from "client/ui/commonValues";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
-import { WORLDS } from "shared/configs/worlds";
+import { EGGS } from "shared/configs/eggs";
 import { ZoneNames } from "shared/configs/zones";
 
 import { ZoneTeleportCard } from "../teleportation/zoneCard";
@@ -37,17 +37,19 @@ export const ZoneSelection = hooks((props: { setZone: (zoneName: ZoneNames) => v
 	});
 
 	const zonesToDisplay: Array<Roact.Element> = [];
-	for (const [worldName, worldData] of pairs(WORLDS)) {
-		for (const [zoneName, zoneData] of pairs(worldData.zones)) {
-			zonesToDisplay.push(
-				<ZoneTeleportCard
-					world={worldName}
-					zone={zoneName}
-					id={zoneData.id}
-					onActivated={(): void => props.setZone(zoneName)}
-				/>,
-			);
+	for (const [, eggData] of pairs(EGGS)) {
+		if (eggData.world === "Limited") {
+			continue;
 		}
+
+		zonesToDisplay.push(
+			<ZoneTeleportCard
+				world={eggData.world}
+				zone={eggData.zone}
+				id={eggData.id}
+				onActivated={(): void => props.setZone(eggData.zone)}
+			/>,
+		);
 	}
 
 	return (

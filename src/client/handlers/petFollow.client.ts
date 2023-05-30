@@ -46,6 +46,9 @@ function isNan(value: number): boolean {
 const cachePlayerPetanimation = (player: Player): Promise<void> =>
 	onStoreCreated(player)
 		.andThen((store) => {
+			// Tried everything. An initial delay will not hurt.
+			task.wait(5);
+
 			const initialState = store.getState();
 
 			const character = player.Character ?? player.CharacterAdded.Wait()[0];

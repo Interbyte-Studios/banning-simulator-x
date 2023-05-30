@@ -335,6 +335,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 					<AccountIconTemplate
 						accessibleFeature={true}
 						image={assetIds.images.ui.account.statsBackground}
+						displayBackground={true}
 						text={"Stats"}
 						layoutOrder={1}
 						onPressed={(): void => setRightComponentDisplayed(RightComponent.Stats)}
@@ -342,6 +343,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 					<AccountIconTemplate
 						accessibleFeature={true}
 						image={assetIds.images.ui.account.Accolades}
+						displayBackground={true}
 						text={"Accolades"}
 						layoutOrder={2}
 						onPressed={(): void => setRightComponentDisplayed(RightComponent.Accolades)}
@@ -349,6 +351,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 					<AccountIconTemplate
 						accessibleFeature={true}
 						image={assetIds.images.ui.account.accountMastery}
+						displayBackground={true}
 						text={"Mastery"}
 						layoutOrder={3}
 						onPressed={(): void => setRightComponentDisplayed(RightComponent.Mastery)}
@@ -356,6 +359,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 					<AccountIconTemplate
 						accessibleFeature={adminAccessToTradeLogs || publicAccessToTradeLogs}
 						image={assetIds.images.ui.account.tradeHistory}
+						displayBackground={true}
 						text={"Trade History"}
 						layoutOrder={4}
 						onPressed={(): void => setRightComponentDisplayed(RightComponent.TradeHistory)}
@@ -367,6 +371,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 						<AccountIconTemplate
 							accessibleFeature={true}
 							image={assetIds.images.ui.hud.icons.options}
+							displayBackground={true}
 							text={"Options"}
 							layoutOrder={5}
 							onPressed={(): void => setRightComponentDisplayed(RightComponent.Options)}
@@ -374,6 +379,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 						<AccountIconTemplate
 							accessibleFeature={true}
 							image={assetIds.images.ui.hud.icons.codes}
+							displayBackground={true}
 							text={"Codes"}
 							layoutOrder={6}
 							onPressed={(): void => setRightComponentDisplayed(RightComponent.Codes)}

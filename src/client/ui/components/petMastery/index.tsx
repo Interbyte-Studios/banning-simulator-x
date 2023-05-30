@@ -98,7 +98,15 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 	});
 
 	if (interfaceVisible) {
-		return <PetMasteryMenu world={worldViewing} hideMenu={(): void => setInterfaceVisibility(false)} />;
+		return (
+			<PetMasteryMenu
+				world={worldViewing}
+				hideMenu={(): void => {
+					setInterfaceVisibility(false);
+					props.setPetMasteryVisibility(false);
+				}}
+			/>
+		);
 	} else {
 		return (
 			<>

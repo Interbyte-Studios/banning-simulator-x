@@ -74,9 +74,9 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 		for (const masteryData of AccountMastery.rank) {
 			let totalMaxLevels = 0;
 			playerStore.getState().index.pets.forEach((petIndex) => {
-				totalMaxLevels += petIndex.maxLevel.radiant;
-				totalMaxLevels += petIndex.maxLevel.void;
-				totalMaxLevels += petIndex.maxLevel.regular;
+				totalMaxLevels += petIndex.maxLevel.radiant.amount;
+				totalMaxLevels += petIndex.maxLevel.void.amount;
+				totalMaxLevels += petIndex.maxLevel.regular.amount;
 			});
 
 			masteryElements.push(
@@ -140,14 +140,17 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 			<>
 				<BaseFrame Position={UDim2.fromScale(0.5, 0.625)} Size={UDim2.fromScale(0.9, 0.7)}>
 					<uigridlayout
-						CellPadding={UDim2.fromScale(-0.095, 0.1)}
-						CellSize={UDim2.fromScale(0.275, 0.26)}
+						CellPadding={UDim2.fromScale(0, 0.1)}
+						CellSize={UDim2.fromScale(0.3, 0.4)}
+						HorizontalAlignment={Enum.HorizontalAlignment.Center}
 						SortOrder={Enum.SortOrder.LayoutOrder}
 					/>
 
 					<AccountIconTemplate
 						accessibleFeature={true}
-						image={assetIds.images.ui.account.hatchingMastery}
+						image={assetIds.images.vectors.Egg}
+						imagePosition={UDim2.fromScale(0.485, 0.5)}
+						displayBackground={false}
 						text={"Eggs"}
 						layoutOrder={1}
 						onPressed={(): void => setMasteryDisplayed("Eggs")}
@@ -155,7 +158,10 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 
 					<AccountIconTemplate
 						accessibleFeature={true}
-						image={assetIds.images.ui.account.boostsMastery}
+						image={assetIds.images.vectors.boosts.greenCrate}
+						imagePosition={UDim2.fromScale(0.45, 0.5)}
+						imageSize={UDim2.fromScale(0.85, 0.85)}
+						displayBackground={false}
 						text={"Boosts"}
 						layoutOrder={2}
 						onPressed={(): void => setMasteryDisplayed("Boosts")}
@@ -163,7 +169,9 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 
 					<AccountIconTemplate
 						accessibleFeature={true}
-						image={assetIds.images.ui.account.banMastery}
+						image={assetIds.images.vectors.Hammer}
+						imageSize={UDim2.fromScale(0.85, 0.85)}
+						displayBackground={false}
 						text={"Banning"}
 						layoutOrder={3}
 						onPressed={(): void => setMasteryDisplayed("Banning")}
@@ -171,7 +179,9 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 
 					<AccountIconTemplate
 						accessibleFeature={true}
-						image={assetIds.images.ui.account.fusingMastery}
+						image={assetIds.images.vectors.PetPaw}
+						imagePosition={UDim2.fromScale(0.515, 0.5)}
+						displayBackground={false}
 						text={"Fusing"}
 						layoutOrder={4}
 						onPressed={(): void => setMasteryDisplayed("Fusing")}
@@ -179,7 +189,9 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 
 					<AccountIconTemplate
 						accessibleFeature={true}
-						image={assetIds.images.ui.account.rankMastery}
+						image={assetIds.images.vectors.Experience}
+						imagePosition={UDim2.fromScale(0.485, 0.5)}
+						displayBackground={false}
 						text={"Experience"}
 						layoutOrder={5}
 						onPressed={(): void => setMasteryDisplayed("Pet Experience")}
@@ -218,7 +230,9 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 			<FullComponentHeader
 				storeFound={true}
 				headerText={`${props.playerViewing.Name}'s Mastery`}
-				returnToSelection={props.returnToSelection}
+				returnToSelection={
+					masteryDisplayed !== undefined ? (): void => setMasteryDisplayed(undefined) : props.returnToSelection
+				}
 				displayReturn={true}
 			/>
 			{masteryDisplayed !== undefined ? scrollingFrame : masteryElements}

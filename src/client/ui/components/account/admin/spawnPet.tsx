@@ -12,7 +12,6 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EGGS } from "shared/configs/eggs";
 import { Pet, Variants } from "shared/configs/pets";
-import { WORLDS } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
 import { getPetData } from "shared/util/getPetData";
 
@@ -138,17 +137,19 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 		});
 
 		const zonesToDisplay: Array<Roact.Element> = [];
-		for (const [worldName, worldData] of pairs(WORLDS)) {
-			for (const [zoneName, zoneData] of pairs(worldData.zones)) {
-				zonesToDisplay.push(
-					<ZoneTeleportCard
-						world={worldName}
-						zone={zoneName}
-						id={zoneData.id}
-						onActivated={(): void => setZoneSelected(zoneName)}
-					/>,
-				);
+		for (const [, eggData] of pairs(EGGS)) {
+			if (eggData.world === "Limited") {
+				continue;
 			}
+
+			zonesToDisplay.push(
+				<ZoneTeleportCard
+					world={eggData.world}
+					zone={eggData.zone}
+					id={eggData.id}
+					onActivated={(): void => setZoneSelected(eggData.zone)}
+				/>,
+			);
 		}
 
 		return (

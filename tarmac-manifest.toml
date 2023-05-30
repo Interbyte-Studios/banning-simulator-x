@@ -2518,6 +2518,11 @@ hash = "e59cd418515186b5f21e1e9754bacd7fefb9c051e740f725f5fa2e757a5bce58"
 id = 11591957709
 packable = false
 
+[inputs."images/vectors/Egg.png"]
+hash = "baf5d0b6181c1790ad0e472f0be0cb455e76a5bfc728769eb9034a47981e15d2"
+id = 13599619475
+packable = false
+
 [inputs."images/vectors/Error.png"]
 hash = "73671753dd9515542fe12e4a5614773f06038c8f2cddb6fb3886c4114da25636"
 id = 11887192861
@@ -2553,6 +2558,11 @@ hash = "a8f91c2988c7017f8c3ab06752e259be0f316371f95a02e95ba994dc491e2840"
 id = 11591958127
 packable = false
 
+[inputs."images/vectors/Hammer.png"]
+hash = "d613f86d930a794984a0b028d6026838c74657fdd0bda1988b018dd1d16353f3"
+id = 13599619630
+packable = false
+
 [inputs."images/vectors/Inventory.png"]
 hash = "a0bb7854c6e3d8cc8d64741f8d23584dabdaa3297a163ac7d019b198da24835a"
 id = 11591958191
@@ -2573,9 +2583,19 @@ hash = "482ce011902a10a7fbd1ac2d31a5086734fa71ee4e31f252902ff25c3cb9f960"
 id = 11591958324
 packable = false
 
+[inputs."images/vectors/RedMark.png"]
+hash = "4e6a63cc0acc53310c20700fcd46c9d321f3e81e2d2dd8a903820f4ec7a17cb9"
+id = 13599619778
+packable = false
+
 [inputs."images/vectors/Rewards.png"]
 hash = "749a3adfbc06d6b71209bd1d37526faf3fc2eefabdfd4baaed6fb741d3ce8e20"
 id = 11591958429
+packable = false
+
+[inputs."images/vectors/Robux.png"]
+hash = "c32dd26698f2c4a2f1dcd2d91636ad2bce179f7bf21c61bb09c7b97c56c99ebc"
+id = 13599619925
 packable = false
 
 [inputs."images/vectors/Settings.png"]
@@ -2721,4 +2741,29 @@ packable = false
 [inputs."images/vectors/boosts/redTriple.png"]
 hash = "7f4466e540e8aa456d4d149c00fe3d00e216e53e7be423a907d18f5351785ae5"
 id = 12592293985
+packable = false
+
+[inputs."images/vectors/trading/DontWant.png"]
+hash = "fb23f42203797ccde4158d61cf70b734cff51e40227abe3dfa0218a08f59c18a"
+id = 13599620311
+packable = false
+
+[inputs."images/vectors/trading/Downgrade.png"]
+hash = "80e894d7eb9e062f77c95984a6e7d81e4a7af243f1097bc76a6b84e0b2ce3019"
+id = 13599620574
+packable = false
+
+[inputs."images/vectors/trading/Offer.png"]
+hash = "c6405a1041bac1b7a121c809d62a59bbdf7132bb54e7afbb2c2c3d868edb7c2f"
+id = 13599620796
+packable = false
+
+[inputs."images/vectors/trading/Upgrade.png"]
+hash = "d8c4f5196c99429b90cc282b35089bbd13239a80776efa4404fdb1e051eff93b"
+id = 13599620992
+packable = false
+
+[inputs."images/vectors/trading/Wantit.png"]
+hash = "ba597cec8118b3c37b45007c8643910b473be8ec8cefda11f7567bf55ed269aa"
+id = 13599621226
 packable = false

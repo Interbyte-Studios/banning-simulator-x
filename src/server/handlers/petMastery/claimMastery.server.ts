@@ -45,7 +45,7 @@ remotes.Server.GetNamespace("petMastery")
 			switch (variant) {
 				case "regular": {
 					if (method === "maxLevel") {
-						if (petsIndex.maxLevel[variant] < variantMasteryRequirements.maxLevel) {
+						if (petsIndex.maxLevel[variant].masteryCache.size() < variantMasteryRequirements.maxLevel) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
@@ -69,7 +69,7 @@ remotes.Server.GetNamespace("petMastery")
 				}
 				case "void": {
 					if (method === "maxLevel") {
-						if (petsIndex.maxLevel[variant] < variantMasteryRequirements.maxLevel) {
+						if (petsIndex.maxLevel[variant].masteryCache.size() < variantMasteryRequirements.maxLevel) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
@@ -95,7 +95,7 @@ remotes.Server.GetNamespace("petMastery")
 				}
 				case "radiant": {
 					if (method === "maxLevel") {
-						if (petsIndex.maxLevel[variant] < variantMasteryRequirements.maxLevel) {
+						if (petsIndex.maxLevel[variant].masteryCache.size() < variantMasteryRequirements.maxLevel) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,

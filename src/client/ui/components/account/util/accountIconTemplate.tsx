@@ -1,75 +1,78 @@
-import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
-import { font, vec2Middle } from "client/ui/commonValues";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
-import { hooks } from "client/ui/hooks";
+import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { playSFX, UIEngagement } from "client/util/playSound";
 
+/**
+ * A template for the account icons.
+ *
+ * @param props The props for the template.
+ * @param props.image The image for the icon.
+ * @param props.text The text for the icon.
+ * @param props.layoutOrder The layout order for the icon.
+ * @param props.accessibleFeature Whether the icon is accessible.
+ * @param props.onPressed The function to call when the icon is pressed.
+ * @returns The template.
+ */
 /* eslint-disable jsdoc/require-jsdoc */
-export const AccountIconTemplate = hooks(
-	(
-		props: { image: string; text: string; layoutOrder: number; accessibleFeature: boolean; onPressed: () => void },
-		hooks,
-	) => {
-		const { useEffect } = hooks;
+export const AccountIconTemplate = (props: {
+	image: string;
+	imageSize?: UDim2;
+	imagePosition?: UDim2;
+	displayBackground: boolean;
+	text: string;
+	layoutOrder: number;
+	accessibleFeature: boolean;
+	onPressed: () => void;
+}): Roact.Element => {
+	return (
+		<BaseFrame LayoutOrder={props.layoutOrder}>
+			<SpringImageButton
+				native={{
+					BackgroundTransparency: props.displayBackground ? 1 : 0,
+					BackgroundColor3: Color3.fromRGB(0, 131, 213),
+					Image: props.displayBackground ? props.image : "",
+				}}
+				size={{ minSize: 0.9, maxSize: 1 }}
+				events={{
+					Activated: (): void => {
+						playSFX(UIEngagement.MinorEngagement);
 
-		const minimizedSize = 0.9;
-		const minizmizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
+						if (props.accessibleFeature) {
+							props.onPressed();
+						}
+					},
+				}}
+			>
+				<uiaspectratioconstraint AspectRatio={1} />
 
-		const maximizedSize = 1;
-		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
+				{props.displayBackground ? undefined : <uicorner CornerRadius={new UDim(1, 0)} />}
+				{props.displayBackground ? undefined : <BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} />}
+				{props.displayBackground ? undefined : (
+					<ImageLabel
+						native={{
+							Image: props.image,
+							Size: props.imageSize ?? UDim2.fromScale(0.9, 0.9),
+							Position: props.imagePosition ?? UDim2.fromScale(0.5, 0.5),
+						}}
+					/>
+				)}
 
-		const motor = new Flipper.SingleMotor(maximizedSize);
-		const [binding, setBinding] = Roact.createBinding(motor.getValue());
-
-		motor.onStep(setBinding);
-
-		useEffect(() => {
-			return (): void => {
-				motor.destroy();
-			};
-		}, []);
-
-		return (
-			<frame BackgroundTransparency={1} LayoutOrder={props.layoutOrder}>
-				<imagebutton
-					BackgroundTransparency={1}
-					AnchorPoint={vec2Middle}
-					Position={UDim2.fromScale(0.5, 0.5)}
-					Size={binding.map((value) => {
-						return UDim2.fromScale(value, value);
-					})}
-					Image={props.image}
-					LayoutOrder={2}
-					ImageColor3={props.accessibleFeature ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(59, 62, 60)}
-					Event={{
-						Activated: (): void => {
-							playSFX(UIEngagement.MinorEngagement);
-
-							if (props.accessibleFeature) {
-								props.onPressed();
-							}
-						},
-						MouseEnter: (): void => motor.setGoal(minizmizedSpring),
-						MouseLeave: (): void => motor.setGoal(maximizedSpring),
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(1, 0.25),
+						Position: UDim2.fromScale(0.5, 0),
+						Text: props.text,
 					}}
-				>
-					<textlabel
-						BackgroundTransparency={1}
-						AnchorPoint={vec2Middle}
-						Size={UDim2.fromScale(0.9, 0.35)}
-						Position={UDim2.fromScale(0.5, 1)}
-						Text={props.text}
-						Font={font}
-						TextScaled={true}
-						TextColor3={Color3.fromRGB(255, 255, 255)}
-					>
-						<BaseUIStroke native={{ Thickness: 1, Color: Color3.fromRGB(0, 108, 176) }} />
-					</textlabel>
-					<uiaspectratioconstraint AspectRatio={1} />
-				</imagebutton>
-			</frame>
-		);
-	},
-);
+					stroke={{
+						native: { Thickness: 2, Color: Color3.fromRGB(0, 74, 122) },
+					}}
+				/>
+			</SpringImageButton>
+		</BaseFrame>
+	);
+};
 /* eslint-enable jsdoc/require-jsdoc */

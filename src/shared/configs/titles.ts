@@ -88,7 +88,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 25;
@@ -103,7 +103,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 50;
@@ -118,7 +118,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 75;
@@ -133,7 +133,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 100;
@@ -148,7 +148,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 250;
@@ -163,7 +163,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 500;
@@ -178,7 +178,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 750;
@@ -201,7 +201,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 1000;

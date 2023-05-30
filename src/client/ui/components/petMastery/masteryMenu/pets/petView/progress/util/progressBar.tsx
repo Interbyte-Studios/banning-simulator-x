@@ -60,7 +60,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 					potentiallyFinishedChallenges += 1;
 				}
 
-				if (petsIndex.maxLevel.regular >= masteryRequirements.maxLevel) {
+				if (petsIndex.maxLevel.regular.masteryCache.size() >= masteryRequirements.maxLevel) {
 					potentiallyFinishedChallenges += 1;
 				}
 			} else if (props.variant === "void") {
@@ -68,7 +68,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 					potentiallyFinishedChallenges += 1;
 				}
 
-				if (petsIndex.maxLevel.void >= masteryRequirements.maxLevel) {
+				if (petsIndex.maxLevel.void.masteryCache.size() >= masteryRequirements.maxLevel) {
 					potentiallyFinishedChallenges += 1;
 				}
 
@@ -76,7 +76,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 					potentiallyFinishedChallenges += 1;
 				}
 			} else if (props.variant === "radiant") {
-				if (petsIndex.maxLevel.radiant >= masteryRequirements.maxLevel) {
+				if (petsIndex.maxLevel.radiant.masteryCache.size() >= masteryRequirements.maxLevel) {
 					potentiallyFinishedChallenges += 1;
 				}
 

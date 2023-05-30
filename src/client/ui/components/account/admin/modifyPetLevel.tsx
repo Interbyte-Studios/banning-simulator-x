@@ -14,7 +14,6 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EGGS } from "shared/configs/eggs";
 import { PET_MAX_LEVELS } from "shared/configs/pets";
-import { WORLDS } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
 import { Pet } from "shared/rodux/pets";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
@@ -241,6 +240,8 @@ export const ModifyPetLevel = hooks((props: { playerViewing: Player; setActiveAc
 			assert(scrollingFrame, `Failed to get Spawn Pet Admin ScrollingFrame.`);
 			assert(scrollingFrame.IsA("ScrollingFrame"), `Expected Spawn Pet Admin to have a ScrollingFrame.`);
 
+			scrollingFrame.CanvasPosition = new Vector2(0, 0);
+
 			scrollingFrame.GetChildren().forEach((adminCard) => {
 				if (adminCard.IsA("ImageLabel")) {
 					adminCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
@@ -249,17 +250,19 @@ export const ModifyPetLevel = hooks((props: { playerViewing: Player; setActiveAc
 		});
 
 		const zonesToDisplay: Array<Roact.Element> = [];
-		for (const [worldName, worldData] of pairs(WORLDS)) {
-			for (const [zoneName, zoneData] of pairs(worldData.zones)) {
-				zonesToDisplay.push(
-					<ZoneTeleportCard
-						world={worldName}
-						zone={zoneName}
-						id={zoneData.id}
-						onActivated={(): void => setZoneSelected(zoneName)}
-					/>,
-				);
+		for (const [, eggData] of pairs(EGGS)) {
+			if (eggData.world === "Limited") {
+				continue;
 			}
+
+			zonesToDisplay.push(
+				<ZoneTeleportCard
+					world={eggData.world}
+					zone={eggData.zone}
+					id={eggData.id}
+					onActivated={(): void => setZoneSelected(eggData.zone)}
+				/>,
+			);
 		}
 
 		return (

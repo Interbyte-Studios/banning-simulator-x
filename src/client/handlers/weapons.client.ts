@@ -274,6 +274,9 @@ onStoreCreated(player)
 			equipWeapon(weapon.Name as WeaponIndex);
 		}
 
+		// Initial Delay
+		task.wait(5);
+
 		const backpack = player.FindFirstChildWhichIsA("Backpack");
 		assert(backpack, `Failed to get backpack for ${player.Name}`);
 

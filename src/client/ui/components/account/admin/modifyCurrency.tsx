@@ -1,7 +1,7 @@
 import Roact from "@rbxts/roact";
 import { CollectionService } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
-import { font, vec2Middle } from "client/ui/commonValues";
+import { font, uiClaimButtonStrokeColor, uiOffButtonStrokeColor, vec2Middle } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
@@ -42,8 +42,8 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 
 	const { admin_ModifyCurrency } = useContext(remoteContext);
 
-	const minimizedSize = 0.115;
-	const maximizedSize = 0.15;
+	const minimizedSize = 0.175;
+	const maximizedSize = 0.2;
 
 	if (currencySelected !== undefined && currencyAmount !== undefined) {
 		return (
@@ -71,7 +71,7 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 
 				<SpringImageButton
 					native={{
-						Position: UDim2.fromScale(0.75, 0.675),
+						Position: UDim2.fromScale(0.75, 0.7),
 						Image: assetIds.images.ui.index.Claim,
 					}}
 					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
@@ -89,19 +89,19 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 					<uiaspectratioconstraint AspectRatio={2} />
 					<StrokeTextLabel
 						native={{
-							Size: UDim2.fromScale(0.95, 0.2),
+							Size: UDim2.fromScale(0.8, 0.8),
 							Text: "Yes",
 						}}
 						stroke={{
-							native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+							native: { Thickness: 1.755, Color: uiClaimButtonStrokeColor },
 						}}
 					/>
 				</SpringImageButton>
 
 				<SpringImageButton
 					native={{
-						Position: UDim2.fromScale(0.25, 0.675),
-						Image: assetIds.images.ui.index.footerNotice,
+						Position: UDim2.fromScale(0.25, 0.7),
+						Image: assetIds.images.ui.index.Off,
 					}}
 					size={{ maxSize: maximizedSize, minSize: minimizedSize }}
 					events={{
@@ -116,11 +116,11 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 					<uiaspectratioconstraint AspectRatio={2} />
 					<StrokeTextLabel
 						native={{
-							Size: UDim2.fromScale(0.95, 0.2),
+							Size: UDim2.fromScale(0.8, 0.8),
 							Text: "No",
 						}}
 						stroke={{
-							native: { Thickness: 1.755, Color: Color3.fromRGB(0, 56, 125) },
+							native: { Thickness: 1.755, Color: uiOffButtonStrokeColor },
 						}}
 					/>
 				</SpringImageButton>
@@ -269,13 +269,6 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 										Size: UDim2.fromScale(0.925, 0.925),
 										Image: "",
 									}}
-									events={{
-										Activated: (): void => {
-											warn("ACTIVATED");
-											playSFX(UIEngagement.MajorEngagement);
-											setCurrencySelected(currencyName);
-										},
-									}}
 								>
 									<uiaspectratioconstraint AspectRatio={1} />
 									<uicorner CornerRadius={new UDim(1, 0)} />
@@ -285,6 +278,13 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 										position={UDim2.fromScale(0.5, 0.5)}
 										size={UDim2.fromScale(0.9, 0.9)}
 										currency={currencyName}
+										events={{
+											Activated: (): void => {
+												warn("ACTIVATED");
+												playSFX(UIEngagement.MajorEngagement);
+												setCurrencySelected(currencyName);
+											},
+										}}
 									/>
 									<StrokeTextLabel
 										native={{

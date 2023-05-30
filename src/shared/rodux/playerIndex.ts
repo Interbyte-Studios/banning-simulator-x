@@ -1,8 +1,10 @@
 import Rodux from "@rbxts/rodux";
 import { t } from "@rbxts/t";
 import { EggName } from "shared/configs/eggs";
+import { PET_MASTERY_REQUIREMENTS } from "shared/configs/petMastery";
 import { PET_MAX_LEVELS } from "shared/configs/pets";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
+import { getPetData } from "shared/util/getPetData";
 import { getPetLevel } from "shared/util/getPetLevel";
 
 import { KillNpc } from "./currencies";
@@ -40,9 +42,18 @@ export interface PlayerIndexState {
 				radiant: number;
 			};
 			maxLevel: {
-				regular: number;
-				void: number;
-				radiant: number;
+				regular: {
+					amount: number;
+					masteryCache: Array<string>;
+				};
+				void: {
+					amount: number;
+					masteryCache: Array<string>;
+				};
+				radiant: {
+					amount: number;
+					masteryCache: Array<string>;
+				};
 			};
 		}
 	>;
@@ -112,9 +123,18 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 							radiant: 0,
 						},
 						maxLevel: {
-							regular: 0,
-							void: 0,
-							radiant: 0,
+							regular: {
+								amount: 0,
+								masteryCache: [],
+							},
+							void: {
+								amount: 0,
+								masteryCache: [],
+							},
+							radiant: {
+								amount: 0,
+								masteryCache: [],
+							},
 						},
 					});
 
@@ -199,9 +219,20 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 
 				const maxLevel = PET_MAX_LEVELS[pet.variant];
 				const petLevel = getPetLevel(pet);
+				const petData = getPetData(pet.id);
 
 				if (petLevel < maxLevel) {
 					continue;
+				}
+
+				let wasNewPet = false;
+				const newUniqueCache = masteryData.maxLevel[pet.variant].masteryCache;
+				if (!newUniqueCache.includes(pet.guid)) {
+					wasNewPet = true;
+
+					if (newUniqueCache.size() < PET_MASTERY_REQUIREMENTS[petData.rarity][pet.variant].maxLevel) {
+						newUniqueCache.push(pet.guid);
+					}
 				}
 
 				newState.pets.set(stringId, {
@@ -209,7 +240,12 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 					fused: masteryData.fused,
 					maxLevel: {
 						...masteryData.maxLevel,
-						[pet.variant]: masteryData.maxLevel[pet.variant] + 1,
+						[pet.variant]: {
+							amount: wasNewPet
+								? masteryData.maxLevel[pet.variant].amount + 1
+								: masteryData.maxLevel[pet.variant].amount,
+							masteryCache: newUniqueCache,
+						},
 					},
 				});
 			}
@@ -229,12 +265,29 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 
 			const maxLevel = PET_MAX_LEVELS[action.variant];
 			if (action.level >= maxLevel) {
+				const petData = getPetData(action.id);
+
+				let wasNewPet = false;
+				const newUniqueCache = petIndex.maxLevel[action.variant].masteryCache;
+				if (!newUniqueCache.includes(action.guid)) {
+					wasNewPet = true;
+
+					if (newUniqueCache.size() < PET_MASTERY_REQUIREMENTS[petData.rarity][action.variant].maxLevel) {
+						newUniqueCache.push(action.guid);
+					}
+				}
+
 				newState.pets.set(stringId, {
 					hatched: petIndex.hatched,
 					fused: petIndex.fused,
 					maxLevel: {
 						...petIndex.maxLevel,
-						[action.variant]: petIndex.maxLevel[action.variant] + 1,
+						[action.variant]: {
+							amount: wasNewPet
+								? petIndex.maxLevel[action.variant].amount + 1
+								: petIndex.maxLevel[action.variant].amount,
+							masteryCache: newUniqueCache,
+						},
 					},
 				});
 			}

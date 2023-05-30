@@ -212,20 +212,20 @@ const IndexStats = RoactRodux.connect(mapIndexStateToIndexStatProps)(
 			switch (props.variant) {
 				case "regular": {
 					hatches = petsIndex.hatched.regular;
-					maxLevels = petsIndex.maxLevel.regular;
+					maxLevels = petsIndex.maxLevel.regular.amount;
 
 					break;
 				}
 				case "void": {
 					hatches = petsIndex.hatched.void;
 					fuses = petsIndex.fused.void;
-					maxLevels = petsIndex.maxLevel.void;
+					maxLevels = petsIndex.maxLevel.void.amount;
 
 					break;
 				}
 				case "radiant": {
 					fuses = petsIndex.fused.radiant;
-					maxLevels = petsIndex.maxLevel.radiant;
+					maxLevels = petsIndex.maxLevel.radiant.amount;
 				}
 			}
 		}
