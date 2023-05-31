@@ -91,7 +91,7 @@ confirmOffer.Connect((player) => {
 		return offerConfirmed.SendToPlayer(player, player, getTradeItems(player));
 	}
 
-	// alert the other player that the offer changed
+	// alert the other player that the offer was confirmed
 	print("Offer was confirmed. Alerting other player.");
 	offerConfirmed.SendToPlayer(getTradingCounterParty(player), player, getTradeItems(player));
 });
@@ -106,7 +106,7 @@ declineOffer.Connect((player) => {
 
 	const otherPlayer = getTradingCounterParty(player);
 	if (declineTradeOffer(player)) {
-		// alert the other player that the trade got cancelled
+		// alert the other player that the trade got declined
 		offerDeclined.SendToPlayer(otherPlayer, player);
 
 		player.SetAttribute(TRADING_ATTRIBUTE, undefined);
@@ -131,7 +131,7 @@ confirmFinalizedTrade.Connect(
 			return finalizedTradeConfirmed.SendToPlayer(player, player, getTradeItems(player));
 		}
 
-		// alert the other player that the offer changed
+		// alert the other player that the offer was confirmed
 		print("Offer was confirmed. Alerting other player.");
 		finalizedTradeConfirmed.SendToPlayer(getTradingCounterParty(player), player, getTradeItems(player));
 
