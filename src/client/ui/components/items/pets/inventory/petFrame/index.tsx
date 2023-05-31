@@ -151,7 +151,6 @@ export const PetFrame = hooks(
 										addAnnouncement("You cannot delete a Primordial or Prismatic pet.", AnnouncementType.Error);
 										return;
 									}
-
 									setSelectedForDelete(!isSelectedForDelete);
 								}
 

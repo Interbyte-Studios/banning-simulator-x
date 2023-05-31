@@ -250,7 +250,15 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 			}
 		});
 		return result;
-	}, [renderedPets, props.selectedPets, props.pets]);
+	}, [
+		renderedPets,
+		props.selectedPets,
+		props.pets,
+		props.inventoryFrame?.multiDeleteEnabled,
+		props.inventoryFrame?.addPetToDeletionRegistry,
+		props.inventoryFrame?.removePetFromDeletionRegistry,
+		props.inventoryFrame?.displayPetInfo,
+	]);
 
 	return (
 		<scrollingframe

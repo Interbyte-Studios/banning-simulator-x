@@ -46,115 +46,117 @@ function isNan(value: number): boolean {
 const cachePlayerPetanimation = (player: Player): Promise<void> =>
 	onStoreCreated(player)
 		.andThen((store) => {
-			// Tried everything. An initial delay will not hurt.
-			task.wait(5);
+			task.spawn(() =>
+				task.delay(5, () => {
+					const initialState = store.getState();
 
-			const initialState = store.getState();
+					const character = player.Character ?? player.CharacterAdded.Wait()[0];
+					if (character === undefined) {
+						warn(`Character could not be defined for ${player.Name}, therefore pets could not be animated.`);
+						return;
+					}
 
-			const character = player.Character ?? player.CharacterAdded.Wait()[0];
-			if (character === undefined) {
-				warn(`Character could not be defined for ${player.Name}, therefore pets could not be animated.`);
-				return;
-			}
+					const humanoid = character.WaitForChild("Humanoid") as Humanoid;
+					if (humanoid === undefined) {
+						warn(`Humanoid could not be defined for ${player.Name}, therefore pets could not be animated.`);
+						return;
+					}
 
-			const humanoid = character.WaitForChild("Humanoid") as Humanoid;
-			if (humanoid === undefined) {
-				warn(`Humanoid could not be defined for ${player.Name}, therefore pets could not be animated.`);
-				return;
-			}
+					const humanoidRootPart = humanoid.RootPart;
+					if (humanoidRootPart === undefined) {
+						warn(`HumanoidRootPart could not be defined for ${player.Name}, therefore pets could not be animated.`);
+						return;
+					}
 
-			const humanoidRootPart = humanoid.RootPart;
-			if (humanoidRootPart === undefined) {
-				warn(`HumanoidRootPart could not be defined for ${player.Name}, therefore pets could not be animated.`);
-				return;
-			}
+					const playerCache = createPetAnimationCache(player);
 
-			const playerCache = createPetAnimationCache(player);
+					playerCache.petsDisplayed.Value = initialState.settings.visual.petsDisplayed;
+					playerCache.distance.Value = initialState.settings.visual.petsStudsOfDistance;
+					playerCache.animationType.Value = initialState.settings.visual.petAnimationType;
 
-			playerCache.petsDisplayed.Value = initialState.settings.visual.petsDisplayed;
-			playerCache.distance.Value = initialState.settings.visual.petsStudsOfDistance;
-			playerCache.animationType.Value = initialState.settings.visual.petAnimationType;
-
-			initialState.pets.forEach((pet) => {
-				if (!pet.equipped) {
-					return;
-				}
-
-				const createdPet = cachePetForAnimation(player, pet.id, pet.guid, pet.variant);
-				createdPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
-				createdPet.model.PivotTo(humanoidRootPart.CFrame);
-
-				playerCache.pets.push(createdPet);
-			});
-
-			store.changed.connect((newState, oldState) => {
-				if (newState.settings.visual !== oldState.settings.visual) {
-					playerCache.petsDisplayed.Value = newState.settings.visual.petsDisplayed;
-					playerCache.distance.Value = newState.settings.visual.petsStudsOfDistance;
-					playerCache.animationType.Value = newState.settings.visual.petAnimationType;
-				}
-
-				if (newState.pets === oldState.pets) {
-					return;
-				}
-
-				const character = player.Character ?? player.CharacterAdded.Wait()[0];
-				if (character === undefined) {
-					warn(`Character could not be defined for ${player.Name}, therefore pets could not be animated.`);
-					return;
-				}
-
-				const humanoid = character.WaitForChild("Humanoid") as Humanoid;
-				if (humanoid === undefined) {
-					warn(`Humanoid could not be defined for ${player.Name}, therefore pets could not be animated.`);
-					return;
-				}
-
-				const humanoidRootPart = humanoid.RootPart;
-				if (humanoidRootPart === undefined) {
-					warn(`HumanoidRootPart could not be defined for ${player.Name}, therefore pets could not be animated.`);
-					return;
-				}
-
-				newState.pets.forEach((pet) => {
-					if (pet.equipped) {
-						const cachedPetIndex = playerCache.pets.find((animatedPet) => animatedPet.guid === pet.guid);
-						if (cachedPetIndex !== undefined) {
+					initialState.pets.forEach((pet) => {
+						if (!pet.equipped) {
 							return;
 						}
 
 						const createdPet = cachePetForAnimation(player, pet.id, pet.guid, pet.variant);
 						createdPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
+
 						playerCache.pets.push(createdPet);
+					});
 
-						return;
-					}
+					store.changed.connect((newState, oldState) => {
+						if (newState.settings.visual !== oldState.settings.visual) {
+							playerCache.petsDisplayed.Value = newState.settings.visual.petsDisplayed;
+							playerCache.distance.Value = newState.settings.visual.petsStudsOfDistance;
+							playerCache.animationType.Value = newState.settings.visual.petAnimationType;
+						}
 
-					const cachedPetIndex = playerCache.pets.findIndex((animatedPet) => animatedPet.guid === pet.guid);
-					if (cachedPetIndex === undefined) {
-						return;
-					}
+						if (newState.pets === oldState.pets) {
+							return;
+						}
 
-					playerCache.pets.unorderedRemove(cachedPetIndex);
-					removePet(pet.guid);
-				});
-			});
+						const character = player.Character ?? player.CharacterAdded.Wait()[0];
+						if (character === undefined) {
+							warn(`Character could not be defined for ${player.Name}, therefore pets could not be animated.`);
+							return;
+						}
 
-			const currentCacheState = getPetAnimationCache();
-			currentCacheState.forEach((playerCache) =>
-				playerCache.pets.forEach((cachedPet) => {
-					cachedPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
+						const humanoid = character.WaitForChild("Humanoid") as Humanoid;
+						if (humanoid === undefined) {
+							warn(`Humanoid could not be defined for ${player.Name}, therefore pets could not be animated.`);
+							return;
+						}
+
+						const humanoidRootPart = humanoid.RootPart;
+						if (humanoidRootPart === undefined) {
+							warn(`HumanoidRootPart could not be defined for ${player.Name}, therefore pets could not be animated.`);
+							return;
+						}
+
+						newState.pets.forEach((pet) => {
+							if (pet.equipped) {
+								const cachedPetIndex = playerCache.pets.find((animatedPet) => animatedPet.guid === pet.guid);
+								if (cachedPetIndex !== undefined) {
+									return;
+								}
+
+								const createdPet = cachePetForAnimation(player, pet.id, pet.guid, pet.variant);
+								createdPet.model.Parent = playerCache.petsDisplayed.Value
+									? Workspace["client objects"].pets
+									: undefined;
+								playerCache.pets.push(createdPet);
+
+								return;
+							}
+
+							const cachedPetIndex = playerCache.pets.findIndex((animatedPet) => animatedPet.guid === pet.guid);
+							if (cachedPetIndex === undefined) {
+								return;
+							}
+
+							playerCache.pets.unorderedRemove(cachedPetIndex);
+							removePet(pet.guid);
+						});
+					});
+
+					const currentCacheState = getPetAnimationCache();
+					currentCacheState.forEach((playerCache) =>
+						playerCache.pets.forEach((cachedPet) => {
+							cachedPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
+						}),
+					);
+
+					playerCache.petsDisplayed.GetPropertyChangedSignal("Value").Connect(() => {
+						const currentCacheState = getPetAnimationCache();
+						currentCacheState.forEach((playerCache) =>
+							playerCache.pets.forEach((cachedPet) => {
+								cachedPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
+							}),
+						);
+					});
 				}),
 			);
-
-			playerCache.petsDisplayed.GetPropertyChangedSignal("Value").Connect(() => {
-				const currentCacheState = getPetAnimationCache();
-				currentCacheState.forEach((playerCache) =>
-					playerCache.pets.forEach((cachedPet) => {
-						cachedPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
-					}),
-				);
-			});
 		})
 		.catch((e) => {
 			throw `Failed to get store for player ${player.Name} | ${e}`;
@@ -165,7 +167,7 @@ Players.PlayerAdded.Connect((player) => cachePlayerPetanimation(player));
 Players.PlayerRemoving.Connect((player) => removePetAnimationCache(player));
 
 let lastPrint = 0;
-const debugEnabled = false; // RunService.IsStudio();
+const debugEnabled = RunService.IsStudio();
 RunService.RenderStepped.Connect(() => {
 	// get the players currently equipped pet models
 	const currentCacheState = getPetAnimationCache();
@@ -212,7 +214,7 @@ RunService.RenderStepped.Connect(() => {
 			const petModel = pet.model;
 			const primaryPart = petModel.PrimaryPart;
 			if (primaryPart === undefined) {
-				return;
+				return warn(`PrimaryPart could not be defined for ${petModel.Name}`);
 			}
 
 			// we need to log the time for certain aspects of the animation such as cosine functions, since they oscilate
