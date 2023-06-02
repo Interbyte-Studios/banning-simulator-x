@@ -53,6 +53,31 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 
 	const trueTradeState = useValue(tradeState);
 
+	const setTradeStateMemo = useCallback(
+		(player: Player | undefined, newTradeState: TradeState, setPlayerBeforeState: boolean) => {
+			if (setPlayerBeforeState) {
+				if (player !== interactingPlayer && player !== undefined) {
+					setInteractingPlayer(player);
+					props.setForeignPlayer(player);
+				}
+
+				if (newTradeState !== tradeState) {
+					setTradeState(newTradeState);
+				}
+			} else {
+				if (newTradeState !== tradeState) {
+					setTradeState(newTradeState);
+				}
+
+				if (player !== interactingPlayer && player !== undefined) {
+					setInteractingPlayer(player);
+					props.setForeignPlayer(player);
+				}
+			}
+		},
+		[interactingPlayer, tradeState],
+	);
+
 	/**
 	 * Sends a trade request to the player.
 	 *
@@ -73,9 +98,9 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 				return;
 			}
 
-			setInteractingPlayer(player);
-			setTradeState(TradeState.OutboundPending);
+			setTradeStateMemo(player, TradeState.OutboundPending, true);
 			requestTrading.SendToServer(player);
+			warn(`${Players.LocalPlayer} sent a trade request to ${player}.`);
 		},
 		[tradeState],
 	);
@@ -89,15 +114,12 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 		(player: Player): void => {
 			// we don't check player attributes here because when the other player created the request, the attributes were set for both players
 			if (trueTradeState.value !== TradeState.Idle && trueTradeState.value !== TradeState.TradeDeclined) {
-				warn(`Trade state is ${tradeState}`);
 				addAnnouncement("You received a trade, but you already have a trade open.", AnnouncementType.Error);
 				return;
 			}
 
-			setInteractingPlayer(player);
-			setTradeState(TradeState.InboundPending);
+			setTradeStateMemo(player, TradeState.InboundPending, true);
 			trueTradeState.value = TradeState.InboundPending;
-			warn("Set state to inbound pending");
 		},
 		[tradeState],
 	);
@@ -112,8 +134,7 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 		}
 
 		if (interactingPlayer === undefined) {
-			setTradeState(TradeState.Idle);
-			setInteractingPlayer(undefined);
+			setTradeStateMemo(undefined, TradeState.Idle, false);
 			trueTradeState.value = TradeState.Idle;
 			clientTradeError.SendToServer();
 			return;
@@ -134,33 +155,40 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 		}
 
 		if (interactingPlayer === undefined) {
-			setTradeState(TradeState.Idle);
-			setInteractingPlayer(undefined);
+			setTradeStateMemo(undefined, TradeState.Idle, false);
 			trueTradeState.value = TradeState.Idle;
 			clientTradeError.SendToServer();
 			return;
 		}
 
-		setInteractingPlayer(undefined);
-		setTradeState(TradeState.TradeDeclined);
+		const player = interactingPlayer;
+		setTradeStateMemo(undefined, TradeState.TradeDeclined, true);
 		trueTradeState.value = TradeState.TradeDeclined;
-		declineTradeRequest.SendToServer(interactingPlayer);
+		declineTradeRequest.SendToServer(player);
 	}, [tradeState, interactingPlayer]);
 
 	// listens to incoming remote events
 	useEffect(() => {
 		const receiveTradeRequestConnection = receiveTradeRequest.Connect(receiveTrade);
 		const tradeRequestAcceptedConnection = tradeRequestAccepted.Connect(() => {
+			if (!props.tradeMenusEnabled) {
+				clientTradeError.SendToServer();
+
+				setTradeStateMemo(undefined, TradeState.Idle, false);
+				return;
+			}
+
 			addAnnouncement(`${interactingPlayer} accepted your trade request!`, AnnouncementType.Announcement);
 			setTradeState(TradeState.TradeAccepted);
 			trueTradeState.value = TradeState.TradeAccepted;
 		});
-		const tradeRequestDeclinedConnection = tradeRequestDeclined.Connect(() => setTradeState(TradeState.TradeDeclined));
+		const tradeRequestDeclinedConnection = tradeRequestDeclined.Connect(() => {
+			setTradeState(TradeState.TradeDeclined);
+		});
 		const abandonTradeAssertionConnection = abandonTradeAssertion.Connect(() => {
 			addAnnouncement("Something has gone wrong with your trade. Try again later. [I:6]", AnnouncementType.Error);
 
-			setTradeState(TradeState.Idle);
-			setInteractingPlayer(undefined);
+			setTradeStateMemo(undefined, TradeState.Idle, false);
 			trueTradeState.value = TradeState.Idle;
 		});
 
@@ -171,25 +199,21 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 			abandonTradeAssertionConnection,
 		];
 		return (): void => connections.forEach((connection) => connection.Disconnect());
-	}, [receiveTradeRequest, tradeRequestAccepted, tradeRequestDeclined, abandonTradeAssertion, interactingPlayer]);
-
-	useEffect(() => {
-		if (interactingPlayer === undefined) {
-			return;
-		}
-
-		props.setForeignPlayer(interactingPlayer);
-	}, [interactingPlayer]);
+	});
 
 	useEffect(() => {
 		if (tradeState === TradeState.OutboundPending || tradeState === TradeState.InboundPending) {
 			if (interactingPlayer === undefined) {
 				addAnnouncement("Something has gone wrong with your trade. Try again later. [I:1]", AnnouncementType.Error);
 
-				setTradeState(TradeState.Idle);
-				setInteractingPlayer(undefined);
+				setTradeStateMemo(undefined, TradeState.Idle, false);
 				clientTradeError.SendToServer();
 			}
+		}
+
+		if (tradeState === TradeState.TradeAccepted) {
+			props.setActiveTrade();
+			setTradeStateMemo(undefined, TradeState.Idle, false);
 		}
 	}, [tradeState]);
 
@@ -233,15 +257,13 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 				}
 				break;
 			case TradeState.TradeAccepted:
-				props.setActiveTrade();
 				return <></>;
 			case TradeState.TradeDeclined:
 				elementToRender = (
 					<DeclinedTradeWarning
 						player={interactingPlayer ?? Players.LocalPlayer}
 						hideMenu={(): void => {
-							setTradeState(TradeState.Idle);
-							setInteractingPlayer(undefined);
+							setTradeStateMemo(undefined, TradeState.Idle, false);
 							trueTradeState.value = TradeState.Idle;
 						}}
 					/>

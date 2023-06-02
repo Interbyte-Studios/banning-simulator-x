@@ -92,6 +92,9 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 	function declineTradeOffer(): void {
 		addAnnouncement(`You have cancelled your trade with ${props.targetPlayer.Name}.`, AnnouncementType.Announcement);
 
+		declineOffer.SendToServer();
+		props.exitTrade();
+
 		setLocalOffer(defaultOffer);
 		setForeignOffer(defaultOffer);
 
@@ -100,9 +103,6 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 
 		setLocalConfirmed(false);
 		setForeignConfirmed(false);
-
-		declineOffer.SendToServer();
-		props.exitTrade();
 	}
 
 	/**
@@ -340,6 +340,7 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 				return;
 			} else if (player.UserId === props.targetPlayer.UserId) {
 				addAnnouncement(`${props.targetPlayer.Name} has cancelled the trade.`, AnnouncementType.Announcement);
+				props.exitTrade();
 
 				setLocalOffer(defaultOffer);
 				setForeignOffer(defaultOffer);
@@ -351,8 +352,6 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 				setForeignConfirmed(false);
 
 				setTradeState(TradeState.Offering);
-
-				props.exitTrade();
 			} else {
 				warn(`Received trade offer declined remote from unknown player. This should never happen.`);
 				return;
@@ -426,6 +425,8 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 		const abandonTradeAssertionConnection = abandonTradeAssertion.Connect(() => {
 			addAnnouncement(`There was an error with the trade. Try again later. [I-12]`, AnnouncementType.Error);
 
+			props.exitTrade();
+
 			setLocalOffer(defaultOffer);
 			setForeignOffer(defaultOffer);
 
@@ -436,8 +437,6 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 			setForeignConfirmed(false);
 
 			setTradeState(TradeState.Offering);
-
-			props.exitTrade();
 		});
 
 		const connections: Array<RBXScriptConnection> = [
@@ -449,17 +448,7 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 			abandonTradeAssertionConnection,
 		];
 		return (): void => connections.forEach((connection) => connection.Disconnect());
-	}, [
-		offerChanged,
-		tradeOfferConfirmed,
-		tradeOfferDeclined,
-		finalizedTradeConfirmed,
-		finalizedTradeDeclined,
-		clientTradeError,
-		abandonTradeAssertion,
-		localReady,
-		localConfirmed,
-	]);
+	});
 
 	return (
 		<ImageLabel

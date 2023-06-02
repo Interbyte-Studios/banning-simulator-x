@@ -27,36 +27,47 @@ interface TradingProps {
 export const Trading = hooks((props: TradingProps, hooks) => {
 	const { useState } = hooks;
 
-	const [foreignPlayer, setForeignPlayer] = useState<Player | undefined>(undefined);
-	const [tradeState, setTradeState] = useState<TradeState>(TradeState.Idle);
+	const [tradeState, setTradeState] = useState<{
+		foreignPlayer: Player | undefined;
+		tradeState: TradeState;
+	}>({
+		foreignPlayer: undefined,
+		tradeState: TradeState.Idle,
+	});
 
-	if (tradeState === TradeState.Idle) {
+	if (tradeState.tradeState === TradeState.Idle) {
 		return (
 			<InactiveTrade
 				tradeMenusEnabled={props.tradeMenusEnabled}
 				tradeMenusVisible={props.tradeMenusVisible}
-				setForeignPlayer={setForeignPlayer}
+				setForeignPlayer={(player: Player): void =>
+					setTradeState({
+						foreignPlayer: player,
+						tradeState: TradeState.Idle,
+					})
+				}
 				setActiveTrade={(): void => {
-					setTradeState(TradeState.ActiveTrade);
+					setTradeState({ foreignPlayer: tradeState.foreignPlayer, tradeState: TradeState.ActiveTrade });
 					props.setActiveTrade(true);
 				}}
 				hideMenu={props.hideMenu}
 			/>
 		);
-	} else if (tradeState === TradeState.ActiveTrade) {
-		if (foreignPlayer === undefined) {
-			warn(`Attempted to render active trade without a foreign player.`);
+	} else if (tradeState.tradeState === TradeState.ActiveTrade) {
+		if (tradeState.foreignPlayer === undefined) {
 			return <></>;
 		}
 
 		return (
 			<ActiveTrade
-				targetPlayer={foreignPlayer}
+				targetPlayer={tradeState.foreignPlayer}
 				exitTrade={(): void => {
-					setForeignPlayer(undefined);
-					setTradeState(TradeState.Idle);
-					props.setActiveTrade(false);
+					setTradeState({
+						foreignPlayer: undefined,
+						tradeState: TradeState.Idle,
+					});
 					props.hideMenu();
+					props.setActiveTrade(false);
 				}}
 			/>
 		);

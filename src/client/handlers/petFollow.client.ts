@@ -167,7 +167,7 @@ Players.PlayerAdded.Connect((player) => cachePlayerPetanimation(player));
 Players.PlayerRemoving.Connect((player) => removePetAnimationCache(player));
 
 let lastPrint = 0;
-const debugEnabled = RunService.IsStudio();
+const debugEnabled = false; // RunService.IsStudio();
 RunService.RenderStepped.Connect(() => {
 	// get the players currently equipped pet models
 	const currentCacheState = getPetAnimationCache();

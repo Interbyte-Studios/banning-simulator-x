@@ -2,6 +2,7 @@ import ProfileService from "@rbxts/profileservice";
 import { Profile } from "@rbxts/profileservice/globals";
 import Rodux from "@rbxts/rodux";
 import { Players } from "@rbxts/services";
+import { TEST_STORE } from "shared/configs/game";
 import { createSpyMiddleware } from "shared/mocks/middleware/spyMiddleware";
 import { remotes } from "shared/remotes";
 import { Store, StoreActions, storeReducer, StoreState } from "shared/rodux";
@@ -69,7 +70,7 @@ const profileTemplate: StoreState = {
 /**
  * The ProfileService profile store.
  */
-const profileStore = ProfileService.GetProfileStore("testStore", profileTemplate);
+const profileStore = ProfileService.GetProfileStore(TEST_STORE, profileTemplate);
 
 /**
  * A collection of all player profiles.

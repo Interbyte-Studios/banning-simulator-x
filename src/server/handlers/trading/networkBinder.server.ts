@@ -59,7 +59,7 @@ modifyOffer.Connect(
 	withPlayerStore((player, store, offer) => {
 		// first, ensure a player is in a trade
 		if (getTradeStatus(player) !== TradeStatus.Trading && getTradeStatus(player) !== TradeStatus.ConfirmedOffer) {
-			return warn("Not in a trade");
+			return;
 		}
 
 		if (!modifyTrade(player, store, offer)) {
@@ -70,7 +70,6 @@ modifyOffer.Connect(
 		}
 
 		// alert the other player that the offer changed
-		print("Offer was changed. Alerting other player.");
 		offerChanged.SendToPlayer(getTradingCounterParty(player), player, offer);
 	}),
 );
@@ -92,7 +91,6 @@ confirmOffer.Connect((player) => {
 	}
 
 	// alert the other player that the offer changed
-	print("Offer was confirmed. Alerting other player.");
 	offerConfirmed.SendToPlayer(getTradingCounterParty(player), player, getTradeItems(player));
 });
 
@@ -132,7 +130,6 @@ confirmFinalizedTrade.Connect(
 		}
 
 		// alert the other player that the offer changed
-		print("Offer was confirmed. Alerting other player.");
 		finalizedTradeConfirmed.SendToPlayer(getTradingCounterParty(player), player, getTradeItems(player));
 
 		if (getTradeStatus(getTradingCounterParty(player)) === TradeStatus.Finalized) {

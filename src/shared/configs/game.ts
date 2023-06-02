@@ -1,8 +1,10 @@
 import assetIds from "shared/assets";
 
+export const TEST_STORE = "TEST_STORE";
+
 export const MAIN_GROUP = 5126818;
-export const BANS_LEADERBOARD_ODS = "bans";
-export const EGGS_LEADERBOARD_ODS = "eggs";
+export const BANS_LEADERBOARD_ODS = `${TEST_STORE}_BANS_ODS`;
+export const EGGS_LEADERBOARD_ODS = `${TEST_STORE}_EGGS_ODS`;
 export const LEADERBOARD_UPDATE_INTERVAL = 60 * 30;
 
 export const MAX_TRADE_OFFER_SIZE = 10;

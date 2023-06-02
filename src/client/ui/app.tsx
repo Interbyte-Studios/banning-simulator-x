@@ -146,8 +146,14 @@ export const app = hooks((props: AppProps, { useState, useCallback, useEffect, u
 				<Trading
 					tradeMenusEnabled={!isMenuVisible("tradingVisible")}
 					tradeMenusVisible={visibility.tradingVisible}
-					setActiveTrade={(value: boolean): void => setActiveTrade(value)}
-					hideMenu={(): void => setVisibility((prev) => ({ ...prev, tradingVisible: false }))}
+					setActiveTrade={(value: boolean): void => {
+						//print(`Setting active trade to ${value}`);
+						setActiveTrade(value);
+					}}
+					hideMenu={(): void => {
+						//warn(`Hiding trading`);
+						setVisibility((prev) => ({ ...prev, tradingVisible: false }));
+					}}
 				/>
 				<SpinWheel
 					visible={visibility.spinWheelVisibility}

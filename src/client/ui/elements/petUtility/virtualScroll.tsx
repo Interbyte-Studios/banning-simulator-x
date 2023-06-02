@@ -106,7 +106,11 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 	const updateItems = useCallback(
 		(scroll: ScrollingFrame): void => {
 			const updatedRenderedPets = checkRenderedPets(scroll, renderedPets, props.searchText);
-			sortPets(updatedRenderedPets, true, true);
+			sortPets(
+				updatedRenderedPets.filter((pet) => pet.isRendered),
+				true,
+				true,
+			);
 			setRenderedPets(updatedRenderedPets);
 		},
 		[renderedPets, props.searchText],
@@ -170,7 +174,11 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		}
 
 		const updatedRenderedPets = checkRenderedPets(scrollingFrame, newPets, props.searchText);
-		sortPets(updatedRenderedPets, true, true);
+		sortPets(
+			updatedRenderedPets.filter((pet) => pet.isRendered),
+			true,
+			true,
+		);
 		setRenderedPets(updatedRenderedPets);
 	}, [props.pets, props.searchText]);
 
@@ -196,7 +204,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 					selectedId += 1;
 					layoutOrder = selectedId;
 				} else {
-					layoutOrder = index + selectedId;
+					layoutOrder = index + 11;
 				}
 			}
 
