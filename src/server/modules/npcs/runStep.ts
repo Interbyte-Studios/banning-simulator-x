@@ -187,7 +187,6 @@ export function runStep(
 				currencyMultiplier += booster;
 			});
 			currencyMultiplier = currencyMultiplier > 1 ? currencyMultiplier : 1;
-			print(globalCurrencyEventMultiplier, currencyMultiplier, reward.currency * currencyMultiplier);
 
 			// get experience multiplier
 			const experienceBoosters: Array<number> = [];
@@ -205,6 +204,9 @@ export function runStep(
 				experienceMultiplier += booster;
 			});
 			experienceMultiplier = experienceMultiplier > 1 ? experienceMultiplier : 1;
+			if (experienceMultiplier > 1 && talismanStatEffects.experience > 1) {
+				experienceMultiplier -= 1;
+			}
 
 			// get pet experience multiplier
 			const petExperienceMultipliers: Array<number> = [];

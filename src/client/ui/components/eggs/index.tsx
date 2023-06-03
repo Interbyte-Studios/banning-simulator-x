@@ -2,6 +2,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players, PolicyService } from "@rbxts/services";
 import { getIsTrading } from "client/modules/isTradingCache";
+import { getLastHatch, setLastHatch } from "client/modules/lastHatch";
 import { udim2BottomRight } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
@@ -61,13 +62,12 @@ interface HatchData {
 }
 
 const player = Players.LocalPlayer;
-const hatchTimeCache: Map<Player, number> = new Map();
 
 /**
  * A higher ordered component that displays both information for all the eggs in the game and functionality to hatch those eggs.
  */
 export const EggsUI = RoactRodux.connect(mapStateToProps)(
-	hooks((props: EggsUIProps, { useState, useContext, useEffect }) => {
+	hooks((props: EggsUIProps, { useState, useContext, useEffect, useValue }) => {
 		const [regionalRegulationsEnforced, setReguionalRegulationsForced] = useState(false);
 
 		if (!props.visible) {
@@ -84,110 +84,145 @@ export const EggsUI = RoactRodux.connect(mapStateToProps)(
 			setReguionalRegulationsForced(playerRegionalRegulations.ArePaidRandomItemsRestricted);
 		}, []);
 
-		const children = [
-			<EggCost />,
-			<EggHud
-				initiateHatch={async (amount: 1 | 2 | 3, egg: EggName, isVoid: boolean): Promise<void> => {
-					// verify that player has waited long enough to hatch
-					const lastHatchTime = hatchTimeCache.get(player) ?? 0;
+		const componentProps = useValue(props);
+		useEffect(() => {
+			componentProps.value = props;
+		}, [props]);
 
-					const now = time();
-					const canHatch = now - lastHatchTime > hatchDebounce;
-					if (!canHatch) {
-						return;
-					}
+		/**
+		 * Initiates the hatching process.
+		 *
+		 * @param amount The amount of eggs to hatch.
+		 * @param egg The egg to hatch.
+		 * @param isVoid Whether or not the egg is a void egg.
+		 */
+		const initiateHatch = async (amount: 1 | 2 | 3, egg: EggName, isVoid: boolean): Promise<void> => {
+			// verify that player has waited long enough to hatch
+			const now = time();
+			const canHatch = now - getLastHatch() > hatchDebounce;
+			if (!canHatch) {
+				return;
+			}
+			setLastHatch(now);
 
-					// make sure they aren't trading
-					if (getIsTrading()) {
-						return;
-					}
+			const properties = componentProps.value;
 
-					// make sure their region (country) allows them to hatch eggs!
-					if (regionalRegulationsEnforced) {
-						addAnnouncement(`Hatching pets is regulated by your country. Sorry!`, AnnouncementType.Error);
-						return;
-					}
+			// make sure they aren't trading
+			if (getIsTrading()) {
+				addAnnouncement(`You cannot hatch while you're trading.`, AnnouncementType.Error);
+				return;
+			}
 
-					// verify that the user can hatch the eggs
-					const eggData = getEggData(egg);
+			// verify that the user can hatch the eggs
+			const eggData = getEggData(egg);
 
-					const eggMasteryReducedMultiplier = getEggsMastery(props.eggs).reducedEggCostMultiplier;
-					const eggCost = getEggCost(egg, isVoid, eggMasteryReducedMultiplier);
+			const eggMasteryReducedMultiplier = getEggsMastery(properties.eggs).reducedEggCostMultiplier;
+			const eggCost = getEggCost(egg, isVoid, eggMasteryReducedMultiplier);
 
-					// check that user owns world
-					const ownsWorld = props.worlds.find((x) => x.name === eggData.world);
-					if (ownsWorld === undefined) {
-						return;
-					}
+			// check that user owns world
+			const ownsWorld = properties.worlds.find((x) => x.name === eggData.world);
+			if (ownsWorld === undefined) {
+				addAnnouncement(`You don't own the world this egg is in!`, AnnouncementType.Error);
+				return;
+			}
 
-					// check that user owns zone
-					const ownsZone = ownsWorld.zones.find((x) => x === eggData.zone);
-					if (ownsZone === undefined) {
-						return;
-					}
+			// check that user owns zone
+			const ownsZone = ownsWorld.zones.find((x) => x === eggData.zone);
+			if (ownsZone === undefined) {
+				addAnnouncement(`You don't own the zone this egg is in!`, AnnouncementType.Error);
+				return;
+			}
 
-					// check for currency
-					if (eggCost.amount * amount > props.currencies[eggCost.currencyType]) {
-						return;
-					}
+			// check for currency
+			if (eggCost.amount * amount > properties.currencies[eggCost.currencyType]) {
+				addAnnouncement(`You don't have enough ${eggCost.currencyType} to hatch this egg!`, AnnouncementType.Error);
+				return;
+			}
 
-					// check inventory space
-					if (props.pets.size() >= getPetInventorySize(props.gamepasses) + amount) {
-						return;
-					}
+			// check inventory space
+			if (properties.pets.size() >= getPetInventorySize(properties.gamepasses) + amount) {
+				addAnnouncement(`You don't have enough inventory space to hatch this egg!`, AnnouncementType.Error);
+				return;
+			}
 
-					// check that user is within distance
-					const character = player.Character;
-					if (character === undefined) {
-						return;
-					}
+			// check that user is within distance
+			const character = player.Character;
+			if (character === undefined) {
+				addAnnouncement(`There was an error hatching your egg. Please try again.`, AnnouncementType.Error);
+				return;
+			}
 
-					const isWithinDistance = withinDistanceToHatch(character, egg, isVoid);
-					// eslint-disable-next-line roblox-ts/lua-truthiness
-					if (!isWithinDistance) {
-						return;
-					}
+			const isWithinDistance = withinDistanceToHatch(character, egg, isVoid);
+			// eslint-disable-next-line roblox-ts/lua-truthiness
+			if (!isWithinDistance) {
+				addAnnouncement(`You are not close enough to hatch this egg!`, AnnouncementType.Error);
+				return;
+			}
+		};
 
-					const requestEggHatch = await hatchEgg.CallServerAsync(amount, egg, isVoid);
+		const children = (
+			<>
+				<EggCost />
+				<EggHud
+					initiateHatch={async (amount: 1 | 2 | 3, egg: EggName, isVoid: boolean): Promise<void> => {
+						// make sure their region (country) allows them to hatch eggs!
+						if (regionalRegulationsEnforced) {
+							addAnnouncement(`Hatching pets is regulated by your country. Sorry!`, AnnouncementType.Error);
+							return;
+						}
 
-					if (requestEggHatch.success) {
-						props.setHatchingStatus(true);
-						AnimateEggs.handleAnimation();
-						AnimateEggs.initiateEggHatch({
-							amount,
-							eggName: egg,
-							isVoid,
-							fastEnabled: props.gamepasses["Fast Hatch"],
-						});
+						await initiateHatch(amount, egg, isVoid);
 
-						setCurrentHatchData({
-							eggName: egg,
-							pets: requestEggHatch.pets,
-							isVoid,
-						});
+						const requestEggHatch = await hatchEgg.CallServerAsync(amount, egg, isVoid);
+						if (requestEggHatch.success) {
+							props.setHatchingStatus(true);
+							AnimateEggs.handleAnimation();
+							AnimateEggs.initiateEggHatch({
+								amount,
+								eggName: egg,
+								isVoid,
+								fastEnabled: props.gamepasses["Fast Hatch"],
+							});
 
-						AnimateEggs.initiatePetHatch({
-							amount,
-							eggName: egg,
-							pets: requestEggHatch.pets,
-							isVoid,
-							fastEnabled: props.gamepasses["Fast Hatch"],
-						});
+							warn(`[1] Setting current hatch data`);
+							setCurrentHatchData({
+								eggName: egg,
+								pets: requestEggHatch.pets,
+								isVoid,
+							});
+							warn(`[1.5] Current hatch data set`);
 
-						setCurrentHatchData(undefined);
-						props.setHatchingStatus(false);
-					} else {
-						setCurrentHatchData(undefined);
-					}
-				}}
-			/>,
-		];
+							AnimateEggs.initiatePetHatch({
+								amount,
+								eggName: egg,
+								pets: requestEggHatch.pets,
+								isVoid,
+								fastEnabled: props.gamepasses["Fast Hatch"],
+							});
 
-		if (currentHatchData) {
-			children.push(
-				<EggHatch eggName={currentHatchData.eggName} isVoid={currentHatchData.isVoid} pets={currentHatchData.pets} />,
-			);
-		}
+							warn(`[6] Refreshing current hatch data`);
+							setCurrentHatchData({
+								eggName: egg,
+								pets: requestEggHatch.pets,
+								isVoid,
+							});
+							warn(`[6.5] Refreshed current hatch data`);
+						} else {
+							addAnnouncement(
+								`An issue has occured while hatching. You might not have enough currency.`,
+								AnnouncementType.Error,
+							);
+							setCurrentHatchData(undefined);
+						}
+					}}
+				/>
+				{currentHatchData !== undefined ? (
+					<EggHatch eggName={currentHatchData.eggName} isVoid={currentHatchData.isVoid} pets={currentHatchData.pets} />
+				) : undefined}
+			</>
+		);
+
+		warn(`[2] currentHatchData: ${currentHatchData}`);
 
 		return <BaseFrame Size={udim2BottomRight}>{children}</BaseFrame>;
 	}),

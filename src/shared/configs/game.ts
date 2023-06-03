@@ -1,6 +1,6 @@
 import assetIds from "shared/assets";
 
-export const TEST_STORE = "TEST_STORE";
+export const TEST_STORE = "TEST_STORE_1";
 
 export const MAIN_GROUP = 5126818;
 export const BANS_LEADERBOARD_ODS = `${TEST_STORE}_BANS_ODS`;

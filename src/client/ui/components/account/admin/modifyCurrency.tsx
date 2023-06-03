@@ -280,7 +280,6 @@ export const ModifyCurrency = hooks((props: { playerViewing: Player; setActiveAc
 										currency={currencyName}
 										events={{
 											Activated: (): void => {
-												warn("ACTIVATED");
 												playSFX(UIEngagement.MajorEngagement);
 												setCurrencySelected(currencyName);
 											},

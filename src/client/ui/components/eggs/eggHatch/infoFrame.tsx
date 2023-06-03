@@ -52,6 +52,8 @@ export function InfoFrame(props: InfoFrameProps): Roact.Element {
 		autoDelete.push(autoDeletedMessage);
 	}
 
+	print(`[5] Pet ${props.pet} hatched from ${props.eggName} at position ${props.id}`);
+
 	return (
 		<BaseFrame Position={infoFramePositions[props.id]} Size={UDim2.fromScale(0.175, 0.12)}>
 			<uiaspectratioconstraint AspectRatio={2.2} />

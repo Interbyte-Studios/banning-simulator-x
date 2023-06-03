@@ -35,7 +35,6 @@ hatchEgg.SetCallback(
 
 		const isTrading = getTradeStatus(player) !== undefined;
 		if (isTrading) {
-			warn("Player is trading, cannot hatch an egg");
 			return {
 				success: false,
 			};
@@ -60,6 +59,13 @@ hatchEgg.SetCallback(
 		// check that user owns zone
 		const ownsZone = ownsWorld.zones.find((x) => x === eggData.zone);
 		if (ownsZone === undefined) {
+			return {
+				success: false,
+			};
+		}
+
+		// check cost
+		if (currentState.currencies[eggCost.currencyType] < eggCost.amount * amount) {
 			return {
 				success: false,
 			};

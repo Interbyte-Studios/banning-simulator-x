@@ -35,6 +35,8 @@ export function EggHatch(props: EggHatchProps): Roact.Element {
 		);
 	}
 
+	print(`[4] Pet(s) ${props.pets} hatched from ${props.eggName}`);
+
 	return (
 		<BaseFrame Position={udim2Middle} Size={udim2BottomRight}>
 			{infoFrames}

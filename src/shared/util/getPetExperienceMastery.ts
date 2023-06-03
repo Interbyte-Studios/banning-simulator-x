@@ -10,7 +10,6 @@ import { PlayerIndexState } from "shared/rodux/playerIndex";
 export const getPetExperienceMastery = (indexState: PlayerIndexState): RankMastery => {
 	let totalMaxLevelPetsEarned = 0;
 	for (const [, petMastery] of pairs(indexState.pets)) {
-		print(totalMaxLevelPetsEarned, petMastery.maxLevel.regular);
 		totalMaxLevelPetsEarned += petMastery.maxLevel.regular.amount;
 		totalMaxLevelPetsEarned += petMastery.maxLevel.void.amount;
 		totalMaxLevelPetsEarned += petMastery.maxLevel.radiant.amount;
