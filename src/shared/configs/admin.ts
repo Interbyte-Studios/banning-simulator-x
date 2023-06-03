@@ -9,4 +9,4 @@ export enum ADMIN_COMMANDS {
 	KickPlayer,
 }
 
-export const ADMIN_RANK = 250;
+export const ADMIN_RANK = 254;
