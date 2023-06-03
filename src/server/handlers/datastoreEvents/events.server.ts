@@ -3,7 +3,7 @@ import { t } from "@rbxts/t";
 
 const datastoreEventsStore = DataStoreService.GetDataStore("DataStoreEvents", "Events");
 const eventsKey = "BSX_DataStoreEvents";
-const getAsyncInterval = 60 * 1;
+const getAsyncInterval = 60 * 10;
 
 const validDatastoreEventCache = t.strictInterface({
 	currencyEvent: t.strictInterface({

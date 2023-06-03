@@ -201,11 +201,8 @@ export const EggsUI = RoactRodux.connect(mapStateToProps)(
 							});
 
 							warn(`[6] Refreshing current hatch data`);
-							setCurrentHatchData({
-								eggName: egg,
-								pets: requestEggHatch.pets,
-								isVoid,
-							});
+							setCurrentHatchData(undefined);
+							props.setHatchingStatus(false);
 							warn(`[6.5] Refreshed current hatch data`);
 						} else {
 							addAnnouncement(
