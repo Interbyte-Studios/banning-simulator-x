@@ -53,7 +53,7 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 			}
 		}
 	} else {
-		const cost = zoneData.cost.amount / 2.5;
+		const cost = zoneData.cost.amount / 5;
 
 		eggCost.amount = isVoid ? cost * 5 - cost * 5 * reducedCost : cost - cost * reducedCost;
 		eggCost.currencyType = zoneData.cost.currency;

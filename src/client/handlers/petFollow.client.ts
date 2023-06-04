@@ -52,19 +52,16 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 
 					const character = player.Character ?? player.CharacterAdded.Wait()[0];
 					if (character === undefined) {
-						warn(`Character could not be defined for ${player.Name}, therefore pets could not be animated.`);
 						return;
 					}
 
 					const humanoid = character.WaitForChild("Humanoid") as Humanoid;
 					if (humanoid === undefined) {
-						warn(`Humanoid could not be defined for ${player.Name}, therefore pets could not be animated.`);
 						return;
 					}
 
 					const humanoidRootPart = humanoid.RootPart;
 					if (humanoidRootPart === undefined) {
-						warn(`HumanoidRootPart could not be defined for ${player.Name}, therefore pets could not be animated.`);
 						return;
 					}
 
@@ -214,7 +211,7 @@ RunService.RenderStepped.Connect(() => {
 			const petModel = pet.model;
 			const primaryPart = petModel.PrimaryPart;
 			if (primaryPart === undefined) {
-				return warn(`PrimaryPart could not be defined for ${petModel.Name}`);
+				return;
 			}
 
 			// we need to log the time for certain aspects of the animation such as cosine functions, since they oscilate
@@ -402,7 +399,7 @@ RunService.RenderStepped.Connect(() => {
 
 					const rayCast = Workspace.Raycast(originPosition, raycastDirection, rayCastParams);
 					if (rayCast === undefined) {
-						return warn(`Raycast failed for ${petModel.Name}`);
+						return;
 					}
 
 					const boundingBoxMultiplier_Y = isMoving ? 2 : 1.1;

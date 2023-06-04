@@ -25,8 +25,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		rank: 1,
 		isBoss: false,
 	},
-	onett: identity<Npc>({
-		name: "Onett",
+	rellhub: identity<Npc>({
+		name: "RELLhub",
 		health: 400,
 		reward: {
 			currency: 80,
@@ -36,8 +36,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		rank: 1,
 		isBoss: false,
 	}),
-	rellhub: identity<Npc>({
-		name: "RELLhub",
+	onett: identity<Npc>({
+		name: "Onett",
 		health: 800,
 		reward: {
 			currency: 160,

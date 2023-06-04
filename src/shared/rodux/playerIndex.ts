@@ -108,7 +108,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 			for (const petToIndex of action.pets) {
 				const stringId = tostring(petToIndex.id);
 				if (stringId === undefined) {
-					throw `Failed to get string id for pet with id ${petToIndex.id}`;
+					throw `[ADD PET] Failed to get string id for pet with id ${petToIndex.id}`;
 				}
 
 				let pet = newState.pets.get(stringId);
@@ -139,7 +139,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 					});
 
 					pet = newState.pets.get(stringId);
-					assert(pet, `Failed to set index data for pet with id "${stringId}".`);
+					assert(pet, `[ADD PET] Failed to set index data for pet with id "${stringId}".`);
 				}
 
 				const eggFromPetId = getEggNameFromPetId(petToIndex.id);
@@ -148,7 +148,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 					newState.eggs.set(eggFromPetId, { regular: 0, void: 0 });
 
 					egg = newState.eggs.get(eggFromPetId);
-					assert(egg, `Failed to set index data for egg "${eggFromPetId}".`);
+					assert(egg, `[ADD PET] Failed to set index data for egg "${eggFromPetId}".`);
 				}
 				if (petToIndex.variant === "regular") {
 					newState.eggs.set(eggFromPetId, { ...egg, regular: egg.regular + 1 });
@@ -177,7 +177,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 					case "fuse": {
 						assert(
 							isValidIndexFusion(petToIndex.variant),
-							`Attempted to index a pet fusion of unsupported variant "${petToIndex.variant}".`,
+							`[ADD PET] Attempted to index a pet fusion of unsupported variant "${petToIndex.variant}".`,
 						);
 
 						newState.pets.set(stringId, {
@@ -191,7 +191,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 						break;
 					}
 					case "maxLevel": {
-						warn(`Attempting to add pet with method "maxLevel"? This is unallowed.`);
+						warn(`[ADD PET] Attempting to add pet with method "maxLevel"? This is unallowed.`);
 						continue;
 					}
 				}
@@ -211,11 +211,39 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 			for (const pet of action.equippedPets) {
 				const stringId = tostring(pet.id);
 				if (stringId === undefined) {
-					throw `Failed to get string id for pet with id ${pet.id}`;
+					throw `[KILL NPC] Failed to get string id for pet with id ${pet.id}`;
 				}
 
-				const masteryData = newState.pets.get(stringId);
-				assert(masteryData, `Failed to get mastery data for pet with id ${pet.id}`);
+				let masteryData = newState.pets.get(stringId);
+				if (masteryData === undefined) {
+					newState.pets.set(stringId, {
+						hatched: {
+							regular: 0,
+							void: 0,
+						},
+						fused: {
+							void: 0,
+							radiant: 0,
+						},
+						maxLevel: {
+							regular: {
+								amount: 0,
+								masteryCache: [],
+							},
+							void: {
+								amount: 0,
+								masteryCache: [],
+							},
+							radiant: {
+								amount: 0,
+								masteryCache: [],
+							},
+						},
+					});
+
+					masteryData = newState.pets.get(stringId);
+					assert(masteryData, `[KILL NPC] Failed to set index data for pet with id "${stringId}".`);
+				}
 
 				const maxLevel = PET_MAX_LEVELS[pet.variant];
 				const petLevel = getPetLevel(pet);
@@ -257,11 +285,11 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 
 			const stringId = tostring(action.id);
 			if (stringId === undefined) {
-				throw `Failed to get string id for pet with id ${action.id}`;
+				throw `[ADMIN | MODIFY PET LEVEL] Failed to get string id for pet with id ${action.id}`;
 			}
 
 			const petIndex = newState.pets.get(stringId);
-			assert(petIndex, `Admin: Failed to get pet index for pet with id ${stringId}`);
+			assert(petIndex, `[ADMIN | MODIFY PET LEVEL] Failed to get pet index for pet with id ${stringId}`);
 
 			const maxLevel = PET_MAX_LEVELS[action.variant];
 			if (action.level >= maxLevel) {

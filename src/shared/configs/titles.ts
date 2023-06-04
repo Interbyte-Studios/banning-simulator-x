@@ -754,7 +754,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => state.index.groupRank !== undefined && state.index.groupRank >= 250,
 	},
 	{
-		name: "Executive",
+		name: "Admin",
 		id: 47,
 		effect: new ColorSequence([
 			new ColorSequenceKeypoint(0, Color3.fromRGB(255, 0, 0)),
@@ -766,7 +766,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 			new ColorSequenceKeypoint(1, Color3.fromRGB(255, 0, 0)),
 		]),
 		category: TitleType.Misc,
-		description: "The developers of Interbyte Studios.",
+		description: "Administrators of Interbyte Studios.",
 		condition: (state): boolean => state.index.groupRank !== undefined && state.index.groupRank >= 253,
 	},
 ] as const);
