@@ -105,26 +105,3 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 });
 
 export type Store = Rodux.Store<StoreState, StoreActions>;
-
-export interface ValidProfile {
-	accolades: AccoladeState;
-	boosts: BoostsState;
-	currencies: CurrenciesState;
-	currentWeapon: CurrentWeaponState;
-	eggs: EggsState;
-	gamepasses: GamepassesState;
-	media: MediaState;
-	pets: PetsState;
-	rank: RankState;
-	settings: SettingsState;
-	titles: TitleState;
-	weapons: WeaponsState;
-	worlds: WorldsState;
-	talismans: TalismansState;
-	currentTalisman: CurrentTalismanState;
-	petMastery: PetMasteryState;
-	spinWheel: SpinWheelState;
-	petTeams: PetTeamsState;
-	playerIndex: PlayerIndexState;
-	devProducts: DevProductState;
-}

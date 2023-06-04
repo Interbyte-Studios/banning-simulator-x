@@ -69,7 +69,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		},
 	},
 	"Mystical Bee": {
-		chance: 0.05,
+		chance: 0.1,
 		id: 23,
 		rarity: "Legendary",
 		stats: {

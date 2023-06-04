@@ -113,6 +113,6 @@ export const RANKS: Array<Rank> = [
 			beginningColor: Color3.fromRGB(245, 252, 99),
 			endingColor: Color3.fromRGB(64, 181, 255),
 		},
-		requiredExperience: 3_000_000,
+		requiredExperience: 5_000_000,
 	},
 ];

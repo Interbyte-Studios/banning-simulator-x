@@ -5,7 +5,7 @@ import { Pet } from ".";
  */
 export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 	"Molten Doggy": {
-		chance: 32.69496,
+		chance: 32.76998,
 		id: 34,
 		rarity: "Basic",
 		stats: {
@@ -61,7 +61,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		},
 	},
 	"Molten Leviathan": {
-		chance: 0.1,
+		chance: 0.02,
 		id: 41,
 		rarity: "Legendary",
 		stats: {
@@ -69,7 +69,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		},
 	},
 	"Molten Destroyer": {
-		chance: 0.005,
+		chance: 0.01,
 		id: 42,
 		rarity: "Legendary",
 		stats: {

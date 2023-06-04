@@ -27,7 +27,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	// zone 3
 	"Sunflower Field": {
 		id: 3,
-		npcs: [BAN_LAND_NPCS.onett, BAN_LAND_NPCS.carbonMeister],
+		npcs: [BAN_LAND_NPCS.rellhub, BAN_LAND_NPCS.carbonMeister],
 		cost: {
 			currency: "coins",
 			amount: 3_000,
@@ -39,7 +39,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	// zone 4
 	Honeycomb: {
 		id: 4,
-		npcs: [BAN_LAND_NPCS.rellhub, BAN_LAND_NPCS.sabrinaBrite],
+		npcs: [BAN_LAND_NPCS.onett, BAN_LAND_NPCS.sabrinaBrite],
 		cost: {
 			currency: "coins",
 			amount: 9_000,

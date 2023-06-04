@@ -5,7 +5,7 @@ import { Pet } from ".";
  */
 export const CANDY_EGG_PETS: Record<string, Pet> = {
 	"Gummy Doggy": {
-		chance: 34.9849,
+		chance: 34.96995,
 		id: 24,
 		rarity: "Basic",
 		stats: {
@@ -61,7 +61,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 		},
 	},
 	"Gummy Striker": {
-		chance: 0.01,
+		chance: 0.02,
 		id: 31,
 		rarity: "Legendary",
 		stats: {
@@ -69,7 +69,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 		},
 	},
 	"Gummy Wyvern": {
-		chance: 0.005,
+		chance: 0.01,
 		id: 32,
 		rarity: "Legendary",
 		stats: {

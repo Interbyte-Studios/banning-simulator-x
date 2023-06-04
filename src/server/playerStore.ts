@@ -1,86 +1,27 @@
-import ProfileService from "@rbxts/profileservice";
-import { Profile } from "@rbxts/profileservice/globals";
 import Rodux from "@rbxts/rodux";
-import { Players } from "@rbxts/services";
-import { TEST_STORE } from "shared/configs/game";
+import { DataStoreService, Players } from "@rbxts/services";
+import { STORE_SCOPE } from "shared/configs/game";
 import { createSpyMiddleware } from "shared/mocks/middleware/spyMiddleware";
 import { remotes } from "shared/remotes";
 import { Store, StoreActions, storeReducer, StoreState } from "shared/rodux";
-import { defaultAccoladeState } from "shared/rodux/accolade";
-import { defaultBansState } from "shared/rodux/bans";
-import { defaultBoosts } from "shared/rodux/boosts";
-import { defaultCurrencies } from "shared/rodux/currencies";
-import { defaultTalismanId } from "shared/rodux/currentTalisman";
-import { defaultCurrentWeaponState } from "shared/rodux/currentWeapon";
-import { defaultDevProductState } from "shared/rodux/devProducts";
-import { defaultEggs } from "shared/rodux/eggs";
-import { defaultExperienceState } from "shared/rodux/experience";
-import { defaultGamepasses } from "shared/rodux/gamepasses";
-import { defaultMediaState } from "shared/rodux/media";
-import { defaultPetMasteryState } from "shared/rodux/petMastery";
-import { defaultPets } from "shared/rodux/pets";
-import { defaultPetTeamsState } from "shared/rodux/petTeams";
-import { defaultPlayerIndex } from "shared/rodux/playerIndex";
-import { defaultQuestsState } from "shared/rodux/quests";
-import { defaultRank } from "shared/rodux/rank";
-import { defaultSettings } from "shared/rodux/settings";
-import { defaultSpinWheel } from "shared/rodux/spinWheel";
-import { defaultTalismans } from "shared/rodux/talismans";
-import { defaultTradeLogs } from "shared/rodux/tradeLogs";
-import { defaultWeaponsState } from "shared/rodux/weapons";
-import { defaultWorlds } from "shared/rodux/worlds";
 import { getOrSetDefault } from "shared/util/getOrSetDefault";
 
 import { replicationMiddleware } from "./modules/rodux/middlewares/replicationMiddleware";
 
-type DeepPartial<T> = { [K in keyof T]?: DeepPartial<T[K]> };
+/**
+ * The data store used to save player data.
+ */
+const playerDataStore = DataStoreService.GetDataStore("mainstore", STORE_SCOPE);
 
 /**
- * Template object representing the initial state for a player's profile.
- * Each property corresponds to a specific slice of the store's state.
- * Default values are assigned to each property based on their respective default state objects/constants.
+ * A collection of all player stores.
  */
-const profileTemplate: StoreState = {
-	accolades: defaultAccoladeState,
-	bans: defaultBansState,
-	boosts: defaultBoosts,
-	currencies: defaultCurrencies,
-	currentWeapon: defaultCurrentWeaponState,
-	eggs: defaultEggs,
-	experience: defaultExperienceState,
-	gamepasses: defaultGamepasses,
-	media: defaultMediaState,
-	pets: defaultPets,
-	quests: defaultQuestsState,
-	rank: defaultRank,
-	settings: defaultSettings,
-	title: undefined,
-	weapons: defaultWeaponsState,
-	worlds: defaultWorlds,
-	talismans: defaultTalismans,
-	currentTalisman: defaultTalismanId,
-	petMastery: defaultPetMasteryState,
-	spinWheel: defaultSpinWheel,
-	petTeams: defaultPetTeamsState,
-	index: defaultPlayerIndex,
-	devProducts: defaultDevProductState,
-	tradeLogs: defaultTradeLogs,
-};
+export const playerStores = new Map<Player, Store>();
 
 /**
- * The ProfileService profile store.
+ * A collection that logs whether or not each players data has loaded.
  */
-const profileStore = ProfileService.GetProfileStore(TEST_STORE, profileTemplate);
-
-/**
- * A collection of all player profiles.
- */
-const playerProfiles: Map<number, Profile<StoreState>> = new Map();
-
-/**
- * Collection of rodux stores.
- */
-export const stores: Map<Player, Store> = new Map();
+const dataLoaded = new Map<Player, boolean>();
 
 /**
  * Map containing creation callbacks for stores associated with each player.
@@ -88,46 +29,76 @@ export const stores: Map<Player, Store> = new Map();
 const storeCreationCallbacks: Map<Player, Array<(store: Store) => void>> = new Map();
 
 /**
- * Handles players joining, creating their Rodux store.
- *
- * @param player The player that is joining.
+ * A type that allows for partial deep copies of a type.
  */
-function onPlayerAdded(player: Player): void {
-	const playerProfile = profileStore.LoadProfileAsync(tostring(player.UserId));
+type DeepPartial<T> = { [K in keyof T]?: DeepPartial<T[K]> };
 
-	if (playerProfile === undefined) {
-		player.Kick(`There was an issue while loading your data. Please rejoin in a few minutes.`);
-		return;
-	}
+/**
+ * An upvalue that represents whether or not the game is shutting down.
+ */
+let shuttingDown = false;
 
-	playerProfile.AddUserId(player.UserId);
-	playerProfile.Reconcile();
-
-	playerProfile.ListenToRelease(() => {
-		playerProfiles.delete(player.UserId);
-
-		player.Kick(`There were cross-server conflicts while loading your data. Please rejoin in a few minutes.`);
-		return;
+/**
+ * Loads a player's profile from the data store.
+ *
+ * @param player The player to load data for.
+ * @param data The data to load into the player's profile.
+ */
+const savePlayerData = (player: Player, data: StoreState): void => {
+	const [success, err] = pcall(() => {
+		playerDataStore.SetAsync(tostring(player.UserId), data);
 	});
 
-	if (!player.IsDescendantOf(Players)) {
-		playerProfile.Release();
+	if (!success) {
+		throw `[PlayerDataStore - savePlayerData] Player: ${player.Name} | Error: ${err}`;
+	}
+};
+
+/**
+ * Loads a player's profile from the data store.
+ *
+ * @param player The player to load data for.
+ * @returns The player's profile data.
+ */
+const loadPlayerData = (player: Player): StoreState | undefined => {
+	const [success, data] = pcall(() => {
+		return playerDataStore.GetAsync(tostring(player.UserId));
+	});
+
+	if (!success) {
+		throw `[PlayerDataStore - loadPlayerData] Player: ${player.Name} | Error: ${data}`;
 	}
 
-	const playerStore = new Rodux.Store(storeReducer, playerProfile.Data, [replicationMiddleware(player)]);
+	return data as StoreState;
+};
 
-	playerProfiles.set(player.UserId, playerProfile);
-	stores.set(player, playerStore);
-	remotes.Server.GetNamespace("rodux").Get("storeStateCreated").SendToAllPlayers(player, playerStore.getState());
+/**
+ * Handles players joining, creating their Rodux store.
+ *
+ * @param player The player to load data for.
+ */
+const onPlayerAdded = async (player: Player): Promise<void> => {
+	if (shuttingDown) {
+		player.Kick("The game is being updated. Please rejoin in a few minutes.");
+		return;
+	}
+
+	const data = loadPlayerData(player);
+
+	const store = new Rodux.Store(storeReducer, data ?? undefined, [replicationMiddleware(player)]);
+	remotes.Server.GetNamespace("rodux").Get("storeStateCreated").SendToAllPlayers(player, store.getState());
+	playerStores.set(player, store);
 
 	// call creation callbacks
 	const callbacks = storeCreationCallbacks.get(player) ?? [];
 	for (const callback of callbacks) {
-		task.spawn(callback, playerStore);
+		task.spawn(callback, store);
 	}
 
 	storeCreationCallbacks.delete(player);
-}
+
+	dataLoaded.set(player, true);
+};
 
 /**
  * Retrieves a player's rodux store.
@@ -135,17 +106,14 @@ function onPlayerAdded(player: Player): void {
  * @param player The player.
  * @returns The store of the player.
  */
-export function retrieveStore(player: Player): Store {
-	const store = stores.get(player);
-
-	// we don't use `assert` here as luau will early evaluate player.Name
-	// which is not set for mock players
+export const retrieveStore = (player: Player): Store => {
+	const store = playerStores.get(player);
 	if (store === undefined) {
-		throw `Failed to retrieve rodux store for player ${player.Name}`;
+		throw `[PlayerDataStore - retrieveStore] Failed to retrieve rodux store for player ${player.Name}`;
 	}
 
 	return store;
-}
+};
 
 /**
  * Creates a fake dummy store for a player.
@@ -161,7 +129,7 @@ export function createDummyStore(
 	const { middleware, dispatchedActions } = createSpyMiddleware();
 
 	const store = new Rodux.Store(storeReducer, initialState, [middleware]);
-	stores.set(player, store);
+	playerStores.set(player, store);
 
 	return {
 		store,
@@ -169,7 +137,7 @@ export function createDummyStore(
 		// eslint-disable-next-line jsdoc/require-jsdoc
 		cleanup: (): void => {
 			store.destruct();
-			stores.delete(player);
+			playerStores.delete(player);
 		},
 	};
 }
@@ -181,7 +149,7 @@ export function createDummyStore(
  * @returns A promise which resolves when the players store has been created.
  */
 export function onStoreCreated(player: Player): Promise<Store> {
-	const store = stores.get(player);
+	const store = playerStores.get(player);
 	if (store) {
 		return Promise.resolve(store);
 	}
@@ -191,45 +159,54 @@ export function onStoreCreated(player: Player): Promise<Store> {
 }
 
 /**
- * Handles players leaving, destructing their Rodux store.
- *
- * @param player The player that is leaving.
+ * Iterates over all players already in the game and creates a store for them.
  */
-function onPlayerRemoving(player: Player): void {
-	const store = stores.get(player);
-	if (!store) {
-		throw `No store existed for ${player}`;
+Players.GetPlayers().forEach(async (player) => {
+	await onPlayerAdded(player);
+});
+
+/**
+ * The PlayerAdded event which creates a store for the player.
+ */
+Players.PlayerAdded.Connect(async (player) => {
+	await onPlayerAdded(player);
+});
+
+/**
+ * The PlayerRemoving event which saves the player's data.
+ */
+Players.PlayerRemoving.Connect((player) => {
+	if (shuttingDown) {
+		return;
 	}
 
-	const profile = playerProfiles.get(player.UserId);
-	if (profile === undefined) {
-		throw `No profile existed for ${player}`;
+	if (dataLoaded.get(player) === undefined) {
+		return;
 	}
 
-	profile.Data = store.getState();
-	profile.Release();
+	const store = playerStores.get(player);
+	if (store !== undefined) {
+		const state = store.getState() as StoreState;
+		savePlayerData(player, state);
 
-	store.destruct();
-	stores.delete(player);
+		store.destruct();
+		playerStores.delete(player);
 
-	// check that no creation callbacks existed for the player
-	// if they did, error
-	const didDeleteCallbacks = storeCreationCallbacks.delete(player);
-	if (didDeleteCallbacks) {
-		throw `Removed store creation callbacks from "${player.Name}"`;
-	}
-}
-
-Players.PlayerAdded.Connect(onPlayerAdded);
-Players.GetPlayers().forEach(onPlayerAdded);
-
-Players.PlayerRemoving.Connect(onPlayerRemoving);
+		// check that no creation callbacks existed for the player
+		// if they did, error
+		const didDeleteCallbacks = storeCreationCallbacks.delete(player);
+		if (didDeleteCallbacks) {
+			throw `Removed store creation callbacks from "${player.Name}"`;
+		}
+	} else throw `[PlayerDataStore - PlayerRemoving] Failed to retrieve rodux store for player ${player.Name}`;
+});
 
 remotes.Server.GetNamespace("rodux")
 	.Get("requestStoreState")
 	.SetCallback((player: Player) => {
-		const store = stores.get(player);
+		const store = playerStores.get(player);
 		if (store === undefined) {
+			warn(`[PlayerDataStore - requestStoreState] Failed to retrieve rodux store for player ${player.Name}`);
 			return undefined;
 		}
 
@@ -237,3 +214,22 @@ remotes.Server.GetNamespace("rodux")
 			state: store.getState(),
 		};
 	});
+
+/**
+ * The BindToClose event which saves all player data and kicks all players (soft shutdown implementation).
+ */
+game.BindToClose(() => {
+	shuttingDown = true;
+
+	for (const player of Players.GetPlayers()) {
+		if (dataLoaded.get(player) !== undefined) {
+			const store = playerStores.get(player);
+			if (store !== undefined) {
+				const state = store.getState() as StoreState;
+				savePlayerData(player, state);
+			} else throw `[PlayerDataStore - BindToClose] Failed to retrieve rodux store for player ${player.Name}`;
+		}
+
+		player.Kick("The game is being updated. Please rejoin in a few minutes.");
+	}
+});

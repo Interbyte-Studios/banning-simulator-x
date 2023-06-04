@@ -8,13 +8,11 @@
 export function getMagnitudeBetweenPlayerAndObject(character: Model, object: BasePart): number | undefined {
 	const humanoid = character.FindFirstChildWhichIsA("Humanoid");
 	if (humanoid === undefined) {
-		warn(`Could not find Humanoid for player ${character.Name}`);
 		return;
 	}
 
 	const humanoidRootPart = humanoid.RootPart;
 	if (humanoidRootPart === undefined) {
-		warn(`Could not find HumanoidRootPart for player ${character.Name}`);
 		return;
 	}
 

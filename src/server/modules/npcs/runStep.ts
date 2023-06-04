@@ -1,5 +1,5 @@
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
-import { stores } from "server/playerStore";
+import { playerStores } from "server/playerStore";
 import { WORLDS } from "shared/configs/worlds";
 import { NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
@@ -156,7 +156,7 @@ export function runStep(
 		// check if npc is dead
 		if (npc.instance.Humanoid.Health <= 0) {
 			// reward player
-			const store = stores.get(player);
+			const store = playerStores.get(player);
 			if (store === undefined) {
 				warn(`Could not get store for "${player.GetFullName()}" when rewarding them for killing NPC`);
 				continue;
@@ -205,10 +205,6 @@ export function runStep(
 				experienceMultiplier += booster;
 			});
 			experienceMultiplier = experienceMultiplier > 1 ? experienceMultiplier : 1;
-
-			warn(
-				`Talisman: ${talismanStatEffects.experience} | Global: ${globalExperienceEventMultiplier} | Boost: ${boostExperienceMultiplier} | Gamepass: ${gamepassExperienceMultiplier} | Total: ${experienceMultiplier}`,
-			);
 
 			// get pet experience multiplier
 			const petExperienceMultipliers: Array<number> = [];

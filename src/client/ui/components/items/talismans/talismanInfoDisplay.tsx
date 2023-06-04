@@ -20,7 +20,7 @@ import { CurrentTalismanState } from "shared/rodux/currentTalisman";
 import { Talisman, TalismansState } from "shared/rodux/talismans";
 import { getTalismanStatEffect } from "shared/util/getTalismanDamage";
 import { getTalismanData } from "shared/util/getTalismanData";
-import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
+import { statsAbbreviator, twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 /**
  * A decal of the talisman being viewed in the talisman info display.
@@ -329,7 +329,11 @@ export const TalismanInfoDisplay = RoactRodux.connect(mapStateToProps)(
 						Position={UDim2.fromScale(0.5, 0.5)}
 						Size={UDim2.fromScale(0.95, 0.95)}
 						Font={font}
-						Text={storedTalisman.phase === "artifact" ? "Max Phase" : `${progressToNextPhase * 100}%`}
+						Text={
+							storedTalisman.phase === "artifact"
+								? "Max Phase"
+								: `${statsAbbreviator.numberToString(progressToNextPhase * 100)}%`
+						}
 						TextScaled={true}
 						TextColor3={Color3.fromRGB(255, 255, 255)}
 					>

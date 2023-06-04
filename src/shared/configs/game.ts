@@ -1,10 +1,10 @@
 import assetIds from "shared/assets";
 
-export const TEST_STORE = "TEST_STORE_2";
+export const STORE_SCOPE = "TEST_STORE_2";
 
 export const MAIN_GROUP = 5126818;
-export const BANS_LEADERBOARD_ODS = `${TEST_STORE}_BANS_ODS`;
-export const EGGS_LEADERBOARD_ODS = `${TEST_STORE}_EGGS_ODS`;
+export const BANS_LEADERBOARD_ODS = `${STORE_SCOPE}_BANS_ODS`;
+export const EGGS_LEADERBOARD_ODS = `${STORE_SCOPE}_EGGS_ODS`;
 export const LEADERBOARD_UPDATE_INTERVAL = 60 * 30;
 
 export const GAME_VERSION = "0.9.5";
@@ -104,7 +104,7 @@ export const GROUP_ROLES: Record<number, { tag: string; color: Color3 }> = {
 		color: Color3.fromRGB(255, 138, 138),
 	},
 	253: {
-		tag: "Developer",
+		tag: "Administrator",
 		color: Color3.fromRGB(255, 138, 138),
 	},
 	252: {

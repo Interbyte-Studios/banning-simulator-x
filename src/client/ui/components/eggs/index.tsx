@@ -184,13 +184,11 @@ export const EggsUI = RoactRodux.connect(mapStateToProps)(
 								fastEnabled: props.gamepasses["Fast Hatch"],
 							});
 
-							warn(`[1] Setting current hatch data`);
 							setCurrentHatchData({
 								eggName: egg,
 								pets: requestEggHatch.pets,
 								isVoid,
 							});
-							warn(`[1.5] Current hatch data set`);
 
 							AnimateEggs.initiatePetHatch({
 								amount,
@@ -200,10 +198,8 @@ export const EggsUI = RoactRodux.connect(mapStateToProps)(
 								fastEnabled: props.gamepasses["Fast Hatch"],
 							});
 
-							warn(`[6] Refreshing current hatch data`);
 							setCurrentHatchData(undefined);
 							props.setHatchingStatus(false);
-							warn(`[6.5] Refreshed current hatch data`);
 						} else {
 							addAnnouncement(
 								`An issue has occured while hatching. You might not have enough currency.`,
@@ -218,8 +214,6 @@ export const EggsUI = RoactRodux.connect(mapStateToProps)(
 				) : undefined}
 			</>
 		);
-
-		warn(`[2] currentHatchData: ${currentHatchData}`);
 
 		return <BaseFrame Size={udim2BottomRight}>{children}</BaseFrame>;
 	}),

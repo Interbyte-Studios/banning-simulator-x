@@ -22,7 +22,7 @@ import { CurrentWeaponState } from "shared/rodux/currentWeapon";
 import { Weapon, WeaponsState } from "shared/rodux/weapons";
 import { getWeaponDamage } from "shared/util/getWeaponDamage";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
-import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
+import { statsAbbreviator, twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 /**
  * A decal of the weapon being viewed in the weapon info display.
@@ -266,7 +266,7 @@ export const WeaponInfoDisplay = RoactRodux.connect(mapStateToProps)(
 					<StrokeTextLabel
 						native={{
 							Size: UDim2.fromScale(0.95, 0.95),
-							Text: storedWeapon.level === 10 ? "Max Level" : `${progress * 100}%`,
+							Text: storedWeapon.level === 10 ? "Max Level" : `${statsAbbreviator.numberToString(progress * 100)}%`,
 						}}
 						stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
 					/>
