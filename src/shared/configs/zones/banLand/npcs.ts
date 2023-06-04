@@ -9,7 +9,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		reward: {
 			currency: 20,
 			currencyType: "coins",
-			experience: 40,
+			experience: 10,
 		},
 		rank: 1,
 		isBoss: false,
@@ -20,7 +20,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		reward: {
 			currency: 40,
 			currencyType: "coins",
-			experience: 80,
+			experience: 20,
 		},
 		rank: 1,
 		isBoss: false,
@@ -31,7 +31,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		reward: {
 			currency: 80,
 			currencyType: "coins",
-			experience: 160,
+			experience: 40,
 		},
 		rank: 1,
 		isBoss: false,
@@ -42,7 +42,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		reward: {
 			currency: 160,
 			currencyType: "coins",
-			experience: 315,
+			experience: 80,
 		},
 		rank: 2,
 		isBoss: false,
@@ -53,7 +53,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		reward: {
 			currency: 640,
 			currencyType: "coins",
-			experience: 625,
+			experience: 200,
 		},
 		rank: 3,
 		isBoss: false,
@@ -64,7 +64,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		reward: {
 			currency: 640,
 			currencyType: "coins",
-			experience: 1_250,
+			experience: 800,
 		},
 		rank: 4,
 		isBoss: false,
@@ -75,7 +75,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		reward: {
 			currency: 1_280,
 			currencyType: "coins",
-			experience: 2_500,
+			experience: 2_000,
 		},
 		rank: 5,
 		isBoss: false,
@@ -86,7 +86,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		reward: {
 			currency: 2_560,
 			currencyType: "coins",
-			experience: 5_000,
+			experience: 6_000,
 		},
 		rank: 6,
 		isBoss: false,

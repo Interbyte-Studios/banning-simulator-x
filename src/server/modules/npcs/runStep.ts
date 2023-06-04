@@ -199,14 +199,16 @@ export function runStep(
 			const gamepassExperienceMultiplier = store.getState().gamepasses["x2 Experience"] ? 2 : 0;
 			experienceBoosters.push(globalExperienceEventMultiplier, boostExperienceMultiplier, gamepassExperienceMultiplier);
 
-			let experienceMultiplier = talismanStatEffects.experience;
+			let experienceMultiplier = 1;
+			experienceMultiplier += talismanStatEffects.experience;
 			experienceBoosters.forEach((booster) => {
 				experienceMultiplier += booster;
 			});
 			experienceMultiplier = experienceMultiplier > 1 ? experienceMultiplier : 1;
-			if (experienceMultiplier > 1 && talismanStatEffects.experience > 1) {
-				experienceMultiplier -= 1;
-			}
+
+			warn(
+				`Talisman: ${talismanStatEffects.experience} | Global: ${globalExperienceEventMultiplier} | Boost: ${boostExperienceMultiplier} | Gamepass: ${gamepassExperienceMultiplier} | Total: ${experienceMultiplier}`,
+			);
 
 			// get pet experience multiplier
 			const petExperienceMultipliers: Array<number> = [];
