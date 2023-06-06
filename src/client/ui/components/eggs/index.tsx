@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Players, PolicyService } from "@rbxts/services";
+import { Players } from "@rbxts/services";
 import { getIsTrading } from "client/modules/isTradingCache";
 import { getLastHatch, setLastHatch } from "client/modules/lastHatch";
 import { udim2BottomRight } from "client/ui/commonValues";
@@ -68,8 +68,6 @@ const player = Players.LocalPlayer;
  */
 export const EggsUI = RoactRodux.connect(mapStateToProps)(
 	hooks((props: EggsUIProps, { useState, useContext, useEffect, useValue }) => {
-		const [regionalRegulationsEnforced, setReguionalRegulationsForced] = useState(false);
-
 		if (!props.visible) {
 			return <></>;
 		}
@@ -78,11 +76,6 @@ export const EggsUI = RoactRodux.connect(mapStateToProps)(
 
 		const { hatchEgg } = useContext(remoteContext);
 		const { addAnnouncement } = useContext(AnnouncementContext);
-
-		useEffect(() => {
-			const playerRegionalRegulations = PolicyService.GetPolicyInfoForPlayerAsync(player);
-			setReguionalRegulationsForced(playerRegionalRegulations.ArePaidRandomItemsRestricted);
-		}, []);
 
 		const componentProps = useValue(props);
 		useEffect(() => {
@@ -165,12 +158,6 @@ export const EggsUI = RoactRodux.connect(mapStateToProps)(
 				<EggCost />
 				<EggHud
 					initiateHatch={async (amount: 1 | 2 | 3, egg: EggName, isVoid: boolean): Promise<void> => {
-						// make sure their region (country) allows them to hatch eggs!
-						if (regionalRegulationsEnforced) {
-							addAnnouncement(`Hatching pets is regulated by your country. Sorry!`, AnnouncementType.Error);
-							return;
-						}
-
 						await initiateHatch(amount, egg, isVoid);
 
 						const requestEggHatch = await hatchEgg.CallServerAsync(amount, egg, isVoid);

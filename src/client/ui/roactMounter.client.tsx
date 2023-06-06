@@ -14,6 +14,7 @@ import { petMasteryRemotes } from "./remotes/petMastery";
 import { petRemtoes } from "./remotes/pets";
 import { questsRemotes } from "./remotes/quests";
 import { ranksRemotes } from "./remotes/ranks";
+import { rewardRemotes } from "./remotes/rewards";
 import { settingsRemotes } from "./remotes/settings";
 import { talismanRemotes } from "./remotes/talismans";
 import { titlesRemtoes } from "./remotes/titles";
@@ -42,6 +43,7 @@ onStoreCreated(player)
 					...petMasteryRemotes,
 					...questsRemotes,
 					...ranksRemotes,
+					...rewardRemotes,
 					...settingsRemotes,
 					...talismanRemotes,
 					...titlesRemtoes,

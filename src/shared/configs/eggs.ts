@@ -7,6 +7,7 @@ import { CITY_EGG_PETS } from "./pets/city";
 import { CORRUPT_EGG_PETS } from "./pets/corrupt";
 import { CYBER_EGG_PETS } from "./pets/cyber";
 import { DESERT_EGG_PETS } from "./pets/desert";
+import { GROUP_CHEST_PETS } from "./pets/group";
 import { HONEYCOMB_EGG_PETS } from "./pets/honeycomb";
 import { MOLTEN_EGG_PETS } from "./pets/molten";
 import { ROYALTY_EGG_PETS } from "./pets/royalty";
@@ -125,6 +126,14 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 	Armored: {
 		id: 10,
 		pets: ARMORED_EGG_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: false,
+		luckApplies: true,
+	},
+	Group: {
+		id: 11,
+		pets: GROUP_CHEST_PETS,
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,

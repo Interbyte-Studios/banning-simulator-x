@@ -68,7 +68,7 @@ export function runStep(
 						: zoneInfo.npcs.find((npc) => !npc.isBoss);
 
 				if (selectedNpc === undefined) {
-					warn(`Failed to spawn npc for zone ${zone.name}`);
+					warn(`[NPC RunStep] - Failed to spawn npc for zone ${zone.name}`);
 					continue;
 				}
 
@@ -109,21 +109,21 @@ export function runStep(
 	for (const { player, store, character } of npcAttacks) {
 		const npc = npcCharacterToNpc.get(character);
 		if (npc === undefined) {
-			warn(`Player ${player.Name} attempted to attack ${character.Name}, but it didn't exist`);
+			warn(`[NPC RunStep] - Player ${player.Name} attempted to attack ${character.Name}, but it didn't exist`);
 			continue;
 		}
 
 		// check that npc is alive
 		if (!(npc.instance.Humanoid.Health > 0)) {
 			// currently this is possible if two players kill and NPC in the same tick
-			warn(`Player ${player.Name} attempted to attack ${character.Name}, but the NPC was dead`);
+			warn(`[NPC RunStep] - Player ${player.Name} attempted to attack ${character.Name}, but the NPC was dead`);
 			continue;
 		}
 
 		// check that npc has a root part
 		const humanoidRootPart = npc.instance.Humanoid.RootPart;
 		if (humanoidRootPart === undefined) {
-			warn(`Failed to get HumanoidRootPart for npc ${npc.instance.Name}`);
+			warn(`[NPC RunStep] - Failed to get HumanoidRootPart for npc ${npc.instance.Name}`);
 			continue;
 		}
 
@@ -132,8 +132,18 @@ export function runStep(
 
 		const currentWeaponData = storeState.weapons.find((weapon) => weapon.id === storeState.currentWeapon.id);
 		if (currentWeaponData === undefined) {
-			warn(`Player ${player.Name} does not own the weapon they're attacking with.`);
+			warn(`[NPC RunStep] - Player ${player.Name} does not own the weapon they're attacking with.`);
 			continue;
+		}
+
+		if (storeState.currentTalisman !== undefined) {
+			const currentTalismanData = storeState.talismans.find((talisman) => talisman.id === storeState.currentTalisman);
+			if (currentTalismanData === undefined) {
+				warn(
+					`[NPC RunStep] - Player ${player.Name} does not own the talisman they're attacking with. | Current Talisman ID: ${storeState.currentTalisman}}`,
+				);
+				continue;
+			}
 		}
 
 		const weaponDamage = getWeaponDamage(currentWeaponData);
@@ -158,7 +168,7 @@ export function runStep(
 			// reward player
 			const store = playerStores.get(player);
 			if (store === undefined) {
-				warn(`Could not get store for "${player.GetFullName()}" when rewarding them for killing NPC`);
+				warn(`[NPC RunStep] - Could not get store for "${player.GetFullName()}" when rewarding them for killing NPC`);
 				continue;
 			}
 
@@ -244,7 +254,7 @@ export function runStep(
 			const randomBanEmitterIndex = math.ceil(math.random(1, banEmitters.GetChildren().size())) - 1;
 			const randomBanEmitter = banEmitters.GetChildren()[randomBanEmitterIndex] as BasePart;
 			if (randomBanEmitter === undefined) {
-				warn(`Failed to get ban emitter for index ${randomBanEmitterIndex}`);
+				warn(`[ NPC RunStep ] - Failed to get ban emitter for index ${randomBanEmitterIndex}`);
 				continue;
 			}
 
@@ -271,7 +281,7 @@ export function runStep(
 			const emitter = banEmitter.FindFirstChild("Attachment")?.FindFirstChild("Banned") as ParticleEmitter;
 			if (emitter !== undefined) {
 				emitter.Emit(1);
-			} else warn("emitter is undefined");
+			} else warn("[ NPC RunStep ] - emitter is undefined");
 
 			// kill npc
 			npcs.delete(npc);
@@ -291,7 +301,7 @@ export function runStep(
 		} else {
 			const emitter = humanoidRootPart.FindFirstChild("ImpactEmitter") as Attachment;
 			if (emitter === undefined) {
-				warn(`Failed to get impact emitter for npc ${npc.instance.Name}`);
+				warn(`[ NPC RunStep ] - Failed to get impact emitter for npc ${npc.instance.Name}`);
 				continue;
 			}
 

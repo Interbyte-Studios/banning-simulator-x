@@ -706,8 +706,24 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 
 	// Misc titles
 	{
-		name: "VIP",
+		name: "Interbyte Club",
 		id: 44,
+		effect: new ColorSequence([
+			new ColorSequenceKeypoint(0, Color3.fromRGB(32, 43, 255)),
+			new ColorSequenceKeypoint(0.15, Color3.fromRGB(70, 141, 255)),
+			new ColorSequenceKeypoint(0.4, Color3.fromRGB(255, 96, 253)),
+			new ColorSequenceKeypoint(0.5, Color3.fromRGB(255, 0, 127)),
+			new ColorSequenceKeypoint(0.6, Color3.fromRGB(255, 96, 253)),
+			new ColorSequenceKeypoint(0.85, Color3.fromRGB(70, 141, 255)),
+			new ColorSequenceKeypoint(1, Color3.fromRGB(32, 43, 255)),
+		]),
+		category: TitleType.Misc,
+		description: "Purchase the VIP gamepass.",
+		condition: (state): boolean => state.index.groupRank !== undefined && state.index.groupRank >= 247,
+	},
+	{
+		name: "VIP",
+		id: 45,
 		effect: new ColorSequence([
 			new ColorSequenceKeypoint(0, Color3.fromRGB(255, 0, 0)),
 			new ColorSequenceKeypoint(0.15, Color3.fromRGB(255, 126, 61)),
@@ -723,7 +739,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 	},
 	{
 		name: "Verified",
-		id: 45,
+		id: 46,
 		effect: new ColorSequence([
 			new ColorSequenceKeypoint(0, Color3.fromRGB(255, 85, 127)),
 			new ColorSequenceKeypoint(0.15, Color3.fromRGB(255, 152, 154)),
@@ -739,7 +755,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 	},
 	{
 		name: "Staff Team",
-		id: 46,
+		id: 47,
 		effect: new ColorSequence([
 			new ColorSequenceKeypoint(0, Color3.fromRGB(0, 85, 255)),
 			new ColorSequenceKeypoint(0.15, Color3.fromRGB(12, 182, 255)),
@@ -755,7 +771,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 	},
 	{
 		name: "Admin",
-		id: 47,
+		id: 48,
 		effect: new ColorSequence([
 			new ColorSequenceKeypoint(0, Color3.fromRGB(255, 0, 0)),
 			new ColorSequenceKeypoint(0.15, Color3.fromRGB(132, 0, 2)),

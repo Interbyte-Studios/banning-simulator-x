@@ -21,6 +21,12 @@ declare namespace assetIds {
 		};
 		decals: {
 			pets: {
+				Byte: string;
+				"Radiant Byte": string;
+				"Radiant Shade Glider": string;
+				"Shade Glider": string;
+				"Void Byte": string;
+				"Void Shade Glider": string;
 				"Void Desert Scorpilord": string;
 				"Desert Pegasus": string;
 				Piggy: string;

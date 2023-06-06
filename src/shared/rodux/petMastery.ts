@@ -101,39 +101,43 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 			});
 
 			petMasteryData = newState.get(action.petId);
-			assert(
-				petMasteryData,
-				`Failed to set pet mastery data for pet with id "${action.petId}" of variant "${action.variant}".`,
-			);
+			if (petMasteryData === undefined) {
+				warn(
+					`[ Pet Mastery Reducer ] - Failed to set pet mastery data for pet with id "${action.petId}" of variant "${action.variant}".`,
+				);
+				return newState;
+			}
 		}
 
 		const masteryData = petMasteryData[action.variant];
 		switch (action.kind) {
 			case "fuse": {
-				assert(
-					voidVariantMasteryData(masteryData) || radiantVariantMasteryData(masteryData),
-					`Mastery data didn't meet strict interface expectations.`,
-				);
+				if (!voidVariantMasteryData(masteryData) && !radiantVariantMasteryData(masteryData)) {
+					warn(`[ Pet Mastery Reducer ] - Mastery data didn't meet strict interface expectations.`);
+					return newState;
+				}
 
 				masteryData.fuseClaimed = true;
 				break;
 			}
 			case "hatch": {
-				assert(
-					regularVariantMasteryData(masteryData) || voidVariantMasteryData(masteryData),
-					`Mastery data didn't meet strict interface expectations.`,
-				);
+				if (!regularVariantMasteryData(masteryData) && !voidVariantMasteryData(masteryData)) {
+					warn(`[ Pet Mastery Reducer ] - Mastery data didn't meet strict interface expectations.`);
+					return newState;
+				}
 
 				masteryData.hatchClaimed = true;
 				break;
 			}
 			case "maxLevel": {
-				assert(
-					regularVariantMasteryData(masteryData) ||
-						voidVariantMasteryData(masteryData) ||
-						radiantVariantMasteryData(masteryData),
-					`Mastery data didn't meet strict interface expectations.`,
-				);
+				if (
+					!regularVariantMasteryData(masteryData) &&
+					!voidVariantMasteryData(masteryData) &&
+					!radiantVariantMasteryData(masteryData)
+				) {
+					warn(`[ Pet Mastery Reducer ] - Mastery data didn't meet strict interface expectations.`);
+					return newState;
+				}
 
 				masteryData.maxLevelClaimed = true;
 				break;
@@ -142,7 +146,10 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 
 		switch (action.variant) {
 			case "regular": {
-				assert(regularVariantMasteryData(masteryData), `Mastery data didn't meet strict interface expectations.`);
+				if (!regularVariantMasteryData(masteryData)) {
+					warn(`[ Pet Mastery Reducer ] - Mastery data didn't meet strict interface expectations.`);
+					return newState;
+				}
 
 				if (masteryData.hatchClaimed && masteryData.maxLevelClaimed) {
 					masteryData.cosmeticEnabled = true;
@@ -172,10 +179,12 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 			});
 
 			petMasteryData = newState.get(action.petId);
-			assert(
-				petMasteryData,
-				`Failed to set pet mastery data for pet with id "${action.petId}" of variant "${action.variant}".`,
-			);
+			if (petMasteryData === undefined) {
+				warn(
+					`[ Pet Mastery Reducer ] - Failed to set pet mastery data for pet with id "${action.petId}" of variant "${action.variant}".`,
+				);
+				return newState;
+			}
 		}
 
 		const masteryData = petMasteryData[action.variant];

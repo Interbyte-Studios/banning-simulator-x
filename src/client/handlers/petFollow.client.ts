@@ -1,3 +1,4 @@
+import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players, RunService, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { cachePetForAnimation } from "client/modules/pets/createPetFollow";
@@ -77,6 +78,10 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 						}
 
 						const createdPet = cachePetForAnimation(player, pet.id, pet.guid, pet.variant);
+						if (createdPet === undefined) {
+							return;
+						}
+
 						createdPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
 
 						playerCache.pets.push(createdPet);
@@ -95,19 +100,16 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 
 						const character = player.Character ?? player.CharacterAdded.Wait()[0];
 						if (character === undefined) {
-							warn(`Character could not be defined for ${player.Name}, therefore pets could not be animated.`);
 							return;
 						}
 
 						const humanoid = character.WaitForChild("Humanoid") as Humanoid;
 						if (humanoid === undefined) {
-							warn(`Humanoid could not be defined for ${player.Name}, therefore pets could not be animated.`);
 							return;
 						}
 
 						const humanoidRootPart = humanoid.RootPart;
 						if (humanoidRootPart === undefined) {
-							warn(`HumanoidRootPart could not be defined for ${player.Name}, therefore pets could not be animated.`);
 							return;
 						}
 
@@ -119,6 +121,10 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 								}
 
 								const createdPet = cachePetForAnimation(player, pet.id, pet.guid, pet.variant);
+								if (createdPet === undefined) {
+									return;
+								}
+
 								createdPet.model.Parent = playerCache.petsDisplayed.Value
 									? Workspace["client objects"].pets
 									: undefined;
@@ -156,7 +162,12 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 			);
 		})
 		.catch((e) => {
-			throw `Failed to get store for player ${player.Name} | ${e}`;
+			// do not include player names. against the rules apparently.
+			GameAnalytics.addErrorEvent(Players.LocalPlayer.UserId, {
+				severity: "error",
+				message: `[ Pet Follow Handler ] - Failed to run promise callback on "onStoreCreated" | ${e}`,
+			});
+			throw `[ Pet Follow Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 		});
 
 Players.GetPlayers().forEach((player) => cachePlayerPetanimation(player));

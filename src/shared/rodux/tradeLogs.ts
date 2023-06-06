@@ -96,7 +96,7 @@ export const tradeLogsReducer = Rodux.createReducer<TradeLogsState, TradeLogActi
 
 		const tradeToRemove = newState.findIndex((trade) => trade === action.savedTrade);
 		if (tradeToRemove === undefined) {
-			warn(`Could not find trade to remove: ${action.savedTrade}`);
+			warn(`[ Trade Logs Reducer | Remove Trade Log ] - Could not find trade to remove: ${action.savedTrade}`);
 			return newState;
 		}
 

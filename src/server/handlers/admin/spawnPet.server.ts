@@ -1,3 +1,4 @@
+import { GameAnalytics } from "@rbxts/gameanalytics";
 import { HttpService } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { retrieveStore } from "server/playerStore";
@@ -39,6 +40,14 @@ remotes.Server.GetNamespace("admin")
 				//enhancements: {},
 				tradeLocked: true,
 			};
+
+			GameAnalytics.addErrorEvent(adminPlayer.UserId, {
+				severity: "warning",
+				message:
+					targetPlayer.UserId === adminPlayer.UserId
+						? `Spawned pet self | Pet: ${pet.id}`
+						: `Spawned pet for user with id: ${targetPlayer.UserId} | Pet: ${pet.id}`,
+			});
 			targetPlayerStore.dispatch(addPets(cost, currency, [pet]));
 		}),
 	);

@@ -153,6 +153,11 @@ hash = "2c773ec68b74ecb5947cab526cecd763d300faaea7e775c4c55152ecdd478cc7"
 id = 11440335126
 packable = false
 
+[inputs."images/decals/pets/Byte.png"]
+hash = "210f06ccb36a8d90fba01d87e1f0898a06de7d9de48716ae8a08fa0a37d0056c"
+id = 13657422617
+packable = false
+
 [inputs."images/decals/pets/City Angel.png"]
 hash = "c02cb484dc6884030701817ac72e00e68882e34d28ca9873e272f2f038703fde"
 id = 11440088121
@@ -558,6 +563,11 @@ hash = "cabe457a78ce171959a0202da2fb9420eb57455854d196e33694d4d86ef243a3"
 id = 11440335219
 packable = false
 
+[inputs."images/decals/pets/Radiant Byte.png"]
+hash = "0938adc32ee2ea9b74c600764998a40f329a5976bb68f5ddbc02a2d1ea72a8a7"
+id = 13657422798
+packable = false
+
 [inputs."images/decals/pets/Radiant City Angel.png"]
 hash = "fe3e5aa30b309eab0e366c5f36fc18e3df056f95b89a005e41ff3d29e800e89d"
 id = 11440108193
@@ -908,6 +918,11 @@ hash = "c0c7d46135ea6126f98018514cd028d05865ddf03bd09fba189d0b8bcce3479e"
 id = 11440114440
 packable = false
 
+[inputs."images/decals/pets/Radiant Shade Glider.png"]
+hash = "00c94a84ddcce19e5d25136f49e3b1a5a6e42cfc6f1a9ebba6fb204015fbc6a2"
+id = 13657423016
+packable = false
+
 [inputs."images/decals/pets/Royal Bunny.png"]
 hash = "8edd096c987a51b8679265d0a88641b87d8e87a081c02cf72e2429cec1d71055"
 id = 11440351838
@@ -921,6 +936,11 @@ packable = false
 [inputs."images/decals/pets/Royal Pegasus.png"]
 hash = "00b9ee62a6635c2b32f3e710967eb76a780556110f6181ecfc2ebb5b510a0d16"
 id = 11440114733
+packable = false
+
+[inputs."images/decals/pets/Shade Glider.png"]
+hash = "400ce7e76886d274a1a9542ee059c2500048eda2543a06dc53dd69dd3ec112dd"
+id = 13657423082
 packable = false
 
 [inputs."images/decals/pets/Void Armored Angel-1.png"]
@@ -986,6 +1006,11 @@ packable = false
 [inputs."images/decals/pets/Void Bunny.png"]
 hash = "fa58fd681526e83c7aa906727df0604d0004c6910c81413dbfbfb918b137dffc"
 id = 11440335325
+packable = false
+
+[inputs."images/decals/pets/Void Byte.png"]
+hash = "399b920241b9b2a7e289a0940d010aff99f5aa89961ffeeff5f26eee4a0c01e1"
+id = 13657423163
 packable = false
 
 [inputs."images/decals/pets/Void City Angel.png"]
@@ -1341,6 +1366,11 @@ packable = false
 [inputs."images/decals/pets/Void Royal Pegasus.png"]
 hash = "2dfff6a942bd4926760653c466ea2f99105fff573e91d2c347350940e78c9919"
 id = 11440122751
+packable = false
+
+[inputs."images/decals/pets/Void Shade Glider.png"]
+hash = "55aa84812b8573362831cfc4a507b7463cb8133a8c53bf3c8263d72a10d5cb53"
+id = 13657423411
 packable = false
 
 [inputs."images/decals/talismans/All Seeing Talisman.png"]

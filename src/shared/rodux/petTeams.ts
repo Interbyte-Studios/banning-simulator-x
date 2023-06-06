@@ -132,7 +132,10 @@ export const petTeamsReducer = Rodux.createReducer<PetTeamsState, PetTeamsAction
 
 			teamIndex = index + 1;
 		});
-		assert(teamIndex, `Failed to get stored team for team with id ${action.teamId}`);
+		if (teamIndex === undefined) {
+			warn(`[ Pet Teams Reducer ] - Failed to get stored team for team with id ${action.teamId}`);
+			return newState;
+		}
 
 		const newTeamData = [...newState.teams];
 		newTeamData[teamIndex - 1].name = action.name;

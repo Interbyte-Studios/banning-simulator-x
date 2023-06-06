@@ -36,30 +36,45 @@ function getPetModel(petName: string): Model {
  * @param variant The variant of the pet.
  * @returns Data for the new pet.
  */
-export function cachePetForAnimation(player: Player, petId: number, guid: string, variant: Variants): PetCreated {
+export function cachePetForAnimation(
+	player: Player,
+	petId: number,
+	guid: string,
+	variant: Variants,
+): PetCreated | undefined {
 	const petData = getPetData(petId);
 
 	const petModel = getPetModel(petData.name);
-	assert(petModel.IsA("Model"));
+	if (petModel === undefined) {
+		warn(`[ Pet Follow Module ] - Failed to get pet model for pet ${petData.name}`);
+		return;
+	}
 
 	petModel.Name = guid;
 	setAssetProperties("pet", petModel, variant);
 
-	if (petModel.PrimaryPart === undefined) {
-		throw `Expected to find primary part for pet ${petData.name}`;
+	const primaryPart = petModel.PrimaryPart;
+	if (primaryPart === undefined) {
+		warn(`[ Pet Follow Module ] - Failed to get primary part for pet ${petData.name}`);
+		return;
 	}
-	assert(petModel.PrimaryPart.IsA("BasePart"));
+
+	if (!primaryPart.IsA("BasePart")) {
+		warn(`[ Pet Follow Module ] - Primary part for pet ${petData.name} is not a BasePart`);
+		return;
+	}
 
 	const petParts = petModel.GetChildren().filter((child) => child.IsA("BasePart")) as Array<BasePart>;
-	weldObject(petParts, petModel.PrimaryPart);
+	weldObject(petParts, primaryPart);
 
-	const alignOrientation = new Instance("AlignOrientation", petModel.PrimaryPart);
-	const alignPosition = new Instance("AlignPosition", petModel.PrimaryPart);
-	const attachment = new Instance("Attachment", petModel.PrimaryPart);
+	const alignOrientation = new Instance("AlignOrientation", primaryPart);
+	const alignPosition = new Instance("AlignPosition", primaryPart);
+	const attachment = new Instance("Attachment", primaryPart);
 	const animationType = petModel.GetAttribute("animationType") as "Walk" | "Fly";
 
 	if (animationType === undefined) {
-		error(`Could not get animation type for ${petData.name}`);
+		warn(`[ Pet Follow Module ] - Failed to get animation type for pet ${petData.name}`);
+		return;
 	}
 
 	alignOrientation.Mode = Enum.OrientationAlignmentMode.OneAttachment;

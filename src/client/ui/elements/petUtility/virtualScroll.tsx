@@ -106,11 +106,6 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 	const updateItems = useCallback(
 		(scroll: ScrollingFrame): void => {
 			const updatedRenderedPets = checkRenderedPets(scroll, renderedPets, props.searchText);
-			sortPets(
-				updatedRenderedPets.filter((pet) => pet.isRendered),
-				true,
-				true,
-			);
 			setRenderedPets(updatedRenderedPets);
 		},
 		[renderedPets, props.searchText],
@@ -159,6 +154,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		const scrollingFrame = scrollingFrameRef.value.getValue();
 		assert(scrollingFrame, `No ScrollingFrame was found for Virtual Scroll`);
 
+		sortPets(props.pets, true, true);
 		let newPets: Array<PetInventoryData> = [];
 		if (props.searchText !== undefined && props.searchText !== "") {
 			const searchText = props.searchText.lower();
@@ -174,11 +170,6 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		}
 
 		const updatedRenderedPets = checkRenderedPets(scrollingFrame, newPets, props.searchText);
-		sortPets(
-			updatedRenderedPets.filter((pet) => pet.isRendered),
-			true,
-			true,
-		);
 		setRenderedPets(updatedRenderedPets);
 	}, [props.pets, props.searchText]);
 

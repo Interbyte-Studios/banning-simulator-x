@@ -68,19 +68,17 @@ export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions |
 		};
 
 		const newState = [...state, newWeapon];
-
 		return newState;
 	},
 	killNpc: (state, action) => {
 		const newState = [...state];
 
 		const currentWeaponIndex = newState.findIndex((weapon) => weapon.id === action.weaponId);
-		if (currentWeaponIndex === undefined) {
-			throw `Expected player to own the weapon ${action.weaponId}`;
+		if (currentWeaponIndex === -1) {
+			return newState;
 		}
 
 		const newCurrentWeapon = { ...newState[currentWeaponIndex] };
-
 		newCurrentWeapon.bans += 1;
 
 		WEAPON_LEVELS.forEach((levelData) => {
@@ -94,7 +92,6 @@ export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions |
 		});
 
 		newState[currentWeaponIndex] = newCurrentWeapon;
-
 		return newState;
 	},
 	admin_ModifyWeaponLevel: (state, action) => {
@@ -102,15 +99,14 @@ export const weaponsReducer = Rodux.createReducer<WeaponsState, WeaponsActions |
 
 		const currentWeaponIndex = newState.findIndex((weapon) => weapon.id === action.weaponId);
 		if (currentWeaponIndex === undefined) {
-			throw `Expected player to own the weapon ${action.weaponId}`;
+			warn(`[ Weapons Reducer | Admin Modify Weapon Level ] - Expected player to own the weapon ${action.weaponId}`);
+			return newState;
 		}
 
 		const newCurrentWeapon = { ...newState[currentWeaponIndex] };
-
 		newCurrentWeapon.level = action.level;
 
 		newState[currentWeaponIndex] = newCurrentWeapon;
-
 		return newState;
 	},
 });

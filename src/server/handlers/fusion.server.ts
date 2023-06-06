@@ -3,6 +3,7 @@ import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { RARITIES } from "shared/configs/rarities";
 import { remotes } from "shared/remotes";
 import { FusionFailKind } from "shared/remotes/fusing";
+import { awardCurrency } from "shared/rodux/currencies";
 import { addPets, ConfirmedPet, deletePets } from "shared/rodux/pets";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
@@ -70,6 +71,7 @@ remotes.Server.Create("requestFusion").SetCallback(
 		const success = random.NextNumber(0, 100) <= fusionSuccessRate;
 		if (!success) {
 			store.dispatch(deletePets(petsToFuse));
+			store.dispatch(awardCurrency(eggCost.currencyType, -fusionCost));
 			return {
 				success: false,
 				reason: FusionFailKind.UnsuccesfulFusion,

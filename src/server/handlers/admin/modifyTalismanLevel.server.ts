@@ -1,3 +1,4 @@
+import { GameAnalytics } from "@rbxts/gameanalytics";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { retrieveStore } from "server/playerStore";
 import { ADMIN_RANK } from "shared/configs/admin";
@@ -23,6 +24,13 @@ remotes.Server.GetNamespace("admin")
 				.talismans.find((talisman) => talisman.id === talismanData.talismanId);
 			if (ownsTalisman === undefined) return;
 
+			GameAnalytics.addErrorEvent(adminPlayer.UserId, {
+				severity: "warning",
+				message:
+					targetPlayer.UserId === adminPlayer.UserId
+						? `Modified talisman level self | Talisman: ${ownsTalisman.id} | Level: ${talismanData.phase}`
+						: `Modified talisman level for user with id: ${targetPlayer.UserId} | Talisman: ${ownsTalisman.id} | Level: ${talismanData.phase}`,
+			});
 			targetPlayerStore.dispatch(admin_modifyTalismanLevel(talismanData.talismanId, talismanData.phase));
 		}),
 	);

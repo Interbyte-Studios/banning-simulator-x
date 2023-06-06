@@ -74,41 +74,44 @@ export const talismanReducer = Rodux.createReducer<TalismansState, TalismanActio
 
 		const newState = [...state];
 
-		const currentTalismanIndex = newState.findIndex((talisman) => talisman.id === action.talismanId);
-		if (currentTalismanIndex === undefined) {
-			throw `Expected player to own the talisman ${action.talismanId}`;
+		const talismanIndex = newState.findIndex((talisman) => talisman.id === action.talismanId);
+		if (talismanIndex === -1) {
+			return state;
 		}
 
-		const currentTalisman = newState[currentTalismanIndex];
+		const newTalisman = [...newState][talismanIndex];
+		newState[talismanIndex] = newTalisman;
 
-		const increaseTalismanBanCounter = currentTalisman.bans + 1;
+		newTalisman.bans += 1;
 
 		let phase: TalismanPhases | undefined;
 		for (const talismanPhase of TALISMAN_PHASES) {
-			if (currentTalisman.bans >= talismanPhase.requiredBans) {
+			if (newTalisman.bans >= talismanPhase.requiredBans) {
 				phase = talismanPhase.phase;
 			}
 		}
-		assert(phase, `Expected to find a phase for the currently equipped talisman with id: ${action.talismanId}`);
-
-		let upgradePhase = false;
-		if (phase !== currentTalisman.phase) {
-			upgradePhase = true;
+		if (phase === undefined) {
+			warn(
+				`[ Talisman Reducer | Kill NPC ] - Expected to find a phase for the currently equipped talisman with id: ${action.talismanId}`,
+			);
+			return state;
 		}
 
-		const newTalismanData = { ...newState[currentTalismanIndex] };
-		newTalismanData.bans = increaseTalismanBanCounter;
-		newTalismanData.phase = upgradePhase ? phase : currentTalisman.phase;
+		if (phase !== newTalisman.phase) {
+			newTalisman.phase = phase;
+		}
 
-		newState[currentTalismanIndex] = newTalismanData;
 		return newState;
 	},
 	admin_modifyTalismanLevel: (state, action) => {
 		const newState = [...state];
 
 		const currentTalismanIndex = newState.findIndex((talisman) => talisman.id === action.talismanId);
-		if (currentTalismanIndex === undefined) {
-			throw `Expected player to own the talisman ${action.talismanId}`;
+		if (currentTalismanIndex === -1) {
+			warn(
+				`[ Talisman Reducer | Admin Modify Talisman Level ] - Expected player to own the talisman ${action.talismanId}`,
+			);
+			return state;
 		}
 
 		const newTalismanData = { ...newState[currentTalismanIndex] };

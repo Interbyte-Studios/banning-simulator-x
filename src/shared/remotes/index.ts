@@ -11,6 +11,7 @@ import { petMastery } from "./petMastery";
 import { pets } from "./pets";
 import { purchaseZoneDefinition } from "./purchaseZone";
 import { redeemQuestDefinition } from "./redeemQuest";
+import { rewardsDefinition } from "./rewards";
 import { roduxDefinitions } from "./rodux";
 import { settings } from "./settings";
 import { spinWheelDefinition } from "./spinWheel";
@@ -27,6 +28,7 @@ export const remotes = Net.Definitions.Create({
 	media: media,
 	pets: pets,
 	petMastery: petMastery,
+	rewards: rewardsDefinition,
 	rodux: roduxDefinitions,
 	settings: settings,
 	weapons: weapons,

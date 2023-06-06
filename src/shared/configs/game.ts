@@ -1,6 +1,6 @@
 import assetIds from "shared/assets";
 
-export const STORE_SCOPE = "TEST_STORE_2";
+export const STORE_SCOPE = "TEST_STORE_3";
 
 export const MAIN_GROUP = 5126818;
 export const BANS_LEADERBOARD_ODS = `${STORE_SCOPE}_BANS_ODS`;
@@ -132,3 +132,6 @@ export const GROUP_ROLES: Record<number, { tag: string; color: Color3 }> = {
 		color: Color3.fromRGB(5, 209, 179),
 	},
 };
+
+export const VIP_PET_ID = 83;
+export const GROUP_PET_ID = 82;

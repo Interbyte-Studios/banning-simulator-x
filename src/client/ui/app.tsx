@@ -17,6 +17,7 @@ import { ItemInventory } from "./components/items";
 import { Leaderboards } from "./components/leaderboards";
 import { PetMastery } from "./components/petMastery";
 import { RankUpgrade } from "./components/ranks/menu";
+import { Rewards } from "./components/rewards";
 import { SpinWheel } from "./components/spinWheel";
 import { TalismanLevelUpAnimation } from "./components/talismanLevelUp";
 import { TalismanTowerHandle } from "./components/talismans";
@@ -160,6 +161,7 @@ export const app = hooks((props: AppProps, { useState, useCallback, useEffect, u
 					hideMenu={(): void => setVisibility((prev) => ({ ...prev, spinWheelVisibility: false }))}
 				/>
 				<Leaderboards />
+				<Rewards />
 			</>
 		</RoactRodux.StoreProvider>
 	);

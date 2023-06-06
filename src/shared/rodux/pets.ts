@@ -226,6 +226,9 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 				};
 
 				newState.push(newPet);
+				if (pet.id === 82) {
+					warn(`Added group pet!`);
+				}
 			}
 			return newState;
 		},
@@ -253,7 +256,9 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 
 			for (const petToEquip of action.pets) {
 				const storedPet = newState.find((pet) => pet.guid === petToEquip.guid);
-				assert(storedPet, `Rodux failed to equip pet with guid: "${petToEquip.guid}"`);
+				if (storedPet === undefined) {
+					continue;
+				}
 
 				storedPet.equipped = petToEquip.enabled;
 			}
@@ -265,7 +270,10 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 
 			for (const petToEquip of action.pets) {
 				const storedPet = newState.find((pet) => pet.guid === petToEquip.guid);
-				assert(storedPet, `Rodux failed to equip pet with guid: "${petToEquip.guid}"`);
+				if (storedPet === undefined) {
+					warn(`[ Pets Reducer ] - Failed to find and lock pet with guid: "${petToEquip.guid}"`);
+					continue;
+				}
 
 				storedPet.locked = petToEquip.enabled;
 			}

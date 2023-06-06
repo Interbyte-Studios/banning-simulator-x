@@ -1,3 +1,4 @@
+import { GameAnalytics } from "@rbxts/gameanalytics";
 import { CollectionService, Players, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
 import { t } from "@rbxts/t";
 import { onStoreCreated } from "client/clientStores";
@@ -8,8 +9,8 @@ import { Store } from "shared/rodux";
 import { getNPCByName } from "shared/util/getNpcByName";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
-const player = Players.LocalPlayer;
-const playerGui = player.WaitForChild("PlayerGui") as PlayerGui;
+const localPlayer = Players.LocalPlayer;
+const playerGui = localPlayer.WaitForChild("PlayerGui") as PlayerGui;
 
 const npcsFolder = Workspace.WaitForChild("npcs");
 
@@ -207,6 +208,11 @@ function updatePlayerTag(player: Player, store: Store): void {
 
 		tag.hold.title.Text = storeState.title;
 
+		const currentGradient = tag.hold.title.FindFirstChildWhichIsA("UIGradient");
+		if (currentGradient !== undefined) {
+			currentGradient.Destroy();
+		}
+
 		if (typeIs(titleData.effect, "Color3")) {
 			tag.hold.title.TextColor3 = titleData.effect;
 		} else {
@@ -331,7 +337,12 @@ function onPlayerAdded(player: Player): void {
 			});
 		})
 		.catch((e) => {
-			throw `Failed to get store for player ${player.Name} | ${e}`;
+			// do not include player names. against the rules apparently.
+			GameAnalytics.addErrorEvent(Players.LocalPlayer.UserId, {
+				severity: "error",
+				message: `[ Billboard Tags Handler ] - Failed to run promise callback on "onStoreCreated" | ${e}`,
+			});
+			throw `[ Billboard Tags Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 		});
 }
 

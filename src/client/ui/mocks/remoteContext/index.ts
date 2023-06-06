@@ -9,6 +9,7 @@ import { petMasteryRemoteContext } from "./remoteDefinitions/petMastery";
 import { petsRemoteContext } from "./remoteDefinitions/pets";
 import { questsRemoteContext } from "./remoteDefinitions/quests";
 import { ranksRemoteContext } from "./remoteDefinitions/ranks";
+import { rewardsRemoteContext } from "./remoteDefinitions/rewards";
 import { settingsRemoteContext } from "./remoteDefinitions/settings";
 import { talismansRemoteContext } from "./remoteDefinitions/talismans";
 import { titlesRemoteContext } from "./remoteDefinitions/titles";
@@ -32,6 +33,7 @@ export const fakeRemoteContext = {
 	...settingsRemoteContext,
 	...talismansRemoteContext,
 	...ranksRemoteContext,
+	...rewardsRemoteContext,
 	...titlesRemoteContext,
 	...wheelSpinRemoteContext,
 	...accoladesRemoteContext,

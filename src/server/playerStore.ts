@@ -1,3 +1,4 @@
+import { GameAnalytics } from "@rbxts/gameanalytics";
 import Rodux from "@rbxts/rodux";
 import { DataStoreService, Players } from "@rbxts/services";
 import { STORE_SCOPE } from "shared/configs/game";
@@ -198,7 +199,13 @@ Players.PlayerRemoving.Connect((player) => {
 		if (didDeleteCallbacks) {
 			throw `Removed store creation callbacks from "${player.Name}"`;
 		}
-	} else throw `[PlayerDataStore - PlayerRemoving] Failed to retrieve rodux store for player ${player.Name}`;
+	} else {
+		GameAnalytics.addErrorEvent(player.UserId, {
+			severity: "error",
+			message: `[PlayerDataStore - PlayerRemoving] Failed to retrieve rodux store for player`,
+		});
+		throw `[PlayerDataStore - PlayerRemoving] Failed to retrieve rodux store for player ${player.Name}`;
+	}
 });
 
 remotes.Server.GetNamespace("rodux")
@@ -227,7 +234,12 @@ game.BindToClose(() => {
 			if (store !== undefined) {
 				const state = store.getState() as StoreState;
 				savePlayerData(player, state);
-			} else throw `[PlayerDataStore - BindToClose] Failed to retrieve rodux store for player ${player.Name}`;
+			} else {
+				GameAnalytics.addErrorEvent(player.UserId, {
+					severity: "error",
+					message: `[PlayerDataStore - BindToClose] Failed to retrieve rodux store for player`,
+				});
+			}
 		}
 
 		player.Kick("The game is being updated. Please rejoin in a few minutes.");

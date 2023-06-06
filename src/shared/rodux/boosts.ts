@@ -3,6 +3,7 @@ import { t } from "@rbxts/t";
 import { BoostProduct } from "shared/configs/game";
 
 import { RedeemCode } from "./media";
+import { ClaimClubReward, ClaimGroupReward, ClaimVIPReward } from "./playerIndex";
 
 export interface BoostsState {
 	storage: {
@@ -120,7 +121,10 @@ export const defaultBoosts: BoostsState = {
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions | RedeemCode>(defaultBoosts, {
+export const boostsReducer = Rodux.createReducer<
+	BoostsState,
+	BoostActions | RedeemCode | ClaimGroupReward | ClaimClubReward | ClaimVIPReward
+>(defaultBoosts, {
 	storeBoost: (state, action) => {
 		const newState = { ...state };
 		const timeIndex = tostring(action.boostTime) as ValidStoredBoostTime;
@@ -142,6 +146,45 @@ export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions | Red
 			[action.name]: newState.active[action.name] + action.boostTime * action.extendedDurationMultiplier,
 		};
 		newState.uses += 1;
+
+		return newState;
+	},
+	claimClubReward: (state, action) => {
+		const newState = { ...state };
+
+		newState.storage = {
+			...newState.storage,
+			[action.boostName]: {
+				...newState.storage[action.boostName],
+				"15": newState.storage[action.boostName]["15"] + 1,
+			},
+		};
+
+		return newState;
+	},
+	claimGroupReward: (state, action) => {
+		const newState = { ...state };
+
+		newState.storage = {
+			...newState.storage,
+			[action.boostName]: {
+				...newState.storage[action.boostName],
+				"15": newState.storage[action.boostName]["15"] + 1,
+			},
+		};
+
+		return newState;
+	},
+	claimVIPReward: (state, action) => {
+		const newState = { ...state };
+
+		newState.storage = {
+			...newState.storage,
+			[action.boostName]: {
+				...newState.storage[action.boostName],
+				"15": newState.storage[action.boostName]["15"] + 1,
+			},
+		};
 
 		return newState;
 	},
