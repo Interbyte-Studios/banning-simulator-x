@@ -82,7 +82,7 @@ export const PlayerOptions = RoactRodux.connect(mapStateToProps)(
 						yPos={0.068}
 						onDecrease={(): void => {
 							const decreasedVolume = props.settings.sound.music - 1;
-							if (decreasedVolume <= 0) {
+							if (decreasedVolume < 0) {
 								return;
 							}
 
@@ -103,7 +103,7 @@ export const PlayerOptions = RoactRodux.connect(mapStateToProps)(
 						yPos={0.101}
 						onDecrease={(): void => {
 							const decreasedVolume = props.settings.sound.soundEffects - 1;
-							if (decreasedVolume <= 0) {
+							if (decreasedVolume < 0) {
 								return;
 							}
 
@@ -194,12 +194,20 @@ export const PlayerOptions = RoactRodux.connect(mapStateToProps)(
 						header={"Pet Distance"}
 						context={tostring(props.settings.visual.petsStudsOfDistance)}
 						yPos={0.476}
-						onDecrease={(): void =>
-							togglePetsStudsOfDistance.SendToServer(props.settings.visual.petsStudsOfDistance - 1)
-						}
-						onIncrease={(): void =>
-							togglePetsStudsOfDistance.SendToServer(props.settings.visual.petsStudsOfDistance + 1)
-						}
+						onDecrease={(): void => {
+							if (props.settings.visual.petsStudsOfDistance <= 10) {
+								return;
+							}
+
+							togglePetsStudsOfDistance.SendToServer(props.settings.visual.petsStudsOfDistance - 1);
+						}}
+						onIncrease={(): void => {
+							if (props.settings.visual.petsStudsOfDistance >= 20) {
+								return;
+							}
+
+							togglePetsStudsOfDistance.SendToServer(props.settings.visual.petsStudsOfDistance + 1);
+						}}
 					/>
 					<OptionChoice
 						header={"Pets Displayed"}
