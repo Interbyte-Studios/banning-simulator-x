@@ -79,8 +79,7 @@ export const talismanReducer = Rodux.createReducer<TalismansState, TalismanActio
 			return state;
 		}
 
-		const newTalisman = [...newState][talismanIndex];
-		newState[talismanIndex] = newTalisman;
+		const newTalisman = { ...newState[talismanIndex] };
 
 		newTalisman.bans += 1;
 
@@ -101,6 +100,7 @@ export const talismanReducer = Rodux.createReducer<TalismansState, TalismanActio
 			newTalisman.phase = phase;
 		}
 
+		newState[talismanIndex] = newTalisman;
 		return newState;
 	},
 	admin_modifyTalismanLevel: (state, action) => {

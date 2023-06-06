@@ -1,27 +1,26 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Players, RunService } from "@rbxts/services";
+import { MarketplaceService, Players, RunService } from "@rbxts/services";
 import { getIsTrading } from "client/modules/isTradingCache";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
+import { GAMEPASSES } from "shared/configs/game";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
 import { GamepassesState } from "shared/rodux/gamepasses";
 import { PetsState } from "shared/rodux/pets";
 import { WorldsState } from "shared/rodux/worlds";
 
-import { AnimateEggs } from "../eggHatch/animateEggs";
-
-interface HatchEggProps extends HatchEggMappedProps {
+interface TripleHatchEggProps extends TripleHatchEggMappedProps {
 	eggName: EggName;
 	isVoid: boolean;
 	initiateHatch: (amount: 1 | 3, egg: EggName, isVoid: boolean) => Promise<void>;
 }
 
-interface HatchEggMappedProps {
+interface TripleHatchEggMappedProps {
 	autoActive: boolean;
 	currenciesState: CurrenciesState;
 	gamepassesState: GamepassesState;
@@ -35,7 +34,7 @@ interface HatchEggMappedProps {
  * @param state The current store state.
  * @returns The mapped props to render with.
  */
-function mapStateToProps(state: StoreState): HatchEggMappedProps {
+function mapStateToProps(state: StoreState): TripleHatchEggMappedProps {
 	return {
 		autoActive: state.settings.gameplay.autoHatch,
 		currenciesState: state.currencies,
@@ -46,21 +45,28 @@ function mapStateToProps(state: StoreState): HatchEggMappedProps {
 }
 
 /**
- * Roact imagebutton component to hatch an egg.
+ * Roact imagebutton component to hatch 3 eggs.
  */
-export const HatchEggButton = RoactRodux.connect(mapStateToProps)((props: HatchEggProps): Roact.Element => {
+export const TripleHatchEggButton = RoactRodux.connect(mapStateToProps)((props: TripleHatchEggProps): Roact.Element => {
 	const player = Players.LocalPlayer;
+
 	return (
 		<SpringImageButton
 			native={{
-				Position: UDim2.fromScale(0.35, 0.75),
-				Image: assetIds.images.buttons["purple button"],
+				Position: UDim2.fromScale(0.65, 0.75),
+				Image: assetIds.images.buttons["teal button"],
 			}}
 			size={{ minSize: 0.1, maxSize: 0.12 }}
 			events={{
 				// eslint-disable-next-line jsdoc/require-jsdoc
 				Activated: async (): Promise<void> => {
 					playSFX(UIEngagement.MajorEngagement);
+
+					// eslint-disable-next-line roblox-ts/lua-truthiness
+					if (!props.gamepassesState["Triple Hatch"]) {
+						MarketplaceService.PromptGamePassPurchase(player, GAMEPASSES["Triple Hatch"]);
+						return;
+					}
 
 					if (props.autoActive) {
 						const character = player.Character;
@@ -74,10 +80,6 @@ export const HatchEggButton = RoactRodux.connect(mapStateToProps)((props: HatchE
 						}
 
 						RunService.BindToRenderStep("autoHatch", Enum.RenderPriority.Last.Value, async () => {
-							if (!AnimateEggs.canHatchEgg()) {
-								return;
-							}
-
 							if (getIsTrading()) {
 								RunService.UnbindFromRenderStep("autoHatch");
 								return;
@@ -95,30 +97,24 @@ export const HatchEggButton = RoactRodux.connect(mapStateToProps)((props: HatchE
 								return;
 							}
 
-							await props.initiateHatch(1, props.eggName, props.isVoid);
+							await props.initiateHatch(3, props.eggName, props.isVoid);
 						});
 
 						const movementConnection = humanoid.GetPropertyChangedSignal("MoveDirection").Connect(() => {
 							RunService.UnbindFromRenderStep("autoHatch");
 							movementConnection.Disconnect();
-							return;
 						});
 
 						const diedConnection = humanoid.Died.Connect(() => {
 							RunService.UnbindFromRenderStep("autoHatch");
 							diedConnection.Disconnect();
-							return;
 						});
 					} else {
-						if (!AnimateEggs.canHatchEgg()) {
-							return;
-						}
-
 						if (getIsTrading()) {
 							return;
 						}
 
-						await props.initiateHatch(1, props.eggName, props.isVoid);
+						await props.initiateHatch(3, props.eggName, props.isVoid);
 					}
 				},
 			}}
@@ -126,17 +122,17 @@ export const HatchEggButton = RoactRodux.connect(mapStateToProps)((props: HatchE
 			<StrokeTextLabel
 				native={{
 					Size: UDim2.fromScale(1, 1),
-					Text: "E",
+					Text: "T",
 				}}
-				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(122, 54, 133) }, isBillboard: true }}
+				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(54, 130, 133) }, isBillboard: true }}
 			>
 				<StrokeTextLabel
 					native={{
 						Position: UDim2.fromScale(0.5, 0.95),
 						Size: UDim2.fromScale(1, 0.4),
-						Text: "Hatch",
+						Text: "Triple",
 					}}
-					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(122, 54, 133) }, isBillboard: true }}
+					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(54, 130, 133) }, isBillboard: true }}
 				/>
 			</StrokeTextLabel>
 		</SpringImageButton>

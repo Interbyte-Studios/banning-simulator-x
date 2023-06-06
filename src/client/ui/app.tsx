@@ -9,7 +9,7 @@ import { LocalMessages } from "./components/announcements";
 import { AutoFight } from "./components/auto fight";
 import { CurrencyGainAnimation } from "./components/currencyGainAnimation";
 import { DatastoreEvents } from "./components/datastoreEvents";
-import { EggsUI } from "./components/eggs";
+import { EggCost } from "./components/eggCosts";
 import { WeaponEquip } from "./components/equip/weaponEquip";
 import { Fusing } from "./components/fusing";
 import { Hud } from "./components/hud";
@@ -85,10 +85,6 @@ export const app = hooks((props: AppProps, { useState, useCallback, useEffect, u
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
 			<>
-				<EggsUI
-					visible={!isMenuVisible()}
-					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
-				/>
 				<Hud
 					visible={!isMenuVisible()}
 					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportationVisible: true })}
@@ -162,6 +158,7 @@ export const app = hooks((props: AppProps, { useState, useCallback, useEffect, u
 				/>
 				<Leaderboards />
 				<Rewards />
+				<EggCost />
 			</>
 		</RoactRodux.StoreProvider>
 	);

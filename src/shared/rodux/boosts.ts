@@ -126,97 +126,101 @@ export const boostsReducer = Rodux.createReducer<
 	BoostActions | RedeemCode | ClaimGroupReward | ClaimClubReward | ClaimVIPReward
 >(defaultBoosts, {
 	storeBoost: (state, action) => {
-		const newState = { ...state };
 		const timeIndex = tostring(action.boostTime) as ValidStoredBoostTime;
 
-		newState.storage = {
-			...newState.storage,
-			[action.name]: {
-				...newState.storage[action.name],
-				[action.boostTime]: newState.storage[action.name][timeIndex] + 1,
+		return {
+			...state,
+			storage: {
+				...state.storage,
+				[action.name]: {
+					...state.storage[action.name],
+					[action.boostTime]: state.storage[action.name][timeIndex] + 1,
+				},
 			},
 		};
-
-		return newState;
 	},
 	claimBoost: (state, action) => {
-		const newState = { ...state };
-		newState.active = {
-			...newState.active,
-			[action.name]: newState.active[action.name] + action.boostTime * action.extendedDurationMultiplier,
+		return {
+			...state,
+			active: {
+				...state.active,
+				[action.name]: state.active[action.name] + action.boostTime * action.extendedDurationMultiplier,
+			},
+			uses: state.uses + 1,
 		};
-		newState.uses += 1;
-
-		return newState;
 	},
 	claimClubReward: (state, action) => {
-		const newState = { ...state };
-
-		newState.storage = {
-			...newState.storage,
-			[action.boostName]: {
-				...newState.storage[action.boostName],
-				"15": newState.storage[action.boostName]["15"] + 1,
+		return {
+			...state,
+			storage: {
+				...state.storage,
+				[action.boostName]: {
+					...state.storage[action.boostName],
+					"15": state.storage[action.boostName]["15"] + 1,
+				},
 			},
 		};
-
-		return newState;
 	},
 	claimGroupReward: (state, action) => {
-		const newState = { ...state };
-
-		newState.storage = {
-			...newState.storage,
-			[action.boostName]: {
-				...newState.storage[action.boostName],
-				"15": newState.storage[action.boostName]["15"] + 1,
+		return {
+			...state,
+			storage: {
+				...state.storage,
+				[action.boostName]: {
+					...state.storage[action.boostName],
+					"15": state.storage[action.boostName]["15"] + 1,
+				},
 			},
 		};
-
-		return newState;
 	},
 	claimVIPReward: (state, action) => {
-		const newState = { ...state };
-
-		newState.storage = {
-			...newState.storage,
-			[action.boostName]: {
-				...newState.storage[action.boostName],
-				"15": newState.storage[action.boostName]["15"] + 1,
+		return {
+			...state,
+			storage: {
+				...state.storage,
+				[action.boostName]: {
+					...state.storage[action.boostName],
+					"15": state.storage[action.boostName]["15"] + 1,
+				},
 			},
 		};
-
-		return newState;
 	},
 	useBoosts: (state, action) => {
-		const newState = { ...state };
-
-		for (const boost of action.boosts) {
-			newState.active = {
-				...newState.active,
-				[boost]: newState.active[boost] - 1,
-			};
-		}
-
-		return newState;
+		return {
+			...state,
+			active: {
+				...state.active,
+				"x2 Currency": action.boosts.includes("x2 Currency")
+					? state.active["x2 Currency"] - 1
+					: state.active["x2 Currency"],
+				"x2 Rank Experience": action.boosts.includes("x2 Rank Experience")
+					? state.active["x2 Rank Experience"] - 1
+					: state.active["x2 Rank Experience"],
+				"x2 Pet Experience": action.boosts.includes("x2 Pet Experience")
+					? state.active["x2 Pet Experience"] - 1
+					: state.active["x2 Pet Experience"],
+				"x2 Hatching Luck": action.boosts.includes("x2 Hatching Luck")
+					? state.active["x2 Hatching Luck"] - 1
+					: state.active["x2 Hatching Luck"],
+			},
+		};
 	},
 	redeemCode: (state, action) => {
 		if (action.boosts === undefined) {
 			return state;
 		}
 
-		const newState = { ...state };
 		const timeIndex = tostring(action.boosts.time) as ValidStoredBoostTime;
-
-		newState.storage = {
-			...newState.storage,
-			[action.name]: {
-				...newState.storage[action.boosts.name],
-				[action.boosts.time]: newState.storage[action.boosts.name][timeIndex] + 1,
+		return {
+			...state,
+			storage: {
+				...state.storage,
+				[action.boosts.name]: {
+					...state.storage[action.boosts.name],
+					[action.boosts.time]: state.storage[action.boosts.name][timeIndex] + 1,
+				},
 			},
 		};
-
-		return newState;
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */

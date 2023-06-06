@@ -337,33 +337,34 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 			return { ...state, gameVersion: [...state.gameVersion, action.version] };
 		},
 		claimGroupReward: (state, action) => {
-			const newState = { ...state };
-			if (action.petId !== undefined) {
-				newState.groupRewardClaimed.petIdClaimed = action.petId;
-			}
-
-			newState.groupRewardClaimed.lastClaimed = action.claimTime;
-			warn(`Claimed Group Reward`);
-			return newState;
+			return {
+				...state,
+				groupRewardClaimed: {
+					...state.groupRewardClaimed,
+					lastClaimed: action.claimTime,
+					petIdClaimed: action.petId !== undefined ? action.petId : state.groupRewardClaimed.petIdClaimed,
+				},
+			};
 		},
 		claimClubReward: (state, action) => {
-			const newState = { ...state };
-			if (action.petId !== undefined) {
-				newState.clubRewardClaimed.petIdClaimed = action.petId;
-			}
-
-			newState.clubRewardClaimed.lastClaimed = action.claimTime;
-			warn(`Claimed Club Reward`);
-			return newState;
+			return {
+				...state,
+				clubRewardClaimed: {
+					...state.clubRewardClaimed,
+					lastClaimed: action.claimTime,
+					petIdClaimed: action.petId !== undefined ? action.petId : state.clubRewardClaimed.petIdClaimed,
+				},
+			};
 		},
 		claimVIPReward: (state, action) => {
-			const newState = { ...state };
-			if (action.petId !== undefined) {
-				newState.vipRewardClaimed.petIdClaimed = action.petId;
-			}
-
-			newState.vipRewardClaimed.lastClaimed = action.claimTime;
-			return newState;
+			return {
+				...state,
+				vipRewardClaimed: {
+					...state.vipRewardClaimed,
+					lastClaimed: action.claimTime,
+					petIdClaimed: action.petId !== undefined ? action.petId : state.vipRewardClaimed.petIdClaimed,
+				},
+			};
 		},
 		killNpc: (state, action) => {
 			const newState = { ...state };
@@ -418,7 +419,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 				}
 
 				let wasNewPet = false;
-				const newUniqueCache = masteryData.maxLevel[pet.variant].masteryCache;
+				const newUniqueCache = [...masteryData.maxLevel[pet.variant].masteryCache];
 				if (!newUniqueCache.includes(pet.guid)) {
 					wasNewPet = true;
 
@@ -464,7 +465,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 				const petData = getPetData(action.id);
 
 				let wasNewPet = false;
-				const newUniqueCache = petIndex.maxLevel[action.variant].masteryCache;
+				const newUniqueCache = [...petIndex.maxLevel[action.variant].masteryCache];
 				if (!newUniqueCache.includes(action.guid)) {
 					wasNewPet = true;
 

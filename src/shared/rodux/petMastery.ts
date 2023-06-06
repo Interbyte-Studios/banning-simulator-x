@@ -109,6 +109,13 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 			}
 		}
 
+		petMasteryData = {
+			...petMasteryData,
+			[action.variant]: {
+				...petMasteryData[action.variant],
+			},
+		};
+
 		const masteryData = petMasteryData[action.variant];
 		switch (action.kind) {
 			case "fuse": {
@@ -165,6 +172,7 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 			}
 		}
 
+		newState.set(action.petId, petMasteryData);
 		return newState;
 	},
 	toggleMasteryCosmetic: (state, action) => {
@@ -187,8 +195,20 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 			}
 		}
 
+		// Create a deep copy of the petMasteryData
+		petMasteryData = {
+			...petMasteryData,
+			[action.variant]: {
+				...petMasteryData[action.variant],
+			},
+		};
+
+		// Now modify the deep copy
 		const masteryData = petMasteryData[action.variant];
 		masteryData.cosmeticEnabled = !masteryData.cosmeticEnabled;
+
+		// And don't forget to update the newState Map with the updated petMasteryData
+		newState.set(action.petId, petMasteryData);
 
 		return newState;
 	},

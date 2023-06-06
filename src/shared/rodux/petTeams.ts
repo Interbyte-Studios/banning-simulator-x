@@ -90,19 +90,17 @@ export const petTeamsReducer = Rodux.createReducer<PetTeamsState, PetTeamsAction
 			return state;
 		}
 
-		const newState = {
+		return {
 			maxTeams: state.maxTeams,
-			teams: state.teams,
+			teams: [
+				...state.teams,
+				{
+					id: state.teams.size() + 1,
+					name: "",
+					pets: action.petsToAddToTeam,
+				},
+			],
 		};
-
-		const newTeam = {
-			id: state.teams.size() + 1,
-			name: "",
-			pets: action.petsToAddToTeam,
-		};
-
-		newState.teams.push(newTeam);
-		return newState;
 	},
 	purchasePetTeam: (state) => {
 		return {
@@ -111,54 +109,36 @@ export const petTeamsReducer = Rodux.createReducer<PetTeamsState, PetTeamsAction
 		};
 	},
 	deletePetTeam: (state, action) => {
-		const newState: PetTeamsState = { ...state };
-
-		const newTeamData = [...newState.teams];
-		const filteredTeams = newTeamData.filter((team) => team.id !== action.teamId);
-
-		newState.teams = filteredTeams;
-
-		return newState;
+		return {
+			...state,
+			teams: state.teams.filter((team) => team.id !== action.teamId),
+		};
 	},
 	updateTeamName: (state, action) => {
-		const newState: PetTeamsState = { ...state };
+		const newState: PetTeamsState = {
+			...state,
+			teams: state.teams.map((team) => {
+				if (team.id !== action.teamId) {
+					return team;
+				}
 
-		let teamIndex: number | undefined;
-		newState.teams.forEach((team, index) => {
-			print(team.id, action.teamId);
-			if (team.id !== action.teamId) {
-				return;
-			}
-
-			teamIndex = index + 1;
-		});
-		if (teamIndex === undefined) {
-			warn(`[ Pet Teams Reducer ] - Failed to get stored team for team with id ${action.teamId}`);
-			return newState;
-		}
-
-		const newTeamData = [...newState.teams];
-		newTeamData[teamIndex - 1].name = action.name;
-
-		newState.teams = newTeamData;
+				return {
+					...team,
+					name: action.name,
+				};
+			}),
+		};
 
 		return newState;
 	},
 	deletePet: (state, action) => {
-		const newState: PetTeamsState = { ...state };
-
-		const newTeams = [...newState.teams];
-		for (const deletedPetGuid of action.pets) {
-			for (const team of newState.teams) {
-				const petIndex = team.pets.findIndex((petGuid) => petGuid === deletedPetGuid);
-				if (petIndex === undefined) {
-					continue;
-				}
-
-				team.pets.unorderedRemove(petIndex);
-			}
-		}
-		newState.teams = newTeams;
+		const newState: PetTeamsState = {
+			...state,
+			teams: state.teams.map((team) => ({
+				...team,
+				pets: team.pets.filter((petGuid) => !action.pets.includes(petGuid)),
+			})),
+		};
 
 		return newState;
 	},

@@ -9,7 +9,6 @@ import { GAMEPASSES } from "shared/configs/game";
 import { Pet } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
 
-import { AnimateEggs } from "../eggHatch/animateEggs";
 import { EggHudDisplay } from "./eggHudDisplay";
 
 interface EggHudProps extends EggHudMappedProps {
@@ -130,10 +129,6 @@ async function manageEggHatch(
 		}
 
 		RunService.BindToRenderStep("autoHatchAction", Enum.RenderPriority.Last.Value, async () => {
-			if (!AnimateEggs.canHatchEgg()) {
-				return;
-			}
-
 			if (getIsTrading()) {
 				RunService.UnbindFromRenderStep("autoHatchAction");
 				return;
@@ -166,10 +161,6 @@ async function manageEggHatch(
 			return;
 		});
 	} else {
-		if (!AnimateEggs.canHatchEgg()) {
-			return;
-		}
-
 		if (getIsTrading()) {
 			return;
 		}
@@ -186,9 +177,7 @@ async function manageEggHatch(
  * @returns A roact element.
  */
 export const EggHud = RoactRodux.connect(mapStateToProps)(
-	hooks((props: EggHudProps, { useState, useEffect }) => {
-		const [isActive, setIsActive] = useState(true);
-
+	hooks((props: EggHudProps, { useEffect }) => {
 		// handle hiding the hud when animating
 		useEffect(() => {
 			ContextActionService.BindAction(
@@ -217,33 +206,11 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 				Enum.KeyCode.T,
 			);
 
-			const connection = RunService.Heartbeat.Connect(() => {
-				if (
-					!AnimateEggs.eggAnimationComplete ||
-					!AnimateEggs.petAnimationComplete ||
-					AnimateEggs.eggAnimationInitiated ||
-					AnimateEggs.petAnimationInitiated
-				) {
-					if (isActive !== false) {
-						setIsActive(false);
-					}
-				} else {
-					if (isActive === false) {
-						setIsActive(true);
-					}
-				}
-			});
-
 			return (): void => {
-				connection.Disconnect();
 				ContextActionService.UnbindAction("hatchEgg");
 				ContextActionService.UnbindAction("hatchEggTriple");
 			};
 		});
-
-		if (!isActive) {
-			return <></>;
-		}
 
 		return (
 			<frame Visible={false}>

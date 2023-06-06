@@ -18,7 +18,7 @@ import { getEggCost } from "shared/util/getEggCost";
 import { getEggsMastery } from "shared/util/getEggsMastery";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
-import { PetFrame } from "../../../elements/common/petFrame";
+import { PetFrame } from "../../elements/common/petFrame";
 import { HatchEggButton } from "./hatchEgg";
 import { ToggleAutoHatchButton } from "./toggleAutoHatch";
 import { TripleHatchEggButton } from "./tripleHatchEgg";

@@ -61,18 +61,18 @@ export const defaultSpinWheel: SpinWheelState = {
 /* eslint-disable jsdoc/require-jsdoc */
 export const spinWheelReducer = Rodux.createReducer<SpinWheelState, SpinWheelActions>(defaultSpinWheel, {
 	updateWheelTime: (state, action) => {
-		const newState: SpinWheelState = { ...state };
-		newState.startTime = action.startTime;
-		newState.endTime = action.endTime;
-		newState.dayEndTime = action.dayEndTime;
-
-		return newState;
+		return {
+			...state,
+			startTime: action.startTime,
+			endTime: action.endTime,
+			dayEndTime: action.dayEndTime,
+		};
 	},
 	updateWheelUses: (state, action) => {
-		const newState: SpinWheelState = { ...state };
-		newState.spinsDone = action.timesSpinned;
-
-		return newState;
+		return {
+			...state,
+			spinsDone: action.timesSpinned,
+		};
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */

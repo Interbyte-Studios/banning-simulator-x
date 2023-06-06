@@ -75,10 +75,10 @@ export const defaultMediaState = {
 /* eslint-disable jsdoc/require-jsdoc */
 export const mediaReducer = Rodux.createReducer<MediaState, MediaActions>(defaultMediaState, {
 	verifyDiscord: (state) => {
-		const newState = { ...state };
-		newState.discordVerified = true;
-
-		return newState;
+		return {
+			...state,
+			discordVerified: true,
+		};
 	},
 	redeemCode: (state, action) => {
 		const newState = { ...state };
