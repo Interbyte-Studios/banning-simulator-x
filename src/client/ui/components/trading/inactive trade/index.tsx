@@ -23,7 +23,6 @@ enum TradeState {
 
 interface InactiveTradeProps {
 	tradeMenusEnabled: boolean;
-	tradeMenusVisible: boolean;
 	setForeignPlayer: (player: Player) => void;
 	setActiveTrade: () => void;
 	hideMenu: () => void;
@@ -227,7 +226,7 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 		switch (tradeState) {
 			case TradeState.Idle:
 			case TradeState.WanderingIdle:
-				if (!props.tradeMenusEnabled || !props.tradeMenusVisible) {
+				if (!props.tradeMenusEnabled) {
 					return <></>;
 				}
 

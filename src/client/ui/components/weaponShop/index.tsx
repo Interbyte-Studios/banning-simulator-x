@@ -10,26 +10,23 @@ const player = Players.LocalPlayer;
 
 interface WeaponShopHandleProps {
 	enabled: boolean;
-	weaponShopVisible: boolean;
-	setWeaponShopVisibility: (value: boolean) => void;
+	setVisibility: (value: boolean) => void;
 }
 
 /**
  * Handles the visibility for components related to the weapon shop.
  */
-export const WeaponShopHandle = hooks((props: WeaponShopHandleProps, { useEffect }) => {
-	if (!props.enabled) {
-		return <></>;
-	}
+export const WeaponShopHandle = hooks((props: WeaponShopHandleProps, { useEffect, useState }) => {
+	const [interfaceVisible, setInterfaceVisibility] = useState(false);
 
 	useEffect(() => {
-		if (!props.weaponShopVisible) {
+		if (!props.enabled) {
 			const camera = Workspace.CurrentCamera;
 			assert(camera, `Workspace current camera was undefined. Cannot open shop.`);
 
 			camera.CameraType = Enum.CameraType.Custom;
 		}
-	});
+	}, [props.enabled]);
 
 	useEffect(() => {
 		ContextActionService.BindAction(
@@ -61,7 +58,8 @@ export const WeaponShopHandle = hooks((props: WeaponShopHandleProps, { useEffect
 					return;
 				}
 
-				props.setWeaponShopVisibility(true);
+				setInterfaceVisibility(true);
+				props.setVisibility(true);
 			},
 			false,
 			Enum.KeyCode.Q,
@@ -72,9 +70,25 @@ export const WeaponShopHandle = hooks((props: WeaponShopHandleProps, { useEffect
 		};
 	});
 
-	if (props.weaponShopVisible) {
-		return <WeaponShop setWeaponShopVisibility={props.setWeaponShopVisibility} />;
+	if (!props.enabled) {
+		return <></>;
+	} else if (interfaceVisible) {
+		return (
+			<WeaponShop
+				hideMenu={(): void => {
+					setInterfaceVisibility(false);
+					props.setVisibility(false);
+				}}
+			/>
+		);
 	} else {
-		return <WeaponShopInteractPrompt visible={true} displayShop={(): void => props.setWeaponShopVisibility(true)} />;
+		return (
+			<WeaponShopInteractPrompt
+				displayShop={(): void => {
+					setInterfaceVisibility(true);
+					props.setVisibility(true);
+				}}
+			/>
+		);
 	}
 });

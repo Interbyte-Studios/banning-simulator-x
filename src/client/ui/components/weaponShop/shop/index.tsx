@@ -15,7 +15,7 @@ import { ViewPreviousWeapon } from "./viewPrevious";
 import { WeaponShopWeaponInfo } from "./weaponInfo";
 
 interface WeaponShopProps extends WeaponShopMappedProps {
-	setWeaponShopVisibility: (value: boolean) => void;
+	hideMenu: () => void;
 }
 
 interface WeaponShopMappedProps {
@@ -54,7 +54,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.5, 0.925)}
 					minimizedSize={0.06}
 					maximizedSize={0.07}
-					onClosed={(): void => props.setWeaponShopVisibility(false)}
+					onClosed={(): void => props.hideMenu()}
 				/>
 			);
 
@@ -65,7 +65,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.58, 0.925)}
 					minimizedSize={0.06}
 					maximizedSize={0.07}
-					onClosed={(): void => props.setWeaponShopVisibility(false)}
+					onClosed={(): void => props.hideMenu()}
 				/>
 			);
 

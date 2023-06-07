@@ -31,11 +31,7 @@ function shouldDisplay(character: Model | undefined, adornee: BasePart): boolean
 /**
  * Displays a custom proximity prompt interface allowing the player to intract with the talisman tower.
  */
-export const TalismanTowerInteractPrompt = hooks((props: { visible: boolean; displayShop: () => void }, hooks) => {
-	if (!props.visible) {
-		return <></>;
-	}
-
+export const TalismanTowerInteractPrompt = hooks((props: { displayShop: () => void }, hooks) => {
 	const { useState, useEffect } = hooks;
 	const [isDisplayed, setDisplay] = useState(false);
 
@@ -61,46 +57,46 @@ export const TalismanTowerInteractPrompt = hooks((props: { visible: boolean; dis
 
 	if (!isDisplayed) {
 		return <></>;
-	}
-
-	return (
-		<billboardgui
-			Active={true}
-			AlwaysOnTop={true}
-			LightInfluence={0}
-			Size={UDim2.fromScale(5, 5)}
-			Adornee={Workspace.interactions.worlds["Ban Land"].talismanTower.InteractPrompt}
-		>
-			<StrokeTextLabel
-				native={{
-					Position: UDim2.fromScale(0.5, 0),
-					Size: UDim2.fromScale(1.5, 0.4),
-					Text: "Talisman Tower",
-				}}
-				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(25, 147, 170) } }}
-			/>
-			<SpringImageButton
-				native={{
-					Image: assetIds.images.buttons["teal button"],
-				}}
-				size={{ minSize: 0.6, maxSize: 0.7 }}
-				events={{
-					/* eslint-disable jsdoc/require-jsdoc */
-					Activated: (): void => {
-						playSFX(UIEngagement.MinorEngagement);
-						props.displayShop();
-					},
-					/* eslint-enable jsdoc/require-jsdoc */
-				}}
+	} else {
+		return (
+			<billboardgui
+				Active={true}
+				AlwaysOnTop={true}
+				LightInfluence={0}
+				Size={UDim2.fromScale(5, 5)}
+				Adornee={Workspace.interactions.worlds["Ban Land"].talismanTower.InteractPrompt}
 			>
 				<StrokeTextLabel
 					native={{
-						Size: UDim2.fromScale(0.9, 0.9),
-						Text: "X",
+						Position: UDim2.fromScale(0.5, 0),
+						Size: UDim2.fromScale(1.5, 0.4),
+						Text: "Talisman Tower",
 					}}
 					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(25, 147, 170) } }}
 				/>
-			</SpringImageButton>
-		</billboardgui>
-	);
+				<SpringImageButton
+					native={{
+						Image: assetIds.images.buttons["teal button"],
+					}}
+					size={{ minSize: 0.6, maxSize: 0.7 }}
+					events={{
+						/* eslint-disable jsdoc/require-jsdoc */
+						Activated: (): void => {
+							playSFX(UIEngagement.MinorEngagement);
+							props.displayShop();
+						},
+						/* eslint-enable jsdoc/require-jsdoc */
+					}}
+				>
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.9, 0.9),
+							Text: "X",
+						}}
+						stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(25, 147, 170) } }}
+					/>
+				</SpringImageButton>
+			</billboardgui>
+		);
+	}
 });

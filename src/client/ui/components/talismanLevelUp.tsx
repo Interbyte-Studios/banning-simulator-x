@@ -17,10 +17,6 @@ import { StrokeTextLabel } from "../elements/baseElements/textlabels/strokeTextL
 import { TalismanGradient } from "../elements/gradients/talismanGradient";
 import { TalismanViewport } from "../elements/viewports/talismanViewport";
 
-interface TalismanLevelUpAnimationProps extends TalismanLevelUpAnimationMappedProps {
-	enabled: boolean;
-}
-
 interface TalismanLevelUpAnimationMappedProps {
 	currentTalisman: CurrentTalismanState;
 	talismans: TalismansState;
@@ -48,11 +44,7 @@ const cachedTalisman: { id: number; phase: TalismanPhases } = {
  * An animation that plays when a player levels up their talisman.
  */
 export const TalismanLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
-	hooks((props: TalismanLevelUpAnimationProps, hooks) => {
-		if (!props.enabled) {
-			return <></>;
-		}
-
+	hooks((props: TalismanLevelUpAnimationMappedProps, hooks) => {
 		if (props.currentTalisman === undefined) {
 			return <></>;
 		}

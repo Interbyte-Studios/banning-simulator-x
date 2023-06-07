@@ -33,11 +33,7 @@ export function shouldDisplay(character: Model | undefined, adornee: BasePart): 
  * Displays a custom proximity prompt interface allowing the player to intract with the weapon shop.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const WeaponShopInteractPrompt = hooks((props: { visible: boolean; displayShop: () => void }, hooks) => {
-	if (!props.visible) {
-		return <></>;
-	}
-
+export const WeaponShopInteractPrompt = hooks((props: { displayShop: () => void }, hooks) => {
 	const { useState, useEffect } = hooks;
 	const [isDisplayed, setDisplay] = useState(false);
 

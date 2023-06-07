@@ -15,7 +15,6 @@ import { ZoneTeleportCard } from "./zoneCard";
 
 interface TeleportationProps {
 	enabled: boolean;
-	visible: boolean;
 	hideMenu: () => void;
 }
 
@@ -23,10 +22,6 @@ interface TeleportationProps {
  * A teleportation interface for players with the gamepass.
  */
 export const Teleportation = hooks((props: TeleportationProps, { useState, useValue, useEffect }) => {
-	if (!props.enabled || !props.visible) {
-		return <></>;
-	}
-
 	const [worldTeleportToView, setWorldTeleport] = useState<WorldName | undefined>(undefined);
 
 	const uiListLayoutRef = useValue(Roact.createRef<UIListLayout>());
@@ -43,9 +38,11 @@ export const Teleportation = hooks((props: TeleportationProps, { useState, useVa
 				teleportationCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
 			}
 		});
-	});
+	}, [uiListLayoutRef]);
 
-	if (worldTeleportToView !== undefined) {
+	if (!props.enabled) {
+		return <></>;
+	} else if (worldTeleportToView !== undefined) {
 		const zonesToDisplay: Array<Roact.Element> = [];
 		for (const [worldName, worldData] of pairs(WORLDS)) {
 			for (const [zoneName, zoneData] of pairs(worldData.zones)) {

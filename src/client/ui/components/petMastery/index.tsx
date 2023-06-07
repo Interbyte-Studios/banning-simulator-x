@@ -12,7 +12,7 @@ const player = Players.LocalPlayer;
 
 interface PetMasteryProps {
 	enabled: boolean;
-	setPetMasteryVisibility: (visible: boolean) => void;
+	setVisibility: (visible: boolean) => void;
 }
 
 /**
@@ -86,7 +86,7 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 
 				setWorldViewing(worldToOpen);
 				setInterfaceVisibility(true);
-				props.setPetMasteryVisibility(true);
+				props.setVisibility(true);
 			},
 			false,
 			Enum.KeyCode.C,
@@ -103,7 +103,7 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 				world={worldViewing}
 				hideMenu={(): void => {
 					setInterfaceVisibility(false);
-					props.setPetMasteryVisibility(false);
+					props.setVisibility(false);
 				}}
 			/>
 		);
@@ -137,7 +137,7 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 							displayPetMastery={(): void => {
 								setWorldViewing(worldName);
 								setInterfaceVisibility(true);
-								props.setPetMasteryVisibility(true);
+								props.setVisibility(true);
 							}}
 						/>
 					);

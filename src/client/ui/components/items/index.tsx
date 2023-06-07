@@ -3,6 +3,7 @@ import { font, vec2Middle } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 import { BottomBar } from "./bottombar";
@@ -15,7 +16,6 @@ export type ValidInventoryType = "Pets" | "Weapons" | "Talismans" | "Titles";
 
 interface ItemInventoryProps {
 	enabled: boolean;
-	visible: boolean;
 	hideMenu: () => void;
 }
 
@@ -23,14 +23,6 @@ interface ItemInventoryProps {
  * Item inventory user interface.
  */
 export const ItemInventory = hooks((props: ItemInventoryProps, hooks) => {
-	if (!props.enabled) {
-		return <></>;
-	}
-
-	if (!props.visible) {
-		return <></>;
-	}
-
 	const { useState } = hooks;
 	const [itemInventoryVisible, setTypeOfInventoryDisplayed] = useState<ValidInventoryType>("Pets");
 
@@ -45,41 +37,48 @@ export const ItemInventory = hooks((props: ItemInventoryProps, hooks) => {
 		inventoryToDisplay.push(<TitlesItems />);
 	}
 
-	return (
-		<imagelabel
-			AnchorPoint={vec2Middle}
-			BackgroundTransparency={1}
-			Size={UDim2.fromScale(0.5, 0.6)}
-			Position={UDim2.fromScale(0.5, 0.5)}
-			Image={assetIds.images.ui.inventory.background}
-			ScaleType={Enum.ScaleType.Fit}
-		>
-			<uiaspectratioconstraint AspectRatio={1.36} />
-			<textlabel
-				BackgroundTransparency={1}
+	if (!props.enabled) {
+		return <></>;
+	} else {
+		return (
+			<imagelabel
 				AnchorPoint={vec2Middle}
-				Size={UDim2.fromScale(0.4, 0.15)}
-				Position={UDim2.fromScale(0.5, 0.075)}
-				Text={itemInventoryVisible}
-				Font={font}
-				TextScaled={true}
-				TextColor3={Color3.fromRGB(255, 255, 255)}
+				BackgroundTransparency={1}
+				Size={UDim2.fromScale(0.5, 0.6)}
+				Position={UDim2.fromScale(0.5, 0.5)}
+				Image={assetIds.images.ui.inventory.background}
+				ScaleType={Enum.ScaleType.Fit}
 			>
-				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(122, 41, 0) }} />
-			</textlabel>
-			{inventoryToDisplay}
-			<BottomBar
-				displayPetInventory={(): void => setTypeOfInventoryDisplayed("Pets")}
-				displayWeaponsInventory={(): void => setTypeOfInventoryDisplayed("Weapons")}
-				displayTalismansInventory={(): void => setTypeOfInventoryDisplayed("Talismans")}
-				displayTitlesInventory={(): void => setTypeOfInventoryDisplayed("Titles")}
-			/>
-			<ExitButton
-				Position={UDim2.fromScale(0.985, 0.115)}
-				minimizedSize={0.09}
-				maximizedSize={0.1}
-				onClosed={(): void => props.hideMenu()}
-			/>
-		</imagelabel>
-	);
+				<uiaspectratioconstraint AspectRatio={1.36} />
+				<textlabel
+					BackgroundTransparency={1}
+					AnchorPoint={vec2Middle}
+					Size={UDim2.fromScale(0.4, 0.15)}
+					Position={UDim2.fromScale(0.5, 0.075)}
+					Text={itemInventoryVisible}
+					Font={font}
+					TextScaled={true}
+					TextColor3={Color3.fromRGB(255, 255, 255)}
+				>
+					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(122, 41, 0) }} />
+				</textlabel>
+				{inventoryToDisplay}
+				<BottomBar
+					displayPetInventory={(): void => setTypeOfInventoryDisplayed("Pets")}
+					displayWeaponsInventory={(): void => setTypeOfInventoryDisplayed("Weapons")}
+					displayTalismansInventory={(): void => setTypeOfInventoryDisplayed("Talismans")}
+					displayTitlesInventory={(): void => setTypeOfInventoryDisplayed("Titles")}
+				/>
+				<ExitButton
+					Position={UDim2.fromScale(0.985, 0.115)}
+					minimizedSize={0.09}
+					maximizedSize={0.1}
+					onClosed={(): void => {
+						playSFX(UIEngagement.MinorEngagement);
+						props.hideMenu();
+					}}
+				/>
+			</imagelabel>
+		);
+	}
 });

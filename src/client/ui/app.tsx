@@ -46,7 +46,7 @@ const visibilityStates = {
 	spinWheelVisibility: false,
 };
 
-export const app = hooks((props: AppProps, { useState, useCallback, useEffect, useContext }) => {
+export const app = hooks((props: AppProps, { useState, useEffect, useContext }) => {
 	const [visibility, setVisibility] = useState(visibilityStates);
 	const [activeTrade, setActiveTrade] = useState(false);
 	const [isHatching, setHatchingStatus] = useState(false);
@@ -70,17 +70,29 @@ export const app = hooks((props: AppProps, { useState, useCallback, useEffect, u
 			false,
 			Enum.KeyCode.Z,
 		);
+
+		return (): void => {
+			ContextActionService.UnbindAction("equipWeapon");
+		};
 	});
 
-	const isMenuVisible = useCallback(
-		(currentMenu?: keyof typeof visibilityStates) =>
-			Object.entries(visibility)
-				.filter(([menu]) => menu !== currentMenu)
-				.some(([, value]) => value) ||
-			activeTrade ||
-			isHatching,
-		[visibility, activeTrade, isHatching],
-	);
+	/**
+	 * Determines if any menu is visible.
+	 *
+	 * @param currentMenu The current menu that is being displayed.
+	 * @returns Whether or not any menu is visible.
+	 */
+	const isMenuVisible = (currentMenu?: keyof typeof visibilityStates): boolean =>
+		Object.entries(visibility)
+			.filter(([menu]) => menu !== currentMenu)
+			.some(([, value]) => value) ||
+		activeTrade ||
+		isHatching;
+
+	warn(`-------------------------`);
+	warn(`Rendering UI at ${os.clock()}...`);
+	Object.entries(visibility).forEach(([key, value]) => warn(`${key}: ${value}`));
+	warn(`-------------------------`);
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
@@ -93,44 +105,30 @@ export const app = hooks((props: AppProps, { useState, useCallback, useEffect, u
 					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHubVisible: true })}
 					displayTradingMenu={(): void => setVisibility({ ...visibilityStates, tradingVisible: true })}
 				/>
-				<WeaponLevelUpAnimation enabled={true} />
-				<TalismanLevelUpAnimation enabled={true} />
-				<LocalMessages />
-				<ZonesUI enabled={!isMenuVisible()} />
-				<WeaponEquip visible={!isMenuVisible()} />
-				<RankUpgrade enabled={!isMenuVisible()} />
 				<WeaponShopHandle
 					enabled={!isMenuVisible("weaponShopVisible")}
-					weaponShopVisible={visibility.weaponShopVisible}
-					setWeaponShopVisibility={(value: boolean): void =>
-						setVisibility((prev) => ({ ...prev, weaponShopVisible: value }))
-					}
+					setVisibility={(value: boolean): void => setVisibility((prev) => ({ ...prev, weaponShopVisible: value }))}
 				/>
 				<TalismanTowerHandle
 					enabled={!isMenuVisible("talismanTowerVisible")}
-					talismanTowerVisible={visibility.talismanTowerVisible}
-					setTalismanTowerVisibility={(value: boolean): void =>
-						setVisibility((prev) => ({ ...prev, talismanTowerVisible: value }))
-					}
+					setVisibility={(value: boolean): void => setVisibility((prev) => ({ ...prev, talismanTowerVisible: value }))}
 				/>
 				<PetMastery
 					enabled={!isMenuVisible("petMasteryVisible")}
-					setPetMasteryVisibility={(value: boolean): void =>
-						setVisibility((prev) => ({ ...prev, petMasteryVisible: value }))
-					}
+					setVisibility={(value: boolean): void => setVisibility((prev) => ({ ...prev, petMasteryVisible: value }))}
 				/>
 				<Teleportation
 					enabled={!isMenuVisible("teleportationVisible")}
-					visible={visibility.teleportationVisible}
 					hideMenu={(): void => setVisibility((prev) => ({ ...prev, teleportationVisible: false }))}
 				/>
-				<CurrencyGainAnimation />
 				<ItemInventory
 					enabled={!isMenuVisible("itemsVisible")}
-					visible={visibility.itemsVisible}
-					hideMenu={(): void => setVisibility((prev) => ({ ...prev, itemsVisible: false }))}
+					hideMenu={(): void => {
+						warn(`Beginning to exit item inventory at: ${os.clock()}`);
+						setVisibility((prev) => ({ ...prev, itemsVisible: false }));
+						warn(`Finished exitting item inventory at: ${os.clock()}`);
+					}}
 				/>
-				<DatastoreEvents enabled={!isMenuVisible()} />
 				<AutoFight
 					enabled={visibility.autoFightVisible}
 					hideMenu={(): void => setVisibility((prev) => ({ ...prev, autoFightVisible: false }))}
@@ -139,16 +137,12 @@ export const app = hooks((props: AppProps, { useState, useCallback, useEffect, u
 					enabled={visibility.accountHubVisible}
 					hideMenu={(): void => setVisibility((prev) => ({ ...prev, accountHubVisible: false }))}
 				/>
-				<Fusing enabled={!isMenuVisible()} />
 				<Trading
 					tradeMenusEnabled={!isMenuVisible("tradingVisible")}
-					tradeMenusVisible={visibility.tradingVisible}
 					setActiveTrade={(value: boolean): void => {
-						//print(`Setting active trade to ${value}`);
 						setActiveTrade(value);
 					}}
 					hideMenu={(): void => {
-						//warn(`Hiding trading`);
 						setVisibility((prev) => ({ ...prev, tradingVisible: false }));
 					}}
 				/>
@@ -156,9 +150,18 @@ export const app = hooks((props: AppProps, { useState, useCallback, useEffect, u
 					visible={visibility.spinWheelVisibility}
 					hideMenu={(): void => setVisibility((prev) => ({ ...prev, spinWheelVisibility: false }))}
 				/>
+				<DatastoreEvents enabled={!isMenuVisible()} />
+				<ZonesUI enabled={!isMenuVisible()} />
+				<WeaponEquip visible={!isMenuVisible()} />
+				<RankUpgrade enabled={!isMenuVisible()} />
+				<Fusing enabled={!isMenuVisible()} />
 				<Leaderboards />
 				<Rewards />
+				<LocalMessages />
 				<EggCost />
+				<WeaponLevelUpAnimation />
+				<TalismanLevelUpAnimation />
+				<CurrencyGainAnimation />
 			</>
 		</RoactRodux.StoreProvider>
 	);

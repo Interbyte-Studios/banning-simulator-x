@@ -16,10 +16,6 @@ import { BaseFrame } from "../elements/baseElements/baseFrame";
 import { StrokeTextLabel } from "../elements/baseElements/textlabels/strokeTextLabel";
 import { WeaponViewport } from "../elements/viewports/weaponViewport";
 
-interface WeaponLevelUpAnimationProps extends WeaponLevelUpAnimationMappedProps {
-	enabled: boolean;
-}
-
 interface WeaponLevelUpAnimationMappedProps {
 	currentWeapon: CurrentWeaponState;
 	weapons: WeaponsState;
@@ -47,11 +43,7 @@ const cachedWeapon = {
  * An animation that plays when a player levels up their weapon.
  */
 export const WeaponLevelUpAnimation = RoactRodux.connect(mapStateToProps)(
-	hooks((props: WeaponLevelUpAnimationProps, hooks) => {
-		if (!props.enabled) {
-			return <></>;
-		}
-
+	hooks((props: WeaponLevelUpAnimationMappedProps, hooks) => {
 		const storedWeapon = props.weapons.find((weapon) => weapon.id === props.currentWeapon.id);
 		assert(storedWeapon, `Expected player to own weapon of id: "${props.currentWeapon}" since they have it equipped.`);
 

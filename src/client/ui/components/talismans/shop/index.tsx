@@ -10,7 +10,7 @@ import { ViewNextTalisman } from "./viewNext";
 import { ViewPreviousTalisman } from "./viewPrevious";
 
 interface TalismanTowerProps {
-	setTalismanTowerVisibility: (value: boolean) => void;
+	hideMenu: () => void;
 }
 
 /**
@@ -80,7 +80,7 @@ export const TalismanTower = hooks((props: TalismanTowerProps, { useState, useEf
 				Position={UDim2.fromScale(0.58, 0.925)}
 				minimizedSize={0.06}
 				maximizedSize={0.07}
-				onClosed={(): void => props.setTalismanTowerVisibility(false)}
+				onClosed={(): void => props.hideMenu()}
 			/>
 		</>
 	);
