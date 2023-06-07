@@ -25,6 +25,11 @@ export const playerStores = new Map<Player, Store>();
 const dataLoaded = new Map<Player, boolean>();
 
 /**
+ * A collection that logs whether or not data is being saved.
+ */
+const savingData = new Map<Player, boolean>();
+
+/**
  * Map containing creation callbacks for stores associated with each player.
  */
 const storeCreationCallbacks: Map<Player, Array<(store: Store) => void>> = new Map();
@@ -185,6 +190,11 @@ Players.PlayerRemoving.Connect((player) => {
 		return;
 	}
 
+	if (savingData.get(player) !== undefined) {
+		return;
+	}
+	savingData.set(player, true);
+
 	const store = playerStores.get(player);
 	if (store !== undefined) {
 		const state = store.getState() as StoreState;
@@ -192,6 +202,9 @@ Players.PlayerRemoving.Connect((player) => {
 
 		store.destruct();
 		playerStores.delete(player);
+
+		dataLoaded.delete(player);
+		savingData.delete(player);
 
 		// check that no creation callbacks existed for the player
 		// if they did, error
@@ -204,6 +217,11 @@ Players.PlayerRemoving.Connect((player) => {
 			severity: "error",
 			message: `[PlayerDataStore - PlayerRemoving] Failed to retrieve rodux store for player`,
 		});
+
+		playerStores.delete(player);
+		dataLoaded.delete(player);
+		savingData.delete(player);
+
 		throw `[PlayerDataStore - PlayerRemoving] Failed to retrieve rodux store for player ${player.Name}`;
 	}
 });
@@ -229,7 +247,7 @@ game.BindToClose(() => {
 	shuttingDown = true;
 
 	for (const player of Players.GetPlayers()) {
-		if (dataLoaded.get(player) !== undefined) {
+		if (dataLoaded.get(player) !== undefined && savingData.get(player) === undefined) {
 			const store = playerStores.get(player);
 			if (store !== undefined) {
 				const state = store.getState() as StoreState;
