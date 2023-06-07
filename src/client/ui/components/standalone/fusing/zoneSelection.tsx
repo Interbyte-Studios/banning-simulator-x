@@ -6,7 +6,7 @@ import { hooks } from "client/ui/hooks";
 import { EGGS } from "shared/configs/eggs";
 import { ZoneNames } from "shared/configs/zones";
 
-import { ZoneTeleportCard } from "../../teleportation/zoneCard";
+import { ZoneTeleportCard } from "../../features/teleportation/zoneCard";
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const ZoneSelection = hooks((props: { setZone: (zoneName: ZoneNames) => void }, { useValue, useEffect }) => {

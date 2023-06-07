@@ -1,4 +1,4 @@
-import { PetInventoryData } from "client/ui/components/items/pets/inventory";
+import { PetInventoryData } from "client/ui/components/features/items/pets/inventory";
 import { RARITIES } from "shared/configs/rarities";
 import { Pet, PetsState } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";

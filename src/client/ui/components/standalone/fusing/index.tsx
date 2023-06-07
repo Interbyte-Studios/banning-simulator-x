@@ -11,7 +11,7 @@ import assetIds from "shared/assets";
 import { Variants } from "shared/configs/pets";
 import { ZoneNames } from "shared/configs/zones";
 
-import { shouldDisplay } from "../../weaponShop/interactPrompt";
+import { shouldDisplay } from "../../shops/weaponShop/interactPrompt";
 import { DisplayPets } from "./displayPets";
 import { PetSelection } from "./petSelection";
 import { ZoneSelection } from "./zoneSelection";

@@ -2,11 +2,11 @@ import Roact from "@rbxts/roact";
 import { CollectionService } from "@rbxts/services";
 import { sortPets } from "client/modules/pets/sort";
 import { vec2Middle } from "client/ui/commonValues";
-import { PetFrame } from "client/ui/components/items/pets/inventory/petFrame";
+import { PetInventoryData } from "client/ui/components/features/items/pets/inventory";
+import { PetFrame } from "client/ui/components/features/items/pets/inventory/petFrame";
 import { PetsState } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 
-import { PetInventoryData } from "../../components/items/pets/inventory";
 import { hooks } from "../../hooks";
 import { updateContentSize } from "../common/rescalingScrollingFrame";
 

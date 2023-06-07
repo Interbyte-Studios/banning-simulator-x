@@ -5,6 +5,7 @@ import { Players, RunService } from "@rbxts/services";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { PetFrame } from "client/ui/elements/common/petFrame";
 import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
@@ -18,7 +19,6 @@ import { getEggCost } from "shared/util/getEggCost";
 import { getEggsMastery } from "shared/util/getEggsMastery";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
-import { PetFrame } from "../../elements/common/petFrame";
 import { HatchEggButton } from "./hatchEgg";
 import { ToggleAutoHatchButton } from "./toggleAutoHatch";
 import { TripleHatchEggButton } from "./tripleHatchEgg";
