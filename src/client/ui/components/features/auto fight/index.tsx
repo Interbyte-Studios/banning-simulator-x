@@ -380,7 +380,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 
 			const connection = npcsFolder.ChildRemoved.Connect((npcCharacter) => {
 				if (focusedNpc === undefined) {
-					return warn("Focused was undefined.");
+					return;
 				}
 
 				if (!npcCharacter.IsA("Model")) {
@@ -388,7 +388,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				}
 
 				if (npcCharacter.Name !== focusedNpc.Parent?.Name) {
-					return warn("Names didn't match.");
+					return;
 				}
 
 				const humanoid = npcCharacter.FindFirstChildOfClass("Humanoid");
