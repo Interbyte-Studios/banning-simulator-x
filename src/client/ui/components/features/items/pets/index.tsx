@@ -206,7 +206,6 @@ export const PetInventory = hooks((_, { useState, useCallback, useEffect }) => {
 	 */
 	const addPetToDeletionRegistry = useCallback(
 		(guid: string) => {
-			print("Adding to deletion registry");
 			setPetsToDelete([...petsToDelete, guid]);
 		},
 		[setPetsToDelete, petsToDelete],

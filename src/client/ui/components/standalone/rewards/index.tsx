@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Workspace } from "@rbxts/services";
+import { MarketplaceService, Players, RunService, Workspace } from "@rbxts/services";
 import { uiClaimButtonStrokeColor, uiDarkStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
@@ -15,7 +15,7 @@ import { formatTime } from "client/util/formatTime";
 import { getPetDecal } from "client/util/getPetDecal";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { BOOST_IMAGES, BoostProduct } from "shared/configs/game";
+import { BOOST_IMAGES, BoostProduct, GAMEPASSES } from "shared/configs/game";
 import { StoreState } from "shared/rodux";
 import { GamepassesState } from "shared/rodux/gamepasses";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
@@ -125,6 +125,7 @@ export const Rewards = RoactRodux.connect(mapStateToProps)(
 				async () => {
 					if (!props.gamepasses.VIP) {
 						addAnnouncement("You don't own the VIP gamepass.", AnnouncementType.Error);
+						MarketplaceService.PromptProductPurchase(Players.LocalPlayer, GAMEPASSES.VIP);
 						return;
 					}
 
@@ -161,6 +162,50 @@ export const Rewards = RoactRodux.connect(mapStateToProps)(
 				vipInteraction.Disconnect();
 			};
 		});
+
+		useEffect(() => {
+			const connection = RunService.Heartbeat.Connect(() => {
+				const now = DateTime.now();
+
+				if (props.gamepasses.VIP) {
+					if (now.UnixTimestamp - props.index.vipRewardClaimed.lastClaimed > 86400) {
+						Workspace.interactions["VIP Chest"].interact.ProximityPrompt.ActionText = "Claim VIP Reward";
+					} else {
+						const timeUntilClaim = 86400 - (now.UnixTimestamp - props.index.vipRewardClaimed.lastClaimed);
+						Workspace.interactions["VIP Chest"].interact.ProximityPrompt.ActionText = `Claim in ${formatTime(
+							timeUntilClaim,
+						)}`;
+					}
+				}
+
+				if (props.index.groupRank !== undefined) {
+					const timeSinceGroupClaim = now.UnixTimestamp - props.index.groupRewardClaimed.lastClaimed;
+					const timeSinceClubClaim = now.UnixTimestamp - props.index.clubRewardClaimed.lastClaimed;
+
+					if (timeSinceClubClaim > 86400) {
+						Workspace.interactions.GroupChest.interact.ProximityPrompt.ActionText = "Claim Club Reward";
+					} else if (timeSinceGroupClaim > 86400) {
+						Workspace.interactions.GroupChest.interact.ProximityPrompt.ActionText = "Claim Group Reward";
+					} else {
+						if (timeSinceClubClaim < timeSinceGroupClaim) {
+							const timeUntilClaim = 86400 - timeSinceClubClaim;
+							Workspace.interactions.GroupChest.interact.ProximityPrompt.ActionText = `Claim in ${formatTime(
+								timeUntilClaim,
+							)}`;
+						} else {
+							const timeUntilClaim = 86400 - timeSinceGroupClaim;
+							Workspace.interactions.GroupChest.interact.ProximityPrompt.ActionText = `Claim in ${formatTime(
+								timeUntilClaim,
+							)}`;
+						}
+					}
+				}
+
+				task.wait(1);
+			});
+
+			return (): void => connection.Disconnect();
+		}, []);
 
 		if (rewards.isEmpty()) {
 			return <></>;

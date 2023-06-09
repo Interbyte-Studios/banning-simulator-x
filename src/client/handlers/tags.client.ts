@@ -135,11 +135,6 @@ function createPlayerTag(player: Player, store: Store): t.static<typeof isPlayer
 		tag.hold.staff.Visible = true;
 	}
 
-	humanoid.Died.Connect(() => {
-		tag.Destroy();
-		return;
-	});
-
 	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
 	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
 
@@ -153,6 +148,11 @@ function createPlayerTag(player: Player, store: Store): t.static<typeof isPlayer
 
 	tag.Adornee = head;
 	tag.Parent = friendlyTags;
+
+	humanoid.Died.Connect(() => {
+		tag.Destroy();
+		return;
+	});
 
 	return tag;
 }
@@ -271,6 +271,20 @@ function createEnemyTag(enemy: Model): void {
 		humanoid.Health,
 	)} / ${twoDpAbbreviator.numberToString(humanoid.MaxHealth)}]`;
 
+	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
+	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
+
+	for (const uiStroke of tag.GetDescendants()) {
+		if (!uiStroke.IsA("UIStroke")) {
+			continue;
+		}
+
+		CollectionService.AddTag(uiStroke, "Billboard_UIStroke");
+	}
+
+	tag.Adornee = head;
+	tag.Parent = enemyTags;
+
 	humanoid.GetPropertyChangedSignal("Health").Connect(() => {
 		const health = humanoid.Health;
 		const maxHealth = humanoid.MaxHealth;
@@ -300,20 +314,6 @@ function createEnemyTag(enemy: Model): void {
 		tag.Destroy();
 		return;
 	});
-
-	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
-	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
-
-	for (const uiStroke of tag.GetDescendants()) {
-		if (!uiStroke.IsA("UIStroke")) {
-			continue;
-		}
-
-		CollectionService.AddTag(uiStroke, "Billboard_UIStroke");
-	}
-
-	tag.Adornee = head;
-	tag.Parent = enemyTags;
 }
 
 /**

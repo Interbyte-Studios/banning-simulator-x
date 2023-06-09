@@ -1,8 +1,10 @@
 import Roact from "@rbxts/roact";
+import RoactRodux from "@rbxts/roact-rodux";
 import { Players } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 
 import { app as App } from "./app";
+import { Leaderboards } from "./components/standalone/leaderboards";
 import { AnnouncementAPI } from "./context/AnnouncementsAPI";
 import { remoteContext } from "./mocks/remoteContext";
 import { accoladeRemotes } from "./remotes/accolades";
@@ -56,6 +58,11 @@ onStoreCreated(player)
 				<AnnouncementAPI>
 					<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
 						{<App player={player} store={store} />}
+					</screengui>
+					<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
+						<RoactRodux.StoreProvider store={store}>
+							<Leaderboards />
+						</RoactRodux.StoreProvider>
 					</screengui>
 				</AnnouncementAPI>
 			</remoteContext.Provider>,

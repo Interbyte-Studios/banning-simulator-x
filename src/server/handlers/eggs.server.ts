@@ -72,7 +72,7 @@ hatchEgg.SetCallback(
 		}
 
 		// check inventory space
-		if (currentState.pets.size() >= getPetInventorySize(currentState.gamepasses) + amount) {
+		if (currentState.pets.size() + amount > getPetInventorySize(currentState.gamepasses)) {
 			return {
 				success: false,
 			};
@@ -189,8 +189,10 @@ hatchEgg.SetCallback(
 			});
 		}
 
-		if (selectedPets.size() > 3) {
-			throw `Issue on the server confirming how many pets should be hatched. Player: ${player.Name} | Amount: ${amount} | Egg: ${eggName} | Void: ${isVoid}`;
+		if (selectedPets.size() !== amount) {
+			throw `Issue on the server confirming how many pets should be hatched. Player: ${
+				player.Name
+			} | Amount: ${amount} | Egg: ${eggName} | Void: ${isVoid} | Amount that server hatched: ${selectedPets.size()}}`;
 		}
 
 		store.dispatch(addPets(eggCost.amount * selectedPets.size(), eggCost.currencyType, selectedPets));

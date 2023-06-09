@@ -51,42 +51,42 @@ export const AccountMastery: _AccountMastery = {
 		{
 			level: 3,
 			requiredFusions: 50,
-			reducedFusionMultiplier: 0.04,
+			reducedFusionMultiplier: 0.08,
 		},
 		{
 			level: 4,
 			requiredFusions: 125,
-			reducedFusionMultiplier: 0.08,
+			reducedFusionMultiplier: 0.12,
 		},
 		{
 			level: 5,
 			requiredFusions: 320,
-			reducedFusionMultiplier: 0.08,
+			reducedFusionMultiplier: 0.16,
 		},
 		{
 			level: 6,
 			requiredFusions: 800,
-			reducedFusionMultiplier: 0.12,
+			reducedFusionMultiplier: 0.2,
 		},
 		{
 			level: 7,
 			requiredFusions: 2000,
-			reducedFusionMultiplier: 0.12,
+			reducedFusionMultiplier: 0.24,
 		},
 		{
 			level: 8,
 			requiredFusions: 5000,
-			reducedFusionMultiplier: 0.16,
+			reducedFusionMultiplier: 0.28,
 		},
 		{
 			level: 9,
 			requiredFusions: 12500,
-			reducedFusionMultiplier: 0.16,
+			reducedFusionMultiplier: 0.32,
 		},
 		{
 			level: 10,
 			requiredFusions: 31250,
-			reducedFusionMultiplier: 0.2,
+			reducedFusionMultiplier: 0.4,
 		},
 	],
 	banning: [

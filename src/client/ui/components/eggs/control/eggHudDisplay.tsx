@@ -10,7 +10,7 @@ import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
-import { Pet } from "shared/configs/pets";
+import { Pet, Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
 import { EggsState } from "shared/rodux/eggs";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
@@ -32,8 +32,8 @@ interface EggHudProps extends EggHudMappedProps {
 	adornee: BasePart;
 	eggName: EggName;
 	isVoid: boolean;
-	pets: Array<Pet>;
-	initiateHatch: (amount: 1 | 3, egg: EggName, isVoid: boolean) => Promise<void>;
+	possiblePets: Array<Pet>;
+	handleHatch: (eggName: EggName, variant: Exclude<Variants, "radiant">, amount: 1 | 3) => void;
 }
 
 interface EggHudMappedProps {
@@ -111,107 +111,109 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 
 		if (!isVisible) {
 			return <></>;
-		}
-
-		return (
-			<billboardgui
-				Active={true}
-				Adornee={props.adornee}
-				AlwaysOnTop={true}
-				Size={UDim2.fromScale(15, 20)}
-				ClipsDescendants={true}
-				ZIndexBehavior={Enum.ZIndexBehavior.Sibling}
-			>
-				<HatchEggButton eggName={props.eggName} isVoid={props.isVoid} initiateHatch={props.initiateHatch} />
-				<TripleHatchEggButton eggName={props.eggName} isVoid={props.isVoid} initiateHatch={props.initiateHatch} />
-				<ToggleAutoHatchButton petsSize={props.pets.size()} />
-
-				<ImageLabel
-					native={{
-						Size: props.pets.size() <= 6 ? UDim2.fromScale(0.5, 0.3) : UDim2.fromScale(0.5, 0.4),
-						Position: props.pets.size() <= 6 ? UDim2.fromScale(0.5, 0.525) : UDim2.fromScale(0.5, 0.485),
-						Image: assetIds.images.ui.egg.background,
-						ScaleType: Enum.ScaleType.Stretch,
-					}}
+		} else {
+			return (
+				<billboardgui
+					Active={true}
+					Adornee={props.adornee}
+					AlwaysOnTop={true}
+					Size={UDim2.fromScale(15, 20)}
+					ClipsDescendants={true}
+					ZIndexBehavior={Enum.ZIndexBehavior.Sibling}
 				>
-					<StrokeTextLabel
-						native={{
-							Size: UDim2.fromScale(0.9, 0.175),
-							Position: UDim2.fromScale(0.5, 0),
-							Text: `${props.eggName} Egg`,
-						}}
-						stroke={{ native: { Thickness: 2.5 } }}
-					/>
+					<HatchEggButton eggName={props.eggName} isVoid={props.isVoid} handleHatch={props.handleHatch} />
+					<TripleHatchEggButton eggName={props.eggName} isVoid={props.isVoid} handleHatch={props.handleHatch} />
+					<ToggleAutoHatchButton petsSize={props.possiblePets.size()} />
 
-					<BaseFrame
-						Size={props.pets.size() <= 6 ? UDim2.fromScale(0.925, 0.85) : UDim2.fromScale(0.925, 0.825)}
-						Position={props.pets.size() <= 6 ? UDim2.fromScale(0.5, 0.55) : UDim2.fromScale(0.5, 0.525)}
+					<ImageLabel
+						native={{
+							Size: props.possiblePets.size() <= 6 ? UDim2.fromScale(0.5, 0.3) : UDim2.fromScale(0.5, 0.4),
+							Position: props.possiblePets.size() <= 6 ? UDim2.fromScale(0.5, 0.525) : UDim2.fromScale(0.5, 0.485),
+							Image: assetIds.images.ui.egg.background,
+							ScaleType: Enum.ScaleType.Stretch,
+						}}
 					>
-						<uigridlayout
-							CellPadding={props.pets.size() <= 6 ? UDim2.fromScale(0.025, 0.1) : UDim2.fromScale(0.025, 0.025)}
-							CellSize={props.pets.size() <= 6 ? UDim2.fromScale(0.3, 0.35) : UDim2.fromScale(0.3, 0.275)}
-							FillDirection={Enum.FillDirection.Horizontal}
-							FillDirectionMaxCells={3}
-							HorizontalAlignment={Enum.HorizontalAlignment.Center}
-							VerticalAlignment={Enum.VerticalAlignment.Top}
-							SortOrder={Enum.SortOrder.LayoutOrder}
+						<StrokeTextLabel
+							native={{
+								Size: UDim2.fromScale(0.9, 0.175),
+								Position: UDim2.fromScale(0.5, 0),
+								Text: `${props.eggName} Egg`,
+							}}
+							stroke={{ native: { Thickness: 2.5 } }}
 						/>
 
-						{Object.values(props.pets).map((petInfo) => {
-							if (petInfo.rarity === "Prismatic" || petInfo.rarity === "Primordial") {
-								return <></>;
-							}
-
-							let hasHatchedVariant = false;
-
-							const stringId = tostring(petInfo.id);
-							if (stringId === undefined) {
-								throw `Failed to get pet id for pet ${petInfo.id} because it could not be converted to a string`;
-							}
-
-							const ownsPetInIndex = props.index.pets.get(stringId);
-							if (ownsPetInIndex !== undefined) {
-								if (props.isVoid) {
-									hasHatchedVariant = ownsPetInIndex.hatched.void > 0;
-								} else {
-									hasHatchedVariant = ownsPetInIndex.hatched.regular > 0;
+						<BaseFrame
+							Size={props.possiblePets.size() <= 6 ? UDim2.fromScale(0.925, 0.85) : UDim2.fromScale(0.925, 0.825)}
+							Position={props.possiblePets.size() <= 6 ? UDim2.fromScale(0.5, 0.55) : UDim2.fromScale(0.5, 0.525)}
+						>
+							<uigridlayout
+								CellPadding={
+									props.possiblePets.size() <= 6 ? UDim2.fromScale(0.025, 0.1) : UDim2.fromScale(0.025, 0.025)
 								}
-							}
+								CellSize={props.possiblePets.size() <= 6 ? UDim2.fromScale(0.3, 0.35) : UDim2.fromScale(0.3, 0.275)}
+								FillDirection={Enum.FillDirection.Horizontal}
+								FillDirectionMaxCells={3}
+								HorizontalAlignment={Enum.HorizontalAlignment.Center}
+								VerticalAlignment={Enum.VerticalAlignment.Top}
+								SortOrder={Enum.SortOrder.LayoutOrder}
+							/>
 
-							return (
-								<PetFrame
-									petId={petInfo.id}
-									variant={props.isVoid ? "void" : "regular"}
-									displayBackground={true}
-									isBillboard={true}
-									shouldBlackout={!hasHatchedVariant}
-								/>
-							);
-						})}
-					</BaseFrame>
+							{Object.values(props.possiblePets).map((petInfo) => {
+								if (petInfo.rarity === "Prismatic" || petInfo.rarity === "Primordial") {
+									return <></>;
+								}
 
-					<StrokeTextLabel
-						native={{
-							Position: props.pets.size() <= 6 ? UDim2.fromScale(0.65, 0.9) : UDim2.fromScale(0.65, 0.91),
-							Size: props.pets.size() <= 6 ? UDim2.fromScale(0.3, 0.15) : UDim2.fromScale(0.3, 0.125),
-							Text: twoDpAbbreviator.numberToString(eggCost.amount),
-							TextXAlignment: Enum.TextXAlignment.Left,
-						}}
-						stroke={{
-							native: { Thickness: 2.5, Color: Color3.fromRGB(255, 255, 255) },
-							currencyGradient: eggCost.currencyType,
-						}}
-					>
-						<CurrencyIcon
-							anchorPoint={new Vector2(1, 0.5)}
-							position={UDim2.fromScale(-0.03, 0.5)}
-							size={{ minimizedSize: 0.9, maximizedSize: 1 }}
-							currency={eggCost.currencyType}
-						/>
-					</StrokeTextLabel>
-				</ImageLabel>
-			</billboardgui>
-		);
+								let hasHatchedVariant = false;
+
+								const stringId = tostring(petInfo.id);
+								if (stringId === undefined) {
+									throw `Failed to get pet id for pet ${petInfo.id} because it could not be converted to a string`;
+								}
+
+								const ownsPetInIndex = props.index.pets.get(stringId);
+								if (ownsPetInIndex !== undefined) {
+									if (props.isVoid) {
+										hasHatchedVariant = ownsPetInIndex.hatched.void > 0;
+									} else {
+										hasHatchedVariant = ownsPetInIndex.hatched.regular > 0;
+									}
+								}
+
+								return (
+									<PetFrame
+										petId={petInfo.id}
+										variant={props.isVoid ? "void" : "regular"}
+										displayBackground={true}
+										isBillboard={true}
+										shouldBlackout={!hasHatchedVariant}
+									/>
+								);
+							})}
+						</BaseFrame>
+
+						<StrokeTextLabel
+							native={{
+								Position: props.possiblePets.size() <= 6 ? UDim2.fromScale(0.65, 0.9) : UDim2.fromScale(0.65, 0.91),
+								Size: props.possiblePets.size() <= 6 ? UDim2.fromScale(0.3, 0.15) : UDim2.fromScale(0.3, 0.125),
+								Text: twoDpAbbreviator.numberToString(eggCost.amount),
+								TextXAlignment: Enum.TextXAlignment.Left,
+							}}
+							stroke={{
+								native: { Thickness: 2.5, Color: Color3.fromRGB(255, 255, 255) },
+								currencyGradient: eggCost.currencyType,
+							}}
+						>
+							<CurrencyIcon
+								anchorPoint={new Vector2(1, 0.5)}
+								position={UDim2.fromScale(-0.03, 0.5)}
+								size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+								currency={eggCost.currencyType}
+							/>
+						</StrokeTextLabel>
+					</ImageLabel>
+				</billboardgui>
+			);
+		}
 	}),
 );
 /* eslint-enable jsdoc/require-jsdoc */

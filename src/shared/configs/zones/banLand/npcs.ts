@@ -84,7 +84,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		name: "mygame43",
 		health: 12_800,
 		reward: {
-			currency: 3_000,
+			currency: 4_200,
 			currencyType: "coins",
 			experience: 6_000,
 		},
@@ -95,7 +95,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		name: "GamesReborn",
 		health: 25_600,
 		reward: {
-			currency: 5_000,
+			currency: 8_400,
 			currencyType: "coins",
 			experience: 10_000,
 		},
@@ -185,7 +185,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		name: "DeeterPlays",
 		health: 38_400,
 		reward: {
-			currency: 9_000,
+			currency: 12_600,
 			currencyType: "coins",
 			experience: 15_000,
 		},
@@ -196,7 +196,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		name: "Beeism",
 		health: 76_800,
 		reward: {
-			currency: 15_000,
+			currency: 25_200,
 			currencyType: "coins",
 			experience: 30_000,
 		},

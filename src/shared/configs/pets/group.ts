@@ -9,7 +9,7 @@ export const GROUP_CHEST_PETS: Record<string, Pet> = {
 		id: 82,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 55,
+			additionalDamage: 25,
 		},
 	},
 	"Shade Glider": {

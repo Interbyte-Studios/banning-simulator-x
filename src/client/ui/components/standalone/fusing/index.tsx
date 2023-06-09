@@ -17,13 +17,12 @@ import { PetSelection } from "./petSelection";
 import { ZoneSelection } from "./zoneSelection";
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const Fusing = hooks((_, hooks) => {
+export const Fusing = hooks((props: { isVisible: boolean; setVisibility: (value: boolean) => void }, hooks) => {
 	const { useState, useEffect } = hooks;
 
 	const [zoneSelected, setZoneSelected] = useState<ZoneNames | undefined>(undefined);
 	const [petSelected, setPetSelected] = useState<number | undefined>(undefined);
 	const [fusingVariant, setFusingVariant] = useState<Variants>("void");
-	const [isVisible, setIsVisible] = useState<boolean>(false);
 
 	const screenToDisplay: Array<Roact.Element> = [];
 	if (petSelected !== undefined && zoneSelected !== undefined) {
@@ -79,7 +78,7 @@ export const Fusing = hooks((_, hooks) => {
 					const canDisplay = shouldDisplay(character, prompt);
 					if (canDisplay) {
 						setFusingVariant("radiant");
-						setIsVisible(true);
+						props.setVisibility(true);
 						return;
 					}
 				}
@@ -88,7 +87,7 @@ export const Fusing = hooks((_, hooks) => {
 					const canDisplay = shouldDisplay(character, prompt);
 					if (canDisplay) {
 						setFusingVariant("void");
-						setIsVisible(true);
+						props.setVisibility(true);
 						return;
 					}
 				}
@@ -102,7 +101,7 @@ export const Fusing = hooks((_, hooks) => {
 		};
 	});
 
-	if (isVisible) {
+	if (props.isVisible) {
 		return (
 			<ImageLabel
 				native={{
@@ -131,7 +130,7 @@ export const Fusing = hooks((_, hooks) => {
 					onClosed={(): void => {
 						setZoneSelected(undefined);
 						setPetSelected(undefined);
-						setIsVisible(false);
+						props.setVisibility(false);
 					}}
 				/>
 			</ImageLabel>
@@ -179,7 +178,7 @@ export const Fusing = hooks((_, hooks) => {
 										const isInDistance = shouldDisplay(character, promptPart);
 										if (isInDistance) {
 											setFusingVariant("radiant");
-											setIsVisible(true);
+											props.setVisibility(true);
 										}
 									},
 								}}
@@ -240,7 +239,7 @@ export const Fusing = hooks((_, hooks) => {
 										const isInDistance = shouldDisplay(character, promptPart);
 										if (isInDistance) {
 											setFusingVariant("void");
-											setIsVisible(true);
+											props.setVisibility(true);
 										}
 									},
 								}}

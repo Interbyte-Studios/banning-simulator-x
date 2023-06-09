@@ -247,7 +247,7 @@ game.BindToClose(() => {
 	shuttingDown = true;
 
 	for (const player of Players.GetPlayers()) {
-		if (dataLoaded.get(player) !== undefined && savingData.get(player) === undefined) {
+		if (dataLoaded.get(player) !== undefined && savingData.get(player) !== undefined) {
 			const store = playerStores.get(player);
 			if (store !== undefined) {
 				const state = store.getState() as StoreState;

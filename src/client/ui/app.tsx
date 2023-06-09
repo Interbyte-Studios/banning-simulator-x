@@ -5,6 +5,7 @@ import { ContextActionService } from "@rbxts/services";
 import { Store } from "shared/rodux";
 
 import { LocalMessages } from "./components/announcements";
+import { EggHud } from "./components/eggs/control";
 import { EggCost } from "./components/eggs/costs";
 import { AccountHub } from "./components/features/account";
 import { AutoFight } from "./components/features/auto fight";
@@ -17,7 +18,6 @@ import { TalismanTowerHandle } from "./components/shops/talismanShop";
 import { WeaponShopHandle } from "./components/shops/weaponShop";
 import { Fusing } from "./components/standalone/fusing";
 import { Hud } from "./components/standalone/hud";
-import { Leaderboards } from "./components/standalone/leaderboards";
 import { CurrencyGainAnimation } from "./components/standalone/notifications/currencyGainAnimation";
 import { DatastoreEvents } from "./components/standalone/notifications/datastoreEvents";
 import { TalismanLevelUpAnimation } from "./components/standalone/notifications/talismanLevelUp";
@@ -42,12 +42,12 @@ const visibilityStates = {
 	accountHub: false,
 	trading: false,
 	petMastery: false,
+	fusing: false,
 };
 
 export const app = hooks((props: AppProps, { useState, useEffect, useContext, useCallback, useMemo }) => {
 	const [visibility, setVisibility] = useState(visibilityStates);
 	const [activeTrade, setActiveTrade] = useState(false);
-	const [isHatching, setHatchingStatus] = useState(false);
 
 	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
 
@@ -84,10 +84,8 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 		(currentMenu?: keyof typeof visibilityStates) =>
 			Object.entries(visibility)
 				.filter(([menu]) => menu !== currentMenu)
-				.some(([, value]) => value) ||
-			activeTrade ||
-			isHatching,
-		[visibility, activeTrade, isHatching],
+				.some(([, value]) => value) || activeTrade,
+		[visibility, activeTrade],
 	);
 
 	/**
@@ -113,29 +111,63 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
 					displayTradingMenu={(): void => setVisibility({ ...visibilityStates, trading: true })}
 				/>,
+				<WeaponShopHandle
+					isVisible={false}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, weaponShop: value })}
+				/>,
+				<TalismanTowerHandle
+					isVisible={false}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, talismanTower: value })}
+				/>,
+				<PetMastery
+					isVisible={false}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, petMastery: value })}
+				/>,
+				<Fusing
+					isVisible={false}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, fusing: value })}
+				/>,
+				<Trading
+					isEnabled={false}
+					setActiveTrade={(value: boolean): void => {
+						setActiveTrade(value);
+					}}
+					hideMenu={(): void => {
+						setVisibility((prev) => ({ ...prev, trading: false }));
+					}}
+				/>,
 				<WeaponLevelUpAnimation />,
 				<TalismanLevelUpAnimation />,
 				<CurrencyGainAnimation />,
 				<WeaponEquip />,
 				<RankUpgrade />,
-				<Fusing />,
 				<DatastoreEvents />,
+			);
+		} else if (isVisible("fusing")) {
+			components.push(
+				<Fusing
+					isVisible={true}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, fusing: value })}
+				/>,
 			);
 		} else if (isVisible("weaponShop")) {
 			components.push(
 				<WeaponShopHandle
+					isVisible={true}
 					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, weaponShop: value })}
 				/>,
 			);
 		} else if (isVisible("talismanTower")) {
 			components.push(
 				<TalismanTowerHandle
+					isVisible={true}
 					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, talismanTower: value })}
 				/>,
 			);
 		} else if (isVisible("petMastery")) {
 			components.push(
 				<PetMastery
+					isVisible={true}
 					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, petMastery: value })}
 				/>,
 			);
@@ -150,17 +182,20 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 		} else if (isVisible("accountHub")) {
 			components.push(<AccountHub hideMenu={(): void => setVisibility((prev) => ({ ...prev, accountHub: false }))} />);
 		} else if (isVisible("trading")) {
-			<Trading
-				setActiveTrade={(value: boolean): void => {
-					setActiveTrade(value);
-				}}
-				hideMenu={(): void => {
-					setVisibility((prev) => ({ ...prev, trading: false }));
-				}}
-			/>;
+			components.push(
+				<Trading
+					isEnabled={true}
+					setActiveTrade={(value: boolean): void => {
+						setActiveTrade(value);
+					}}
+					hideMenu={(): void => {
+						setVisibility((prev) => ({ ...prev, trading: false }));
+					}}
+				/>,
+			);
 		}
 
-		components.push(<ZonesUI />, <Leaderboards />, <Rewards />, <LocalMessages />, <EggCost />);
+		components.push(<ZonesUI />, <Rewards />, <LocalMessages />, <EggCost />, <EggHud />);
 
 		return components;
 	}, [visibility]);

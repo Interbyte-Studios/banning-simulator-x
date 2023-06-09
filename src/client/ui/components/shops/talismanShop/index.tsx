@@ -9,15 +9,14 @@ import { TalismanTower } from "./shop";
 const player = Players.LocalPlayer;
 
 interface TalismanTowerHandleProps {
+	isVisible: boolean;
 	setVisibility: (value: boolean) => void;
 }
 
 /**
  * Handles the visibility for components related to the talisman tower.
  */
-export const TalismanTowerHandle = hooks((props: TalismanTowerHandleProps, { useEffect, useState }) => {
-	const [interfaceVisible, setInterfaceVisibility] = useState(false);
-
+export const TalismanTowerHandle = hooks((props: TalismanTowerHandleProps, { useEffect }) => {
 	useEffect(() => {
 		ContextActionService.BindAction(
 			"openTalismanTower",
@@ -59,7 +58,7 @@ export const TalismanTowerHandle = hooks((props: TalismanTowerHandleProps, { use
 		};
 	});
 
-	if (interfaceVisible) {
+	if (props.isVisible) {
 		return (
 			<TalismanTower
 				hideMenu={(): void => {
@@ -68,7 +67,6 @@ export const TalismanTowerHandle = hooks((props: TalismanTowerHandleProps, { use
 
 					camera.CameraType = Enum.CameraType.Custom;
 
-					setInterfaceVisibility(false);
 					props.setVisibility(false);
 				}}
 			/>
@@ -77,7 +75,6 @@ export const TalismanTowerHandle = hooks((props: TalismanTowerHandleProps, { use
 		return (
 			<TalismanTowerInteractPrompt
 				displayShop={(): void => {
-					setInterfaceVisibility(true);
 					props.setVisibility(true);
 				}}
 			/>

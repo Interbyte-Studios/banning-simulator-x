@@ -9,15 +9,14 @@ import { WeaponShop } from "./shop";
 const player = Players.LocalPlayer;
 
 interface WeaponShopHandleProps {
+	isVisible: boolean;
 	setVisibility: (value: boolean) => void;
 }
 
 /**
  * Handles the visibility for components related to the weapon shop.
  */
-export const WeaponShopHandle = hooks((props: WeaponShopHandleProps, { useEffect, useState }) => {
-	const [interfaceVisible, setInterfaceVisibility] = useState(false);
-
+export const WeaponShopHandle = hooks((props: WeaponShopHandleProps, { useEffect }) => {
 	useEffect(() => {
 		ContextActionService.BindAction(
 			"openWeaponShop",
@@ -48,7 +47,6 @@ export const WeaponShopHandle = hooks((props: WeaponShopHandleProps, { useEffect
 					return;
 				}
 
-				setInterfaceVisibility(true);
 				props.setVisibility(true);
 			},
 			false,
@@ -60,7 +58,9 @@ export const WeaponShopHandle = hooks((props: WeaponShopHandleProps, { useEffect
 		};
 	});
 
-	if (interfaceVisible) {
+	if (props.isVisible) {
+		warn(`Interface is visible`);
+
 		return (
 			<WeaponShop
 				hideMenu={(): void => {
@@ -69,7 +69,6 @@ export const WeaponShopHandle = hooks((props: WeaponShopHandleProps, { useEffect
 
 					camera.CameraType = Enum.CameraType.Custom;
 
-					setInterfaceVisibility(false);
 					props.setVisibility(false);
 				}}
 			/>
@@ -78,7 +77,6 @@ export const WeaponShopHandle = hooks((props: WeaponShopHandleProps, { useEffect
 		return (
 			<WeaponShopInteractPrompt
 				displayShop={(): void => {
-					setInterfaceVisibility(true);
 					props.setVisibility(true);
 				}}
 			/>

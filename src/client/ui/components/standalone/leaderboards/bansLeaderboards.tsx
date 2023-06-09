@@ -129,7 +129,6 @@ export const BanLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 
 		return (): void => connection.Disconnect();
 	});
-
 	const positions: Array<Roact.Element> = [];
 	leaderboardData.forEach((data) => {
 		const position = data.position;

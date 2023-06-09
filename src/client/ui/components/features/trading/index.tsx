@@ -10,6 +10,7 @@ enum TradeState {
 }
 
 interface TradingProps {
+	isEnabled: boolean;
 	setActiveTrade: (value: boolean) => void;
 	hideMenu: () => void;
 }
@@ -36,6 +37,7 @@ export const Trading = hooks((props: TradingProps, hooks) => {
 	if (tradeState.tradeState === TradeState.Idle) {
 		return (
 			<InactiveTrade
+				isEnabled={props.isEnabled}
 				setForeignPlayer={(player: Player): void =>
 					setTradeState({
 						foreignPlayer: player,

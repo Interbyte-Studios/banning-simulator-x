@@ -11,6 +11,7 @@ import { PetMasteryMenu } from "./masteryMenu";
 const player = Players.LocalPlayer;
 
 interface PetMasteryProps {
+	isVisible: boolean;
 	setVisibility: (visible: boolean) => void;
 }
 
@@ -18,7 +19,6 @@ interface PetMasteryProps {
  * A handler component to display the pet mastery interface based on the world the player is in.
  */
 export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }) => {
-	const [interfaceVisible, setInterfaceVisibility] = useState(false);
 	const [worldViewing, setWorldViewing] = useState<WorldName>("Ban Land");
 
 	useEffect(() => {
@@ -80,7 +80,6 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 				assert(worldToOpen !== undefined, `Expected to find the world the player is in to open the pet mastery.`);
 
 				setWorldViewing(worldToOpen);
-				setInterfaceVisibility(true);
 				props.setVisibility(true);
 			},
 			false,
@@ -92,16 +91,8 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 		};
 	});
 
-	if (interfaceVisible) {
-		return (
-			<PetMasteryMenu
-				world={worldViewing}
-				hideMenu={(): void => {
-					setInterfaceVisibility(false);
-					props.setVisibility(false);
-				}}
-			/>
-		);
+	if (props.isVisible) {
+		return <PetMasteryMenu world={worldViewing} hideMenu={(): void => props.setVisibility(false)} />;
 	} else {
 		return (
 			<>
@@ -131,7 +122,6 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 							adornee={primaryPart}
 							displayPetMastery={(): void => {
 								setWorldViewing(worldName);
-								setInterfaceVisibility(true);
 								props.setVisibility(true);
 							}}
 						/>

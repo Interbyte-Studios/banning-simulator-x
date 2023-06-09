@@ -31,7 +31,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		cost: {
 			currency: "coins",
 			amount: 3_000,
-			requiredRank: 1,
+			requiredRank: 2,
 		},
 		color: Color3.fromRGB(61, 163, 90),
 	},
