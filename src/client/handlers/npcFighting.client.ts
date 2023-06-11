@@ -73,8 +73,11 @@ const onNPCInteraction = (player: Player, npc: Model): void => {
 		weapon.Activate();
 	}
 
+	const autoFollowConnection = RunService.RenderStepped.Connect(onRenderStepped);
+	currentConnection = autoFollowConnection;
+
 	const connection = RunService.RenderStepped.Connect(() => {
-		if (currentConnection === undefined || npc.Parent === undefined) {
+		if (currentConnection !== autoFollowConnection || npc.Parent === undefined) {
 			setManualAutoFight(false);
 			connection.Disconnect();
 			return;
@@ -82,8 +85,6 @@ const onNPCInteraction = (player: Player, npc: Model): void => {
 
 		handleWeapon();
 	});
-
-	currentConnection = RunService.RenderStepped.Connect(() => onRenderStepped());
 };
 
 /**
