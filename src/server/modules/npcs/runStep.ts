@@ -109,21 +109,18 @@ export function runStep(
 	for (const { player, store, character } of npcAttacks) {
 		const npc = npcCharacterToNpc.get(character);
 		if (npc === undefined) {
-			warn(`[NPC RunStep] - Player ${player.Name} attempted to attack ${character.Name}, but it didn't exist`);
 			continue;
 		}
 
 		// check that npc is alive
 		if (!(npc.instance.Humanoid.Health > 0)) {
 			// currently this is possible if two players kill and NPC in the same tick
-			warn(`[NPC RunStep] - Player ${player.Name} attempted to attack ${character.Name}, but the NPC was dead`);
 			continue;
 		}
 
 		// check that npc has a root part
 		const humanoidRootPart = npc.instance.Humanoid.RootPart;
 		if (humanoidRootPart === undefined) {
-			warn(`[NPC RunStep] - Failed to get HumanoidRootPart for npc ${npc.instance.Name}`);
 			continue;
 		}
 
@@ -185,18 +182,14 @@ export function runStep(
 			const gamepassCurrencyMultiplier = store.getState().gamepasses["x2 Currency"] ? 2 : 0;
 			const masteryCurrencyMultiplier = getBanningMastery(store.getState().bans).currencyGainedMultiplier;
 
-			currencyBoosters.push(
-				globalCurrencyEventMultiplier,
-				boostCurrencyMultiplier,
-				gamepassCurrencyMultiplier,
-				masteryCurrencyMultiplier,
-			);
+			currencyBoosters.push(globalCurrencyEventMultiplier, boostCurrencyMultiplier, gamepassCurrencyMultiplier);
 
 			let currencyMultiplier = 0;
 			currencyBoosters.forEach((booster) => {
 				currencyMultiplier += booster;
 			});
 			currencyMultiplier = currencyMultiplier > 1 ? currencyMultiplier : 1;
+			currencyMultiplier += masteryCurrencyMultiplier - 1;
 
 			// get experience multiplier
 			const experienceBoosters: Array<number> = [];

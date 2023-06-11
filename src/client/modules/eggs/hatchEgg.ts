@@ -324,7 +324,6 @@ export const animateTripleEggHatch = (
 	pets: Array<ConfirmedPet>,
 	fastHatch: boolean,
 ): void => {
-	warn(fastHatch);
 	const camera = Workspace.CurrentCamera;
 	assert(camera, `Failed to animate single egg hatch | Couldn't find camera.`);
 
@@ -480,7 +479,7 @@ export const animateTripleEggHatch = (
 
 	// animate
 	// move egg to center
-	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 1.5 / 1.5 : 1.5, Enum.EasingStyle.Quint), {
+	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 1 : 1.5, Enum.EasingStyle.Quint), {
 		Value: -5,
 	}).Play();
 

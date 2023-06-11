@@ -41,7 +41,7 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		cost: {
 			currency: "coins",
 			amount: 4_000,
-			rank: 3,
+			rank: 2,
 		},
 		stats: {
 			experience: 0.1,
@@ -54,7 +54,7 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		cost: {
 			currency: "coins",
 			amount: 12_000,
-			rank: 4,
+			rank: 3,
 		},
 		stats: {
 			experience: 0.2,
@@ -67,7 +67,7 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		cost: {
 			currency: "coins",
 			amount: 35_000,
-			rank: 5,
+			rank: 4,
 		},
 		stats: {
 			experience: 0.3,
@@ -106,7 +106,7 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		cost: {
 			currency: "coins",
 			amount: 375_000,
-			rank: 1,
+			rank: 7,
 		},
 		stats: {
 			experience: 0.65,
@@ -119,7 +119,7 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 		cost: {
 			currency: "coins",
 			amount: 750_000,
-			rank: 1,
+			rank: 7,
 		},
 		stats: {
 			experience: 0.8,

@@ -228,10 +228,10 @@ Players.PlayerRemoving.Connect((player) => {
 
 remotes.Server.GetNamespace("rodux")
 	.Get("requestStoreState")
-	.SetCallback((player: Player) => {
-		const store = playerStores.get(player);
+	.SetCallback((player: Player, targetPlayer: Player) => {
+		const store = playerStores.get(targetPlayer);
 		if (store === undefined) {
-			warn(`[PlayerDataStore - requestStoreState] Failed to retrieve rodux store for player ${player.Name}`);
+			warn(`[PlayerDataStore - requestStoreState] Failed to retrieve rodux store for player ${targetPlayer.Name}`);
 			return undefined;
 		}
 

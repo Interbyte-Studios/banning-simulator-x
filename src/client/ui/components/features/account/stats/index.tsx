@@ -89,6 +89,7 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 		}
 
 		const connection = playerStore.changed.connect((newState, oldState) => {
+			warn(`Store for ${props.viewedPlayer.Name} changed.`);
 			if (newState.bans.bans !== oldState.bans.bans) {
 				setBans(newState.bans.bans);
 			}
@@ -131,14 +132,17 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 			throw `Failed to get player store for ${props.viewedPlayer.Name}.`;
 		}
 
-		setBans(playerStore.getState().bans.bans);
-		setHatches(playerStore.getState().index.eggs);
-		setTimePlayed(playerStore.getState().index.timePlayed);
-		setGroupRank(playerStore.getState().index.groupRank);
-		setRank(playerStore.getState().rank);
-		setTitle(playerStore.getState().title);
-		setWeapon(playerStore.getState().currentWeapon.id);
-		setTalisman(playerStore.getState().currentTalisman);
+		warn(`Viewing stats for ${props.viewedPlayer.Name}.`);
+		const currentState = playerStore.getState();
+
+		setBans(currentState.bans.bans);
+		setHatches(currentState.index.eggs);
+		setTimePlayed(currentState.index.timePlayed);
+		setGroupRank(currentState.index.groupRank);
+		setRank(currentState.rank);
+		setTitle(currentState.title);
+		setWeapon(currentState.currentWeapon.id);
+		setTalisman(currentState.currentTalisman);
 	}, [props.viewedPlayer]);
 
 	return (

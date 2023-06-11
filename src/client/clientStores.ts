@@ -92,7 +92,6 @@ Players.GetPlayers().forEach(async (player) => {
 
 	const store = new Rodux.Store(storeReducer, storeState.state);
 	stores.set(player, store);
-	warn("Store created for", player.Name);
 
 	// call creation callbacks
 	const callbacks = storeCreationCallbacks.get(player) ?? [];

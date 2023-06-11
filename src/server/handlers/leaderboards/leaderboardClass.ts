@@ -55,19 +55,19 @@ export class LeaderboardDataStore {
 	async getSortedAsync(isAscending: boolean, amount: number): Promise<Array<[string, number]>> {
 		const sortedData: Array<[string, number]> = [];
 
-		try {
-			const data = this.orderedDatastore.GetSortedAsync(isAscending, amount);
-			let page = data.GetCurrentPage();
-			while (page.size() > 0) {
-				for (const entry of page) {
-					sortedData.push([entry.key, entry.value as number]);
-				}
-				if (sortedData.size() >= amount) break;
-				data.AdvanceToNextPageAsync();
-				page = data.GetCurrentPage();
+		const [success, result] = pcall(() => this.orderedDatastore.GetSortedAsync(isAscending, amount));
+		if (!success) {
+			return sortedData;
+		}
+
+		let page = result.GetCurrentPage();
+		while (page.size() > 0) {
+			for (const entry of page) {
+				sortedData.push([entry.key, entry.value as number]);
 			}
-		} catch (error) {
-			warn(`Failed to get sorted data: ${error}`);
+			if (sortedData.size() >= amount) break;
+			result.AdvanceToNextPageAsync();
+			page = result.GetCurrentPage();
 		}
 
 		return sortedData;

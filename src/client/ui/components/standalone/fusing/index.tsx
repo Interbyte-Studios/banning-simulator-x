@@ -77,7 +77,6 @@ export const Fusing = hooks((props: { isVisible: boolean; setVisibility: (value:
 				for (const prompt of radiantPrompts) {
 					const canDisplay = shouldDisplay(character, prompt);
 					if (canDisplay) {
-						setFusingVariant("radiant");
 						props.setVisibility(true);
 						return;
 					}
@@ -86,7 +85,6 @@ export const Fusing = hooks((props: { isVisible: boolean; setVisibility: (value:
 				for (const prompt of voidPrompts) {
 					const canDisplay = shouldDisplay(character, prompt);
 					if (canDisplay) {
-						setFusingVariant("void");
 						props.setVisibility(true);
 						return;
 					}
@@ -101,6 +99,31 @@ export const Fusing = hooks((props: { isVisible: boolean; setVisibility: (value:
 		};
 	});
 
+	useEffect(() => {
+		if (props.isVisible) {
+			const character = Players.LocalPlayer.Character;
+			if (character === undefined) {
+				return;
+			}
+
+			for (const prompt of voidPrompts) {
+				const canDisplay = shouldDisplay(character, prompt);
+				if (canDisplay) {
+					setFusingVariant("void");
+					return;
+				}
+			}
+
+			for (const prompt of radiantPrompts) {
+				const canDisplay = shouldDisplay(character, prompt);
+				if (canDisplay) {
+					setFusingVariant("radiant");
+					return;
+				}
+			}
+		}
+	}, [props.isVisible]);
+
 	if (props.isVisible) {
 		return (
 			<ImageLabel
@@ -114,7 +137,7 @@ export const Fusing = hooks((props: { isVisible: boolean; setVisibility: (value:
 					native={{
 						Size: UDim2.fromScale(0.4, 0.135),
 						Position: UDim2.fromScale(0.5, 0.08),
-						Text: "Fusing",
+						Text: `${fusingVariant === "radiant" ? "Radiant" : fusingVariant === "void" ? "Void" : ""} Fusing`,
 					}}
 					stroke={{
 						native: { Thickness: 1.5, Color: Color3.fromRGB(184, 80, 0) },

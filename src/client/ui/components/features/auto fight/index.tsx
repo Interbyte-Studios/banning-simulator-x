@@ -24,12 +24,15 @@ import { MAX_RANK, RANKS } from "shared/configs/ranks";
 import { MAX_WEAPON_ID } from "shared/configs/weapons";
 import { isValidZone, UniversalWorldData, Zone, ZoneNames } from "shared/configs/zones";
 import { StoreState } from "shared/rodux";
+import { BansState } from "shared/rodux/bans";
+import { BoostsState } from "shared/rodux/boosts";
 import { CurrenciesState } from "shared/rodux/currencies";
 import { CurrentWeaponState } from "shared/rodux/currentWeapon";
 import { ExperienceState } from "shared/rodux/experience";
 import { GamepassesState } from "shared/rodux/gamepasses";
 import { RankState } from "shared/rodux/rank";
 import { WorldsState } from "shared/rodux/worlds";
+import { getBanningMastery } from "shared/util/getBanningMastery";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
@@ -68,6 +71,8 @@ interface AutoFightMappedProps {
 	currentWeapon: CurrentWeaponState;
 	experience: ExperienceState;
 	currencies: CurrenciesState;
+	bans: BansState;
+	boosts: BoostsState;
 	walkspeed: number;
 }
 
@@ -86,6 +91,8 @@ function mapStateToProps(state: StoreState): AutoFightMappedProps {
 		experience: state.experience,
 		currencies: state.currencies,
 		walkspeed: state.settings.gameplay.walkSpeed,
+		bans: state.bans,
+		boosts: state.boosts,
 	};
 }
 
@@ -411,13 +418,26 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 								continue;
 							}
 
-							if (ReplicatedStorage.events.currency.enabled.Value) {
-								if (ReplicatedStorage.events.currency.multiplier.Value > 2) {
-									cachedCurrency.amount += npcData.reward.currency * ReplicatedStorage.events.currency.multiplier.Value;
-								}
-							} else {
-								cachedCurrency.amount += npcData.reward.currency;
-							}
+							const currencyBoosters: Array<number> = [];
+							const globalCurrencyEventMultiplier = ReplicatedStorage.events.currency.enabled.Value
+								? ReplicatedStorage.events.currency.multiplier.Value > 1
+									? ReplicatedStorage.events.currency.multiplier.Value
+									: 0
+								: 0;
+							const boostCurrencyMultiplier = props.boosts.active["x2 Currency"] > 0 ? 2 : 0;
+							const gamepassCurrencyMultiplier = props.gamepasses["x2 Currency"] ? 2 : 0;
+							const masteryCurrencyMultiplier = getBanningMastery(props.bans).currencyGainedMultiplier;
+
+							currencyBoosters.push(globalCurrencyEventMultiplier, boostCurrencyMultiplier, gamepassCurrencyMultiplier);
+
+							let currencyMultiplier = 0;
+							currencyBoosters.forEach((booster) => {
+								currencyMultiplier += booster;
+							});
+							currencyMultiplier = currencyMultiplier > 1 ? currencyMultiplier : 1;
+							currencyMultiplier += masteryCurrencyMultiplier - 1;
+
+							cachedCurrency.amount += npcData.reward.currency * currencyMultiplier;
 						}
 					}
 
@@ -426,7 +446,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 			});
 
 			return (): void => connection.Disconnect();
-		}, [isEnabled]);
+		}, [isEnabled, props.boosts, props.bans]);
 
 		useEffect(() => toggleAutoFight(isEnabled, props.walkspeed), [isEnabled, props.walkspeed]);
 

@@ -718,7 +718,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 			new ColorSequenceKeypoint(1, Color3.fromRGB(32, 43, 255)),
 		]),
 		category: TitleType.Misc,
-		description: "Purchase the VIP gamepass.",
+		description: "Members who are apart of the Interbyte Club.",
 		condition: (state): boolean => state.index.groupRank !== undefined && state.index.groupRank >= 247,
 	},
 	{
