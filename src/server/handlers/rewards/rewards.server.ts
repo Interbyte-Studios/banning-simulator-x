@@ -3,7 +3,7 @@ import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { BoostProduct, GROUP_PET_ID, VIP_PET_ID } from "shared/configs/game";
 import { remotes } from "shared/remotes";
 import { addPets } from "shared/rodux/pets";
-import { claimClubReward, claimGroupReward } from "shared/rodux/playerIndex";
+import { claimClubReward, claimGroupReward, claimVIPReward } from "shared/rodux/playerIndex";
 
 const rewardRemotes = remotes.Server.GetNamespace("rewards");
 rewardRemotes.Get("claimClubReward").SetCallback(
@@ -166,7 +166,7 @@ rewardRemotes.Get("claimVIPReward").SetCallback(
 		}
 
 		const hasClaimedPet = currentState.index.vipRewardClaimed.petIdClaimed === VIP_PET_ID;
-		store.dispatch(claimGroupReward(timeStamp, boost, hasClaimedPet ? undefined : VIP_PET_ID));
+		store.dispatch(claimVIPReward(timeStamp, boost, hasClaimedPet ? undefined : VIP_PET_ID));
 		if (!hasClaimedPet) {
 			store.dispatch(
 				addPets(0, "coins", [
@@ -188,7 +188,7 @@ rewardRemotes.Get("claimVIPReward").SetCallback(
 				name: boost,
 				duration: 15,
 			},
-			petId: !hasClaimedPet ? GROUP_PET_ID : undefined,
+			petId: !hasClaimedPet ? VIP_PET_ID : undefined,
 		};
 	}),
 );

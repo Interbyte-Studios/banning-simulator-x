@@ -212,7 +212,7 @@ export const BanLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 				ScrollBarThickness={20}
 				ScrollBarImageColor3={Color3.fromRGB(0, 185, 255)}
 			>
-				<uilistlayout Padding={new UDim(0.01, 0)} Ref={uiListLayoutRef.value} SortOrder={Enum.SortOrder.LayoutOrder} />
+				<uilistlayout Padding={new UDim(0.002, 0)} Ref={uiListLayoutRef.value} SortOrder={Enum.SortOrder.LayoutOrder} />
 				{leaderboards}
 			</RescalingScrollingFrame>
 		</surfacegui>

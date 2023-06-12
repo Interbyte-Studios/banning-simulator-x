@@ -6,6 +6,7 @@ import { createSpyMiddleware } from "shared/mocks/middleware/spyMiddleware";
 import { remotes } from "shared/remotes";
 import { Store, StoreActions, storeReducer, StoreState } from "shared/rodux";
 import { getOrSetDefault } from "shared/util/getOrSetDefault";
+import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { replicationMiddleware } from "./modules/rodux/middlewares/replicationMiddleware";
 
@@ -95,6 +96,20 @@ const onPlayerAdded = async (player: Player): Promise<void> => {
 	remotes.Server.GetNamespace("rodux").Get("storeStateCreated").SendToAllPlayers(player, store.getState());
 	playerStores.set(player, store);
 
+	const leaderstats = new Instance("Folder");
+	leaderstats.Name = "leaderstats";
+	leaderstats.Parent = player;
+
+	const bans = new Instance("StringValue");
+	bans.Name = "🔨 Bans 🔨";
+	bans.Parent = leaderstats;
+	bans.Value = statsAbbreviator.numberToString(store.getState().bans.bans);
+
+	const eggsHatched = new Instance("StringValue");
+	eggsHatched.Name = "🥚 Eggs 🥚";
+	eggsHatched.Parent = leaderstats;
+	eggsHatched.Value = statsAbbreviator.numberToString(store.getState().eggs.eggs);
+
 	// call creation callbacks
 	const callbacks = storeCreationCallbacks.get(player) ?? [];
 	for (const callback of callbacks) {
@@ -104,6 +119,16 @@ const onPlayerAdded = async (player: Player): Promise<void> => {
 	storeCreationCallbacks.delete(player);
 
 	dataLoaded.set(player, true);
+
+	store.changed.connect((newState, oldState) => {
+		if (newState.bans.bans !== oldState.bans.bans) {
+			bans.Value = statsAbbreviator.numberToString(newState.bans.bans);
+		}
+
+		if (newState.eggs.eggs !== oldState.eggs.eggs) {
+			eggsHatched.Value = statsAbbreviator.numberToString(newState.eggs.eggs);
+		}
+	});
 };
 
 /**

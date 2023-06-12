@@ -1,6 +1,6 @@
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import Make from "@rbxts/make";
-import { Players, RunService, SoundService } from "@rbxts/services";
+import { Players, SoundService } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { getCurrentWorld } from "client/util/getCurrentWorld";
 import { WorldName, WORLDS } from "shared/configs/worlds";
@@ -107,7 +107,8 @@ export function stopPlaylist(): void {
 }
 
 task.spawn(() => {
-	RunService.RenderStepped.Connect(() => {
+	// eslint-disable-next-line no-constant-condition
+	while (true) {
 		const world = getCurrentWorld();
 		if (world === undefined) {
 			return;
@@ -118,6 +119,6 @@ task.spawn(() => {
 		}
 		currentWorld = world;
 
-		setPlaylist(world);
-	});
+		setPlaylist(currentWorld);
+	}
 });

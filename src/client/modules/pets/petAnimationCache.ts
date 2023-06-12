@@ -10,7 +10,7 @@ export interface PetCreated {
 	petType: "Walk" | "Fly";
 }
 
-interface PlayerAnimationCache {
+export interface PlayerAnimationCache {
 	player: Player;
 	petsDisplayed: BoolValue;
 	distance: NumberValue;

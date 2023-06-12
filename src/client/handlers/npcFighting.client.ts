@@ -1,10 +1,11 @@
 import { Players, RunService, UserInputService, Workspace } from "@rbxts/services";
-import { getPurchasedAutoFightState, setManualAutoFight } from "client/modules/autoFightCache";
+import { getManualAutoFightState, getPurchasedAutoFightState, setManualAutoFight } from "client/modules/autoFightCache";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 const npcs = Workspace.WaitForChild("npcs") as Folder;
 let currentConnection: RBXScriptConnection | undefined;
+let lastSwingTime = 0;
 
 /**
  * Called when a player interacts with an NPC.
@@ -13,7 +14,6 @@ let currentConnection: RBXScriptConnection | undefined;
  * @param npc The NPC that was interacted with.
  */
 const onNPCInteraction = (player: Player, npc: Model): void => {
-	let lastSwingTime = 0;
 	setManualAutoFight(true);
 
 	/**
@@ -50,59 +50,8 @@ const onNPCInteraction = (player: Player, npc: Model): void => {
 		playerHumanoid.MoveTo(targetPosition);
 	}
 
-	/**
-	 * Returns the current time in seconds.
-	 */
-	function handleWeapon(): void {
-		const now = time();
-		if (now - lastSwingTime < 0.5) {
-			return;
-		}
-		lastSwingTime = now;
-
-		const character = player.Character;
-		if (character === undefined) {
-			return;
-		}
-
-		const weapon = character.FindFirstChildOfClass("Tool");
-		if (weapon === undefined) {
-			return;
-		}
-
-		weapon.Activate();
-	}
-
-	const connection = RunService.RenderStepped.Connect(() => {
-		if (currentConnection === undefined || npc.Parent === undefined) {
-			setManualAutoFight(false);
-			connection.Disconnect();
-			return;
-		}
-
-		handleWeapon();
-	});
-
 	currentConnection = RunService.RenderStepped.Connect(() => onRenderStepped());
 };
-
-/**
- * Updates the mouse icon.
- */
-const updateMouseIcon = (): void => {
-	const player = Players.LocalPlayer;
-	const mouse = player.GetMouse();
-
-	RunService.RenderStepped.Connect(() => {
-		const target = mouse.Target;
-		if (target && target.IsDescendantOf(npcs)) {
-			mouse.Icon = assetIds.images.vectors.SmallSword;
-		} else {
-			mouse.Icon = "rbxasset://textures/ArrowFarCursor.png";
-		}
-	});
-};
-
 /**
  * Called when a player presses a key.
  *
@@ -167,6 +116,29 @@ const onInputBegan = (input: InputObject, gameProcessedEvent: boolean): void => 
 	}
 };
 
+/**
+ * Returns the current time in seconds.
+ */
+function handleWeapon(): void {
+	const now = time();
+	if (now - lastSwingTime < 0.5) {
+		return;
+	}
+	lastSwingTime = now;
+
+	const character = Players.LocalPlayer.Character;
+	if (character === undefined) {
+		return;
+	}
+
+	const weapon = character.FindFirstChildOfClass("Tool");
+	if (weapon === undefined) {
+		return;
+	}
+
+	weapon.Activate();
+}
+
 UserInputService.InputBegan.Connect((input, gameProcessedEvent) => {
 	onInputBegan(input, gameProcessedEvent);
 
@@ -196,4 +168,27 @@ UserInputService.TouchMoved.Connect((_, gameProcessedEvent) => {
 		currentConnection = undefined;
 	}
 });
-task.spawn(() => updateMouseIcon());
+
+task.spawn(() => {
+	const player = Players.LocalPlayer;
+	const mouse = player.GetMouse();
+
+	RunService.RenderStepped.Connect(() => {
+		const target = mouse.Target;
+		if (target && target.IsDescendantOf(npcs)) {
+			mouse.Icon = assetIds.images.vectors.SmallSword;
+		} else {
+			mouse.Icon = "rbxasset://textures/ArrowFarCursor.png";
+		}
+	});
+});
+
+RunService.RenderStepped.Connect(() => {
+	if (currentConnection !== undefined) {
+		handleWeapon();
+
+		if (getManualAutoFightState()) {
+			setManualAutoFight(true);
+		}
+	}
+});

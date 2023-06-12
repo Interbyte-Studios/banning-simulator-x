@@ -5,10 +5,12 @@ import { cachePetForAnimation } from "client/modules/pets/createPetFollow";
 import {
 	createPetAnimationCache,
 	getPetAnimationCache,
+	PlayerAnimationCache,
 	removePetAnimationCache,
 } from "client/modules/pets/petAnimationCache";
 import { removePet } from "client/modules/pets/unequipPet";
-import { isValidPetAnimationType } from "shared/rodux/settings";
+import { Pet } from "shared/rodux/pets";
+import { ValidPetAnimationType } from "shared/rodux/settings";
 
 const radius = math.pi * 2;
 
@@ -39,116 +41,106 @@ function isNan(value: number): boolean {
 }
 
 /**
- * Caches a player's settings and animates their pets physical models..
+ * Finds and returns the humanoid root part of the player.
  *
- * @param player The player object.
- * @returns An empty promise.
+ * @param player The player to get the humanoid root part from.
+ * @returns The humanoid root part of the player.
+ */
+const getHumanoidRootPart = (player: Player): BasePart | undefined => {
+	const character = player.Character ?? player.CharacterAdded.Wait()[0];
+	if (character === undefined) {
+		return;
+	}
+	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
+	if (humanoid === undefined) {
+		return;
+	}
+	return humanoid.RootPart;
+};
+
+/**
+ * Updates the player's animation cache with new visual settings.
+ *
+ * @param playerCache The cache of the player.
+ * @param visualSettings The visual settings of the player.
+ * @param visualSettings.petsDisplayed Whether or not pets are displayed.
+ * @param visualSettings.petsStudsOfDistance The amount of studs the pets are away from the player.
+ * @param visualSettings.petAnimationType The animation type of the pets.
+ */
+const updatePlayerCacheVisuals = (
+	playerCache: PlayerAnimationCache,
+	visualSettings: { petsDisplayed: boolean; petsStudsOfDistance: number; petAnimationType: ValidPetAnimationType },
+): void => {
+	playerCache.petsDisplayed.Value = visualSettings.petsDisplayed;
+	playerCache.distance.Value = visualSettings.petsStudsOfDistance;
+	playerCache.animationType.Value = visualSettings.petAnimationType;
+};
+
+/**
+ * Creates and caches a pet for the player.
+ *
+ * @param player The player to create and cache the pet for.
+ * @param playerCache The cache of the player.
+ * @param pet The pet to create and cache.
+ */
+const createAndCachePet = (player: Player, playerCache: PlayerAnimationCache, pet: Pet): void => {
+	const createdPet = cachePetForAnimation(player, pet.id, pet.guid, pet.variant);
+	if (createdPet === undefined) {
+		return;
+	}
+
+	createdPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
+	playerCache.pets.push(createdPet);
+};
+
+/**
+ * Caches the pet animation for a player.
+ *
+ * @param player The player to cache the pet animation for.
+ * @returns A callback that yields until the player's store has been created.
  */
 const cachePlayerPetanimation = (player: Player): Promise<void> =>
 	onStoreCreated(player)
 		.andThen((store) => {
 			task.spawn(() =>
 				task.delay(5, () => {
-					const initialState = store.getState();
-
-					const character = player.Character ?? player.CharacterAdded.Wait()[0];
-					if (character === undefined) {
-						return;
-					}
-
-					const humanoid = character.WaitForChild("Humanoid") as Humanoid;
-					if (humanoid === undefined) {
-						return;
-					}
-
-					const humanoidRootPart = humanoid.RootPart;
+					const humanoidRootPart = getHumanoidRootPart(player);
 					if (humanoidRootPart === undefined) {
 						return;
 					}
 
+					const currentState = store.getState();
 					const playerCache = createPetAnimationCache(player);
+					updatePlayerCacheVisuals(playerCache, currentState.settings.visual);
 
-					playerCache.petsDisplayed.Value = initialState.settings.visual.petsDisplayed;
-					playerCache.distance.Value = initialState.settings.visual.petsStudsOfDistance;
-					playerCache.animationType.Value = initialState.settings.visual.petAnimationType;
-
-					initialState.pets.forEach((pet) => {
-						if (!pet.equipped) {
-							return;
+					currentState.pets.forEach((pet) => {
+						if (pet.equipped) {
+							createAndCachePet(player, playerCache, pet);
 						}
-
-						const createdPet = cachePetForAnimation(player, pet.id, pet.guid, pet.variant);
-						if (createdPet === undefined) {
-							return;
-						}
-
-						createdPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
-
-						playerCache.pets.push(createdPet);
 					});
 
 					store.changed.connect((newState, oldState) => {
 						if (newState.settings.visual !== oldState.settings.visual) {
-							playerCache.petsDisplayed.Value = newState.settings.visual.petsDisplayed;
-							playerCache.distance.Value = newState.settings.visual.petsStudsOfDistance;
-							playerCache.animationType.Value = newState.settings.visual.petAnimationType;
+							updatePlayerCacheVisuals(playerCache, newState.settings.visual);
 						}
 
-						if (newState.pets === oldState.pets) {
-							return;
-						}
-
-						const character = player.Character ?? player.CharacterAdded.Wait()[0];
-						if (character === undefined) {
-							return;
-						}
-
-						const humanoid = character.WaitForChild("Humanoid") as Humanoid;
-						if (humanoid === undefined) {
-							return;
-						}
-
-						const humanoidRootPart = humanoid.RootPart;
-						if (humanoidRootPart === undefined) {
-							return;
-						}
-
-						newState.pets.forEach((pet) => {
-							if (pet.equipped) {
-								const cachedPetIndex = playerCache.pets.find((animatedPet) => animatedPet.guid === pet.guid);
-								if (cachedPetIndex !== undefined) {
-									return;
+						if (newState.pets !== oldState.pets) {
+							newState.pets.forEach((pet) => {
+								if (pet.equipped) {
+									const cachedPetIndex = playerCache.pets.find((animatedPet) => animatedPet.guid === pet.guid);
+									if (cachedPetIndex === undefined) {
+										createAndCachePet(player, playerCache, pet);
+									}
+								} else {
+									const cachedPetIndex = playerCache.pets.findIndex((animatedPet) => animatedPet.guid === pet.guid);
+									if (cachedPetIndex !== -1) {
+										playerCache.pets.unorderedRemove(cachedPetIndex);
+										removePet(pet.guid);
+									}
 								}
-
-								const createdPet = cachePetForAnimation(player, pet.id, pet.guid, pet.variant);
-								if (createdPet === undefined) {
-									return;
-								}
-
-								createdPet.model.Parent = playerCache.petsDisplayed.Value
-									? Workspace["client objects"].pets
-									: undefined;
-								playerCache.pets.push(createdPet);
-
-								return;
-							}
-
-							const cachedPetIndex = playerCache.pets.findIndex((animatedPet) => animatedPet.guid === pet.guid);
-							if (cachedPetIndex === undefined) {
-								return;
-							}
-
-							playerCache.pets.unorderedRemove(cachedPetIndex);
-							removePet(pet.guid);
-						});
+							});
+						}
 					});
-
-					const currentCacheState = getPetAnimationCache();
-					currentCacheState.forEach((playerCache) =>
-						playerCache.pets.forEach((cachedPet) => {
-							cachedPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
-						}),
-					);
 
 					playerCache.petsDisplayed.GetPropertyChangedSignal("Value").Connect(() => {
 						const currentCacheState = getPetAnimationCache();
@@ -174,9 +166,35 @@ Players.GetPlayers().forEach((player) => cachePlayerPetanimation(player));
 Players.PlayerAdded.Connect((player) => cachePlayerPetanimation(player));
 Players.PlayerRemoving.Connect((player) => removePetAnimationCache(player));
 
-let lastPrint = 0;
-const debugEnabled = false; // RunService.IsStudio();
+const rayCastParams = new RaycastParams();
+rayCastParams.IgnoreWater = true;
+rayCastParams.FilterType = Enum.RaycastFilterType.Exclude;
+rayCastParams.FilterDescendantsInstances = [Workspace.worlds];
+
+/**
+ * Calculates the shared data for all pets.
+ *
+ * @param now The current time.
+ * @returns The shared data for all pets.
+ */
+const calculateSharedData = (
+	now: number,
+): { petJump: number; petRotate: number; petHover: number; petFace: number } => {
+	const petJump = math.clamp(math.cos(now * 24) * 2, 0, 2);
+	const petRotate = math.cos(now * 10) * 30;
+	const petHover = math.cos(now * 2.5) * 1.2;
+	const petFace = math.sin(now * 2.2) * 15;
+
+	return { petJump, petRotate, petHover, petFace };
+};
+
 RunService.RenderStepped.Connect(() => {
+	debug.profilebegin("petFollow");
+	const now = time();
+
+	// get shared animation values for pets
+	const { petJump, petRotate, petHover, petFace } = calculateSharedData(now);
+
 	// get the players currently equipped pet models
 	const currentCacheState = getPetAnimationCache();
 
@@ -199,10 +217,7 @@ RunService.RenderStepped.Connect(() => {
 		}
 
 		// we use raycasts for walking pets to make sure they're animated right above the ground
-		const rayCastParams = new RaycastParams();
-		rayCastParams.IgnoreWater = true;
-		rayCastParams.FilterType = Enum.RaycastFilterType.Exclude;
-		rayCastParams.FilterDescendantsInstances = [character, Workspace.worlds];
+		rayCastParams.FilterDescendantsInstances = [Workspace.worlds, character];
 
 		// iterate through all the pets the player has equipped and animate them
 		playerCache.pets.forEach((pet, index) => {
@@ -211,22 +226,11 @@ RunService.RenderStepped.Connect(() => {
 				return;
 			}
 
-			// type checking is important! We need to be sure the pet has either "flying" or "walking" as its animation type
-			const animationType = playerCache.animationType.Value;
-			if (!isValidPetAnimationType(animationType)) {
-				return;
-			}
-
 			// we use the primary part of the pet model for manipulating it's position and orientation
-			const petType = pet.petType;
-			const petModel = pet.model;
-			const primaryPart = petModel.PrimaryPart;
+			const primaryPart = pet.model.PrimaryPart;
 			if (primaryPart === undefined) {
 				return;
 			}
-
-			// we need to log the time for certain aspects of the animation such as cosine functions, since they oscilate
-			const now = time();
 
 			// align position is how we keep the pet in a relative distance to the player
 			const alignPosition = pet.alignPosition;
@@ -237,14 +241,7 @@ RunService.RenderStepped.Connect(() => {
 			// make sure pet is within 25 studs of player at all times
 			const magnitudeFromPlayer = humanoidRootPart.Position.sub(primaryPart.Position).Magnitude;
 			if (magnitudeFromPlayer > 25) {
-				petModel.PivotTo(humanoidRootPart.CFrame);
-				if (now - lastPrint > 3 && debugEnabled) {
-					warn(
-						"[STUDIO DEBUG] Pet model was too far from player, resetting position | Magnitude was " +
-							magnitudeFromPlayer,
-					);
-					lastPrint = now;
-				}
+				pet.model.PivotTo(humanoidRootPart.CFrame);
 				return;
 			}
 
@@ -252,31 +249,21 @@ RunService.RenderStepped.Connect(() => {
 			const isMoving = humanoid.MoveDirection.Magnitude > 0;
 
 			// here's where we get the bounding box of the pet model and calculate its jump and rotation values
-			const [, petSize] = petModel.GetBoundingBox();
-			const petJump = math.clamp(math.cos(now * 24) * 2, 0, 2);
-			const petRotate = math.cos(now * 10) * 30;
-
-			// calculate the hover and face values for the pet model
-			const petHover = math.cos(now * 2.5) * 1.2;
-			const petFace = math.sin(now * 2.2) * 15;
+			const [, petSize] = pet.model.GetBoundingBox();
 
 			// animate the pets based on whether they player has their animation set to "Surrounding" or "Following"
-			if (animationType === "Surrounding") {
+			if (playerCache.animationType.Value === "Surrounding") {
 				// calculate the position of the pet in the surrounding (circle) animation
 				const equippedPets = playerCache.pets.size();
 				const petAngle = index * (radius / equippedPets);
 				const { xPos, zPos } = getXandZ(petAngle, equippedPets, playerCache.distance.Value);
 
 				if (isNan(xPos) || isNan(zPos)) {
-					if (debugEnabled && now - lastPrint > 3) {
-						warn(`[STUDIO DEBUG] X or Z position is NaN for ${petModel.Name}`);
-						lastPrint = now;
-					}
 					return;
 				}
 
 				// some pets walk, some fly
-				if (petType === "Walk") {
+				if (pet.petType === "Walk") {
 					// we need to make sure the pet is above the ground, so we use a raycast to get the position of the ground
 					const magicVector = new Vector3(xPos, 20, zPos);
 					const originPosition = humanoidRootPart.Position.add(magicVector);
@@ -301,16 +288,6 @@ RunService.RenderStepped.Connect(() => {
 					// here we account for the pet needing to be right above the ground (to simulate walking), and it's jump value for when the player jumps
 					const aboveGroundY = rayCast.Position.Y + petSize.Y / (petSize.Y * boundingBoxMultiplier_Y);
 					if (isNan(aboveGroundY)) {
-						if (debugEnabled && now - lastPrint > 3) {
-							warn(`-------------------------------`);
-							warn(`[STUDIO DEBUG]`);
-							warn(`Above ground Y is NaN for ${petModel.Name}`);
-							warn(`Raycast position: ${rayCast.Position.Y}`);
-							warn(`Pet size: ${petSize.Y}`);
-							warn(`Bounding box multiplier: ${boundingBoxMultiplier_Y}`);
-							warn(`-------------------------------`);
-							lastPrint = now;
-						}
 						return;
 					}
 
@@ -319,10 +296,6 @@ RunService.RenderStepped.Connect(() => {
 					const petCFrame = aboveGroundCFrame.mul(jumpCFrame);
 
 					if (isNan(petCFrame.X) || isNan(petCFrame.Y) || isNan(petCFrame.Z)) {
-						if (debugEnabled && now - lastPrint > 3) {
-							warn("[STUDIO DEBUG] petCFrame contains NaN");
-							lastPrint = now;
-						}
 						return;
 					}
 
@@ -338,26 +311,10 @@ RunService.RenderStepped.Connect(() => {
 						isNan(lookingAtPlayer.Y) ||
 						isNan(lookingAtPlayer.Z)
 					) {
-						if (debugEnabled && now - lastPrint > 3) {
-							warn("[STUDIO DEBUG] orientedInPlayerDirection or lookingAtPlayer contains NaN");
-							lastPrint = now;
-						}
 						return;
 					}
 
 					const petRotationCFrame = isMoving ? orientedInPlayerDirection : lookingAtPlayer;
-
-					if (debugEnabled && now - lastPrint > 3) {
-						warn(`-------------------------------`);
-						warn(`[STUDIO DEBUG]`);
-						warn(`Align Position Y: ${alignPosition.Position.Y}`);
-						warn(`Align Orientation: ${petRotationCFrame.X} | ${petRotationCFrame.Y} | ${petRotationCFrame.Z}`);
-						warn(
-							`Oriented in player direction: ${orientedInPlayerDirection.X} | ${orientedInPlayerDirection.Y} | ${orientedInPlayerDirection.Z}`,
-						);
-						warn(`-------------------------------`);
-						lastPrint = now;
-					}
 
 					// animate!
 					alignPosition.Position = petCFrame.Position;
@@ -367,7 +324,7 @@ RunService.RenderStepped.Connect(() => {
 					if (!isMoving) {
 						alignOrientation.SecondaryAxis = new Vector3(0, 1, 0);
 					}
-				} else if (petType === "Fly") {
+				} else if (pet.petType === "Fly") {
 					// calculate the align position of the pet with respect to the player
 					const petCFrame = new CFrame(
 						humanoidRootPart.CFrame.X,
@@ -392,7 +349,7 @@ RunService.RenderStepped.Connect(() => {
 					alignPosition.Position = petCFrameWithFlying.Position;
 					alignOrientation.CFrame = petOrientation;
 				}
-			} else if (animationType === "Following") {
+			} else if (playerCache.animationType.Value === "Following") {
 				// calculate the colum pet is sorted into based on how many pets are equipped
 				const spacing = 2.5;
 				const columns = math.floor(math.sqrt(playerCache.pets.size()));
@@ -403,7 +360,7 @@ RunService.RenderStepped.Connect(() => {
 				const zCoord = math.floor(index / columns);
 
 				// some pets walk, some fly
-				if (petType === "Walk") {
+				if (pet.petType === "Walk") {
 					const magicY = 20;
 					const originPosition = new Vector3(0, magicY, 0);
 					const raycastDirection = new Vector3(0, -100, 0);
@@ -431,7 +388,7 @@ RunService.RenderStepped.Connect(() => {
 					if (!isMoving) {
 						alignOrientation.SecondaryAxis = new Vector3(0, 1, 0);
 					}
-				} else if (petType === "Fly") {
+				} else if (pet.petType === "Fly") {
 					const petCFrame = new CFrame(
 						humanoidRootPart.CFrame.X,
 						humanoidRootPart.Position.Y,
@@ -450,4 +407,5 @@ RunService.RenderStepped.Connect(() => {
 			}
 		});
 	}
+	debug.profileend();
 });

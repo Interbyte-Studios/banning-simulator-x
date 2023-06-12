@@ -124,7 +124,9 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 				const canHatch = now - lastHatchTime > hatchDebounce;
 				if (!canHatch) {
 					addAnnouncement(
-						`You must wait ${hatchDebounce - (now - lastHatchTime)} seconds before hatching another egg!`,
+						`You must wait ${statsAbbreviator.numberToString(
+							hatchDebounce - (now - lastHatchTime),
+						)} seconds before hatching another egg!`,
 						AnnouncementType.Error,
 					);
 					return;
