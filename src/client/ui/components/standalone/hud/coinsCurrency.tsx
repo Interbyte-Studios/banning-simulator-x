@@ -10,6 +10,10 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { OpenShop } from "./openShop";
 
+interface CoinsCurrencyProps extends CoinsCurrencyMappedProps {
+	onlyShowCurrencyEnabled: boolean;
+}
+
 interface CoinsCurrencyMappedProps {
 	coins: number;
 }
@@ -25,7 +29,7 @@ function mapStateToProps(state: StoreState): CoinsCurrencyMappedProps {
 }
 
 export const CoinsCurrency = RoactRodux.connect(mapStateToProps)(
-	hooks((props: CoinsCurrencyMappedProps) => {
+	hooks((props: CoinsCurrencyProps) => {
 		return (
 			<ImageLabel
 				native={{
@@ -36,7 +40,9 @@ export const CoinsCurrency = RoactRodux.connect(mapStateToProps)(
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={4.8} />
-				<OpenShop minimizedSize={0.8} maximizedSize={0.9} position={UDim2.fromScale(0.95, 0.5)} />
+				{props.onlyShowCurrencyEnabled && (
+					<OpenShop minimizedSize={0.8} maximizedSize={0.9} position={UDim2.fromScale(0.95, 0.5)} />
+				)}
 				<CurrencyIcon
 					position={UDim2.fromScale(0.075, 0.5)}
 					size={{ minimizedSize: 0.9, maximizedSize: 1.05 }}

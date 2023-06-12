@@ -14,26 +14,41 @@ interface HudProps {
 	displayAutoFight: () => void;
 	displayAccount: () => void;
 	displayTradingMenu: () => void;
+	onlyShowCurrency: boolean;
 }
 
 export const Hud = hooks((props: HudProps) => {
-	return (
-		<BaseFrame
-			AnchorPoint={new Vector2(0, 0.5)}
-			Position={UDim2.fromScale(0.005, 0.5)}
-			Size={UDim2.fromScale(0.25, 0.5)}
-		>
-			<uiaspectratioconstraint AspectRatio={0.8} />
-			<HUDHeader
-				displayItems={props.displayItems}
-				displayAccount={props.displayAccount}
-				displayTeleportation={props.displayTeleportation}
-				displayAutoFight={props.displayAutoFight}
-			/>
-			<RanksViewer />
-			<CoinsCurrency />
-			<GemsCurrency />
-			<HUDFooter displayTradingMenu={props.displayTradingMenu} />
-		</BaseFrame>
-	);
+	if (props.onlyShowCurrency) {
+		return (
+			<BaseFrame
+				AnchorPoint={new Vector2(0, 0.5)}
+				Position={UDim2.fromScale(0.005, 0.5)}
+				Size={UDim2.fromScale(0.25, 0.5)}
+			>
+				<uiaspectratioconstraint AspectRatio={0.8} />
+				<CoinsCurrency onlyShowCurrencyEnabled={props.onlyShowCurrency} />
+				<GemsCurrency onlyShowCurrencyEnabled={props.onlyShowCurrency} />
+			</BaseFrame>
+		);
+	} else {
+		return (
+			<BaseFrame
+				AnchorPoint={new Vector2(0, 0.5)}
+				Position={UDim2.fromScale(0.005, 0.5)}
+				Size={UDim2.fromScale(0.25, 0.5)}
+			>
+				<uiaspectratioconstraint AspectRatio={0.8} />
+				<HUDHeader
+					displayItems={props.displayItems}
+					displayAccount={props.displayAccount}
+					displayTeleportation={props.displayTeleportation}
+					displayAutoFight={props.displayAutoFight}
+				/>
+				<RanksViewer />
+				<CoinsCurrency onlyShowCurrencyEnabled={props.onlyShowCurrency} />
+				<GemsCurrency onlyShowCurrencyEnabled={props.onlyShowCurrency} />
+				<HUDFooter displayTradingMenu={props.displayTradingMenu} />
+			</BaseFrame>
+		);
+	}
 });

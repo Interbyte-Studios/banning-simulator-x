@@ -41,6 +41,7 @@ export const WeaponShopInteractPrompt = hooks((props: { displayShop: () => void 
 		const player = Players.LocalPlayer;
 
 		const connection = RunService.RenderStepped.Connect(() => {
+			debug.profilebegin("weaponShopInteractPrompt");
 			if (shouldDisplay(player.Character, Workspace.interactions.worlds["Ban Land"].weaponShop.InteractPrompt)) {
 				if (!isDisplayed) {
 					setDisplay(true);
@@ -50,6 +51,7 @@ export const WeaponShopInteractPrompt = hooks((props: { displayShop: () => void 
 					setDisplay(false);
 				}
 			}
+			debug.profileend();
 		});
 
 		return (): void => {

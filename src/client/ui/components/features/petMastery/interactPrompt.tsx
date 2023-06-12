@@ -39,6 +39,7 @@ export const PetMasteryInteractPrompt = hooks((props: { adornee: BasePart; displ
 		const player = Players.LocalPlayer;
 
 		const connection = RunService.RenderStepped.Connect(() => {
+			debug.profilebegin("petMasteryInteractPrompt");
 			if (shouldDisplay(player.Character, props.adornee)) {
 				if (!isDisplayed) {
 					setDisplay(true);
@@ -48,6 +49,7 @@ export const PetMasteryInteractPrompt = hooks((props: { adornee: BasePart; displ
 					setDisplay(false);
 				}
 			}
+			debug.profileend();
 		});
 
 		return (): void => {

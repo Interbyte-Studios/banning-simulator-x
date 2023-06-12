@@ -20,6 +20,7 @@ const onNPCInteraction = (player: Player, npc: Model): void => {
 	 * Called on render stepped.
 	 */
 	function onRenderStepped(): void {
+		debug.profilebegin("onNPCInteraction");
 		const npcHumanoid = npc.FindFirstChildOfClass("Humanoid");
 		if (npcHumanoid === undefined) {
 			return;
@@ -48,6 +49,7 @@ const onNPCInteraction = (player: Player, npc: Model): void => {
 		const direction = npcHumanoidRootPart.Position.sub(playerRootPart.Position).Unit;
 		const targetPosition = npcHumanoidRootPart.Position.sub(direction.mul(3));
 		playerHumanoid.MoveTo(targetPosition);
+		debug.profileend();
 	}
 
 	currentConnection = RunService.RenderStepped.Connect(() => onRenderStepped());
@@ -174,16 +176,19 @@ task.spawn(() => {
 	const mouse = player.GetMouse();
 
 	RunService.RenderStepped.Connect(() => {
+		debug.profilebegin("mouseIcon");
 		const target = mouse.Target;
 		if (target && target.IsDescendantOf(npcs)) {
 			mouse.Icon = assetIds.images.vectors.SmallSword;
 		} else {
 			mouse.Icon = "rbxasset://textures/ArrowFarCursor.png";
 		}
+		debug.profileend();
 	});
 });
 
 RunService.RenderStepped.Connect(() => {
+	debug.profilebegin("npcFighting");
 	if (currentConnection !== undefined) {
 		handleWeapon();
 
@@ -191,4 +196,6 @@ RunService.RenderStepped.Connect(() => {
 			setManualAutoFight(true);
 		}
 	}
+
+	debug.profileend();
 });

@@ -82,12 +82,14 @@ export function equipTalisman(player: Player, talismanId: number, phase: Talisma
 	talisman.Parent = Workspace["client objects"].talismans;
 
 	const talismanRender = RunService.RenderStepped.Connect(() => {
+		debug.profilebegin("talismanRender");
 		if (humanoidRootPart !== undefined) {
 			const hover = math.cos(os.clock() * 3) * 1;
 
 			alignPosition.Position = humanoidRootPart.CFrame.mul(new CFrame(2, hover, 3)).Position;
 			alignOrientation.CFrame = humanoidRootPart.CFrame;
 		}
+		debug.profileend();
 	});
 
 	humanoid.Died.Connect(() => {

@@ -220,7 +220,7 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 								props.returnToSelection();
 								addAnnouncement(
 									`You've fused a ${
-										props.variant === "regular" ? "Void" : props.variant === "void" ? "Radiant" : "Unknown"
+										props.variant === "void" ? "Void" : props.variant === "radiant" ? "Radiant" : "Unknown"
 									} pet! Congratulations!`,
 									AnnouncementType.Announcement,
 								);

@@ -42,6 +42,7 @@ export const AnnouncementAPI = hooks(
 
 		useEffect(() => {
 			const connection = RunService.RenderStepped.Connect(() => {
+				debug.profilebegin("announcementAPI");
 				if (mounted.value === false) {
 					return;
 				}
@@ -74,6 +75,7 @@ export const AnnouncementAPI = hooks(
 				if (mounted.value) {
 					setErrors(newErrors);
 				}
+				debug.profileend();
 			});
 
 			return (): void => connection.Disconnect();

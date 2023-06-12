@@ -41,6 +41,7 @@ interface AutoFightCache {
 	startingRank: number;
 	startingWeapon: number;
 	petExperience: number;
+	bans: number;
 }
 
 let lastTimerCheck = 0;
@@ -58,6 +59,7 @@ const autoFightCache: AutoFightCache = {
 	startingRank: 1,
 	startingWeapon: 1,
 	petExperience: 0,
+	bans: 0,
 };
 
 interface AutoFightProps extends AutoFightMappedProps {
@@ -121,6 +123,14 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				mounted.value = false;
 			};
 		}, []);
+
+		useEffect(() => {
+			if (!isEnabled) {
+				return;
+			}
+
+			autoFightCache.bans += 1;
+		}, [isEnabled, props.bans]);
 
 		useEffect(() => {
 			const connection = RunService.Heartbeat.Connect(() => {
@@ -343,6 +353,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 
 			let lastSwingTime = 0;
 			const connection = RunService.RenderStepped.Connect(() => {
+				debug.profilebegin("Auto Fight");
 				const now = time();
 				if (now - lastSwingTime < 0.5) {
 					return;
@@ -360,6 +371,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				}
 
 				weapon.Activate();
+				debug.profileend();
 			});
 
 			return (): void => connection.Disconnect();
@@ -376,6 +388,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 			autoFightCache.startingRank = props.rank;
 			autoFightCache.startingWeapon = props.currentWeapon.id;
 			autoFightCache.petExperience = 0;
+			autoFightCache.bans = 0;
 
 			focusedNpc = undefined;
 		}, [isEnabled, props.currencies, props.rank, props.currentWeapon]);
@@ -894,6 +907,32 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 									</BaseFrame>
 								);
 							})}
+
+							<BaseFrame
+								BackgroundTransparency={0}
+								BackgroundColor3={Color3.fromRGB(26, 116, 172)}
+								Size={UDim2.fromScale(1, 0.12)}
+							>
+								<uicorner CornerRadius={new UDim(0.3, 0)} />
+								<StrokeTextLabel
+									native={{
+										Position: UDim2.fromScale(0.265, 0.5),
+										Size: UDim2.fromScale(0.5, 0.8),
+										Text: "Accumulated Bans:",
+										TextXAlignment: Enum.TextXAlignment.Left,
+									}}
+									stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+								/>
+								<StrokeTextLabel
+									native={{
+										Position: UDim2.fromScale(0.825, 0.5),
+										Size: UDim2.fromScale(0.3, 0.7),
+										Text: tostring(autoFightCache.bans),
+										TextXAlignment: Enum.TextXAlignment.Right,
+									}}
+									stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+								/>
+							</BaseFrame>
 
 							<BaseFrame
 								BackgroundTransparency={0}

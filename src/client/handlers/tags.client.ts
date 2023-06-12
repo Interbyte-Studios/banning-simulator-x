@@ -1,5 +1,5 @@
 import { GameAnalytics } from "@rbxts/gameanalytics";
-import { CollectionService, Players, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
+import { Players, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
 import { t } from "@rbxts/t";
 import { onStoreCreated } from "client/clientStores";
 import { getRankIcon } from "client/util/getRankIcon";
@@ -138,18 +138,10 @@ function createPlayerTag(player: Player, store: Store): t.static<typeof isPlayer
 	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
 	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
 
-	for (const uiStroke of tag.GetDescendants()) {
-		if (!uiStroke.IsA("UIStroke")) {
-			continue;
-		}
-
-		CollectionService.AddTag(uiStroke, "Billboard_UIStroke");
-	}
-
 	tag.Adornee = head;
 	tag.Parent = friendlyTags;
 
-	humanoid.Died.Connect(() => {
+	humanoid.AncestryChanged.Connect(() => {
 		tag.Destroy();
 		return;
 	});
@@ -274,14 +266,6 @@ function createEnemyTag(enemy: Model): void {
 	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
 	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
 
-	for (const uiStroke of tag.GetDescendants()) {
-		if (!uiStroke.IsA("UIStroke")) {
-			continue;
-		}
-
-		CollectionService.AddTag(uiStroke, "Billboard_UIStroke");
-	}
-
 	tag.Adornee = head;
 	tag.Parent = enemyTags;
 
@@ -310,7 +294,7 @@ function createEnemyTag(enemy: Model): void {
 		)} / ${twoDpAbbreviator.numberToString(humanoid.MaxHealth)}]`;
 	});
 
-	humanoid.Died.Connect(() => {
+	humanoid.AncestryChanged.Connect(() => {
 		tag.Destroy();
 		return;
 	});
@@ -366,6 +350,7 @@ npcsFolder.GetChildren().forEach((enemy) => {
 });
 
 RunService.RenderStepped.Connect((deltaTime) => {
+	debug.profilebegin("Gradient Tags");
 	gradients.forEach((gradient) => {
 		if (gradient.Offset.X < 0.75) {
 			gradient.Offset = new Vector2(gradient.Offset.X + 0.5 * deltaTime, 0);
@@ -375,4 +360,5 @@ RunService.RenderStepped.Connect((deltaTime) => {
 
 		gradient.Rotation = 40;
 	});
+	debug.profileend();
 });

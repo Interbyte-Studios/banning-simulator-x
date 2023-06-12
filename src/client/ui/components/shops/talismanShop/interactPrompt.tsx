@@ -39,6 +39,7 @@ export const TalismanTowerInteractPrompt = hooks((props: { displayShop: () => vo
 		const player = Players.LocalPlayer;
 
 		const connection = RunService.RenderStepped.Connect(() => {
+			debug.profilebegin("talismanTowerInteractPrompt");
 			if (shouldDisplay(player.Character, Workspace.interactions.worlds["Ban Land"].talismanTower.InteractPrompt)) {
 				if (!isDisplayed) {
 					setDisplay(true);
@@ -48,6 +49,7 @@ export const TalismanTowerInteractPrompt = hooks((props: { displayShop: () => vo
 					setDisplay(false);
 				}
 			}
+			debug.profileend();
 		});
 
 		return (): void => {

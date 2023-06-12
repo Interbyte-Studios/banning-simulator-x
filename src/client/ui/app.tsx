@@ -113,6 +113,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
 					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
 					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					onlyShowCurrency={false}
 				/>,
 				<WeaponShopHandle
 					isVisible={false}
@@ -152,6 +153,14 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					isVisible={true}
 					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, fusing: value })}
 				/>,
+				<Hud
+					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
+					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
+					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					onlyShowCurrency={true}
+				/>,
 			);
 		} else if (isVisible("weaponShop")) {
 			components.push(
@@ -159,12 +168,28 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					isVisible={true}
 					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, weaponShop: value })}
 				/>,
+				<Hud
+					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
+					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
+					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					onlyShowCurrency={true}
+				/>,
 			);
 		} else if (isVisible("talismanTower")) {
 			components.push(
 				<TalismanTowerHandle
 					isVisible={true}
 					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, talismanTower: value })}
+				/>,
+				<Hud
+					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
+					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
+					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					onlyShowCurrency={true}
 				/>,
 			);
 		} else if (isVisible("petMastery")) {
@@ -181,7 +206,17 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 		} else if (isVisible("items")) {
 			components.push(<ItemInventory hideMenu={(): void => setVisibility((prev) => ({ ...prev, items: false }))} />);
 		} else if (isVisible("autoFight")) {
-			components.push(<AutoFight hideMenu={(): void => setVisibility((prev) => ({ ...prev, autoFight: false }))} />);
+			components.push(
+				<AutoFight hideMenu={(): void => setVisibility((prev) => ({ ...prev, autoFight: false }))} />,
+				<Hud
+					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
+					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
+					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					onlyShowCurrency={true}
+				/>,
+			);
 		} else if (isVisible("accountHub")) {
 			components.push(<AccountHub hideMenu={(): void => setVisibility((prev) => ({ ...prev, accountHub: false }))} />);
 		} else if (isVisible("trading")) {

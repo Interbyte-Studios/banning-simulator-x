@@ -21,10 +21,13 @@ function animateVendor(petMasteryVendor: Model): void {
 	const faceAmount = 15;
 
 	RunService.RenderStepped.Connect(() => {
+		debug.profilebegin("petMasteryVendor");
 		const hover = math.sin(os.clock() * hoverSpeed) * hoverAmount;
 		const face = math.sin(os.clock() * faceSpeed) * faceAmount;
 
 		petMasteryVendor.PivotTo(originalCFrame.mul(new CFrame(0, hover, 0).mul(CFrame.Angles(math.rad(face), 0, 0))));
+
+		debug.profileend();
 	});
 }
 

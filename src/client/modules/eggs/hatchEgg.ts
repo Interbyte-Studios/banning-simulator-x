@@ -51,11 +51,13 @@ let spin = false;
 
 // Runservice connection to handle spinning
 RunService.RenderStepped.Connect(() => {
+	debug.profilebegin("Egg Spin");
 	if (spin) {
 		petRotation.Value += 3;
 	} else {
 		petRotation.Value += 0.7;
 	}
+	debug.profileend();
 });
 
 /**
@@ -281,6 +283,7 @@ export const animateSingleEggHatch = (
 	positionValue.Destroy();
 	rarityGradient.Destroy();
 	rarityParticleEmitter.Clear();
+	rarityParticle.Destroy();
 
 	middleDecal.Image = "";
 	middleName.Visible = false;
@@ -621,6 +624,7 @@ export const animateTripleEggHatch = (
 	rarity2Gradient.Destroy();
 	rarity3Gradient.Destroy();
 	rarityParticleEmitter.Clear();
+	rarityParticle.Destroy();
 
 	middleDecal.Image = "";
 	middleName.Visible = false;

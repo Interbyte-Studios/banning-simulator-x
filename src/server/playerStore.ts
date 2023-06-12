@@ -100,15 +100,15 @@ const onPlayerAdded = async (player: Player): Promise<void> => {
 	leaderstats.Name = "leaderstats";
 	leaderstats.Parent = player;
 
+	const eggsHatched = new Instance("IntValue");
+	eggsHatched.Name = "🥚 Eggs 🥚";
+	eggsHatched.Parent = leaderstats;
+	eggsHatched.Value = store.getState().eggs.eggs;
+
 	const bans = new Instance("StringValue");
 	bans.Name = "🔨 Bans 🔨";
 	bans.Parent = leaderstats;
 	bans.Value = statsAbbreviator.numberToString(store.getState().bans.bans);
-
-	const eggsHatched = new Instance("StringValue");
-	eggsHatched.Name = "🥚 Eggs 🥚";
-	eggsHatched.Parent = leaderstats;
-	eggsHatched.Value = statsAbbreviator.numberToString(store.getState().eggs.eggs);
 
 	// call creation callbacks
 	const callbacks = storeCreationCallbacks.get(player) ?? [];
@@ -126,7 +126,7 @@ const onPlayerAdded = async (player: Player): Promise<void> => {
 		}
 
 		if (newState.eggs.eggs !== oldState.eggs.eggs) {
-			eggsHatched.Value = statsAbbreviator.numberToString(newState.eggs.eggs);
+			eggsHatched.Value = newState.eggs.eggs;
 		}
 	});
 };
@@ -272,7 +272,7 @@ game.BindToClose(() => {
 	shuttingDown = true;
 
 	for (const player of Players.GetPlayers()) {
-		if (dataLoaded.get(player) !== undefined && savingData.get(player) !== undefined) {
+		if (dataLoaded.get(player) !== undefined && savingData.get(player) === undefined) {
 			const store = playerStores.get(player);
 			if (store !== undefined) {
 				const state = store.getState() as StoreState;

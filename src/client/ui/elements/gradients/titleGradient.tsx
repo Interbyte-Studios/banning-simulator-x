@@ -31,6 +31,7 @@ export const TitleGradient = hooks((props: { titleId: number }, { useEffect, use
 		assert(gradient);
 
 		const connection = RunService.RenderStepped.Connect((deltaTime) => {
+			debug.profilebegin("titleGradient");
 			if (offsetOfAnimation.getValue().X < 0.75) {
 				gradient.Offset = new Vector2(offsetOfAnimation.getValue().X + 0.5 * deltaTime, 0);
 			} else {
@@ -39,6 +40,7 @@ export const TitleGradient = hooks((props: { titleId: number }, { useEffect, use
 
 			gradient.Rotation = 40;
 			setAnimationOffset(gradient.Offset);
+			debug.profileend();
 		});
 
 		return (): void => connection.Disconnect();

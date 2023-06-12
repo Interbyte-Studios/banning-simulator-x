@@ -93,6 +93,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 			const player = Players.LocalPlayer;
 
 			const connection = RunService.RenderStepped.Connect(() => {
+				debug.profilebegin("eggHudDisplay");
 				if (shouldDisplayHud(player.Character, props.adornee)) {
 					if (!isVisible) {
 						setVisibility(true);
@@ -102,6 +103,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 						setVisibility(false);
 					}
 				}
+				debug.profileend();
 			});
 
 			return (): void => {

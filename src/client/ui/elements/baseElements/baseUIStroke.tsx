@@ -26,10 +26,10 @@ export const BaseUIStroke = hooks((props: BaseUIStrokeProps, hooks) => {
 	useEffect(() => {
 		const uiStroke = uiStrokeRef.value.getValue();
 		if (uiStroke) {
-			CollectionService.AddTag(
-				uiStroke,
-				props.isBillboard !== undefined && props.isBillboard === true ? "Billboard_UIStroke" : "Normal_UIStroke",
-			);
+			// we stopped supporting billboards for now due to lag issues
+			if (!props.isBillboard) {
+				CollectionService.AddTag(uiStroke, "Normal_UIStroke");
+			}
 		} else warn(`Failed to get BaseUIStroke roact ref`);
 	}, [uiStrokeRef]);
 

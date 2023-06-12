@@ -16,7 +16,8 @@ import { withinDistanceToHatch } from "shared/util/withinDistanceToHatch";
 
 import { getTradeStatus } from "./trading/trades";
 
-const hatchEgg = remotes.Server.GetNamespace("eggs").Create("hatchEgg");
+const hatchSystemMessage = remotes.Server.GetNamespace("eggs").Get("hatchEggSystemMessage");
+const hatchEgg = remotes.Server.GetNamespace("eggs").Get("hatchEgg");
 const hatchTimeCache: Map<Player, number> = new Map();
 const randomGenerator = new Random();
 
@@ -176,6 +177,9 @@ hatchEgg.SetCallback(
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			if (pet.rarity === "Prismatic" || pet.rarity === "Primordial") {
 				addPetToCache(pet.id);
+				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
+			} else if (pet.rarity === "Legendary") {
+				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
 			}
 
 			selectedPets.push({

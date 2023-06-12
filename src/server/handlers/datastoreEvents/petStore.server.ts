@@ -7,7 +7,6 @@ import {
 	getPetsCache,
 	setLocalPetCache,
 	setPetsCache,
-	updateStoreInterval,
 	validPetExistCache,
 } from "server/modules/datastoreCaches/petExistStore";
 
@@ -96,7 +95,7 @@ task.spawn(() => {
 
 	// eslint-disable-next-line no-constant-condition
 	while (true) {
-		task.wait(updateStoreInterval);
+		task.wait(60 * 5);
 		compareCaches();
 	}
 });

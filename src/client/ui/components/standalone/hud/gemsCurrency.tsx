@@ -10,6 +10,10 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { OpenShop } from "./openShop";
 
+interface GemsCurrencyProps extends GemsCurrencyMappedProps {
+	onlyShowCurrencyEnabled: boolean;
+}
+
 interface GemsCurrencyMappedProps {
 	gems: number;
 }
@@ -25,7 +29,7 @@ function mapStateToProps(state: StoreState): GemsCurrencyMappedProps {
 }
 
 export const GemsCurrency = RoactRodux.connect(mapStateToProps)(
-	hooks((props: GemsCurrencyMappedProps) => {
+	hooks((props: GemsCurrencyProps) => {
 		return (
 			<ImageLabel
 				native={{
@@ -36,7 +40,9 @@ export const GemsCurrency = RoactRodux.connect(mapStateToProps)(
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={4.8} />
-				<OpenShop minimizedSize={0.8} maximizedSize={0.9} position={UDim2.fromScale(0.95, 0.5)} />
+				{props.onlyShowCurrencyEnabled && (
+					<OpenShop minimizedSize={0.8} maximizedSize={0.9} position={UDim2.fromScale(0.95, 0.5)} />
+				)}
 				<CurrencyIcon
 					position={UDim2.fromScale(0.075, 0.5)}
 					size={{ minimizedSize: 0.9, maximizedSize: 1.05 }}
