@@ -9,13 +9,16 @@ import { EggHud } from "./components/eggs/control";
 import { EggCost } from "./components/eggs/costs";
 import { AccountHub } from "./components/features/account";
 import { AutoFight } from "./components/features/auto fight";
+import { Codes } from "./components/features/codes";
 import { ItemInventory } from "./components/features/items";
 import { PetMastery } from "./components/features/petMastery";
+import { Settings } from "./components/features/settings";
 import { Teleportation } from "./components/features/teleportation";
 import { Trading } from "./components/features/trading";
 import { RankUpgrade } from "./components/ranks/menu";
 import { TalismanTowerHandle } from "./components/shops/talismanShop";
 import { WeaponShopHandle } from "./components/shops/weaponShop";
+import { BoostCounter } from "./components/standalone/boostCounter";
 import { Fusing } from "./components/standalone/fusing";
 import { Hud } from "./components/standalone/hud";
 import { CurrencyGainAnimation } from "./components/standalone/notifications/currencyGainAnimation";
@@ -23,6 +26,7 @@ import { DatastoreEvents } from "./components/standalone/notifications/datastore
 import { TalismanLevelUpAnimation } from "./components/standalone/notifications/talismanLevelUp";
 import { WeaponLevelUpAnimation } from "./components/standalone/notifications/weaponLevelUp";
 import { Rewards } from "./components/standalone/rewards";
+import { RobuxShop } from "./components/standalone/robuxShop";
 import { WeaponEquip } from "./components/standalone/weaponEquip/weaponEquip";
 import { ZonesUI } from "./components/standalone/zones";
 import { AnnouncementContext, AnnouncementType } from "./context/AnnouncementsAPI";
@@ -44,6 +48,9 @@ const visibilityStates = {
 	trading: false,
 	petMastery: false,
 	fusing: false,
+	settings: false,
+	codes: false,
+	robuxShop: false,
 };
 
 export const app = hooks((props: AppProps, { useState, useEffect, useContext, useCallback, useMemo }) => {
@@ -112,6 +119,9 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
 					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
 					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
+					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
+					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
 					onlyShowCurrency={false}
 				/>,
@@ -158,6 +168,9 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
 					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
 					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
+					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
+					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
 					onlyShowCurrency={true}
 				/>,
@@ -173,6 +186,9 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
 					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
 					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
+					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
+					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
 					onlyShowCurrency={true}
 				/>,
@@ -188,6 +204,9 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
 					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
 					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
+					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
+					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
 					onlyShowCurrency={true}
 				/>,
@@ -213,6 +232,9 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
 					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
 					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
+					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
+					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
 					onlyShowCurrency={true}
 				/>,
@@ -231,9 +253,15 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					}}
 				/>,
 			);
+		} else if (isVisible("codes")) {
+			components.push(<Codes hideMenu={(): void => setVisibility((prev) => ({ ...prev, codes: false }))} />);
+		} else if (isVisible("settings")) {
+			components.push(<Settings hideMenu={(): void => setVisibility((prev) => ({ ...prev, settings: false }))} />);
+		} else if (isVisible("robuxShop")) {
+			components.push(<RobuxShop hideMenu={(): void => setVisibility((prev) => ({ ...prev, robuxShop: false }))} />);
 		}
 
-		components.push(<ZonesUI />, <Rewards />, <LocalMessages />, <EggCost />, <EggHud />);
+		components.push(<ZonesUI />, <Rewards />, <LocalMessages />, <EggCost />, <EggHud />, <BoostCounter />);
 
 		return components;
 	}, [visibility]);

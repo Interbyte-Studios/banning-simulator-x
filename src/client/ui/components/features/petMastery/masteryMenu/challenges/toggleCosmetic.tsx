@@ -43,7 +43,7 @@ function mapStateToProps(state: StoreState): ToggleCosmeticMappedProps {
  */
 export const TogglePetMasteryCosmetic = RoactRodux.connect(mapStateToProps)(
 	hooks((props: ToggleCosmeticProps, hooks) => {
-		const petsMastery = props.petMastery.get(props.pet);
+		const petsMastery = props.petMastery.get(tostring(props.pet));
 
 		let canToggleCosmetic = false;
 		if (petsMastery !== undefined) {

@@ -17,8 +17,8 @@ import { PetsState } from "shared/rodux/pets";
 import { WorldsState } from "shared/rodux/worlds";
 
 interface ZoneTeleportCardProps extends WorldTeleportCardMappedProps {
-	world: WorldName;
-	zone: ZoneNames;
+	world: WorldName | "Exclusive";
+	zone: ZoneNames | "Exclusive";
 	id: number;
 	onActivated?: () => void;
 }
@@ -56,7 +56,9 @@ export const ZoneTeleportCard = RoactRodux.connect(mapStateToProps)(
 				native={{
 					Size: UDim2.fromScale(1, 0.305),
 					Image:
-						storedWorldData !== undefined
+						props.zone === "Exclusive"
+							? assetIds.images.ui.teleportation.exclusive
+							: storedWorldData !== undefined
 							? storedWorldData.zones.find((zone) => zone === props.zone)
 								? assetIds.images.ui.teleportation[props.zone]
 								: assetIds.images.ui.teleportation[`${props.zone} Locked`]
@@ -79,6 +81,10 @@ export const ZoneTeleportCard = RoactRodux.connect(mapStateToProps)(
 
 							if (props.onActivated !== undefined) {
 								props.onActivated();
+								return;
+							}
+
+							if (props.zone === "Exclusive") {
 								return;
 							}
 
@@ -127,7 +133,9 @@ export const ZoneTeleportCard = RoactRodux.connect(mapStateToProps)(
 						Position: UDim2.fromScale(0.25, 0.2),
 						Size: UDim2.fromScale(0.4, 0.325),
 						Text:
-							storedWorldData !== undefined
+							props.zone === "Exclusive"
+								? "Exclusive"
+								: storedWorldData !== undefined
 								? storedWorldData.zones.find((zone) => zone === props.zone)
 									? props.zone
 									: `${props.zone} (Locked)`

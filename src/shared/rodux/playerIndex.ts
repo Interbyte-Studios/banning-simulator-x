@@ -61,6 +61,7 @@ export interface PlayerIndexState {
 	eggs: Map<EggName, { regular: number; void: number }>;
 	timePlayed: number;
 	gameVersion: Array<string>;
+	joinDate: DateTime;
 	groupRank: number | undefined;
 	groupRewardClaimed: {
 		lastClaimed: number;
@@ -203,6 +204,7 @@ export const defaultPlayerIndex: PlayerIndexState = {
 	timePlayed: 0,
 	gameVersion: [],
 	groupRank: undefined,
+	joinDate: DateTime.now(),
 	groupRewardClaimed: {
 		lastClaimed: 0,
 		petIdClaimed: 0,

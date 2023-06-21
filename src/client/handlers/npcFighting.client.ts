@@ -52,6 +52,27 @@ const onNPCInteraction = (player: Player, npc: Model): void => {
 		debug.profileend();
 	}
 
+	const npcHumanoid = npc.FindFirstChildOfClass("Humanoid");
+	if (npcHumanoid === undefined) {
+		if (currentConnection !== undefined) {
+			setManualAutoFight(false);
+			currentConnection.Disconnect();
+			currentConnection = undefined;
+		}
+
+		return;
+	}
+
+	const diedConnection = npcHumanoid.AncestryChanged.Connect(() => {
+		if (currentConnection !== undefined) {
+			setManualAutoFight(false);
+			currentConnection.Disconnect();
+			currentConnection = undefined;
+		}
+
+		diedConnection.Disconnect();
+	});
+
 	currentConnection = RunService.RenderStepped.Connect(() => onRenderStepped());
 };
 /**

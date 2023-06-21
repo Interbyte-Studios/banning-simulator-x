@@ -54,8 +54,11 @@ remotes.Server.Create("requestFusion").SetCallback(
 		// check that player has enough money
 		const eggName = getEggNameFromPetId(petId);
 		const eggCost = getEggCost(eggName, true, 0);
-		const fusionCost =
-			(eggCost.amount / rarityId) * petsToFuse.size() * (variant === "radiant" ? 3 : variant === "void" ? 2 : 1);
+		let fusionCost = eggCost.amount / rarityId;
+		if (petData.fusionCost !== undefined) {
+			fusionCost = petData.fusionCost;
+		}
+		fusionCost = fusionCost * petsToFuse.size() * (variant === "radiant" ? 3 : variant === "void" ? 2 : 1);
 
 		if (store.getState().currencies[eggCost.currencyType] < fusionCost) {
 			return {

@@ -2,6 +2,7 @@ import { createContext } from "@rbxts/roact";
 
 import { accoladesRemoteContext } from "./remoteDefinitions/accolades";
 import { adminRemoteContext } from "./remoteDefinitions/admin";
+import { boostsRemoteContext } from "./remoteDefinitions/boosts";
 import { eggsRemoteContext } from "./remoteDefinitions/eggs";
 import { fusionRemoteContext } from "./remoteDefinitions/fusion";
 import { mediaRemoteContext } from "./remoteDefinitions/media";
@@ -39,6 +40,7 @@ export const fakeRemoteContext = {
 	...accoladesRemoteContext,
 	...fusionRemoteContext,
 	...tradingRemoteContext,
+	...boostsRemoteContext,
 };
 
 export const remoteContext = createContext(fakeRemoteContext);

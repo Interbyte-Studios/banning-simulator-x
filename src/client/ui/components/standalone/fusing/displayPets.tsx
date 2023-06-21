@@ -30,7 +30,7 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 interface DisplayPetsProps extends DisplayPetsMappedProps {
 	variant: Variants;
 	returnToSelection: () => void;
-	selectedZone: ZoneNames;
+	selectedZone: ZoneNames | "Exclusive";
 	petSelected: number;
 }
 
@@ -77,22 +77,23 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 		props.pets.forEach((petData) => {
 			const eggName = getEggNameFromPetId(petData.id);
 			const eggData = EGGS[eggName];
-
-			if (eggData.zone !== props.selectedZone) {
-				return;
-			}
-
 			const variantToDisplay = props.variant === "radiant" ? "void" : props.variant === "void" ? "regular" : "regular";
 
-			if (petData.variant !== variantToDisplay) {
-				return;
+			if (props.selectedZone === "Exclusive" && eggData.zone === "Limited" && !eggData.hidden) {
+				if (petData.variant !== variantToDisplay || petData.id !== props.petSelected) {
+					return;
+				}
+
+				petsSelection.push(petData);
 			}
 
-			if (petData.id !== props.petSelected) {
+			if (
+				eggData.zone !== props.selectedZone ||
+				petData.variant !== variantToDisplay ||
+				petData.id !== props.petSelected
+			) {
 				return;
 			}
-
-			petsSelection.push(petData);
 		});
 
 		const petData = getPetData(props.petSelected);
@@ -103,11 +104,14 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 		const eggName = getEggNameFromPetId(props.petSelected);
 		const eggCost = getEggCost(eggName, true, 0);
 
-		// fusion cost = egg cost / rarityId * amount of pets selected
-		const fusionCost =
-			(eggCost.amount / rarityId) *
-			selectedPets.size() *
-			(props.variant === "radiant" ? 3 : props.variant === "void" ? 2 : 1);
+		// fusion cost = egg cost / rarityId * amount of pets selected or specified fusion cost
+		let fusionCost = eggCost.amount / rarityId;
+		if (petData.fusionCost !== undefined) {
+			fusionCost = petData.fusionCost;
+		}
+
+		fusionCost =
+			fusionCost * selectedPets.size() * (props.variant === "radiant" ? 3 : props.variant === "void" ? 2 : 1);
 
 		return (
 			<>

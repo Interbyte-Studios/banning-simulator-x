@@ -20,6 +20,11 @@ export interface Pet {
 	rarity: Rarities;
 
 	/**
+	 * The cost of fusing the pet.
+	 */
+	fusionCost?: number;
+
+	/**
 	 * The stats of the pet.
 	 */
 	stats: {
@@ -88,6 +93,7 @@ export const VARIANT_GRADIENTS = preserveWithConstraint<Record<Variants, RarityG
 		id: 1,
 		reverseId: 3,
 		maxFusions: 0,
+		betterMaxFusions: 0,
 		BeginningColor: Color3.fromRGB(255, 255, 255),
 		EndingColor: Color3.fromRGB(148, 148, 148),
 		SpecialColor: undefined,
@@ -96,6 +102,7 @@ export const VARIANT_GRADIENTS = preserveWithConstraint<Record<Variants, RarityG
 		id: 2,
 		reverseId: 2,
 		maxFusions: 0,
+		betterMaxFusions: 0,
 		BeginningColor: Color3.fromRGB(98, 37, 209),
 		EndingColor: Color3.fromRGB(57, 0, 86),
 		SpecialColor: undefined,
@@ -104,6 +111,7 @@ export const VARIANT_GRADIENTS = preserveWithConstraint<Record<Variants, RarityG
 		id: 3,
 		reverseId: 1,
 		maxFusions: 0,
+		betterMaxFusions: 0,
 		BeginningColor: Color3.fromRGB(255, 255, 255),
 		EndingColor: Color3.fromRGB(250, 196, 61),
 		SpecialColor: undefined,
@@ -119,7 +127,7 @@ export const PET_MAX_LEVELS = {
 
 // Amount of bans required per level
 export const PET_LEVEL_REQUIREMENTS = {
-	regular: 20,
-	void: 30,
-	radiant: 40,
+	regular: 30,
+	void: 45,
+	radiant: 72,
 };

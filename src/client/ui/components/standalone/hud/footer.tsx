@@ -2,10 +2,16 @@ import Roact from "@rbxts/roact";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { hooks } from "client/ui/hooks";
 
+import { CodesIcon } from "./codesIcon";
+import { SettingsIcon } from "./settingsIcon";
+import { ShopIcon } from "./shopIcon";
 import { TradingIcon } from "./tradingIcon";
 
 interface HUDFooterProps {
 	displayTradingMenu: () => void;
+	displayCodes: () => void;
+	displaySettings: () => void;
+	displayShop: () => void;
 }
 
 export const HUDFooter = hooks((props: HUDFooterProps) => {
@@ -22,6 +28,9 @@ export const HUDFooter = hooks((props: HUDFooterProps) => {
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>
 			<TradingIcon displayTrading={props.displayTradingMenu} />
+			<CodesIcon displayIcon={props.displayCodes} />
+			<SettingsIcon displayIcon={props.displaySettings} />
+			<ShopIcon displayIcon={props.displayShop} />
 		</BaseFrame>
 	);
 });

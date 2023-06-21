@@ -1,6 +1,8 @@
 import Roact from "@rbxts/roact";
+import RoactRodux from "@rbxts/roact-rodux";
 import { setPetItemRowSize } from "client/handlers/item inventory/inventoryLayoutHandler";
 import { uiDarkStrokeColor } from "client/ui/commonValues";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
@@ -10,6 +12,10 @@ import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
+import { StoreState } from "shared/rodux";
+import { PetsState } from "shared/rodux/pets";
+import { isImmuneRarity } from "shared/rodux/settings";
+import { getPetData } from "shared/util/getPetData";
 
 import { PetItems } from "./inventory";
 import { PetInventoryCounterTopBar } from "./inventoryCounter";
@@ -183,6 +189,117 @@ export const ToggleMultiDelete = hooks(
 );
 /* eslint-enable jsdoc/require-jsdoc */
 
+interface DeleteAllMappedProps {
+	pets: PetsState;
+}
+
+/**
+ * @param state The current state of the store.
+ * @returns The mapped props.
+ */
+function mapStateToProps(state: StoreState): DeleteAllMappedProps {
+	return {
+		pets: state.pets,
+	};
+}
+
+/**
+ * Toggles an interface for the player's pet teams.
+ *
+ * @param props The component props.
+ * @param props.deleteAll A callback to delete all applicable pets.
+ * @returns The component.
+ */
+export const DeleteAll = RoactRodux.connect(mapStateToProps)(
+	hooks((props: DeleteAllMappedProps, { useState, useContext }) => {
+		const [isEnabled, setIsEnabled] = useState(false);
+
+		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
+		const { deletePets } = useContext(remoteContext);
+
+		const elementsToRender: Roact.Element = (
+			<>
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.9, 0.95),
+						Image: assetIds.images.ui.inventory.pets["function button"],
+					}}
+					size={{ minSize: 0.15, maxSize: 0.185 }}
+					events={{
+						// eslint-disable-next-line jsdoc/require-jsdoc
+						Activated: (): void => {
+							playSFX(UIEngagement.MinorEngagement);
+							setIsEnabled(!isEnabled);
+						},
+					}}
+				>
+					<uiaspectratioconstraint AspectRatio={2.8} />
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "Delete-All",
+						}}
+						stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(153, 39, 41) } }}
+					/>
+				</SpringImageButton>
+				{isEnabled ? (
+					<ImageLabel
+						native={{
+							Position: UDim2.fromScale(1.225, 0.175),
+							Size: UDim2.fromScale(0.4, 0.35),
+							Image: assetIds.images.ui.inventory.pets["delete-sidebar"],
+						}}
+					>
+						<StrokeTextLabel
+							native={{
+								Size: UDim2.fromScale(1, 0.3),
+								Position: UDim2.fromScale(0.5, 0.25),
+								Text: `Delete all unlocked pets? (Legendary+ will not be deleted)`,
+							}}
+							stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+						/>
+						<CancelMultiDeleteSelection
+							completeMultiDelete={(): void => {
+								playSFX(UIEngagement.MinorEngagement);
+								setIsEnabled(false);
+							}}
+						/>
+						<AcceptMultiDeleteSelection
+							completeMultiDelete={(): void => {
+								playSFX(UIEngagement.MinorEngagement);
+
+								const petsToDelete: Array<string> = [];
+								for (const pet of props.pets) {
+									const petData = getPetData(pet.id);
+									if (isImmuneRarity(petData.rarity)) {
+										continue;
+									}
+
+									if (pet.locked) {
+										continue;
+									}
+
+									if (pet.equipped) {
+										continue;
+									}
+
+									petsToDelete.push(pet.guid);
+								}
+
+								deletePets.SendToServer(petsToDelete);
+								addAnnouncement(`You deleted ${petsToDelete.size()} pets!`, AnnouncementType.Announcement);
+								setIsEnabled(false);
+							}}
+						/>
+					</ImageLabel>
+				) : undefined}
+			</>
+		);
+
+		return elementsToRender;
+	}),
+);
+
 let petInfoDisplayOldState: string | undefined;
 
 /**
@@ -286,6 +403,7 @@ export const PetInventory = hooks((_, { useState, useCallback, useEffect }) => {
 					displayPetInfo={(guid: string): void => setPetInfoDisplayed(guid)}
 				/>
 				<PetInventoryBottomControl enableTeams={(): void => setTeamsEnabled(true)} />
+				<DeleteAll />
 				{petInfoDisplay}
 			</BaseFrame>
 		);

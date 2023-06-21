@@ -9,6 +9,7 @@ import { AnnouncementAPI } from "./context/AnnouncementsAPI";
 import { remoteContext } from "./mocks/remoteContext";
 import { accoladeRemotes } from "./remotes/accolades";
 import { adminRemotes } from "./remotes/admin";
+import { boostRemotes } from "./remotes/boosts";
 import { eggsRemotes } from "./remotes/eggs";
 import { fusionRemtoes } from "./remotes/fusion";
 import { mediaRemotes } from "./remotes/media";
@@ -38,6 +39,7 @@ onStoreCreated(player)
 				value={{
 					...accoladeRemotes,
 					...adminRemotes,
+					...boostRemotes,
 					...eggsRemotes,
 					...fusionRemtoes,
 					...mediaRemotes,

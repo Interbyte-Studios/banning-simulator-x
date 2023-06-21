@@ -2,6 +2,7 @@ import Net from "@rbxts/net";
 
 import { accolades } from "./accolades";
 import { admin } from "./admin";
+import { useBoostDefinition } from "./boosts";
 import { damageNPCDefinition } from "./damageNPC";
 import { eggs } from "./eggs";
 import { equipTitleDefinition } from "./equipTitle";
@@ -43,4 +44,5 @@ export const remotes = Net.Definitions.Create({
 	spinWheel: spinWheelDefinition,
 	spinWheelInfo: spinWheelInfoDefinition,
 	requestFusion: fusionRequestDefinition,
+	useBoost: useBoostDefinition,
 });

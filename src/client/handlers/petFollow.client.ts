@@ -191,14 +191,8 @@ const calculateSharedData = (
 RunService.RenderStepped.Connect(() => {
 	debug.profilebegin("petFollow");
 	const now = time();
-
-	// get shared animation values for pets
 	const { petJump, petRotate, petHover, petFace } = calculateSharedData(now);
-
-	// get the players currently equipped pet models
 	const currentCacheState = getPetAnimationCache();
-
-	// iterate through all the players in the game, and animate their pets
 	for (const playerCache of currentCacheState) {
 		// make sure we have the necessary objects to animate the pets
 		const character = playerCache.player.Character;
@@ -235,12 +229,17 @@ RunService.RenderStepped.Connect(() => {
 			// align position is how we keep the pet in a relative distance to the player
 			const alignPosition = pet.alignPosition;
 
+			// for flying pets, we need Rigidity enabled to prevent unexpected reactions to roblox physics
+			if (pet.petType === "Fly" && !alignPosition.RigidityEnabled) {
+				alignPosition.RigidityEnabled = true;
+			}
+
 			// align orientation is how we keep the pet either facing the player, or facing the direction the player is moving
 			const alignOrientation = pet.alignOrientation;
 
-			// make sure pet is within 25 studs of player at all times
+			// make sure pet is within 100 studs of player at all times
 			const magnitudeFromPlayer = humanoidRootPart.Position.sub(primaryPart.Position).Magnitude;
-			if (magnitudeFromPlayer > 25) {
+			if (magnitudeFromPlayer > 100) {
 				pet.model.PivotTo(humanoidRootPart.CFrame);
 				return;
 			}

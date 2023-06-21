@@ -59,7 +59,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 				totalChallenges += 2;
 			}
 
-			const petsMasteryIndex = props.petMastery.get(data.id);
+			const petsMasteryIndex = props.petMastery.get(tostring(data.id));
 			if (petsMasteryIndex === undefined) {
 				continue;
 			}

@@ -240,10 +240,14 @@ function createEnemyTag(enemy: Model): void {
 	assert(enemyTag, `Failed to get enemy tag from rep storage`);
 
 	const humanoid = enemy.WaitForChild("Humanoid") as Humanoid;
-	assert(humanoid, `Failed to create enemy tag. Infinitely yielded for Humanoid for enemey: ${enemy.Name}`);
+	if (humanoid === undefined) {
+		return;
+	}
 
 	const head = enemy.WaitForChild("Head") as BasePart;
-	assert(head, `Failed to create enemy tag. Infinitely yielded for Head for enemey: ${enemy.Name}`);
+	if (head === undefined) {
+		return;
+	}
 
 	const npcData = getNPCByName(enemy.Name);
 	if (npcData === undefined) {
@@ -306,6 +310,8 @@ function createEnemyTag(enemy: Model): void {
 function onPlayerAdded(player: Player): void {
 	onStoreCreated(player)
 		.andThen((store) => {
+			task.wait(5);
+
 			if (player.Character) {
 				createPlayerTag(player, store);
 			}

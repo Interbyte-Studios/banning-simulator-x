@@ -14,6 +14,9 @@ interface HudProps {
 	displayAutoFight: () => void;
 	displayAccount: () => void;
 	displayTradingMenu: () => void;
+	displayCodes: () => void;
+	displaySettings: () => void;
+	displayShop: () => void;
 	onlyShowCurrency: boolean;
 }
 
@@ -47,7 +50,12 @@ export const Hud = hooks((props: HudProps) => {
 				<RanksViewer />
 				<CoinsCurrency onlyShowCurrencyEnabled={props.onlyShowCurrency} />
 				<GemsCurrency onlyShowCurrencyEnabled={props.onlyShowCurrency} />
-				<HUDFooter displayTradingMenu={props.displayTradingMenu} />
+				<HUDFooter
+					displayTradingMenu={props.displayTradingMenu}
+					displayCodes={props.displayCodes}
+					displaySettings={props.displaySettings}
+					displayShop={props.displayShop}
+				/>
 			</BaseFrame>
 		);
 	}

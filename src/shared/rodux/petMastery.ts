@@ -24,7 +24,7 @@ export const radiantVariantMasteryData = t.strictInterface({
 });
 
 export type PetMasteryState = Map<
-	number,
+	string,
 	{
 		regular: {
 			hatchClaimed: boolean;
@@ -92,15 +92,16 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 	claimMastery: (state, action) => {
 		const newState = new Map([...state]);
 
-		let petMasteryData = newState.get(action.petId);
+		const stringId = tostring(action.petId);
+		let petMasteryData = newState.get(stringId);
 		if (petMasteryData === undefined) {
-			newState.set(action.petId, {
+			newState.set(stringId, {
 				regular: { hatchClaimed: false, maxLevelClaimed: false, cosmeticEnabled: false },
 				void: { hatchClaimed: false, maxLevelClaimed: false, fuseClaimed: false, cosmeticEnabled: false },
 				radiant: { maxLevelClaimed: false, fuseClaimed: false, cosmeticEnabled: false },
 			});
 
-			petMasteryData = newState.get(action.petId);
+			petMasteryData = newState.get(stringId);
 			if (petMasteryData === undefined) {
 				warn(
 					`[ Pet Mastery Reducer ] - Failed to set pet mastery data for pet with id "${action.petId}" of variant "${action.variant}".`,
@@ -172,21 +173,22 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 			}
 		}
 
-		newState.set(action.petId, petMasteryData);
+		newState.set(stringId, petMasteryData);
 		return newState;
 	},
 	toggleMasteryCosmetic: (state, action) => {
 		const newState = new Map([...state]);
 
-		let petMasteryData = newState.get(action.petId);
+		const stringId = tostring(action.petId);
+		let petMasteryData = newState.get(stringId);
 		if (petMasteryData === undefined) {
-			newState.set(action.petId, {
+			newState.set(stringId, {
 				regular: { hatchClaimed: false, maxLevelClaimed: false, cosmeticEnabled: false },
 				void: { hatchClaimed: false, maxLevelClaimed: false, fuseClaimed: false, cosmeticEnabled: false },
 				radiant: { maxLevelClaimed: false, fuseClaimed: false, cosmeticEnabled: false },
 			});
 
-			petMasteryData = newState.get(action.petId);
+			petMasteryData = newState.get(stringId);
 			if (petMasteryData === undefined) {
 				warn(
 					`[ Pet Mastery Reducer ] - Failed to set pet mastery data for pet with id "${action.petId}" of variant "${action.variant}".`,
@@ -195,7 +197,6 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 			}
 		}
 
-		// Create a deep copy of the petMasteryData
 		petMasteryData = {
 			...petMasteryData,
 			[action.variant]: {
@@ -203,12 +204,10 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 			},
 		};
 
-		// Now modify the deep copy
 		const masteryData = petMasteryData[action.variant];
 		masteryData.cosmeticEnabled = !masteryData.cosmeticEnabled;
 
-		// And don't forget to update the newState Map with the updated petMasteryData
-		newState.set(action.petId, petMasteryData);
+		newState.set(stringId, petMasteryData);
 
 		return newState;
 	},

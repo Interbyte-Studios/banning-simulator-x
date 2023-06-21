@@ -22,7 +22,7 @@ interface PetSelectionProps extends PetSelectionMappedProps {
 	variant: Variants;
 	returnToSelection: () => void;
 	setPetSelected: (petId: number) => void;
-	selectedZone: ZoneNames;
+	selectedZone: ZoneNames | "Exclusive";
 }
 
 interface PetSelectionMappedProps {
@@ -63,14 +63,18 @@ export const PetSelection = RoactRodux.connect(mapStateToProps)(
 
 			const eggName = getEggNameFromPetId(petData.id);
 			const eggData = EGGS[eggName];
+			const variantToDisplay = props.variant === "radiant" ? "void" : props.variant === "void" ? "regular" : "regular";
 
-			if (eggData.zone !== props.selectedZone) {
+			if (props.selectedZone === "Exclusive" && eggData.world === "Limited" && !eggData.hidden) {
+				if (petData.variant !== variantToDisplay) {
+					return;
+				}
+
+				petsSelection.push(petData);
 				return;
 			}
 
-			const variantToDisplay = props.variant === "radiant" ? "void" : props.variant === "void" ? "regular" : "regular";
-
-			if (petData.variant !== variantToDisplay) {
+			if (eggData.zone !== props.selectedZone || petData.variant !== variantToDisplay) {
 				return;
 			}
 

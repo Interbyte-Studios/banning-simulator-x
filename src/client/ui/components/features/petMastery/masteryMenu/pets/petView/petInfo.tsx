@@ -283,9 +283,10 @@ const ExtraStats = hooks((props: { pet: number; variant: Variants }, hooks) => {
 const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
 	const maxLevel = PET_MAX_LEVELS[props.variant];
 
-	// equation to get maximum damage is [((damage * variantMultiplier * 2.5) / 30) * pet level] where 2.5 is the maximum damage and 30 is the maximum level
 	const variantMultiplier = props.variant === "radiant" ? 3 : props.variant === "void" ? 2 : 1;
-	const maximumDamage = props.pet.stats.additionalDamage * variantMultiplier * 2.5;
+	const strengthPerLevel = (props.pet.stats.additionalDamage * variantMultiplier) / maxLevel;
+
+	const petDamage = math.floor(props.pet.stats.additionalDamage * variantMultiplier + maxLevel * strengthPerLevel);
 
 	return (
 		<>
@@ -326,7 +327,7 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
 					Position: UDim2.fromScale(0.8, 0.575),
 					Size: UDim2.fromScale(0.35, 0.1),
 					TextColor3: Color3.fromRGB(230, 64, 64),
-					Text: twoDpAbbreviator.numberToString(maximumDamage),
+					Text: twoDpAbbreviator.numberToString(petDamage),
 					TextXAlignment: Enum.TextXAlignment.Left,
 				}}
 				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(126, 24, 75) } }}

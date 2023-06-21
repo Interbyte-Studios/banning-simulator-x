@@ -68,7 +68,13 @@ export function cachePetForAnimation(
 	weldObject(petParts, primaryPart);
 
 	const alignOrientation = new Instance("AlignOrientation", primaryPart);
+	alignOrientation.RigidityEnabled = true;
+	alignOrientation.ReactionTorqueEnabled = true;
+
 	const alignPosition = new Instance("AlignPosition", primaryPart);
+	alignPosition.ReactionForceEnabled = true;
+	alignPosition.ApplyAtCenterOfMass = true;
+
 	const attachment = new Instance("Attachment", primaryPart);
 	const animationType = petModel.GetAttribute("animationType") as "Walk" | "Fly";
 

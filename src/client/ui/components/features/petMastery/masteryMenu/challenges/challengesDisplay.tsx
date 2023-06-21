@@ -334,7 +334,7 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 			throw `Failed to get pet string id for pet ${props.pet}.`;
 		}
 		const petsIndex = props.index.pets.get(stringId);
-		const petsMasteryIndex = props.petMastery.get(props.pet);
+		const petsMasteryIndex = props.petMastery.get(tostring(props.pet));
 
 		const petData = getPetData(props.pet);
 

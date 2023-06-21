@@ -107,6 +107,8 @@ export function stopPlaylist(): void {
 }
 
 task.spawn(() => {
+	task.wait(5);
+
 	// eslint-disable-next-line no-constant-condition
 	while (true) {
 		const world = getCurrentWorld();

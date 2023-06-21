@@ -20,7 +20,7 @@ import { ZoneSelection } from "./zoneSelection";
 export const Fusing = hooks((props: { isVisible: boolean; setVisibility: (value: boolean) => void }, hooks) => {
 	const { useState, useEffect } = hooks;
 
-	const [zoneSelected, setZoneSelected] = useState<ZoneNames | undefined>(undefined);
+	const [zoneSelected, setZoneSelected] = useState<ZoneNames | "Exclusive" | undefined>(undefined);
 	const [petSelected, setPetSelected] = useState<number | undefined>(undefined);
 	const [fusingVariant, setFusingVariant] = useState<Variants>("void");
 
@@ -44,7 +44,7 @@ export const Fusing = hooks((props: { isVisible: boolean; setVisibility: (value:
 			/>,
 		);
 	} else {
-		screenToDisplay.push(<ZoneSelection setZone={(zone: ZoneNames): void => setZoneSelected(zone)} />);
+		screenToDisplay.push(<ZoneSelection setZone={(zone: ZoneNames | "Exclusive"): void => setZoneSelected(zone)} />);
 	}
 
 	const radiantPrompts: Array<BasePart> = [];

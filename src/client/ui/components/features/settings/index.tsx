@@ -1,40 +1,41 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Players } from "@rbxts/services";
-import { vec2Middle } from "client/ui/commonValues";
+import { uiHeaderStrokeColor, vec2Middle } from "client/ui/commonValues";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { SettingsState } from "shared/rodux/settings";
 
-import { RightComponentHeader } from "../util/rightComponentHeader";
 import { OptionChoice } from "./optionChoice";
 import { OptionMultiChoice } from "./optionMultiChoice";
 import { OptionSectionHeader } from "./sectionHeader";
 
-interface OptionsProps extends OptionsMappedProps {
-	returnToSelection: () => void;
+interface SettingsProps extends SettingsMappedProps {
+	hideMenu: () => void;
 }
 
-interface OptionsMappedProps {
+interface SettingsMappedProps {
 	settings: SettingsState;
 }
 
 /**
- * Maps the Rodux store's state to the props.
+ * The settings component mapped props.
  *
- * @param state The current state of the store.
- * @returns The mapped props to render with.
+ * @param state The rodux store state.
+ * @returns The mapped props.
  */
-function mapStateToProps(state: StoreState): OptionsMappedProps {
+const mapStateToProps = (state: StoreState): SettingsMappedProps => {
 	return {
 		settings: state.settings,
 	};
-}
+};
 
-/* eslint-disable jsdoc/require-jsdoc */
-export const PlayerOptions = RoactRodux.connect(mapStateToProps)(
-	hooks((props: OptionsProps, { useContext }) => {
+export const Settings = RoactRodux.connect(mapStateToProps)(
+	hooks((props: SettingsProps, { useContext }) => {
 		const {
 			toggleButtonClickSFX,
 			toggleMusicVolume,
@@ -53,18 +54,33 @@ export const PlayerOptions = RoactRodux.connect(mapStateToProps)(
 		} = useContext(remoteContext);
 
 		return (
-			<>
-				<RightComponentHeader
-					storeFound={true}
-					headerText={`Settings [${Players.LocalPlayer.Name}]`}
-					returnToSelection={props.returnToSelection}
-					displayReturn={true}
+			<ImageLabel
+				native={{
+					Size: UDim2.fromScale(0.25, 0.5),
+					Image: assetIds.images.ui.settings.background,
+				}}
+			>
+				<uiaspectratioconstraint AspectRatio={0.878} />
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.49, 0.08),
+						Size: UDim2.fromScale(0.4, 0.125),
+						Text: "Settings",
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiHeaderStrokeColor } }}
 				/>
+				<ExitButton
+					Position={UDim2.fromScale(0.975, 0.075)}
+					minimizedSize={0.1}
+					maximizedSize={0.125}
+					onClosed={(): void => props.hideMenu()}
+				/>
+
 				<scrollingframe
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={1}
-					Position={UDim2.fromScale(0.725, 0.615)}
-					Size={UDim2.fromScale(0.5, 0.685)}
+					Position={UDim2.fromScale(0.5, 0.575)}
+					Size={UDim2.fromScale(0.925, 0.785)}
 					ScrollBarThickness={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 					CanvasSize={UDim2.fromScale(0, 4)}
@@ -242,8 +258,7 @@ export const PlayerOptions = RoactRodux.connect(mapStateToProps)(
 						onPressed={(): void => toggleAutoDelete.SendToServer("Epic")}
 					/>
 				</scrollingframe>
-			</>
+			</ImageLabel>
 		);
 	}),
 );
-/* eslint-enable jsdoc/require-jsdoc */

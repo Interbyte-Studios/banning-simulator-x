@@ -5,27 +5,30 @@ import { Pet } from ".";
  */
 export const ROYALTY_EGG_PETS: Record<string, Pet> = {
 	"Royal Dragon": {
-		chance: 33.4,
+		chance: 75,
 		id: 44,
-		rarity: "Basic",
+		rarity: "Rare",
+		fusionCost: 20000,
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 375,
 		},
 	},
 	"Royal Pegasus": {
-		chance: 33.3,
+		chance: 23,
 		id: 45,
-		rarity: "Basic",
+		rarity: "Epic",
+		fusionCost: 24500,
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 475,
 		},
 	},
 	"BIG Royal Bunny": {
-		chance: 33.3,
-		id: 45,
-		rarity: "Basic",
+		chance: 1,
+		id: 46,
+		rarity: "Legendary",
+		fusionCost: 28000,
 		stats: {
-			additionalDamage: 1,
+			additionalDamage: 800,
 		},
 	},
 };

@@ -191,6 +191,8 @@ export function runStep(
 			currencyMultiplier = currencyMultiplier > 1 ? currencyMultiplier : 1;
 			currencyMultiplier += masteryCurrencyMultiplier - 1;
 
+			warn(`[NPC RunStep] - Currency Multiplier: ${currencyMultiplier}`);
+
 			// get experience multiplier
 			const experienceBoosters: Array<number> = [];
 			const globalExperienceEventMultiplier = ReplicatedStorage.events.experience.enabled.Value
@@ -209,6 +211,8 @@ export function runStep(
 			});
 			experienceMultiplier = experienceMultiplier > 1 ? experienceMultiplier : 1;
 
+			warn(`[NPC RunStep] - Experience Multiplier: ${experienceMultiplier}`);
+
 			// get pet experience multiplier
 			const petExperienceMultipliers: Array<number> = [];
 			const boostPetExperienceMultiplier = store.getState().boosts.active["x2 Pet Experience"] > 0 ? 2 : 0;
@@ -223,6 +227,8 @@ export function runStep(
 				petExperienceMultiplier += booster;
 			});
 			petExperienceMultiplier = petExperienceMultiplier > 1 ? petExperienceMultiplier : 1;
+
+			warn(`[NPC RunStep] - Pet Experience Multiplier: ${petExperienceMultiplier}`);
 
 			// get equipped pets
 			const equippedPets = store.getState().pets.filter((pet) => pet.equipped);

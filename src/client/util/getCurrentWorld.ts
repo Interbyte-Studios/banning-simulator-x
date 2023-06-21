@@ -24,7 +24,7 @@ export function getCurrentWorld(): WorldName | undefined {
 		return;
 	}
 
-	const humanoid = character.FindFirstChildWhichIsA("Humanoid");
+	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
 	if (humanoid === undefined) {
 		return;
 	}
@@ -39,7 +39,7 @@ export function getCurrentWorld(): WorldName | undefined {
 
 	const raycastParams = new RaycastParams();
 	raycastParams.FilterDescendantsInstances = landingParts;
-	raycastParams.FilterType = Enum.RaycastFilterType.Whitelist;
+	raycastParams.FilterType = Enum.RaycastFilterType.Include;
 
 	const raycastResult = Workspace.Raycast(rayOrigin, rayDirection, raycastParams);
 	if (raycastResult === undefined) {

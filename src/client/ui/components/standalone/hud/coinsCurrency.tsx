@@ -40,7 +40,7 @@ export const CoinsCurrency = RoactRodux.connect(mapStateToProps)(
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={4.8} />
-				{props.onlyShowCurrencyEnabled && (
+				{!props.onlyShowCurrencyEnabled && (
 					<OpenShop minimizedSize={0.8} maximizedSize={0.9} position={UDim2.fromScale(0.95, 0.5)} />
 				)}
 				<CurrencyIcon

@@ -134,17 +134,32 @@ export const boostsReducer = Rodux.createReducer<
 				...state.storage,
 				[action.name]: {
 					...state.storage[action.name],
-					[action.boostTime]: state.storage[action.name][timeIndex] + 1,
+					[timeIndex]: state.storage[action.name][timeIndex] + 1,
 				},
 			},
 		};
 	},
 	claimBoost: (state, action) => {
+		const timeIndex = tostring(action.boostTime) as ValidStoredBoostTime;
+		const storedBoost = state.storage[action.name][timeIndex];
+		if (storedBoost === undefined || storedBoost < 1) {
+			return state;
+		}
+
+		const additionalTime = action.boostTime * 60;
+
 		return {
 			...state,
 			active: {
 				...state.active,
-				[action.name]: state.active[action.name] + action.boostTime * action.extendedDurationMultiplier,
+				[action.name]: state.active[action.name] + additionalTime * action.extendedDurationMultiplier,
+			},
+			storage: {
+				...state.storage,
+				[action.name]: {
+					...state.storage[action.name],
+					[timeIndex]: state.storage[action.name][timeIndex] - 1,
+				},
 			},
 			uses: state.uses + 1,
 		};
@@ -217,7 +232,7 @@ export const boostsReducer = Rodux.createReducer<
 				...state.storage,
 				[action.boosts.name]: {
 					...state.storage[action.boosts.name],
-					[action.boosts.time]: state.storage[action.boosts.name][timeIndex] + 1,
+					[timeIndex]: state.storage[action.boosts.name][timeIndex] + 1,
 				},
 			},
 		};

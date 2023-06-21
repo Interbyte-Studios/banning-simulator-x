@@ -17,12 +17,10 @@ import { CurrentWeaponState } from "shared/rodux/currentWeapon";
 import { Accolades } from "./accolades";
 import { Admin } from "./admin";
 import { EditAccount } from "./admin/editAccount";
-import { Codes } from "./codes";
 import { Mastery } from "./mastery";
 import { AccountPlayerSelection } from "./playerSelection/accountPlayerSelection";
 import { ReturnToAccountView } from "./playerSelection/returnToAccountView";
 import { SelectPlayer } from "./playerSelection/selectPlayer";
-import { PlayerOptions } from "./settings";
 import { PlayerStats } from "./stats";
 import { TradeHistory } from "./trades";
 import { AccountIconTemplate } from "./util/accountIconTemplate";
@@ -53,9 +51,7 @@ function mapStateToProps(state: StoreState): AccountHubMappedProps {
 enum RightComponent {
 	Accolades = "Accolades",
 	Admin = "Admin",
-	Codes = "Codes",
 	Mastery = "Mastery",
-	Options = "Options",
 	Stats = "Stats",
 	TradeHistory = "TradeHistory",
 }
@@ -279,11 +275,9 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 					playerViewing={playerViewing}
 				/>
 			),
-			Codes: <Codes returnToSelection={(): void => setRightComponentDisplayed(undefined)} />,
 			Mastery: (
 				<Mastery returnToSelection={(): void => setRightComponentDisplayed(undefined)} playerViewing={playerViewing} />
 			),
-			Options: <PlayerOptions returnToSelection={(): void => setRightComponentDisplayed(undefined)} />,
 			Stats: (
 				<PlayerStats
 					viewedPlayer={playerViewing}
@@ -353,27 +347,6 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 						onPressed={(): void => setRightComponentDisplayed(RightComponent.TradeHistory)}
 					/>,
 				];
-
-				if (playerViewing.UserId === Players.LocalPlayer.UserId) {
-					featureIcons.push(
-						<AccountIconTemplate
-							accessibleFeature={true}
-							image={assetIds.images.ui.hud.icons.options}
-							displayBackground={true}
-							text={"Options"}
-							layoutOrder={5}
-							onPressed={(): void => setRightComponentDisplayed(RightComponent.Options)}
-						/>,
-						<AccountIconTemplate
-							accessibleFeature={true}
-							image={assetIds.images.ui.hud.icons.codes}
-							displayBackground={true}
-							text={"Codes"}
-							layoutOrder={6}
-							onPressed={(): void => setRightComponentDisplayed(RightComponent.Codes)}
-						/>,
-					);
-				}
 
 				rightComponent = (
 					<BaseFrame Position={UDim2.fromScale(0.725, 0.565)} Size={UDim2.fromScale(0.5, 0.765)}>

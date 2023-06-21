@@ -90,7 +90,6 @@ export const AnnouncementAPI = hooks(
 		const addAnnouncement = useCallback(
 			(message: string, messageType: AnnouncementType): void => {
 				numberOfAnnouncements += 1;
-
 				const id = numberOfAnnouncements;
 				const newErrors = [
 					...errors,
