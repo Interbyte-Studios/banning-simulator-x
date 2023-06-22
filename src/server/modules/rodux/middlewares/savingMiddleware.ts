@@ -9,11 +9,10 @@ import { UnreachableCaseError } from "shared/util/unreachableCaseError";
  * The saving middleware.
  *
  * @param player The player.
- * @param store The store.
  * @param profile The profile of the player.
  * @returns The middleware.
  */
-export const savingMiddleware = (player: Player, store: Store, profile: Profile<StoreState>): Rodux.Middleware => {
+export const savingMiddleware = (player: Player, profile: Profile<StoreState>): Rodux.Middleware => {
 	if (RunService.IsClient()) {
 		warn(debug.traceback());
 		throw `Attempt to create savingMiddleware on client.`;

@@ -34,6 +34,7 @@ import { getOrSetDefault } from "shared/util/getOrSetDefault";
 import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { replicationMiddleware } from "./modules/rodux/middlewares/replicationMiddleware";
+import { savingMiddleware } from "./modules/rodux/middlewares/savingMiddleware";
 
 /**
  * Profile template matches the store state template.
@@ -136,7 +137,10 @@ const onPlayerAdded = async (player: Player): Promise<void> => {
 	profile.Reconcile();
 	profiles.set(player, profile);
 
-	const store = new Rodux.Store(storeReducer, profile.Data, [replicationMiddleware(player)]);
+	const store = new Rodux.Store(storeReducer, profile.Data, [
+		replicationMiddleware(player),
+		savingMiddleware(player, profile),
+	]);
 	remotes.Server.GetNamespace("rodux").Get("storeStateCreated").SendToAllPlayers(player, store.getState());
 	playerStores.set(player, store);
 
