@@ -1,6 +1,7 @@
 import Rodux from "@rbxts/rodux";
 import { Currency } from "shared/configs/currencies";
 import { Variants } from "shared/configs/pets";
+import { Modify } from "shared/util/modify";
 
 export interface SavedTradeCurrency {
 	currencyType: Currency;
@@ -24,6 +25,15 @@ export interface SavedTrade {
 	otherOffer: SavedTradeOffer;
 	localOffer: SavedTradeOffer;
 }
+
+export type SerializedTradeLogState = Array<
+	Modify<
+		SavedTrade,
+		{
+			timestamp: number;
+		}
+	>
+>;
 
 export type TradeLogsState = Array<SavedTrade>;
 export type TradeLogActions = SaveTrade | RemoveTradeLog;
