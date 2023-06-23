@@ -6,7 +6,7 @@ import { Pet } from ".";
 export const ARMORED_EGG_PETS: Record<string, Pet> = {
 	"Armored Doggy": {
 		chance: 36.88599,
-		id: 56,
+		id: 73,
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
@@ -14,7 +14,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 	},
 	"Armored Bunny": {
 		chance: 30,
-		id: 57,
+		id: 74,
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
@@ -22,7 +22,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 	},
 	"Armored Kitty": {
 		chance: 20,
-		id: 58,
+		id: 75,
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
@@ -30,7 +30,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 	},
 	"Armored Deer": {
 		chance: 10,
-		id: 59,
+		id: 76,
 		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
@@ -38,7 +38,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 	},
 	"Armored Pegasus": {
 		chance: 1.5,
-		id: 60,
+		id: 77,
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
@@ -46,7 +46,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 	},
 	"Armored Dragon": {
 		chance: 1.4,
-		id: 61,
+		id: 78,
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
@@ -54,7 +54,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 	},
 	"Armored Angel": {
 		chance: 0.2,
-		id: 62,
+		id: 79,
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
@@ -62,7 +62,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 	},
 	"Armored Guard": {
 		chance: 0.01,
-		id: 63,
+		id: 80,
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
@@ -70,7 +70,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 	},
 	"Armored Spartan": {
 		chance: 0.004,
-		id: 64,
+		id: 81,
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
@@ -78,7 +78,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 	},
 	"Glitchbot NEO": {
 		chance: 0.000005,
-		id: 65,
+		id: 82,
 		rarity: "Primordial",
 		stats: {
 			additionalDamage: 1,

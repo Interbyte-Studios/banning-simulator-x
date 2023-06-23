@@ -16,7 +16,7 @@ export function getTalismanStatEffect(
 	if (talismanId === undefined || phase === undefined) {
 		return {
 			damage: 0,
-			experience: 1,
+			experience: 0,
 			walkspeed: 0,
 		};
 	}

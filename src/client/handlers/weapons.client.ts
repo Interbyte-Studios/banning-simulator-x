@@ -1,3 +1,4 @@
+import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players, ReplicatedStorage, StarterGui, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { NPCImpact, playSFX, WeaponSlash } from "client/util/playSound";
@@ -303,5 +304,10 @@ onStoreCreated(player)
 		});
 	})
 	.catch((e) => {
-		throw `Failed to get store for player ${player.Name} | ${e}`;
+		// do not include player names. against the rules apparently.
+		GameAnalytics.addErrorEvent(Players.LocalPlayer.UserId, {
+			severity: "error",
+			message: `[ Weapon Handler ] - Failed to run promise callback on "onStoreCreated" | ${e}`,
+		});
+		throw `[ Weapon Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 	});

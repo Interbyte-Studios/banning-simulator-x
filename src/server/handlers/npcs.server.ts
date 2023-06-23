@@ -3,7 +3,7 @@ import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { WORLDS } from "shared/configs/worlds";
 import { UniversalWorldData } from "shared/configs/zones";
 import { remotes } from "shared/remotes";
-import { NpcCharacter } from "shared/remotes/damageNPC";
+import { isNpcCharacter, NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 
 import { runStep } from "../modules/npcs/runStep";
@@ -16,6 +16,14 @@ const attackDownTime = 0.5;
 let npcAttacks: Array<{ player: Player; store: Store; character: NpcCharacter }> = [];
 remotes.Server.Get("damageNPC").Connect(
 	withPlayerStore((player, store, character) => {
+		if (character === undefined) {
+			return;
+		}
+
+		if (!isNpcCharacter(character)) {
+			return;
+		}
+
 		const currentState = store.getState();
 		for (const [worldName, worldData] of pairs(UniversalWorldData)) {
 			for (const [zoneName, zoneData] of pairs(worldData)) {

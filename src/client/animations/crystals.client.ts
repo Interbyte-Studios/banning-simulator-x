@@ -76,6 +76,7 @@ for (const crystal of smallCrystals) {
 }
 
 RunService.RenderStepped.Connect(() => {
+	debug.profilebegin("crystalAnimation");
 	for (const crystalData of cframeValues) {
 		if (crystalData.crystal.PrimaryPart === undefined) {
 			continue;
@@ -83,4 +84,5 @@ RunService.RenderStepped.Connect(() => {
 
 		crystalData.crystal.SetPrimaryPartCFrame(crystalData.cframeValue.Value);
 	}
+	debug.profileend();
 });

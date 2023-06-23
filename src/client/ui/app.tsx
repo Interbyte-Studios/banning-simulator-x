@@ -4,27 +4,32 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { ContextActionService } from "@rbxts/services";
 import { Store } from "shared/rodux";
 
-import { AccountHub } from "./components/account";
 import { LocalMessages } from "./components/announcements";
-import { AutoFight } from "./components/auto fight";
-import { CurrencyGainAnimation } from "./components/currencyGainAnimation";
-import { DatastoreEvents } from "./components/datastoreEvents";
-import { EggsUI } from "./components/eggs";
-import { WeaponEquip } from "./components/equip/weaponEquip";
-import { Fusing } from "./components/fusing";
-import { Hud } from "./components/hud";
-import { ItemInventory } from "./components/items";
-import { Leaderboards } from "./components/leaderboards";
-import { PetMastery } from "./components/petMastery";
+import { EggHud } from "./components/eggs/control";
+import { EggCost } from "./components/eggs/costs";
+import { AccountHub } from "./components/features/account";
+import { AutoFight } from "./components/features/auto fight";
+import { Codes } from "./components/features/codes";
+import { ItemInventory } from "./components/features/items";
+import { PetMastery } from "./components/features/petMastery";
+import { Settings } from "./components/features/settings";
+import { Teleportation } from "./components/features/teleportation";
+import { Trading } from "./components/features/trading";
 import { RankUpgrade } from "./components/ranks/menu";
-import { SpinWheel } from "./components/spinWheel";
-import { TalismanLevelUpAnimation } from "./components/talismanLevelUp";
-import { TalismanTowerHandle } from "./components/talismans";
-import { Teleportation } from "./components/teleportation";
-import { Trading } from "./components/trading";
-import { WeaponLevelUpAnimation } from "./components/weaponLevelUp";
-import { WeaponShopHandle } from "./components/weaponShop";
-import { ZonesUI } from "./components/zones";
+import { TalismanTowerHandle } from "./components/shops/talismanShop";
+import { WeaponShopHandle } from "./components/shops/weaponShop";
+import { BoostCounter } from "./components/standalone/boostCounter";
+import { Fusing } from "./components/standalone/fusing";
+import { Hud } from "./components/standalone/hud";
+import { CurrencyGainAnimation } from "./components/standalone/notifications/currencyGainAnimation";
+import { DatastoreEvents } from "./components/standalone/notifications/datastoreEvents";
+import { TalismanLevelUpAnimation } from "./components/standalone/notifications/talismanLevelUp";
+import { WeaponLevelUpAnimation } from "./components/standalone/notifications/weaponLevelUp";
+import { Rewards } from "./components/standalone/rewards";
+import { RobuxShop } from "./components/standalone/robuxShop";
+import { WeaponEquip } from "./components/standalone/weaponEquip/weaponEquip";
+import { ZonesUI } from "./components/standalone/zones";
+import { AnnouncementContext, AnnouncementType } from "./context/AnnouncementsAPI";
 import { hooks } from "./hooks";
 import { remoteContext } from "./mocks/remoteContext";
 
@@ -34,21 +39,25 @@ interface AppProps {
 }
 
 const visibilityStates = {
-	teleportationVisible: false,
-	weaponShopVisible: false,
-	talismanTowerVisible: false,
-	itemsVisible: false,
-	autoFightVisible: false,
-	accountHubVisible: false,
-	tradingVisible: false,
-	petMasteryVisible: false,
-	spinWheelVisibility: false,
+	teleportation: false,
+	weaponShop: false,
+	talismanTower: false,
+	items: false,
+	autoFight: false,
+	accountHub: false,
+	trading: false,
+	petMastery: false,
+	fusing: false,
+	settings: false,
+	codes: false,
+	robuxShop: false,
 };
 
-export const app = hooks((props: AppProps, { useState, useCallback, useEffect, useContext }) => {
+export const app = hooks((props: AppProps, { useState, useEffect, useContext, useCallback, useMemo }) => {
 	const [visibility, setVisibility] = useState(visibilityStates);
 	const [activeTrade, setActiveTrade] = useState(false);
-	const [isHatching, setHatchingStatus] = useState(false);
+
+	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
 
@@ -69,92 +78,197 @@ export const app = hooks((props: AppProps, { useState, useCallback, useEffect, u
 			false,
 			Enum.KeyCode.Z,
 		);
+
+		return (): void => {
+			ContextActionService.UnbindAction("equipWeapon");
+		};
 	});
 
+	/**
+	 * Determines if any menu is visible.
+	 *
+	 * @param currentMenu The current menu that is being displayed.
+	 * @returns Whether or not any menu is visible.
+	 */
 	const isMenuVisible = useCallback(
 		(currentMenu?: keyof typeof visibilityStates) =>
 			Object.entries(visibility)
 				.filter(([menu]) => menu !== currentMenu)
-				.some(([, value]) => value) ||
-			activeTrade ||
-			isHatching,
-		[visibility, activeTrade, isHatching],
+				.some(([, value]) => value) || activeTrade,
+		[visibility, activeTrade],
 	);
+
+	/**
+	 * Determines if a menu is visible.
+	 *
+	 * @param currentMenu The current menu that is being displayed.
+	 * @returns Whether or not the menu is visible.
+	 */
+	const isVisible = useCallback((currentMenu: keyof typeof visibilityStates) => visibility[currentMenu], [visibility]);
+
+	/**
+	 * The components that are visible.
+	 */
+	const visibleComponents: Array<Roact.Element> = useMemo(() => {
+		const components: Array<Roact.Element> = [];
+
+		if (!isMenuVisible()) {
+			components.push(
+				<Hud
+					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
+					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
+					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
+					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
+					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
+					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					onlyShowCurrency={false}
+				/>,
+				<WeaponShopHandle
+					isVisible={false}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, weaponShop: value })}
+				/>,
+				<TalismanTowerHandle
+					isVisible={false}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, talismanTower: value })}
+				/>,
+				<PetMastery
+					isVisible={false}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, petMastery: value })}
+				/>,
+				<Fusing
+					isVisible={false}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, fusing: value })}
+				/>,
+				<Trading
+					isEnabled={false}
+					setActiveTrade={(value: boolean): void => {
+						setActiveTrade(value);
+					}}
+					hideMenu={(): void => {
+						setVisibility((prev) => ({ ...prev, trading: false }));
+					}}
+				/>,
+				<WeaponLevelUpAnimation />,
+				<TalismanLevelUpAnimation />,
+				<CurrencyGainAnimation />,
+				<WeaponEquip />,
+				<RankUpgrade />,
+				<DatastoreEvents />,
+			);
+		} else if (isVisible("fusing")) {
+			components.push(
+				<Fusing
+					isVisible={true}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, fusing: value })}
+				/>,
+				<Hud
+					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
+					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
+					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
+					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
+					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
+					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					onlyShowCurrency={true}
+				/>,
+			);
+		} else if (isVisible("weaponShop")) {
+			components.push(
+				<WeaponShopHandle
+					isVisible={true}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, weaponShop: value })}
+				/>,
+				<Hud
+					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
+					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
+					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
+					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
+					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
+					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					onlyShowCurrency={true}
+				/>,
+			);
+		} else if (isVisible("talismanTower")) {
+			components.push(
+				<TalismanTowerHandle
+					isVisible={true}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, talismanTower: value })}
+				/>,
+				<Hud
+					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
+					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
+					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
+					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
+					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
+					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					onlyShowCurrency={true}
+				/>,
+			);
+		} else if (isVisible("petMastery")) {
+			components.push(
+				<PetMastery
+					isVisible={true}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, petMastery: value })}
+				/>,
+			);
+		} else if (isVisible("teleportation")) {
+			components.push(
+				<Teleportation hideMenu={(): void => setVisibility((prev) => ({ ...prev, teleportation: false }))} />,
+			);
+		} else if (isVisible("items")) {
+			components.push(<ItemInventory hideMenu={(): void => setVisibility((prev) => ({ ...prev, items: false }))} />);
+		} else if (isVisible("autoFight")) {
+			components.push(
+				<AutoFight hideMenu={(): void => setVisibility((prev) => ({ ...prev, autoFight: false }))} />,
+				<Hud
+					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
+					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
+					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
+					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
+					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
+					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					onlyShowCurrency={true}
+				/>,
+			);
+		} else if (isVisible("accountHub")) {
+			components.push(<AccountHub hideMenu={(): void => setVisibility((prev) => ({ ...prev, accountHub: false }))} />);
+		} else if (isVisible("trading")) {
+			components.push(
+				<Trading
+					isEnabled={true}
+					setActiveTrade={(value: boolean): void => {
+						setActiveTrade(value);
+					}}
+					hideMenu={(): void => {
+						setVisibility((prev) => ({ ...prev, trading: false }));
+					}}
+				/>,
+			);
+		} else if (isVisible("codes")) {
+			components.push(<Codes hideMenu={(): void => setVisibility((prev) => ({ ...prev, codes: false }))} />);
+		} else if (isVisible("settings")) {
+			components.push(<Settings hideMenu={(): void => setVisibility((prev) => ({ ...prev, settings: false }))} />);
+		} else if (isVisible("robuxShop")) {
+			components.push(<RobuxShop hideMenu={(): void => setVisibility((prev) => ({ ...prev, robuxShop: false }))} />);
+		}
+
+		components.push(<ZonesUI />, <Rewards />, <LocalMessages />, <EggCost />, <EggHud />, <BoostCounter />);
+
+		return components;
+	}, [visibility]);
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
-			<>
-				<EggsUI
-					visible={!isMenuVisible()}
-					setHatchingStatus={(isHatching: boolean): void => setHatchingStatus(isHatching)}
-				/>
-				<Hud
-					visible={!isMenuVisible()}
-					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportationVisible: true })}
-					displayItems={(): void => setVisibility({ ...visibilityStates, itemsVisible: true })}
-					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFightVisible: true })}
-					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHubVisible: true })}
-					displayTradingMenu={(): void => setVisibility({ ...visibilityStates, tradingVisible: true })}
-				/>
-				<WeaponLevelUpAnimation enabled={true} />
-				<TalismanLevelUpAnimation enabled={true} />
-				<LocalMessages />
-				<ZonesUI enabled={!isMenuVisible()} />
-				<WeaponEquip visible={!isMenuVisible()} />
-				<RankUpgrade enabled={!isMenuVisible()} />
-				<WeaponShopHandle
-					enabled={!isMenuVisible("weaponShopVisible")}
-					weaponShopVisible={visibility.weaponShopVisible}
-					setWeaponShopVisibility={(value: boolean): void =>
-						setVisibility((prev) => ({ ...prev, weaponShopVisible: value }))
-					}
-				/>
-				<TalismanTowerHandle
-					enabled={!isMenuVisible("talismanTowerVisible")}
-					talismanTowerVisible={visibility.talismanTowerVisible}
-					setTalismanTowerVisibility={(value: boolean): void =>
-						setVisibility((prev) => ({ ...prev, talismanTowerVisible: value }))
-					}
-				/>
-				<PetMastery
-					enabled={!isMenuVisible("petMasteryVisible")}
-					setPetMasteryVisibility={(value: boolean): void =>
-						setVisibility((prev) => ({ ...prev, petMasteryVisible: value }))
-					}
-				/>
-				<Teleportation
-					enabled={!isMenuVisible("teleportationVisible")}
-					visible={visibility.teleportationVisible}
-					hideMenu={(): void => setVisibility((prev) => ({ ...prev, teleportationVisible: false }))}
-				/>
-				<CurrencyGainAnimation />
-				<ItemInventory
-					enabled={!isMenuVisible("itemsVisible")}
-					visible={visibility.itemsVisible}
-					hideMenu={(): void => setVisibility((prev) => ({ ...prev, itemsVisible: false }))}
-				/>
-				<DatastoreEvents enabled={!isMenuVisible()} />
-				<AutoFight
-					enabled={visibility.autoFightVisible}
-					hideMenu={(): void => setVisibility((prev) => ({ ...prev, autoFightVisible: false }))}
-				/>
-				<AccountHub
-					enabled={visibility.accountHubVisible}
-					hideMenu={(): void => setVisibility((prev) => ({ ...prev, accountHubVisible: false }))}
-				/>
-				<Fusing enabled={!isMenuVisible()} />
-				<Trading
-					tradeMenusEnabled={!isMenuVisible("tradingVisible")}
-					tradeMenusVisible={visibility.tradingVisible}
-					setActiveTrade={(value: boolean): void => setActiveTrade(value)}
-					hideMenu={(): void => setVisibility((prev) => ({ ...prev, tradingVisible: false }))}
-				/>
-				<SpinWheel
-					visible={visibility.spinWheelVisibility}
-					hideMenu={(): void => setVisibility((prev) => ({ ...prev, spinWheelVisibility: false }))}
-				/>
-				<Leaderboards />
-			</>
+			<>{visibleComponents}</>
 		</RoactRodux.StoreProvider>
 	);
 });

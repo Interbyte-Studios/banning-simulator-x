@@ -15,7 +15,7 @@ remotes.Server.GetNamespace("petMastery")
 			const state = store.getState();
 
 			// check to be sure the pet's been discovered
-			const petMasteryIndex = state.petMastery.get(id);
+			const petMasteryIndex = state.petMastery.get(tostring(id));
 			if (petMasteryIndex === undefined) {
 				return;
 			}

@@ -7,6 +7,8 @@ import { CITY_EGG_PETS } from "./pets/city";
 import { CORRUPT_EGG_PETS } from "./pets/corrupt";
 import { CYBER_EGG_PETS } from "./pets/cyber";
 import { DESERT_EGG_PETS } from "./pets/desert";
+import { EXCLUSIVE_PETS } from "./pets/exclusive";
+import { GROUP_CHEST_PETS } from "./pets/group";
 import { HONEYCOMB_EGG_PETS } from "./pets/honeycomb";
 import { MOLTEN_EGG_PETS } from "./pets/molten";
 import { ROYALTY_EGG_PETS } from "./pets/royalty";
@@ -41,6 +43,11 @@ export interface Egg {
 	hatchable: boolean;
 
 	/**
+	 * Whether or not the egg is hidden.
+	 */
+	hidden: boolean;
+
+	/**
 	 * Whether or not luck boost and luck events apply to the egg.
 	 */
 	luckApplies: boolean;
@@ -56,6 +63,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Ban Land",
 		zone: "Forest",
 		hatchable: true,
+		hidden: false,
 		luckApplies: true,
 	},
 	Desert: {
@@ -64,6 +72,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Ban Land",
 		zone: "Desert",
 		hatchable: true,
+		hidden: false,
 		luckApplies: true,
 	},
 	Honeycomb: {
@@ -72,6 +81,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Ban Land",
 		zone: "Honeycomb",
 		hatchable: true,
+		hidden: false,
 		luckApplies: true,
 	},
 	Candy: {
@@ -80,6 +90,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Ban Land",
 		zone: "Candy Land",
 		hatchable: true,
+		hidden: false,
 		luckApplies: true,
 	},
 	Molten: {
@@ -88,6 +99,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Ban Land",
 		zone: "Lava Lands",
 		hatchable: true,
+		hidden: false,
 		luckApplies: true,
 	},
 	Royalty: {
@@ -96,6 +108,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,
+		hidden: false,
 		luckApplies: false,
 	},
 	City: {
@@ -104,6 +117,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,
+		hidden: true,
 		luckApplies: true,
 	},
 	Cyber: {
@@ -112,6 +126,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,
+		hidden: true,
 		luckApplies: true,
 	},
 	Corrupt: {
@@ -120,6 +135,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,
+		hidden: true,
 		luckApplies: true,
 	},
 	Armored: {
@@ -128,7 +144,26 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,
+		hidden: true,
 		luckApplies: true,
+	},
+	Group: {
+		id: 499,
+		pets: GROUP_CHEST_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: false,
+		hidden: false,
+		luckApplies: false,
+	},
+	Exclusive: {
+		id: 500,
+		pets: EXCLUSIVE_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: false,
+		hidden: false,
+		luckApplies: false,
 	},
 });
 
@@ -148,4 +183,4 @@ export function isEggName(name: unknown): name is EggName {
 /**
  * How long a player must wait between egg hatches.
  */
-export const hatchDebounce = 5.5;
+export const hatchDebounce = 3;

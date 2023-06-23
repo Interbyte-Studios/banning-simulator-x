@@ -48,7 +48,7 @@ export const RANKS: Array<Rank> = [
 			beginningColor: Color3.fromRGB(86, 100, 107),
 			endingColor: Color3.fromRGB(151, 161, 167),
 		},
-		requiredExperience: 2_000,
+		requiredExperience: 3_500,
 	},
 	{
 		name: "Gold",
@@ -61,7 +61,7 @@ export const RANKS: Array<Rank> = [
 			beginningColor: Color3.fromRGB(84, 54, 0),
 			endingColor: Color3.fromRGB(252, 199, 84),
 		},
-		requiredExperience: 4_000,
+		requiredExperience: 21_000,
 	},
 	{
 		name: "Diamond",
@@ -74,7 +74,7 @@ export const RANKS: Array<Rank> = [
 			beginningColor: Color3.fromRGB(0, 46, 69),
 			endingColor: Color3.fromRGB(82, 181, 245),
 		},
-		requiredExperience: 16_000,
+		requiredExperience: 40_000,
 	},
 	{
 		name: "Emerald",
@@ -87,7 +87,7 @@ export const RANKS: Array<Rank> = [
 			beginningColor: Color3.fromRGB(5, 61, 3),
 			endingColor: Color3.fromRGB(120, 235, 107),
 		},
-		requiredExperience: 93_750,
+		requiredExperience: 164_000,
 	},
 	{
 		name: "Draconic",
@@ -100,7 +100,7 @@ export const RANKS: Array<Rank> = [
 			beginningColor: Color3.fromRGB(51, 0, 0),
 			endingColor: Color3.fromRGB(135, 51, 43),
 		},
-		requiredExperience: 500_000,
+		requiredExperience: 875_000,
 	},
 	{
 		name: "Pendulum",
@@ -113,6 +113,6 @@ export const RANKS: Array<Rank> = [
 			beginningColor: Color3.fromRGB(245, 252, 99),
 			endingColor: Color3.fromRGB(64, 181, 255),
 		},
-		requiredExperience: 3_000_000,
+		requiredExperience: 8_750_000,
 	},
 ];

@@ -1,5 +1,5 @@
 import { HttpService, Players, ReplicatedStorage } from "@rbxts/services";
-import { addPetToCache } from "server/modules/datastoreCaches/petExistStore";
+import { addPetToCache } from "server/modules/datastore/petExistStore";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { getPetPercentages } from "server/util/getPetPercentages";
 import { hatchDebounce } from "shared/configs/eggs";
@@ -16,7 +16,8 @@ import { withinDistanceToHatch } from "shared/util/withinDistanceToHatch";
 
 import { getTradeStatus } from "./trading/trades";
 
-const hatchEgg = remotes.Server.GetNamespace("eggs").Create("hatchEgg");
+const hatchSystemMessage = remotes.Server.GetNamespace("eggs").Get("hatchEggSystemMessage");
+const hatchEgg = remotes.Server.GetNamespace("eggs").Get("hatchEgg");
 const hatchTimeCache: Map<Player, number> = new Map();
 const randomGenerator = new Random();
 
@@ -35,7 +36,6 @@ hatchEgg.SetCallback(
 
 		const isTrading = getTradeStatus(player) !== undefined;
 		if (isTrading) {
-			warn("Player is trading, cannot hatch an egg");
 			return {
 				success: false,
 			};
@@ -65,8 +65,15 @@ hatchEgg.SetCallback(
 			};
 		}
 
+		// check cost
+		if (currentState.currencies[eggCost.currencyType] < eggCost.amount * amount) {
+			return {
+				success: false,
+			};
+		}
+
 		// check inventory space
-		if (currentState.pets.size() >= getPetInventorySize(currentState.gamepasses) + amount) {
+		if (currentState.pets.size() + amount > getPetInventorySize(currentState.gamepasses)) {
 			return {
 				success: false,
 			};
@@ -170,6 +177,9 @@ hatchEgg.SetCallback(
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			if (pet.rarity === "Prismatic" || pet.rarity === "Primordial") {
 				addPetToCache(pet.id);
+				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
+			} else if (pet.rarity === "Legendary") {
+				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
 			}
 
 			selectedPets.push({
@@ -183,8 +193,10 @@ hatchEgg.SetCallback(
 			});
 		}
 
-		if (selectedPets.size() > 3) {
-			throw `Issue on the server confirming how many pets should be hatched. Player: ${player.Name} | Amount: ${amount} | Egg: ${eggName} | Void: ${isVoid}`;
+		if (selectedPets.size() !== amount) {
+			throw `Issue on the server confirming how many pets should be hatched. Player: ${
+				player.Name
+			} | Amount: ${amount} | Egg: ${eggName} | Void: ${isVoid} | Amount that server hatched: ${selectedPets.size()}}`;
 		}
 
 		store.dispatch(addPets(eggCost.amount * selectedPets.size(), eggCost.currencyType, selectedPets));

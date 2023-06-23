@@ -6,7 +6,7 @@ import { testAction } from "./testAction";
 export = (): void => {
 	describe("rodux/title", () => {
 		it("should equip different title", () => {
-			const state = "Executive";
+			const state = "Admin";
 
 			const action = equipTitle("Staff Team");
 			const newState = "Staff Team";
@@ -17,9 +17,9 @@ export = (): void => {
 		it("should equip title for first time", () => {
 			const state = undefined;
 
-			const action = equipTitle("Executive");
+			const action = equipTitle("Admin");
 
-			const newState = "Executive";
+			const newState = "Admin";
 
 			testAction(state, newState, titleReducer, action);
 		});

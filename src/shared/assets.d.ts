@@ -21,6 +21,12 @@ declare namespace assetIds {
 		};
 		decals: {
 			pets: {
+				Byte: string;
+				"Radiant Byte": string;
+				"Radiant Shade Glider": string;
+				"Shade Glider": string;
+				"Void Byte": string;
+				"Void Shade Glider": string;
 				"Void Desert Scorpilord": string;
 				"Desert Pegasus": string;
 				Piggy: string;
@@ -377,6 +383,24 @@ declare namespace assetIds {
 				Candy: string;
 				Molten: string;
 				Desert: string;
+				Royal: string;
+			};
+			gamepasses: {
+				["+2 Pets Equipped"]: string;
+				["+250 Inventory"]: string;
+				["+3 Pets Equipped"]: string;
+				["+450 Inventory"]: string;
+				["+800 Inventory"]: string;
+				["Auto Fight"]: string;
+				["Better Fusion"]: string;
+				["Fast Hatch"]: string;
+				Skip_Egg_Hatching: string;
+				Teleportation: string;
+				["Triple Hatch"]: string;
+				VIP: string;
+				["x2 Currency"]: string;
+				["x2 Experience"]: string;
+				["x2 Luck"]: string;
 			};
 		};
 		vectors: {
@@ -464,6 +488,7 @@ declare namespace assetIds {
 				showExtraStats: string;
 			};
 			teleportation: {
+				exclusive: string;
 				"Candy Land Locked": string;
 				Desert: string;
 				"The Mines": string;
@@ -534,6 +559,7 @@ declare namespace assetIds {
 					"auto fight": string;
 					teleport: string;
 					trading: string;
+					shop: string;
 				};
 				"rank fill": string;
 			};
@@ -543,6 +569,9 @@ declare namespace assetIds {
 			};
 			settings: {
 				"setting background": string;
+				background: string;
+			};
+			shop: {
 				background: string;
 			};
 			equip: {

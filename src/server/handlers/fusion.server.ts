@@ -3,6 +3,7 @@ import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { RARITIES } from "shared/configs/rarities";
 import { remotes } from "shared/remotes";
 import { FusionFailKind } from "shared/remotes/fusing";
+import { awardCurrency } from "shared/rodux/currencies";
 import { addPets, ConfirmedPet, deletePets } from "shared/rodux/pets";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
@@ -53,8 +54,11 @@ remotes.Server.Create("requestFusion").SetCallback(
 		// check that player has enough money
 		const eggName = getEggNameFromPetId(petId);
 		const eggCost = getEggCost(eggName, true, 0);
-		const fusionCost =
-			(eggCost.amount / rarityId) * petsToFuse.size() * (variant === "radiant" ? 3 : variant === "void" ? 2 : 1);
+		let fusionCost = eggCost.amount / rarityId;
+		if (petData.fusionCost !== undefined) {
+			fusionCost = petData.fusionCost;
+		}
+		fusionCost = fusionCost * petsToFuse.size() * (variant === "radiant" ? 3 : variant === "void" ? 2 : 1);
 
 		if (store.getState().currencies[eggCost.currencyType] < fusionCost) {
 			return {
@@ -70,6 +74,7 @@ remotes.Server.Create("requestFusion").SetCallback(
 		const success = random.NextNumber(0, 100) <= fusionSuccessRate;
 		if (!success) {
 			store.dispatch(deletePets(petsToFuse));
+			store.dispatch(awardCurrency(eggCost.currencyType, -fusionCost));
 			return {
 				success: false,
 				reason: FusionFailKind.UnsuccesfulFusion,

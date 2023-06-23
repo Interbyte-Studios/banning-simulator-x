@@ -1,3 +1,4 @@
+import { GameAnalytics } from "@rbxts/gameanalytics";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { retrieveStore } from "server/playerStore";
 import { ADMIN_RANK } from "shared/configs/admin";
@@ -18,6 +19,13 @@ remotes.Server.GetNamespace("admin")
 			const targetPlayerStore = retrieveStore(targetPlayer);
 			if (targetPlayerStore === undefined) return;
 
+			GameAnalytics.addErrorEvent(adminPlayer.UserId, {
+				severity: "warning",
+				message:
+					targetPlayer.UserId === adminPlayer.UserId
+						? `Granted currency to self | Currency: ${currency} | Amount: ${amount}`
+						: `Granted currency to user with id: ${targetPlayer.UserId} | Currency: ${currency} | Amount: ${amount}`,
+			});
 			targetPlayerStore.dispatch(awardCurrency(currency, amount));
 		}),
 	);

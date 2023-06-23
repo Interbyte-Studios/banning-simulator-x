@@ -207,80 +207,52 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 	defaultPets,
 	{
 		addPet: (state, action) => {
-			const newState: PetsState = [...state];
+			const newPets = action.pets
+				.filter((pet) => !pet.autoDeleted)
+				.map((pet) => {
+					return {
+						id: pet.id,
+						bans: 0,
+						guid: pet.guid,
+						equipped: false,
+						locked: false,
+						variant: pet.variant,
+						tradeLocked: pet.tradeLocked,
+					};
+				});
 
-			for (const pet of action.pets) {
-				if (pet.autoDeleted) {
-					continue;
-				}
-
-				const newPet: Pet = {
-					id: pet.id,
-					bans: 1,
-					guid: pet.guid,
-					equipped: false,
-					locked: false,
-					variant: pet.variant,
-					tradeLocked: pet.tradeLocked,
-					//enhancements: pet.enhancements ?? {},
-				};
-
-				newState.push(newPet);
-			}
-			return newState;
+			return [...state, ...newPets];
 		},
 		deletePet: (state, action) => {
-			const newState = [...state];
-
-			for (const petToDelete of action.pets) {
-				newState.unorderedRemove(newState.findIndex((pet) => pet.guid === petToDelete));
-			}
-
-			return newState;
+			return state.filter((pet) => !action.pets.includes(pet.guid));
 		},
 		equipPets: (state, action) => {
-			const newState = [...state];
+			return state.map((pet) => {
+				const shouldBeEquipped = action.pets.some((p) => p.guid === pet.guid && p.enabled);
+				const shouldBeUnequipped = action.unequipAll || action.pets.some((p) => p.guid === pet.guid && !p.enabled);
 
-			if (action.unequipAll) {
-				for (const pet of newState) {
-					if (pet.equipped === false) {
-						continue;
-					}
-
-					pet.equipped = false;
+				if (shouldBeEquipped) {
+					return { ...pet, equipped: true };
+				} else if (shouldBeUnequipped) {
+					return { ...pet, equipped: false };
 				}
-			}
 
-			for (const petToEquip of action.pets) {
-				const storedPet = newState.find((pet) => pet.guid === petToEquip.guid);
-				assert(storedPet, `Rodux failed to equip pet with guid: "${petToEquip.guid}"`);
-
-				storedPet.equipped = petToEquip.enabled;
-			}
-
-			return newState;
+				return pet;
+			});
 		},
 		lockPets: (state, action) => {
-			const newState = [...state];
-
-			for (const petToEquip of action.pets) {
-				const storedPet = newState.find((pet) => pet.guid === petToEquip.guid);
-				assert(storedPet, `Rodux failed to equip pet with guid: "${petToEquip.guid}"`);
-
-				storedPet.locked = petToEquip.enabled;
-			}
+			const newState = state.map((pet) => {
+				const petToLock = action.pets.find((p) => p.guid === pet.guid);
+				if (petToLock) {
+					return { ...pet, locked: petToLock.enabled };
+				}
+				return pet;
+			});
 
 			return newState;
 		},
-		enhancePet: (state, action) => {
-			const newState = [...state];
-
-			const pet = newState.find((pet) => pet.guid === action.guid);
-			if (pet !== undefined) {
-				//pet.enhancements[action.enhancementData.variant] = action.enhancementData;
-			}
-
-			return newState;
+		enhancePet: (state) => {
+			return state;
 		},
 		redeemQuest: (state, action) => {
 			if (action.rewardType.kind !== "pet") {
@@ -325,28 +297,27 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 			];
 		},
 		killNpc: (state, action) => {
-			const newState = [...state];
-
-			for (const pet of newState) {
+			const newState = state.map((pet) => {
 				if (!pet.equipped) {
-					continue;
+					return pet;
 				}
 
-				pet.bans += 1 * math.ceil(action.petExperienceMultiplier);
-			}
+				return { ...pet, bans: pet.bans + 1 * math.ceil(action.petExperienceMultiplier) };
+			});
 
 			return newState;
 		},
 		admin_ModifyPetLevel: (state, action) => {
-			const newState = [...state];
+			const newState = state.map((pet) => {
+				if (pet.guid !== action.guid) {
+					return pet;
+				}
 
-			const pet = newState.find((pet) => pet.guid === action.guid);
-			if (pet !== undefined) {
 				const desiredLevels = action.level < PET_MAX_LEVELS[pet.variant] ? action.level : PET_MAX_LEVELS[pet.variant];
 				const banResult = PET_LEVEL_REQUIREMENTS[pet.variant] * desiredLevels;
 
-				pet.bans = banResult;
-			}
+				return { ...pet, bans: banResult };
+			});
 
 			return newState;
 		},

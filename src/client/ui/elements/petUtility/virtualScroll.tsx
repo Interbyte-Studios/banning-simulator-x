@@ -2,11 +2,11 @@ import Roact from "@rbxts/roact";
 import { CollectionService } from "@rbxts/services";
 import { sortPets } from "client/modules/pets/sort";
 import { vec2Middle } from "client/ui/commonValues";
-import { PetFrame } from "client/ui/components/items/pets/inventory/petFrame";
+import { PetInventoryData } from "client/ui/components/features/items/pets/inventory";
+import { PetFrame } from "client/ui/components/features/items/pets/inventory/petFrame";
 import { PetsState } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 
-import { PetInventoryData } from "../../components/items/pets/inventory";
 import { hooks } from "../../hooks";
 import { updateContentSize } from "../common/rescalingScrollingFrame";
 
@@ -106,7 +106,6 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 	const updateItems = useCallback(
 		(scroll: ScrollingFrame): void => {
 			const updatedRenderedPets = checkRenderedPets(scroll, renderedPets, props.searchText);
-			sortPets(updatedRenderedPets, true, true);
 			setRenderedPets(updatedRenderedPets);
 		},
 		[renderedPets, props.searchText],
@@ -155,6 +154,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		const scrollingFrame = scrollingFrameRef.value.getValue();
 		assert(scrollingFrame, `No ScrollingFrame was found for Virtual Scroll`);
 
+		sortPets(props.pets, true, true);
 		let newPets: Array<PetInventoryData> = [];
 		if (props.searchText !== undefined && props.searchText !== "") {
 			const searchText = props.searchText.lower();
@@ -170,7 +170,6 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		}
 
 		const updatedRenderedPets = checkRenderedPets(scrollingFrame, newPets, props.searchText);
-		sortPets(updatedRenderedPets, true, true);
 		setRenderedPets(updatedRenderedPets);
 	}, [props.pets, props.searchText]);
 
@@ -196,7 +195,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 					selectedId += 1;
 					layoutOrder = selectedId;
 				} else {
-					layoutOrder = index + selectedId;
+					layoutOrder = index + 11;
 				}
 			}
 
@@ -250,7 +249,15 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 			}
 		});
 		return result;
-	}, [renderedPets, props.selectedPets, props.pets]);
+	}, [
+		renderedPets,
+		props.selectedPets,
+		props.pets,
+		props.inventoryFrame?.multiDeleteEnabled,
+		props.inventoryFrame?.addPetToDeletionRegistry,
+		props.inventoryFrame?.removePetFromDeletionRegistry,
+		props.inventoryFrame?.displayPetInfo,
+	]);
 
 	return (
 		<scrollingframe

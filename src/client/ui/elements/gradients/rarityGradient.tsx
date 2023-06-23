@@ -26,6 +26,7 @@ export const RarityGradient = hooks((props: { Rarity: Rarities }, { useEffect, u
 		assert(gradient);
 
 		const connection = RunService.RenderStepped.Connect((deltaTime) => {
+			debug.profilebegin("rarityGradient");
 			if (offsetOfAnimation.getValue().X < 0.75) {
 				gradient.Offset = new Vector2(offsetOfAnimation.getValue().X + 0.5 * deltaTime, 0);
 			} else {
@@ -34,6 +35,7 @@ export const RarityGradient = hooks((props: { Rarity: Rarities }, { useEffect, u
 
 			gradient.Rotation = 40;
 			setAnimationOffset(gradient.Offset);
+			debug.profileend();
 		});
 
 		return (): void => connection.Disconnect();

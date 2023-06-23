@@ -13,31 +13,51 @@ const talismansFolder = ReplicatedStorage.assetObjects.talismans;
  * @param phase The phase of the talisman.
  */
 export function equipTalisman(player: Player, talismanId: number, phase: TalismanPhases): void {
-	const character = player.Character;
-	assert(character, `Failed to get character for ${player.Name}. Cannot animate talisman.`);
+	const character = player.Character ?? player.CharacterAdded.Wait()[0];
+	if (character === undefined) {
+		warn(`[Talisman Animator] - Failed to animate talisman for player ${player.Name}. Character is undefined.`);
+		return;
+	}
 
-	const humanoid = character.FindFirstChildOfClass("Humanoid");
-	assert(humanoid, `Failed to get Humanoid for ${player.Name}. Cannot animate talisman.`);
+	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
+	if (humanoid === undefined) {
+		warn(`[Talisman Animator] - Failed to animate talisman for player ${player.Name}. Humanoid is undefined.`);
+		return;
+	}
 
 	const humanoidRootPart = humanoid.RootPart;
-	assert(humanoidRootPart, `Failed to get HumanoidRootPart for ${player.Name}. Cannot animate talisman.`);
+	if (humanoidRootPart === undefined) {
+		warn(`[Talisman Animator] - Failed to animate talisman for player ${player.Name}. HumanoidRootPart is undefined.`);
+		return;
+	}
 
 	const talismanData = getTalismanData(talismanId);
 
 	const talismanFolder = talismansFolder.FindFirstChild(`Tier ${talismanData.id}`);
-	assert(talismanFolder, `Failed to get talisman folder for talisman tier ${talismanData.id}`);
+	if (talismanFolder === undefined) {
+		warn(`[Talisman Animator] - Failed to animate talisman for player ${player.Name}. Talisman folder is undefined.`);
+		return;
+	}
 
 	const phaseName = phase === "awakend" ? "Awakend" : phase === "artifact" ? "Artifact" : "normal";
 	const talismanModel = talismanFolder.FindFirstChild(
 		phaseName === "normal" ? talismanData.name : `${phaseName} ${talismanData.name}`,
 	);
-	assert(talismanModel, `Failed to get talisman named: "${phaseName} ${talismanData.name}"`);
+	if (talismanModel === undefined) {
+		warn(
+			`[Talisman Animator] - Failed to animate talisman for player ${player.Name}. Talisman model ${talismanData.name} of variant ${phaseName} is undefined.`,
+		);
+		return;
+	}
 
 	const talisman = talismanModel.Clone() as Model;
 	setAssetProperties("talisman", talisman);
 
 	const primaryPart = talisman.PrimaryPart as BasePart;
-	assert(primaryPart, `Failed to get primary part of talisman with id: "${talismanId}" of phase: "${phase}".`);
+	if (primaryPart === undefined) {
+		warn(`[Talisman Animator] - Failed to animate talisman for player ${player.Name}. PrimaryPart is undefined.`);
+		return;
+	}
 
 	const talismanAttachment = new Instance("Attachment", primaryPart);
 
@@ -62,12 +82,14 @@ export function equipTalisman(player: Player, talismanId: number, phase: Talisma
 	talisman.Parent = Workspace["client objects"].talismans;
 
 	const talismanRender = RunService.RenderStepped.Connect(() => {
+		debug.profilebegin("talismanRender");
 		if (humanoidRootPart !== undefined) {
 			const hover = math.cos(os.clock() * 3) * 1;
 
 			alignPosition.Position = humanoidRootPart.CFrame.mul(new CFrame(2, hover, 3)).Position;
 			alignOrientation.CFrame = humanoidRootPart.CFrame;
 		}
+		debug.profileend();
 	});
 
 	humanoid.Died.Connect(() => {

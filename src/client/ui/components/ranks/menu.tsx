@@ -23,10 +23,6 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 const player = Players.LocalPlayer;
 
-interface RankUpgradeProps extends RankUpgradeMappedProps {
-	enabled: boolean;
-}
-
 interface RankUpgradeMappedProps {
 	currentRank: number;
 	currencies: CurrenciesState;
@@ -51,11 +47,7 @@ function mapStateToProps(state: StoreState): RankUpgradeMappedProps {
  * A UI to upgrade a player's rank.
  */
 export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
-	hooks((props: RankUpgradeProps, hooks) => {
-		if (!props.enabled) {
-			return <></>;
-		}
-
+	hooks((props: RankUpgradeMappedProps, hooks) => {
 		const { useState, useValue, useEffect, useContext } = hooks;
 		const { unlockRank } = useContext(remoteContext);
 		const { addAnnouncement } = useContext(AnnouncementContext);

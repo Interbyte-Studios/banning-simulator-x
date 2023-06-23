@@ -1,3 +1,4 @@
+import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { ADMIN_RANK } from "shared/configs/admin";
@@ -12,6 +13,11 @@ remotes.Server.GetNamespace("admin")
 			if (!isAdminRank) return;
 
 			task.spawn(() => {
+				GameAnalytics.addErrorEvent(adminPlayer.UserId, {
+					severity: "warning",
+					message: `Shutdown server`,
+				});
+
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
 					task.wait(0.5);

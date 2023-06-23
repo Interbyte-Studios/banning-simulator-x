@@ -1,4 +1,5 @@
-import { CollectionService, Players, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
+import { GameAnalytics } from "@rbxts/gameanalytics";
+import { Players, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
 import { t } from "@rbxts/t";
 import { onStoreCreated } from "client/clientStores";
 import { getRankIcon } from "client/util/getRankIcon";
@@ -8,8 +9,8 @@ import { Store } from "shared/rodux";
 import { getNPCByName } from "shared/util/getNpcByName";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
-const player = Players.LocalPlayer;
-const playerGui = player.WaitForChild("PlayerGui") as PlayerGui;
+const localPlayer = Players.LocalPlayer;
+const playerGui = localPlayer.WaitForChild("PlayerGui") as PlayerGui;
 
 const npcsFolder = Workspace.WaitForChild("npcs");
 
@@ -134,24 +135,16 @@ function createPlayerTag(player: Player, store: Store): t.static<typeof isPlayer
 		tag.hold.staff.Visible = true;
 	}
 
-	humanoid.Died.Connect(() => {
-		tag.Destroy();
-		return;
-	});
-
 	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
 	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
 
-	for (const uiStroke of tag.GetDescendants()) {
-		if (!uiStroke.IsA("UIStroke")) {
-			continue;
-		}
-
-		CollectionService.AddTag(uiStroke, "Billboard_UIStroke");
-	}
-
 	tag.Adornee = head;
 	tag.Parent = friendlyTags;
+
+	humanoid.AncestryChanged.Connect(() => {
+		tag.Destroy();
+		return;
+	});
 
 	return tag;
 }
@@ -207,6 +200,11 @@ function updatePlayerTag(player: Player, store: Store): void {
 
 		tag.hold.title.Text = storeState.title;
 
+		const currentGradient = tag.hold.title.FindFirstChildWhichIsA("UIGradient");
+		if (currentGradient !== undefined) {
+			currentGradient.Destroy();
+		}
+
 		if (typeIs(titleData.effect, "Color3")) {
 			tag.hold.title.TextColor3 = titleData.effect;
 		} else {
@@ -242,10 +240,14 @@ function createEnemyTag(enemy: Model): void {
 	assert(enemyTag, `Failed to get enemy tag from rep storage`);
 
 	const humanoid = enemy.WaitForChild("Humanoid") as Humanoid;
-	assert(humanoid, `Failed to create enemy tag. Infinitely yielded for Humanoid for enemey: ${enemy.Name}`);
+	if (humanoid === undefined) {
+		return;
+	}
 
 	const head = enemy.WaitForChild("Head") as BasePart;
-	assert(head, `Failed to create enemy tag. Infinitely yielded for Head for enemey: ${enemy.Name}`);
+	if (head === undefined) {
+		return;
+	}
 
 	const npcData = getNPCByName(enemy.Name);
 	if (npcData === undefined) {
@@ -264,6 +266,12 @@ function createEnemyTag(enemy: Model): void {
 	tag.hold.fillBackground.health.Text = `[${twoDpAbbreviator.numberToString(
 		humanoid.Health,
 	)} / ${twoDpAbbreviator.numberToString(humanoid.MaxHealth)}]`;
+
+	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
+	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
+
+	tag.Adornee = head;
+	tag.Parent = enemyTags;
 
 	humanoid.GetPropertyChangedSignal("Health").Connect(() => {
 		const health = humanoid.Health;
@@ -290,24 +298,10 @@ function createEnemyTag(enemy: Model): void {
 		)} / ${twoDpAbbreviator.numberToString(humanoid.MaxHealth)}]`;
 	});
 
-	humanoid.Died.Connect(() => {
+	humanoid.AncestryChanged.Connect(() => {
 		tag.Destroy();
 		return;
 	});
-
-	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
-	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
-
-	for (const uiStroke of tag.GetDescendants()) {
-		if (!uiStroke.IsA("UIStroke")) {
-			continue;
-		}
-
-		CollectionService.AddTag(uiStroke, "Billboard_UIStroke");
-	}
-
-	tag.Adornee = head;
-	tag.Parent = enemyTags;
 }
 
 /**
@@ -316,6 +310,8 @@ function createEnemyTag(enemy: Model): void {
 function onPlayerAdded(player: Player): void {
 	onStoreCreated(player)
 		.andThen((store) => {
+			task.wait(5);
+
 			if (player.Character) {
 				createPlayerTag(player, store);
 			}
@@ -331,7 +327,12 @@ function onPlayerAdded(player: Player): void {
 			});
 		})
 		.catch((e) => {
-			throw `Failed to get store for player ${player.Name} | ${e}`;
+			// do not include player names. against the rules apparently.
+			GameAnalytics.addErrorEvent(Players.LocalPlayer.UserId, {
+				severity: "error",
+				message: `[ Billboard Tags Handler ] - Failed to run promise callback on "onStoreCreated" | ${e}`,
+			});
+			throw `[ Billboard Tags Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 		});
 }
 
@@ -355,6 +356,7 @@ npcsFolder.GetChildren().forEach((enemy) => {
 });
 
 RunService.RenderStepped.Connect((deltaTime) => {
+	debug.profilebegin("Gradient Tags");
 	gradients.forEach((gradient) => {
 		if (gradient.Offset.X < 0.75) {
 			gradient.Offset = new Vector2(gradient.Offset.X + 0.5 * deltaTime, 0);
@@ -364,4 +366,5 @@ RunService.RenderStepped.Connect((deltaTime) => {
 
 		gradient.Rotation = 40;
 	});
+	debug.profileend();
 });

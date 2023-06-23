@@ -31,26 +31,27 @@ export type StoreState = {
 	boosts: BoostsState;
 	currencies: CurrenciesState;
 	currentWeapon: CurrentWeaponState;
+	currentTalisman: CurrentTalismanState;
+	devProducts: DevProductState;
 	eggs: EggsState;
 	experience: ExperienceState;
 	gamepasses: GamepassesState;
+	index: PlayerIndexState;
 	media: MediaState;
 	pets: PetsState;
+	petMastery: PetMasteryState;
+	petTeams: PetTeamsState;
 	quests: QuestsState;
 	rank: RankState;
 	settings: SettingsState;
+	spinWheel: SpinWheelState;
+	talismans: TalismansState;
 	title: TitleState;
+	tradeLogs: TradeLogsState;
 	weapons: WeaponsState;
 	worlds: WorldsState;
-	talismans: TalismansState;
-	currentTalisman: CurrentTalismanState;
-	index: PlayerIndexState;
-	petMastery: PetMasteryState;
-	spinWheel: SpinWheelState;
-	petTeams: PetTeamsState;
-	devProducts: DevProductState;
-	tradeLogs: TradeLogsState;
 };
+
 export type StoreActions = (
 	| AccoladeActions
 	| BoostActions
@@ -105,26 +106,3 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 });
 
 export type Store = Rodux.Store<StoreState, StoreActions>;
-
-export interface ValidProfile {
-	accolades: AccoladeState;
-	boosts: BoostsState;
-	currencies: CurrenciesState;
-	currentWeapon: CurrentWeaponState;
-	eggs: EggsState;
-	gamepasses: GamepassesState;
-	media: MediaState;
-	pets: PetsState;
-	rank: RankState;
-	settings: SettingsState;
-	titles: TitleState;
-	weapons: WeaponsState;
-	worlds: WorldsState;
-	talismans: TalismansState;
-	currentTalisman: CurrentTalismanState;
-	petMastery: PetMasteryState;
-	spinWheel: SpinWheelState;
-	petTeams: PetTeamsState;
-	playerIndex: PlayerIndexState;
-	devProducts: DevProductState;
-}

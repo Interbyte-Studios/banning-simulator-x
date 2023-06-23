@@ -2,6 +2,7 @@ import Net from "@rbxts/net";
 
 import { accolades } from "./accolades";
 import { admin } from "./admin";
+import { useBoostDefinition } from "./boosts";
 import { damageNPCDefinition } from "./damageNPC";
 import { eggs } from "./eggs";
 import { equipTitleDefinition } from "./equipTitle";
@@ -11,6 +12,7 @@ import { petMastery } from "./petMastery";
 import { pets } from "./pets";
 import { purchaseZoneDefinition } from "./purchaseZone";
 import { redeemQuestDefinition } from "./redeemQuest";
+import { rewardsDefinition } from "./rewards";
 import { roduxDefinitions } from "./rodux";
 import { settings } from "./settings";
 import { spinWheelDefinition } from "./spinWheel";
@@ -27,6 +29,7 @@ export const remotes = Net.Definitions.Create({
 	media: media,
 	pets: pets,
 	petMastery: petMastery,
+	rewards: rewardsDefinition,
 	rodux: roduxDefinitions,
 	settings: settings,
 	weapons: weapons,
@@ -41,4 +44,5 @@ export const remotes = Net.Definitions.Create({
 	spinWheel: spinWheelDefinition,
 	spinWheelInfo: spinWheelInfoDefinition,
 	requestFusion: fusionRequestDefinition,
+	useBoost: useBoostDefinition,
 });

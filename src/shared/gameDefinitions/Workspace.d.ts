@@ -72,6 +72,16 @@ declare global {
 				interact: BasePart;
 				teleport: BasePart;
 			};
+			GroupChest: Model & {
+				interact: BasePart & {
+					ProximityPrompt: ProximityPrompt;
+				};
+			};
+			"VIP Chest": Model & {
+				interact: BasePart & {
+					ProximityPrompt: ProximityPrompt;
+				};
+			};
 		};
 		decoration: Folder & {
 			[P in keyof Worlds]: Folder & {
