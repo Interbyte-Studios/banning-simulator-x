@@ -1,6 +1,5 @@
 import { Profile } from "@rbxts/profileservice/globals";
 import Rodux from "@rbxts/rodux";
-import { RunService } from "@rbxts/services";
 import { PET_LEVEL_REQUIREMENTS, PET_MAX_LEVELS } from "shared/configs/pets";
 import { Store, StoreActions, StoreState } from "shared/rodux";
 import { UnreachableCaseError } from "shared/util/unreachableCaseError";
@@ -13,11 +12,6 @@ import { UnreachableCaseError } from "shared/util/unreachableCaseError";
  * @returns The middleware.
  */
 export const savingMiddleware = (player: Player, profile: Profile<StoreState>): Rodux.Middleware => {
-	if (RunService.IsClient()) {
-		warn(debug.traceback());
-		throw `Attempt to create savingMiddleware on client.`;
-	}
-
 	return (nextDispatch, store: Store) => {
 		return (_action: StoreActions) => {
 			const action = _action;

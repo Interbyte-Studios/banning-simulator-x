@@ -31,7 +31,6 @@ import { defaultTradeLogs } from "shared/rodux/tradeLogs";
 import { defaultWeaponsState } from "shared/rodux/weapons";
 import { defaultWorlds } from "shared/rodux/worlds";
 import { getOrSetDefault } from "shared/util/getOrSetDefault";
-import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import { replicationMiddleware } from "./modules/rodux/middlewares/replicationMiddleware";
 import { savingMiddleware } from "./modules/rodux/middlewares/savingMiddleware";
@@ -144,20 +143,6 @@ const onPlayerAdded = async (player: Player): Promise<void> => {
 	remotes.Server.GetNamespace("rodux").Get("storeStateCreated").SendToAllPlayers(player, store.getState());
 	playerStores.set(player, store);
 
-	const leaderstats = new Instance("Folder");
-	leaderstats.Name = "leaderstats";
-	leaderstats.Parent = player;
-
-	const eggsHatched = new Instance("IntValue");
-	eggsHatched.Name = "🥚 Eggs 🥚";
-	eggsHatched.Parent = leaderstats;
-	eggsHatched.Value = store.getState().eggs.eggs;
-
-	const bans = new Instance("StringValue");
-	bans.Name = "🔨 Bans 🔨";
-	bans.Parent = leaderstats;
-	bans.Value = statsAbbreviator.numberToString(store.getState().bans.bans);
-
 	// call creation callbacks
 	const callbacks = storeCreationCallbacks.get(player) ?? [];
 	for (const callback of callbacks) {
@@ -170,16 +155,6 @@ const onPlayerAdded = async (player: Player): Promise<void> => {
 	profile.ListenToRelease(() => {
 		profiles.delete(player);
 		player.Kick(`There was an issue. Please rejoin.`);
-	});
-
-	store.changed.connect((newState, oldState) => {
-		if (newState.bans.bans !== oldState.bans.bans) {
-			bans.Value = statsAbbreviator.numberToString(newState.bans.bans);
-		}
-
-		if (newState.eggs.eggs !== oldState.eggs.eggs) {
-			eggsHatched.Value = newState.eggs.eggs;
-		}
 	});
 };
 
