@@ -1,7 +1,7 @@
+import Object from "@rbxts/object-utils";
 import { HttpService, Players, ReplicatedStorage } from "@rbxts/services";
 import { addPetToCache } from "server/modules/datastore/petExistStore";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
-import { getPetPercentages } from "server/util/getPetPercentages";
 import { hatchDebounce } from "shared/configs/eggs";
 import { Rarities } from "shared/configs/rarities";
 import { remotes } from "shared/remotes";
@@ -107,32 +107,45 @@ hatchEgg.SetCallback(
 			? currentState.boosts.active["x2 Hatching Luck"] > 0 || ReplicatedStorage.events.luck.enabled.Value
 			: false;
 		const ownsLuckGamepass = store.getState().gamepasses["x2 Luck"];
-		const truePetPercentages = getPetPercentages(eggName, boostEnabled, ownsLuckGamepass);
+
+		// calculate luck
+		const petChances = Object.entries(eggData.pets).map(([, petData]) => {
+			const newPetData = { ...petData };
+
+			if (petData.rarity === "Legendary" || petData.rarity === "Prismatic" || petData.rarity === "Primordial") {
+				if (ownsLuckGamepass) {
+					newPetData.chance *= 2;
+				}
+
+				if (boostEnabled) {
+					newPetData.chance *= 2;
+				}
+			}
+
+			return newPetData;
+		});
+
+		// "normalize" the chances so they add to 100
+		const totalChance = Object.values(petChances).reduce((total, pet) => total + pet.chance, 0);
+		for (const petData of petChances) {
+			petData.chance = (petData.chance / totalChance) * 100;
+		}
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		for (const _ of $range(1, amount)) {
-			const randomNumber = randomGenerator.NextNumber(0, 100);
-			truePetPercentages.forEach((registeredPet) => {
-				if (registeredPet.isLowestId) {
-					if (randomNumber < registeredPet.petChance) {
-						hatchedPets.push({ id: registeredPet.petId, rarity: registeredPet.rarity });
-						return;
-					}
+			let chance = randomGenerator.NextNumber(0, 100);
+			for (const petData of petChances) {
+				chance -= petData.chance;
+				if (chance > 0) {
+					continue;
 				}
 
-				if (randomNumber > registeredPet.petChance) {
-					const nextPet = truePetPercentages.find((x) => x.petId === registeredPet.petId + 1);
-					if (nextPet === undefined) {
-						hatchedPets.push({ id: registeredPet.petId, rarity: registeredPet.rarity });
-						return;
-					}
-
-					if (randomNumber < nextPet.petChance) {
-						hatchedPets.push({ id: registeredPet.petId, rarity: registeredPet.rarity });
-						return;
-					}
-				}
-			});
+				hatchedPets.push({
+					id: petData.id,
+					rarity: petData.rarity,
+				});
+				break;
+			}
 		}
 
 		// confirm pet
@@ -154,25 +167,6 @@ hatchEgg.SetCallback(
 			if (!isImmuneRarity(pet.rarity)) {
 				autoDeleted = currentState.settings.autoDelete.rarities[pet.rarity];
 			}
-
-			// check to see if we should add an enhancement by default to the pet (random chance)
-			/*
-			let selectedEnhancement: EnhancePetMetadata | undefined;
-
-			const randomNumber = new Random().NextInteger(0, 100);
-			if (randomNumber > 99) {
-				const rolledEnhancement = rollEnhancement(isVoid ? "void" : "regular");
-				if (rolledEnhancement === undefined) {
-					warn(`Failed to roll a "${isVoid ? "void" : "regular"}" enhancement upon hatching pet with id: "${pet.id}"`);
-				} else {
-					selectedEnhancement = {
-						category: rolledEnhancement.category,
-						rarity: rolledEnhancement.rarity,
-						variant: isVoid ? "void" : "regular",
-					};
-				}
-			}
-			*/
 
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			if (pet.rarity === "Prismatic" || pet.rarity === "Primordial") {

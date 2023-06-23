@@ -1,5 +1,7 @@
 import assetIds from "shared/assets";
 
+import { EggName } from "./eggs";
+
 export const STORE_SCOPE = "TEST_STORE_5";
 
 export const MAIN_GROUP = 5126818;
@@ -77,15 +79,15 @@ export const BOOST_PRODUCTS = {
 	["x2 Hatching Luck"]: {
 		// Implemented
 		15: 1383497133,
-		30: 1383496578,
-		60: 1383496678,
+		30: 1383497207,
+		60: 1383497376,
 		120: 1383497448,
 	},
 	["x2 Pet Experience"]: {
 		// Implemented
 		15: 1383496504,
-		30: 20750996,
-		60: 20751002,
+		30: 1383496578,
+		60: 1383496678,
 		120: 1383496828,
 	},
 	["x2 Rank Experience"]: {
@@ -183,7 +185,7 @@ export const LIMITED_EGG_DEVPRODUCT = {
 	ThreeEggs: 1563247707,
 };
 
-export const LIMITED_EGG = 6; // The id of the robux egg currently on sale. In this case, id 6 means Royal egg.
+export const LIMITED_EGG: EggName = "Royalty"; // The id of the robux egg currently on sale. In this case, id 6 means Royal egg.
 export const EXCLUSIVE_PETS = [
 	// The shop only supports adding 3 pets for exclusive pets. If we want to add more, we'll need to rework the shop a bit.
 	{

@@ -186,6 +186,11 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 				<StatCard header={"Title:"} stat={titleName} additionalElements={titleSpecialElement} layoutId={1} />
 				<StatCard header={"Rank:"} stat={rank} layoutId={2} />
 				<StatCard header={"Bans:"} stat={statsAbbreviator.numberToString(bans)} layoutId={3} />
+				<StatCard
+					header={"Started Playing:"}
+					stat={playerStore.getState().index.joinDate.FormatLocalTime("LL", "en-us")}
+					layoutId={4}
+				/>
 				<StatCard header={"Time Played:"} stat={formatTime(timePlayed)} layoutId={4} />
 				<StatCard header={"Reg. Eggs:"} stat={statsAbbreviator.numberToString(totalRegularEggHatches)} layoutId={5} />
 				<StatCard header={"Void Eggs:"} stat={statsAbbreviator.numberToString(totalVoidEggHatches)} layoutId={6} />

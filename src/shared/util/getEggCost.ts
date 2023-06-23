@@ -40,7 +40,7 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 
 	switch (eggData.id) {
 		case 1: {
-			const cost = 25;
+			const cost = 10;
 			const voidCost = cost * 10;
 			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
 			eggCost.amount = math.ceil(eggCost.amount);
@@ -52,7 +52,7 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 				throw `Unexpected issue while finding cost for "${egg}"`;
 			}
 
-			const cost = zoneData.cost.amount / 20;
+			const cost = zoneData.cost.amount / 25;
 			const voidCost = cost * 10;
 			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
 			eggCost.amount = math.ceil(eggCost.amount);
@@ -64,7 +64,7 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 				throw `Unexpected issue while finding cost for "${egg}"`;
 			}
 
-			const cost = zoneData.cost.amount / 22;
+			const cost = zoneData.cost.amount / 25;
 			const voidCost = cost * 10;
 			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
 			eggCost.amount = math.ceil(eggCost.amount);
@@ -76,8 +76,8 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 				throw `Unexpected issue while finding cost for "${egg}"`;
 			}
 
-			const cost = zoneData.cost.amount / 70;
-			const voidCost = cost * 11;
+			const cost = 850;
+			const voidCost = 12_750;
 			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
 			eggCost.amount = math.ceil(eggCost.amount);
 			eggCost.currencyType = zoneData.cost.currency;
@@ -88,8 +88,8 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 				throw `Unexpected issue while finding cost for "${egg}"`;
 			}
 
-			const cost = zoneData.cost.amount / 300;
-			const voidCost = cost * 11;
+			const cost = 1_000;
+			const voidCost = 15_000;
 			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
 			eggCost.amount = math.ceil(eggCost.amount);
 			eggCost.currencyType = zoneData.cost.currency;

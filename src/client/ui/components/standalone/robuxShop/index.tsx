@@ -108,7 +108,6 @@ export const RobuxShop = hooks((props: RobuxShopProps, { useState }) => {
 		);
 	}
 
-	warn(`Rendering robux shop`);
 	return (
 		<ImageLabel
 			native={{

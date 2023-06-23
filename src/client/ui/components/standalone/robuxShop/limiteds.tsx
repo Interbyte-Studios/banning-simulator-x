@@ -268,7 +268,7 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 
 					<StrokeTextLabel
 						native={{
-							Text: "1%",
+							Text: "2%",
 							Position: UDim2.fromScale(0.8, 0.96),
 							Size: UDim2.fromScale(0.646, 0.56),
 						}}
