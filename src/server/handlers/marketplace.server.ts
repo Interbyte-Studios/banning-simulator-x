@@ -1,5 +1,4 @@
-import { DataStoreService, HttpService, MarketplaceService, Players } from "@rbxts/services";
-import { t } from "@rbxts/t";
+import { HttpService, MarketplaceService, Players } from "@rbxts/services";
 import { retrieveStore } from "server/playerStore";
 import {
 	BOOST_PRODUCTS,
@@ -15,42 +14,12 @@ import { addPets } from "shared/rodux/pets";
 import { purchasePetTeam } from "shared/rodux/petTeams";
 import { getEggData } from "shared/util/getEggData";
 
-const marketplaceDataStore = DataStoreService.GetDataStore("marketplacePurchases", "testPurchases");
-const validPlayerPurchaseLog = t.array(
-	t.strictInterface({
-		productId: t.number,
-		purchaseId: t.string,
-	}),
-);
-type ValidPlayerPurchaseLog = t.static<typeof validPlayerPurchaseLog>;
-
 const marketplaceRemotes = remotes.Server.GetNamespace("eggs");
 const hatchSingleExclusive = marketplaceRemotes.Get("hatchSingleExclusiveEgg");
 const tripleSingleExclusive = marketplaceRemotes.Get("hatchTripleExclusiveEgg");
 
 // eslint-disable-next-line jsdoc/require-jsdoc
 MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision => {
-	// check to see if we have already purchased this
-	const [success, playerPurchaseData] = pcall(() => marketplaceDataStore.GetAsync(tostring(receiptInfo.PlayerId)));
-	if (!success) {
-		warn(
-			`Failed to get player's purchase history. Even with no purchase history, this shouldn't happen! Datastores might be inaccessible at the moment!`,
-		);
-		return Enum.ProductPurchaseDecision.NotProcessedYet;
-	}
-
-	let newPlayerPurchaseData: ValidPlayerPurchaseLog = [];
-	if (playerPurchaseData !== undefined && validPlayerPurchaseLog(playerPurchaseData)) {
-		newPlayerPurchaseData = playerPurchaseData;
-	}
-
-	const alreadyReceivedRewards = newPlayerPurchaseData.find(
-		(purchaseLog) => purchaseLog.purchaseId === receiptInfo.PurchaseId,
-	);
-	if (alreadyReceivedRewards !== undefined) {
-		return Enum.ProductPurchaseDecision.NotProcessedYet;
-	}
-
 	const player = Players.GetPlayers().find((player) => player.UserId === receiptInfo.PlayerId);
 	if (player === undefined) {
 		warn(
@@ -60,6 +29,13 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 	}
 
 	const store = retrieveStore(player);
+	const alreadyReceivedRewards = store
+		.getState()
+		.devProducts.find((purchaseLog) => purchaseLog.purchaseId === receiptInfo.PurchaseId);
+	if (alreadyReceivedRewards !== undefined) {
+		return Enum.ProductPurchaseDecision.NotProcessedYet;
+	}
+
 	let purchaseProcessed = false;
 	for (const [boostName, boostTimes] of pairs(BOOST_PRODUCTS)) {
 		for (const [boostTime, boostId] of pairs(boostTimes)) {
@@ -109,7 +85,7 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 		);
 
 		hatchSingleExclusive.SendToPlayer(player, LIMITED_EGG, selectedPet);
-		return Enum.ProductPurchaseDecision.PurchaseGranted;
+		purchaseProcessed = true;
 	}
 
 	if (receiptInfo.ProductId === LIMITED_EGG_DEVPRODUCT.ThreeEggs) {
@@ -150,7 +126,7 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 		);
 
 		tripleSingleExclusive.SendToPlayer(player, LIMITED_EGG, selectedPets);
-		return Enum.ProductPurchaseDecision.PurchaseGranted;
+		purchaseProcessed = true;
 	}
 
 	for (const exclusivePet of EXCLUSIVE_PETS) {
@@ -173,20 +149,6 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 
 	if (!purchaseProcessed) throw `Product of id ${receiptInfo.ProductId} was not processed.`;
 
-	const [savedMarketplacePurchase] = pcall(() =>
-		marketplaceDataStore.SetAsync(
-			tostring(receiptInfo.PlayerId),
-			newPlayerPurchaseData.push({
-				productId: receiptInfo.ProductId,
-				purchaseId: receiptInfo.PurchaseId,
-			}),
-		),
-	);
-	if (!savedMarketplacePurchase) {
-		throw `Unable to update DataStores for ProcessReceipt - ${receiptInfo.PurchaseId} | Player Id: ${receiptInfo.PlayerId}`;
-	} else {
-		// update player store
-		store.dispatch(claimDevProduct(receiptInfo.ProductId, receiptInfo.PurchaseId));
-		return Enum.ProductPurchaseDecision.PurchaseGranted;
-	}
+	store.dispatch(claimDevProduct(receiptInfo.ProductId, receiptInfo.PurchaseId));
+	return Enum.ProductPurchaseDecision.PurchaseGranted;
 };
