@@ -124,7 +124,7 @@ export const BOOST_IMAGES = {
 	},
 };
 
-export const PURCHASE_PET_TEAM_PRODUCT = 20751132;
+export const PURCHASE_PET_TEAM_PRODUCT = 1383498501;
 export const PURCHASE_PET_TEAM_PRODUCT_COST = 149;
 
 export const GROUP_ID = 5126818;
@@ -142,7 +142,7 @@ export const GROUP_ROLES: Record<number, { tag: string; color: Color3 }> = {
 		color: Color3.fromRGB(255, 138, 138),
 	},
 	252: {
-		tag: "Contributor",
+		tag: "In-Game Moderator / Senior Tester",
 		color: Color3.fromRGB(0, 181, 237),
 	},
 	251: {
@@ -158,12 +158,20 @@ export const GROUP_ROLES: Record<number, { tag: string; color: Color3 }> = {
 		color: Color3.fromRGB(255, 191, 120),
 	},
 	248: {
-		tag: "Legendary Fan",
+		tag: "Contributors",
 		color: Color3.fromRGB(5, 209, 179),
 	},
 	247: {
-		tag: "Fan",
-		color: Color3.fromRGB(5, 209, 179),
+		tag: "Bee Man!",
+		color: Color3.fromRGB(255, 199, 41),
+	},
+	246: {
+		tag: "Legendary Fan",
+		color: Color3.fromRGB(212, 128, 227),
+	},
+	245: {
+		tag: "Member",
+		color: Color3.fromRGB(199, 51, 186),
 	},
 };
 

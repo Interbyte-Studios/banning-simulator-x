@@ -26,7 +26,7 @@ export interface ConfirmedPet extends PetData {
 	guid: string;
 }
 
-export type PetAttainMethod = "maxLevel" | "fuse" | "hatch" | "admin" | "trade";
+export type PetAttainMethod = "maxLevel" | "fuse" | "hatch" | "admin" | "trade" | "purchase";
 export interface PetData {
 	id: number;
 	variant: Variants;

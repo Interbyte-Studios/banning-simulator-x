@@ -31,7 +31,7 @@ const MasteryChallengeFrame = hooks(
 			rarity: Rarities;
 			variant: Variants;
 			number: 1 | 2 | 3;
-			challengeType: Exclude<PetAttainMethod, "admin" | "trade">;
+			challengeType: Exclude<PetAttainMethod, "admin" | "trade" | "purchase">;
 			requirement: number;
 			amount: number;
 			progress: number;

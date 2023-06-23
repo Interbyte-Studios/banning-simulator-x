@@ -23,7 +23,7 @@ Players.PlayerAdded.Connect(async (player) => {
 			let userOwnsGamepass = MarketplaceService.UserOwnsGamePassAsync(player.UserId, id);
 
 			if (userOwnsGamepass === false) {
-				userOwnsGamepass = playerRankInGroup > 249;
+				userOwnsGamepass = playerRankInGroup > 248;
 			}
 
 			if (userOwnsGamepass) {

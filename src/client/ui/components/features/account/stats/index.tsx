@@ -39,6 +39,9 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 	const [title, setTitle] = useState(storeState.title);
 	const [weapon, setWeapon] = useState(storeState.currentWeapon.id);
 	const [talisman, setTalisman] = useState(storeState.currentTalisman);
+	const [legendariesHatched, setLegendariesHatched] = useState(storeState.eggs.rarities.Legendary);
+	const [prismaticsHatched, setPrismaticsHatched] = useState(storeState.eggs.rarities.Prismatic);
+	const [primordialsHatched, setPrimordialsHatched] = useState(storeState.eggs.rarities.Primordial);
 
 	let totalRegularEggHatches = 0;
 	let totalVoidEggHatches = 0;
@@ -89,7 +92,6 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 		}
 
 		const connection = playerStore.changed.connect((newState, oldState) => {
-			warn(`Store for ${props.viewedPlayer.Name} changed.`);
 			if (newState.bans.bans !== oldState.bans.bans) {
 				setBans(newState.bans.bans);
 			}
@@ -121,6 +123,18 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 			if (newState.currentTalisman !== oldState.currentTalisman) {
 				setTalisman(newState.currentTalisman);
 			}
+
+			if (newState.eggs.rarities.Legendary !== oldState.eggs.rarities.Legendary) {
+				setTalisman(newState.eggs.rarities.Legendary);
+			}
+
+			if (newState.eggs.rarities.Prismatic !== oldState.eggs.rarities.Prismatic) {
+				setTalisman(newState.eggs.rarities.Prismatic);
+			}
+
+			if (newState.eggs.rarities.Primordial !== oldState.eggs.rarities.Primordial) {
+				setTalisman(newState.eggs.rarities.Primordial);
+			}
 		});
 
 		return (): void => connection.disconnect();
@@ -132,7 +146,6 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 			throw `Failed to get player store for ${props.viewedPlayer.Name}.`;
 		}
 
-		warn(`Viewing stats for ${props.viewedPlayer.Name}.`);
 		const currentState = playerStore.getState();
 
 		setBans(currentState.bans.bans);
@@ -143,6 +156,9 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 		setTitle(currentState.title);
 		setWeapon(currentState.currentWeapon.id);
 		setTalisman(currentState.currentTalisman);
+		setPrismaticsHatched(currentState.eggs.rarities.Prismatic);
+		setPrimordialsHatched(currentState.eggs.rarities.Primordial);
+		setLegendariesHatched(currentState.eggs.rarities.Legendary);
 	}, [props.viewedPlayer]);
 
 	return (
@@ -167,15 +183,18 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 					Ref={uiListLayoutRef.value}
 					SortOrder={Enum.SortOrder.LayoutOrder}
 				/>
-				<StatCard header={"Bans:"} stat={statsAbbreviator.numberToString(bans)} layoutId={1} />
-				<StatCard header={"Reg. Eggs:"} stat={statsAbbreviator.numberToString(totalRegularEggHatches)} layoutId={2} />
-				<StatCard header={"Void Eggs:"} stat={statsAbbreviator.numberToString(totalVoidEggHatches)} layoutId={3} />
+				<StatCard header={"Title:"} stat={titleName} additionalElements={titleSpecialElement} layoutId={1} />
+				<StatCard header={"Rank:"} stat={rank} layoutId={2} />
+				<StatCard header={"Bans:"} stat={statsAbbreviator.numberToString(bans)} layoutId={3} />
 				<StatCard header={"Time Played:"} stat={formatTime(timePlayed)} layoutId={4} />
-				<StatCard header={"Group Rank:"} stat={groupRankName} textColor={groupRankColor} layoutId={5} />
-				<StatCard header={"Rank:"} stat={rank} layoutId={6} />
-				<StatCard header={"Title:"} stat={titleName} additionalElements={titleSpecialElement} layoutId={7} />
-				<StatCard header={"Weapon:"} stat={weaponName} layoutId={8} />
-				<StatCard header={"Talisman:"} stat={talismanName} layoutId={9} />
+				<StatCard header={"Reg. Eggs:"} stat={statsAbbreviator.numberToString(totalRegularEggHatches)} layoutId={5} />
+				<StatCard header={"Void Eggs:"} stat={statsAbbreviator.numberToString(totalVoidEggHatches)} layoutId={6} />
+				<StatCard header={"Legends Hatched:"} stat={statsAbbreviator.numberToString(legendariesHatched)} layoutId={7} />
+				<StatCard header={"Prismatics Hatched:"} stat={prismaticsHatched} layoutId={8} />
+				<StatCard header={"Primordials Hatched:"} stat={primordialsHatched} layoutId={9} />
+				<StatCard header={"Weapon:"} stat={weaponName} layoutId={10} />
+				<StatCard header={"Talisman:"} stat={talismanName} layoutId={11} />
+				<StatCard header={"Group Rank:"} stat={groupRankName} textColor={groupRankColor} layoutId={12} />
 			</RescalingScrollingFrame>
 		</>
 	);

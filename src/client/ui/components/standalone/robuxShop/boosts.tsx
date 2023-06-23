@@ -334,7 +334,7 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 										 */
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
-											if (props.boosts.storage[key][30] < 1) {
+											if (props.boosts.storage[key]["30"] < 1) {
 												addAnnouncement(`You don't have any of that boost!`, AnnouncementType.Error);
 												return;
 											}
@@ -448,7 +448,7 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 										 */
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
-											if (props.boosts.storage[key][60] < 1) {
+											if (props.boosts.storage[key]["60"] < 1) {
 												addAnnouncement(`You don't have any of that boost!`, AnnouncementType.Error);
 												return;
 											}
@@ -562,7 +562,7 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 										 */
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
-											if (props.boosts.storage[key][120] < 1) {
+											if (props.boosts.storage[key]["120"] < 1) {
 												addAnnouncement(`You don't have any of that boost!`, AnnouncementType.Error);
 												return;
 											}

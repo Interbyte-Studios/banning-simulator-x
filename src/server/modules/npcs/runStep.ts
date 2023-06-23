@@ -191,42 +191,29 @@ export function runStep(
 			currencyMultiplier = currencyMultiplier > 1 ? currencyMultiplier : 1;
 			currencyMultiplier += masteryCurrencyMultiplier - 1;
 
-			warn(`[NPC RunStep] - Currency Multiplier: ${currencyMultiplier}`);
-
 			// get experience multiplier
-			const experienceBoosters: Array<number> = [];
-			const globalExperienceEventMultiplier = ReplicatedStorage.events.experience.enabled.Value
-				? ReplicatedStorage.events.experience.multiplier.Value > 1
-					? ReplicatedStorage.events.experience.multiplier.Value
-					: 0
-				: 0;
-			const boostExperienceMultiplier = store.getState().boosts.active["x2 Rank Experience"] > 0 ? 2 : 0;
-			const gamepassExperienceMultiplier = store.getState().gamepasses["x2 Experience"] ? 2 : 0;
-			experienceBoosters.push(globalExperienceEventMultiplier, boostExperienceMultiplier, gamepassExperienceMultiplier);
-
-			let experienceMultiplier = 1;
-			experienceMultiplier += talismanStatEffects.experience;
-			experienceBoosters.forEach((booster) => {
-				experienceMultiplier += booster;
-			});
+			let experienceMultiplier = 0;
+			if (store.getState().gamepasses["x2 Experience"]) {
+				experienceMultiplier += 2;
+			}
+			if (store.getState().boosts.active["x2 Rank Experience"] > 0) {
+				experienceMultiplier += 2;
+			}
+			if (
+				ReplicatedStorage.events.experience.enabled.Value &&
+				ReplicatedStorage.events.experience.multiplier.Value > 1
+			) {
+				experienceMultiplier += ReplicatedStorage.events.experience.multiplier.Value;
+			}
 			experienceMultiplier = experienceMultiplier > 1 ? experienceMultiplier : 1;
 
-			warn(`[NPC RunStep] - Experience Multiplier: ${experienceMultiplier}`);
-
 			// get pet experience multiplier
-			const petExperienceMultipliers: Array<number> = [];
-			const boostPetExperienceMultiplier = store.getState().boosts.active["x2 Pet Experience"] > 0 ? 2 : 0;
-			const masteryPetExperienceMultiplier = getPetExperienceMastery(
-				store.getState().index,
-			).additionalPetExperienceMultiplier;
-
-			petExperienceMultipliers.push(boostPetExperienceMultiplier, masteryPetExperienceMultiplier);
-
 			let petExperienceMultiplier = 0;
-			petExperienceMultipliers.forEach((booster) => {
-				petExperienceMultiplier += booster;
-			});
+			if (store.getState().boosts.active["x2 Pet Experience"] > 0) {
+				petExperienceMultiplier += 2;
+			}
 			petExperienceMultiplier = petExperienceMultiplier > 1 ? petExperienceMultiplier : 1;
+			petExperienceMultiplier += getPetExperienceMastery(store.getState().index).additionalPetExperienceMultiplier - 1;
 
 			warn(`[NPC RunStep] - Pet Experience Multiplier: ${petExperienceMultiplier}`);
 
