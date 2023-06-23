@@ -1,5 +1,5 @@
 import { HttpService, Players, ReplicatedStorage } from "@rbxts/services";
-import { addPetToCache } from "server/modules/datastoreCaches/petExistStore";
+import { addPetToCache } from "server/modules/datastore/petExistStore";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { getPetPercentages } from "server/util/getPetPercentages";
 import { hatchDebounce } from "shared/configs/eggs";

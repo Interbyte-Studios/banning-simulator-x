@@ -8,7 +8,7 @@ import {
 	setLocalPetCache,
 	setPetsCache,
 	validPetExistCache,
-} from "server/modules/datastoreCaches/petExistStore";
+} from "server/modules/datastore/petExistStore";
 
 const datastoreEventsStore = DataStoreService.GetDataStore(datastoreName, datastoreScope);
 
