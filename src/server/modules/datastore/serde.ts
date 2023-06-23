@@ -19,7 +19,7 @@ import { defaultRank } from "shared/rodux/rank";
 import { defaultSettings } from "shared/rodux/settings";
 import { defaultSpinWheel } from "shared/rodux/spinWheel";
 import { defaultTalismans } from "shared/rodux/talismans";
-import { TradeLogsState } from "shared/rodux/tradeLogs";
+import { SerializedTradeLogState } from "shared/rodux/tradeLogs";
 import { defaultWeaponsState } from "shared/rodux/weapons";
 import { defaultWorlds } from "shared/rodux/worlds";
 import { Modify } from "shared/util/modify";
@@ -33,17 +33,7 @@ export type ProfileState = Modify<
 				joinDate: number;
 			}
 		>;
-		tradeLogs: Modify<
-			StoreState["tradeLogs"],
-			Array<
-				Modify<
-					TradeLogsState[number],
-					{
-						timestamp: number;
-					}
-				>
-			>
-		>;
+		tradeLogs: SerializedTradeLogState;
 	}
 >;
 
