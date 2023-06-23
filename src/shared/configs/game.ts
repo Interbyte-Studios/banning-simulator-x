@@ -1,6 +1,6 @@
 import assetIds from "shared/assets";
 
-export const STORE_SCOPE = "TEST_STORE_4";
+export const STORE_SCOPE = "TEST_STORE_5";
 
 export const MAIN_GROUP = 5126818;
 export const BANS_LEADERBOARD_ODS = `${STORE_SCOPE}_BANS_ODS`;
@@ -69,31 +69,31 @@ export type BoostProduct = keyof typeof BOOST_PRODUCTS;
 export const BOOST_PRODUCTS = {
 	["x2 Currency"]: {
 		// Implemented
-		15: 20750907,
-		30: 20750916,
-		60: 20750923,
-		120: 20750965,
+		15: 1383495064,
+		30: 1383495384,
+		60: 1383495520,
+		120: 1383495744,
 	},
 	["x2 Hatching Luck"]: {
 		// Implemented
-		15: 20751056,
-		30: 20751060,
-		60: 20751062,
-		120: 20751066,
+		15: 1383497133,
+		30: 1383496578,
+		60: 1383496678,
+		120: 1383497448,
 	},
 	["x2 Pet Experience"]: {
 		// Implemented
-		15: 20750995,
+		15: 1383496504,
 		30: 20750996,
 		60: 20751002,
-		120: 20751006,
+		120: 1383496828,
 	},
 	["x2 Rank Experience"]: {
 		// Implemented
-		15: 20750971,
-		30: 20750974,
-		60: 20750981,
-		120: 20750990,
+		15: 1383495941,
+		30: 1383495994,
+		60: 1383496197,
+		120: 1383496328,
 	},
 };
 
@@ -167,8 +167,8 @@ export const GROUP_ROLES: Record<number, { tag: string; color: Color3 }> = {
 	},
 };
 
-export const VIP_PET_ID = 83;
-export const GROUP_PET_ID = 82;
+export const VIP_PET_ID = 10002;
+export const GROUP_PET_ID = 10001;
 
 export const LIMITED_EGG_DEVPRODUCT = {
 	OneEgg: 1563247508,

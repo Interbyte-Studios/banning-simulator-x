@@ -29,9 +29,9 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 
 	let purchaseProcessed = false;
 	for (const [boostName, boostTimes] of pairs(BOOST_PRODUCTS)) {
-		for (const [, boostId] of pairs(boostTimes)) {
+		for (const [boostTime, boostId] of pairs(boostTimes)) {
 			if (boostId === receiptInfo.ProductId) {
-				store.dispatch(claimBoost(boostName, 15, boostMasteryExtendedDuration));
+				store.dispatch(claimBoost(boostName, boostTime, boostMasteryExtendedDuration));
 				purchaseProcessed = true;
 			}
 		}

@@ -22,7 +22,7 @@ export const ROYALTY_EGG_PETS: Record<string, Pet> = {
 			additionalDamage: 475,
 		},
 	},
-	"BIG Royal Bunny": {
+	"Prime Royal": {
 		chance: 1,
 		id: 46,
 		rarity: "Legendary",
