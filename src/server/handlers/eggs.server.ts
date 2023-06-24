@@ -1,6 +1,6 @@
 import Object from "@rbxts/object-utils";
 import { HttpService, Players, ReplicatedStorage } from "@rbxts/services";
-import { addPetToCache } from "server/modules/datastore/petExistStore";
+import { increasePetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { hatchDebounce } from "shared/configs/eggs";
 import { Rarities } from "shared/configs/rarities";
@@ -170,7 +170,7 @@ hatchEgg.SetCallback(
 
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			if (pet.rarity === "Prismatic" || pet.rarity === "Primordial") {
-				addPetToCache(pet.id);
+				increasePetCount(pet.id);
 				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
 			} else if (pet.rarity === "Legendary") {
 				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
