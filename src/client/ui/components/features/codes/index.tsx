@@ -73,7 +73,7 @@ export const Codes = RoactRodux.connect(mapStateToProps)(
 					native={{
 						Position: UDim2.fromScale(0.5, 0.465),
 						Size: UDim2.fromScale(0.9, 0.45),
-						Text: "Follow @TenrousR, @RealNotNert, and @InterbyteRBLX on Twitter for exclusive codes!",
+						Text: "Follow @CigatronixR, @RealNotNert, and @InterbyteRBLX on Twitter for exclusive codes!",
 					}}
 					stroke={{
 						native: { Thickness: 1.5, Color: Color3.fromRGB(0, 56, 125) },

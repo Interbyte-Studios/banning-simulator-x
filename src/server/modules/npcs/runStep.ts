@@ -215,8 +215,6 @@ export function runStep(
 			petExperienceMultiplier = petExperienceMultiplier > 1 ? petExperienceMultiplier : 1;
 			petExperienceMultiplier += getPetExperienceMastery(store.getState().index).additionalPetExperienceMultiplier - 1;
 
-			warn(`[NPC RunStep] - Pet Experience Multiplier: ${petExperienceMultiplier}`);
-
 			// get equipped pets
 			const equippedPets = store.getState().pets.filter((pet) => pet.equipped);
 

@@ -19,7 +19,7 @@ export const ROYALTY_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		fusionCost: 24500,
 		stats: {
-			additionalDamage: 475,
+			additionalDamage: 775,
 		},
 	},
 	"Prime Royal": {
@@ -28,7 +28,7 @@ export const ROYALTY_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		fusionCost: 28000,
 		stats: {
-			additionalDamage: 800,
+			additionalDamage: 1350,
 		},
 	},
 };

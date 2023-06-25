@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { ReplicatedStorage } from "@rbxts/services";
 import { uiDarkStrokeColor, uiHeaderStrokeColor } from "client/ui/commonValues";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
@@ -292,7 +293,7 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
 		<>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.315, 0.425),
+					Position: UDim2.fromScale(0.315, 0.475),
 					Size: UDim2.fromScale(0.4, 0.1),
 					Text: `Level 1:`,
 				}}
@@ -300,7 +301,7 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
 			/>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.8, 0.425),
+					Position: UDim2.fromScale(0.8, 0.475),
 					Size: UDim2.fromScale(0.35, 0.1),
 					TextColor3: Color3.fromRGB(230, 64, 64),
 					Text: twoDpAbbreviator.numberToString(props.pet.stats.additionalDamage * variantMultiplier),
@@ -316,7 +317,7 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
 			</StrokeTextLabel>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.305, 0.575),
+					Position: UDim2.fromScale(0.305, 0.625),
 					Size: UDim2.fromScale(0.4, 0.1),
 					Text: `Level ${maxLevel}:`,
 				}}
@@ -324,7 +325,7 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
 			/>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.8, 0.575),
+					Position: UDim2.fromScale(0.8, 0.625),
 					Size: UDim2.fromScale(0.35, 0.1),
 					TextColor3: Color3.fromRGB(230, 64, 64),
 					Text: twoDpAbbreviator.numberToString(petDamage),
@@ -351,6 +352,7 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
  */
 export function PetInfoView(props: { pet: number; variant: Variants; isDiscovered: boolean }): Roact.Element {
 	const petData = getPetData(props.pet);
+	const existAmount = ReplicatedStorage.PetExistStores.GetAttribute(tostring(props.pet));
 
 	return (
 		<>
@@ -359,6 +361,18 @@ export function PetInfoView(props: { pet: number; variant: Variants; isDiscovere
 			<HatchChance pet={petData} variant={props.variant} />
 			<ExtraStats pet={props.pet} variant={props.variant} />
 			<MinAndMaxStats pet={petData} variant={props.variant} />
+
+			{typeIs(existAmount, "number") && (
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.7, 0.375),
+						Size: UDim2.fromScale(0.5, 0.07),
+						TextColor3: Color3.fromRGB(255, 170, 255),
+						Text: `⭐ ${twoDpAbbreviator.numberToString(existAmount)} Exist`,
+					}}
+					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(111, 74, 111) } }}
+				/>
+			)}
 		</>
 	);
 }

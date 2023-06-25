@@ -170,11 +170,12 @@ hatchEgg.SetCallback(
 
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			if (pet.rarity === "Prismatic" || pet.rarity === "Primordial") {
-				increasePetCount(pet.id);
 				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
 			} else if (pet.rarity === "Legendary") {
 				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
 			}
+
+			increasePetCount(pet.id);
 
 			selectedPets.push({
 				autoDeleted,

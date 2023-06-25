@@ -19,7 +19,7 @@ import { Pet, PetsState } from "shared/rodux/pets";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 
 interface PetSelectionProps extends PetSelectionMappedProps {
-	variant: Variants;
+	variant: Exclude<Variants, "regular">;
 	returnToSelection: () => void;
 	setPetSelected: (petId: number) => void;
 	selectedZone: ZoneNames | "Exclusive";

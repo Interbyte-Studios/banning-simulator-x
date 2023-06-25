@@ -22,7 +22,7 @@ export const Fusing = hooks((props: { isVisible: boolean; setVisibility: (value:
 
 	const [zoneSelected, setZoneSelected] = useState<ZoneNames | "Exclusive" | undefined>(undefined);
 	const [petSelected, setPetSelected] = useState<number | undefined>(undefined);
-	const [fusingVariant, setFusingVariant] = useState<Variants>("void");
+	const [fusingVariant, setFusingVariant] = useState<Exclude<Variants, "regular">>("void");
 
 	const screenToDisplay: Array<Roact.Element> = [];
 	if (petSelected !== undefined && zoneSelected !== undefined) {

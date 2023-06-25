@@ -94,6 +94,8 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 			) {
 				return;
 			}
+
+			petsSelection.push(petData);
 		});
 
 		const petData = getPetData(props.petSelected);

@@ -1,5 +1,6 @@
 import { DataStoreService, ReplicatedStorage } from "@rbxts/services";
 import {
+	getHatchCount,
 	isValidPetHatchCount,
 	newHatchedPets,
 	setNewHatchedPets,
@@ -21,7 +22,7 @@ function updateGlobalCache(): void {
 	// this gets a bit tricky for a second:
 	// we want to temporarily lock the server's cache
 	// so that we don't double-count when running the UpdateAsync callback
-	const newPets = newHatchedPets;
+	const newPets = getHatchCount();
 	setNewHatchedPets([]);
 
 	const [writeSuccess, newCache] = pcall(() => {
@@ -75,7 +76,7 @@ task.spawn(() => {
 	// eslint-disable-next-line no-constant-condition
 	while (true) {
 		updateGlobalCache();
-		task.wait(60 * 5);
+		task.wait(20);
 	}
 });
 
