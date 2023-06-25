@@ -29,7 +29,6 @@ import { Rewards } from "./components/standalone/rewards";
 import { RobuxShop } from "./components/standalone/robuxShop";
 import { WeaponEquip } from "./components/standalone/weaponEquip/weaponEquip";
 import { ZonesUI } from "./components/standalone/zones";
-import { AnnouncementContext, AnnouncementType } from "./context/AnnouncementsAPI";
 import { hooks } from "./hooks";
 import { remoteContext } from "./mocks/remoteContext";
 
@@ -56,8 +55,6 @@ const visibilityStates = {
 export const app = hooks((props: AppProps, { useState, useEffect, useContext, useCallback, useMemo }) => {
 	const [visibility, setVisibility] = useState(visibilityStates);
 	const [activeTrade, setActiveTrade] = useState(false);
-
-	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
 
@@ -122,7 +119,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
-					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					displayTradingMenu={(): void => setVisibility({ ...visibilityStates, trading: true })}
 					onlyShowCurrency={false}
 				/>,
 				<WeaponShopHandle
@@ -171,7 +168,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
-					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					displayTradingMenu={(): void => setVisibility({ ...visibilityStates, trading: true })}
 					onlyShowCurrency={true}
 				/>,
 			);
@@ -189,7 +186,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
-					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					displayTradingMenu={(): void => setVisibility({ ...visibilityStates, trading: true })}
 					onlyShowCurrency={true}
 				/>,
 			);
@@ -207,7 +204,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
-					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					displayTradingMenu={(): void => setVisibility({ ...visibilityStates, trading: true })}
 					onlyShowCurrency={true}
 				/>,
 			);
@@ -235,7 +232,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
-					displayTradingMenu={(): void => addAnnouncement("Trading is currently disabled.", AnnouncementType.Error)}
+					displayTradingMenu={(): void => setVisibility({ ...visibilityStates, trading: true })}
 					onlyShowCurrency={true}
 				/>,
 			);
