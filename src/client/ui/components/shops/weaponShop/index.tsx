@@ -59,8 +59,6 @@ export const WeaponShopHandle = hooks((props: WeaponShopHandleProps, { useEffect
 	});
 
 	if (props.isVisible) {
-		warn(`Interface is visible`);
-
 		return (
 			<WeaponShop
 				hideMenu={(): void => {

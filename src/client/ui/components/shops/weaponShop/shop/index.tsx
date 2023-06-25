@@ -95,7 +95,6 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 			}
 		});
 
-		warn(`Should be returning UI!`);
 		return (
 			<>
 				<ViewPreviousWeapon
