@@ -1,11 +1,5 @@
-import { DataStoreService, ReplicatedStorage } from "@rbxts/services";
-import {
-	getHatchCount,
-	isValidPetHatchCount,
-	newHatchedPets,
-	setNewHatchedPets,
-	updateHatchCount,
-} from "server/modules/datastore/pets";
+import { DataStoreService } from "@rbxts/services";
+import { getNewHatchedPets, isValidPetHatchCount, setNewHatchedPets, setPetCount } from "server/modules/datastore/pets";
 
 const datastoreEventsStore = DataStoreService.GetDataStore("DataStoreEvents", "PetStore");
 
@@ -22,7 +16,7 @@ function updateGlobalCache(): void {
 	// this gets a bit tricky for a second:
 	// we want to temporarily lock the server's cache
 	// so that we don't double-count when running the UpdateAsync callback
-	const newPets = getHatchCount();
+	const serverNewHatchedPets = getNewHatchedPets();
 	setNewHatchedPets([]);
 
 	const [writeSuccess, newCache] = pcall(() => {
@@ -31,7 +25,8 @@ function updateGlobalCache(): void {
 				throw `DataStore hatch count was in invalid format`;
 			}
 
-			for (const petId of newPets) {
+			// add on our server's changes
+			for (const petId of serverNewHatchedPets) {
 				let globalCount = globalData.find((pet) => pet.id === petId);
 				if (globalCount === undefined) {
 					globalCount = {
@@ -48,26 +43,17 @@ function updateGlobalCache(): void {
 	});
 
 	if (writeSuccess) {
-		updateHatchCount(newCache);
-
-		// remove each pet that we added
-		for (const petId of newPets) {
-			const petIndex = newHatchedPets.findIndex((id) => id === petId);
-			if (petIndex !== -1) {
-				newHatchedPets.unorderedRemove(petIndex);
-			}
-		}
-
-		updateHatchCount(newCache);
-
 		for (const pet of newCache) {
-			ReplicatedStorage.PetExistStores.SetAttribute(tostring(pet.id), pet.existingAmount);
+			setPetCount(pet.id, pet.existingAmount);
 		}
 	} else {
 		// we failed to update the global data store
 		// let's add all the pets back to the server cache
-		for (const pet of newPets) {
-			newHatchedPets.push(pet);
+		// the server cache has changed since we ran the UpdateAsync call
+		// so we need to retrieve it again
+		const changedServerHatchedPets = getNewHatchedPets();
+		for (const pet of serverNewHatchedPets) {
+			changedServerHatchedPets.push(pet);
 		}
 	}
 }
