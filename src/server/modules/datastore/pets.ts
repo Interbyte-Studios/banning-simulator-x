@@ -1,11 +1,19 @@
+import { ReplicatedStorage } from "@rbxts/services";
 import { t } from "@rbxts/t";
 
 export const isValidPetHatchCount = t.array(t.interface({ id: t.number, existingAmount: t.number }));
-type ValidPetHatchCount = t.static<typeof isValidPetHatchCount>;
-
-export let petHatchCount: ValidPetHatchCount = [];
 
 let newHatchedPets: Array<number> = [];
+
+/**
+ * Updates the local server cache of pet hatch counts for a specific pet.
+ *
+ * @param petId The pet ID to set the counter for.
+ * @param count The amount of this pet that exists globally.
+ */
+export function setPetCount(petId: number, count: number): void {
+	ReplicatedStorage.PetExistStores.SetAttribute(tostring(petId), count);
+}
 
 /**
  * Increases the global pet counter of how many of a certain `petId` exist in the game.
@@ -13,17 +21,8 @@ let newHatchedPets: Array<number> = [];
  * @param petId The pet ID to record the hatch for.
  */
 export function increasePetCount(petId: number): void {
-	let count = petHatchCount.find((pet) => pet.id === petId);
-	if (count === undefined) {
-		count = {
-			id: petId,
-			existingAmount: 0,
-		};
-		petHatchCount.push(count);
-	}
-
 	// record count locally
-	count.existingAmount += 1;
+	setPetCount(petId, tonumber(ReplicatedStorage.PetExistStores.GetAttribute(tostring(petId))) ?? 0 + 1);
 
 	// append to changes to perform to datastore
 	newHatchedPets.push(petId);
@@ -34,15 +33,6 @@ export function increasePetCount(petId: number): void {
  */
 export function getNewHatchedPets(): Array<number> {
 	return newHatchedPets;
-}
-
-/**
- * Updates the local server cache of pet hatch counts.
- *
- * @param newCount The new pet hatch count.
- */
-export function updateHatchCount(newCount: ValidPetHatchCount): void {
-	petHatchCount = newCount;
 }
 
 /**

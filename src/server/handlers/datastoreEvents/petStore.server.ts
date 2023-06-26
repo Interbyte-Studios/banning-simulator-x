@@ -1,10 +1,5 @@
-import { DataStoreService, ReplicatedStorage } from "@rbxts/services";
-import {
-	getNewHatchedPets,
-	isValidPetHatchCount,
-	setNewHatchedPets,
-	updateHatchCount,
-} from "server/modules/datastore/pets";
+import { DataStoreService } from "@rbxts/services";
+import { getNewHatchedPets, isValidPetHatchCount, setNewHatchedPets, setPetCount } from "server/modules/datastore/pets";
 
 const datastoreEventsStore = DataStoreService.GetDataStore("DataStoreEvents", "PetStore");
 
@@ -48,10 +43,8 @@ function updateGlobalCache(): void {
 	});
 
 	if (writeSuccess) {
-		updateHatchCount(newCache);
-
 		for (const pet of newCache) {
-			ReplicatedStorage.PetExistStores.SetAttribute(tostring(pet.id), pet.existingAmount);
+			setPetCount(pet.id, pet.existingAmount);
 		}
 	} else {
 		// we failed to update the global data store
