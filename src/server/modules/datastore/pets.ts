@@ -5,7 +5,7 @@ type ValidPetHatchCount = t.static<typeof isValidPetHatchCount>;
 
 export let petHatchCount: ValidPetHatchCount = [];
 
-export let newHatchedPets: Array<number> = [];
+let newHatchedPets: Array<number> = [];
 
 /**
  * Increases the global pet counter of how many of a certain `petId` exist in the game.
@@ -32,7 +32,7 @@ export function increasePetCount(petId: number): void {
 /**
  * @returns The server cache for hatched pets.
  */
-export function getHatchCount(): Array<number> {
+export function getNewHatchedPets(): Array<number> {
 	return newHatchedPets;
 }
 
