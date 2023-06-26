@@ -67,7 +67,7 @@ export class LeaderboardDataStore {
 				page = data.GetCurrentPage();
 			}
 		} catch (error) {
-			warn(`Failed to get sorted data: ${error}`);
+			return sortedData;
 		}
 
 		return sortedData;

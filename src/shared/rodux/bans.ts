@@ -13,10 +13,10 @@ export const defaultBansState: BansState = {
 /* eslint-disable jsdoc/require-jsdoc */
 export const bansReducer = Rodux.createReducer<BansState, KillNpc>(defaultBansState, {
 	killNpc: (state) => {
-		const newState = { ...state };
-		newState.bans += 1;
-
-		return newState;
+		return {
+			...state,
+			bans: state.bans + 1,
+		};
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */

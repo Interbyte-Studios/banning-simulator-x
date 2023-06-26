@@ -13,7 +13,7 @@ export const isValidWalkSpeed = t.numberMin(16);
 export const isValidTimeOfDay = t.numberConstrained(0, 24);
 export const isValidPetDistance = t.numberConstrained(10, 20);
 
-export const isImmuneRarity = t.literal("Legendary", "Prismatic", "Primordial");
+export const isImmuneRarity = t.literal("Exclusive", "Legendary", "Prismatic", "Primordial");
 export type ImmuneRarities = t.static<typeof isImmuneRarity>;
 
 export interface Settings {
@@ -316,88 +316,133 @@ export const settingsReducer = Rodux.createReducer<SettingsState, SettingsAction
 		};
 	},
 	toggleRarityDelete: (state, action) => {
-		const newState = { ...state };
-		newState.autoDelete.rarities[action.rarity] = !state.autoDelete.rarities[action.rarity];
-
-		return newState;
+		return {
+			...state,
+			autoDelete: {
+				...state.autoDelete,
+				rarities: {
+					...state.autoDelete.rarities,
+					[action.rarity]: !state.autoDelete.rarities[action.rarity],
+				},
+			},
+		};
 	},
 	toggleButtonClickSounds: (state, action) => {
-		const newState: Settings = { ...state };
-		newState.sound = { ...state.sound, buttonClick: action.enabled };
-
-		return newState;
+		return {
+			...state,
+			sound: {
+				...state.sound,
+				buttonClick: action.enabled,
+			},
+		};
 	},
 	toggleMusicVolume: (state, action) => {
-		const newState: Settings = { ...state };
-		newState.sound = { ...state.sound, music: action.volume };
-
-		return newState;
+		return {
+			...state,
+			sound: {
+				...state.sound,
+				music: action.volume,
+			},
+		};
 	},
 	toggleSoundEffectsVolume: (state, action) => {
-		const newState: Settings = { ...state };
-		newState.sound = { ...state.sound, soundEffects: action.volume };
-
-		return newState;
+		return {
+			...state,
+			sound: {
+				...state.sound,
+				soundEffects: action.volume,
+			},
+		};
 	},
 	toggleAuto: (state) => {
-		const newState: Settings = { ...state };
-		newState.gameplay = { ...state.gameplay, autoHatch: !state.gameplay.autoHatch };
-
-		return newState;
+		return {
+			...state,
+			gameplay: {
+				...state.gameplay,
+				autoHatch: !state.gameplay.autoHatch,
+			},
+		};
 	},
 	toggleWalkSpeed: (state, action) => {
-		const newState: Settings = { ...state };
-		newState.gameplay = { ...state.gameplay, walkSpeed: action.walkSpeed };
-
-		return newState;
+		return {
+			...state,
+			gameplay: {
+				...state.gameplay,
+				walkSpeed: action.walkSpeed,
+			},
+		};
 	},
 	toggleGraphics: (state, action) => {
-		const newState: Settings = { ...state };
-		newState.visual = { ...state.visual, graphicsQuality: action.quality };
-
-		return newState;
+		return {
+			...state,
+			visual: {
+				...state.visual,
+				graphicsQuality: action.quality,
+			},
+		};
 	},
 	toggleTimeOfDay: (state, action) => {
-		const newState: Settings = { ...state };
-		newState.visual = { ...state.visual, timeOfDay: action.timeOfDay };
-
-		return newState;
+		return {
+			...state,
+			visual: {
+				...state.visual,
+				timeOfDay: action.timeOfDay,
+			},
+		};
 	},
 	togglePetAnimationType: (state, action) => {
-		const newState: Settings = { ...state };
-		newState.visual = { ...state.visual, petAnimationType: action.animationType };
-
-		return newState;
+		return {
+			...state,
+			visual: {
+				...state.visual,
+				petAnimationType: action.animationType,
+			},
+		};
 	},
 	togglePetsDisplayed: (state, action) => {
-		const newState: Settings = { ...state };
-		newState.visual = { ...state.visual, petsDisplayed: action.displayed };
-
-		return newState;
+		return {
+			...state,
+			visual: {
+				...state.visual,
+				petsDisplayed: action.displayed,
+			},
+		};
 	},
 	togglePetsStudsOfDistance: (state, action) => {
-		const newState: Settings = { ...state };
-		newState.visual = { ...state.visual, petsStudsOfDistance: action.studs };
-
-		return newState;
+		return {
+			...state,
+			visual: {
+				...state.visual,
+				petsStudsOfDistance: action.studs,
+			},
+		};
 	},
 	togglePublicInventory: (state) => {
-		const newState: Settings = { ...state };
-		newState.privacy = { ...state.privacy, publicInventory: !state.privacy.publicInventory };
-
-		return newState;
+		return {
+			...state,
+			privacy: {
+				...state.privacy,
+				publicInventory: !state.privacy.publicInventory,
+			},
+		};
 	},
 	togglePublicTradeHistory: (state) => {
-		const newState: Settings = { ...state };
-		newState.privacy = { ...state.privacy, publicTradeHistory: !state.privacy.publicTradeHistory };
-
-		return newState;
+		return {
+			...state,
+			privacy: {
+				...state.privacy,
+				publicTradeHistory: !state.privacy.publicTradeHistory,
+			},
+		};
 	},
 	toggleTradesEnabled: (state) => {
-		const newState = { ...state };
-		newState.privacy = { ...state.privacy, tradesEnabled: !state.privacy.tradesEnabled };
-
-		return newState;
+		return {
+			...state,
+			privacy: {
+				...state.privacy,
+				tradesEnabled: !state.privacy.tradesEnabled,
+			},
+		};
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */

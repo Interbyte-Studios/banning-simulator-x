@@ -79,28 +79,29 @@ remotes.Client.GetNamespace("rodux")
 	});
 
 Players.GetPlayers().forEach(async (player) => {
-	const storeState = await remotes.Client.GetNamespace("rodux").Get("requestStoreState").CallServerAsync(player);
-	if (storeState === undefined) {
-		// server did not have a store for the player when we requested in
-		// this likely needs some investigation to solve
-		throw `Failed to retrieve server state for ${player.Name}`;
-	}
+	task.delay(5, async (): Promise<void> => {
+		const storeState = await remotes.Client.GetNamespace("rodux").Get("requestStoreState").CallServerAsync(player);
+		if (storeState === undefined) {
+			// server did not have a store for the player when we requested in
+			// this likely needs some investigation to solve
+			throw `Failed to retrieve server state for ${player.Name}`;
+		}
 
-	if (stores.get(player)) {
-		return;
-	}
+		if (stores.get(player)) {
+			return;
+		}
 
-	const store = new Rodux.Store(storeReducer, storeState.state);
-	stores.set(player, store);
-	warn("Store created for", player.Name);
+		const store = new Rodux.Store(storeReducer, storeState.state);
+		stores.set(player, store);
 
-	// call creation callbacks
-	const callbacks = storeCreationCallbacks.get(player) ?? [];
-	for (const callback of callbacks) {
-		task.spawn(callback, store);
-	}
+		// call creation callbacks
+		const callbacks = storeCreationCallbacks.get(player) ?? [];
+		for (const callback of callbacks) {
+			task.spawn(callback, store);
+		}
 
-	storeCreationCallbacks.delete(player);
+		storeCreationCallbacks.delete(player);
+	});
 });
 
 Players.PlayerRemoving.Connect(onPlayerRemoving);

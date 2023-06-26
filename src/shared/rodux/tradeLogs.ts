@@ -1,6 +1,7 @@
 import Rodux from "@rbxts/rodux";
 import { Currency } from "shared/configs/currencies";
 import { Variants } from "shared/configs/pets";
+import { Modify } from "shared/util/modify";
 
 export interface SavedTradeCurrency {
 	currencyType: Currency;
@@ -24,6 +25,15 @@ export interface SavedTrade {
 	otherOffer: SavedTradeOffer;
 	localOffer: SavedTradeOffer;
 }
+
+export type SerializedTradeLogState = Array<
+	Modify<
+		SavedTrade,
+		{
+			timestamp: number;
+		}
+	>
+>;
 
 export type TradeLogsState = Array<SavedTrade>;
 export type TradeLogActions = SaveTrade | RemoveTradeLog;
@@ -95,8 +105,8 @@ export const tradeLogsReducer = Rodux.createReducer<TradeLogsState, TradeLogActi
 		const newState = [...state];
 
 		const tradeToRemove = newState.findIndex((trade) => trade === action.savedTrade);
-		if (tradeToRemove === undefined) {
-			warn(`Could not find trade to remove: ${action.savedTrade}`);
+		if (tradeToRemove === -1) {
+			warn(`[ Trade Logs Reducer | Remove Trade Log ] - Could not find trade to remove: ${action.savedTrade}`);
 			return newState;
 		}
 

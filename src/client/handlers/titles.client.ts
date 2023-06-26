@@ -51,6 +51,7 @@ chatScroll?.ChildAdded.Connect((chatObject) => {
 });
 
 RunService.RenderStepped.Connect((deltaTime) => {
+	debug.profilebegin("titleGradients");
 	gradients.forEach((gradient) => {
 		if (gradient.Offset.X < 0.75) {
 			gradient.Offset = new Vector2(gradient.Offset.X + 0.5 * deltaTime, 0);
@@ -60,4 +61,5 @@ RunService.RenderStepped.Connect((deltaTime) => {
 
 		gradient.Rotation = 40;
 	});
+	debug.profileend();
 });

@@ -5,8 +5,8 @@ import { Pet } from ".";
  */
 export const CITY_EGG_PETS: Record<string, Pet> = {
 	"City Doggy": {
-		chance: 32.1,
-		id: 66,
+		chance: 32.3,
+		id: 47,
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
@@ -14,7 +14,7 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 	},
 	"City Bunny": {
 		chance: 30,
-		id: 67,
+		id: 48,
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
@@ -22,7 +22,7 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 	},
 	"City Kitty": {
 		chance: 20,
-		id: 68,
+		id: 49,
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
@@ -30,7 +30,7 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 	},
 	"City Deer": {
 		chance: 10,
-		id: 69,
+		id: 50,
 		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
@@ -38,7 +38,7 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 	},
 	"City Angel": {
 		chance: 7.5,
-		id: 70,
+		id: 51,
 		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
@@ -46,7 +46,7 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 	},
 	"City Defender": {
 		chance: 0.2,
-		id: 71,
+		id: 52,
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,

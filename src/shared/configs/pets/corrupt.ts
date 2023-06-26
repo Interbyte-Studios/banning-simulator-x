@@ -5,8 +5,8 @@ import { Pet } from ".";
  */
 export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 	"Corrupt Doggy": {
-		chance: 38.3299,
-		id: 72,
+		chance: 38.37995,
+		id: 63,
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
@@ -14,7 +14,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 	},
 	"Corrupt Bunny": {
 		chance: 30,
-		id: 73,
+		id: 64,
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
@@ -22,7 +22,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 	},
 	"Corrupt Bear": {
 		chance: 20,
-		id: 74,
+		id: 65,
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
@@ -30,7 +30,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 	},
 	"Corrupt Deer": {
 		chance: 10,
-		id: 75,
+		id: 66,
 		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
@@ -38,7 +38,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 	},
 	"Corrupt Pegasus": {
 		chance: 1,
-		id: 76,
+		id: 67,
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
@@ -46,7 +46,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 	},
 	"Corrupt Demon": {
 		chance: 0.5,
-		id: 77,
+		id: 68,
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
@@ -54,23 +54,23 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 	},
 	"Corrupt Hyperhalo": {
 		chance: 0.1,
-		id: 78,
+		id: 69,
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
 		},
 	},
 	"Corrupt Duke": {
-		chance: 0.05,
-		id: 79,
+		chance: 0.02,
+		id: 70,
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
 		},
 	},
 	"Corrupted Titan": {
-		chance: 0.02,
-		id: 80,
+		chance: 0.01,
+		id: 71,
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
@@ -78,7 +78,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 	},
 	"Corrupted Overseer": {
 		chance: 0.00005,
-		id: 81,
+		id: 72,
 		rarity: "Prismatic",
 		stats: {
 			additionalDamage: 1,

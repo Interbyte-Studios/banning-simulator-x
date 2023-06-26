@@ -1,8 +1,11 @@
 import Rodux from "@rbxts/rodux";
 import { t } from "@rbxts/t";
 import { EggName } from "shared/configs/eggs";
+import { BoostProduct } from "shared/configs/game";
+import { PET_MASTERY_REQUIREMENTS } from "shared/configs/petMastery";
 import { PET_MAX_LEVELS } from "shared/configs/pets";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
+import { getPetData } from "shared/util/getPetData";
 import { getPetLevel } from "shared/util/getPetLevel";
 
 import { KillNpc } from "./currencies";
@@ -40,24 +43,72 @@ export interface PlayerIndexState {
 				radiant: number;
 			};
 			maxLevel: {
-				regular: number;
-				void: number;
-				radiant: number;
+				regular: {
+					amount: number;
+					masteryCache: Array<string>;
+				};
+				void: {
+					amount: number;
+					masteryCache: Array<string>;
+				};
+				radiant: {
+					amount: number;
+					masteryCache: Array<string>;
+				};
 			};
 		}
 	>;
 	eggs: Map<EggName, { regular: number; void: number }>;
 	timePlayed: number;
-	gameVersion: Array<number>;
+	gameVersion: Array<string>;
+	joinDate: DateTime;
 	groupRank: number | undefined;
+	groupRewardClaimed: {
+		lastClaimed: number;
+		petIdClaimed: number;
+	};
+	clubRewardClaimed: {
+		lastClaimed: number;
+		petIdClaimed: number;
+	};
+	vipRewardClaimed: {
+		lastClaimed: number;
+		petIdClaimed: number;
+	};
 }
-export type PlayerIndexActions = SetGroupRank | AddTimePlayed | Admin_ModifyPetLevel;
+export type PlayerIndexActions =
+	| SetGroupRank
+	| AddTimePlayed
+	| LogGameVersion
+	| ClaimGroupReward
+	| ClaimClubReward
+	| ClaimVIPReward
+	| Admin_ModifyPetLevel;
 
 interface SetGroupRank extends Rodux.Action<"setGroupRank"> {
 	rank: number;
 }
 
 interface AddTimePlayed extends Rodux.Action<"addTimePlayed"> {}
+
+interface LogGameVersion extends Rodux.Action<"logGameVersion"> {
+	version: string;
+}
+export interface ClaimGroupReward extends Rodux.Action<"claimGroupReward"> {
+	claimTime: number;
+	boostName: BoostProduct;
+	petId?: number;
+}
+export interface ClaimClubReward extends Rodux.Action<"claimClubReward"> {
+	claimTime: number;
+	boostName: BoostProduct;
+	petId?: number;
+}
+export interface ClaimVIPReward extends Rodux.Action<"claimVIPReward"> {
+	claimTime: number;
+	boostName: BoostProduct;
+	petId?: number;
+}
 
 /**
  * @param rank The rank to set.
@@ -79,12 +130,93 @@ export function addTimePlayed(): AddTimePlayed & Rodux.AnyAction {
 	};
 }
 
+/**
+ * @param version The version to log.
+ * @returns The Rodux action to dispatch.
+ */
+export function logGameVersion(version: string): LogGameVersion & Rodux.AnyAction {
+	return {
+		type: "logGameVersion",
+		version,
+	};
+}
+
+/**
+ * @param claimTime The time it was claimed.
+ * @param boostName The name of the boost that was claimed.
+ * @param petId The pet id that was claimed.
+ * @returns The Rodux action to dispatch.
+ */
+export function claimGroupReward(
+	claimTime: number,
+	boostName: BoostProduct,
+	petId?: number,
+): ClaimGroupReward & Rodux.AnyAction {
+	return {
+		type: "claimGroupReward",
+		claimTime,
+		petId,
+		boostName,
+	};
+}
+
+/**
+ * @param claimTime The time it was claimed.
+ * @param boostName The name of the boost that was claimed.
+ * @param petId The pet id that was claimed.
+ * @returns The Rodux action to dispatch.
+ */
+export function claimClubReward(
+	claimTime: number,
+	boostName: BoostProduct,
+	petId?: number,
+): ClaimClubReward & Rodux.AnyAction {
+	return {
+		type: "claimClubReward",
+		claimTime,
+		petId,
+		boostName,
+	};
+}
+
+/**
+ * @param claimTime The time it was claimed.
+ * @param boostName The name of the boost that was claimed.
+ * @param petId The pet id that was claimed.
+ * @returns The Rodux action to dispatch.
+ */
+export function claimVIPReward(
+	claimTime: number,
+	boostName: BoostProduct,
+	petId?: number,
+): ClaimVIPReward & Rodux.AnyAction {
+	return {
+		type: "claimVIPReward",
+		claimTime,
+		petId,
+		boostName,
+	};
+}
+
 export const defaultPlayerIndex: PlayerIndexState = {
 	pets: new Map(),
 	eggs: new Map(),
 	timePlayed: 0,
-	gameVersion: [0],
+	gameVersion: [],
 	groupRank: undefined,
+	joinDate: DateTime.now(),
+	groupRewardClaimed: {
+		lastClaimed: 0,
+		petIdClaimed: 0,
+	},
+	clubRewardClaimed: {
+		lastClaimed: 0,
+		petIdClaimed: 0,
+	},
+	vipRewardClaimed: {
+		lastClaimed: 0,
+		petIdClaimed: 0,
+	},
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
@@ -97,7 +229,8 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 			for (const petToIndex of action.pets) {
 				const stringId = tostring(petToIndex.id);
 				if (stringId === undefined) {
-					throw `Failed to get string id for pet with id ${petToIndex.id}`;
+					warn(`[ Index Reducer | AddPet ] - Failed to get string id for pet with id ${petToIndex.id}`);
+					continue;
 				}
 
 				let pet = newState.pets.get(stringId);
@@ -112,14 +245,26 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 							radiant: 0,
 						},
 						maxLevel: {
-							regular: 0,
-							void: 0,
-							radiant: 0,
+							regular: {
+								amount: 0,
+								masteryCache: [],
+							},
+							void: {
+								amount: 0,
+								masteryCache: [],
+							},
+							radiant: {
+								amount: 0,
+								masteryCache: [],
+							},
 						},
 					});
 
 					pet = newState.pets.get(stringId);
-					assert(pet, `Failed to set index data for pet with id "${stringId}".`);
+					if (pet === undefined) {
+						warn(`[ Index Reducer | AddPet ] - Failed to set index data for pet with id "${stringId}".`);
+						continue;
+					}
 				}
 
 				const eggFromPetId = getEggNameFromPetId(petToIndex.id);
@@ -128,7 +273,10 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 					newState.eggs.set(eggFromPetId, { regular: 0, void: 0 });
 
 					egg = newState.eggs.get(eggFromPetId);
-					assert(egg, `Failed to set index data for egg "${eggFromPetId}".`);
+					if (egg === undefined) {
+						warn(`[ Index Reducer | AddPet ] - Failed to set index data for egg "${eggFromPetId}".`);
+						continue;
+					}
 				}
 				if (petToIndex.variant === "regular") {
 					newState.eggs.set(eggFromPetId, { ...egg, regular: egg.regular + 1 });
@@ -155,10 +303,12 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 						break;
 					}
 					case "fuse": {
-						assert(
-							isValidIndexFusion(petToIndex.variant),
-							`Attempted to index a pet fusion of unsupported variant "${petToIndex.variant}".`,
-						);
+						if (!isValidIndexFusion(petToIndex.variant)) {
+							warn(
+								`[ Index Reducer | AddPet ] - Attempted to index a pet fusion of unsupported variant "${petToIndex.variant}".`,
+							);
+							continue;
+						}
 
 						newState.pets.set(stringId, {
 							fused: {
@@ -171,7 +321,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 						break;
 					}
 					case "maxLevel": {
-						warn(`Attempting to add pet with method "maxLevel"? This is unallowed.`);
+						warn(`[ Index Reducer | AddPet ] - Attempting to add pet with method "maxLevel"? This is unallowed.`);
 						continue;
 					}
 				}
@@ -185,23 +335,99 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 		addTimePlayed: (state) => {
 			return { ...state, timePlayed: state.timePlayed + 1 };
 		},
+		logGameVersion: (state, action) => {
+			return { ...state, gameVersion: [...state.gameVersion, action.version] };
+		},
+		claimGroupReward: (state, action) => {
+			return {
+				...state,
+				groupRewardClaimed: {
+					...state.groupRewardClaimed,
+					lastClaimed: action.claimTime,
+					petIdClaimed: action.petId !== undefined ? action.petId : state.groupRewardClaimed.petIdClaimed,
+				},
+			};
+		},
+		claimClubReward: (state, action) => {
+			return {
+				...state,
+				clubRewardClaimed: {
+					...state.clubRewardClaimed,
+					lastClaimed: action.claimTime,
+					petIdClaimed: action.petId !== undefined ? action.petId : state.clubRewardClaimed.petIdClaimed,
+				},
+			};
+		},
+		claimVIPReward: (state, action) => {
+			return {
+				...state,
+				vipRewardClaimed: {
+					...state.vipRewardClaimed,
+					lastClaimed: action.claimTime,
+					petIdClaimed: action.petId !== undefined ? action.petId : state.vipRewardClaimed.petIdClaimed,
+				},
+			};
+		},
 		killNpc: (state, action) => {
 			const newState = { ...state };
 
 			for (const pet of action.equippedPets) {
 				const stringId = tostring(pet.id);
 				if (stringId === undefined) {
-					throw `Failed to get string id for pet with id ${pet.id}`;
+					warn(`[ Index Reducer | KillNPC ] - Failed to get string id for pet with id ${pet.id}`);
+					continue;
 				}
 
-				const masteryData = newState.pets.get(stringId);
-				assert(masteryData, `Failed to get mastery data for pet with id ${pet.id}`);
+				let masteryData = newState.pets.get(stringId);
+				if (masteryData === undefined) {
+					newState.pets.set(stringId, {
+						hatched: {
+							regular: 0,
+							void: 0,
+						},
+						fused: {
+							void: 0,
+							radiant: 0,
+						},
+						maxLevel: {
+							regular: {
+								amount: 0,
+								masteryCache: [],
+							},
+							void: {
+								amount: 0,
+								masteryCache: [],
+							},
+							radiant: {
+								amount: 0,
+								masteryCache: [],
+							},
+						},
+					});
+
+					masteryData = newState.pets.get(stringId);
+					if (masteryData === undefined) {
+						warn(`[ Index Reducer | KillNPC ] - Failed to set index data for pet with id "${stringId}".`);
+						continue;
+					}
+				}
 
 				const maxLevel = PET_MAX_LEVELS[pet.variant];
 				const petLevel = getPetLevel(pet);
+				const petData = getPetData(pet.id);
 
 				if (petLevel < maxLevel) {
 					continue;
+				}
+
+				let wasNewPet = false;
+				const newUniqueCache = [...masteryData.maxLevel[pet.variant].masteryCache];
+				if (!newUniqueCache.includes(pet.guid)) {
+					wasNewPet = true;
+
+					if (newUniqueCache.size() < PET_MASTERY_REQUIREMENTS[petData.rarity][pet.variant].maxLevel) {
+						newUniqueCache.push(pet.guid);
+					}
 				}
 
 				newState.pets.set(stringId, {
@@ -209,7 +435,12 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 					fused: masteryData.fused,
 					maxLevel: {
 						...masteryData.maxLevel,
-						[pet.variant]: masteryData.maxLevel[pet.variant] + 1,
+						[pet.variant]: {
+							amount: wasNewPet
+								? masteryData.maxLevel[pet.variant].amount + 1
+								: masteryData.maxLevel[pet.variant].amount,
+							masteryCache: newUniqueCache,
+						},
 					},
 				});
 			}
@@ -221,20 +452,41 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 
 			const stringId = tostring(action.id);
 			if (stringId === undefined) {
-				throw `Failed to get string id for pet with id ${action.id}`;
+				warn(`[ Index Reducer | Admin Modify Pet Level ] - Failed to get string id for pet with id ${action.id}`);
+				return newState;
 			}
 
 			const petIndex = newState.pets.get(stringId);
-			assert(petIndex, `Admin: Failed to get pet index for pet with id ${stringId}`);
+			if (petIndex === undefined) {
+				warn(`[ Index Reducer | Admin Modify Pet Level ] - Failed to get pet index for pet with id ${stringId}`);
+				return newState;
+			}
 
 			const maxLevel = PET_MAX_LEVELS[action.variant];
 			if (action.level >= maxLevel) {
+				const petData = getPetData(action.id);
+
+				let wasNewPet = false;
+				const newUniqueCache = [...petIndex.maxLevel[action.variant].masteryCache];
+				if (!newUniqueCache.includes(action.guid)) {
+					wasNewPet = true;
+
+					if (newUniqueCache.size() < PET_MASTERY_REQUIREMENTS[petData.rarity][action.variant].maxLevel) {
+						newUniqueCache.push(action.guid);
+					}
+				}
+
 				newState.pets.set(stringId, {
 					hatched: petIndex.hatched,
 					fused: petIndex.fused,
 					maxLevel: {
 						...petIndex.maxLevel,
-						[action.variant]: petIndex.maxLevel[action.variant] + 1,
+						[action.variant]: {
+							amount: wasNewPet
+								? petIndex.maxLevel[action.variant].amount + 1
+								: petIndex.maxLevel[action.variant].amount,
+							masteryCache: newUniqueCache,
+						},
 					},
 				});
 			}

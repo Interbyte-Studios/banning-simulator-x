@@ -1,3 +1,4 @@
+import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { equipTalisman } from "client/modules/talismans/followTalisman";
@@ -34,42 +35,74 @@ function checkTalismanEquip(player: Player, store: Store): void {
 function handlePlayerTalisman(player: Player): void {
 	onStoreCreated(player)
 		.andThen((store) => {
-			checkTalismanEquip(player, store);
-
-			player.CharacterAdded.Connect(() => checkTalismanEquip(player, store));
-
-			store.changed.connect((newState, oldState) => {
-				if (newState.currentTalisman === oldState.currentTalisman) {
-					if (newState.currentTalisman === undefined || oldState.currentTalisman === undefined) {
-						return;
-					}
-
-					const storedTalisman = newState.talismans.find((talisman) => talisman.id === newState.currentTalisman);
-					const oldStoredTalisman = oldState.talismans.find((talisman) => talisman.id === oldState.currentTalisman);
-
-					if (storedTalisman === undefined || oldStoredTalisman === undefined) {
-						return;
-					}
-
-					if (storedTalisman.phase === oldStoredTalisman.phase) {
-						return;
-					}
-
-					checkTalismanEquip(player, store);
+			/**
+			 * Handles the talisman for the player.
+			 */
+			const handleTalisman = (): void => {
+				const character = player.Character ?? player.CharacterAdded.Wait()[0];
+				if (character === undefined) {
+					warn(`[Talisman Handler] - Failed to get character for player ${player.Name} ${player.UserId}`);
+					return;
 				}
 
-				const currentTalisman = newState.currentTalisman;
-				if (currentTalisman !== undefined) {
-					checkTalismanEquip(player, store);
-				} else {
-					unequipTalisman(player);
+				const humanoid = character.WaitForChild("Humanoid") as Humanoid;
+				if (humanoid === undefined) {
+					warn(`[Talisman Handler] - Failed to get humanoid for player ${player.Name} ${player.UserId}`);
+					return;
 				}
+
+				const humanoidRootPart = humanoid.RootPart;
+				if (humanoidRootPart === undefined) {
+					warn(`[Talisman Handler] - Failed to get humanoid root part for player ${player.Name} ${player.UserId}`);
+					return;
+				}
+
+				checkTalismanEquip(player, store);
+			};
+
+			task.delay(5, (): void => {
+				handleTalisman();
+				player.CharacterAdded.Connect(() => handleTalisman());
+
+				store.changed.connect((newState, oldState) => {
+					if (newState.currentTalisman === oldState.currentTalisman) {
+						if (newState.currentTalisman === undefined || oldState.currentTalisman === undefined) {
+							return;
+						}
+
+						const storedTalisman = newState.talismans.find((talisman) => talisman.id === newState.currentTalisman);
+						const oldStoredTalisman = oldState.talismans.find((talisman) => talisman.id === oldState.currentTalisman);
+
+						if (storedTalisman === undefined || oldStoredTalisman === undefined) {
+							return;
+						}
+
+						if (storedTalisman.phase === oldStoredTalisman.phase) {
+							return;
+						}
+
+						handleTalisman();
+					}
+
+					const currentTalisman = newState.currentTalisman;
+					if (currentTalisman !== undefined) {
+						handleTalisman();
+					} else {
+						unequipTalisman(player);
+					}
+				});
 			});
 		})
 		.catch((e) => {
-			throw `Failed to get store for player ${player.Name} | ${e}`;
+			// do not include player names. against the rules apparently.
+			GameAnalytics.addErrorEvent(Players.LocalPlayer.UserId, {
+				severity: "error",
+				message: `[ Talisman Handler ] - Failed to run promise callback on "onStoreCreated" | ${e}`,
+			});
+			throw `[ Talisman Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 		});
 }
 
 Players.GetPlayers().forEach((player) => handlePlayerTalisman(player));
 Players.PlayerAdded.Connect((player) => handlePlayerTalisman(player));
+Players.PlayerRemoving.Connect((player) => unequipTalisman(player));

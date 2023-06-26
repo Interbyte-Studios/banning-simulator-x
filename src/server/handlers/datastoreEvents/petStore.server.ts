@@ -1,102 +1,79 @@
-import { DataStoreService, ReplicatedStorage } from "@rbxts/services";
-import {
-	datastoreName,
-	datastoreScope,
-	eventsKey,
-	getLocalPetsCache,
-	getPetsCache,
-	setLocalPetCache,
-	setPetsCache,
-	updateStoreInterval,
-	validPetExistCache,
-} from "server/modules/datastoreCaches/petExistStore";
+import { DataStoreService } from "@rbxts/services";
+import { getPetExistCache, isValidPetHatchCount, setNewHatchedPets, setPetCount } from "server/modules/datastore/pets";
 
-const datastoreEventsStore = DataStoreService.GetDataStore(datastoreName, datastoreScope);
+const datastoreEventsStore = DataStoreService.GetDataStore("DataStoreEvents", "PetStore");
+const PET_HATCH_KEY = "BSX_PetsStore";
+const getAsyncInterval = 30;
 
 /**
- * Retrieves the cache of existing secret pets.
+ * Attempts to write the server cache of newly hatched pets to the global cache.
+ *
+ * At the same time, after retrieval, updates the server with the global cache.
+ *
+ * If failures occur, the server cache will remain intact.
  */
-function getPetExistStore(): void {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [success] = pcall(() => {
-		const [data] = datastoreEventsStore.GetAsync(eventsKey);
+function updateGlobalCache(): void {
+	// this gets a bit tricky for a second:
+	// we want to temporarily lock the server's cache
+	// so that we don't double-count when running the UpdateAsync callback
+	const serverNewHatchedPets = getPetExistCache();
+	setNewHatchedPets([]);
 
-		if (!validPetExistCache(data)) {
-			throw `Expected data store pet exist cache to be valid.`;
-		}
-
-		for (const cachedPetExistAmount of data) {
-			const cachedAmount = getPetsCache().find((petExistCache) => petExistCache.id === cachedPetExistAmount.id);
-			if (cachedAmount === undefined) {
-				setPetsCache([...getPetsCache(), cachedPetExistAmount]);
-				continue;
+	const [writeSuccess, newCache] = pcall(() => {
+		return datastoreEventsStore.UpdateAsync(PET_HATCH_KEY, (globalData) => {
+			if (!isValidPetHatchCount(globalData)) {
+				throw `DataStore hatch count was in invalid format`;
 			}
 
-			cachedAmount.existingAmount = cachedPetExistAmount.existingAmount;
-		}
+			// add on our server's changes
+			for (const petData of serverNewHatchedPets) {
+				let globalCount = globalData.find((pet) => pet.id === petData.petId);
+				if (globalCount === undefined) {
+					globalCount = {
+						id: petData.petId,
+						variants: {
+							regular: 0,
+							void: 0,
+							radiant: 0,
+						},
+					};
+					globalData.push(globalCount);
+				}
 
-		const newPetsCache = getPetsCache();
+				for (const [name, modifiedCounter] of pairs(petData.variants)) {
+					globalCount.variants[name] += modifiedCounter.added;
+					globalCount.variants[name] -= modifiedCounter.removed;
+				}
+			}
 
-		for (const petData of newPetsCache) {
-			ReplicatedStorage.PetExistStores.SetAttribute(tostring(petData.id), petData.existingAmount);
-		}
-
-		setLocalPetCache(newPetsCache);
+			return $tuple(globalData);
+		});
 	});
 
-	if (!success) {
-		throw `Failed to get datastore events cache from global data store.`;
+	if (writeSuccess) {
+		for (const petData of newCache) {
+			for (const [name, amount] of pairs(petData.variants)) {
+				setPetCount(petData.id, name, amount);
+			}
+		}
+	} else {
+		// we failed to update the global data store
+		// let's add all the pets back to the server cache
+		// the server cache has changed since we ran the UpdateAsync call
+		// so we need to retrieve it again
+		const changedServerHatchedPets = getPetExistCache();
+		for (const pet of serverNewHatchedPets) {
+			changedServerHatchedPets.push(pet);
+		}
 	}
-}
-
-/**
- * Compares the locally stored cache to the datastore for updates.
- */
-function compareCaches(): void {
-	datastoreEventsStore.UpdateAsync(eventsKey, (cachedData) => {
-		if (!validPetExistCache(cachedData)) {
-			throw `Expected stored pet exist cache to valid.`;
-		}
-
-		const currentStoreCache = getPetsCache();
-		const newData = cachedData;
-
-		for (const petData of getLocalPetsCache()) {
-			const oldCachedPetData = currentStoreCache.find((pet) => pet.id === petData.id);
-			if (oldCachedPetData === undefined) {
-				continue;
-			}
-
-			const cachedPetData = newData.find((pet) => pet.id === petData.id);
-			if (cachedPetData === undefined) {
-				continue;
-			}
-
-			if (petData.existingAmount < oldCachedPetData.existingAmount) {
-				continue;
-			}
-
-			const increment = petData.existingAmount - oldCachedPetData.existingAmount;
-			cachedPetData.existingAmount += increment;
-		}
-
-		setPetsCache(newData);
-		setLocalPetCache(newData);
-
-		for (const petData of newData) {
-			ReplicatedStorage.PetExistStores.SetAttribute(tostring(petData.id), petData.existingAmount);
-		}
-
-		return [newData] as LuaTuple<[newValue: unknown]>;
-	});
 }
 
 task.spawn(() => {
-	getPetExistStore();
-
 	// eslint-disable-next-line no-constant-condition
 	while (true) {
-		task.wait(updateStoreInterval);
-		compareCaches();
+		updateGlobalCache();
+		task.wait(getAsyncInterval);
 	}
 });
+
+game.BindToClose(updateGlobalCache);

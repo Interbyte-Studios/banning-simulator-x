@@ -65,10 +65,10 @@ export const worldsReducer = Rodux.createReducer<WorldsState, WorldActions>(defa
 
 		// get existing unlocked world
 		const worldDataIndex = newState.findIndex((x) => x.name === action.worldName);
-		assert(
-			worldDataIndex !== -1,
-			`Expected to find world data for ${action.worldName} when unlocking zone ${action.zoneName}`,
-		);
+		if (worldDataIndex === -1) {
+			warn(`[ Worlds Reducer | Unlock Zone ] - Failed to find world data for ${action.worldName}.`);
+			return newState;
+		}
 
 		const newWorldData = { ...newState[worldDataIndex] };
 		newState[worldDataIndex] = newWorldData;

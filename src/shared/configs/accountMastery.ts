@@ -51,42 +51,42 @@ export const AccountMastery: _AccountMastery = {
 		{
 			level: 3,
 			requiredFusions: 50,
-			reducedFusionMultiplier: 0.04,
+			reducedFusionMultiplier: 0.08,
 		},
 		{
 			level: 4,
 			requiredFusions: 125,
-			reducedFusionMultiplier: 0.08,
+			reducedFusionMultiplier: 0.12,
 		},
 		{
 			level: 5,
 			requiredFusions: 320,
-			reducedFusionMultiplier: 0.08,
+			reducedFusionMultiplier: 0.16,
 		},
 		{
 			level: 6,
 			requiredFusions: 800,
-			reducedFusionMultiplier: 0.12,
+			reducedFusionMultiplier: 0.2,
 		},
 		{
 			level: 7,
 			requiredFusions: 2000,
-			reducedFusionMultiplier: 0.12,
+			reducedFusionMultiplier: 0.24,
 		},
 		{
 			level: 8,
 			requiredFusions: 5000,
-			reducedFusionMultiplier: 0.16,
+			reducedFusionMultiplier: 0.28,
 		},
 		{
 			level: 9,
 			requiredFusions: 12500,
-			reducedFusionMultiplier: 0.16,
+			reducedFusionMultiplier: 0.32,
 		},
 		{
 			level: 10,
 			requiredFusions: 31250,
-			reducedFusionMultiplier: 0.2,
+			reducedFusionMultiplier: 0.4,
 		},
 	],
 	banning: [
@@ -94,7 +94,7 @@ export const AccountMastery: _AccountMastery = {
 		{
 			level: 1,
 			requiredBans: 0,
-			currencyGainedMultiplier: 0,
+			currencyGainedMultiplier: 1,
 		},
 		{
 			level: 2,
@@ -156,42 +156,42 @@ export const AccountMastery: _AccountMastery = {
 		},
 		{
 			level: 3,
-			requiredUses: 20,
+			requiredUses: 25,
 			extendedDurationMultiplier: 1.09,
 		},
 		{
 			level: 4,
-			requiredUses: 30,
+			requiredUses: 50,
 			extendedDurationMultiplier: 1.12,
 		},
 		{
 			level: 5,
-			requiredUses: 40,
+			requiredUses: 100,
 			extendedDurationMultiplier: 1.15,
 		},
 		{
 			level: 6,
-			requiredUses: 50,
+			requiredUses: 200,
 			extendedDurationMultiplier: 1.18,
 		},
 		{
 			level: 7,
-			requiredUses: 75,
+			requiredUses: 400,
 			extendedDurationMultiplier: 1.21,
 		},
 		{
 			level: 8,
-			requiredUses: 100,
+			requiredUses: 600,
 			extendedDurationMultiplier: 1.24,
 		},
 		{
 			level: 9,
-			requiredUses: 150,
+			requiredUses: 800,
 			extendedDurationMultiplier: 1.27,
 		},
 		{
 			level: 10,
-			requiredUses: 200,
+			requiredUses: 1000,
 			extendedDurationMultiplier: 1.3,
 		},
 	],

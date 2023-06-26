@@ -74,6 +74,7 @@ for (const [name, data] of pairs(EGGS)) {
 }
 
 RunService.RenderStepped.Connect(() => {
+	debug.profilebegin("eggAnimation");
 	for (const eggData of cframeValues) {
 		if (eggData.egg.PrimaryPart === undefined) {
 			continue;
@@ -81,4 +82,5 @@ RunService.RenderStepped.Connect(() => {
 
 		eggData.egg.SetPrimaryPartCFrame(eggData.cframeValue.Value);
 	}
+	debug.profileend();
 });

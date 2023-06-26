@@ -1,8 +1,10 @@
-import { PetInventoryData } from "client/ui/components/items/pets/inventory";
+import { PetInventoryData } from "client/ui/components/features/items/pets/inventory";
 import { RARITIES } from "shared/configs/rarities";
 import { Pet, PetsState } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 import { getPetStrength } from "shared/util/getPetStrength";
+
+const variantMapping = { regular: 1, void: 2, radiant: 3 };
 
 /**
  * Sorts a collection of pets based on a specified sort type.
@@ -31,6 +33,13 @@ export function sortPets(
 			}
 		}
 
+		// Sort by strength
+		const pet1Strength = getPetStrength(pet1);
+		const pet2Strength = getPetStrength(pet2);
+		if (pet1Strength !== pet2Strength) {
+			return pet1Strength > pet2Strength;
+		}
+
 		// Get pet data
 		const pet1Data = getPetData(pet1.id);
 		const pet2Data = getPetData(pet2.id);
@@ -42,16 +51,16 @@ export function sortPets(
 			return pet1RarityData.id > pet2RarityData.id;
 		}
 
+		// Sort by variant
+		const pet1Variant = variantMapping[pet1.variant];
+		const pet2Variant = variantMapping[pet2.variant];
+		if (pet1Variant !== pet2Variant) {
+			return pet1Variant > pet2Variant;
+		}
+
 		// Sort by name
 		if (pet1Data.name !== pet2Data.name) {
 			return pet1Data.name > pet2Data.name;
-		}
-
-		// Sort by strength
-		const pet1Strength = getPetStrength(pet1);
-		const pet2Strength = getPetStrength(pet2);
-		if (pet1Strength !== pet2Strength) {
-			return pet1Strength > pet2Strength;
 		}
 
 		// If all other sort criteria are equal, sort by GUID

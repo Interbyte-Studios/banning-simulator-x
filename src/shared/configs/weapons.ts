@@ -124,7 +124,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Sunflower Sword": {
 		id: 9,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 2,
 			currency: "coins",
 			amount: 1_500,
 		},
@@ -136,7 +136,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Sunflower Basher": {
 		id: 10,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 2,
 			currency: "coins",
 			amount: 2_275,
 		},
@@ -148,7 +148,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Sunflower Spear": {
 		id: 11,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 2,
 			currency: "coins",
 			amount: 3_000,
 		},
@@ -160,7 +160,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Sunflower Slicer": {
 		id: 12,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 2,
 			currency: "coins",
 			amount: 4_500,
 		},

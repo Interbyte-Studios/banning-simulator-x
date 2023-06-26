@@ -2,6 +2,7 @@ import { createContext } from "@rbxts/roact";
 
 import { accoladesRemoteContext } from "./remoteDefinitions/accolades";
 import { adminRemoteContext } from "./remoteDefinitions/admin";
+import { boostsRemoteContext } from "./remoteDefinitions/boosts";
 import { eggsRemoteContext } from "./remoteDefinitions/eggs";
 import { fusionRemoteContext } from "./remoteDefinitions/fusion";
 import { mediaRemoteContext } from "./remoteDefinitions/media";
@@ -9,6 +10,7 @@ import { petMasteryRemoteContext } from "./remoteDefinitions/petMastery";
 import { petsRemoteContext } from "./remoteDefinitions/pets";
 import { questsRemoteContext } from "./remoteDefinitions/quests";
 import { ranksRemoteContext } from "./remoteDefinitions/ranks";
+import { rewardsRemoteContext } from "./remoteDefinitions/rewards";
 import { settingsRemoteContext } from "./remoteDefinitions/settings";
 import { talismansRemoteContext } from "./remoteDefinitions/talismans";
 import { titlesRemoteContext } from "./remoteDefinitions/titles";
@@ -32,11 +34,13 @@ export const fakeRemoteContext = {
 	...settingsRemoteContext,
 	...talismansRemoteContext,
 	...ranksRemoteContext,
+	...rewardsRemoteContext,
 	...titlesRemoteContext,
 	...wheelSpinRemoteContext,
 	...accoladesRemoteContext,
 	...fusionRemoteContext,
 	...tradingRemoteContext,
+	...boostsRemoteContext,
 };
 
 export const remoteContext = createContext(fakeRemoteContext);

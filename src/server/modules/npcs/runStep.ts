@@ -1,5 +1,5 @@
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
-import { stores } from "server/playerStore";
+import { playerStores } from "server/playerStore";
 import { WORLDS } from "shared/configs/worlds";
 import { NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
@@ -68,7 +68,7 @@ export function runStep(
 						: zoneInfo.npcs.find((npc) => !npc.isBoss);
 
 				if (selectedNpc === undefined) {
-					warn(`Failed to spawn npc for zone ${zone.name}`);
+					warn(`[NPC RunStep] - Failed to spawn npc for zone ${zone.name}`);
 					continue;
 				}
 
@@ -109,21 +109,18 @@ export function runStep(
 	for (const { player, store, character } of npcAttacks) {
 		const npc = npcCharacterToNpc.get(character);
 		if (npc === undefined) {
-			warn(`Player ${player.Name} attempted to attack ${character.Name}, but it didn't exist`);
 			continue;
 		}
 
 		// check that npc is alive
 		if (!(npc.instance.Humanoid.Health > 0)) {
 			// currently this is possible if two players kill and NPC in the same tick
-			warn(`Player ${player.Name} attempted to attack ${character.Name}, but the NPC was dead`);
 			continue;
 		}
 
 		// check that npc has a root part
 		const humanoidRootPart = npc.instance.Humanoid.RootPart;
 		if (humanoidRootPart === undefined) {
-			warn(`Failed to get HumanoidRootPart for npc ${npc.instance.Name}`);
 			continue;
 		}
 
@@ -132,8 +129,18 @@ export function runStep(
 
 		const currentWeaponData = storeState.weapons.find((weapon) => weapon.id === storeState.currentWeapon.id);
 		if (currentWeaponData === undefined) {
-			warn(`Player ${player.Name} does not own the weapon they're attacking with.`);
+			warn(`[NPC RunStep] - Player ${player.Name} does not own the weapon they're attacking with.`);
 			continue;
+		}
+
+		if (storeState.currentTalisman !== undefined) {
+			const currentTalismanData = storeState.talismans.find((talisman) => talisman.id === storeState.currentTalisman);
+			if (currentTalismanData === undefined) {
+				warn(
+					`[NPC RunStep] - Player ${player.Name} does not own the talisman they're attacking with. | Current Talisman ID: ${storeState.currentTalisman}}`,
+				);
+				continue;
+			}
 		}
 
 		const weaponDamage = getWeaponDamage(currentWeaponData);
@@ -156,9 +163,9 @@ export function runStep(
 		// check if npc is dead
 		if (npc.instance.Humanoid.Health <= 0) {
 			// reward player
-			const store = stores.get(player);
+			const store = playerStores.get(player);
 			if (store === undefined) {
-				warn(`Could not get store for "${player.GetFullName()}" when rewarding them for killing NPC`);
+				warn(`[NPC RunStep] - Could not get store for "${player.GetFullName()}" when rewarding them for killing NPC`);
 				continue;
 			}
 
@@ -175,51 +182,38 @@ export function runStep(
 			const gamepassCurrencyMultiplier = store.getState().gamepasses["x2 Currency"] ? 2 : 0;
 			const masteryCurrencyMultiplier = getBanningMastery(store.getState().bans).currencyGainedMultiplier;
 
-			currencyBoosters.push(
-				globalCurrencyEventMultiplier,
-				boostCurrencyMultiplier,
-				gamepassCurrencyMultiplier,
-				masteryCurrencyMultiplier,
-			);
+			currencyBoosters.push(globalCurrencyEventMultiplier, boostCurrencyMultiplier, gamepassCurrencyMultiplier);
 
 			let currencyMultiplier = 0;
 			currencyBoosters.forEach((booster) => {
 				currencyMultiplier += booster;
 			});
 			currencyMultiplier = currencyMultiplier > 1 ? currencyMultiplier : 1;
-			print(globalCurrencyEventMultiplier, currencyMultiplier, reward.currency * currencyMultiplier);
+			currencyMultiplier += masteryCurrencyMultiplier - 1;
 
 			// get experience multiplier
-			const experienceBoosters: Array<number> = [];
-			const globalExperienceEventMultiplier = ReplicatedStorage.events.experience.enabled.Value
-				? ReplicatedStorage.events.experience.multiplier.Value > 1
-					? ReplicatedStorage.events.experience.multiplier.Value
-					: 0
-				: 0;
-			const boostExperienceMultiplier = store.getState().boosts.active["x2 Rank Experience"] > 0 ? 2 : 0;
-			const gamepassExperienceMultiplier = store.getState().gamepasses["x2 Experience"] ? 2 : 0;
-			experienceBoosters.push(globalExperienceEventMultiplier, boostExperienceMultiplier, gamepassExperienceMultiplier);
-
-			let experienceMultiplier = talismanStatEffects.experience;
-			experienceBoosters.forEach((booster) => {
-				experienceMultiplier += booster;
-			});
+			let experienceMultiplier = 0;
+			if (store.getState().gamepasses["x2 Experience"]) {
+				experienceMultiplier += 2;
+			}
+			if (store.getState().boosts.active["x2 Rank Experience"] > 0) {
+				experienceMultiplier += 2;
+			}
+			if (
+				ReplicatedStorage.events.experience.enabled.Value &&
+				ReplicatedStorage.events.experience.multiplier.Value > 1
+			) {
+				experienceMultiplier += ReplicatedStorage.events.experience.multiplier.Value;
+			}
 			experienceMultiplier = experienceMultiplier > 1 ? experienceMultiplier : 1;
 
 			// get pet experience multiplier
-			const petExperienceMultipliers: Array<number> = [];
-			const boostPetExperienceMultiplier = store.getState().boosts.active["x2 Pet Experience"] > 0 ? 2 : 0;
-			const masteryPetExperienceMultiplier = getPetExperienceMastery(
-				store.getState().index,
-			).additionalPetExperienceMultiplier;
-
-			petExperienceMultipliers.push(boostPetExperienceMultiplier, masteryPetExperienceMultiplier);
-
 			let petExperienceMultiplier = 0;
-			petExperienceMultipliers.forEach((booster) => {
-				petExperienceMultiplier += booster;
-			});
+			if (store.getState().boosts.active["x2 Pet Experience"] > 0) {
+				petExperienceMultiplier += 2;
+			}
 			petExperienceMultiplier = petExperienceMultiplier > 1 ? petExperienceMultiplier : 1;
+			petExperienceMultiplier += getPetExperienceMastery(store.getState().index).additionalPetExperienceMultiplier - 1;
 
 			// get equipped pets
 			const equippedPets = store.getState().pets.filter((pet) => pet.equipped);
@@ -244,7 +238,7 @@ export function runStep(
 			const randomBanEmitterIndex = math.ceil(math.random(1, banEmitters.GetChildren().size())) - 1;
 			const randomBanEmitter = banEmitters.GetChildren()[randomBanEmitterIndex] as BasePart;
 			if (randomBanEmitter === undefined) {
-				warn(`Failed to get ban emitter for index ${randomBanEmitterIndex}`);
+				warn(`[ NPC RunStep ] - Failed to get ban emitter for index ${randomBanEmitterIndex}`);
 				continue;
 			}
 
@@ -271,7 +265,7 @@ export function runStep(
 			const emitter = banEmitter.FindFirstChild("Attachment")?.FindFirstChild("Banned") as ParticleEmitter;
 			if (emitter !== undefined) {
 				emitter.Emit(1);
-			} else warn("emitter is undefined");
+			} else warn("[ NPC RunStep ] - emitter is undefined");
 
 			// kill npc
 			npcs.delete(npc);
@@ -291,7 +285,7 @@ export function runStep(
 		} else {
 			const emitter = humanoidRootPart.FindFirstChild("ImpactEmitter") as Attachment;
 			if (emitter === undefined) {
-				warn(`Failed to get impact emitter for npc ${npc.instance.Name}`);
+				warn(`[ NPC RunStep ] - Failed to get impact emitter for npc ${npc.instance.Name}`);
 				continue;
 			}
 

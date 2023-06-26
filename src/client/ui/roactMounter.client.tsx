@@ -1,12 +1,15 @@
 import Roact from "@rbxts/roact";
+import RoactRodux from "@rbxts/roact-rodux";
 import { Players } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 
 import { app as App } from "./app";
+import { Leaderboards } from "./components/standalone/leaderboards";
 import { AnnouncementAPI } from "./context/AnnouncementsAPI";
 import { remoteContext } from "./mocks/remoteContext";
 import { accoladeRemotes } from "./remotes/accolades";
 import { adminRemotes } from "./remotes/admin";
+import { boostRemotes } from "./remotes/boosts";
 import { eggsRemotes } from "./remotes/eggs";
 import { fusionRemtoes } from "./remotes/fusion";
 import { mediaRemotes } from "./remotes/media";
@@ -14,6 +17,7 @@ import { petMasteryRemotes } from "./remotes/petMastery";
 import { petRemtoes } from "./remotes/pets";
 import { questsRemotes } from "./remotes/quests";
 import { ranksRemotes } from "./remotes/ranks";
+import { rewardRemotes } from "./remotes/rewards";
 import { settingsRemotes } from "./remotes/settings";
 import { talismanRemotes } from "./remotes/talismans";
 import { titlesRemtoes } from "./remotes/titles";
@@ -35,6 +39,7 @@ onStoreCreated(player)
 				value={{
 					...accoladeRemotes,
 					...adminRemotes,
+					...boostRemotes,
 					...eggsRemotes,
 					...fusionRemtoes,
 					...mediaRemotes,
@@ -42,6 +47,7 @@ onStoreCreated(player)
 					...petMasteryRemotes,
 					...questsRemotes,
 					...ranksRemotes,
+					...rewardRemotes,
 					...settingsRemotes,
 					...talismanRemotes,
 					...titlesRemtoes,
@@ -54,6 +60,11 @@ onStoreCreated(player)
 				<AnnouncementAPI>
 					<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
 						{<App player={player} store={store} />}
+					</screengui>
+					<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
+						<RoactRodux.StoreProvider store={store}>
+							<Leaderboards />
+						</RoactRodux.StoreProvider>
 					</screengui>
 				</AnnouncementAPI>
 			</remoteContext.Provider>,

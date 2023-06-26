@@ -38,25 +38,75 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 		currencyType: "coins",
 	};
 
-	if (zoneData.cost === undefined) {
-		// eggs in the first zone of each world (first zones are always free)
-		switch (egg) {
-			case "Starter": {
-				const cost = 100;
-
-				eggCost.amount = isVoid ? cost * 5 - cost * reducedCost : cost - cost * reducedCost;
-				eggCost.currencyType = "coins";
-				break;
-			}
-			default: {
+	switch (eggData.id) {
+		case 1: {
+			const cost = 10;
+			const voidCost = cost * 10;
+			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
+			eggCost.amount = math.ceil(eggCost.amount);
+			eggCost.currencyType = "coins";
+			break;
+		}
+		case 2: {
+			if (zoneData.cost === undefined) {
 				throw `Unexpected issue while finding cost for "${egg}"`;
 			}
-		}
-	} else {
-		const cost = zoneData.cost.amount / 2;
 
-		eggCost.amount = isVoid ? cost * 5 - cost * 5 * reducedCost : cost - cost * reducedCost;
-		eggCost.currencyType = zoneData.cost.currency;
+			const cost = zoneData.cost.amount / 25;
+			const voidCost = cost * 10;
+			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
+			eggCost.amount = math.ceil(eggCost.amount);
+			eggCost.currencyType = zoneData.cost.currency;
+			break;
+		}
+		case 3: {
+			if (zoneData.cost === undefined) {
+				throw `Unexpected issue while finding cost for "${egg}"`;
+			}
+
+			const cost = zoneData.cost.amount / 25;
+			const voidCost = cost * 10;
+			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
+			eggCost.amount = math.ceil(eggCost.amount);
+			eggCost.currencyType = zoneData.cost.currency;
+			break;
+		}
+		case 4: {
+			if (zoneData.cost === undefined) {
+				throw `Unexpected issue while finding cost for "${egg}"`;
+			}
+
+			const cost = 850;
+			const voidCost = 12_750;
+			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
+			eggCost.amount = math.ceil(eggCost.amount);
+			eggCost.currencyType = zoneData.cost.currency;
+			break;
+		}
+		case 5: {
+			if (zoneData.cost === undefined) {
+				throw `Unexpected issue while finding cost for "${egg}"`;
+			}
+
+			const cost = 1_000;
+			const voidCost = 15_000;
+			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
+			eggCost.amount = math.ceil(eggCost.amount);
+			eggCost.currencyType = zoneData.cost.currency;
+			break;
+		}
+		default: {
+			if (zoneData.cost === undefined) {
+				throw `Unexpected issue while finding cost for "${egg}"`;
+			}
+
+			const cost = zoneData.cost.amount / 20;
+			const voidCost = cost * 10;
+			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
+			eggCost.amount = math.ceil(eggCost.amount);
+			eggCost.currencyType = zoneData.cost.currency;
+			break;
+		}
 	}
 
 	return eggCost;

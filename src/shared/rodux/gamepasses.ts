@@ -40,10 +40,10 @@ export const defaultGamepasses: GamepassesState = {
 /* eslint-disable jsdoc/require-jsdoc */
 export const gamepassesReducer = Rodux.createReducer<GamepassesState, GamepassActions>(defaultGamepasses, {
 	claimGamepass: (state, action) => {
-		const newState = { ...state };
-		newState[action.name] = true;
-
-		return newState;
+		return {
+			...state,
+			[action.name]: true,
+		};
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */

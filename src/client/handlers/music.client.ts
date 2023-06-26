@@ -1,5 +1,6 @@
+import { GameAnalytics } from "@rbxts/gameanalytics";
 import Make from "@rbxts/make";
-import { Players, RunService, SoundService } from "@rbxts/services";
+import { Players, SoundService } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { getCurrentWorld } from "client/util/getCurrentWorld";
 import { WorldName, WORLDS } from "shared/configs/worlds";
@@ -40,7 +41,12 @@ onStoreCreated(player)
 		});
 	})
 	.catch((e) => {
-		throw `Failed to get store for player ${player.Name} | ${e}`;
+		// do not include player names. against the rules apparently.
+		GameAnalytics.addErrorEvent(Players.LocalPlayer.UserId, {
+			severity: "error",
+			message: `[ Music Handler ] - Failed to run promise callback on "onStoreCreated" | ${e}`,
+		});
+		throw `[ Lighting Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 	});
 
 /**
@@ -101,7 +107,10 @@ export function stopPlaylist(): void {
 }
 
 task.spawn(() => {
-	RunService.RenderStepped.Connect(() => {
+	task.wait(5);
+
+	// eslint-disable-next-line no-constant-condition
+	while (true) {
 		const world = getCurrentWorld();
 		if (world === undefined) {
 			return;
@@ -112,6 +121,6 @@ task.spawn(() => {
 		}
 		currentWorld = world;
 
-		setPlaylist(world);
-	});
+		setPlaylist(currentWorld);
+	}
 });

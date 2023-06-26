@@ -1,21 +1,26 @@
-import { DataStoreService, MarketplaceService, Players } from "@rbxts/services";
+import { HttpService, MarketplaceService, Players } from "@rbxts/services";
+import { modifyPetCount } from "server/modules/datastore/pets";
 import { retrieveStore } from "server/playerStore";
-import { BOOST_PRODUCTS, PURCHASE_PET_TEAM_PRODUCT } from "shared/configs/game";
-import { claimBoost } from "shared/rodux/boosts";
+import {
+	BOOST_PRODUCTS,
+	EXCLUSIVE_PETS,
+	LIMITED_EGG,
+	LIMITED_EGG_DEVPRODUCT,
+	PURCHASE_PET_TEAM_PRODUCT,
+} from "shared/configs/game";
+import { remotes } from "shared/remotes";
+import { storeBoost } from "shared/rodux/boosts";
 import { claimDevProduct } from "shared/rodux/devProducts";
+import { addPets } from "shared/rodux/pets";
 import { purchasePetTeam } from "shared/rodux/petTeams";
-import { getBoostMastery } from "shared/util/getBoostMastery";
+import { getEggData } from "shared/util/getEggData";
 
-const marketplaceDataStore = DataStoreService.GetDataStore("marketplacePurchases");
+const marketplaceRemotes = remotes.Server.GetNamespace("eggs");
+const hatchSingleExclusive = marketplaceRemotes.Get("hatchSingleExclusiveEgg");
+const tripleSingleExclusive = marketplaceRemotes.Get("hatchTripleExclusiveEgg");
 
 // eslint-disable-next-line jsdoc/require-jsdoc
 MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision => {
-	// check to see if we have already purchased this
-	const [hasBeenPurchased] = pcall(() => marketplaceDataStore.GetAsync(receiptInfo.PurchaseId));
-	if (hasBeenPurchased) {
-		return Enum.ProductPurchaseDecision.PurchaseGranted;
-	}
-
 	const player = Players.GetPlayers().find((player) => player.UserId === receiptInfo.PlayerId);
 	if (player === undefined) {
 		warn(
@@ -25,13 +30,18 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 	}
 
 	const store = retrieveStore(player);
-	const boostMasteryExtendedDuration = getBoostMastery(store.getState().boosts).extendedDurationMultiplier;
+	const alreadyReceivedRewards = store
+		.getState()
+		.devProducts.find((purchaseLog) => purchaseLog.purchaseId === receiptInfo.PurchaseId);
+	if (alreadyReceivedRewards !== undefined) {
+		return Enum.ProductPurchaseDecision.NotProcessedYet;
+	}
 
 	let purchaseProcessed = false;
 	for (const [boostName, boostTimes] of pairs(BOOST_PRODUCTS)) {
-		for (const [, boostId] of pairs(boostTimes)) {
+		for (const [boostTime, boostId] of pairs(boostTimes)) {
 			if (boostId === receiptInfo.ProductId) {
-				store.dispatch(claimBoost(boostName, 15, boostMasteryExtendedDuration));
+				store.dispatch(storeBoost(boostName, boostTime));
 				purchaseProcessed = true;
 			}
 		}
@@ -46,14 +56,118 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 		purchaseProcessed = true;
 	}
 
+	if (receiptInfo.ProductId === LIMITED_EGG_DEVPRODUCT.OneEgg) {
+		const randomObject = new Random();
+
+		let selectedPet = 0;
+		let chance = randomObject.NextNumber(0, 100);
+		const eggData = getEggData(LIMITED_EGG);
+		for (const [, petData] of pairs(eggData.pets)) {
+			chance -= petData.chance;
+			if (chance > 0) {
+				continue;
+			}
+
+			selectedPet = petData.id;
+			break;
+		}
+
+		store.dispatch(
+			addPets(0, "coins", [
+				{
+					id: selectedPet,
+					variant: "regular",
+					method: "purchase",
+					tradeLocked: false,
+					autoDeleted: false,
+					guid: HttpService.GenerateGUID(false),
+				},
+			]),
+		);
+
+		modifyPetCount({
+			type: "addPet",
+			petId: selectedPet,
+			variant: "regular",
+		});
+
+		hatchSingleExclusive.SendToPlayer(player, LIMITED_EGG, selectedPet);
+		purchaseProcessed = true;
+	}
+
+	if (receiptInfo.ProductId === LIMITED_EGG_DEVPRODUCT.ThreeEggs) {
+		const selectedPets: Array<number> = [];
+
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		for (const _ of $range(1, 3)) {
+			const randomObject = new Random();
+
+			const eggData = getEggData(LIMITED_EGG);
+			let chance = randomObject.NextNumber(0, 100);
+			for (const [, petData] of pairs(eggData.pets)) {
+				chance -= petData.chance;
+				if (chance > 0) {
+					continue;
+				}
+
+				modifyPetCount({
+					type: "addPet",
+					petId: petData.id,
+					variant: "regular",
+				});
+
+				selectedPets.push(petData.id);
+				break;
+			}
+		}
+
+		store.dispatch(
+			addPets(
+				0,
+				"coins",
+				selectedPets.map((petId) => {
+					return {
+						id: petId,
+						variant: "regular",
+						method: "purchase",
+						tradeLocked: false,
+						autoDeleted: false,
+						guid: HttpService.GenerateGUID(false),
+					};
+				}),
+			),
+		);
+
+		tripleSingleExclusive.SendToPlayer(player, LIMITED_EGG, selectedPets);
+		purchaseProcessed = true;
+	}
+
+	for (const exclusivePet of EXCLUSIVE_PETS) {
+		if (receiptInfo.ProductId === exclusivePet.devproductId) {
+			store.dispatch(
+				addPets(0, "coins", [
+					{
+						id: exclusivePet.petId,
+						variant: "regular",
+						method: "purchase",
+						tradeLocked: false,
+						autoDeleted: false,
+						guid: HttpService.GenerateGUID(false),
+					},
+				]),
+			);
+
+			modifyPetCount({
+				type: "addPet",
+				petId: exclusivePet.petId,
+				variant: "regular",
+			});
+			purchaseProcessed = true;
+		}
+	}
+
 	if (!purchaseProcessed) throw `Product of id ${receiptInfo.ProductId} was not processed.`;
 
-	const [savedMarketplacePurchase] = pcall(() => marketplaceDataStore.SetAsync(receiptInfo.PurchaseId, true));
-	if (!savedMarketplacePurchase) {
-		throw `Unable to update DataStores for ProcessReceipt - ${receiptInfo.PurchaseId}`;
-	} else {
-		// update player store
-		store.dispatch(claimDevProduct(receiptInfo.ProductId, receiptInfo.PurchaseId));
-		return Enum.ProductPurchaseDecision.PurchaseGranted;
-	}
+	store.dispatch(claimDevProduct(receiptInfo.ProductId, receiptInfo.PurchaseId));
+	return Enum.ProductPurchaseDecision.PurchaseGranted;
 };

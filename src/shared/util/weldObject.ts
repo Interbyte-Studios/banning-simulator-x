@@ -1,19 +1,18 @@
 /**
  * Welds a primary object with any given number of secondary objects.
  *
- * @param _partsToWeld The parts to weld.
+ * @param partsToWeld The parts to weld.
  * @param primaryWeldingPart The part that will be welded to the other parts.
  */
-export function weldObject(_partsToWeld: Array<BasePart>, primaryWeldingPart: BasePart): void {
-	const partsToWeld = _partsToWeld;
+export function weldObject(partsToWeld: Array<BasePart>, primaryWeldingPart: BasePart): void {
 	const holding: Array<BasePart> = [];
 
-	for (const basePart of partsToWeld) {
-		if (!basePart.IsA("BasePart")) {
+	for (const part of partsToWeld) {
+		if (!part.IsA("BasePart")) {
 			continue;
 		}
 
-		holding.push(basePart);
+		holding.push(part);
 	}
 
 	if (holding.size() < 2) {
@@ -21,9 +20,9 @@ export function weldObject(_partsToWeld: Array<BasePart>, primaryWeldingPart: Ba
 		return;
 	}
 
-	for (let i = 1; i < holding.size(); i++) {
-		const p1 = primaryWeldingPart ?? holding[1];
-		const p0 = holding[i - 1];
+	for (let i = 0; i < holding.size(); i++) {
+		const p1 = primaryWeldingPart ?? holding[0];
+		const p0 = holding[i];
 
 		const a1 = p1.Anchored;
 		const a0 = p0.Anchored;

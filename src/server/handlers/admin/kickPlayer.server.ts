@@ -1,3 +1,4 @@
+import { GameAnalytics } from "@rbxts/gameanalytics";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { ADMIN_RANK } from "shared/configs/admin";
 import { GROUP_ID } from "shared/configs/game";
@@ -14,6 +15,10 @@ remotes.Server.GetNamespace("admin")
 			if (targetPlayer === undefined) return;
 
 			task.spawn(() => {
+				GameAnalytics.addErrorEvent(adminPlayer.UserId, {
+					severity: "warning",
+					message: `Kicked ${targetPlayer.Name}`,
+				});
 				targetPlayer.Kick("You've been kicked by an Administrator.");
 			});
 		}),

@@ -88,7 +88,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 25;
@@ -103,7 +103,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 50;
@@ -118,7 +118,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 75;
@@ -133,7 +133,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 100;
@@ -148,7 +148,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 250;
@@ -163,7 +163,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 500;
@@ -178,7 +178,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 750;
@@ -201,7 +201,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant + petData.maxLevel.void + petData.maxLevel.regular;
+				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
 			});
 
 			return maxPets >= 1000;
@@ -706,8 +706,24 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 
 	// Misc titles
 	{
-		name: "VIP",
+		name: "Interbyte Club",
 		id: 44,
+		effect: new ColorSequence([
+			new ColorSequenceKeypoint(0, Color3.fromRGB(32, 43, 255)),
+			new ColorSequenceKeypoint(0.15, Color3.fromRGB(70, 141, 255)),
+			new ColorSequenceKeypoint(0.4, Color3.fromRGB(255, 96, 253)),
+			new ColorSequenceKeypoint(0.5, Color3.fromRGB(255, 0, 127)),
+			new ColorSequenceKeypoint(0.6, Color3.fromRGB(255, 96, 253)),
+			new ColorSequenceKeypoint(0.85, Color3.fromRGB(70, 141, 255)),
+			new ColorSequenceKeypoint(1, Color3.fromRGB(32, 43, 255)),
+		]),
+		category: TitleType.Misc,
+		description: "Members who are apart of the Interbyte Club.",
+		condition: (state): boolean => state.index.groupRank !== undefined && state.index.groupRank >= 247,
+	},
+	{
+		name: "VIP",
+		id: 45,
 		effect: new ColorSequence([
 			new ColorSequenceKeypoint(0, Color3.fromRGB(255, 0, 0)),
 			new ColorSequenceKeypoint(0.15, Color3.fromRGB(255, 126, 61)),
@@ -723,7 +739,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 	},
 	{
 		name: "Verified",
-		id: 45,
+		id: 46,
 		effect: new ColorSequence([
 			new ColorSequenceKeypoint(0, Color3.fromRGB(255, 85, 127)),
 			new ColorSequenceKeypoint(0.15, Color3.fromRGB(255, 152, 154)),
@@ -739,7 +755,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 	},
 	{
 		name: "Staff Team",
-		id: 46,
+		id: 47,
 		effect: new ColorSequence([
 			new ColorSequenceKeypoint(0, Color3.fromRGB(0, 85, 255)),
 			new ColorSequenceKeypoint(0.15, Color3.fromRGB(12, 182, 255)),
@@ -754,8 +770,8 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		condition: (state): boolean => state.index.groupRank !== undefined && state.index.groupRank >= 250,
 	},
 	{
-		name: "Executive",
-		id: 47,
+		name: "Admin",
+		id: 48,
 		effect: new ColorSequence([
 			new ColorSequenceKeypoint(0, Color3.fromRGB(255, 0, 0)),
 			new ColorSequenceKeypoint(0.15, Color3.fromRGB(132, 0, 2)),
@@ -766,7 +782,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 			new ColorSequenceKeypoint(1, Color3.fromRGB(255, 0, 0)),
 		]),
 		category: TitleType.Misc,
-		description: "The developers of Interbyte Studios.",
+		description: "Administrators of Interbyte Studios.",
 		condition: (state): boolean => state.index.groupRank !== undefined && state.index.groupRank >= 253,
 	},
 ] as const);

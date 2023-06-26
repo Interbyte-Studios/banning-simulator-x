@@ -2,11 +2,11 @@ import Roact from "@rbxts/roact";
 import { CollectionService } from "@rbxts/services";
 import { sortPets } from "client/modules/pets/sort";
 import { vec2Middle } from "client/ui/commonValues";
-import { PetFrame } from "client/ui/components/items/pets/inventory/petFrame";
+import { PetInventoryData } from "client/ui/components/features/items/pets/inventory";
+import { PetFrame } from "client/ui/components/features/items/pets/inventory/petFrame";
 import { PetsState } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 
-import { PetInventoryData } from "../../components/items/pets/inventory";
 import { hooks } from "../../hooks";
 import { updateContentSize } from "../common/rescalingScrollingFrame";
 
@@ -53,7 +53,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 	// State for managing the rendered pets
 	sortPets(props.pets, true, true);
 	const [renderedPets, setRenderedPets] = useState<Array<PetInventoryData>>(
-		props.pets.map((pet) => ({ ...pet, isRendered: false })),
+		props.pets.map((pet, index) => ({ ...pet, isRendered: index < 35 })),
 	);
 
 	const checkRenderedPets = useCallback(
@@ -88,6 +88,10 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 						}
 					}
 
+					if (index < 35 && !shouldBeRendered) {
+						shouldBeRendered = true;
+					}
+
 					if (shouldBeRendered !== pet.isRendered) {
 						pet.isRendered = shouldBeRendered;
 					}
@@ -102,7 +106,6 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 	const updateItems = useCallback(
 		(scroll: ScrollingFrame): void => {
 			const updatedRenderedPets = checkRenderedPets(scroll, renderedPets, props.searchText);
-			sortPets(updatedRenderedPets, true, true);
 			setRenderedPets(updatedRenderedPets);
 		},
 		[renderedPets, props.searchText],
@@ -151,6 +154,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		const scrollingFrame = scrollingFrameRef.value.getValue();
 		assert(scrollingFrame, `No ScrollingFrame was found for Virtual Scroll`);
 
+		sortPets(props.pets, true, true);
 		let newPets: Array<PetInventoryData> = [];
 		if (props.searchText !== undefined && props.searchText !== "") {
 			const searchText = props.searchText.lower();
@@ -166,7 +170,6 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		}
 
 		const updatedRenderedPets = checkRenderedPets(scrollingFrame, newPets, props.searchText);
-		sortPets(updatedRenderedPets, true, true);
 		setRenderedPets(updatedRenderedPets);
 	}, [props.pets, props.searchText]);
 
@@ -184,13 +187,15 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 
 	const elementsToDisplay: Array<Roact.Element> = useMemo(() => {
 		const result: Array<Roact.Element> = [];
+		let selectedId = 0;
 		renderedPets.forEach((pet, index) => {
 			let layoutOrder = index;
 			if (props.selectedPets !== undefined) {
 				if (props.selectedPets.includes(pet.guid)) {
-					layoutOrder = 1 + index;
+					selectedId += 1;
+					layoutOrder = selectedId;
 				} else {
-					layoutOrder = index + renderedPets.size() + 1;
+					layoutOrder = index + 11;
 				}
 			}
 
@@ -244,7 +249,15 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 			}
 		});
 		return result;
-	}, [renderedPets, props.selectedPets, props.pets]);
+	}, [
+		renderedPets,
+		props.selectedPets,
+		props.pets,
+		props.inventoryFrame?.multiDeleteEnabled,
+		props.inventoryFrame?.addPetToDeletionRegistry,
+		props.inventoryFrame?.removePetFromDeletionRegistry,
+		props.inventoryFrame?.displayPetInfo,
+	]);
 
 	return (
 		<scrollingframe

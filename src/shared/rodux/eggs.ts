@@ -35,25 +35,44 @@ export const defaultEggs: EggsState = {
 		Legendary: 0,
 		Primordial: 0,
 		Prismatic: 0,
+		Exclusive: 0,
 	},
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const eggsReducer = Rodux.createReducer<EggsState, EggsActions>(defaultEggs, {
 	addEgg: (state, action) => {
-		const newState = { ...state };
+		const newEggAmount = state.eggs + action.pets.size();
+		const newRarities = {
+			Basic: 0,
+			Ordinary: 0,
+			Rare: 0,
+			Epic: 0,
+			Legendary: 0,
+			Primordial: 0,
+			Prismatic: 0,
+			Exclusive: 0,
+		};
 
 		for (const pet of action.pets) {
 			const petData = getPetData(pet.id);
 
-			newState.eggs += 1;
-			newState.rarities = {
-				...newState.rarities,
-				[petData.rarity]: newState.rarities[petData.rarity] + 1,
-			};
+			newRarities[petData.rarity] += 1;
 		}
 
-		return newState;
+		return {
+			eggs: newEggAmount,
+			rarities: {
+				Basic: state.rarities.Basic + newRarities.Basic,
+				Ordinary: state.rarities.Ordinary + newRarities.Ordinary,
+				Rare: state.rarities.Rare + newRarities.Rare,
+				Epic: state.rarities.Epic + newRarities.Epic,
+				Legendary: state.rarities.Legendary + newRarities.Legendary,
+				Primordial: state.rarities.Primordial + newRarities.Primordial,
+				Prismatic: state.rarities.Prismatic + newRarities.Prismatic,
+				Exclusive: state.rarities.Exclusive + newRarities.Exclusive,
+			},
+		};
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */

@@ -36,35 +36,51 @@ function getPetModel(petName: string): Model {
  * @param variant The variant of the pet.
  * @returns Data for the new pet.
  */
-export function cachePetForAnimation(player: Player, petId: number, guid: string, variant: Variants): PetCreated {
+export function cachePetForAnimation(
+	player: Player,
+	petId: number,
+	guid: string,
+	variant: Variants,
+): PetCreated | undefined {
 	const petData = getPetData(petId);
 
 	const petModel = getPetModel(petData.name);
-	assert(petModel.IsA("Model"));
-	setAssetProperties("pet", petModel, variant);
-
-	if (petModel.PrimaryPart === undefined) {
-		throw `Expected to find primary part for pet ${petData.name}`;
+	if (petModel === undefined) {
+		warn(`[ Pet Follow Module ] - Failed to get pet model for pet ${petData.name}`);
+		return;
 	}
 
-	const petParts: Array<BasePart> = [];
-	petModel.GetChildren().forEach((part) => {
-		if (part.IsA("BasePart")) {
-			petParts.push(part);
-		}
-	});
-
 	petModel.Name = guid;
-	weldObject(petParts, petModel.PrimaryPart);
-	assert(petModel.PrimaryPart.IsA("BasePart"));
+	setAssetProperties("pet", petModel, variant);
 
-	const alignOrientation = new Instance("AlignOrientation", petModel.PrimaryPart);
-	const alignPosition = new Instance("AlignPosition", petModel.PrimaryPart);
-	const attachment = new Instance("Attachment", petModel.PrimaryPart);
+	const primaryPart = petModel.PrimaryPart;
+	if (primaryPart === undefined) {
+		warn(`[ Pet Follow Module ] - Failed to get primary part for pet ${petData.name}`);
+		return;
+	}
+
+	if (!primaryPart.IsA("BasePart")) {
+		warn(`[ Pet Follow Module ] - Primary part for pet ${petData.name} is not a BasePart`);
+		return;
+	}
+
+	const petParts = petModel.GetChildren().filter((child) => child.IsA("BasePart")) as Array<BasePart>;
+	weldObject(petParts, primaryPart);
+
+	const alignOrientation = new Instance("AlignOrientation", primaryPart);
+	alignOrientation.RigidityEnabled = true;
+	alignOrientation.ReactionTorqueEnabled = true;
+
+	const alignPosition = new Instance("AlignPosition", primaryPart);
+	alignPosition.ReactionForceEnabled = true;
+	alignPosition.ApplyAtCenterOfMass = true;
+
+	const attachment = new Instance("Attachment", primaryPart);
 	const animationType = petModel.GetAttribute("animationType") as "Walk" | "Fly";
 
 	if (animationType === undefined) {
-		error(`Could not get animation type for ${petData.name}`);
+		warn(`[ Pet Follow Module ] - Failed to get animation type for pet ${petData.name}`);
+		return;
 	}
 
 	alignOrientation.Mode = Enum.OrientationAlignmentMode.OneAttachment;
@@ -74,7 +90,6 @@ export function cachePetForAnimation(player: Player, petId: number, guid: string
 	alignPosition.Responsiveness = animationType === "Fly" ? 15 : 20;
 	alignOrientation.Responsiveness = 20;
 
-	const originCFrame = new CFrame(0, 0, 0);
 	const returnValue: PetCreated = {
 		guid,
 		id: petId,
@@ -84,19 +99,5 @@ export function cachePetForAnimation(player: Player, petId: number, guid: string
 		petType: animationType,
 		owner: player,
 	};
-
-	const character = player.Character;
-	if (character === undefined) {
-		petModel.PrimaryPart.PivotTo(originCFrame);
-		return returnValue;
-	}
-
-	const primaryPart = character.PrimaryPart;
-	if (primaryPart === undefined) {
-		petModel.PrimaryPart.PivotTo(originCFrame);
-		return returnValue;
-	}
-
-	petModel.PrimaryPart.PivotTo(character.PrimaryPart !== undefined ? character.PrimaryPart.CFrame : originCFrame);
 	return returnValue;
 }

@@ -104,15 +104,9 @@ declare global {
 				[P in keyof Eggs]: Folder & {
 					regular: Folder & {
 						egg: Model;
-						["egg cracked 1"]: Model;
-						["egg cracked 2"]: Model;
-						["egg cracked 3"]: Model;
 					};
 					void: Folder & {
 						egg: Model;
-						["egg cracked 1"]: Model;
-						["egg cracked 2"]: Model;
-						["egg cracked 3"]: Model;
 					};
 				};
 			};
@@ -143,6 +137,9 @@ declare global {
 				multiplier: IntValue;
 			};
 			luck: Configuration & {
+				enabled: BoolValue;
+			};
+			trading: Configuration & {
 				enabled: BoolValue;
 			};
 		};

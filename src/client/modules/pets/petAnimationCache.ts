@@ -1,3 +1,5 @@
+import { removePet } from "./unequipPet";
+
 export interface PetCreated {
 	guid: string;
 	id: number;
@@ -8,7 +10,7 @@ export interface PetCreated {
 	petType: "Walk" | "Fly";
 }
 
-interface PlayerAnimationCache {
+export interface PlayerAnimationCache {
 	player: Player;
 	petsDisplayed: BoolValue;
 	distance: NumberValue;
@@ -34,12 +36,43 @@ export const createPetAnimationCache = (player: Player): PlayerAnimationCache =>
 };
 
 /**
+ * @param guid The guid of the pet to remove from cache.
+ */
+export const removePetFromCache = (guid: string): void => {
+	for (const cache of settingsCache) {
+		const petIndex = cache.pets.findIndex((pet) => pet.guid === guid);
+		if (petIndex === undefined) {
+			continue;
+		}
+
+		removePet(guid);
+		cache.pets.unorderedRemove(petIndex);
+	}
+};
+
+/**
  * @param player The player to remove cache data for.
  */
 export const removePetAnimationCache = (player: Player): void => {
+	// remove pets
+	const cache = settingsCache.find((cacheData) => cacheData.player === player);
+	if (cache === undefined) {
+		warn(
+			`[ Pet Animation Cache ] - Failed to remove pet animation cache for player ${player.Name} | Couldn't find object.`,
+		);
+		return;
+	}
+
+	for (const pet of cache.pets) {
+		removePet(pet.guid);
+	}
+
+	// remove cache
 	const cacheIndex = settingsCache.findIndex((cacheData) => cacheData.player === player);
 	if (cacheIndex === undefined) {
-		warn(`Failed to remove pet animation cache for player ${player.Name}`);
+		warn(
+			`[ Pet Animation Cache ] - Failed to remove pet animation cache for player ${player.Name} | Couldn't find index.`,
+		);
 		return;
 	}
 

@@ -2,7 +2,6 @@ import Object from "@rbxts/object-utils";
 import Rodux from "@rbxts/rodux";
 import { currencies, Currency } from "shared/configs/currencies";
 
-import { RedeemCode } from "./media";
 import { AddPet, EnhancePet, Pet } from "./pets";
 import { RedeemQuest } from "./quests";
 import { UnlockRank } from "./rank";
@@ -73,7 +72,7 @@ export function awardCurrency(currency: Currency, amount: number): AwardCurrency
 }
 
 // start with 0 currency
-const defaultCurrencyAmount = 500;
+const defaultCurrencyAmount = 0;
 export const defaultCurrencies = Object.fromEntries(
 	Object.values(currencies).map((currency) => [currency, defaultCurrencyAmount] as const),
 );
@@ -88,71 +87,72 @@ export const currenciesReducer = Rodux.createReducer<
 	| AddPet
 	| RedeemQuest
 	| PurchaseTalisman
-	| RedeemCode
 	| EnhancePet
 	| UnlockRank
 >(defaultCurrencies, {
 	purchaseWeapon: (state, action) => {
-		const purchasedCurrency = state[action.cost.currency] - action.cost.amount;
-
-		return { ...state, [action.cost.currency]: purchasedCurrency };
+		return {
+			...state,
+			[action.cost.currency]: state[action.cost.currency] - action.cost.amount,
+		};
 	},
 	killNpc: (state, action) => {
-		const increasedCurrency = state[action.currencyType] + action.currency;
-
-		return { ...state, [action.currencyType]: increasedCurrency };
+		return {
+			...state,
+			[action.currencyType]: state[action.currencyType] + action.currency,
+		};
 	},
 	unlockWorld: (state, action) => {
-		const purchasedCurrency = state[action.currency.type] - action.currency.amount;
-
-		return { ...state, [action.currency.amount]: purchasedCurrency };
+		return {
+			...state,
+			[action.currency.type]: state[action.currency.type] - action.currency.amount,
+		};
 	},
 	unlockZone: (state, action) => {
-		const purchasedCurrency = state[action.currency.type] - action.currency.amount;
-
-		return { ...state, [action.currency.type]: purchasedCurrency };
+		return {
+			...state,
+			[action.currency.type]: state[action.currency.type] - action.currency.amount,
+		};
 	},
 	addPet: (state, action) => {
-		const purchasedCurrency = state[action.currencyType] - action.cost;
-
-		return { ...state, [action.currencyType]: purchasedCurrency };
+		return {
+			...state,
+			[action.currencyType]: state[action.currencyType] - action.cost,
+		};
 	},
 	redeemQuest: (state, action) => {
 		if (action.rewardType.kind !== "currency") {
 			return state;
 		}
 
-		const redeemedCurrency = state[action.rewardType.currency] + action.rewardType.amount;
-
-		return { ...state, [action.rewardType.currency]: redeemedCurrency };
+		return {
+			...state,
+			[action.rewardType.currency]: state[action.rewardType.currency] + action.rewardType.amount,
+		};
 	},
 	purchaseTalisman: (state, action) => {
-		const purchasedCurrency = state[action.cost.currency] - action.cost.amount;
-
-		return { ...state, [action.cost.currency]: purchasedCurrency };
-	},
-	redeemCode: (state, action) => {
-		if (action.currency === undefined) {
-			return state;
-		}
-
-		const redeemedCurrency = state[action.currency.name] + action.currency.amount;
-
-		return { ...state, [action.currency.name]: redeemedCurrency };
+		return {
+			...state,
+			[action.cost.currency]: state[action.cost.currency] - action.cost.amount,
+		};
 	},
 	enhancePet: (state, action) => {
-		const purchasedCurrency = state.gems - action.cost;
-		return { ...state, gems: purchasedCurrency };
+		return {
+			...state,
+			gems: state.gems - action.cost,
+		};
 	},
 	unlockRank: (state, action) => {
-		const purchasedCurency = state[action.currency] - action.cost;
-		return { ...state, [action.currency]: purchasedCurency };
+		return {
+			...state,
+			[action.currency]: state[action.currency] - action.cost,
+		};
 	},
 	awardCurrency: (state, action) => {
-		const newState = { ...state };
-		newState[action.currency] += action.amount;
-
-		return newState;
+		return {
+			...state,
+			[action.currency]: state[action.currency] + action.amount,
+		};
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */

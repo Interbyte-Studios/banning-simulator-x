@@ -2,7 +2,7 @@ import Rodux from "@rbxts/rodux";
 import { t } from "@rbxts/t";
 import { BoostProduct } from "shared/configs/game";
 
-import { RedeemCode } from "./media";
+import { ClaimClubReward, ClaimGroupReward, ClaimVIPReward } from "./playerIndex";
 
 export interface BoostsState {
 	storage: {
@@ -120,60 +120,104 @@ export const defaultBoosts: BoostsState = {
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const boostsReducer = Rodux.createReducer<BoostsState, BoostActions | RedeemCode>(defaultBoosts, {
+export const boostsReducer = Rodux.createReducer<
+	BoostsState,
+	BoostActions | ClaimGroupReward | ClaimClubReward | ClaimVIPReward
+>(defaultBoosts, {
 	storeBoost: (state, action) => {
-		const newState = { ...state };
 		const timeIndex = tostring(action.boostTime) as ValidStoredBoostTime;
 
-		newState.storage = {
-			...newState.storage,
-			[action.name]: {
-				...newState.storage[action.name],
-				[action.boostTime]: newState.storage[action.name][timeIndex] + 1,
+		return {
+			...state,
+			storage: {
+				...state.storage,
+				[action.name]: {
+					...state.storage[action.name],
+					[timeIndex]: state.storage[action.name][timeIndex] + 1,
+				},
 			},
 		};
-
-		return newState;
 	},
 	claimBoost: (state, action) => {
-		const newState = { ...state };
-		newState.active = {
-			...newState.active,
-			[action.name]: newState.active[action.name] + action.boostTime * action.extendedDurationMultiplier,
-		};
-		newState.uses += 1;
-
-		return newState;
-	},
-	useBoosts: (state, action) => {
-		const newState = { ...state };
-
-		for (const boost of action.boosts) {
-			newState.active = {
-				...newState.active,
-				[boost]: newState.active[boost] - 1,
-			};
-		}
-
-		return newState;
-	},
-	redeemCode: (state, action) => {
-		if (action.boosts === undefined) {
+		const timeIndex = tostring(action.boostTime) as ValidStoredBoostTime;
+		const storedBoost = state.storage[action.name][timeIndex];
+		if (storedBoost === undefined || storedBoost < 1) {
 			return state;
 		}
 
-		const newState = { ...state };
-		const timeIndex = tostring(action.boosts.time) as ValidStoredBoostTime;
+		const additionalTime = action.boostTime * 60;
 
-		newState.storage = {
-			...newState.storage,
-			[action.name]: {
-				...newState.storage[action.boosts.name],
-				[action.boosts.time]: newState.storage[action.boosts.name][timeIndex] + 1,
+		return {
+			...state,
+			active: {
+				...state.active,
+				[action.name]: state.active[action.name] + additionalTime * action.extendedDurationMultiplier,
+			},
+			storage: {
+				...state.storage,
+				[action.name]: {
+					...state.storage[action.name],
+					[timeIndex]: state.storage[action.name][timeIndex] - 1,
+				},
+			},
+			uses: state.uses + 1,
+		};
+	},
+	claimClubReward: (state, action) => {
+		return {
+			...state,
+			storage: {
+				...state.storage,
+				[action.boostName]: {
+					...state.storage[action.boostName],
+					"15": state.storage[action.boostName]["15"] + 1,
+				},
 			},
 		};
-
-		return newState;
+	},
+	claimGroupReward: (state, action) => {
+		return {
+			...state,
+			storage: {
+				...state.storage,
+				[action.boostName]: {
+					...state.storage[action.boostName],
+					"15": state.storage[action.boostName]["15"] + 1,
+				},
+			},
+		};
+	},
+	claimVIPReward: (state, action) => {
+		return {
+			...state,
+			storage: {
+				...state.storage,
+				[action.boostName]: {
+					...state.storage[action.boostName],
+					"15": state.storage[action.boostName]["15"] + 1,
+				},
+			},
+		};
+	},
+	useBoosts: (state, action) => {
+		return {
+			...state,
+			active: {
+				...state.active,
+				"x2 Currency": action.boosts.includes("x2 Currency")
+					? state.active["x2 Currency"] - 1
+					: state.active["x2 Currency"],
+				"x2 Rank Experience": action.boosts.includes("x2 Rank Experience")
+					? state.active["x2 Rank Experience"] - 1
+					: state.active["x2 Rank Experience"],
+				"x2 Pet Experience": action.boosts.includes("x2 Pet Experience")
+					? state.active["x2 Pet Experience"] - 1
+					: state.active["x2 Pet Experience"],
+				"x2 Hatching Luck": action.boosts.includes("x2 Hatching Luck")
+					? state.active["x2 Hatching Luck"] - 1
+					: state.active["x2 Hatching Luck"],
+			},
+		};
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */

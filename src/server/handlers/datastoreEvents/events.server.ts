@@ -1,9 +1,9 @@
-import { DataStoreService, ReplicatedStorage } from "@rbxts/services";
+import { DataStoreService, ReplicatedStorage, Workspace } from "@rbxts/services";
 import { t } from "@rbxts/t";
 
 const datastoreEventsStore = DataStoreService.GetDataStore("DataStoreEvents", "Events");
 const eventsKey = "BSX_DataStoreEvents";
-const getAsyncInterval = 60 * 1;
+const getAsyncInterval = 60;
 
 const validDatastoreEventCache = t.strictInterface({
 	currencyEvent: t.strictInterface({
@@ -15,39 +15,41 @@ const validDatastoreEventCache = t.strictInterface({
 		multiplier: t.number,
 	}),
 	luckEvent: t.boolean,
+	tradingEnabled: t.boolean,
 });
 export type ValidDatastoreEventCache = t.static<typeof validDatastoreEventCache>;
-
-let datastoreEventCache: ValidDatastoreEventCache;
 
 /**
  * Reads the value of the datastore events DataStore.
  */
 function updateDatastoreEventCache(): void {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [success] = pcall(() => {
+	const [success, dataOrError] = pcall(() => {
 		const [data] = datastoreEventsStore.GetAsync(eventsKey);
 
 		if (!validDatastoreEventCache(data)) {
 			throw `Expected data store event cache to be valid.`;
 		}
 
-		datastoreEventCache = data;
+		return data;
 	});
 
 	if (!success) {
-		throw `Failed to get datastore events cache from global data store.`;
+		warn(`Failed to get datastore events cache from global data store: ${dataOrError}`);
+		return;
 	}
 
-	ReplicatedStorage.events.currency.enabled.Value = datastoreEventCache.currencyEvent.enabled;
-	ReplicatedStorage.events.currency.multiplier.Value = datastoreEventCache.currencyEvent.multiplier;
+	const { currencyEvent, experienceEvent, luckEvent, tradingEnabled } = dataOrError;
 
-	ReplicatedStorage.events.experience.enabled.Value = datastoreEventCache.experienceEvent.enabled;
-	ReplicatedStorage.events.experience.multiplier.Value = datastoreEventCache.experienceEvent.multiplier;
+	ReplicatedStorage.events.currency.enabled.Value = currencyEvent.enabled;
+	ReplicatedStorage.events.currency.multiplier.Value = currencyEvent.multiplier;
 
-	ReplicatedStorage.events.luck.enabled.Value = datastoreEventCache.luckEvent;
+	ReplicatedStorage.events.experience.enabled.Value = experienceEvent.enabled;
+	ReplicatedStorage.events.experience.multiplier.Value = experienceEvent.multiplier;
 
-	ReplicatedStorage.events.timeUpdated.Value = time();
+	ReplicatedStorage.events.luck.enabled.Value = luckEvent;
+	ReplicatedStorage.events.trading.enabled.Value = tradingEnabled;
+
+	ReplicatedStorage.events.timeUpdated.Value = Workspace.GetServerTimeNow();
 }
 
 task.defer(() => {

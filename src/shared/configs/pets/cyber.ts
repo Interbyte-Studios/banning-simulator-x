@@ -5,8 +5,8 @@ import { Pet } from ".";
  */
 export const CYBER_EGG_PETS: Record<string, Pet> = {
 	"Cyber Doggy": {
-		chance: 37.0429,
-		id: 46,
+		chance: 37.01995,
+		id: 53,
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
@@ -14,7 +14,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 	},
 	"Cyber Bunny": {
 		chance: 30,
-		id: 47,
+		id: 54,
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
@@ -22,7 +22,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 	},
 	"Cyber Kitty": {
 		chance: 20,
-		id: 48,
+		id: 55,
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
@@ -30,7 +30,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 	},
 	"Cyber Bear": {
 		chance: 10,
-		id: 49,
+		id: 56,
 		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
@@ -38,7 +38,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 	},
 	"Cyber Angel": {
 		chance: 1.5,
-		id: 50,
+		id: 57,
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
@@ -46,7 +46,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 	},
 	"Cyber Pegasus": {
 		chance: 1.4,
-		id: 51,
+		id: 58,
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
@@ -54,23 +54,23 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 	},
 	"Cybernetic Phoenix": {
 		chance: 0.05,
-		id: 52,
+		id: 59,
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
 		},
 	},
 	"Cybernetic Guard": {
-		chance: 0.005,
-		id: 53,
+		chance: 0.02,
+		id: 60,
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
 		},
 	},
 	"Cybernetic Dementor": {
-		chance: 0.002,
-		id: 54,
+		chance: 0.01,
+		id: 61,
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
@@ -78,7 +78,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 	},
 	"Cybernetic Destroyer": {
 		chance: 0.00005,
-		id: 55,
+		id: 62,
 		rarity: "Prismatic",
 		stats: {
 			additionalDamage: 1,

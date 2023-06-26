@@ -23,10 +23,6 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 const player = Players.LocalPlayer;
 
-interface RankUpgradeProps extends RankUpgradeMappedProps {
-	enabled: boolean;
-}
-
 interface RankUpgradeMappedProps {
 	currentRank: number;
 	currencies: CurrenciesState;
@@ -51,16 +47,13 @@ function mapStateToProps(state: StoreState): RankUpgradeMappedProps {
  * A UI to upgrade a player's rank.
  */
 export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
-	hooks((props: RankUpgradeProps, hooks) => {
-		if (!props.enabled) {
-			return <></>;
-		}
-
+	hooks((props: RankUpgradeMappedProps, hooks) => {
 		const { useState, useValue, useEffect, useContext } = hooks;
 		const { unlockRank } = useContext(remoteContext);
 		const { addAnnouncement } = useContext(AnnouncementContext);
 
 		const [isVisible, setVisibility] = useState(false);
+		const [withinRange, setWithinRange] = useState(false);
 
 		useEffect(() => {
 			if (isVisible) {
@@ -97,16 +90,20 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 
 				const magnitude = humanoidRootPart.Position.sub(Workspace.interactions.rankUpgrade.teleport.Position).Magnitude;
 				if (magnitude > 15) {
+					if (withinRange) {
+						setWithinRange(false);
+					}
 					return;
 				}
 
 				setVisibility(true);
+				setWithinRange(true);
 			});
 
 			return (): void => {
 				connection.Disconnect();
 			};
-		});
+		}, [isVisible, withinRange]);
 
 		if (!isVisible) {
 			return <></>;
@@ -137,6 +134,19 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 
 			return (): void => connection.Disconnect();
 		});
+
+		const exitButton: Roact.Element = (
+			<ExitButton
+				Position={UDim2.fromScale(0.985, 0.09)}
+				minimizedSize={0.06}
+				maximizedSize={0.075}
+				onClosed={(): void => {
+					playSFX(UIEngagement.MinorEngagement);
+
+					setVisibility(false);
+				}}
+			/>
+		);
 
 		const ranksUIs: Array<Roact.Element> = RANKS.map((rankData) => {
 			const progressToRank =
@@ -332,16 +342,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 					/>
 					{ranksUIs}
 				</RescalingScrollingFrame>
-				<ExitButton
-					Position={UDim2.fromScale(0.985, 0.09)}
-					minimizedSize={0.06}
-					maximizedSize={0.075}
-					onClosed={(): void => {
-						playSFX(UIEngagement.MinorEngagement);
-
-						setVisibility(false);
-					}}
-				/>
+				{withinRange && exitButton}
 			</ImageLabel>
 		);
 	}),
