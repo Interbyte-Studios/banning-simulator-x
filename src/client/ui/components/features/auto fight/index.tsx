@@ -408,7 +408,10 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 			return (): void => connection.Disconnect();
 		}, [isEnabled, props.boosts, props.bans]);
 
-		useEffect(() => toggleAutoFight(isEnabled, props.walkspeed), [isEnabled, props.walkspeed]);
+		useEffect(() => {
+			toggleAutoFight(isEnabled, props.walkspeed);
+			setPurchasedAutoFight(isEnabled);
+		}, [isEnabled, props.walkspeed]);
 
 		if (!isEnabled) {
 			if (!props.gamepasses["Auto Fight"]) {
@@ -597,9 +600,6 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 										addAnnouncement("You're already fighting an NPC. Try again later.", AnnouncementType.Error);
 										return;
 									}
-
-									setPurchasedAutoFight(true);
-
 									setSelectedZone(landingFolder.Name);
 									setIsEnabled(true);
 								},
@@ -659,7 +659,10 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 						native={{
 							Position: UDim2.fromScale(0.34, 0.65),
 							Size: UDim2.fromScale(0.215, 0.3),
-							Text: currencyAmount !== undefined ? statsAbbreviator.numberToString(currencyAmount.amount) : "",
+							Text:
+								currencyAmount !== undefined
+									? statsAbbreviator.numberToString(props.currencies[currencyAmount.name] - currencyAmount.amount)
+									: "",
 							TextXAlignment: Enum.TextXAlignment.Left,
 						}}
 						stroke={{

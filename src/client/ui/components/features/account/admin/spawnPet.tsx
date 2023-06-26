@@ -25,7 +25,7 @@ interface SpawnedPet extends Pet {
 /* eslint-disable jsdoc/require-jsdoc */
 export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAction: () => void }, hooks) => {
 	const { useValue, useEffect, useState, useContext } = hooks;
-	const [zoneSelected, setZoneSelected] = useState<ZoneNames | undefined>(undefined);
+	const [zoneSelected, setZoneSelected] = useState<ZoneNames | "Exclusive" | undefined>(undefined);
 	const [petSelected, setPetSelected] = useState<SpawnedPet | undefined>(undefined);
 
 	const { admin_SpawnPet } = useContext(remoteContext);
@@ -152,6 +152,15 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 			);
 		}
 
+		zonesToDisplay.push(
+			<ZoneTeleportCard
+				world={"Exclusive"}
+				zone={"Exclusive"}
+				id={500}
+				onActivated={(): void => setZoneSelected("Exclusive")}
+			/>,
+		);
+
 		return (
 			<>
 				<FullComponentHeader
@@ -190,12 +199,22 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 			assert(scrollingFrame.IsA("ScrollingFrame"), "Expected administrative pet spawning ui to have a ScrollingFrame.");
 
 			scrollingFrame.CanvasPosition = new Vector2(0, 0);
-
-			CollectionService.AddTag(uiGridLayout, `UnscaledInventoryGridLayout`);
+			CollectionService.AddTag(uiGridLayout, `InventoryGridLayout`);
 		});
 
 		const petsSelection: Array<SpawnedPet> = [];
 		for (const [, eggData] of pairs(EGGS)) {
+			if (zoneSelected === "Exclusive" && eggData.zone === "Limited") {
+				for (const [, petData] of pairs(eggData.pets)) {
+					petsSelection.push(
+						{ ...petData, variant: "regular" },
+						{ ...petData, variant: "void" },
+						{ ...petData, variant: "radiant" },
+					);
+				}
+				continue;
+			}
+
 			if (eggData.zone !== zoneSelected) {
 				continue;
 			}

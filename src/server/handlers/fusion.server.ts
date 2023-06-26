@@ -32,7 +32,8 @@ remotes.Server.Create("requestFusion").SetCallback(
 				};
 			}
 
-			if (storedPet.variant !== variant) {
+			const variantPetsShouldbe = variant === "radiant" ? "void" : variant === "void" ? "regular" : "";
+			if (storedPet.variant !== variantPetsShouldbe) {
 				return {
 					success: false,
 					reason: FusionFailKind.InternalError,
