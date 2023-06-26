@@ -1,4 +1,5 @@
 import { HttpService } from "@rbxts/services";
+import { modifyPetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { BoostProduct, GROUP_PET_ID, VIP_PET_ID } from "shared/configs/game";
 import { remotes } from "shared/remotes";
@@ -100,6 +101,11 @@ rewardRemotes.Get("claimGroupReward").SetCallback(
 		const hasClaimedPet = currentState.index.groupRewardClaimed.petIdClaimed === GROUP_PET_ID;
 		store.dispatch(claimGroupReward(timeStamp, boost, hasClaimedPet ? undefined : GROUP_PET_ID));
 		if (!hasClaimedPet) {
+			modifyPetCount({
+				type: "addPet",
+				petId: GROUP_PET_ID,
+				variant: "regular",
+			});
 			store.dispatch(
 				addPets(0, "coins", [
 					{
@@ -168,6 +174,11 @@ rewardRemotes.Get("claimVIPReward").SetCallback(
 		const hasClaimedPet = currentState.index.vipRewardClaimed.petIdClaimed === VIP_PET_ID;
 		store.dispatch(claimVIPReward(timeStamp, boost, hasClaimedPet ? undefined : VIP_PET_ID));
 		if (!hasClaimedPet) {
+			modifyPetCount({
+				type: "addPet",
+				petId: VIP_PET_ID,
+				variant: "regular",
+			});
 			store.dispatch(
 				addPets(0, "coins", [
 					{

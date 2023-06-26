@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { Players } from "@rbxts/services";
+import { Players, ReplicatedStorage } from "@rbxts/services";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
@@ -84,6 +84,11 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 	 */
 	const sendTrade = useCallback(
 		(player: Player): void => {
+			if (!ReplicatedStorage.events.trading.enabled.Value) {
+				addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
+				return;
+			}
+
 			if (
 				trueTradeState.value !== TradeState.Idle ||
 				Players.LocalPlayer.GetAttribute(TRADING_ATTRIBUTE) !== undefined
@@ -127,6 +132,11 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 	 * A callback to accept an inbound trade request.
 	 */
 	const acceptTrade = useCallback((): void => {
+		if (!ReplicatedStorage.events.trading.enabled.Value) {
+			addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
+			return;
+		}
+
 		if (trueTradeState.value !== TradeState.InboundPending) {
 			addAnnouncement("There was an issue accepting the trade. [I-3]", AnnouncementType.Error);
 			return;

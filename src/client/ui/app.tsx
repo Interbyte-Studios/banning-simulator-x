@@ -123,7 +123,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
-							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Announcement);
+							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
 							return;
 						}
 
@@ -179,7 +179,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
-							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Announcement);
+							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
 							return;
 						}
 
@@ -204,7 +204,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
-							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Announcement);
+							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
 							return;
 						}
 
@@ -229,7 +229,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
-							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Announcement);
+							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
 							return;
 						}
 
@@ -264,7 +264,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
-							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Announcement);
+							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
 							return;
 						}
 
