@@ -1,3 +1,4 @@
+import { t } from "@rbxts/t";
 import assetIds from "shared/assets";
 
 import { EggName } from "./eggs";
@@ -67,7 +68,8 @@ export const GAMEPASS_DESCRIPTIONS = {
 	Teleportation: "Teleport to any zone that you own!", // Implemented
 };
 
-export type BoostProduct = keyof typeof BOOST_PRODUCTS;
+export const isBoost = t.literal("x2 Currency", "x2 Hatching Luck", "x2 Pet Experience", "x2 Rank Experience");
+export type BoostProduct = t.static<typeof isBoost>;
 export const BOOST_PRODUCTS = {
 	["x2 Currency"]: {
 		// Implemented

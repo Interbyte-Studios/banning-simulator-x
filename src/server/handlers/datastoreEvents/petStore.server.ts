@@ -1,9 +1,9 @@
 import { DataStoreService } from "@rbxts/services";
-import { getNewHatchedPets, isValidPetHatchCount, setNewHatchedPets, setPetCount } from "server/modules/datastore/pets";
+import { getPetExistCache, isValidPetHatchCount, setNewHatchedPets, setPetCount } from "server/modules/datastore/pets";
 
 const datastoreEventsStore = DataStoreService.GetDataStore("DataStoreEvents", "PetStore");
-
 const PET_HATCH_KEY = "BSX_PetsStore";
+const getAsyncInterval = 30;
 
 /**
  * Attempts to write the server cache of newly hatched pets to the global cache.
@@ -16,7 +16,7 @@ function updateGlobalCache(): void {
 	// this gets a bit tricky for a second:
 	// we want to temporarily lock the server's cache
 	// so that we don't double-count when running the UpdateAsync callback
-	const serverNewHatchedPets = getNewHatchedPets();
+	const serverNewHatchedPets = getPetExistCache();
 	setNewHatchedPets([]);
 
 	const [writeSuccess, newCache] = pcall(() => {
@@ -26,16 +26,24 @@ function updateGlobalCache(): void {
 			}
 
 			// add on our server's changes
-			for (const petId of serverNewHatchedPets) {
-				let globalCount = globalData.find((pet) => pet.id === petId);
+			for (const petData of serverNewHatchedPets) {
+				let globalCount = globalData.find((pet) => pet.id === petData.petId);
 				if (globalCount === undefined) {
 					globalCount = {
-						id: petId,
-						existingAmount: 0,
+						id: petData.petId,
+						variants: {
+							regular: 0,
+							void: 0,
+							radiant: 0,
+						},
 					};
 					globalData.push(globalCount);
 				}
-				globalCount.existingAmount += 1;
+
+				for (const [name, modifiedCounter] of pairs(petData.variants)) {
+					globalCount.variants[name] += modifiedCounter.added;
+					globalCount.variants[name] -= modifiedCounter.removed;
+				}
 			}
 
 			return $tuple(globalData);
@@ -43,15 +51,17 @@ function updateGlobalCache(): void {
 	});
 
 	if (writeSuccess) {
-		for (const pet of newCache) {
-			setPetCount(pet.id, pet.existingAmount);
+		for (const petData of newCache) {
+			for (const [name, amount] of pairs(petData.variants)) {
+				setPetCount(petData.id, name, amount);
+			}
 		}
 	} else {
 		// we failed to update the global data store
 		// let's add all the pets back to the server cache
 		// the server cache has changed since we ran the UpdateAsync call
 		// so we need to retrieve it again
-		const changedServerHatchedPets = getNewHatchedPets();
+		const changedServerHatchedPets = getPetExistCache();
 		for (const pet of serverNewHatchedPets) {
 			changedServerHatchedPets.push(pet);
 		}
@@ -62,7 +72,7 @@ task.spawn(() => {
 	// eslint-disable-next-line no-constant-condition
 	while (true) {
 		updateGlobalCache();
-		task.wait(20);
+		task.wait(getAsyncInterval);
 	}
 });
 

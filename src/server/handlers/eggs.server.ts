@@ -1,6 +1,6 @@
 import Object from "@rbxts/object-utils";
 import { HttpService, Players, ReplicatedStorage } from "@rbxts/services";
-import { increasePetCount } from "server/modules/datastore/pets";
+import { modifyPetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { hatchDebounce } from "shared/configs/eggs";
 import { Rarities } from "shared/configs/rarities";
@@ -175,7 +175,13 @@ hatchEgg.SetCallback(
 				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
 			}
 
-			increasePetCount(pet.id);
+			if (!autoDeleted) {
+				modifyPetCount({
+					type: "addPet",
+					petId: pet.id,
+					variant: isVoid ? "void" : "regular",
+				});
+			}
 
 			selectedPets.push({
 				autoDeleted,

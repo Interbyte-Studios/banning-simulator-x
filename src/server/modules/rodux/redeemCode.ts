@@ -1,95 +1,12 @@
 import { HttpService } from "@rbxts/services";
 import { RedeemCodeFailKind } from "shared/remotes/media/redeemCode";
 import { Store } from "shared/rodux";
-import { codeData, redeemCode } from "shared/rodux/media";
+import { storeBoost } from "shared/rodux/boosts";
+import { awardCurrency } from "shared/rodux/currencies";
+import { redeemCode } from "shared/rodux/media";
+import { addPets, ConfirmedPet } from "shared/rodux/pets";
 
-const validCodes: Array<codeData> = [
-	{
-		name: "Release",
-		currency: {
-			amount: 500,
-			name: "gems",
-		},
-	},
-	{
-		name: "BanningSimX",
-		currency: {
-			amount: 750,
-			name: "gems",
-		},
-	},
-	{
-		name: "Interbyte",
-		currency: {
-			amount: 750,
-			name: "coins",
-		},
-	},
-	{
-		name: "FreeCoins",
-		currency: {
-			amount: 500,
-			name: "coins",
-		},
-	},
-	{
-		name: "FreeGems",
-		currency: {
-			amount: 500,
-			name: "gems",
-		},
-	},
-	{
-		name: "FreeLuck",
-		boosts: {
-			name: "x2 Hatching Luck",
-			time: 15,
-		},
-	},
-	{
-		name: "FreeCurrency",
-		boosts: {
-			name: "x2 Currency",
-			time: 15,
-		},
-	},
-	{
-		name: "FreePet",
-		pet: {
-			id: 5,
-			guid: HttpService.GenerateGUID(false),
-			variant: "void",
-		},
-	},
-	{
-		name: "Dungeons",
-		boosts: {
-			name: "x2 Rank Experience",
-			time: 15,
-		},
-	},
-	{
-		name: "TimeTrials",
-		boosts: {
-			name: "x2 Rank Experience",
-			time: 15,
-		},
-	},
-	{
-		name: "Collection",
-		boosts: {
-			name: "x2 Hatching Luck",
-			time: 15,
-		},
-	},
-	{
-		name: "Armor",
-		boosts: {
-			name: "x2 Currency",
-			time: 30,
-		},
-	},
-];
+import { getCodesCache } from "../datastore/codes";
 
 /**
  * Redeems a code.
@@ -102,7 +19,9 @@ export function checkRedeemCode(
 	store: Store,
 	code: string,
 ): { success: true } | { success: false; reason: RedeemCodeFailKind } {
-	const codeData = validCodes.find((c) => c.name === code);
+	const codesCache = getCodesCache();
+
+	const codeData = codesCache.find((activeCode) => activeCode.name === code);
 	if (codeData === undefined) {
 		return {
 			success: false,
@@ -118,7 +37,30 @@ export function checkRedeemCode(
 		};
 	}
 
-	store.dispatch(redeemCode(codeData.name, codeData.currency, codeData.boosts, codeData.pet, codeData.experience));
+	store.dispatch(redeemCode(codeData.name));
+
+	for (const boostReward of codeData.reward.boosts) {
+		store.dispatch(storeBoost(boostReward.name, boostReward.time));
+	}
+
+	if (codeData.reward.currency.amount > 0) {
+		store.dispatch(awardCurrency(codeData.reward.currency.name, codeData.reward.currency.amount));
+	}
+
+	const petsToAdd: Array<ConfirmedPet> = [];
+	for (const pet of codeData.reward.pets) {
+		petsToAdd.push({
+			id: pet.id,
+			variant: pet.variant,
+			method: "hatch",
+			tradeLocked: false,
+			autoDeleted: false,
+			guid: HttpService.GenerateGUID(false),
+		});
+	}
+
+	store.dispatch(addPets(0, "coins", petsToAdd));
+	store.dispatch(redeemCode(code));
 
 	return {
 		success: true,

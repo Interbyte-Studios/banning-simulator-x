@@ -15,6 +15,7 @@ const validDatastoreEventCache = t.strictInterface({
 		multiplier: t.number,
 	}),
 	luckEvent: t.boolean,
+	tradingEnabled: t.boolean,
 });
 export type ValidDatastoreEventCache = t.static<typeof validDatastoreEventCache>;
 
@@ -37,7 +38,7 @@ function updateDatastoreEventCache(): void {
 		return;
 	}
 
-	const { currencyEvent, experienceEvent, luckEvent } = dataOrError;
+	const { currencyEvent, experienceEvent, luckEvent, tradingEnabled } = dataOrError;
 
 	ReplicatedStorage.events.currency.enabled.Value = currencyEvent.enabled;
 	ReplicatedStorage.events.currency.multiplier.Value = currencyEvent.multiplier;
@@ -46,6 +47,7 @@ function updateDatastoreEventCache(): void {
 	ReplicatedStorage.events.experience.multiplier.Value = experienceEvent.multiplier;
 
 	ReplicatedStorage.events.luck.enabled.Value = luckEvent;
+	ReplicatedStorage.events.trading.enabled.Value = tradingEnabled;
 
 	ReplicatedStorage.events.timeUpdated.Value = Workspace.GetServerTimeNow();
 }

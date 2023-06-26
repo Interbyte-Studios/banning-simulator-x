@@ -1,3 +1,4 @@
+import { modifyPetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
 import { deletePets } from "shared/rodux/pets";
@@ -29,6 +30,13 @@ remotes.Server.GetNamespace("pets")
 				if (petData.rarity === "Prismatic" || petData.rarity === "Primordial") {
 					continue;
 				}
+
+				modifyPetCount({
+					type: "deletePet",
+					petId: storedPet.id,
+					variant: storedPet.variant,
+					amount: 1,
+				});
 
 				petsToDelete.push(petToDelete);
 			}

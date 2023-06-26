@@ -139,6 +139,9 @@ declare global {
 			luck: Configuration & {
 				enabled: BoolValue;
 			};
+			trading: Configuration & {
+				enabled: BoolValue;
+			};
 		};
 		leaderboards: Folder & {
 			bans: Folder;

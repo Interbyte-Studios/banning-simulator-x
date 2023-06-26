@@ -2,7 +2,6 @@ import Object from "@rbxts/object-utils";
 import Rodux from "@rbxts/rodux";
 import { currencies, Currency } from "shared/configs/currencies";
 
-import { RedeemCode } from "./media";
 import { AddPet, EnhancePet, Pet } from "./pets";
 import { RedeemQuest } from "./quests";
 import { UnlockRank } from "./rank";
@@ -88,7 +87,6 @@ export const currenciesReducer = Rodux.createReducer<
 	| AddPet
 	| RedeemQuest
 	| PurchaseTalisman
-	| RedeemCode
 	| EnhancePet
 	| UnlockRank
 >(defaultCurrencies, {
@@ -136,16 +134,6 @@ export const currenciesReducer = Rodux.createReducer<
 		return {
 			...state,
 			[action.cost.currency]: state[action.cost.currency] - action.cost.amount,
-		};
-	},
-	redeemCode: (state, action) => {
-		if (action.currency === undefined) {
-			return state;
-		}
-
-		return {
-			...state,
-			[action.currency.name]: state[action.currency.name] + action.currency.amount,
 		};
 	},
 	enhancePet: (state, action) => {

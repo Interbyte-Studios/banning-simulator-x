@@ -2,7 +2,6 @@ import Rodux from "@rbxts/rodux";
 import { t } from "@rbxts/t";
 import { BoostProduct } from "shared/configs/game";
 
-import { RedeemCode } from "./media";
 import { ClaimClubReward, ClaimGroupReward, ClaimVIPReward } from "./playerIndex";
 
 export interface BoostsState {
@@ -123,7 +122,7 @@ export const defaultBoosts: BoostsState = {
 /* eslint-disable jsdoc/require-jsdoc */
 export const boostsReducer = Rodux.createReducer<
 	BoostsState,
-	BoostActions | RedeemCode | ClaimGroupReward | ClaimClubReward | ClaimVIPReward
+	BoostActions | ClaimGroupReward | ClaimClubReward | ClaimVIPReward
 >(defaultBoosts, {
 	storeBoost: (state, action) => {
 		const timeIndex = tostring(action.boostTime) as ValidStoredBoostTime;
@@ -217,23 +216,6 @@ export const boostsReducer = Rodux.createReducer<
 				"x2 Hatching Luck": action.boosts.includes("x2 Hatching Luck")
 					? state.active["x2 Hatching Luck"] - 1
 					: state.active["x2 Hatching Luck"],
-			},
-		};
-	},
-	redeemCode: (state, action) => {
-		if (action.boosts === undefined) {
-			return state;
-		}
-
-		const timeIndex = tostring(action.boosts.time) as ValidStoredBoostTime;
-		return {
-			...state,
-			storage: {
-				...state.storage,
-				[action.boosts.name]: {
-					...state.storage[action.boosts.name],
-					[timeIndex]: state.storage[action.boosts.name][timeIndex] + 1,
-				},
 			},
 		};
 	},
