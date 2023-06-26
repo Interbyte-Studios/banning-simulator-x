@@ -1,7 +1,7 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { ContextActionService } from "@rbxts/services";
+import { ContextActionService, ReplicatedStorage } from "@rbxts/services";
 import { Store } from "shared/rodux";
 
 import { LocalMessages } from "./components/announcements";
@@ -29,6 +29,7 @@ import { Rewards } from "./components/standalone/rewards";
 import { RobuxShop } from "./components/standalone/robuxShop";
 import { WeaponEquip } from "./components/standalone/weaponEquip/weaponEquip";
 import { ZonesUI } from "./components/standalone/zones";
+import { AnnouncementContext, AnnouncementType } from "./context/AnnouncementsAPI";
 import { hooks } from "./hooks";
 import { remoteContext } from "./mocks/remoteContext";
 
@@ -56,6 +57,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 	const [visibility, setVisibility] = useState(visibilityStates);
 	const [activeTrade, setActiveTrade] = useState(false);
 
+	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
 
 	useEffect(() => {
@@ -119,7 +121,14 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
-					displayTradingMenu={(): void => setVisibility({ ...visibilityStates, trading: true })}
+					displayTradingMenu={(): void => {
+						if (!ReplicatedStorage.events.trading.enabled.Value) {
+							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Announcement);
+							return;
+						}
+
+						setVisibility({ ...visibilityStates, trading: true });
+					}}
 					onlyShowCurrency={false}
 				/>,
 				<WeaponShopHandle
@@ -168,7 +177,14 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
-					displayTradingMenu={(): void => setVisibility({ ...visibilityStates, trading: true })}
+					displayTradingMenu={(): void => {
+						if (!ReplicatedStorage.events.trading.enabled.Value) {
+							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Announcement);
+							return;
+						}
+
+						setVisibility({ ...visibilityStates, trading: true });
+					}}
 					onlyShowCurrency={true}
 				/>,
 			);
@@ -186,7 +202,14 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
-					displayTradingMenu={(): void => setVisibility({ ...visibilityStates, trading: true })}
+					displayTradingMenu={(): void => {
+						if (!ReplicatedStorage.events.trading.enabled.Value) {
+							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Announcement);
+							return;
+						}
+
+						setVisibility({ ...visibilityStates, trading: true });
+					}}
 					onlyShowCurrency={true}
 				/>,
 			);
@@ -204,7 +227,14 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
-					displayTradingMenu={(): void => setVisibility({ ...visibilityStates, trading: true })}
+					displayTradingMenu={(): void => {
+						if (!ReplicatedStorage.events.trading.enabled.Value) {
+							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Announcement);
+							return;
+						}
+
+						setVisibility({ ...visibilityStates, trading: true });
+					}}
 					onlyShowCurrency={true}
 				/>,
 			);
@@ -232,7 +262,14 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
-					displayTradingMenu={(): void => setVisibility({ ...visibilityStates, trading: true })}
+					displayTradingMenu={(): void => {
+						if (!ReplicatedStorage.events.trading.enabled.Value) {
+							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Announcement);
+							return;
+						}
+
+						setVisibility({ ...visibilityStates, trading: true });
+					}}
 					onlyShowCurrency={true}
 				/>,
 			);

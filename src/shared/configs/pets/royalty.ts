@@ -7,7 +7,7 @@ export const ROYALTY_EGG_PETS: Record<string, Pet> = {
 	"Royal Dragon": {
 		chance: 75,
 		id: 44,
-		rarity: "Rare",
+		rarity: "Exclusive",
 		fusionCost: 20000,
 		stats: {
 			additionalDamage: 375,
@@ -16,7 +16,7 @@ export const ROYALTY_EGG_PETS: Record<string, Pet> = {
 	"Royal Pegasus": {
 		chance: 23,
 		id: 45,
-		rarity: "Epic",
+		rarity: "Exclusive",
 		fusionCost: 24500,
 		stats: {
 			additionalDamage: 775,
@@ -25,7 +25,7 @@ export const ROYALTY_EGG_PETS: Record<string, Pet> = {
 	"Prime Royal": {
 		chance: 2,
 		id: 46,
-		rarity: "Legendary",
+		rarity: "Exclusive",
 		fusionCost: 28000,
 		stats: {
 			additionalDamage: 1350,

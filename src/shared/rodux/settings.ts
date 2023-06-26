@@ -13,7 +13,7 @@ export const isValidWalkSpeed = t.numberMin(16);
 export const isValidTimeOfDay = t.numberConstrained(0, 24);
 export const isValidPetDistance = t.numberConstrained(10, 20);
 
-export const isImmuneRarity = t.literal("Legendary", "Prismatic", "Primordial");
+export const isImmuneRarity = t.literal("Exclusive", "Legendary", "Prismatic", "Primordial");
 export type ImmuneRarities = t.static<typeof isImmuneRarity>;
 
 export interface Settings {

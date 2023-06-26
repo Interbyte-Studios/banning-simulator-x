@@ -35,6 +35,7 @@ export const defaultEggs: EggsState = {
 		Legendary: 0,
 		Primordial: 0,
 		Prismatic: 0,
+		Exclusive: 0,
 	},
 };
 
@@ -50,6 +51,7 @@ export const eggsReducer = Rodux.createReducer<EggsState, EggsActions>(defaultEg
 			Legendary: 0,
 			Primordial: 0,
 			Prismatic: 0,
+			Exclusive: 0,
 		};
 
 		for (const pet of action.pets) {
@@ -68,6 +70,7 @@ export const eggsReducer = Rodux.createReducer<EggsState, EggsActions>(defaultEg
 				Legendary: state.rarities.Legendary + newRarities.Legendary,
 				Primordial: state.rarities.Primordial + newRarities.Primordial,
 				Prismatic: state.rarities.Prismatic + newRarities.Prismatic,
+				Exclusive: state.rarities.Exclusive + newRarities.Exclusive,
 			},
 		};
 	},

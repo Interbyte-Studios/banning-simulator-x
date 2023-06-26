@@ -14,7 +14,7 @@ export type Rarity = keyof typeof RARITIES;
 export const RARITIES = preserveWithConstraint<Record<string, RarityGradient>>()({
 	Basic: {
 		id: 1,
-		reverseId: 7,
+		reverseId: 8,
 		maxFusions: 11,
 		betterMaxFusions: 9,
 		BeginningColor: Color3.fromRGB(210, 255, 212),
@@ -23,7 +23,7 @@ export const RARITIES = preserveWithConstraint<Record<string, RarityGradient>>()
 	},
 	Ordinary: {
 		id: 2,
-		reverseId: 6,
+		reverseId: 7,
 		maxFusions: 10,
 		betterMaxFusions: 8,
 		BeginningColor: Color3.fromRGB(253, 179, 255),
@@ -32,7 +32,7 @@ export const RARITIES = preserveWithConstraint<Record<string, RarityGradient>>()
 	},
 	Rare: {
 		id: 3,
-		reverseId: 5,
+		reverseId: 6,
 		maxFusions: 9,
 		betterMaxFusions: 7,
 		BeginningColor: Color3.fromRGB(255, 250, 184),
@@ -41,7 +41,7 @@ export const RARITIES = preserveWithConstraint<Record<string, RarityGradient>>()
 	},
 	Epic: {
 		id: 4,
-		reverseId: 4,
+		reverseId: 5,
 		maxFusions: 8,
 		betterMaxFusions: 6,
 		BeginningColor: Color3.fromRGB(255, 184, 184),
@@ -50,7 +50,7 @@ export const RARITIES = preserveWithConstraint<Record<string, RarityGradient>>()
 	},
 	Legendary: {
 		id: 5,
-		reverseId: 3,
+		reverseId: 4,
 		maxFusions: 7,
 		betterMaxFusions: 5,
 		BeginningColor: Color3.fromRGB(200, 198, 255),
@@ -67,7 +67,7 @@ export const RARITIES = preserveWithConstraint<Record<string, RarityGradient>>()
 	},
 	Prismatic: {
 		id: 6,
-		reverseId: 2,
+		reverseId: 3,
 		maxFusions: 4,
 		betterMaxFusions: 3,
 		BeginningColor: Color3.fromRGB(255, 222, 222),
@@ -84,7 +84,7 @@ export const RARITIES = preserveWithConstraint<Record<string, RarityGradient>>()
 	},
 	Primordial: {
 		id: 7,
-		reverseId: 1,
+		reverseId: 2,
 		maxFusions: 3,
 		betterMaxFusions: 2,
 		BeginningColor: Color3.fromRGB(255, 185, 186),
@@ -97,6 +97,23 @@ export const RARITIES = preserveWithConstraint<Record<string, RarityGradient>>()
 			new ColorSequenceKeypoint(0.6, Color3.fromRGB(255, 0, 255)),
 			new ColorSequenceKeypoint(0.85, Color3.fromRGB(255, 170, 255)),
 			new ColorSequenceKeypoint(1, Color3.fromRGB(255, 0, 127)),
+		]),
+	},
+	Exclusive: {
+		id: 8,
+		reverseId: 1,
+		maxFusions: 7,
+		betterMaxFusions: 5,
+		BeginningColor: Color3.fromRGB(194, 128, 250),
+		EndingColor: Color3.fromRGB(156, 10, 240),
+		SpecialColor: new ColorSequence([
+			new ColorSequenceKeypoint(0, Color3.fromRGB(140, 0, 255)),
+			new ColorSequenceKeypoint(0.15, Color3.fromRGB(204, 168, 247)),
+			new ColorSequenceKeypoint(0.4, Color3.fromRGB(204, 36, 237)),
+			new ColorSequenceKeypoint(0.5, Color3.fromRGB(255, 0, 222)),
+			new ColorSequenceKeypoint(0.6, Color3.fromRGB(204, 36, 237)),
+			new ColorSequenceKeypoint(0.85, Color3.fromRGB(204, 36, 237)),
+			new ColorSequenceKeypoint(1, Color3.fromRGB(140, 0, 255)),
 		]),
 	},
 });

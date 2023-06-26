@@ -7,7 +7,7 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 	"Quiet Angel": {
 		chance: 0,
 		id: 10003,
-		rarity: "Epic",
+		rarity: "Exclusive",
 		fusionCost: 100,
 		stats: {
 			additionalDamage: 40,
@@ -16,7 +16,7 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 	Seekstress: {
 		chance: 0,
 		id: 10004,
-		rarity: "Legendary",
+		rarity: "Exclusive",
 		fusionCost: 1000,
 		stats: {
 			additionalDamage: 125,
@@ -25,7 +25,7 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 	PeaceKeeper: {
 		chance: 0,
 		id: 10005,
-		rarity: "Legendary",
+		rarity: "Exclusive",
 		fusionCost: 20000,
 		stats: {
 			additionalDamage: 1250,

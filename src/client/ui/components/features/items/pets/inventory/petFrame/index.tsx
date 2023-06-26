@@ -82,6 +82,12 @@ export const PetFrame = hooks(
 		}, []);
 
 		useEffect(() => {
+			if (!props.inventory?.multiDeleteEnabled && isSelectedForDelete) {
+				setSelectedForDelete(false);
+			}
+		}, [props.inventory?.multiDeleteEnabled]);
+
+		useEffect(() => {
 			if (props.inventory !== undefined && isSelectedForDelete && !props.inventory.multiDeleteEnabled) {
 				setSelectedForDelete(false);
 			}

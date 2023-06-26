@@ -1,4 +1,5 @@
 import { HttpService, MarketplaceService, Players } from "@rbxts/services";
+import { modifyPetCount } from "server/modules/datastore/pets";
 import { retrieveStore } from "server/playerStore";
 import {
 	BOOST_PRODUCTS,
@@ -84,6 +85,12 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 			]),
 		);
 
+		modifyPetCount({
+			type: "addPet",
+			petId: selectedPet,
+			variant: "regular",
+		});
+
 		hatchSingleExclusive.SendToPlayer(player, LIMITED_EGG, selectedPet);
 		purchaseProcessed = true;
 	}
@@ -102,6 +109,12 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 				if (chance > 0) {
 					continue;
 				}
+
+				modifyPetCount({
+					type: "addPet",
+					petId: petData.id,
+					variant: "regular",
+				});
 
 				selectedPets.push(petData.id);
 				break;
@@ -143,6 +156,12 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 					},
 				]),
 			);
+
+			modifyPetCount({
+				type: "addPet",
+				petId: exclusivePet.petId,
+				variant: "regular",
+			});
 			purchaseProcessed = true;
 		}
 	}

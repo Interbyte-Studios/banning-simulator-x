@@ -123,6 +123,23 @@ export const PET_MASTERY_REQUIREMENTS = {
 			fuse: 1,
 		},
 	},
+	Exclusive: {
+		regular: {
+			hatch: 0,
+			maxLevel: 10,
+			fuse: 0,
+		},
+		void: {
+			hatch: 0,
+			maxLevel: 15,
+			fuse: 5,
+		},
+		radiant: {
+			hatch: 0,
+			maxLevel: 10,
+			fuse: 5,
+		},
+	},
 };
 
 interface Pet_Mastery_Rewards_Def {
@@ -394,6 +411,44 @@ export const PET_MASTERY_REWARDS: { [rarity in Rarity]: Pet_Mastery_Rewards_Def 
 		},
 	},
 	Prismatic: {
+		regular: {
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 120,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 120,
+			},
+			fuse: undefined, // no fuse requirement
+		},
+		void: {
+			hatch: {
+				boost: "x2 Hatching Luck",
+				duration: 120,
+			},
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 120,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 120,
+			},
+		},
+		radiant: {
+			hatch: undefined, // no hatch requirement
+			maxLevel: {
+				boost: "x2 Pet Experience",
+				duration: 120,
+			},
+			fuse: {
+				boost: "x2 Rank Experience",
+				duration: 120,
+			},
+		},
+	},
+	Exclusive: {
 		regular: {
 			hatch: {
 				boost: "x2 Hatching Luck",

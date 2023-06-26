@@ -66,6 +66,42 @@ const PetView = hooks((props: { storedPet: Pet }, hooks) => {
 });
 
 /**
+ * A counter that displays the amount that globally exist.
+ */
+const ExistAmount = hooks((props: { storedPet: Pet }, { useState, useEffect }) => {
+	const [existAmount, setExistAmount] = useState(0);
+	useEffect(() => {
+		const petExistCache = ReplicatedStorage.PetExistStores.FindFirstChild(props.storedPet.id) as Configuration;
+		if (petExistCache === undefined) {
+			return;
+		}
+
+		const variantCache = petExistCache.FindFirstChild(props.storedPet.variant) as IntValue;
+		if (variantCache === undefined) {
+			return;
+		}
+
+		if (existAmount !== variantCache.Value) {
+			setExistAmount(variantCache.Value);
+		}
+	});
+
+	if (existAmount > 0) {
+		return (
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.375, 0.6),
+					Size: UDim2.fromScale(0.675, 0.1),
+					TextColor3: Color3.fromRGB(255, 170, 255),
+					Text: `⭐ ${twoDpAbbreviator.numberToString(existAmount)} Exist`,
+				}}
+				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(111, 74, 111) } }}
+			/>
+		);
+	} else return <></>;
+});
+
+/**
  * Displays a summary of the pet being viewed in the item inventory.
  *
  * `inventoryFrame` is the frame in which all pets are rendered.
@@ -127,24 +163,6 @@ export const PetSummary = hooks(
 
 			return (): void => connections.forEach((conn) => conn.Disconnect());
 		}, []);
-
-		const existingCounter: Array<Roact.Element> = [];
-		const existAmount = ReplicatedStorage.PetExistStores.GetAttribute(tostring(props.storedPet.id));
-		if (existAmount !== undefined) {
-			if (typeIs(existAmount, "number")) {
-				existingCounter.push(
-					<StrokeTextLabel
-						native={{
-							Position: UDim2.fromScale(0.375, 0.6),
-							Size: UDim2.fromScale(0.675, 0.1),
-							TextColor3: Color3.fromRGB(255, 170, 255),
-							Text: `⭐ ${twoDpAbbreviator.numberToString(existAmount)} Exist`,
-						}}
-						stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(111, 74, 111) } }}
-					/>,
-				);
-			}
-		}
 
 		return (
 			<imagelabel
@@ -255,7 +273,7 @@ export const PetSummary = hooks(
 					}}
 					stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
 				/>
-				{existingCounter}
+				<ExistAmount storedPet={props.storedPet} />
 			</imagelabel>
 		);
 	},
