@@ -23,7 +23,7 @@ export function testAction<T, A extends StoreActions>(
 	const result = reducer(beforeState, action);
 
 	// check that the reducer produced the expect state value after
-	assertDeepEqual(result, afterState);
+	assertDeepEqual(result, afterState, "Unexpected result after running reducer");
 	// check that the reducer did not mutate the original input
-	assertDeepEqual(savedBeforeState, beforeState);
+	assertDeepEqual(savedBeforeState, beforeState, "Original state mutated when running reducer");
 }
