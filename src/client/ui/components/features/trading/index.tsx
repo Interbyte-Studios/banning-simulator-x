@@ -11,8 +11,16 @@ enum TradeState {
 
 interface TradingProps {
 	isEnabled: boolean;
-	setActiveTrade: (value: boolean) => void;
 	hideMenu: () => void;
+
+	// This "tradingPlayer" prop exists because since we only display the trading UI during an active trade,
+	// it resets the tradeState in this component to default value where the trade state is idle,
+	// so we need to refresh it's memory on who is being actively traded.
+	tradingPlayer: Player | undefined;
+	setTradingPlayer: (player: Player | undefined) => void;
+
+	tradeActive: boolean;
+	setActiveTrade: (value: boolean) => void;
 }
 
 /**
@@ -24,47 +32,54 @@ interface TradingProps {
  * @returns The Roact element to render.
  */
 export const Trading = hooks((props: TradingProps, hooks) => {
-	const { useState } = hooks;
+	const { useState, useEffect } = hooks;
 
-	const [tradeState, setTradeState] = useState<{
-		foreignPlayer: Player | undefined;
-		tradeState: TradeState;
-	}>({
-		foreignPlayer: undefined,
-		tradeState: TradeState.Idle,
-	});
+	const [foreignPlayer, setForeignPlayer] = useState<Player | undefined>(props.tradingPlayer);
+	const [tradeState, setTradeState] = useState(props.tradeActive ? TradeState.ActiveTrade : TradeState.Idle);
 
-	if (tradeState.tradeState === TradeState.Idle) {
+	useEffect(() => {
+		if (props.tradingPlayer !== foreignPlayer) {
+			setForeignPlayer(props.tradingPlayer);
+		}
+	}, [props.tradingPlayer]);
+
+	warn(`Rendering trade state. Foreign player: ${foreignPlayer}`);
+	if (tradeState === TradeState.Idle) {
 		return (
 			<InactiveTrade
 				isEnabled={props.isEnabled}
-				setForeignPlayer={(player: Player): void =>
-					setTradeState({
-						foreignPlayer: player,
-						tradeState: TradeState.Idle,
-					})
-				}
+				foreignPlayer={foreignPlayer}
+				setForeignPlayer={(player: Player): void => {
+					warn(`Setting foreign player to ${player.Name}!`);
+					setForeignPlayer(player);
+					props.setTradingPlayer(player);
+				}}
 				setActiveTrade={(): void => {
-					setTradeState({ foreignPlayer: tradeState.foreignPlayer, tradeState: TradeState.ActiveTrade });
+					if (foreignPlayer === undefined) {
+						warn(`Attempted to set active trade with undefined foreign player!`);
+						return;
+					}
+
+					warn(`Setting active trade!`);
+					setTradeState(TradeState.ActiveTrade);
 					props.setActiveTrade(true);
 				}}
 				hideMenu={props.hideMenu}
 			/>
 		);
-	} else if (tradeState.tradeState === TradeState.ActiveTrade) {
-		if (tradeState.foreignPlayer === undefined) {
+	} else if (tradeState === TradeState.ActiveTrade) {
+		if (foreignPlayer === undefined) {
 			return <></>;
 		}
 
 		return (
 			<ActiveTrade
-				targetPlayer={tradeState.foreignPlayer}
+				targetPlayer={foreignPlayer}
 				exitTrade={(): void => {
-					setTradeState({
-						foreignPlayer: undefined,
-						tradeState: TradeState.Idle,
-					});
+					setTradeState(TradeState.Idle);
+					setForeignPlayer(undefined);
 					props.hideMenu();
+					props.setTradingPlayer(undefined);
 					props.setActiveTrade(false);
 				}}
 			/>
