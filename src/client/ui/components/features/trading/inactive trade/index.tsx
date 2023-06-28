@@ -220,6 +220,16 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 				clientTradeError.SendToServer();
 			}
 		}
+
+		if (tradeState === TradeState.InboundPending) {
+			task.delay(10, (): void => {
+				if (trueTradeState.value === TradeState.InboundPending && foreignPlayer !== undefined) {
+					trueTradeState.value = TradeState.Idle;
+					setTradeStateMemo(undefined, TradeState.Idle, true);
+					declineTradeRequest.SendToServer(foreignPlayer);
+				}
+			});
+		}
 	}, [tradeState, foreignPlayer]);
 
 	/**

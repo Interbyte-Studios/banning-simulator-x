@@ -31,4 +31,13 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalDamage: 1250,
 		},
 	},
+	"Developer Gummy Bunny": {
+		chance: 0,
+		id: 10006,
+		rarity: "Exclusive",
+		fusionCost: 50000000000,
+		stats: {
+			additionalDamage: 5000000000000000,
+		},
+	},
 };

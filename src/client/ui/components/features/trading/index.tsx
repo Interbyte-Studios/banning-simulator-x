@@ -1,4 +1,5 @@
 import Roact from "@rbxts/roact";
+import { setIsTrading } from "client/modules/isTradingCache";
 import { hooks } from "client/ui/hooks";
 
 import { ActiveTrade } from "./active trade";
@@ -43,6 +44,14 @@ export const Trading = hooks((props: TradingProps, hooks) => {
 		}
 	}, [props.tradingPlayer]);
 
+	useEffect(() => {
+		if (props.tradeActive) {
+			setIsTrading(true);
+		} else {
+			setIsTrading(false);
+		}
+	}, [props.tradeActive]);
+
 	warn(`Rendering trade state. Foreign player: ${foreignPlayer}`);
 	if (tradeState === TradeState.Idle) {
 		return (
@@ -55,12 +64,6 @@ export const Trading = hooks((props: TradingProps, hooks) => {
 					props.setTradingPlayer(player);
 				}}
 				setActiveTrade={(): void => {
-					if (foreignPlayer === undefined) {
-						warn(`Attempted to set active trade with undefined foreign player!`);
-						return;
-					}
-
-					warn(`Setting active trade!`);
 					setTradeState(TradeState.ActiveTrade);
 					props.setActiveTrade(true);
 				}}
@@ -76,6 +79,7 @@ export const Trading = hooks((props: TradingProps, hooks) => {
 			<ActiveTrade
 				targetPlayer={foreignPlayer}
 				exitTrade={(): void => {
+					setIsTrading(false);
 					setTradeState(TradeState.Idle);
 					setForeignPlayer(undefined);
 					props.hideMenu();
