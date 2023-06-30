@@ -3,7 +3,7 @@ import assetIds from "shared/assets";
 
 import { EggName } from "./eggs";
 
-export const STORE_SCOPE = "TEST_STORE_5";
+export const STORE_SCOPE = "mainstore"; // Last test store was "TEST_STORE_5"
 
 export const MAIN_GROUP = 5126818;
 export const BANS_LEADERBOARD_ODS = `${STORE_SCOPE}_BANS_ODS`;

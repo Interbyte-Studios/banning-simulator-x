@@ -11,6 +11,7 @@ export const ROYALTY_EGG_PETS: Record<string, Pet> = {
 		fusionCost: 20000,
 		stats: {
 			additionalDamage: 375,
+			additionalBans: 30,
 		},
 	},
 	"Royal Pegasus": {
@@ -20,6 +21,7 @@ export const ROYALTY_EGG_PETS: Record<string, Pet> = {
 		fusionCost: 24500,
 		stats: {
 			additionalDamage: 775,
+			additionalBans: 80,
 		},
 	},
 	"Prime Royal": {
@@ -29,6 +31,7 @@ export const ROYALTY_EGG_PETS: Record<string, Pet> = {
 		fusionCost: 28000,
 		stats: {
 			additionalDamage: 1350,
+			additionalBans: 150,
 		},
 	},
 };

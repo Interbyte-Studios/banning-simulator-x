@@ -3,6 +3,7 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { MarketplaceService, Players, RunService, Workspace } from "@rbxts/services";
 import { getManualAutoFightState, setPurchasedAutoFight } from "client/modules/autoFightCache";
 import { toggleAutoFight } from "client/modules/autoFightWalkspeedHandler";
+import { getIsTrading } from "client/modules/isTradingCache";
 import {
 	uiClaimButtonStrokeColor,
 	uiDarkStrokeColor,
@@ -707,6 +708,10 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 							/* eslint-disable jsdoc/require-jsdoc */
 							Activated: (): void => {
 								playSFX(UIEngagement.MinorEngagement);
+								if (getIsTrading()) {
+									return;
+								}
+
 								setIsEnabled(false);
 							},
 						}}

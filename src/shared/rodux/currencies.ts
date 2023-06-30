@@ -15,6 +15,7 @@ export type CurrenciesActions = KillNpc | AwardCurrency;
 export interface KillNpc extends Rodux.Action<"killNpc"> {
 	currency: number;
 	currencyType: Currency;
+	bans: number;
 	experience: number;
 	weaponId: number;
 	talismanId: number | undefined;
@@ -30,6 +31,7 @@ export interface AwardCurrency extends Rodux.Action<"awardCurrency"> {
 /**
  * @param currencyAmount The amount of currency to reward the player with.
  * @param currencyType The type of currency to reward the player with.
+ * @param bans The amount of bans to give em.
  * @param experience The amount of experience to give them.
  * @param weaponId The id of the weapon the player has equipped.
  * @param talismanId The id of the talisman the player has equipped.
@@ -40,6 +42,7 @@ export interface AwardCurrency extends Rodux.Action<"awardCurrency"> {
 export function killNpc(
 	currencyAmount: number,
 	currencyType: Currency,
+	bans: number,
 	experience: number,
 	weaponId: number,
 	talismanId: number | undefined,
@@ -50,6 +53,7 @@ export function killNpc(
 		type: "killNpc",
 		currency: currencyAmount,
 		currencyType,
+		bans,
 		experience,
 		weaponId,
 		talismanId,

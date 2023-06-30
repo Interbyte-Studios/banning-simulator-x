@@ -195,8 +195,8 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 				<StatCard header={"Reg. Eggs:"} stat={statsAbbreviator.numberToString(totalRegularEggHatches)} layoutId={5} />
 				<StatCard header={"Void Eggs:"} stat={statsAbbreviator.numberToString(totalVoidEggHatches)} layoutId={6} />
 				<StatCard header={"Legends Hatched:"} stat={statsAbbreviator.numberToString(legendariesHatched)} layoutId={7} />
-				<StatCard header={"Prismatics Hatched:"} stat={prismaticsHatched} layoutId={8} />
-				<StatCard header={"Primordials Hatched:"} stat={primordialsHatched} layoutId={9} />
+				<StatCard header={"Prismatics Hatched:"} stat={tostring(prismaticsHatched)} layoutId={8} />
+				<StatCard header={"Primordials Hatched:"} stat={tostring(primordialsHatched)} layoutId={9} />
 				<StatCard header={"Weapon:"} stat={weaponName} layoutId={10} />
 				<StatCard header={"Talisman:"} stat={talismanName} layoutId={11} />
 				<StatCard header={"Group Rank:"} stat={groupRankName} textColor={groupRankColor} layoutId={12} />

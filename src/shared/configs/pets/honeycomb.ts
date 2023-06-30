@@ -10,6 +10,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 20,
+			additionalBans: 8,
 		},
 	},
 	"Doggy Bee": {
@@ -18,6 +19,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 20,
+			additionalBans: 8,
 		},
 	},
 	"Dinosaur Bee": {
@@ -26,6 +28,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 28,
+			additionalBans: 12,
 		},
 	},
 	"Evil Bee": {
@@ -34,6 +37,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 28,
+			additionalBans: 12,
 		},
 	},
 	"Bunny Bee": {
@@ -42,6 +46,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		rarity: "Rare",
 		stats: {
 			additionalDamage: 35,
+			additionalBans: 16,
 		},
 	},
 	"Honey Bee": {
@@ -50,6 +55,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 45,
+			additionalBans: 20,
 		},
 	},
 	"Pegasus Bee": {
@@ -58,6 +64,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 50,
+			additionalBans: 20,
 		},
 	},
 	"Queen Bee": {
@@ -66,6 +73,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 60,
+			additionalBans: 26,
 		},
 	},
 	"Mystical Bee": {
@@ -74,6 +82,7 @@ export const HONEYCOMB_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 70,
+			additionalBans: 32,
 		},
 	},
 };

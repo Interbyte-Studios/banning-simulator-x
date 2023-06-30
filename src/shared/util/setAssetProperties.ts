@@ -55,6 +55,15 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 				}
 
 				if (variant === "void") {
+					for (const particleEmitter of child.GetDescendants()) {
+						if (!particleEmitter.IsA("ParticleEmitter")) continue;
+
+						particleEmitter.Color = new ColorSequence([
+							new ColorSequenceKeypoint(0, Color3.fromRGB(85, 0, 255)),
+							new ColorSequenceKeypoint(1, Color3.fromRGB(183, 0, 255)),
+						]);
+					}
+
 					const petEyes = child.FindFirstChild("Eyes");
 					if (petEyes !== undefined && petEyes.IsA("Decal")) {
 						petEyes.Color3 = Color3.fromRGB(255, 0, 255);
@@ -70,9 +79,18 @@ export function setAssetProperties(assetType: ValidAssetType, assetObject: Model
 						}
 					}
 				} else if (variant === "radiant") {
+					for (const particleEmitter of child.GetDescendants()) {
+						if (!particleEmitter.IsA("ParticleEmitter")) continue;
+
+						particleEmitter.Color = new ColorSequence([
+							new ColorSequenceKeypoint(0, Color3.fromRGB(255, 255, 255)),
+							new ColorSequenceKeypoint(1, Color3.fromRGB(255, 255, 255)),
+						]);
+					}
+
 					const petEyes = child.FindFirstChild("Eyes");
 					if (petEyes !== undefined && petEyes.IsA("Decal")) {
-						petEyes.Color3 = Color3.fromRGB(255, 191, 161);
+						petEyes.Color3 = Color3.fromRGB(255, 255, 255);
 					}
 
 					const tags = CollectionService.GetTags(child);

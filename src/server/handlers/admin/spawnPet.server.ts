@@ -5,18 +5,19 @@ import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { retrieveStore } from "server/playerStore";
 import { ADMIN_RANK } from "shared/configs/admin";
 import { Currency } from "shared/configs/currencies";
-import { GROUP_ID } from "shared/configs/game";
 import { remotes } from "shared/remotes";
 import { addPets, ConfirmedPet } from "shared/rodux/pets";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetData } from "shared/util/getPetData";
 
 remotes.Server.GetNamespace("admin")
-	.Create("admin_SpawnPet")
+	.Get("admin_SpawnPet")
 	.Connect(
 		withPlayerStore((adminPlayer, store, targetPlayerId, petData) => {
-			const isAdminRank = adminPlayer.GetRankInGroup(GROUP_ID) >= ADMIN_RANK;
-			if (!isAdminRank) return;
+			const groupRank = store.getState().index.groupRank;
+			if (groupRank === undefined || groupRank < ADMIN_RANK) {
+				return;
+			}
 
 			const targetPlayer = game.GetService("Players").GetPlayerByUserId(targetPlayerId);
 			if (targetPlayer === undefined) return;
@@ -34,25 +35,25 @@ remotes.Server.GetNamespace("admin")
 			const currency: Currency = "coins";
 			const pet: ConfirmedPet = {
 				autoDeleted: false,
-				id: isValidPet.id,
+				id: petData.petId,
 				guid: HttpService.GenerateGUID(false),
 				variant: petData.variant,
 				method: "admin",
 				//enhancements: {},
-				tradeLocked: true,
+				tradeLocked: groupRank >= 254,
 			};
 
 			GameAnalytics.addErrorEvent(adminPlayer.UserId, {
 				severity: "warning",
 				message:
 					targetPlayer.UserId === adminPlayer.UserId
-						? `${adminPlayer.Name} Spawned pet | Pet: ${pet.id}`
-						: `${adminPlayer.Name} Spawned pet for user with id: ${targetPlayer.UserId} | Pet: ${pet.id}`,
+						? `${adminPlayer.Name} spawned pet | Pet: ${pet.id} | Variant: ${pet.variant}`
+						: `${adminPlayer.Name} spawned pet for user with id: ${targetPlayer.UserId} | Pet: ${pet.id} | Variant: ${pet.variant}`,
 			});
 			modifyPetCount({
 				type: "addPet",
-				petId: isValidPet.id,
-				variant: "regular",
+				petId: petData.petId,
+				variant: petData.variant,
 			});
 			targetPlayerStore.dispatch(addPets(cost, currency, [pet]));
 		}),

@@ -10,6 +10,7 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"City Bunny": {
@@ -18,6 +19,7 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"City Kitty": {
@@ -26,6 +28,7 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"City Deer": {
@@ -34,6 +37,7 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"City Angel": {
@@ -42,6 +46,7 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"City Defender": {
@@ -50,6 +55,7 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 };

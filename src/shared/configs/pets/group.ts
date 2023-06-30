@@ -11,6 +11,7 @@ export const GROUP_CHEST_PETS: Record<string, Pet> = {
 		fusionCost: 10000,
 		stats: {
 			additionalDamage: 25,
+			additionalBans: 5,
 		},
 	},
 	"Shade Glider": {
@@ -20,6 +21,7 @@ export const GROUP_CHEST_PETS: Record<string, Pet> = {
 		fusionCost: 28000,
 		stats: {
 			additionalDamage: 55,
+			additionalBans: 15,
 		},
 	},
 };

@@ -10,6 +10,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Corrupt Bunny": {
@@ -18,6 +19,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Corrupt Bear": {
@@ -26,6 +28,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Corrupt Deer": {
@@ -34,6 +37,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Corrupt Pegasus": {
@@ -42,6 +46,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Corrupt Demon": {
@@ -50,6 +55,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Corrupt Hyperhalo": {
@@ -58,6 +64,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Corrupt Duke": {
@@ -66,6 +73,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Corrupted Titan": {
@@ -74,6 +82,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Corrupted Overseer": {
@@ -82,6 +91,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		rarity: "Prismatic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 };

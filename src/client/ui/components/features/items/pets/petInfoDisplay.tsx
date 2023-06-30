@@ -312,6 +312,7 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 			return <></>;
 		}
 
+		const petStrength = getPetStrength(storedPet);
 		const petData = getPetData(storedPet.id);
 		const rarityData = RARITIES[petData.rarity];
 
@@ -455,18 +456,38 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 
 				<StrokeTextLabel
 					native={{
-						Position: UDim2.fromScale(0.7, 0.675),
-						Size: UDim2.fromScale(0.5, 0.08),
+						Position: UDim2.fromScale(0.35, 0.675),
+						Size: UDim2.fromScale(0.3, 0.08),
 						TextColor3: Color3.fromRGB(230, 64, 64),
-						Text: twoDpAbbreviator.numberToString(getPetStrength(storedPet)),
+						Text: twoDpAbbreviator.numberToString(petStrength.petDamage),
 						TextXAlignment: Enum.TextXAlignment.Left,
 					}}
 					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(105, 0, 0) } }}
 				>
 					<DamageIcon
 						anchorPoint={new Vector2(0, 0.5)}
-						position={UDim2.fromScale(-0.35, 0.5)}
+						position={UDim2.fromScale(-0.5, 0.5)}
 						size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+					/>
+				</StrokeTextLabel>
+
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.825, 0.675),
+						Size: UDim2.fromScale(0.3, 0.08),
+						TextColor3: Color3.fromRGB(230, 64, 64),
+						Text: twoDpAbbreviator.numberToString(petStrength.petBans),
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(105, 0, 0) } }}
+				>
+					<ImageLabel
+						native={{
+							AnchorPoint: new Vector2(0, 0.5),
+							Image: assetIds.images.vectors.Hammer,
+							Size: UDim2.fromScale(1, 1),
+							Position: UDim2.fromScale(-0.75, 0.5),
+						}}
 					/>
 				</StrokeTextLabel>
 

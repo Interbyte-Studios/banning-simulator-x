@@ -1,7 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
-import { setIsTrading } from "client/modules/isTradingCache";
 import { uiClaimButtonStrokeColor, uiDarkStrokeColor, uiOffButtonStrokeColor } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
@@ -29,8 +28,6 @@ export const TradeRequest = hooks(
 
 		const declineTradeRemote = useContext(remoteContext).declineTradeRequest;
 		const acceptTradeRemote = useContext(remoteContext).acceptTradeRequest;
-
-		setIsTrading(true);
 
 		return (
 			<BaseFrame Size={UDim2.fromScale(0.975, 0.9)}>

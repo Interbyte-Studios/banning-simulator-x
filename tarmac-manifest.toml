@@ -423,6 +423,11 @@ hash = "1f303a0f23e05ce23e4d14f0eb7266c9e43a3933ded62cc82edd16c8200a9490"
 id = 11435013537
 packable = false
 
+[inputs."images/decals/pets/Developer Gummy Bunny.png"]
+hash = "9013d2964b2e261a81813a613d5f24ba8225f6d35b8b85c0b4cf10bdb9502f5d"
+id = 13893668941
+packable = false
+
 [inputs."images/decals/pets/Dinosaur Bee.png"]
 hash = "2d037fd633b43e998e6e6ebaa21d31d0567b2599b23a73a4d3ddefb44a720954"
 id = 11440090866
@@ -841,6 +846,11 @@ packable = false
 [inputs."images/decals/pets/Radiant Desert Wraith.png"]
 hash = "6c369cd5c213198b00a2ddeb93e8bcef254da1a5f19421744534bfa9be0100c1"
 id = 11435015383
+packable = false
+
+[inputs."images/decals/pets/Radiant Developer Gummy Bunny.png"]
+hash = "77f23e2aa1b0c4808268718d8fb111a220045089386396790962c44ffd397455"
+id = 13893669275
 packable = false
 
 [inputs."images/decals/pets/Radiant Dinosaur Bee.png"]
@@ -1311,6 +1321,11 @@ packable = false
 [inputs."images/decals/pets/Void Desert Wraith.png"]
 hash = "9f0c131bb4f9b5a8cdf553501d8d13ca945a5fe048fd12991ce74e48d32e0b68"
 id = 11435017297
+packable = false
+
+[inputs."images/decals/pets/Void Developer Gummy Bunny.png"]
+hash = "ca8554d7e868d777e0a8b94a4773b6b9db370eb1f4c4e26f9fa307be9ba4f17a"
+id = 13893669602
 packable = false
 
 [inputs."images/decals/pets/Void Dinosaur Bee.png"]
