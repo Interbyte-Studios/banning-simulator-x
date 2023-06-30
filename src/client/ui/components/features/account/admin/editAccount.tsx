@@ -5,7 +5,7 @@ import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/stro
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { ADMIN_RANK } from "shared/configs/admin";
+import { MODERATOR_RANK } from "shared/configs/admin";
 import { StoreState } from "shared/rodux";
 
 interface EditAccountProps extends EditAccountMappedProps {
@@ -31,7 +31,7 @@ function editAccountMapProps(state: StoreState): EditAccountMappedProps {
 /* eslint-disable jsdoc/require-jsdoc */
 export const EditAccount = RoactRodux.connect(editAccountMapProps)(
 	hooks((props: EditAccountProps) => {
-		if (props.groupRank === undefined || props.groupRank < ADMIN_RANK) {
+		if (props.groupRank === undefined || props.groupRank < MODERATOR_RANK) {
 			return <></>;
 		}
 

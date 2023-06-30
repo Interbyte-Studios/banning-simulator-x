@@ -2,20 +2,21 @@ import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { ADMIN_RANK } from "shared/configs/admin";
-import { GROUP_ID } from "shared/configs/game";
 import { remotes } from "shared/remotes";
 
 remotes.Server.GetNamespace("admin")
 	.Create("admin_ShutdownServer")
 	.Connect(
-		withPlayerStore((adminPlayer) => {
-			const isAdminRank = adminPlayer.GetRankInGroup(GROUP_ID) >= ADMIN_RANK;
-			if (!isAdminRank) return;
+		withPlayerStore((adminPlayer, store) => {
+			const groupRank = store.getState().index.groupRank;
+			if (groupRank === undefined || groupRank < ADMIN_RANK) {
+				return;
+			}
 
 			task.spawn(() => {
 				GameAnalytics.addErrorEvent(adminPlayer.UserId, {
 					severity: "warning",
-					message: `Shutdown server`,
+					message: `${adminPlayer.Name} shutdown a server.`,
 				});
 
 				// eslint-disable-next-line no-constant-condition
