@@ -161,7 +161,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		const scrollingFrame = scrollingFrameRef.value.getValue();
 		assert(scrollingFrame, `No ScrollingFrame was found for Virtual Scroll`);
 
-		sortPets(props.pets, true, true);
+		sortPets(props.pets, true, true, props.selectedPets);
 		let newPets: Array<PetInventoryData> = [];
 		if (props.searchText !== undefined && props.searchText !== "") {
 			const searchText = props.searchText.lower();
@@ -194,20 +194,8 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 
 	const elementsToDisplay: Array<Roact.Element> = useMemo(() => {
 		const result: Array<Roact.Element> = [];
-		let selectedId = 0;
 		renderedPets.forEach((pet, index) => {
 			const isSelected = props.selectedPets?.includes(pet.guid);
-			let layoutOrder = index;
-
-			if (props.selectedPets !== undefined) {
-				if (isSelected) {
-					selectedId += 1;
-					layoutOrder = selectedId;
-				} else {
-					layoutOrder = index + props.selectedPets.size() + 1;
-				}
-			}
-
 			if (props.inventoryFrame !== undefined) {
 				result.push(
 					<PetFrame
@@ -215,7 +203,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 						native={{
 							isRendered: pet.isRendered,
 							storedPetData: pet,
-							layoutOrderIndex: layoutOrder,
+							layoutOrderIndex: index,
 							displayFrame: props.noToolTipDispay ? undefined : scrollingFrameRef.value,
 							isSelected: isSelected,
 						}}
@@ -234,7 +222,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 						native={{
 							isRendered: pet.isRendered,
 							storedPetData: pet,
-							layoutOrderIndex: layoutOrder,
+							layoutOrderIndex: index,
 							onActivated: props.onActivated,
 							displayFrame: props.noToolTipDispay ? undefined : scrollingFrameRef.value,
 							isSelected: isSelected,
@@ -248,7 +236,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 						native={{
 							isRendered: pet.isRendered,
 							storedPetData: pet,
-							layoutOrderIndex: layoutOrder,
+							layoutOrderIndex: index,
 							displayFrame: props.noToolTipDispay ? undefined : scrollingFrameRef.value,
 						}}
 					/>,

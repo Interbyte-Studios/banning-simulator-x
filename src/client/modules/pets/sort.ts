@@ -12,13 +12,23 @@ const variantMapping = { regular: 1, void: 2, radiant: 3 };
  * @param pets The collection of pets to sort.
  * @param checkForEquipped Whether or not to sort for equipped.
  * @param checkForLocked Whether or not to sort for locked.
+ * @param selectedPets Whether the pet is selected or not.
  */
 export function sortPets(
 	pets: PetsState | Array<PetInventoryData>,
 	checkForEquipped: boolean,
 	checkForLocked: boolean,
+	selectedPets?: Array<string>,
 ): void {
 	table.sort(pets, (pet1: Pet, pet2: Pet) => {
+		if (selectedPets !== undefined && selectedPets.includes(pet1.guid)) {
+			return true;
+		}
+
+		if (selectedPets !== undefined && selectedPets.includes(pet2.guid)) {
+			return false;
+		}
+
 		// Sort by equipped status if requested
 		if (checkForEquipped) {
 			if (pet1.equipped !== pet2.equipped) {
