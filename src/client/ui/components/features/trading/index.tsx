@@ -1,4 +1,5 @@
 import Roact from "@rbxts/roact";
+import { Players } from "@rbxts/services";
 import { setIsTrading } from "client/modules/isTradingCache";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { hooks } from "client/ui/hooks";
@@ -54,6 +55,30 @@ export const Trading = hooks((props: TradingProps, hooks) => {
 			setIsTrading(false);
 		}
 	}, [props.tradeActive]);
+
+	useEffect(() => {
+		if (!props.tradeActive) {
+			return;
+		}
+
+		if (foreignPlayer === undefined) {
+			return;
+		}
+
+		const connection = Players.PlayerRemoving.Connect((player) => {
+			if (player.UserId === foreignPlayer?.UserId) {
+				addAnnouncement("The other player has left the game.", AnnouncementType.Announcement);
+				setIsTrading(false);
+				setTradeState(TradeState.Idle);
+				setForeignPlayer(undefined);
+				props.hideMenu();
+				props.setTradingPlayer(undefined);
+				props.setActiveTrade(false);
+			}
+		});
+
+		return (): void => connection.Disconnect();
+	}, [foreignPlayer, props.tradeActive]);
 
 	if (tradeState === TradeState.Idle) {
 		return (

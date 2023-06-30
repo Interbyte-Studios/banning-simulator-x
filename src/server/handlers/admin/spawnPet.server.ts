@@ -12,9 +12,14 @@ import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetData } from "shared/util/getPetData";
 
 remotes.Server.GetNamespace("admin")
-	.Create("admin_SpawnPet")
+	.Get("admin_SpawnPet")
 	.Connect(
 		withPlayerStore((adminPlayer, store, targetPlayerId, petData) => {
+			const groupRank = store.getState().index.groupRank;
+			if (groupRank === undefined || groupRank < ADMIN_RANK) {
+				return;
+			}
+
 			const isAdminRank = adminPlayer.GetRankInGroup(GROUP_ID) >= ADMIN_RANK;
 			if (!isAdminRank) return;
 
@@ -39,7 +44,7 @@ remotes.Server.GetNamespace("admin")
 				variant: petData.variant,
 				method: "admin",
 				//enhancements: {},
-				tradeLocked: true,
+				tradeLocked: groupRank >= 254,
 			};
 
 			GameAnalytics.addErrorEvent(adminPlayer.UserId, {

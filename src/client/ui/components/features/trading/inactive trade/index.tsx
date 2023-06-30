@@ -95,7 +95,6 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 		[props.foreignPlayer, tradeState],
 	);
 
-	warn(`Inactive trade rendering with trade state is ${tradeState}.`);
 	/**
 	 * Sends a trade request to the player.
 	 *
