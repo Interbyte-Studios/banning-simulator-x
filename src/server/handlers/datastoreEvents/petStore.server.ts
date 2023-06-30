@@ -1,7 +1,8 @@
 import { DataStoreService } from "@rbxts/services";
 import { getPetExistCache, isValidPetHatchCount, setNewHatchedPets, setPetCount } from "server/modules/datastore/pets";
+import { STORE_SCOPE } from "shared/configs/game";
 
-const datastoreEventsStore = DataStoreService.GetDataStore("DataStoreEvents", "PetStore");
+const datastoreEventsStore = DataStoreService.GetDataStore("DataStoreEvents", STORE_SCOPE);
 const PET_HATCH_KEY = "BSX_PetsStore";
 const getAsyncInterval = 30;
 
