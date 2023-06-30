@@ -352,7 +352,25 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
  */
 export function PetInfoView(props: { pet: number; variant: Variants; isDiscovered: boolean }): Roact.Element {
 	const petData = getPetData(props.pet);
-	const existAmount = ReplicatedStorage.PetExistStores.GetAttribute(tostring(props.pet));
+	const existElement: Array<Roact.Element> = [];
+
+	const existAmount = ReplicatedStorage.PetExistStores.FindFirstChild(props.pet);
+	if (existAmount !== undefined) {
+		const variantAmount = existAmount.FindFirstChild(props.variant) as IntValue;
+		if (variantAmount !== undefined) {
+			existElement.push(
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.7, 0.375),
+						Size: UDim2.fromScale(0.5, 0.07),
+						TextColor3: Color3.fromRGB(255, 170, 255),
+						Text: `⭐ ${twoDpAbbreviator.numberToString(variantAmount.Value)} Exist`,
+					}}
+					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(111, 74, 111) } }}
+				/>,
+			);
+		}
+	}
 
 	return (
 		<>
@@ -362,17 +380,7 @@ export function PetInfoView(props: { pet: number; variant: Variants; isDiscovere
 			<ExtraStats pet={props.pet} variant={props.variant} />
 			<MinAndMaxStats pet={petData} variant={props.variant} />
 
-			{typeIs(existAmount, "number") && (
-				<StrokeTextLabel
-					native={{
-						Position: UDim2.fromScale(0.7, 0.375),
-						Size: UDim2.fromScale(0.5, 0.07),
-						TextColor3: Color3.fromRGB(255, 170, 255),
-						Text: `⭐ ${twoDpAbbreviator.numberToString(existAmount)} Exist`,
-					}}
-					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(111, 74, 111) } }}
-				/>
-			)}
+			{existElement}
 		</>
 	);
 }

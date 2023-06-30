@@ -72,9 +72,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 			} else {
 				for (let index = 0; index < newPets.size(); index++) {
 					const pet = newPets[index];
-
-					const trueIndex = selectedPets !== undefined ? index + selectedPets.size() : index;
-					const y = math.floor(trueIndex / gridLayout.FillDirectionMaxCells);
+					const y = math.floor(index / gridLayout.FillDirectionMaxCells);
 					const yPos = y * gridLayout.CellSize.Y.Offset + y * gridLayout.CellPadding.Y.Offset;
 
 					// the frame can be visible if we are half way from the previous y coordinate
@@ -162,6 +160,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		assert(scrollingFrame, `No ScrollingFrame was found for Virtual Scroll`);
 
 		sortPets(props.pets, true, true, props.selectedPets);
+		warn(`Sorted pets!`);
 		let newPets: Array<PetInventoryData> = [];
 		if (props.searchText !== undefined && props.searchText !== "") {
 			const searchText = props.searchText.lower();

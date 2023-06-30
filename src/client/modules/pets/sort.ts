@@ -21,12 +21,13 @@ export function sortPets(
 	selectedPets?: Array<string>,
 ): void {
 	table.sort(pets, (pet1: Pet, pet2: Pet) => {
-		if (selectedPets !== undefined && selectedPets.includes(pet1.guid)) {
-			return true;
-		}
+		if (selectedPets !== undefined) {
+			const pet1IsSelected = selectedPets.includes(pet1.guid);
+			const pet2IsSelected = selectedPets.includes(pet2.guid);
 
-		if (selectedPets !== undefined && selectedPets.includes(pet2.guid)) {
-			return false;
+			if (pet1IsSelected !== pet2IsSelected) {
+				return pet1IsSelected;
+			}
 		}
 
 		// Sort by equipped status if requested
