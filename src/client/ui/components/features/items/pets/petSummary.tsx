@@ -90,7 +90,7 @@ const ExistAmount = hooks((props: { storedPet: Pet }, { useState, useEffect }) =
 		return (
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.375, 0.6),
+					Position: UDim2.fromScale(0.375, 0.7),
 					Size: UDim2.fromScale(0.675, 0.1),
 					TextColor3: Color3.fromRGB(255, 170, 255),
 					Text: `⭐ ${twoDpAbbreviator.numberToString(existAmount)} Exist`,
@@ -112,6 +112,7 @@ export const PetSummary = hooks(
 		const rarityData = RARITIES[petData.rarity];
 
 		const petLevel = math.floor(getPetLevel(props.storedPet));
+		const petStrength = getPetStrength(props.storedPet);
 
 		const petSummaryRef = useValue(Roact.createRef<ImageLabel>());
 		useEffect(() => {
@@ -217,10 +218,20 @@ export const PetSummary = hooks(
 
 				<StrokeTextLabel
 					native={{
+						Size: UDim2.fromScale(0.625, 0.1),
+						Position: UDim2.fromScale(0.35, 0.4),
+						Text: `Damage:`,
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+				/>
+
+				<StrokeTextLabel
+					native={{
 						Position: UDim2.fromScale(0.735, 0.4),
 						Size: UDim2.fromScale(0.35, 0.1),
 						TextColor3: Color3.fromRGB(230, 64, 64),
-						Text: twoDpAbbreviator.numberToString(getPetStrength(props.storedPet)),
+						Text: twoDpAbbreviator.numberToString(petStrength.petDamage),
 						TextXAlignment: Enum.TextXAlignment.Left,
 					}}
 					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(105, 0, 0) } }}
@@ -235,8 +246,8 @@ export const PetSummary = hooks(
 				<StrokeTextLabel
 					native={{
 						Size: UDim2.fromScale(0.625, 0.1),
-						Position: UDim2.fromScale(0.35, 0.4),
-						Text: `Damage:`,
+						Position: UDim2.fromScale(0.35, 0.5),
+						Text: `Bans:`,
 						TextXAlignment: Enum.TextXAlignment.Left,
 					}}
 					stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
@@ -244,8 +255,28 @@ export const PetSummary = hooks(
 
 				<StrokeTextLabel
 					native={{
+						Position: UDim2.fromScale(0.735, 0.5),
+						Size: UDim2.fromScale(0.35, 0.1),
+						TextColor3: Color3.fromRGB(230, 64, 64),
+						Text: twoDpAbbreviator.numberToString(petStrength.petBans),
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(105, 0, 0) } }}
+				>
+					<ImageLabel
+						native={{
+							AnchorPoint: new Vector2(0, 0.5),
+							Image: assetIds.images.vectors.Hammer,
+							Size: UDim2.fromScale(1, 1),
+							Position: UDim2.fromScale(-0.7, 0.5),
+						}}
+					/>
+				</StrokeTextLabel>
+
+				<StrokeTextLabel
+					native={{
 						Size: UDim2.fromScale(0.9, 0.08),
-						Position: UDim2.fromScale(0.485, 0.5),
+						Position: UDim2.fromScale(0.485, 0.6),
 						Text:
 							props.storedPet.variant !== "radiant"
 								? `${tostring(petData.chance)}% Hatch Chance`

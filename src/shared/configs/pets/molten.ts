@@ -10,6 +10,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 350,
+			additionalBans: 48,
 		},
 	},
 	"Molten Bunny": {
@@ -18,6 +19,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 400,
+			additionalBans: 64,
 		},
 	},
 	"Molten Kitty": {
@@ -26,6 +28,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 400,
+			additionalBans: 64,
 		},
 	},
 	"Molten Squirrel": {
@@ -34,6 +37,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 400,
+			additionalBans: 64,
 		},
 	},
 	"Molten Pegasus": {
@@ -42,6 +46,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 665,
+			additionalBans: 80,
 		},
 	},
 	"Molten Blob": {
@@ -50,6 +55,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 720,
+			additionalBans: 85,
 		},
 	},
 	"Molten Wraith": {
@@ -58,6 +64,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 770,
+			additionalBans: 90,
 		},
 	},
 	"Molten Leviathan": {
@@ -66,6 +73,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 870,
+			additionalBans: 110,
 		},
 	},
 	"Molten Destroyer": {
@@ -74,6 +82,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 950,
+			additionalBans: 125,
 		},
 	},
 	Coreye: {
@@ -82,6 +91,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		rarity: "Prismatic",
 		stats: {
 			additionalDamage: 8500,
+			additionalBans: 450,
 		},
 	},
 };

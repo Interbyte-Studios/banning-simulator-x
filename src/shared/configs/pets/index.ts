@@ -29,6 +29,7 @@ export interface Pet {
 	 */
 	stats: {
 		additionalDamage: number;
+		additionalBans: number;
 	};
 }
 

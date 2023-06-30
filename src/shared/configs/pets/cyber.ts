@@ -10,6 +10,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Cyber Bunny": {
@@ -18,6 +19,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Cyber Kitty": {
@@ -26,6 +28,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Cyber Bear": {
@@ -34,6 +37,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Cyber Angel": {
@@ -42,6 +46,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Cyber Pegasus": {
@@ -50,6 +55,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Cybernetic Phoenix": {
@@ -58,6 +64,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Cybernetic Guard": {
@@ -66,6 +73,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Cybernetic Dementor": {
@@ -74,6 +82,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Cybernetic Destroyer": {
@@ -82,6 +91,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Prismatic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 };

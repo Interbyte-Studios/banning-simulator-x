@@ -63,7 +63,7 @@ export = (): void => {
 			const state = [weaponData];
 			const newState = [updatedWeaponData];
 
-			const action = killNpc(0, "coins", 1, weaponData.id, 1, 1, []);
+			const action = killNpc(0, "coins", 1, 1, weaponData.id, 1, 1, []);
 			testAction(state, newState, weaponsReducer, action);
 		});
 	});

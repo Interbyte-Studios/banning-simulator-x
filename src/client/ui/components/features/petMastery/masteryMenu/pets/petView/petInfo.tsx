@@ -14,7 +14,7 @@ import { Pet, PET_MAX_LEVELS, Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
 import { getPetData } from "shared/util/getPetData";
-import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
+import { twoDpAbbreviator, zeroDecimalAbbreviator } from "shared/util/twoDpAbbreviator";
 
 interface PetData extends Pet {
 	name: string;
@@ -286,38 +286,60 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
 
 	const variantMultiplier = props.variant === "radiant" ? 3 : props.variant === "void" ? 2 : 1;
 	const strengthPerLevel = (props.pet.stats.additionalDamage * variantMultiplier) / maxLevel;
+	const bansPetLevel = (props.pet.stats.additionalBans * variantMultiplier) / maxLevel;
 
 	const petDamage = math.floor(props.pet.stats.additionalDamage * variantMultiplier + maxLevel * strengthPerLevel);
+	const petBans = math.floor(props.pet.stats.additionalBans * variantMultiplier + maxLevel * bansPetLevel);
 
 	return (
 		<>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.315, 0.475),
+					Position: UDim2.fromScale(0.225, 0.475),
 					Size: UDim2.fromScale(0.4, 0.1),
 					Text: `Level 1:`,
+					TextXAlignment: Enum.TextXAlignment.Left,
 				}}
 				stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
 			/>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.8, 0.475),
-					Size: UDim2.fromScale(0.35, 0.1),
+					Position: UDim2.fromScale(0.6, 0.475),
+					Size: UDim2.fromScale(0.18, 0.1),
 					TextColor3: Color3.fromRGB(230, 64, 64),
-					Text: twoDpAbbreviator.numberToString(props.pet.stats.additionalDamage * variantMultiplier),
+					Text: zeroDecimalAbbreviator.numberToString(props.pet.stats.additionalDamage * variantMultiplier),
 					TextXAlignment: Enum.TextXAlignment.Left,
 				}}
 				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(126, 24, 75) } }}
 			>
 				<DamageIcon
 					anchorPoint={new Vector2(0, 0.5)}
-					position={UDim2.fromScale(-0.35, 0.5)}
+					position={UDim2.fromScale(-0.575, 0.5)}
 					size={{ minimizedSize: 0.9, maximizedSize: 1 }}
 				/>
 			</StrokeTextLabel>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.305, 0.625),
+					Position: UDim2.fromScale(0.875, 0.475),
+					Size: UDim2.fromScale(0.18, 0.1),
+					TextColor3: Color3.fromRGB(230, 64, 64),
+					Text: zeroDecimalAbbreviator.numberToString(props.pet.stats.additionalBans * variantMultiplier),
+					TextXAlignment: Enum.TextXAlignment.Left,
+				}}
+				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(126, 24, 75) } }}
+			>
+				<ImageLabel
+					native={{
+						AnchorPoint: new Vector2(-0.5, 0.5),
+						Image: assetIds.images.vectors.Hammer,
+						Size: UDim2.fromScale(1, 1),
+						Position: UDim2.fromScale(-0.85, 0.5),
+					}}
+				/>
+			</StrokeTextLabel>
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.225, 0.625),
 					Size: UDim2.fromScale(0.4, 0.1),
 					Text: `Level ${maxLevel}:`,
 				}}
@@ -325,18 +347,37 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
 			/>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.8, 0.625),
-					Size: UDim2.fromScale(0.35, 0.1),
+					Position: UDim2.fromScale(0.6, 0.625),
+					Size: UDim2.fromScale(0.18, 0.1),
 					TextColor3: Color3.fromRGB(230, 64, 64),
-					Text: twoDpAbbreviator.numberToString(petDamage),
+					Text: zeroDecimalAbbreviator.numberToString(petDamage),
 					TextXAlignment: Enum.TextXAlignment.Left,
 				}}
 				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(126, 24, 75) } }}
 			>
 				<DamageIcon
 					anchorPoint={new Vector2(0, 0.5)}
-					position={UDim2.fromScale(-0.35, 0.5)}
+					position={UDim2.fromScale(-0.575, 0.5)}
 					size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+				/>
+			</StrokeTextLabel>
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.875, 0.625),
+					Size: UDim2.fromScale(0.18, 0.1),
+					TextColor3: Color3.fromRGB(230, 64, 64),
+					Text: zeroDecimalAbbreviator.numberToString(petBans),
+					TextXAlignment: Enum.TextXAlignment.Left,
+				}}
+				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(126, 24, 75) } }}
+			>
+				<ImageLabel
+					native={{
+						AnchorPoint: new Vector2(0, 0.5),
+						Image: assetIds.images.vectors.Hammer,
+						Size: UDim2.fromScale(1, 1),
+						Position: UDim2.fromScale(-0.85, 0.5),
+					}}
 				/>
 			</StrokeTextLabel>
 		</>

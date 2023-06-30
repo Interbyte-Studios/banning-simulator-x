@@ -151,9 +151,11 @@ export function runStep(
 
 		const equippedPets = store.getState().pets.filter((pet) => pet.equipped);
 		let petDamageBonus = 0;
+		let petBansBonus = 0;
 		for (const pet of equippedPets) {
 			const petStrength = getPetStrength(pet);
-			petDamageBonus += petStrength;
+			petDamageBonus += petStrength.petDamage;
+			petBansBonus += petStrength.petBans;
 		}
 
 		const damageAmount = weaponDamage + talismanStatEffects.damage + petDamageBonus;
@@ -170,6 +172,7 @@ export function runStep(
 			}
 
 			const { reward } = npc.npc;
+			petBansBonus += reward.bans;
 
 			// get currency multiplier
 			const currencyBoosters: Array<number> = [];
@@ -215,14 +218,12 @@ export function runStep(
 			petExperienceMultiplier = petExperienceMultiplier > 1 ? petExperienceMultiplier : 1;
 			petExperienceMultiplier += getPetExperienceMastery(store.getState().index).additionalPetExperienceMultiplier - 1;
 
-			// get equipped pets
-			const equippedPets = store.getState().pets.filter((pet) => pet.equipped);
-
 			// apply reward
 			store.dispatch(
 				killNpc(
 					reward.currency * currencyMultiplier,
 					WORLDS[npc.world.name].reward,
+					petBansBonus,
 					reward.experience * experienceMultiplier,
 					storeState.currentWeapon.id,
 					storeState.currentTalisman,

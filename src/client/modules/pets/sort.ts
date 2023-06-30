@@ -47,8 +47,8 @@ export function sortPets(
 		// Sort by strength
 		const pet1Strength = getPetStrength(pet1);
 		const pet2Strength = getPetStrength(pet2);
-		if (pet1Strength !== pet2Strength) {
-			return pet1Strength > pet2Strength;
+		if (pet1Strength.petDamage !== pet2Strength.petDamage) {
+			return pet1Strength.petDamage > pet2Strength.petDamage;
 		}
 
 		// Get pet data
