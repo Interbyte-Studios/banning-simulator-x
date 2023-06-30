@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import { setIsTrading } from "client/modules/isTradingCache";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { hooks } from "client/ui/hooks";
 
 import { ActiveTrade } from "./active trade";
@@ -33,10 +34,12 @@ interface TradingProps {
  * @returns The Roact element to render.
  */
 export const Trading = hooks((props: TradingProps, hooks) => {
-	const { useState, useEffect } = hooks;
+	const { useState, useEffect, useContext } = hooks;
 
 	const [foreignPlayer, setForeignPlayer] = useState<Player | undefined>(props.tradingPlayer);
 	const [tradeState, setTradeState] = useState(props.tradeActive ? TradeState.ActiveTrade : TradeState.Idle);
+
+	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 	useEffect(() => {
 		if (props.tradingPlayer !== foreignPlayer) {
@@ -52,14 +55,12 @@ export const Trading = hooks((props: TradingProps, hooks) => {
 		}
 	}, [props.tradeActive]);
 
-	warn(`Rendering trade state. Foreign player: ${foreignPlayer}`);
 	if (tradeState === TradeState.Idle) {
 		return (
 			<InactiveTrade
 				isEnabled={props.isEnabled}
 				foreignPlayer={foreignPlayer}
-				setForeignPlayer={(player: Player): void => {
-					warn(`Setting foreign player to ${player.Name}!`);
+				setForeignPlayer={(player: Player | undefined): void => {
 					setForeignPlayer(player);
 					props.setTradingPlayer(player);
 				}}
@@ -67,6 +68,7 @@ export const Trading = hooks((props: TradingProps, hooks) => {
 					setTradeState(TradeState.ActiveTrade);
 					props.setActiveTrade(true);
 				}}
+				setDeclinedTrade={(): void => setTradeState(TradeState.Idle)}
 				hideMenu={props.hideMenu}
 			/>
 		);
@@ -79,6 +81,7 @@ export const Trading = hooks((props: TradingProps, hooks) => {
 			<ActiveTrade
 				targetPlayer={foreignPlayer}
 				exitTrade={(): void => {
+					addAnnouncement("The trade has either finished or been cancelled.", AnnouncementType.Announcement);
 					setIsTrading(false);
 					setTradeState(TradeState.Idle);
 					setForeignPlayer(undefined);

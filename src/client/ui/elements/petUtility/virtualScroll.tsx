@@ -32,6 +32,7 @@ interface VirtualScrollProps {
 }
 
 const preDisplayedRows = 5;
+let lastCheck = 0;
 
 /**
  * A virtual scrolling component for pets.
@@ -57,11 +58,13 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 	);
 
 	const checkRenderedPets = useCallback(
-		(scrollingFrame: ScrollingFrame, petsToIterate: ReadonlyArray<PetInventoryData>, search?: string) => {
+		(
+			scrollingFrame: ScrollingFrame,
+			petsToIterate: ReadonlyArray<PetInventoryData>,
+			selectedPets: Array<string> | undefined,
+		) => {
 			const gridLayout = scrollingFrame.FindFirstChildWhichIsA("UIGridLayout");
 			assert(gridLayout, `No UIGridLayout was found for PetItems component.`);
-
-			const searchText = search?.lower();
 
 			const newPets = [...petsToIterate];
 			if (newPets.size() <= gridLayout.FillDirectionMaxCells * preDisplayedRows) {
@@ -69,7 +72,9 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 			} else {
 				for (let index = 0; index < newPets.size(); index++) {
 					const pet = newPets[index];
-					const y = math.floor(index / gridLayout.FillDirectionMaxCells);
+
+					const trueIndex = selectedPets !== undefined ? index + selectedPets.size() : index;
+					const y = math.floor(trueIndex / gridLayout.FillDirectionMaxCells);
 					const yPos = y * gridLayout.CellSize.Y.Offset + y * gridLayout.CellPadding.Y.Offset;
 
 					// the frame can be visible if we are half way from the previous y coordinate
@@ -80,15 +85,11 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 
 					let shouldBeRendered = belowTop && aboveBottom;
 
-					// check against search text props
-					if (searchText !== undefined && searchText !== "" && shouldBeRendered) {
-						const petData = getPetData(pet.id);
-						if (petData.name.lower().match(searchText).size() !== 0) {
-							shouldBeRendered = false;
-						}
+					if (index < 35 && !shouldBeRendered) {
+						shouldBeRendered = true;
 					}
 
-					if (index < 35 && !shouldBeRendered) {
+					if (!shouldBeRendered && selectedPets !== undefined && selectedPets.includes(pet.guid)) {
 						shouldBeRendered = true;
 					}
 
@@ -100,15 +101,21 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 
 			return newPets;
 		},
-		[props.searchText],
+		[],
 	);
 
 	const updateItems = useCallback(
 		(scroll: ScrollingFrame): void => {
-			const updatedRenderedPets = checkRenderedPets(scroll, renderedPets, props.searchText);
+			const now = time();
+			if (now - lastCheck < 0.25) {
+				return;
+			}
+			lastCheck = now;
+
+			const updatedRenderedPets = checkRenderedPets(scroll, renderedPets, props.selectedPets);
 			setRenderedPets(updatedRenderedPets);
 		},
-		[renderedPets, props.searchText],
+		[renderedPets, props.searchText, props.selectedPets],
 	);
 
 	// automatic grid layout connection
@@ -169,9 +176,9 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 			newPets = props.pets.map((pet) => ({ ...pet, isRendered: false }));
 		}
 
-		const updatedRenderedPets = checkRenderedPets(scrollingFrame, newPets, props.searchText);
+		const updatedRenderedPets = checkRenderedPets(scrollingFrame, newPets, props.selectedPets);
 		setRenderedPets(updatedRenderedPets);
-	}, [props.pets, props.searchText]);
+	}, [props.pets, props.searchText, props.selectedPets]);
 
 	// resize connection
 	useEffect(() => {
@@ -189,17 +196,17 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		const result: Array<Roact.Element> = [];
 		let selectedId = 0;
 		renderedPets.forEach((pet, index) => {
+			const isSelected = props.selectedPets?.includes(pet.guid);
 			let layoutOrder = index;
+
 			if (props.selectedPets !== undefined) {
-				if (props.selectedPets.includes(pet.guid)) {
+				if (isSelected) {
 					selectedId += 1;
 					layoutOrder = selectedId;
 				} else {
-					layoutOrder = index + 11;
+					layoutOrder = index + props.selectedPets.size() + 1;
 				}
 			}
-
-			const isSelected = props.selectedPets?.includes(pet.guid);
 
 			if (props.inventoryFrame !== undefined) {
 				result.push(

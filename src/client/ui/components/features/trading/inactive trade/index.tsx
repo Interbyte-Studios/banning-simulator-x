@@ -1,6 +1,5 @@
 import Roact from "@rbxts/roact";
 import { Players, ReplicatedStorage } from "@rbxts/services";
-import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
@@ -24,10 +23,13 @@ enum TradeState {
 interface InactiveTradeProps {
 	isEnabled: boolean;
 	foreignPlayer: Player | undefined;
-	setForeignPlayer: (player: Player) => void;
+	setDeclinedTrade: () => void;
+	setForeignPlayer: (player: Player | undefined) => void;
 	setActiveTrade: () => void;
 	hideMenu: () => void;
 }
+
+let inboundTradeRequest = false;
 
 /**
  * Displays a notice that a trade has been completed.
@@ -46,10 +48,14 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 		clientTradeError,
 		abandonTradeAssertion,
 	} = useContext(remoteContext);
-	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
-
 	const [foreignPlayer, setForeignPlayer] = useState<Player | undefined>(props.foreignPlayer);
-	const [tradeState, setTradeState] = useState<TradeState>(foreignPlayer ? TradeState.TradeAccepted : TradeState.Idle);
+	const [tradeState, setTradeState] = useState<TradeState>(
+		foreignPlayer && inboundTradeRequest
+			? TradeState.InboundPending
+			: foreignPlayer
+			? TradeState.TradeAccepted
+			: TradeState.Idle,
+	);
 
 	useEffect(() => {
 		if (props.foreignPlayer !== foreignPlayer) {
@@ -57,11 +63,17 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 		}
 	}, [props.foreignPlayer]);
 
+	useEffect(() => {
+		if (tradeState !== TradeState.InboundPending && inboundTradeRequest) {
+			setTradeState(TradeState.InboundPending);
+		}
+	}, []);
+
 	const trueTradeState = useValue(tradeState);
 	const setTradeStateMemo = useCallback(
 		(player: Player | undefined, newTradeState: TradeState, setPlayerBeforeState: boolean) => {
 			if (setPlayerBeforeState) {
-				if (player !== props.foreignPlayer && player !== undefined) {
+				if (player !== props.foreignPlayer) {
 					props.setForeignPlayer(player);
 					setForeignPlayer(player);
 				}
@@ -74,7 +86,7 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 					setTradeState(newTradeState);
 				}
 
-				if (player !== props.foreignPlayer && player !== undefined) {
+				if (player !== props.foreignPlayer) {
 					props.setForeignPlayer(player);
 					setForeignPlayer(player);
 				}
@@ -83,6 +95,7 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 		[props.foreignPlayer, tradeState],
 	);
 
+	warn(`Inactive trade rendering with trade state is ${tradeState}.`);
 	/**
 	 * Sends a trade request to the player.
 	 *
@@ -91,7 +104,6 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 	const sendTrade = useCallback(
 		(player: Player): void => {
 			if (!ReplicatedStorage.events.trading.enabled.Value) {
-				addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
 				return;
 			}
 
@@ -99,12 +111,10 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 				trueTradeState.value !== TradeState.Idle ||
 				Players.LocalPlayer.GetAttribute(TRADING_ATTRIBUTE) !== undefined
 			) {
-				addAnnouncement("You already have a trade active, or an outgoing request.", AnnouncementType.Error);
 				return;
 			}
 
 			if (player.GetAttribute(TRADING_ATTRIBUTE) !== undefined) {
-				addAnnouncement("The other player is currently in a trade.", AnnouncementType.Error);
 				return;
 			}
 
@@ -123,11 +133,11 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 		(player: Player): void => {
 			// we don't check player attributes here because when the other player created the request, the attributes were set for both players
 			if (trueTradeState.value !== TradeState.Idle && trueTradeState.value !== TradeState.TradeDeclined) {
-				addAnnouncement("You received a trade, but you already have a trade open.", AnnouncementType.Error);
 				return;
 			}
 
 			trueTradeState.value = TradeState.InboundPending;
+			inboundTradeRequest = true;
 			setTradeStateMemo(player, TradeState.InboundPending, true);
 		},
 		[tradeState],
@@ -138,18 +148,17 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 	 */
 	const acceptTrade = useCallback((): void => {
 		if (!ReplicatedStorage.events.trading.enabled.Value) {
-			addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
 			return;
 		}
 
 		if (trueTradeState.value !== TradeState.InboundPending) {
-			addAnnouncement("There was an issue accepting the trade. [I-3]", AnnouncementType.Error);
 			return;
 		}
 
 		assert(foreignPlayer, `Failed to accept trade request from ${foreignPlayer}.`);
 
 		trueTradeState.value = TradeState.TradeAccepted;
+		inboundTradeRequest = false;
 		setTradeState(TradeState.TradeAccepted);
 		acceptTradeRequest.SendToServer(foreignPlayer);
 		props.setActiveTrade();
@@ -160,7 +169,7 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 	 */
 	const declineTrade = useCallback((): void => {
 		if (trueTradeState.value !== TradeState.InboundPending) {
-			addAnnouncement("There was an issue declining the trade. [I-4]", AnnouncementType.Error);
+			warn(`Trade state was ${trueTradeState.value} when declining trade request.`);
 			return;
 		}
 
@@ -173,7 +182,9 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 
 		const player = foreignPlayer;
 		trueTradeState.value = TradeState.TradeDeclined;
+		inboundTradeRequest = false;
 		setTradeStateMemo(undefined, TradeState.TradeDeclined, true);
+		props.setDeclinedTrade();
 		declineTradeRequest.SendToServer(player);
 	}, [tradeState, foreignPlayer]);
 
@@ -182,22 +193,19 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 		const receiveTradeRequestConnection = receiveTradeRequest.Connect(receiveTrade);
 		const tradeRequestAcceptedConnection = tradeRequestAccepted.Connect(() => {
 			if (foreignPlayer === undefined) {
-				warn(`Foreign player was undefined.`);
 				return;
 			}
 
-			warn(`Trade request accepted from ${foreignPlayer}.`);
-			addAnnouncement(`${foreignPlayer} accepted your trade request!`, AnnouncementType.Announcement);
 			trueTradeState.value = TradeState.TradeAccepted;
 			setTradeState(TradeState.TradeAccepted);
 			props.setActiveTrade();
 		});
 		const tradeRequestDeclinedConnection = tradeRequestDeclined.Connect(() => {
-			setTradeState(TradeState.TradeDeclined);
+			trueTradeState.value = TradeState.TradeDeclined;
+			setTradeStateMemo(undefined, TradeState.TradeDeclined, true);
+			props.setDeclinedTrade();
 		});
 		const abandonTradeAssertionConnection = abandonTradeAssertion.Connect(() => {
-			addAnnouncement("Something has gone wrong with your trade. Try again later. [I:6]", AnnouncementType.Error);
-
 			trueTradeState.value = TradeState.Idle;
 			setTradeStateMemo(undefined, TradeState.Idle, false);
 		});
@@ -214,8 +222,6 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 	useEffect(() => {
 		if (tradeState === TradeState.OutboundPending || tradeState === TradeState.InboundPending) {
 			if (foreignPlayer === undefined) {
-				addAnnouncement("Something has gone wrong with your trade. Try again later. [I:1]", AnnouncementType.Error);
-
 				setTradeStateMemo(undefined, TradeState.Idle, false);
 				clientTradeError.SendToServer();
 			}
@@ -225,6 +231,8 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 			task.delay(10, (): void => {
 				if (trueTradeState.value === TradeState.InboundPending && foreignPlayer !== undefined) {
 					trueTradeState.value = TradeState.Idle;
+
+					inboundTradeRequest = false;
 					setTradeStateMemo(undefined, TradeState.Idle, true);
 					declineTradeRequest.SendToServer(foreignPlayer);
 				}
@@ -249,13 +257,19 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 				elementToRender = <TradeList hideMenu={props.hideMenu} sendTrade={sendTrade} />;
 				break;
 			case TradeState.OutboundPending:
-				assert(foreignPlayer, `Failed to display OutboundPending trade state.`);
+				if (foreignPlayer === undefined) {
+					return <></>;
+				}
+
 				elementToRender = (
 					<SentTradeRequest player={foreignPlayer} hideMenu={(): void => setTradeState(TradeState.WanderingIdle)} />
 				);
 				break;
 			case TradeState.InboundPending:
-				assert(foreignPlayer, `Failed to display InboundPending trade state.`);
+				if (foreignPlayer === undefined) {
+					return <></>;
+				}
+
 				elementToRender = <TradeRequest player={foreignPlayer} acceptTrade={acceptTrade} declineTrade={declineTrade} />;
 				break;
 			case TradeState.TradeAccepted:

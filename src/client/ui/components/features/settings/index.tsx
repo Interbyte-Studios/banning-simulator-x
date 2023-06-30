@@ -47,7 +47,6 @@ export const Settings = RoactRodux.connect(mapStateToProps)(
 			tradesEnabled,
 			toggleGraphics,
 			toggleTimeOfDay,
-			togglePetAnimationType,
 			togglePetsStudsOfDistance,
 			togglePetsDisplayed,
 			toggleAutoDelete,
@@ -198,13 +197,6 @@ export const Settings = RoactRodux.connect(mapStateToProps)(
 
 							toggleTimeOfDay.SendToServer(increasedTimeOfDay);
 						}}
-					/>
-					<OptionMultiChoice
-						header={"Pet Animation"}
-						context={props.settings.visual.petAnimationType === "Following" ? "1" : "2"}
-						yPos={0.443}
-						onDecrease={(): void => togglePetAnimationType.SendToServer("Following")}
-						onIncrease={(): void => togglePetAnimationType.SendToServer("Surrounding")}
 					/>
 					<OptionMultiChoice
 						header={"Pet Distance"}

@@ -302,7 +302,23 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 			components.push(<RobuxShop hideMenu={(): void => setVisibility((prev) => ({ ...prev, robuxShop: false }))} />);
 		}
 
-		components.push(<ZonesUI />, <Rewards />, <LocalMessages />, <EggCost />, <EggHud />, <BoostCounter />);
+		components.push(
+			<ZonesUI />,
+			<Rewards />,
+			<LocalMessages />,
+			<EggCost />,
+			<EggHud />,
+			<BoostCounter />,
+			// Need to add trading so they can receive requests while in other UI's.
+			<Trading
+				isEnabled={false}
+				tradingPlayer={tradingPlayer}
+				tradeActive={activeTrade}
+				setTradingPlayer={(player: Player | undefined): void => setTradingPlayer(player)}
+				setActiveTrade={(value: boolean): void => setActiveTrade(value)}
+				hideMenu={(): void => setVisibility((prev) => ({ ...prev, trading: false }))}
+			/>,
+		);
 
 		return components;
 	}, [visibility, isMenuVisible, activeTrade]);
