@@ -28,10 +28,7 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 		passage.Destroy();
 	}
 
-	const zoneInfo = sign.FindFirstChild("zoneInfo");
-	if (zoneInfo !== undefined) {
-		zoneInfo.Destroy();
-	}
+	sign.Destroy();
 }
 
 /**

@@ -17,9 +17,10 @@ export function getPetStrength(pet: Pet): { petDamage: number; petBans: number }
 	const maxLevel = PET_LEVEL_REQUIREMENTS[pet.variant];
 	const variantMultiplier = pet.variant === "radiant" ? 3 : pet.variant === "void" ? 2 : 1;
 	const strengthPerLevel = (petData.stats.additionalDamage * variantMultiplier) / maxLevel;
+	const bansPerLevel = (petData.stats.additionalBans * variantMultiplier) / maxLevel;
 
 	const petDamage = math.floor(petData.stats.additionalDamage * variantMultiplier + petLevel * strengthPerLevel);
-	const petBans = math.floor(petData.stats.additionalBans * variantMultiplier + petLevel * strengthPerLevel);
+	const petBans = math.floor(petData.stats.additionalBans * variantMultiplier + petLevel * bansPerLevel);
 
 	return {
 		petDamage,

@@ -8,7 +8,7 @@ export const STORE_SCOPE = "mainstore"; // Last test store was "TEST_STORE_5"
 export const MAIN_GROUP = 5126818;
 export const BANS_LEADERBOARD_ODS = `${STORE_SCOPE}_BANS_ODS`;
 export const EGGS_LEADERBOARD_ODS = `${STORE_SCOPE}_EGGS_ODS`;
-export const LEADERBOARD_UPDATE_INTERVAL = 60 * 30;
+export const LEADERBOARD_UPDATE_INTERVAL = 60;
 
 export const GAME_VERSION = "0.9.5";
 

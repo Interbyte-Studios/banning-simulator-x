@@ -40,8 +40,8 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 
 	switch (eggData.id) {
 		case 1: {
-			const cost = 10;
-			const voidCost = cost * 10;
+			const cost = 40;
+			const voidCost = cost * 25;
 			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
 			eggCost.amount = math.ceil(eggCost.amount);
 			eggCost.currencyType = "coins";
@@ -52,8 +52,8 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 				throw `Unexpected issue while finding cost for "${egg}"`;
 			}
 
-			const cost = zoneData.cost.amount / 25;
-			const voidCost = cost * 10;
+			const cost = 125;
+			const voidCost = cost * 25;
 			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
 			eggCost.amount = math.ceil(eggCost.amount);
 			eggCost.currencyType = zoneData.cost.currency;
@@ -64,8 +64,8 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 				throw `Unexpected issue while finding cost for "${egg}"`;
 			}
 
-			const cost = zoneData.cost.amount / 25;
-			const voidCost = cost * 10;
+			const cost = 500;
+			const voidCost = cost * 25;
 			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
 			eggCost.amount = math.ceil(eggCost.amount);
 			eggCost.currencyType = zoneData.cost.currency;
@@ -76,8 +76,8 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 				throw `Unexpected issue while finding cost for "${egg}"`;
 			}
 
-			const cost = 850;
-			const voidCost = 12_750;
+			const cost = 1_250;
+			const voidCost = cost * 25;
 			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
 			eggCost.amount = math.ceil(eggCost.amount);
 			eggCost.currencyType = zoneData.cost.currency;
@@ -88,8 +88,8 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 				throw `Unexpected issue while finding cost for "${egg}"`;
 			}
 
-			const cost = 1_000;
-			const voidCost = 15_000;
+			const cost = 1_500;
+			const voidCost = cost * 25;
 			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
 			eggCost.amount = math.ceil(eggCost.amount);
 			eggCost.currencyType = zoneData.cost.currency;
@@ -101,7 +101,7 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 			}
 
 			const cost = zoneData.cost.amount / 20;
-			const voidCost = cost * 10;
+			const voidCost = cost * 25;
 			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
 			eggCost.amount = math.ceil(eggCost.amount);
 			eggCost.currencyType = zoneData.cost.currency;

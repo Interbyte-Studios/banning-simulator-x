@@ -7,7 +7,6 @@ import { getIsTrading } from "client/modules/isTradingCache";
 import {
 	uiClaimButtonStrokeColor,
 	uiDarkStrokeColor,
-	uiHeaderStrokeColor,
 	uiOffButtonStrokeColor,
 	uiTextStrokeColor,
 } from "client/ui/commonValues";
@@ -419,35 +418,18 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				return (
 					<ImageLabel
 						native={{
-							Size: UDim2.fromScale(0.5, 0.675),
-							Image: assetIds.images.ui.teleportation.background,
+							Position: UDim2.fromScale(0.5, 0.75),
+							Size: UDim2.fromScale(0.35, 0.4),
+							Image: assetIds.images.ui.autoFight.minimized,
 						}}
 					>
-						<uiaspectratioconstraint AspectRatio={1.163} />
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.063),
-								Size: UDim2.fromScale(0.425, 0.11),
-								Text: "Auto Fight",
-							}}
-							stroke={{ native: { Thickness: 2, Color: uiHeaderStrokeColor } }}
-						/>
+						<uiaspectratioconstraint AspectRatio={3.2} />
 
 						<StrokeTextLabel
 							native={{
 								Position: UDim2.fromScale(0.5, 0.2),
-								Size: UDim2.fromScale(0.85, 0.11),
+								Size: UDim2.fromScale(0.985, 0.2),
 								Text: "You do not own Auto Fight!",
-							}}
-							stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
-						/>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.35),
-								Size: UDim2.fromScale(0.85, 0.11),
-								Text: "You can unlock Auto Fight by purchasing the gamepass:",
 							}}
 							stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
 						/>
@@ -455,17 +437,17 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 						<BaseFrame
 							BackgroundTransparency={0}
 							BackgroundColor3={Color3.fromRGB(13, 147, 230)}
-							Position={UDim2.fromScale(0.5, 0.45)}
-							Size={UDim2.fromScale(0.6, 0.175)}
+							Position={UDim2.fromScale(0.5, 0.65)}
+							Size={UDim2.fromScale(0.95, 0.5)}
 						>
 							<uicorner CornerRadius={new UDim(0.15, 0)} />
 							<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
 
 							<StrokeTextLabel
 								native={{
-									Position: UDim2.fromScale(0.4, 0.5),
+									Position: UDim2.fromScale(0.3, 0.5),
 									Size: UDim2.fromScale(0.2, 0.4),
-									Text: "R$699",
+									Text: "R$499",
 									TextColor3: Color3.fromRGB(85, 255, 127),
 								}}
 								stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
@@ -473,7 +455,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 
 							<SpringImageButton
 								native={{
-									Position: UDim2.fromScale(0.8, 0.5),
+									Position: UDim2.fromScale(0.85, 0.5),
 									Image: assetIds.images.ui.index.Claim,
 								}}
 								size={{ minSize: 0.6, maxSize: 0.7 }}
@@ -498,20 +480,30 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 							</SpringImageButton>
 
 							<BaseFrame // todo: Convert to image label of auto fight gamepass
+								BackgroundTransparency={0}
 								BackgroundColor3={Color3.fromRGB(14, 165, 253)}
-								Position={UDim2.fromScale(0.135, 0.5)}
+								Position={UDim2.fromScale(0.1, 0.5)}
 								Size={UDim2.fromScale(0.9, 0.9)}
 							>
 								<uiaspectratioconstraint AspectRatio={1} />
 								<uicorner CornerRadius={new UDim(1, 0)} />
 								<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
+								<ImageLabel
+									native={{
+										Position: UDim2.fromScale(0.5, 0.5),
+										Size: UDim2.fromScale(1, 1),
+										Image: assetIds.images.decals.gamepasses["Auto Fight"],
+									}}
+								>
+									<uiaspectratioconstraint AspectRatio={1} />
+								</ImageLabel>
 							</BaseFrame>
 						</BaseFrame>
 
 						<ExitButton
-							Position={UDim2.fromScale(0.975, 0.125)}
-							minimizedSize={0.085}
-							maximizedSize={0.1}
+							Position={UDim2.fromScale(0.975, 0.05)}
+							minimizedSize={0.25}
+							maximizedSize={0.3}
 							onClosed={(): void => props.hideMenu()}
 						/>
 					</ImageLabel>
