@@ -34,6 +34,13 @@ export type PetIndexState = Map<
 	}
 >;
 
+type InternalPetIndexState = PetIndexState extends Map<unknown, infer T> ? T : never;
+export type SerializedPetIndexState = Array<
+	{
+		petId: number;
+	} & InternalPetIndexState
+>;
+
 const defaultPetData: PetIndexState extends Map<unknown, infer T> ? T : never = {
 	hatched: {
 		regular: 0,
@@ -171,3 +178,24 @@ export const petIndexReducer = Rodux.createReducer<
 	admin_ModifyPetLevel: petReducer,
 });
 /* eslint-enable jsdoc/require-jsdoc */
+
+/**
+ *
+ * @param state The state of the pet index.
+ * @returns A serialized state which can later be deserialized.
+ */
+export function serializePetIndexState(state: PetIndexState): SerializedPetIndexState {
+	return [...state].map(([petId, petIndexData]) => ({
+		petId,
+		...petIndexData,
+	}));
+}
+
+/**
+ *
+ * @param state The serialized state of the pet index.
+ * @returns The deserialized state of the pet index.
+ */
+export function deserializePetIndexState(state: SerializedPetIndexState): PetIndexState {
+	return new Map(state.map((serializedData) => [serializedData.petId, { ...serializedData }]));
+}

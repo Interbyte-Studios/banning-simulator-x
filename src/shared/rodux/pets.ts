@@ -304,7 +304,7 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 			...state,
 			{
 				id,
-				bans: 1,
+				bans: 0,
 				guid,
 				equipped: false,
 				locked: false,

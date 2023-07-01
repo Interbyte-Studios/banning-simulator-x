@@ -13,6 +13,11 @@ import { defaultMediaState } from "shared/rodux/media";
 import { defaultPets } from "shared/rodux/pets";
 import { defaultPetTeamsState } from "shared/rodux/petTeams";
 import { defaultPlayerIndexState } from "shared/rodux/playerIndex";
+import {
+	deserializePetIndexState,
+	SerializedPetIndexState,
+	serializePetIndexState,
+} from "shared/rodux/playerIndex/pets";
 import { defaultQuestsState } from "shared/rodux/quests";
 import { defaultRank } from "shared/rodux/rank";
 import { defaultSettings } from "shared/rodux/settings";
@@ -30,6 +35,7 @@ export type ProfileState = Modify<
 			StoreState["index"],
 			{
 				joinDate: number;
+				pets: SerializedPetIndexState;
 			}
 		>;
 		tradeLogs: SerializedTradeLogState;
@@ -52,6 +58,7 @@ export const profileTemplate: ProfileState = {
 	gamepasses: defaultGamepasses,
 	index: {
 		...defaultPlayerIndexState,
+		pets: [],
 		joinDate: DateTime.now().UnixTimestampMillis,
 	},
 	media: defaultMediaState,
@@ -80,6 +87,7 @@ export function serialize(store: StoreState): ProfileState {
 		...store,
 		index: {
 			...store.index,
+			pets: serializePetIndexState(store.index.pets),
 			joinDate: store.index.joinDate.UnixTimestampMillis,
 		},
 		tradeLogs: store.tradeLogs.map((log) => {
@@ -102,6 +110,7 @@ export function deserialize(state: ProfileState): StoreState {
 		...state,
 		index: {
 			...state.index,
+			pets: deserializePetIndexState(state.index.pets),
 			joinDate: DateTime.fromUnixTimestampMillis(state.index.joinDate),
 		},
 		tradeLogs: state.tradeLogs.map((log) => {
