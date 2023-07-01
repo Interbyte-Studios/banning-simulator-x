@@ -239,12 +239,12 @@ function createEnemyTag(enemy: Model): void {
 	const enemyTag = ReplicatedStorage.assetObjects.tags.enemyTag;
 	assert(enemyTag, `Failed to get enemy tag from rep storage`);
 
-	const humanoid = enemy.WaitForChild("Humanoid") as Humanoid;
+	const humanoid = enemy.FindFirstChildOfClass("Humanoid");
 	if (humanoid === undefined) {
 		return;
 	}
 
-	const head = enemy.WaitForChild("Head") as BasePart;
+	const head = enemy.FindFirstChild("Head") as BasePart;
 	if (head === undefined) {
 		return;
 	}
@@ -344,7 +344,7 @@ npcsFolder.ChildAdded.Connect((enemy) => {
 		return;
 	}
 
-	createEnemyTag(enemy);
+	task.delay(2, () => createEnemyTag(enemy));
 });
 
 npcsFolder.GetChildren().forEach((enemy) => {
@@ -352,7 +352,7 @@ npcsFolder.GetChildren().forEach((enemy) => {
 		return;
 	}
 
-	createEnemyTag(enemy);
+	task.delay(2, () => createEnemyTag(enemy));
 });
 
 RunService.RenderStepped.Connect((deltaTime) => {
