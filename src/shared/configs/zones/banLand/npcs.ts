@@ -4,9 +4,10 @@ import { Npc } from "..";
 
 export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 	bronzePiece: {
-		name: "BronzePiece",
+		name: "Forest Wizard",
 		health: 100,
 		reward: {
+			bans: 1,
 			currency: 35,
 			currencyType: "coins",
 			experience: 10,
@@ -15,9 +16,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: false,
 	},
 	nyxun: {
-		name: "Nyxun",
+		name: "Desert Bandit",
 		health: 200,
 		reward: {
+			bans: 2,
 			currency: 60,
 			currencyType: "coins",
 			experience: 20,
@@ -26,9 +28,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: false,
 	},
 	rellhub: identity<Npc>({
-		name: "RELLhub",
+		name: "Floral Girl",
 		health: 400,
 		reward: {
+			bans: 4,
 			currency: 120,
 			currencyType: "coins",
 			experience: 40,
@@ -37,9 +40,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: false,
 	}),
 	onett: identity<Npc>({
-		name: "Onett",
+		name: "Bee King",
 		health: 800,
 		reward: {
+			bans: 8,
 			currency: 270,
 			currencyType: "coins",
 			experience: 80,
@@ -48,9 +52,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: false,
 	}),
 	buildIntoGames: identity<Npc>({
-		name: "BuildIntoGames",
+		name: "Ice Skier",
 		health: 1_600,
 		reward: {
+			bans: 16,
 			currency: 810,
 			currencyType: "coins",
 			experience: 200,
@@ -59,9 +64,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: false,
 	}),
 	foreverDev: identity<Npc>({
-		name: "ForeverDev",
+		name: "Beach Boy",
 		health: 3_200,
 		reward: {
+			bans: 32,
 			currency: 1_215,
 			currencyType: "coins",
 			experience: 800,
@@ -70,9 +76,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: false,
 	}),
 	snickTrix: identity<Npc>({
-		name: "SnickTrix",
+		name: "Sparkletime King",
 		health: 6_400,
 		reward: {
+			bans: 64,
 			currency: 2_100,
 			currencyType: "coins",
 			experience: 2_000,
@@ -81,9 +88,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: false,
 	}),
 	mygame43: identity<Npc>({
-		name: "mygame43",
+		name: "Mining Guy",
 		health: 12_800,
 		reward: {
+			bans: 128,
 			currency: 4_200,
 			currencyType: "coins",
 			experience: 6_000,
@@ -92,9 +100,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: false,
 	}),
 	gamesReborn: identity<Npc>({
-		name: "GamesReborn",
+		name: "Lava Lord",
 		health: 25_600,
 		reward: {
+			bans: 256,
 			currency: 8_400,
 			currencyType: "coins",
 			experience: 10_000,
@@ -105,9 +114,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 
 	// Bosses
 	russoTalks: identity<Npc>({
-		name: "RussoTalks",
+		name: "Mushroom King",
 		health: 300,
 		reward: {
+			bans: 3,
 			currency: 105,
 			currencyType: "coins",
 			experience: 120,
@@ -116,9 +126,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: true,
 	}),
 	sonsofFun_YT: identity<Npc>({
-		name: "SonsofFun_YT",
+		name: "Desert Scout",
 		health: 600,
 		reward: {
+			bans: 6,
 			currency: 180,
 			currencyType: "coins",
 			experience: 240,
@@ -127,9 +138,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: true,
 	}),
 	carbonMeister: identity<Npc>({
-		name: "CarbonMeister",
+		name: "Magic Floral Man",
 		health: 1_200,
 		reward: {
+			bans: 12,
 			currency: 360,
 			currencyType: "coins",
 			experience: 480,
@@ -138,9 +150,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: true,
 	}),
 	sabrinaBrite: identity<Npc>({
-		name: "SabrinaBrite",
+		name: "Onett",
 		health: 2_400,
 		reward: {
+			bans: 24,
 			currency: 810,
 			currencyType: "coins",
 			experience: 945,
@@ -149,9 +162,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: true,
 	}),
 	djMonopoli: identity<Npc>({
-		name: "DJMonopoli",
+		name: "Ice Golem",
 		health: 4_800,
 		reward: {
+			bans: 48,
 			currency: 2_430,
 			currencyType: "coins",
 			experience: 1_875,
@@ -160,9 +174,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: true,
 	}),
 	merely: identity<Npc>({
-		name: "Merely",
+		name: "Pufferfish King",
 		health: 9_600,
 		reward: {
+			bans: 96,
 			currency: 3_645,
 			currencyType: "coins",
 			experience: 3_750,
@@ -171,9 +186,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: true,
 	}),
 	alvin_Blox: identity<Npc>({
-		name: "Alvin_Blox",
+		name: "Pastel Guardian",
 		health: 19_200,
 		reward: {
+			bans: 192,
 			currency: 6_300,
 			currencyType: "coins",
 			experience: 7_500,
@@ -182,9 +198,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: true,
 	}),
 	deeterPlays: identity<Npc>({
-		name: "DeeterPlays",
+		name: "Elemental King",
 		health: 38_400,
 		reward: {
+			bans: 384,
 			currency: 12_600,
 			currencyType: "coins",
 			experience: 15_000,
@@ -193,9 +210,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		isBoss: true,
 	}),
 	beeism: identity<Npc>({
-		name: "Beeism",
+		name: "Headless Doombringer",
 		health: 76_800,
 		reward: {
+			bans: 768,
 			currency: 25_200,
 			currencyType: "coins",
 			experience: 30_000,

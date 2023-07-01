@@ -10,6 +10,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Armored Bunny": {
@@ -18,6 +19,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Armored Kitty": {
@@ -26,6 +28,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Armored Deer": {
@@ -34,6 +37,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Armored Pegasus": {
@@ -42,6 +46,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Armored Dragon": {
@@ -50,6 +55,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Armored Angel": {
@@ -58,6 +64,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Armored Guard": {
@@ -66,6 +73,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Armored Spartan": {
@@ -74,6 +82,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 	"Glitchbot NEO": {
@@ -82,6 +91,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Primordial",
 		stats: {
 			additionalDamage: 1,
+			additionalBans: 1,
 		},
 	},
 };

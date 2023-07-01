@@ -1,4 +1,4 @@
-import { Players } from "@rbxts/services";
+import { Players, ReplicatedStorage } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
 import { TRADING_ATTRIBUTE } from "shared/trading/tradingAttributes";
@@ -147,14 +147,7 @@ declineFinalizedTrade.Connect((player) => {
 
 const clientTradeError = tradesNamespace.Get("clientTradeError");
 const abandonTradeAssertion = tradesNamespace.Get("abandonTradeAssertion");
-clientTradeError.Connect((player) => {
-	player.SetAttribute(TRADING_ATTRIBUTE, undefined);
-	getTradingCounterParty(player).SetAttribute(TRADING_ATTRIBUTE, undefined);
-
-	abandonTradeAssertion.SendToPlayer(getTradingCounterParty(player));
-
-	removeTrade(player);
-});
+clientTradeError.Connect(() => {});
 
 Players.PlayerRemoving.Connect((player) => {
 	// remove a trade if it exists
@@ -164,6 +157,22 @@ Players.PlayerRemoving.Connect((player) => {
 
 		if (trader !== player) {
 			abandonTradeAssertion.SendToPlayer(trader);
+		}
+	}
+});
+
+ReplicatedStorage.events.trading.enabled.GetPropertyChangedSignal("Value").Connect(() => {
+	if (ReplicatedStorage.events.trading.enabled.Value) {
+		for (const player of Players.GetPlayers()) {
+			// remove a trade if it exists
+			const traders = removeTrade(player);
+			for (const trader of traders) {
+				trader.SetAttribute(TRADING_ATTRIBUTE, undefined);
+
+				if (trader !== player) {
+					abandonTradeAssertion.SendToPlayer(trader);
+				}
+			}
 		}
 	}
 });

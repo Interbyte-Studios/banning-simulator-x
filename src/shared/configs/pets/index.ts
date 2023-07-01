@@ -29,6 +29,7 @@ export interface Pet {
 	 */
 	stats: {
 		additionalDamage: number;
+		additionalBans: number;
 	};
 }
 
@@ -58,12 +59,12 @@ export const TAG_CONFIG = {
 		Radiant_1: {
 			Color: Color3.fromRGB(231, 231, 236),
 			Material: Enum.Material.SmoothPlastic,
-			Reflectance: -0.75,
+			Reflectance: 0,
 		},
 		Radiant_2: {
-			Color: Color3.fromRGB(255, 191, 161),
-			Material: Enum.Material.SmoothPlastic,
-			Reflectance: -0.5,
+			Color: Color3.fromRGB(0, 0, 0),
+			Material: Enum.Material.Glass,
+			Reflectance: 0,
 		},
 		Radiant_Outline: {
 			Color: Color3.fromRGB(0, 0, 0),

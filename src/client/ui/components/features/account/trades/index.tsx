@@ -168,7 +168,7 @@ const PlayerCurrencyOffer = (props: {
 /**
  * A trade card displaying a trade log.
  */
-const TradeCard = hooks((props: { tradeLog: SavedTrade; viewTrade: () => void }) => {
+const TradeCard = hooks((props: { playerViewing: Player; tradeLog: SavedTrade; viewTrade: () => void }) => {
 	const [success, result] = pcall(() => Players.GetNameFromUserIdAsync(props.tradeLog.otherPlayerId));
 
 	let otherPlayerName: string | undefined;
@@ -189,7 +189,7 @@ const TradeCard = hooks((props: { tradeLog: SavedTrade; viewTrade: () => void })
 				<BaseUIStroke native={{ Color: Color3.fromRGB(5, 56, 88), Thickness: 2 }} />
 
 				<PlayerImage
-					playerId={Players.LocalPlayer.UserId}
+					playerId={props.playerViewing.UserId}
 					position={UDim2.fromScale(0.055, 0.25)}
 					size={UDim2.fromScale(0.4, 0.4)}
 				/>
@@ -204,7 +204,7 @@ const TradeCard = hooks((props: { tradeLog: SavedTrade; viewTrade: () => void })
 					native={{
 						Position: UDim2.fromScale(0.215, 0.15),
 						Size: UDim2.fromScale(0.2, 0.25),
-						Text: Players.LocalPlayer.Name,
+						Text: props.playerViewing.Name,
 						TextXAlignment: Enum.TextXAlignment.Left,
 					}}
 					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(5, 56, 88) } }}
@@ -345,7 +345,11 @@ export const TradeHistory = hooks((props: TradeHistoryProps, { useEffect, useVal
 
 		const tradeLogs = state.tradeLogs;
 		const tradeLogElements: Array<Roact.Element> = tradeLogs.map((tradeLog) => (
-			<TradeCard tradeLog={tradeLog} viewTrade={(): void => setViewedTrade(tradeLog)} />
+			<TradeCard
+				playerViewing={props.playerViewing}
+				tradeLog={tradeLog}
+				viewTrade={(): void => setViewedTrade(tradeLog)}
+			/>
 		));
 
 		return (

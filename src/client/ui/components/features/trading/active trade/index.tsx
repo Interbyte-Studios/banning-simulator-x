@@ -1,6 +1,5 @@
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
-import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
@@ -44,8 +43,6 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 		abandonTradeAssertion,
 		clientTradeError,
 	} = useContext(remoteContext);
-	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
-
 	// manages the state of the active trade
 	const [tradeState, setTradeState] = useState<TradeState>(TradeState.Offering);
 
@@ -90,8 +87,6 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 	 * Declines the finalized trade.
 	 */
 	function declineTradeOffer(): void {
-		addAnnouncement(`You have cancelled your trade with ${props.targetPlayer.Name}.`, AnnouncementType.Announcement);
-
 		declineOffer.SendToServer();
 		props.exitTrade();
 
@@ -258,18 +253,12 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 	useEffect(() => {
 		const offerChangedConnection = offerChanged.Connect((player: Player, newOffer: PlayerTradeItem) => {
 			if (player.UserId === Players.LocalPlayer.UserId) {
-				addAnnouncement(`There was an issue. Your trade offer has been updated.`, AnnouncementType.Announcement);
 				setLocalOffer(newOffer);
 			} else if (player.UserId === props.targetPlayer.UserId) {
-				warn(
-					`Received offer changed | Currency Type: ${newOffer.currency?.type} | Currency Amount: ${newOffer.currency?.amount}`,
-				);
 				setForeignOffer(newOffer);
 				setLocalReady(false);
 				setForeignReady(false);
 			} else {
-				addAnnouncement(`There was an error with the trade. Try again later. [I-9]`, AnnouncementType.Error);
-
 				setLocalOffer(defaultOffer);
 				setForeignOffer(defaultOffer);
 
@@ -297,15 +286,9 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 					warn(`Received trade offer confirmed remote from local player. This should never happen.`);
 					return;
 				} else if (player.UserId === props.targetPlayer.UserId) {
-					warn("Received Offer Confirmation");
-
 					setForeignReady(true);
 
 					if (!evaluateOffers(foreignOffer, confirmedOffer)) {
-						addAnnouncement(
-							`${props.targetPlayer.Name}'s trade was innacurate, and has been updated.`,
-							AnnouncementType.Announcement,
-						);
 						setForeignOffer(confirmedOffer);
 					}
 
@@ -313,8 +296,6 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 						setTradeState(TradeState.ViewingFinalizedOffer);
 					}
 				} else {
-					addAnnouncement(`There was an error with the trade. Try again later. [I-10]`, AnnouncementType.Error);
-
 					setLocalOffer(defaultOffer);
 					setForeignOffer(defaultOffer);
 
@@ -339,7 +320,6 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 				warn(`Received trade offer declined remote from local player. This should never happen.`);
 				return;
 			} else if (player.UserId === props.targetPlayer.UserId) {
-				addAnnouncement(`${props.targetPlayer.Name} has cancelled the trade.`, AnnouncementType.Announcement);
 				props.exitTrade();
 
 				setLocalOffer(defaultOffer);
@@ -367,10 +347,6 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 					setForeignConfirmed(true);
 
 					if (!evaluateOffers(foreignOffer, finalizedOffer)) {
-						addAnnouncement(
-							`${props.targetPlayer.Name}'s trade was innacurate, and has been updated.`,
-							AnnouncementType.Announcement,
-						);
 						setForeignOffer(finalizedOffer);
 					}
 
@@ -378,8 +354,6 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 						setTradeState(TradeState.Completed);
 					}
 				} else {
-					addAnnouncement(`There was an error with the trade. Try again later. [I-11]`, AnnouncementType.Error);
-
 					setLocalOffer(defaultOffer);
 					setForeignOffer(defaultOffer);
 
@@ -392,7 +366,6 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 					setTradeState(TradeState.Offering);
 
 					props.exitTrade();
-
 					clientTradeError.SendToServer();
 					return;
 				}
@@ -404,11 +377,6 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 				warn(`Received finalized trade declined remote from local player. This should never happen.`);
 				return;
 			} else if (player.UserId === props.targetPlayer.UserId) {
-				addAnnouncement(
-					`${props.targetPlayer.Name} has declined the finalized offer. Try another offer.`,
-					AnnouncementType.Announcement,
-				);
-
 				setLocalReady(false);
 				setForeignReady(false);
 
@@ -423,10 +391,6 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 		});
 
 		const abandonTradeAssertionConnection = abandonTradeAssertion.Connect(() => {
-			addAnnouncement(`There was an error with the trade. Try again later. [I-12]`, AnnouncementType.Error);
-
-			props.exitTrade();
-
 			setLocalOffer(defaultOffer);
 			setForeignOffer(defaultOffer);
 
@@ -437,6 +401,7 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 			setForeignConfirmed(false);
 
 			setTradeState(TradeState.Offering);
+			props.exitTrade();
 		});
 
 		const connections: Array<RBXScriptConnection> = [

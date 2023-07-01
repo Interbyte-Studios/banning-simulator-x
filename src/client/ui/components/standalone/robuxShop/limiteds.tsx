@@ -304,7 +304,7 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 					<StrokeTextLabel
 						native={{
 							Size: UDim2.fromScale(0.75, 0.75),
-							Text: "Buy",
+							Text: "Buy 1",
 						}}
 						stroke={{ native: { Thickness: 2.5, Color: uiClaimButtonStrokeColor } }}
 					/>
@@ -338,7 +338,7 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 					<StrokeTextLabel
 						native={{
 							Size: UDim2.fromScale(0.75, 0.75),
-							Text: "Buy",
+							Text: "Buy 3",
 						}}
 						stroke={{ native: { Thickness: 2.5, Color: uiClaimButtonStrokeColor } }}
 					/>

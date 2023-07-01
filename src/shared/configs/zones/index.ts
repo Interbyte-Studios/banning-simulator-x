@@ -8,6 +8,7 @@ export interface Npc {
 	name: string;
 	health: number;
 	reward: {
+		bans: number;
 		currency: number;
 		currencyType: Currency;
 		experience: number;

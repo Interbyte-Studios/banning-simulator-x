@@ -10,7 +10,7 @@ import { getPetLevel } from "./getPetLevel";
  * @param pet The first stored pet.
  * @returns The strength of the pet.
  */
-export function getPetStrength(pet: Pet): number {
+export function getPetStrength(pet: Pet): { petDamage: number; petBans: number } {
 	const petData = getPetData(pet.id);
 	const petLevel = getPetLevel(pet);
 
@@ -19,6 +19,10 @@ export function getPetStrength(pet: Pet): number {
 	const strengthPerLevel = (petData.stats.additionalDamage * variantMultiplier) / maxLevel;
 
 	const petDamage = math.floor(petData.stats.additionalDamage * variantMultiplier + petLevel * strengthPerLevel);
+	const petBans = math.floor(petData.stats.additionalBans * variantMultiplier + petLevel * strengthPerLevel);
 
-	return petDamage;
+	return {
+		petDamage,
+		petBans,
+	};
 }

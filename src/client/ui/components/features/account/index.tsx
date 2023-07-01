@@ -258,9 +258,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 							<camera CFrame={new CFrame(0, 0, 0)} Ref={cameraRef.value} />
 						</viewportframe>
 					</BaseFrame>
-					{props.groupRank !== undefined && props.groupRank >= ADMIN_RANK && (
-						<EditAccount showAdmin={(): void => setRightComponentDisplayed(RightComponent.Admin)} />
-					)}
+					<EditAccount showAdmin={(): void => setRightComponentDisplayed(RightComponent.Admin)} />
 					<SelectPlayer setPlayerSelectionVisibility={(): void => setPlayerSelectionVisibility(true)} />
 				</>
 			);

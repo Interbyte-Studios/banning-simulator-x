@@ -11,6 +11,7 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 		fusionCost: 100,
 		stats: {
 			additionalDamage: 40,
+			additionalBans: 15,
 		},
 	},
 	Seekstress: {
@@ -20,6 +21,7 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 		fusionCost: 1000,
 		stats: {
 			additionalDamage: 125,
+			additionalBans: 35,
 		},
 	},
 	PeaceKeeper: {
@@ -29,6 +31,17 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 		fusionCost: 20000,
 		stats: {
 			additionalDamage: 1250,
+			additionalBans: 120,
+		},
+	},
+	"Developer Gummy Bunny": {
+		chance: 0,
+		id: 10006,
+		rarity: "Exclusive",
+		fusionCost: 50000000000,
+		stats: {
+			additionalDamage: 5000000000000000,
+			additionalBans: 100,
 		},
 	},
 };

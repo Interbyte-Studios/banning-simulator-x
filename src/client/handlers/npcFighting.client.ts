@@ -90,7 +90,11 @@ const onInputBegan = (input: InputObject, gameProcessedEvent: boolean): void => 
 		return;
 	}
 
-	if (input.UserInputType === Enum.UserInputType.MouseButton1 || input.UserInputType === Enum.UserInputType.Touch) {
+	if (
+		input.UserInputType === Enum.UserInputType.MouseButton1 ||
+		input.UserInputType === Enum.UserInputType.Touch ||
+		input.UserInputType === Enum.UserInputType.Gamepad1
+	) {
 		const player = Players.LocalPlayer;
 		const mouse = player.GetMouse();
 

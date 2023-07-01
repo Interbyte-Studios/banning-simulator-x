@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
-import { Players } from "@rbxts/services";
 import { setIsTrading } from "client/modules/isTradingCache";
 import { uiClaimButtonStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
@@ -50,9 +49,7 @@ export const DeclinedTradeWarning = (props: { player: Player; hideMenu: () => vo
 				native={{
 					Position: UDim2.fromScale(0.5, 0.426),
 					Size: UDim2.fromScale(0.95, 0.311),
-					Text: `${props.player === Players.LocalPlayer ? "You've" : props.player.Name} declined ${
-						props.player === Players.LocalPlayer ? "/ cancelled" : ""
-					} your trade request. You can try again, or try trading with someone else.`,
+					Text: `The trade was either declined, cancelled, or timed out. Try again later.`,
 				}}
 				stroke={{ native: { Thickness: 1.5, Color: uiTextStrokeColor } }}
 			/>

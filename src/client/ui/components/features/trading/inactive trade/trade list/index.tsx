@@ -42,9 +42,11 @@ export const TradeList = hooks(
 
 		// updates the state of the players in the game
 		useEffect(() => {
-			const addedConnection = Players.PlayerAdded.Connect(() =>
-				setPlayersInGame(Players.GetPlayers().filter((player) => player !== Players.LocalPlayer)),
-			);
+			const addedConnection = Players.PlayerAdded.Connect(() => {
+				task.delay(8, (): void =>
+					setPlayersInGame(Players.GetPlayers().filter((player) => player !== Players.LocalPlayer)),
+				);
+			});
 
 			const removedConnection = Players.PlayerRemoving.Connect(() =>
 				setPlayersInGame(Players.GetPlayers().filter((player) => player !== Players.LocalPlayer)),

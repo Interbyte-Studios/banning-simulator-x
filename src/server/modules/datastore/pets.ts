@@ -110,7 +110,7 @@ export function modifyPetCount(
 		// append to datastore
 		const existingCache = newExistCache.find((petCache) => petCache.petId === counter.petId);
 		if (existingCache !== undefined) {
-			existingCache.variants[counter.variant].removed -= counter.amount;
+			existingCache.variants[counter.variant].removed += counter.amount;
 		} else {
 			const newCache = {
 				petId: counter.petId,
@@ -130,7 +130,7 @@ export function modifyPetCount(
 				},
 			};
 
-			newCache.variants[counter.variant].removed -= counter.amount;
+			newCache.variants[counter.variant].removed += counter.amount;
 			newExistCache.push(newCache);
 		}
 	}

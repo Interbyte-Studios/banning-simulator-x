@@ -55,7 +55,8 @@ const visibilityStates = {
 
 export const app = hooks((props: AppProps, { useState, useEffect, useContext, useCallback, useMemo }) => {
 	const [visibility, setVisibility] = useState(visibilityStates);
-	const [activeTrade, setActiveTrade] = useState(false);
+	const [tradingPlayer, setTradingPlayer] = useState<Player | undefined>(undefined);
+	const [activeTrade, setActiveTrade] = useState<boolean>(false);
 
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
@@ -91,9 +92,10 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 	 */
 	const isMenuVisible = useCallback(
 		(currentMenu?: keyof typeof visibilityStates) =>
+			activeTrade ||
 			Object.entries(visibility)
 				.filter(([menu]) => menu !== currentMenu)
-				.some(([, value]) => value) || activeTrade,
+				.some(([, value]) => value),
 		[visibility, activeTrade],
 	);
 
@@ -110,7 +112,6 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 	 */
 	const visibleComponents: Array<Roact.Element> = useMemo(() => {
 		const components: Array<Roact.Element> = [];
-
 		if (!isMenuVisible()) {
 			components.push(
 				<Hud
@@ -149,12 +150,11 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 				/>,
 				<Trading
 					isEnabled={false}
-					setActiveTrade={(value: boolean): void => {
-						setActiveTrade(value);
-					}}
-					hideMenu={(): void => {
-						setVisibility((prev) => ({ ...prev, trading: false }));
-					}}
+					tradingPlayer={tradingPlayer}
+					tradeActive={activeTrade}
+					setTradingPlayer={(player: Player | undefined): void => setTradingPlayer(player)}
+					setActiveTrade={(value: boolean): void => setActiveTrade(value)}
+					hideMenu={(): void => setVisibility((prev) => ({ ...prev, trading: false }))}
 				/>,
 				<WeaponLevelUpAnimation />,
 				<TalismanLevelUpAnimation />,
@@ -272,19 +272,26 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					}}
 					onlyShowCurrency={true}
 				/>,
+				<Trading
+					isEnabled={false}
+					tradingPlayer={tradingPlayer}
+					tradeActive={activeTrade}
+					setTradingPlayer={(player: Player | undefined): void => setTradingPlayer(player)}
+					setActiveTrade={(value: boolean): void => setActiveTrade(value)}
+					hideMenu={(): void => setVisibility((prev) => ({ ...prev, trading: false }))}
+				/>,
 			);
 		} else if (isVisible("accountHub")) {
 			components.push(<AccountHub hideMenu={(): void => setVisibility((prev) => ({ ...prev, accountHub: false }))} />);
-		} else if (isVisible("trading")) {
+		} else if (isVisible("trading") || activeTrade) {
 			components.push(
 				<Trading
 					isEnabled={true}
-					setActiveTrade={(value: boolean): void => {
-						setActiveTrade(value);
-					}}
-					hideMenu={(): void => {
-						setVisibility((prev) => ({ ...prev, trading: false }));
-					}}
+					tradingPlayer={tradingPlayer}
+					tradeActive={activeTrade}
+					setTradingPlayer={(player: Player | undefined): void => setTradingPlayer(player)}
+					setActiveTrade={(value: boolean): void => setActiveTrade(value)}
+					hideMenu={(): void => setVisibility((prev) => ({ ...prev, trading: false }))}
 				/>,
 			);
 		} else if (isVisible("codes")) {
@@ -295,10 +302,26 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 			components.push(<RobuxShop hideMenu={(): void => setVisibility((prev) => ({ ...prev, robuxShop: false }))} />);
 		}
 
-		components.push(<ZonesUI />, <Rewards />, <LocalMessages />, <EggCost />, <EggHud />, <BoostCounter />);
+		components.push(
+			<ZonesUI />,
+			<Rewards />,
+			<LocalMessages />,
+			<EggCost />,
+			<EggHud />,
+			<BoostCounter />,
+			// Need to add trading so they can receive requests while in other UI's.
+			<Trading
+				isEnabled={false}
+				tradingPlayer={tradingPlayer}
+				tradeActive={activeTrade}
+				setTradingPlayer={(player: Player | undefined): void => setTradingPlayer(player)}
+				setActiveTrade={(value: boolean): void => setActiveTrade(value)}
+				hideMenu={(): void => setVisibility((prev) => ({ ...prev, trading: false }))}
+			/>,
+		);
 
 		return components;
-	}, [visibility]);
+	}, [visibility, isMenuVisible, activeTrade]);
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>
