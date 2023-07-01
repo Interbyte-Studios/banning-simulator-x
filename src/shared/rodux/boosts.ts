@@ -2,7 +2,9 @@ import Rodux from "@rbxts/rodux";
 import { t } from "@rbxts/t";
 import { BoostProduct } from "shared/configs/game";
 
-import { ClaimClubReward, ClaimGroupReward, ClaimVIPReward } from "./playerIndex";
+import { ClaimClubReward } from "./playerIndex/clubRewards";
+import { ClaimGroupReward } from "./playerIndex/groupRewards";
+import { ClaimVIPReward } from "./playerIndex/vipRewards";
 
 export interface BoostsState {
 	storage: {

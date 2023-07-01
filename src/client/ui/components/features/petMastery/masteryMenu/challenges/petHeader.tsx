@@ -35,12 +35,7 @@ function mapStateToProps(state: StoreState): ChallengesPetHeaderMappedProps {
  */
 export const ChallengesPetHeader = RoactRodux.connect(mapStateToProps)(
 	hooks((props: ChallengesPetHeaderProps) => {
-		const stringId = tostring(props.pet);
-		if (stringId === undefined) {
-			throw `Failed to get pet mastery data for pet ${props.pet}.`;
-		}
-
-		const petsIndex = props.index.pets.get(stringId);
+		const petsIndex = props.index.pets.get(props.pet);
 		const petData = getPetData(props.pet);
 
 		const variantHeader = props.variant === "radiant" ? "Radiant" : props.variant === "void" ? "Void" : "Regular";

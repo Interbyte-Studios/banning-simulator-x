@@ -40,12 +40,7 @@ function mapStateToProps(state: StoreState): RegularEggProgressMappedProps {
  */
 export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 	hooks((props: ProgressBarProps) => {
-		const stringId = tostring(props.pet);
-		if (stringId === undefined) {
-			throw `Failed to get pet mastery data for pet ${props.pet}.`;
-		}
-
-		const petsIndex = props.index.pets.get(stringId);
+		const petsIndex = props.index.pets.get(props.pet);
 
 		const petData = getPetData(props.pet);
 		const masteryRequirements = PET_MASTERY_REQUIREMENTS[petData.rarity][props.variant];
@@ -60,7 +55,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 					potentiallyFinishedChallenges += 1;
 				}
 
-				if (petsIndex.maxLevel.regular.masteryCache.size() >= masteryRequirements.maxLevel) {
+				if (petsIndex.maxLevel.regular.cachedMaxLevel.size() >= masteryRequirements.maxLevel) {
 					potentiallyFinishedChallenges += 1;
 				}
 			} else if (props.variant === "void") {
@@ -68,7 +63,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 					potentiallyFinishedChallenges += 1;
 				}
 
-				if (petsIndex.maxLevel.void.masteryCache.size() >= masteryRequirements.maxLevel) {
+				if (petsIndex.maxLevel.void.cachedMaxLevel.size() >= masteryRequirements.maxLevel) {
 					potentiallyFinishedChallenges += 1;
 				}
 
@@ -76,7 +71,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 					potentiallyFinishedChallenges += 1;
 				}
 			} else if (props.variant === "radiant") {
-				if (petsIndex.maxLevel.radiant.masteryCache.size() >= masteryRequirements.maxLevel) {
+				if (petsIndex.maxLevel.radiant.cachedMaxLevel.size() >= masteryRequirements.maxLevel) {
 					potentiallyFinishedChallenges += 1;
 				}
 

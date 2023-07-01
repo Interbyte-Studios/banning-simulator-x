@@ -7,12 +7,7 @@ import { hooks } from "client/ui/hooks";
 import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
-import {
-	PetMasteryState,
-	radiantVariantMasteryData,
-	regularVariantMasteryData,
-	voidVariantMasteryData,
-} from "shared/rodux/petMastery";
+import { PetMasteryState, PetMasteryStateVariant } from "shared/rodux/petMastery";
 import { getEggData } from "shared/util/getEggData";
 import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
@@ -59,18 +54,15 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 				totalChallenges += 2;
 			}
 
-			const petsMasteryIndex = props.petMastery.get(tostring(data.id));
+			const petsMasteryIndex = props.petMastery.get(data.id);
 			if (petsMasteryIndex === undefined) {
 				continue;
 			}
 
-			const masteryData = petsMasteryIndex[props.variant];
+			const _masteryData = petsMasteryIndex[props.variant];
 			switch (props.variant) {
 				case "regular": {
-					assert(
-						regularVariantMasteryData(masteryData),
-						`Mastery data didn't meet strict interface type expectations.`,
-					);
+					const masteryData = _masteryData as PetMasteryStateVariant[typeof props.variant];
 
 					if (masteryData.hatchClaimed) {
 						completedChallenges += 1;
@@ -82,7 +74,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 					break;
 				}
 				case "void": {
-					assert(voidVariantMasteryData(masteryData), `Mastery data didn't meet strict interface type expectations.`);
+					const masteryData = _masteryData as PetMasteryStateVariant[typeof props.variant];
 
 					if (masteryData.hatchClaimed) {
 						completedChallenges += 1;
@@ -99,10 +91,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 					break;
 				}
 				case "radiant": {
-					assert(
-						radiantVariantMasteryData(masteryData),
-						`Mastery data didn't meet strict interface type expectations.`,
-					);
+					const masteryData = _masteryData as PetMasteryStateVariant[typeof props.variant];
 
 					if (masteryData.maxLevelClaimed) {
 						completedChallenges += 1;

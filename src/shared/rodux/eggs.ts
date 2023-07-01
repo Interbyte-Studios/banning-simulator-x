@@ -1,26 +1,35 @@
 import Rodux from "@rbxts/rodux";
+import { Currency } from "shared/configs/currencies";
 import { Rarities } from "shared/configs/rarities";
 import { getPetData } from "shared/util/getPetData";
 
-import { ConfirmedPet } from "./pets";
+import { HatchedPet } from "./pets";
 
 export interface EggsState {
 	eggs: number;
 	rarities: { [P in Rarities]: number };
 }
-export type EggsActions = AddEgg;
+export type EggsActions = HatchEgg;
 
-export interface AddEgg extends Rodux.Action<"addEgg"> {
-	pets: Array<ConfirmedPet>;
+export interface HatchEgg extends Rodux.Action<"hatchEgg"> {
+	pets: Array<HatchedPet>;
+	cost: number;
+	currencyType: Currency;
 }
 
 /**
+ * Hatches a new egg, incrementing its hatch counter, adding the pets to inventory, and removing the specified currency.
+ *
+ * @param cost The cost of the egg.
+ * @param currencyType The currency used to pay for the egg.
  * @param pets The pets to add.
  * @returns The Rodux action to dispatch.
  */
-export function addEgg(pets: Array<ConfirmedPet>): AddEgg & Rodux.AnyAction {
+export function hatchEgg(cost: number, currencyType: Currency, pets: Array<HatchedPet>): HatchEgg & Rodux.AnyAction {
 	return {
-		type: "addEgg",
+		type: "hatchEgg",
+		cost,
+		currencyType,
 		pets,
 	};
 }
@@ -41,18 +50,8 @@ export const defaultEggs: EggsState = {
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const eggsReducer = Rodux.createReducer<EggsState, EggsActions>(defaultEggs, {
-	addEgg: (state, action) => {
-		const newEggAmount = state.eggs + action.pets.size();
-		const newRarities = {
-			Basic: 0,
-			Ordinary: 0,
-			Rare: 0,
-			Epic: 0,
-			Legendary: 0,
-			Primordial: 0,
-			Prismatic: 0,
-			Exclusive: 0,
-		};
+	hatchEgg: (state, action) => {
+		const newRarities = { ...state.rarities };
 
 		for (const pet of action.pets) {
 			const petData = getPetData(pet.id);
@@ -61,17 +60,8 @@ export const eggsReducer = Rodux.createReducer<EggsState, EggsActions>(defaultEg
 		}
 
 		return {
-			eggs: newEggAmount,
-			rarities: {
-				Basic: state.rarities.Basic + newRarities.Basic,
-				Ordinary: state.rarities.Ordinary + newRarities.Ordinary,
-				Rare: state.rarities.Rare + newRarities.Rare,
-				Epic: state.rarities.Epic + newRarities.Epic,
-				Legendary: state.rarities.Legendary + newRarities.Legendary,
-				Primordial: state.rarities.Primordial + newRarities.Primordial,
-				Prismatic: state.rarities.Prismatic + newRarities.Prismatic,
-				Exclusive: state.rarities.Exclusive + newRarities.Exclusive,
-			},
+			eggs: state.eggs + action.pets.size(),
+			rarities: newRarities,
 		};
 	},
 });

@@ -5,7 +5,7 @@ import { RARITIES } from "shared/configs/rarities";
 import { remotes } from "shared/remotes";
 import { FusionFailKind } from "shared/remotes/fusing";
 import { awardCurrency } from "shared/rodux/currencies";
-import { addPets, ConfirmedPet, deletePets } from "shared/rodux/pets";
+import { deletePets, FusedPet, fusePets, isValidFusableVariant } from "shared/rodux/pets";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetData } from "shared/util/getPetData";
@@ -13,6 +13,13 @@ import { getPetData } from "shared/util/getPetData";
 remotes.Server.Create("requestFusion").SetCallback(
 	withPlayerStore((_, store, petsToFuse, variant) => {
 		const currentState = store.getState();
+
+		if (!isValidFusableVariant(variant)) {
+			return {
+				success: false,
+				reason: FusionFailKind.InternalError,
+			};
+		}
 
 		// check that all pets have the same id and are the same variant
 		let petId: number | undefined;
@@ -32,8 +39,7 @@ remotes.Server.Create("requestFusion").SetCallback(
 				};
 			}
 
-			const variantPetsShouldbe = variant === "radiant" ? "void" : variant === "void" ? "regular" : "";
-			if (storedPet.variant !== variantPetsShouldbe) {
+			if (storedPet.variant !== variant) {
 				return {
 					success: false,
 					reason: FusionFailKind.InternalError,
@@ -69,7 +75,7 @@ remotes.Server.Create("requestFusion").SetCallback(
 		if (petData.fusionCost !== undefined) {
 			fusionCost = petData.fusionCost;
 		}
-		fusionCost = fusionCost * petsToFuse.size() * (variant === "radiant" ? 3 : variant === "void" ? 2 : 1);
+		fusionCost = fusionCost * petsToFuse.size() * (variant === "radiant" ? 3 : 2);
 
 		if (currentState.currencies[eggCost.currencyType] < fusionCost) {
 			return {
@@ -104,12 +110,10 @@ remotes.Server.Create("requestFusion").SetCallback(
 			};
 		}
 
-		const newPet: ConfirmedPet = {
+		const newPet: FusedPet = {
 			id: petData.id,
 			variant: variant,
-			method: "fuse",
 			tradeLocked: false,
-			autoDeleted: false,
 			guid: HttpService.GenerateGUID(false),
 		};
 
@@ -120,7 +124,7 @@ remotes.Server.Create("requestFusion").SetCallback(
 		});
 
 		store.dispatch(deletePets(petsToFuse));
-		store.dispatch(addPets(fusionCost, eggCost.currencyType, [newPet]));
+		store.dispatch(fusePets(fusionCost, eggCost.currencyType, newPet));
 
 		return { success: true };
 	}),

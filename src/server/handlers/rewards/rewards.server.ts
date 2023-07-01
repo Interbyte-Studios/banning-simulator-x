@@ -4,13 +4,14 @@ import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { BoostProduct, GROUP_PET_ID, VIP_PET_ID } from "shared/configs/game";
 import { remotes } from "shared/remotes";
 import { addPets } from "shared/rodux/pets";
-import { claimClubReward, claimGroupReward, claimVIPReward } from "shared/rodux/playerIndex";
+import { claimClubReward } from "shared/rodux/playerIndex/clubRewards";
+import { claimGroupReward } from "shared/rodux/playerIndex/groupRewards";
+import { claimVIPReward } from "shared/rodux/playerIndex/vipRewards";
 
 const rewardRemotes = remotes.Server.GetNamespace("rewards");
 rewardRemotes.Get("claimClubReward").SetCallback(
 	withPlayerStore((player, store) => {
 		const now = DateTime.now();
-		const timeStamp = now.UnixTimestamp;
 
 		const currentState = store.getState();
 		if (currentState.index.groupRank === undefined) {
@@ -19,8 +20,8 @@ rewardRemotes.Get("claimClubReward").SetCallback(
 			};
 		}
 
-		const previousClaims = currentState.index.clubRewardClaimed.lastClaimed;
-		const canClaim = timeStamp - previousClaims > 86400;
+		const previousClaims = currentState.index.clubRewards.lastClaimed;
+		const canClaim = now.UnixTimestamp - previousClaims.UnixTimestamp > 86400;
 
 		if (!canClaim) {
 			return {
@@ -46,7 +47,7 @@ rewardRemotes.Get("claimClubReward").SetCallback(
 				boost = "x2 Pet Experience";
 				break;
 		}
-		store.dispatch(claimClubReward(timeStamp, boost));
+		store.dispatch(claimClubReward(now, boost));
 
 		return {
 			success: true,
@@ -61,7 +62,6 @@ rewardRemotes.Get("claimClubReward").SetCallback(
 rewardRemotes.Get("claimGroupReward").SetCallback(
 	withPlayerStore((player, store) => {
 		const now = DateTime.now();
-		const timeStamp = now.UnixTimestamp;
 
 		const currentState = store.getState();
 		if (currentState.index.groupRank === undefined) {
@@ -70,8 +70,8 @@ rewardRemotes.Get("claimGroupReward").SetCallback(
 			};
 		}
 
-		const previousClaims = currentState.index.groupRewardClaimed.lastClaimed;
-		const canClaim = timeStamp - previousClaims > 86400;
+		const previousClaims = currentState.index.groupRewards.lastClaimed;
+		const canClaim = now.UnixTimestamp - previousClaims.UnixTimestamp > 86400;
 
 		if (!canClaim) {
 			return {
@@ -98,8 +98,8 @@ rewardRemotes.Get("claimGroupReward").SetCallback(
 				break;
 		}
 
-		const hasClaimedPet = currentState.index.groupRewardClaimed.petIdClaimed === GROUP_PET_ID;
-		store.dispatch(claimGroupReward(timeStamp, boost, hasClaimedPet ? undefined : GROUP_PET_ID));
+		const hasClaimedPet = currentState.index.groupRewards.lastPetIdClaimed === GROUP_PET_ID;
+		store.dispatch(claimGroupReward(now, boost, hasClaimedPet ? undefined : GROUP_PET_ID));
 		if (!hasClaimedPet) {
 			modifyPetCount({
 				type: "addPet",
@@ -107,14 +107,12 @@ rewardRemotes.Get("claimGroupReward").SetCallback(
 				variant: "regular",
 			});
 			store.dispatch(
-				addPets(0, "coins", [
+				addPets([
 					{
 						id: GROUP_PET_ID,
 						variant: "regular",
-						method: "hatch",
 						tradeLocked: false,
 						guid: HttpService.GenerateGUID(false),
-						autoDeleted: false,
 					},
 				]),
 			);
@@ -134,7 +132,6 @@ rewardRemotes.Get("claimGroupReward").SetCallback(
 rewardRemotes.Get("claimVIPReward").SetCallback(
 	withPlayerStore((player, store) => {
 		const now = DateTime.now();
-		const timeStamp = now.UnixTimestamp;
 
 		const currentState = store.getState();
 		if (!currentState.gamepasses.VIP) {
@@ -143,8 +140,8 @@ rewardRemotes.Get("claimVIPReward").SetCallback(
 			};
 		}
 
-		const previousClaims = currentState.index.vipRewardClaimed.lastClaimed;
-		const canClaim = timeStamp - previousClaims > 86400;
+		const previousClaims = currentState.index.vipRewards.lastClaimed;
+		const canClaim = now.UnixTimestamp - previousClaims.UnixTimestamp > 86400;
 
 		if (!canClaim) {
 			return {
@@ -171,8 +168,8 @@ rewardRemotes.Get("claimVIPReward").SetCallback(
 				break;
 		}
 
-		const hasClaimedPet = currentState.index.vipRewardClaimed.petIdClaimed === VIP_PET_ID;
-		store.dispatch(claimVIPReward(timeStamp, boost, hasClaimedPet ? undefined : VIP_PET_ID));
+		const hasClaimedPet = currentState.index.vipRewards.lastPetIdClaimed === VIP_PET_ID;
+		store.dispatch(claimVIPReward(now, boost, hasClaimedPet ? undefined : VIP_PET_ID));
 		if (!hasClaimedPet) {
 			modifyPetCount({
 				type: "addPet",
@@ -180,14 +177,12 @@ rewardRemotes.Get("claimVIPReward").SetCallback(
 				variant: "regular",
 			});
 			store.dispatch(
-				addPets(0, "coins", [
+				addPets([
 					{
 						id: VIP_PET_ID,
 						variant: "regular",
-						method: "hatch",
 						tradeLocked: false,
 						guid: HttpService.GenerateGUID(false),
-						autoDeleted: false,
 					},
 				]),
 			);

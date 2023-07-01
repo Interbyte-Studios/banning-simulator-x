@@ -1,10 +1,5 @@
 import { remotes } from "shared/remotes";
-import {
-	radiantVariantMasteryData,
-	regularVariantMasteryData,
-	toggleMasteryCosmetic,
-	voidVariantMasteryData,
-} from "shared/rodux/petMastery";
+import { PetMasteryStateVariant, toggleMasteryCosmetic } from "shared/rodux/petMastery";
 
 import { withPlayerStore } from "../../modules/net/withPlayerStore";
 
@@ -15,17 +10,17 @@ remotes.Server.GetNamespace("petMastery")
 			const state = store.getState();
 
 			// check to be sure the pet's been discovered
-			const petMasteryIndex = state.petMastery.get(tostring(id));
+			const petMasteryIndex = state.petMastery.get(id);
 			if (petMasteryIndex === undefined) {
 				return;
 			}
 
 			// check to be sure they've claimed mastery on all challenges for the pets variant.
-			const masteryData = petMasteryIndex[variant];
+			const _masteryData = petMasteryIndex[variant];
 
 			switch (variant) {
 				case "regular": {
-					assert(regularVariantMasteryData(masteryData), `Mastery data didn't meet strict interface expectations.`);
+					const masteryData = _masteryData as PetMasteryStateVariant[typeof variant];
 
 					if (!(masteryData.hatchClaimed && masteryData.maxLevelClaimed)) {
 						return;
@@ -33,7 +28,7 @@ remotes.Server.GetNamespace("petMastery")
 					break;
 				}
 				case "void": {
-					assert(voidVariantMasteryData(masteryData), `Mastery data didn't meet strict interface expectations.`);
+					const masteryData = _masteryData as PetMasteryStateVariant[typeof variant];
 
 					if (!(masteryData.hatchClaimed && masteryData.maxLevelClaimed && masteryData.fuseClaimed)) {
 						return;
@@ -41,7 +36,7 @@ remotes.Server.GetNamespace("petMastery")
 					break;
 				}
 				case "radiant": {
-					assert(radiantVariantMasteryData(masteryData), `Mastery data didn't meet strict interface expectations.`);
+					const masteryData = _masteryData as PetMasteryStateVariant[typeof variant];
 
 					if (!(masteryData.maxLevelClaimed && masteryData.fuseClaimed)) {
 						return;

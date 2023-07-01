@@ -8,6 +8,7 @@ import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { getBoostHumanTime } from "client/util/getBoostHumanTime";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { BOOST_IMAGES } from "shared/configs/game";
@@ -16,10 +17,40 @@ import { Variants } from "shared/configs/pets";
 import { Rarities } from "shared/configs/rarities";
 import { ClaimPetMasteryFailKind } from "shared/remotes/petMastery/claimMastery";
 import { StoreState } from "shared/rodux";
-import { PetMasteryState } from "shared/rodux/petMastery";
-import { PetAttainMethod } from "shared/rodux/pets";
+import { PetMasteryChallengeType, PetMasteryState } from "shared/rodux/petMastery";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
 import { getPetData } from "shared/util/getPetData";
+import { UnreachableCaseError } from "shared/util/unreachableCaseError";
+
+/* eslint-disable jsdoc/require-jsdoc */
+const challengeColors: {
+	[P in PetMasteryChallengeType]: {
+		name: string;
+		color: Color3;
+		strokeColor: Color3;
+		description: (amount: number) => string;
+	};
+} = {
+	hatch: {
+		name: "Hatching mastery",
+		color: Color3.fromRGB(90, 255, 206),
+		strokeColor: Color3.fromRGB(44, 126, 102),
+		description: (amount) => `Hatch ${amount} times.`,
+	},
+	maxLevel: {
+		name: "Max Level Mastery",
+		color: Color3.fromRGB(255, 227, 15),
+		strokeColor: Color3.fromRGB(120, 101, 71),
+		description: (amount) => `Reach max level ${amount} times.`,
+	},
+	fuse: {
+		name: "Fusing Mastery",
+		color: Color3.fromRGB(255, 90, 90),
+		strokeColor: Color3.fromRGB(152, 54, 54),
+		description: (amount) => `Fuse ${amount} times.`,
+	},
+};
+/* eslint-enable jsdoc/require-jsdoc */
 
 /**
  * Displays a mastery challenge.
@@ -31,45 +62,19 @@ const MasteryChallengeFrame = hooks(
 			rarity: Rarities;
 			variant: Variants;
 			number: 1 | 2 | 3;
-			challengeType: Exclude<PetAttainMethod, "admin" | "trade" | "purchase">;
+			challengeType: PetMasteryChallengeType;
 			requirement: number;
 			amount: number;
 			progress: number;
 			hasBeenClaimed: boolean;
 		},
-		hooks,
+		{ useContext },
 	) => {
-		const challengeColor =
-			props.challengeType === "hatch"
-				? Color3.fromRGB(90, 255, 206)
-				: props.challengeType === "maxLevel"
-				? Color3.fromRGB(255, 227, 15)
-				: Color3.fromRGB(255, 90, 90);
-
-		const challengeStroke =
-			props.challengeType === "hatch"
-				? Color3.fromRGB(44, 126, 102)
-				: props.challengeType === "maxLevel"
-				? Color3.fromRGB(120, 101, 71)
-				: Color3.fromRGB(152, 54, 54);
-
-		const masteryChallengeName =
-			props.challengeType === "hatch"
-				? `Hatching Mastery`
-				: props.challengeType === "maxLevel"
-				? "Max Level Mastery"
-				: "Fusing Mastery";
-
-		const masteryDescription =
-			props.challengeType === "hatch"
-				? `Hatch ${props.requirement} times.`
-				: props.challengeType === "maxLevel"
-				? `Reach max level ${props.requirement} times.`
-				: `Fuse ${props.requirement} times.`;
-
-		const { useContext } = hooks;
 		const { claimPetMastery } = useContext(remoteContext);
 		const { addAnnouncement } = useContext(AnnouncementContext);
+
+		const { color: challengeColor, strokeColor, name, description } = challengeColors[props.challengeType];
+		const masteryDescription = description(props.requirement);
 
 		const petMasteryReward = PET_MASTERY_REWARDS[props.rarity][props.variant][props.challengeType];
 		assert(
@@ -77,14 +82,7 @@ const MasteryChallengeFrame = hooks(
 			`Failed to get pet mastery reward for ${props.rarity} ${props.variant} ${props.challengeType}`,
 		);
 
-		const boostRewardTime =
-			petMasteryReward.duration === 15
-				? "15m"
-				: petMasteryReward.duration === 30
-				? "30m"
-				: petMasteryReward.duration === 60
-				? "1h"
-				: "2h";
+		const boostRewardTime = getBoostHumanTime(petMasteryReward.duration);
 		const boostImage = BOOST_IMAGES[petMasteryReward.boost][petMasteryReward.duration];
 
 		return (
@@ -107,14 +105,14 @@ const MasteryChallengeFrame = hooks(
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 					<uicorner CornerRadius={new UDim(0.18, 0)} />
-					<BaseUIStroke native={{ Thickness: 1.8, Color: challengeStroke }} />
+					<BaseUIStroke native={{ Thickness: 1.8, Color: strokeColor }} />
 
 					<StrokeTextLabel
 						native={{
 							Size: UDim2.fromScale(0.9, 0.9),
 							Text: `${props.number}.`,
 						}}
-						stroke={{ native: { Thickness: 1.5, Color: challengeStroke } }}
+						stroke={{ native: { Thickness: 1.5, Color: strokeColor } }}
 					/>
 				</BaseFrame>
 
@@ -248,9 +246,9 @@ const MasteryChallengeFrame = hooks(
 					native={{
 						Position: UDim2.fromScale(0.475, 0.2),
 						Size: UDim2.fromScale(0.6, 0.35),
-						Text: masteryChallengeName,
+						Text: name,
 					}}
-					stroke={{ native: { Thickness: 1.6, Color: challengeStroke } }}
+					stroke={{ native: { Thickness: 1.6, Color: strokeColor } }}
 				/>
 
 				{/* The description of the mastery challenge. */}
@@ -260,7 +258,7 @@ const MasteryChallengeFrame = hooks(
 						Size: UDim2.fromScale(0.625, 0.3),
 						Text: masteryDescription,
 					}}
-					stroke={{ native: { Thickness: 1.6, Color: challengeStroke } }}
+					stroke={{ native: { Thickness: 1.6, Color: strokeColor } }}
 				/>
 
 				{/* The progress bar indicating how close they are to completing the mastery */}
@@ -329,18 +327,7 @@ function mapStateToProps(state: StoreState): PetMasteryChallengesMappedProps {
  */
 export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 	hooks((props: PetMasteryChallengesProps) => {
-		const stringId = tostring(props.pet);
-		if (stringId === undefined) {
-			throw `Failed to get pet string id for pet ${props.pet}.`;
-		}
-		const petsIndex = props.index.pets.get(stringId);
-		const petsMasteryIndex = props.petMastery.get(tostring(props.pet));
-
-		const petData = getPetData(props.pet);
-
-		const requirements = PET_MASTERY_REQUIREMENTS[petData.rarity][props.variant];
-
-		const challengesToDisplay: Array<Roact.Element> = [];
+		const petsIndex = props.index.pets.get(props.pet);
 		if (petsIndex === undefined) {
 			return (
 				<StrokeTextLabel
@@ -354,21 +341,20 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 			);
 		}
 
-		if (props.variant === "regular") {
-			let hatchCompleted = false;
-			let maxLevelCompleted = false;
+		const petsMasteryIndex = props.petMastery.get(props.pet);
 
-			if (petsMasteryIndex !== undefined) {
-				hatchCompleted = petsMasteryIndex.regular.hatchClaimed;
-				maxLevelCompleted = petsMasteryIndex.regular.maxLevelClaimed;
-			}
+		const petData = getPetData(props.pet);
 
-			if (!hatchCompleted) {
-				let hatchProgress = petsIndex.hatched.regular / requirements.hatch;
-				if (hatchProgress > 1) {
-					hatchProgress = 1;
-				}
+		const requirements = PET_MASTERY_REQUIREMENTS[petData.rarity][props.variant];
 
+		const challengesToDisplay: Array<Roact.Element> = [];
+
+		switch (props.variant) {
+			case "regular": {
+				const hatchCompleted = petsMasteryIndex?.regular.hatchClaimed ?? false;
+				const maxLevelCompleted = petsMasteryIndex?.regular.maxLevelClaimed ?? false;
+
+				const hatchProgress = math.min(petsIndex.hatched.regular / requirements.hatch, 1); // clamp to 1
 				challengesToDisplay.push(
 					<MasteryChallengeFrame
 						pet={props.pet}
@@ -378,32 +364,12 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						challengeType={"hatch"}
 						requirement={requirements.hatch}
 						amount={petsIndex.hatched.regular}
-						progress={hatchProgress}
-						hasBeenClaimed={false}
+						progress={hatchCompleted ? 1 : hatchProgress}
+						hasBeenClaimed={hatchCompleted}
 					/>,
 				);
-			} else {
-				challengesToDisplay.push(
-					<MasteryChallengeFrame
-						pet={props.pet}
-						rarity={petData.rarity}
-						variant={props.variant}
-						number={1}
-						challengeType={"hatch"}
-						requirement={requirements.hatch}
-						amount={petsIndex.hatched.regular}
-						progress={1}
-						hasBeenClaimed={true}
-					/>,
-				);
-			}
 
-			if (!maxLevelCompleted) {
-				let maxLevelProgress = petsIndex.maxLevel.regular.masteryCache.size() / requirements.maxLevel;
-				if (maxLevelProgress > 1) {
-					maxLevelProgress = 1;
-				}
-
+				const maxLevelProgress = math.min(petsIndex.maxLevel.regular.cachedMaxLevel.size() / requirements.maxLevel, 1); // clamp to 1
 				challengesToDisplay.push(
 					<MasteryChallengeFrame
 						pet={props.pet}
@@ -412,43 +378,20 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						number={2}
 						challengeType={"maxLevel"}
 						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.regular.masteryCache.size()}
-						progress={maxLevelProgress}
-						hasBeenClaimed={false}
+						amount={petsIndex.maxLevel.regular.cachedMaxLevel.size()}
+						progress={maxLevelCompleted ? 1 : maxLevelProgress}
+						hasBeenClaimed={maxLevelCompleted}
 					/>,
 				);
-			} else {
-				challengesToDisplay.push(
-					<MasteryChallengeFrame
-						pet={props.pet}
-						rarity={petData.rarity}
-						variant={props.variant}
-						number={2}
-						challengeType={"maxLevel"}
-						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.regular.masteryCache.size()}
-						progress={1}
-						hasBeenClaimed={true}
-					/>,
-				);
+
+				break;
 			}
-		} else if (props.variant === "void") {
-			let hatchCompleted = false;
-			let maxLevelCompleted = false;
-			let fuseCompleted = false;
+			case "void": {
+				const hatchCompleted = petsMasteryIndex?.void.hatchClaimed ?? false;
+				const maxLevelCompleted = petsMasteryIndex?.void.maxLevelClaimed ?? false;
+				const fuseCompleted = petsMasteryIndex?.void.fuseClaimed ?? false;
 
-			if (petsMasteryIndex !== undefined) {
-				hatchCompleted = petsMasteryIndex.void.hatchClaimed;
-				maxLevelCompleted = petsMasteryIndex.void.maxLevelClaimed;
-				fuseCompleted = petsMasteryIndex.void.fuseClaimed;
-			}
-
-			if (!hatchCompleted) {
-				let hatchProgress = petsIndex.hatched.void / requirements.hatch;
-				if (hatchProgress > 1) {
-					hatchProgress = 1;
-				}
-
+				const hatchProgress = math.min(petsIndex.hatched.void / requirements.hatch, 1);
 				challengesToDisplay.push(
 					<MasteryChallengeFrame
 						pet={props.pet}
@@ -458,32 +401,12 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						challengeType={"hatch"}
 						requirement={requirements.hatch}
 						amount={petsIndex.hatched.void}
-						progress={hatchProgress}
-						hasBeenClaimed={false}
+						progress={hatchCompleted ? 1 : hatchProgress}
+						hasBeenClaimed={hatchCompleted}
 					/>,
 				);
-			} else {
-				challengesToDisplay.push(
-					<MasteryChallengeFrame
-						pet={props.pet}
-						rarity={petData.rarity}
-						variant={props.variant}
-						number={1}
-						challengeType={"hatch"}
-						requirement={requirements.hatch}
-						amount={petsIndex.hatched.void}
-						progress={1}
-						hasBeenClaimed={true}
-					/>,
-				);
-			}
 
-			if (!maxLevelCompleted) {
-				let maxLevelProgress = petsIndex.maxLevel.void.masteryCache.size() / requirements.maxLevel;
-				if (maxLevelProgress > 1) {
-					maxLevelProgress = 1;
-				}
-
+				const maxLevelProgress = math.min(petsIndex.maxLevel.void.cachedMaxLevel.size() / requirements.maxLevel, 1);
 				challengesToDisplay.push(
 					<MasteryChallengeFrame
 						pet={props.pet}
@@ -492,33 +415,13 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						number={2}
 						challengeType={"maxLevel"}
 						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.void.masteryCache.size()}
-						progress={maxLevelProgress}
-						hasBeenClaimed={false}
+						amount={petsIndex.maxLevel.void.cachedMaxLevel.size()}
+						progress={maxLevelCompleted ? 1 : maxLevelProgress}
+						hasBeenClaimed={maxLevelCompleted}
 					/>,
 				);
-			} else {
-				challengesToDisplay.push(
-					<MasteryChallengeFrame
-						pet={props.pet}
-						rarity={petData.rarity}
-						variant={props.variant}
-						number={2}
-						challengeType={"maxLevel"}
-						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.void.masteryCache.size()}
-						progress={1}
-						hasBeenClaimed={true}
-					/>,
-				);
-			}
 
-			if (!fuseCompleted) {
-				let fusedProgress = petsIndex.fused.void / requirements.fuse;
-				if (fusedProgress > 1) {
-					fusedProgress = 1;
-				}
-
+				const fusedProgress = math.min(petsIndex.fused.void / requirements.fuse, 1);
 				challengesToDisplay.push(
 					<MasteryChallengeFrame
 						pet={props.pet}
@@ -528,40 +431,18 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						challengeType={"fuse"}
 						requirement={requirements.fuse}
 						amount={petsIndex.fused.void}
-						progress={fusedProgress}
-						hasBeenClaimed={false}
+						progress={fuseCompleted ? 1 : fusedProgress}
+						hasBeenClaimed={fuseCompleted}
 					/>,
 				);
-			} else {
-				challengesToDisplay.push(
-					<MasteryChallengeFrame
-						pet={props.pet}
-						rarity={petData.rarity}
-						variant={props.variant}
-						number={3}
-						challengeType={"fuse"}
-						requirement={requirements.fuse}
-						amount={petsIndex.fused.void}
-						progress={1}
-						hasBeenClaimed={true}
-					/>,
-				);
+
+				break;
 			}
-		} else if (props.variant === "radiant") {
-			let maxLevelCompleted = false;
-			let fuseCompleted = false;
+			case "radiant": {
+				const maxLevelCompleted = petsMasteryIndex?.radiant.maxLevelClaimed ?? false;
+				const fuseCompleted = petsMasteryIndex?.radiant.fuseClaimed ?? false;
 
-			if (petsMasteryIndex !== undefined) {
-				maxLevelCompleted = petsMasteryIndex.radiant.maxLevelClaimed;
-				fuseCompleted = petsMasteryIndex.radiant.fuseClaimed;
-			}
-
-			if (!maxLevelCompleted) {
-				let maxLevelProgress = petsIndex.maxLevel.radiant.masteryCache.size() / requirements.maxLevel;
-				if (maxLevelProgress > 1) {
-					maxLevelProgress = 1;
-				}
-
+				const maxLevelProgress = math.min(petsIndex.maxLevel.radiant.cachedMaxLevel.size() / requirements.maxLevel, 1);
 				challengesToDisplay.push(
 					<MasteryChallengeFrame
 						pet={props.pet}
@@ -570,33 +451,13 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						number={1}
 						challengeType={"maxLevel"}
 						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.radiant.masteryCache.size()}
-						progress={maxLevelProgress}
-						hasBeenClaimed={false}
+						amount={petsIndex.maxLevel.radiant.cachedMaxLevel.size()}
+						progress={maxLevelCompleted ? 1 : maxLevelProgress}
+						hasBeenClaimed={maxLevelCompleted}
 					/>,
 				);
-			} else {
-				challengesToDisplay.push(
-					<MasteryChallengeFrame
-						pet={props.pet}
-						rarity={petData.rarity}
-						variant={props.variant}
-						number={1}
-						challengeType={"maxLevel"}
-						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.radiant.masteryCache.size()}
-						progress={1}
-						hasBeenClaimed={true}
-					/>,
-				);
-			}
 
-			if (!fuseCompleted) {
-				let fusedProgress = petsIndex.fused.radiant / requirements.fuse;
-				if (fusedProgress > 1) {
-					fusedProgress = 1;
-				}
-
+				const fusedProgress = math.min(petsIndex.fused.radiant / requirements.fuse, 1);
 				challengesToDisplay.push(
 					<MasteryChallengeFrame
 						pet={props.pet}
@@ -606,25 +467,14 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						challengeType={"fuse"}
 						requirement={requirements.fuse}
 						amount={petsIndex.fused.radiant}
-						progress={fusedProgress}
-						hasBeenClaimed={false}
+						progress={fuseCompleted ? 1 : fusedProgress}
+						hasBeenClaimed={fuseCompleted}
 					/>,
 				);
-			} else {
-				challengesToDisplay.push(
-					<MasteryChallengeFrame
-						pet={props.pet}
-						rarity={petData.rarity}
-						variant={props.variant}
-						number={2}
-						challengeType={"fuse"}
-						requirement={requirements.fuse}
-						amount={petsIndex.fused.radiant}
-						progress={1}
-						hasBeenClaimed={true}
-					/>,
-				);
+				break;
 			}
+			default:
+				throw new UnreachableCaseError(props.variant);
 		}
 
 		return (

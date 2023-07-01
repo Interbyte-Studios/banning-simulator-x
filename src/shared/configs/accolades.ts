@@ -82,7 +82,7 @@ export const ACCOLADES: Array<Accolade> = [
 				for (const [, petData] of pairs(eggData.pets)) {
 					totalObjectives += 7; // total objectives per pet
 
-					const storedMasteryData = state.petMastery.get(tostring(petData.id));
+					const storedMasteryData = state.petMastery.get(petData.id);
 					if (storedMasteryData === undefined) {
 						continue;
 					}

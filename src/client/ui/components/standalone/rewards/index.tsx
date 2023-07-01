@@ -57,13 +57,12 @@ export const Rewards = RoactRodux.connect(mapStateToProps)(
 						return;
 					}
 
-					const now = DateTime.now();
-					const timeStamp = now.UnixTimestamp;
+					const now = DateTime.now().UnixTimestamp;
 
 					const newItems: RewardsCache = [];
 
-					const claimGroup = timeStamp - props.index.groupRewardClaimed.lastClaimed;
-					const claimClub = timeStamp - props.index.clubRewardClaimed.lastClaimed;
+					const claimGroup = now - props.index.groupRewards.lastClaimed.UnixTimestamp;
+					const claimClub = now - props.index.clubRewards.lastClaimed.UnixTimestamp;
 
 					const canClaimGroup = claimGroup > 86400;
 
@@ -130,11 +129,10 @@ export const Rewards = RoactRodux.connect(mapStateToProps)(
 					}
 
 					const now = DateTime.now();
-					const timeStamp = now.UnixTimestamp;
 
 					const newItems: RewardsCache = [];
 
-					const canClaimVIP = timeStamp - props.index.vipRewardClaimed.lastClaimed > 86400;
+					const canClaimVIP = now.UnixTimestamp - props.index.vipRewards.lastClaimed.UnixTimestamp > 86400;
 					if (canClaimVIP) {
 						const result = await claimVIPReward.CallServerAsync();
 						if (result.success) {
@@ -168,10 +166,10 @@ export const Rewards = RoactRodux.connect(mapStateToProps)(
 				const now = DateTime.now();
 
 				if (props.gamepasses.VIP) {
-					if (now.UnixTimestamp - props.index.vipRewardClaimed.lastClaimed > 86400) {
+					if (now.UnixTimestamp - props.index.vipRewards.lastClaimed.UnixTimestamp > 86400) {
 						Workspace.interactions["VIP Chest"].interact.ProximityPrompt.ActionText = "Claim VIP Reward";
 					} else {
-						const timeUntilClaim = 86400 - (now.UnixTimestamp - props.index.vipRewardClaimed.lastClaimed);
+						const timeUntilClaim = 86400 - (now.UnixTimestamp - props.index.vipRewards.lastClaimed.UnixTimestamp);
 						Workspace.interactions["VIP Chest"].interact.ProximityPrompt.ActionText = `Claim in ${formatTime(
 							timeUntilClaim,
 						)}`;
@@ -179,8 +177,8 @@ export const Rewards = RoactRodux.connect(mapStateToProps)(
 				}
 
 				if (props.index.groupRank !== undefined) {
-					const timeSinceGroupClaim = now.UnixTimestamp - props.index.groupRewardClaimed.lastClaimed;
-					const timeSinceClubClaim = now.UnixTimestamp - props.index.clubRewardClaimed.lastClaimed;
+					const timeSinceGroupClaim = now.UnixTimestamp - props.index.groupRewards.lastClaimed.UnixTimestamp;
+					const timeSinceClubClaim = now.UnixTimestamp - props.index.clubRewards.lastClaimed.UnixTimestamp;
 
 					if (timeSinceClubClaim > 86400) {
 						Workspace.interactions.GroupChest.interact.ProximityPrompt.ActionText = "Claim Club Reward";

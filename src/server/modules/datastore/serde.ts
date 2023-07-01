@@ -10,10 +10,9 @@ import { defaultEggs } from "shared/rodux/eggs";
 import { defaultExperienceState } from "shared/rodux/experience";
 import { defaultGamepasses } from "shared/rodux/gamepasses";
 import { defaultMediaState } from "shared/rodux/media";
-import { defaultPetMasteryState } from "shared/rodux/petMastery";
 import { defaultPets } from "shared/rodux/pets";
 import { defaultPetTeamsState } from "shared/rodux/petTeams";
-import { defaultPlayerIndex } from "shared/rodux/playerIndex";
+import { defaultPlayerIndexState } from "shared/rodux/playerIndex";
 import { defaultQuestsState } from "shared/rodux/quests";
 import { defaultRank } from "shared/rodux/rank";
 import { defaultSettings } from "shared/rodux/settings";
@@ -52,12 +51,12 @@ export const profileTemplate: ProfileState = {
 	experience: defaultExperienceState,
 	gamepasses: defaultGamepasses,
 	index: {
-		...defaultPlayerIndex,
+		...defaultPlayerIndexState,
 		joinDate: DateTime.now().UnixTimestampMillis,
 	},
 	media: defaultMediaState,
 	pets: defaultPets,
-	petMastery: defaultPetMasteryState,
+	petMastery: new Map(),
 	petTeams: defaultPetTeamsState,
 	quests: defaultQuestsState,
 	rank: defaultRank,

@@ -1,9 +1,13 @@
 import Rodux from "@rbxts/rodux";
+import { t } from "@rbxts/t";
 import { Currency } from "shared/configs/currencies";
 import { EnhancePetMetadata } from "shared/configs/enchantments";
 import { PET_LEVEL_REQUIREMENTS, PET_MAX_LEVELS, Variants } from "shared/configs/pets";
+import { getPetExtraBans } from "shared/util/getPetLevel";
+import { Modify } from "shared/util/modify";
 
 import { KillNpc } from "./currencies";
+import { HatchEgg } from "./eggs";
 import { RedeemQuest } from "./quests";
 
 export interface Pet {
@@ -18,26 +22,50 @@ export interface Pet {
 }
 
 export type PetsState = Array<Pet>;
-export type PetsActions = AddPet | DeletePet | EnhancePet | EquipPet | LockPet | Admin_ModifyPetLevel;
+export type PetsActions = DeletePet | EnhancePet | EquipPet | LockPet | Admin_ModifyPetLevel | FusePet | AddPets;
 
-export interface ConfirmedPet extends PetData {
+export interface HatchedPet extends HatchablePet {
 	autoDeleted: boolean;
 	guid: string;
 }
 
-export type PetAttainMethod = "maxLevel" | "fuse" | "hatch" | "admin" | "trade" | "purchase";
+export type HatchablePet = Omit<
+	Modify<
+		PetData,
+		{
+			variant: Exclude<Variants, "radiant">;
+		}
+	>,
+	"method"
+>;
+
+export interface FusedPet extends FusablePet {
+	guid: string;
+}
+
+export const isValidFusableVariant = t.literal("void", "radiant");
+export type FusablePet = Omit<
+	Modify<
+		PetData,
+		{
+			variant: t.static<typeof isValidFusableVariant>;
+		}
+	>,
+	"method"
+>;
+
+export interface AddedPet extends AddablePet {
+	guid: string;
+}
+export type AddablePet = Omit<PetData, "method">;
+
+export type PetAttainMethod = "fuse" | "hatch" | "admin" | "trade" | "purchase";
 export interface PetData {
 	id: number;
 	variant: Variants;
 	//enhancements?: { [slot in Variants]?: Omit<EnhancePetMetadata, "variant"> };
 	method: PetAttainMethod;
 	tradeLocked: boolean;
-}
-
-export interface AddPet extends Rodux.Action<"addPet"> {
-	cost: number;
-	currencyType: Currency;
-	pets: Array<ConfirmedPet>;
 }
 
 export interface DeletePet extends Rodux.Action<"deletePet"> {
@@ -66,19 +94,14 @@ export interface Admin_ModifyPetLevel extends Rodux.Action<"admin_ModifyPetLevel
 	level: number;
 }
 
-/**
- * @param cost The cost of the egg hatch.
- * @param currencyType The type of currency the eggs were purchased with.
- * @param pets The pets to add.
- * @returns The Rodux action to dispatch.
- */
-export function addPets(cost: number, currencyType: Currency, pets: Array<ConfirmedPet>): AddPet & Rodux.AnyAction {
-	return {
-		type: "addPet",
-		cost,
-		currencyType,
-		pets,
-	};
+export interface FusePet extends Rodux.Action<"fusePet"> {
+	pet: FusedPet;
+	fusionCost: number;
+	currencyType: Currency;
+}
+
+export interface AddPets extends Rodux.Action<"addPets"> {
+	pets: Array<AddedPet>;
 }
 
 /**
@@ -162,11 +185,39 @@ export function admin_ModifyPetLevel(
 	};
 }
 
+/**
+ *
+ * @param fusionCost The cost of the fusion.
+ * @param currencyType The type of currency.
+ * @param pet The pets to fuse.
+ * @returns The Rodux action to dispatch.
+ */
+export function fusePets(fusionCost: number, currencyType: Currency, pet: FusedPet): FusePet & Rodux.AnyAction {
+	return {
+		type: "fusePet",
+		fusionCost,
+		currencyType,
+		pet,
+	};
+}
+
+/**
+ *
+ * @param pets The pets to add.
+ * @returns The Rodux action to dispatch.
+ */
+export function addPets(pets: Array<AddedPet>): AddPets & Rodux.AnyAction {
+	return {
+		type: "addPets",
+		pets,
+	};
+}
+
 export const defaultPets: PetsState = [];
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQuest | KillNpc>(defaultPets, {
-	addPet: (state, action) => {
+export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQuest | KillNpc | HatchEgg>(defaultPets, {
+	hatchEgg: (state, action) => {
 		const newPets = action.pets
 			.filter((pet) => !pet.autoDeleted)
 			.map((pet) => {
@@ -182,6 +233,34 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 			});
 
 		return [...state, ...newPets];
+	},
+	fusePet: (state, action) => {
+		return [
+			...state,
+			{
+				id: action.pet.id,
+				bans: 0,
+				guid: action.pet.guid,
+				equipped: false,
+				locked: false,
+				variant: action.pet.variant,
+				tradeLocked: action.pet.tradeLocked,
+			},
+		];
+	},
+	addPets: (state, action) => {
+		return [
+			...state,
+			...action.pets.map((pet) => ({
+				id: pet.id,
+				bans: 0,
+				guid: pet.guid,
+				equipped: false,
+				locked: false,
+				variant: pet.variant,
+				tradeLocked: pet.tradeLocked,
+			})),
+		];
 	},
 	deletePet: (state, action) => {
 		return state.filter((pet) => !action.pets.includes(pet.guid));
@@ -241,7 +320,7 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 				return pet;
 			}
 
-			return { ...pet, bans: pet.bans + 1 * math.ceil(action.petExperienceMultiplier) };
+			return { ...pet, bans: pet.bans + getPetExtraBans(action.petExperienceMultiplier) };
 		});
 
 		return newState;

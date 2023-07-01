@@ -5,8 +5,8 @@ import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { hatchDebounce } from "shared/configs/eggs";
 import { Rarities } from "shared/configs/rarities";
 import { remotes } from "shared/remotes";
-import { addEgg } from "shared/rodux/eggs";
-import { addPets, ConfirmedPet } from "shared/rodux/pets";
+import { hatchEgg } from "shared/rodux/eggs";
+import { HatchedPet } from "shared/rodux/pets";
 import { isImmuneRarity } from "shared/rodux/settings";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
@@ -17,11 +17,11 @@ import { withinDistanceToHatch } from "shared/util/withinDistanceToHatch";
 import { getTradeStatus } from "./trading/trades";
 
 const hatchSystemMessage = remotes.Server.GetNamespace("eggs").Get("hatchEggSystemMessage");
-const hatchEgg = remotes.Server.GetNamespace("eggs").Get("hatchEgg");
+const hatchEggRemote = remotes.Server.GetNamespace("eggs").Get("hatchEgg");
 const hatchTimeCache: Map<Player, number> = new Map();
 const randomGenerator = new Random();
 
-hatchEgg.SetCallback(
+hatchEggRemote.SetCallback(
 	withPlayerStore((player, store, amount, eggName, isVoid) => {
 		// verify that player has waited long enough to hatch
 		const lastHatchTime = hatchTimeCache.get(player) ?? 0;
@@ -149,7 +149,7 @@ hatchEgg.SetCallback(
 		}
 
 		// confirm pet
-		const selectedPets: Array<ConfirmedPet> = [];
+		const selectedPets: Array<HatchedPet> = [];
 		for (const pet of hatchedPets) {
 			// check for currency
 			if (currentState.currencies[eggCost.currencyType] < eggCost.amount) {
@@ -188,7 +188,6 @@ hatchEgg.SetCallback(
 				id: pet.id,
 				guid: HttpService.GenerateGUID(false),
 				variant: isVoid ? "void" : "regular",
-				method: "hatch",
 				//enhancements: { [pet.rarity]: selectedEnhancement },
 				tradeLocked: false,
 			});
@@ -200,8 +199,7 @@ hatchEgg.SetCallback(
 			} | Amount: ${amount} | Egg: ${eggName} | Void: ${isVoid} | Amount that server hatched: ${selectedPets.size()}}`;
 		}
 
-		store.dispatch(addPets(eggCost.amount * selectedPets.size(), eggCost.currencyType, selectedPets));
-		store.dispatch(addEgg(selectedPets));
+		store.dispatch(hatchEgg(eggCost.amount * selectedPets.size(), eggCost.currencyType, selectedPets));
 		return {
 			success: true,
 			pets: selectedPets,
