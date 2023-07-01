@@ -9,6 +9,7 @@ import { defaultDevProductState } from "shared/rodux/devProducts";
 import { defaultEggs } from "shared/rodux/eggs";
 import { defaultExperienceState } from "shared/rodux/experience";
 import { defaultGamepasses } from "shared/rodux/gamepasses";
+import { defaultInvitedFriendState } from "shared/rodux/invitedFriend";
 import { defaultMediaState } from "shared/rodux/media";
 import { defaultPetMasteryState } from "shared/rodux/petMastery";
 import { defaultPets } from "shared/rodux/pets";
@@ -68,6 +69,7 @@ export const profileTemplate: ProfileState = {
 	tradeLogs: [],
 	weapons: defaultWeaponsState,
 	worlds: defaultWorlds,
+	invitedFriend: defaultInvitedFriendState,
 };
 
 /**

@@ -10,6 +10,7 @@ import { DevProductActions, devProductReducer, DevProductState } from "./devProd
 import { EggsActions, eggsReducer, EggsState } from "./eggs";
 import { experienceReducer, ExperienceState } from "./experience";
 import { GamepassActions, gamepassesReducer, GamepassesState } from "./gamepasses";
+import { InvitedFriendActions, invitedFriendReducer, InvitedFriendState } from "./invitedFriend";
 import { MediaActions, mediaReducer, MediaState } from "./media";
 import { PetMasteryActions, petMasteryReducer, PetMasteryState } from "./petMastery";
 import { PetsActions, petsReducer, PetsState } from "./pets";
@@ -37,6 +38,7 @@ export type StoreState = {
 	experience: ExperienceState;
 	gamepasses: GamepassesState;
 	index: PlayerIndexState;
+	invitedFriend: InvitedFriendState;
 	media: MediaState;
 	pets: PetsState;
 	petMastery: PetMasteryState;
@@ -75,6 +77,7 @@ export type StoreActions = (
 	| PlayerIndexActions
 	| DevProductActions
 	| TradeLogActions
+	| InvitedFriendActions
 ) &
 	Rodux.AnyAction;
 
@@ -98,6 +101,7 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	talismans: talismanReducer,
 	currentTalisman: currentTalismanReducer,
 	index: playerIndexReducer,
+	invitedFriend: invitedFriendReducer,
 	petMastery: petMasteryReducer,
 	spinWheel: spinWheelReducer,
 	petTeams: petTeamsReducer,

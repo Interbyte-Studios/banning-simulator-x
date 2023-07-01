@@ -15,6 +15,9 @@ declare global {
 			};
 		};
 		interactions: Folder & {
+			invites: Folder & {
+				interactions: Folder;
+			};
 			leaderboards: Folder & {
 				bans: Folder;
 				eggs: Folder;

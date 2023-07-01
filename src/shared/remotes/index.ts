@@ -3,6 +3,7 @@ import Net from "@rbxts/net";
 import { accolades } from "./accolades";
 import { admin } from "./admin";
 import { useBoostDefinition } from "./boosts";
+import { claimInvitedFriendDefinition } from "./claimInvitedFriend";
 import { damageNPCDefinition } from "./damageNPC";
 import { eggs } from "./eggs";
 import { equipTitleDefinition } from "./equipTitle";
@@ -36,6 +37,7 @@ export const remotes = Net.Definitions.Create({
 	talismans: talismans,
 	trades: trading,
 
+	claimInvitedFriend: claimInvitedFriendDefinition,
 	equipTitle: equipTitleDefinition,
 	damageNPC: damageNPCDefinition,
 	purchaseZone: purchaseZoneDefinition,

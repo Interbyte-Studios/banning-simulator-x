@@ -160,7 +160,6 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		assert(scrollingFrame, `No ScrollingFrame was found for Virtual Scroll`);
 
 		sortPets(props.pets, true, true, props.selectedPets);
-		warn(`Sorted pets!`);
 		let newPets: Array<PetInventoryData> = [];
 		if (props.searchText !== undefined && props.searchText !== "") {
 			const searchText = props.searchText.lower();
