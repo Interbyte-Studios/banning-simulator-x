@@ -305,6 +305,18 @@ export function runStep(
 
 	// move & wander & attack players
 	for (const npc of npcs) {
+		// sometimes the head of an npc disappears
+		// we need to investigate this further (TODO), but for now
+		// we want to just remove the npc if that happens
+		if (npc.instance.FindFirstChild("Head") === undefined) {
+			npcs.delete(npc);
+			npcCharacterToNpc.delete(npc.instance);
+
+			npc.instance.Parent = undefined;
+
+			continue;
+		}
+
 		const wanderingDistance = npc.instance.Head.Position.sub(npc.spawn.floor.Position).Magnitude;
 
 		if (
