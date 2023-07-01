@@ -414,7 +414,6 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 
 				const maxLevel = PET_MAX_LEVELS[pet.variant];
 				const petLevel = getPetLevel(pet);
-				const petData = getPetData(pet.id);
 				if (petLevel < maxLevel) {
 					continue;
 				}
@@ -423,10 +422,7 @@ export const playerIndexReducer = Rodux.createReducer<PlayerIndexState, AddPet |
 				const newUniqueCache = [...masteryData.maxLevel[pet.variant].masteryCache];
 				if (!newUniqueCache.includes(pet.guid)) {
 					wasNewPet = true;
-
-					if (newUniqueCache.size() < PET_MASTERY_REQUIREMENTS[petData.rarity][pet.variant].maxLevel) {
-						newUniqueCache.push(pet.guid);
-					}
+					newUniqueCache.push(pet.guid);
 				}
 				newState.pets.set(stringId, {
 					hatched: masteryData.hatched,

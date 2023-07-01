@@ -124,6 +124,26 @@ export function runStep(
 			continue;
 		}
 
+		const playerCharacter = player.Character;
+		if (playerCharacter === undefined) {
+			continue;
+		}
+
+		const playerHumanoid = character.FindFirstChildOfClass("Humanoid");
+		if (playerHumanoid === undefined) {
+			continue;
+		}
+
+		const playerRootPart = playerHumanoid.RootPart;
+		if (playerRootPart === undefined) {
+			continue;
+		}
+
+		// check distance between player and npc
+		if (humanoidRootPart.Position.sub(playerRootPart.Position).Magnitude > 8) {
+			continue;
+		}
+
 		// apply weapon damage to npc
 		const storeState = store.getState();
 

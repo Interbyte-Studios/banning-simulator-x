@@ -321,7 +321,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		]),
 		category: TitleType.Pets,
 		description: "Hatch a Prismatic+ rarity pet.",
-		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial > 1,
+		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial >= 1,
 	},
 	{
 		name: "Secret Champion",
@@ -335,7 +335,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		]),
 		category: TitleType.Pets,
 		description: "Hatch a Prismatic+ rarity pet 5 times.",
-		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial > 5,
+		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial >= 5,
 	},
 	{
 		name: "Secret Saint",
@@ -349,7 +349,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		]),
 		category: TitleType.Pets,
 		description: "Hatch a Prismatic+ rarity pet 10 times.",
-		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial > 10,
+		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial >= 10,
 	},
 
 	// Weapons (Weapon Level)
@@ -367,7 +367,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 1;
+			return maxLevels >= 1;
 		},
 	},
 	{
@@ -384,7 +384,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 2;
+			return maxLevels >= 2;
 		},
 	},
 	{
@@ -401,7 +401,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 5;
+			return maxLevels >= 5;
 		},
 	},
 	{
@@ -418,7 +418,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 10;
+			return maxLevels >= 10;
 		},
 	},
 	{
@@ -435,7 +435,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 15;
+			return maxLevels >= 15;
 		},
 	},
 	{
@@ -452,7 +452,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 20;
+			return maxLevels >= 20;
 		},
 	},
 	{
@@ -469,7 +469,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 25;
+			return maxLevels >= 25;
 		},
 	},
 	{
@@ -494,7 +494,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 30;
+			return maxLevels >= 30;
 		},
 	},
 
@@ -504,14 +504,14 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		id: 32,
 		effect: Color3.fromRGB(79, 5, 166),
 		category: TitleType.Weapons,
-		description: "Ban 5,000 NPCs.",
+		description: "Accumulate 5,000 Bans.",
 		condition: (state): boolean => {
 			let bans = 0;
 			state.weapons.forEach((weaponData) => {
 				bans += weaponData.bans;
 			});
 
-			return bans > 5000;
+			return bans >= 5_000;
 		},
 	},
 	{
@@ -519,14 +519,14 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		id: 33,
 		effect: Color3.fromRGB(158, 79, 245),
 		category: TitleType.Weapons,
-		description: "Ban 10,000 NPCs.",
+		description: "Accumulate 50,000 Bans.",
 		condition: (state): boolean => {
 			let bans = 0;
 			state.weapons.forEach((weaponData) => {
 				bans += weaponData.bans;
 			});
 
-			return bans > 10000;
+			return bans >= 50_000;
 		},
 	},
 	{
@@ -534,14 +534,14 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		id: 34,
 		effect: Color3.fromRGB(176, 23, 214),
 		category: TitleType.Weapons,
-		description: "Ban 25,000 NPCs.",
+		description: "Accumulate 250,000 Bans.",
 		condition: (state): boolean => {
 			let bans = 0;
 			state.weapons.forEach((weaponData) => {
 				bans += weaponData.bans;
 			});
 
-			return bans > 25000;
+			return bans >= 250_000;
 		},
 	},
 	{
@@ -549,14 +549,14 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		id: 35,
 		effect: Color3.fromRGB(242, 102, 184),
 		category: TitleType.Weapons,
-		description: "Ban 50,000 NPCs.",
+		description: "Accumulate 1,000,000 Bans.",
 		condition: (state): boolean => {
 			let bans = 0;
 			state.weapons.forEach((weaponData) => {
 				bans += weaponData.bans;
 			});
 
-			return bans > 50000;
+			return bans >= 1_000_000;
 		},
 	},
 	{
@@ -564,14 +564,14 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		id: 36,
 		effect: Color3.fromRGB(28, 33, 207),
 		category: TitleType.Weapons,
-		description: "Ban 75,000 NPCs.",
+		description: "Accumulate 50,000,000 Bans.",
 		condition: (state): boolean => {
 			let bans = 0;
 			state.weapons.forEach((weaponData) => {
 				bans += weaponData.bans;
 			});
 
-			return bans > 75000;
+			return bans >= 50_000_000;
 		},
 	},
 	{
@@ -579,14 +579,14 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		id: 37,
 		effect: Color3.fromRGB(33, 153, 204),
 		category: TitleType.Weapons,
-		description: "Ban 100,000 NPCs.",
+		description: "Accumulate 250,000,000 Bans.",
 		condition: (state): boolean => {
 			let bans = 0;
 			state.weapons.forEach((weaponData) => {
 				bans += weaponData.bans;
 			});
 
-			return bans > 1000000;
+			return bans >= 250_000_000;
 		},
 	},
 	{
@@ -594,14 +594,14 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		id: 38,
 		effect: Color3.fromRGB(33, 214, 112),
 		category: TitleType.Weapons,
-		description: "Ban 250,000 NPCs.",
+		description: "Accumulate 500,000,000 Bans.",
 		condition: (state): boolean => {
 			let bans = 0;
 			state.weapons.forEach((weaponData) => {
 				bans += weaponData.bans;
 			});
 
-			return bans > 250000;
+			return bans >= 500_000_000;
 		},
 	},
 	{
@@ -609,14 +609,14 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		id: 39,
 		effect: Color3.fromRGB(242, 171, 18),
 		category: TitleType.Weapons,
-		description: "Ban 500,000 NPCs.",
+		description: "Accumulate 750,000,000 Bans.",
 		condition: (state): boolean => {
 			let bans = 0;
 			state.weapons.forEach((weaponData) => {
 				bans += weaponData.bans;
 			});
 
-			return bans > 500000;
+			return bans >= 750_000_000;
 		},
 	},
 	{
@@ -624,14 +624,14 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		id: 40,
 		effect: Color3.fromRGB(176, 26, 10),
 		category: TitleType.Weapons,
-		description: "Ban 750,000 NPCs.",
+		description: "Accumulate 1,000,000,000 Bans.",
 		condition: (state): boolean => {
 			let bans = 0;
 			state.weapons.forEach((weaponData) => {
 				bans += weaponData.bans;
 			});
 
-			return bans > 750000;
+			return bans >= 1_000_000_000;
 		},
 	},
 	{
@@ -647,14 +647,14 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 			new ColorSequenceKeypoint(1, Color3.fromRGB(255, 151, 161)),
 		]),
 		category: TitleType.Weapons,
-		description: "Ban 1,000,000 NPCs.",
+		description: "Accumulate 10,000,000,000 Bans.",
 		condition: (state): boolean => {
 			let bans = 0;
 			state.weapons.forEach((weaponData) => {
 				bans += weaponData.bans;
 			});
 
-			return bans > 1000000;
+			return bans >= 10_000_000_000;
 		},
 	},
 	{
@@ -670,14 +670,14 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 			new ColorSequenceKeypoint(1, Color3.fromRGB(0, 179, 255)),
 		]),
 		category: TitleType.Weapons,
-		description: "Ban 2,500,000 NPCs.",
+		description: "Accumulate 50,000,000,000 Bans.",
 		condition: (state): boolean => {
 			let bans = 0;
 			state.weapons.forEach((weaponData) => {
 				bans += weaponData.bans;
 			});
 
-			return bans > 2500000;
+			return bans >= 50_000_000_000;
 		},
 	},
 	{
@@ -693,14 +693,14 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 			new ColorSequenceKeypoint(1, Color3.fromRGB(255, 85, 127)),
 		]),
 		category: TitleType.Weapons,
-		description: "Ban 5,000,000 NPCs.",
+		description: "Accumulate 100,000,000,000 Bans.",
 		condition: (state): boolean => {
 			let bans = 0;
 			state.weapons.forEach((weaponData) => {
 				bans += weaponData.bans;
 			});
 
-			return bans > 5000000;
+			return bans >= 100_000_000_000;
 		},
 	},
 
@@ -719,7 +719,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		]),
 		category: TitleType.Misc,
 		description: "Members who are apart of the Interbyte Club.",
-		condition: (state): boolean => state.index.groupRank !== undefined && state.index.groupRank >= 247,
+		condition: (state): boolean => state.index.groupRank !== undefined && state.index.groupRank >= 246,
 	},
 	{
 		name: "VIP",

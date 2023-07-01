@@ -415,12 +415,13 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 		}, [isEnabled, props.walkspeed]);
 
 		if (!isEnabled) {
-			if (!props.gamepasses["Auto Fight"]) {
+			if (props.gamepasses["Auto Fight"]) {
 				return (
 					<ImageLabel
 						native={{
-							Size: UDim2.fromScale(0.5, 0.675),
-							Image: assetIds.images.ui.teleportation.background,
+							Position: UDim2.fromScale(0.5, 0.75),
+							Size: UDim2.fromScale(0.35, 0.4),
+							Image: assetIds.images.ui.autoFight.minimized,
 						}}
 					>
 						<uiaspectratioconstraint AspectRatio={1.163} />

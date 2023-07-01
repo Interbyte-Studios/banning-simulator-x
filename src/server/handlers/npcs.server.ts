@@ -11,7 +11,7 @@ import { NpcWorldState } from "../modules/npcs/worldState";
 
 // log npc attacks
 const _lastAttack: Map<number, number> = new Map();
-const attackDownTime = 0.5;
+const attackDownTime = 0.75;
 
 let npcAttacks: Array<{ player: Player; store: Store; character: NpcCharacter }> = [];
 remotes.Server.Get("damageNPC").Connect(
