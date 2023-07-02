@@ -20,6 +20,7 @@ import { RARITIES } from "shared/configs/rarities";
 import { ZoneNames } from "shared/configs/zones";
 import { FusionFailKind } from "shared/remotes/fusing";
 import { StoreState } from "shared/rodux";
+import { GamepassesState } from "shared/rodux/gamepasses";
 import { Pet, PetsState } from "shared/rodux/pets";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
@@ -35,6 +36,7 @@ interface DisplayPetsProps extends DisplayPetsMappedProps {
 }
 
 interface DisplayPetsMappedProps {
+	gamepasses: GamepassesState;
 	pets: PetsState;
 }
 
@@ -46,6 +48,7 @@ interface DisplayPetsMappedProps {
  */
 function mapStateToProps(state: StoreState): DisplayPetsMappedProps {
 	return {
+		gamepasses: state.gamepasses,
 		pets: state.pets,
 	};
 }
@@ -100,7 +103,9 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 
 		const petData = getPetData(props.petSelected);
 		const rarityId = RARITIES[petData.rarity].reverseId;
-		const maxFusions = RARITIES[petData.rarity].maxFusions;
+		const maxFusions = props.gamepasses
+			? RARITIES[petData.rarity].betterMaxFusions
+			: RARITIES[petData.rarity].maxFusions;
 
 		// isVoid is set to true since this is radiant fusion.
 		const eggName = getEggNameFromPetId(props.petSelected);

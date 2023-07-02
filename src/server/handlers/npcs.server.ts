@@ -11,7 +11,7 @@ import { NpcWorldState } from "../modules/npcs/worldState";
 
 // log npc attacks
 const _lastAttack: Map<number, number> = new Map();
-const attackDownTime = 0.75;
+const attackDownTime = 0.3;
 
 let npcAttacks: Array<{ player: Player; store: Store; character: NpcCharacter }> = [];
 remotes.Server.Get("damageNPC").Connect(
@@ -117,14 +117,15 @@ for (const [worldName, worldInfo] of pairs(WORLDS)) {
 		const halfSize = size.div(2).mul(new Vector3(1, 0, 1));
 
 		const halfHeight = new Vector3(0, size.Y / 2, 0);
+		const fiveStuds = new Vector3(0, 5, 0);
 
 		zones.push({
 			name: zoneName,
 			npcs: [],
 			spawn: {
 				floor,
-				min: position.sub(halfSize).add(halfHeight),
-				max: position.add(halfSize).add(halfHeight),
+				min: position.sub(halfSize).add(halfHeight).add(fiveStuds),
+				max: position.add(halfSize).add(halfHeight).add(fiveStuds),
 			},
 		});
 	}

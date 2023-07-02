@@ -15,6 +15,7 @@ remotes.Server.Create("requestFusion").SetCallback(
 		const currentState = store.getState();
 
 		// check that all pets have the same id and are the same variant
+		const cachedGuids: Array<string> = [];
 		let petId: number | undefined;
 		for (const petGuid of petsToFuse) {
 			const storedPet = currentState.pets.find((_pet) => _pet.guid === petGuid);
@@ -40,6 +41,15 @@ remotes.Server.Create("requestFusion").SetCallback(
 				};
 			}
 
+			if (cachedGuids.includes(storedPet.guid)) {
+				return {
+					success: false,
+					reason: FusionFailKind.InternalError,
+				};
+			} else {
+				cachedGuids.push(storedPet.guid);
+			}
+
 			if (petId === undefined) {
 				petId = storedPet.id;
 			} else {
@@ -60,7 +70,9 @@ remotes.Server.Create("requestFusion").SetCallback(
 
 		const petData = getPetData(petId);
 		const rarityId = RARITIES[petData.rarity].reverseId;
-		const maxFusions = RARITIES[petData.rarity].maxFusions;
+		const maxFusions = currentState.gamepasses["Better Fusion"]
+			? RARITIES[petData.rarity].betterMaxFusions
+			: RARITIES[petData.rarity].maxFusions;
 
 		// check that player has enough money
 		const eggName = getEggNameFromPetId(petId);

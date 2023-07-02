@@ -16,7 +16,6 @@ const player = Players.LocalPlayer;
 function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 	const zoneDecoration = Workspace.decoration[world][zone];
 	const door = zoneDecoration.door;
-	const sign = zoneDecoration.sign;
 
 	const lock = door.FindFirstChild("lock");
 	if (lock !== undefined) {
@@ -28,7 +27,10 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 		passage.Destroy();
 	}
 
-	sign.Destroy();
+	const sign = zoneDecoration.FindFirstChild("sign");
+	if (sign !== undefined) {
+		sign.Destroy();
+	}
 }
 
 /**

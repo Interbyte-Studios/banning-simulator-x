@@ -293,6 +293,10 @@ function createEnemyTag(enemy: Model): void {
 		healthTween.Play();
 		healthTween.Completed.Wait();
 
+		if (tag.hold === undefined) {
+			return;
+		}
+
 		tag.hold.fillBackground.health.Text = `[${twoDpAbbreviator.numberToString(
 			humanoid.Health,
 		)} / ${twoDpAbbreviator.numberToString(humanoid.MaxHealth)}]`;

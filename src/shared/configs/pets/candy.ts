@@ -91,7 +91,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 		rarity: "Prismatic",
 		stats: {
 			additionalDamage: 3200,
-			additionalBans: 250,
+			additionalBans: 550,
 		},
 	},
 };

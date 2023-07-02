@@ -1,5 +1,6 @@
 import { StoreState } from "shared/rodux";
 import { defaultAccoladeState } from "shared/rodux/accolade";
+import { defaultMigratedBans } from "shared/rodux/banMigration";
 import { defaultBansState } from "shared/rodux/bans";
 import { defaultBoosts } from "shared/rodux/boosts";
 import { defaultCurrencies } from "shared/rodux/currencies";
@@ -57,6 +58,7 @@ export const profileTemplate: ProfileState = {
 		joinDate: DateTime.now().UnixTimestampMillis,
 	},
 	media: defaultMediaState,
+	migratedBans: defaultMigratedBans,
 	pets: defaultPets,
 	petMastery: defaultPetMasteryState,
 	petTeams: defaultPetTeamsState,
