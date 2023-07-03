@@ -6,6 +6,7 @@ import { BoostActions, boostsReducer, BoostsState } from "./boosts";
 import { CurrenciesActions, currenciesReducer, CurrenciesState } from "./currencies";
 import { CurrentTalismanActions, currentTalismanReducer, CurrentTalismanState } from "./currentTalisman";
 import { CurrentWeaponActions, currentWeaponReducer, CurrentWeaponState } from "./currentWeapon";
+import { dataVersionReducer, DataVersionState } from "./dataVersion";
 import { DevProductActions, devProductReducer, DevProductState } from "./devProducts";
 import { EggsActions, eggsReducer, EggsState } from "./eggs";
 import { experienceReducer, ExperienceState } from "./experience";
@@ -50,6 +51,7 @@ export type StoreState = {
 	tradeLogs: TradeLogsState;
 	weapons: WeaponsState;
 	worlds: WorldsState;
+	dataVersion: DataVersionState;
 };
 
 export type StoreActions = (
@@ -103,6 +105,7 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	petTeams: petTeamsReducer,
 	devProducts: devProductReducer,
 	tradeLogs: tradeLogsReducer,
+	dataVersion: dataVersionReducer,
 });
 
 export type Store = Rodux.Store<StoreState, StoreActions>;

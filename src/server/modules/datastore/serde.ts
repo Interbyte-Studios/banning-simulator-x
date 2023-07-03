@@ -107,6 +107,7 @@ export const profileTemplate: ProfileState = {
 	tradeLogs: [],
 	weapons: defaultWeaponsState,
 	worlds: defaultWorlds,
+	dataVersion: 1,
 };
 
 /**

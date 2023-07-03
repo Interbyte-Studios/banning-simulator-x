@@ -5,6 +5,7 @@ import { Profile } from "@rbxts/profileservice/globals";
 import { HttpService, Players } from "@rbxts/services";
 import { STORE_SCOPE } from "shared/configs/game";
 
+import { runMigrations } from "./modules/datastore/migrations";
 import { deserialize, ProfileState, profileTemplate, serialize } from "./modules/datastore/serde";
 import { createPlayerStore, removeStore, retrieveStore } from "./playerStore";
 
@@ -54,6 +55,9 @@ async function onPlayerAdded(player: Player): Promise<void> {
 
 	profile.AddUserId(player.UserId);
 	profile.Reconcile();
+
+	runMigrations(profile.Data);
+
 	profiles.set(player, profile);
 
 	profile.ListenToRelease(() => {

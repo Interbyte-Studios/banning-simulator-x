@@ -2,7 +2,7 @@ import { Players } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { onStoreCreated } from "server/playerStore";
 import { remotes } from "shared/remotes";
-import { claimBoost, useBoosts, ValidBoostUseRecord, ValidStoredBoostTime } from "shared/rodux/boosts";
+import { claimBoost, useBoosts, ValidBoostUseRecord } from "shared/rodux/boosts";
 import { getBoostMastery } from "shared/util/getBoostMastery";
 
 Players.GetPlayers().forEach((player) =>
@@ -52,8 +52,7 @@ useBoostRemote.Connect(
 	withPlayerStore((_, store, boostName, boostTime) => {
 		const currentState = store.getState();
 
-		const timeIndex = tostring(boostTime) as ValidStoredBoostTime;
-		const storedBoost = currentState.boosts.storage[boostName][timeIndex];
+		const storedBoost = currentState.boosts.storage[boostName][boostTime];
 		if (storedBoost < 1) {
 			return;
 		}
