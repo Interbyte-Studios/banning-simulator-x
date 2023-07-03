@@ -366,14 +366,21 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 						}
 
 						const withinDistanceForRegular = withinDistanceToHatch(character, eggName, false);
-
 						if (withinDistanceForRegular) {
-							await handleHatch(eggName, "regular", 1);
+							if (autoEnabled) {
+								autoEnabled = false;
+							} else {
+								await handleHatch(eggName, "regular", 1);
+							}
 							break;
 						} else {
 							const withinDistanceForVoid = withinDistanceToHatch(character, eggName, true);
 							if (withinDistanceForVoid) {
-								await handleHatch(eggName, "void", 1);
+								if (autoEnabled) {
+									autoEnabled = false;
+								} else {
+									await handleHatch(eggName, "void", 1);
+								}
 								break;
 							}
 						}
@@ -411,7 +418,6 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 						}
 
 						const withinDistanceForRegular = withinDistanceToHatch(character, eggName, false);
-
 						if (withinDistanceForRegular) {
 							if (autoEnabled) {
 								autoEnabled = false;
@@ -425,7 +431,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 								if (autoEnabled) {
 									autoEnabled = false;
 								} else {
-									await handleHatch(eggName, "regular", 3);
+									await handleHatch(eggName, "void", 3);
 								}
 								break;
 							}
