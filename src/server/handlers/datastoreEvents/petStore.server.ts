@@ -21,7 +21,10 @@ function updateGlobalCache(): void {
 	setNewHatchedPets([]);
 
 	const [writeSuccess, newCache] = pcall(() => {
-		return datastoreEventsStore.UpdateAsync(PET_HATCH_KEY, (globalData) => {
+		return datastoreEventsStore.UpdateAsync(PET_HATCH_KEY, (_globalData) => {
+			// if this was the first time the game has been run (across all severs), we make an empty array
+			const globalData = _globalData ?? [];
+
 			if (!isValidPetHatchCount(globalData)) {
 				throw `DataStore hatch count was in invalid format`;
 			}
