@@ -1,3 +1,4 @@
+import Object from "@rbxts/object-utils";
 import Rodux from "@rbxts/rodux";
 import { Variants } from "shared/configs/pets";
 
@@ -23,6 +24,8 @@ export type PetMasteryState = Map<
 	}
 >;
 export type PetMasteryStateVariant = PetMasteryState extends Map<unknown, infer T> ? T : never;
+
+export type SerializedPetMasteryState = Array<PetMasteryStateVariant & { petId: number }>;
 
 export type PetMasteryActions = ClaimHatchMastery | ClaimMaxLevelMastery | ClaimFuseMastery | ToggleMasteryCosmetic;
 
@@ -201,3 +204,30 @@ export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMastery
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */
+
+/**
+ *
+ * @param store The Rodux state of the pet mastery.
+ * @returns The serialized version of the pet mastery.
+ */
+export function serializePetMastery(store: PetMasteryState): SerializedPetMasteryState {
+	return Object.entries(store).map(([petId, value]) => ({ petId, ...value }));
+}
+
+/**
+ *
+ * @param state The serialized version of the pet mastery.
+ * @returns Th deserialized version that is able to be loaded into a Rodux store.
+ */
+export function deserializePetMastery(state: SerializedPetMasteryState): PetMasteryState {
+	return new Map(
+		state.map((value) => {
+			const petId = value.petId;
+
+			// remove petId
+			value.petId = undefined as unknown as number;
+
+			return [petId, value];
+		}),
+	);
+}

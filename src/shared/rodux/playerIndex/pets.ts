@@ -197,5 +197,14 @@ export function serializePetIndexState(state: PetIndexState): SerializedPetIndex
  * @returns The deserialized state of the pet index.
  */
 export function deserializePetIndexState(state: SerializedPetIndexState): PetIndexState {
-	return new Map(state.map((serializedData) => [serializedData.petId, { ...serializedData }]));
+	return new Map(
+		state.map((serializedData) => {
+			const petId = serializedData.petId;
+
+			// remove petId from serialized data
+			serializedData.petId = undefined as unknown as number;
+
+			return [petId, serializedData];
+		}),
+	);
 }
