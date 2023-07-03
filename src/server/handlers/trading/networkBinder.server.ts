@@ -145,9 +145,7 @@ declineFinalizedTrade.Connect((player) => {
 	}
 });
 
-const clientTradeError = tradesNamespace.Get("clientTradeError");
 const abandonTradeAssertion = tradesNamespace.Get("abandonTradeAssertion");
-clientTradeError.Connect(() => {});
 
 Players.PlayerRemoving.Connect((player) => {
 	// remove a trade if it exists
