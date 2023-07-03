@@ -389,16 +389,6 @@ export function runStep(
 			continue;
 		}
 
-		const npcRoot = npc.instance.Humanoid.RootPart;
-		if (npcRoot === undefined) {
-			npcs.delete(npc);
-			npcCharacterToNpc.delete(npc.instance);
-
-			npc.instance.Parent = undefined;
-
-			continue;
-		}
-
 		const wanderingDistance = npc.instance.Head.Position.sub(npc.spawn.floor.Position).Magnitude;
 
 		if (
