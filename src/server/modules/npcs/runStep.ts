@@ -16,7 +16,7 @@ import { getRandomCFrame } from "./getRandomCFrame";
 import { NpcInstance, NpcWorldState } from "./worldState";
 
 // how far the npc will travel around spawn
-const NPC_SPAWN_SURROUNDING = 25;
+const NPC_SPAWN_SURROUNDING = 15;
 // min and max times for an NPC to wait between wanders
 const NPC_WANDER_COOLDOWN_MIN = 7;
 const NPC_WANDER_COOLDOWN_MAX = 15;
@@ -121,6 +121,26 @@ export function runStep(
 		// check that npc has a root part
 		const humanoidRootPart = npc.instance.Humanoid.RootPart;
 		if (humanoidRootPart === undefined) {
+			continue;
+		}
+
+		const playerCharacter = player.Character;
+		if (playerCharacter === undefined) {
+			continue;
+		}
+
+		const playerHumanoid = character.FindFirstChildOfClass("Humanoid");
+		if (playerHumanoid === undefined) {
+			continue;
+		}
+
+		const playerRootPart = playerHumanoid.RootPart;
+		if (playerRootPart === undefined) {
+			continue;
+		}
+
+		// check distance between player and npc
+		if (humanoidRootPart.Position.sub(playerRootPart.Position).Magnitude > 8) {
 			continue;
 		}
 
@@ -305,6 +325,28 @@ export function runStep(
 
 	// move & wander & attack players
 	for (const npc of npcs) {
+		// sometimes the head of an npc disappears
+		// we need to investigate this further (TODO), but for now
+		// we want to just remove the npc if that happens
+		if (npc.instance.FindFirstChild("Head") === undefined) {
+			npcs.delete(npc);
+			npcCharacterToNpc.delete(npc.instance);
+
+			npc.instance.Parent = undefined;
+
+			continue;
+		}
+
+		const npcRoot = npc.instance.Humanoid.RootPart;
+		if (npcRoot === undefined) {
+			npcs.delete(npc);
+			npcCharacterToNpc.delete(npc.instance);
+
+			npc.instance.Parent = undefined;
+
+			continue;
+		}
+
 		const wanderingDistance = npc.instance.Head.Position.sub(npc.spawn.floor.Position).Magnitude;
 
 		if (

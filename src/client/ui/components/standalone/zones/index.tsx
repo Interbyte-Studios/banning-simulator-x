@@ -37,9 +37,19 @@ export const ZonesUI = RoactRodux.connect(mapStateToProps)(
 
 		const elements: Array<Roact.Element> = [];
 		for (const [worldName, worldData] of pairs(WORLDS)) {
+			const storedWorld = props.worlds.find((storedWorldData) => storedWorldData.name === worldName);
+			if (storedWorld === undefined) {
+				continue;
+			}
+
 			const worldFolder = Workspace.decoration[worldName];
 
 			for (const [zoneName, zoneData] of pairs(worldData.zones)) {
+				const storedZone = storedWorld.zones.find((storedZoneName) => storedZoneName === zoneName);
+				if (storedZone !== undefined) {
+					continue;
+				}
+
 				if (isStarterZone(zoneName)) {
 					continue;
 				}

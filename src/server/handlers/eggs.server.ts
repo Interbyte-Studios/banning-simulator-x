@@ -43,9 +43,14 @@ hatchEggRemote.SetCallback(
 
 		// verify that the user can hatch the eggs
 		const currentState = store.getState();
-		const eggData = getEggData(eggName);
+		if (amount > 1 && !currentState.gamepasses["Triple Hatch"]) {
+			return {
+				success: false,
+			};
+		}
 
 		// find reduced egg cost provided by player mastery
+		const eggData = getEggData(eggName);
 		const eggMasteryReducedMultiplier = getEggsMastery(store.getState().eggs).reducedEggCostMultiplier;
 		const eggCost = getEggCost(eggName, isVoid, eggMasteryReducedMultiplier);
 

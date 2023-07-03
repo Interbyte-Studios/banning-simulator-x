@@ -31,6 +31,7 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 	}
 
 	const storeState = playerStore.getState();
+	const [npcBans, setNPCBans] = useState(0);
 	const [bans, setBans] = useState(storeState.bans.bans);
 	const [hatches, setHatches] = useState(storeState.index.eggs);
 	const [timePlayed, setTimePlayed] = useState(storeState.index.timePlayed);
@@ -50,8 +51,14 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 		totalVoidEggHatches += egg.void;
 	});
 
-	const groupRankName = groupRank === undefined ? "No Rank" : GROUP_ROLES[groupRank].tag;
-	const groupRankColor = groupRank === undefined ? Color3.fromRGB(255, 255, 255) : GROUP_ROLES[groupRank].color;
+	const groupRankInfo = groupRank !== undefined && GROUP_ROLES[groupRank];
+	const groupRankName = groupRank === undefined ? "No Rank" : groupRankInfo !== false ? groupRankInfo.tag : "No Rank";
+	const groupRankColor =
+		groupRank === undefined
+			? Color3.fromRGB(255, 255, 255)
+			: groupRankInfo !== false
+			? groupRankInfo.color
+			: Color3.fromRGB(255, 255, 255);
 
 	const titleSpecialElement: Array<Roact.Element> = [];
 	const titleName = title ?? "No Title";
@@ -92,6 +99,14 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 		}
 
 		const connection = playerStore.changed.connect((newState, oldState) => {
+			if (newState.weapons === oldState.weapons) {
+				let newBans = 0;
+				for (const weapon of newState.weapons) {
+					newBans += weapon.bans;
+				}
+				setNPCBans(newBans);
+			}
+
 			if (newState.bans.bans !== oldState.bans.bans) {
 				setBans(newState.bans.bans);
 			}
@@ -148,6 +163,12 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 
 		const currentState = playerStore.getState();
 
+		let newBans = 0;
+		for (const weapon of currentState.weapons) {
+			newBans += weapon.bans;
+		}
+
+		setNPCBans(newBans);
 		setBans(currentState.bans.bans);
 		setHatches(currentState.index.eggs);
 		setTimePlayed(currentState.index.timePlayed);
@@ -185,6 +206,7 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 				/>
 				<StatCard header={"Title:"} stat={titleName} additionalElements={titleSpecialElement} layoutId={1} />
 				<StatCard header={"Rank:"} stat={rank} layoutId={2} />
+				<StatCard header={"NPCs Banned:"} stat={statsAbbreviator.numberToString(npcBans)} layoutId={3} />
 				<StatCard header={"Bans:"} stat={statsAbbreviator.numberToString(bans)} layoutId={3} />
 				<StatCard
 					header={"Started Playing:"}

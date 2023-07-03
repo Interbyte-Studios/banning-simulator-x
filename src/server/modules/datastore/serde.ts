@@ -1,5 +1,6 @@
 import { StoreState } from "shared/rodux";
 import { defaultAccoladeState } from "shared/rodux/accolade";
+import { defaultMigratedBans } from "shared/rodux/banMigration";
 import { defaultBansState } from "shared/rodux/bans";
 import { defaultBoosts, deserializeBoosts, serializeBoosts, SerializedBoostsState } from "shared/rodux/boosts";
 import { defaultCurrencies } from "shared/rodux/currencies";
@@ -9,6 +10,7 @@ import { defaultDevProductState } from "shared/rodux/devProducts";
 import { defaultEggs } from "shared/rodux/eggs";
 import { defaultExperienceState } from "shared/rodux/experience";
 import { defaultGamepasses } from "shared/rodux/gamepasses";
+import { defaultInvitedFriendState } from "shared/rodux/invitedFriend";
 import { defaultMediaState } from "shared/rodux/media";
 import { deserializePetMastery, SerializedPetMasteryState, serializePetMastery } from "shared/rodux/petMastery";
 import { defaultPets } from "shared/rodux/pets";
@@ -95,6 +97,7 @@ export const profileTemplate: ProfileState = {
 		},
 	},
 	media: defaultMediaState,
+	migratedBans: defaultMigratedBans,
 	pets: defaultPets,
 	petMastery: [],
 	petTeams: defaultPetTeamsState,
@@ -108,6 +111,7 @@ export const profileTemplate: ProfileState = {
 	weapons: defaultWeaponsState,
 	worlds: defaultWorlds,
 	dataVersion: 1,
+	invitedFriend: defaultInvitedFriendState,
 };
 
 /**

@@ -1023,6 +1023,11 @@ hash = "10c0d7d4523afda02c2ad7078ce4549297d4ba7ab92473c54f15d4e8544cdc3d"
 id = 13814449772
 packable = false
 
+[inputs."images/decals/pets/Radiant Radioactive Gryphon.png"]
+hash = "3c4382cb33a3b6db52172ee4b3879acd8e880cd12ce8b126a599fafbb9d7c448"
+id = 13922365105
+packable = false
+
 [inputs."images/decals/pets/Radiant Royal Bunny.png"]
 hash = "e4f5d0dd8b184badc8ab1992c443171c5bdbcda431af39e9c9bbccf39646327e"
 id = 11440347182
@@ -1046,6 +1051,11 @@ packable = false
 [inputs."images/decals/pets/Radiant Shade Glider.png"]
 hash = "00c94a84ddcce19e5d25136f49e3b1a5a6e42cfc6f1a9ebba6fb204015fbc6a2"
 id = 13657423016
+packable = false
+
+[inputs."images/decals/pets/Radioactive Gryphon.png"]
+hash = "2c6e0c9e898baec0ecd772fb6eff48a327b3f1dd24a5b41d2bf473cb67971c61"
+id = 13922365369
 packable = false
 
 [inputs."images/decals/pets/Royal Bunny.png"]
@@ -1501,6 +1511,11 @@ packable = false
 [inputs."images/decals/pets/Void Quiet Angel.png"]
 hash = "20e146f02584036e9b8d70607e6ff5eb303531de53ff53f10355e812731cbf2c"
 id = 13814450572
+packable = false
+
+[inputs."images/decals/pets/Void Radioactive Gryphon.png"]
+hash = "48e57e908971ef3b900af3781fae2de551c9620524a3bf110d32d05f74521294"
+id = 13921977109
 packable = false
 
 [inputs."images/decals/pets/Void Royal Bunny.png"]

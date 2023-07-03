@@ -10,6 +10,7 @@ import { Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
 import { getPetData } from "shared/util/getPetData";
+import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
 interface ProgressBarProps extends RegularEggProgressMappedProps {
 	pet: number;
@@ -112,7 +113,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 				<StrokeTextLabel
 					native={{
 						Size: UDim2.fromScale(1, 1),
-						Text: `${completionPercentage * 100}%`,
+						Text: `${statsAbbreviator.numberToString(completionPercentage * 100)}%`,
 					}}
 					stroke={{ native: { Thickness: 2 } }}
 				/>

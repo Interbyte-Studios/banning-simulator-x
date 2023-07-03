@@ -11,11 +11,22 @@ import { NpcWorldState } from "../modules/npcs/worldState";
 
 // log npc attacks
 const _lastAttack: Map<number, number> = new Map();
-const attackDownTime = 0.5;
+const attackDownTime = 0.3;
 
 let npcAttacks: Array<{ player: Player; store: Store; character: NpcCharacter }> = [];
 remotes.Server.Get("damageNPC").Connect(
 	withPlayerStore((player, store, character) => {
+		const now = time();
+		const lastAttack = _lastAttack.get(player.UserId);
+		if (lastAttack === undefined) {
+			_lastAttack.set(player.UserId, now);
+		} else {
+			if (now - lastAttack < attackDownTime) {
+				return;
+			}
+			_lastAttack.set(player.UserId, now);
+		}
+
 		if (character === undefined) {
 			return;
 		}
@@ -45,15 +56,28 @@ remotes.Server.Get("damageNPC").Connect(
 			}
 		}
 
-		const now = time();
-		const lastAttack = _lastAttack.get(player.UserId);
-		if (lastAttack === undefined) {
-			_lastAttack.set(player.UserId, now);
-		} else {
-			if (now - lastAttack < attackDownTime) {
-				return;
-			}
-			_lastAttack.set(player.UserId, now);
+		const playercharacter = player.Character;
+		if (playercharacter === undefined) {
+			return;
+		}
+
+		const playerHumanoid = playercharacter.FindFirstChildOfClass("Humanoid");
+		if (playerHumanoid === undefined) {
+			return;
+		}
+
+		const playerRoot = playerHumanoid.RootPart;
+		if (playerRoot === undefined) {
+			return;
+		}
+
+		const npcRoot = character.Humanoid.RootPart;
+		if (npcRoot === undefined) {
+			return;
+		}
+
+		if (playerRoot.Position.sub(npcRoot.Position).Magnitude > 8) {
+			return;
 		}
 
 		const npcAttack = {
@@ -93,14 +117,15 @@ for (const [worldName, worldInfo] of pairs(WORLDS)) {
 		const halfSize = size.div(2).mul(new Vector3(1, 0, 1));
 
 		const halfHeight = new Vector3(0, size.Y / 2, 0);
+		const fiveStuds = new Vector3(0, 5, 0);
 
 		zones.push({
 			name: zoneName,
 			npcs: [],
 			spawn: {
 				floor,
-				min: position.sub(halfSize).add(halfHeight),
-				max: position.add(halfSize).add(halfHeight),
+				min: position.sub(halfSize).add(halfHeight).add(fiveStuds),
+				max: position.add(halfSize).add(halfHeight).add(fiveStuds),
 			},
 		});
 	}

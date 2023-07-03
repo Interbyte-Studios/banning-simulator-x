@@ -31,7 +31,7 @@ export const PetLevelAndLockIndicator = (props: { isLocked: boolean; petLevel: n
 							native={{
 								Size: UDim2.fromScale(1, 1),
 								Position: UDim2.fromScale(-0.15, 0.5),
-								Image: assetIds.images.ui.inventory.locked,
+								Image: assetIds.images.vectors.Lock,
 							}}
 						>
 							<uiaspectratioconstraint AspectRatio={1} />
@@ -45,7 +45,7 @@ export const PetLevelAndLockIndicator = (props: { isLocked: boolean; petLevel: n
 						native={{
 							Size: UDim2.fromScale(0.25, 0.25),
 							Position: UDim2.fromScale(0.5, 0.95),
-							Image: assetIds.images.ui.inventory.locked,
+							Image: assetIds.images.vectors.Lock,
 						}}
 					>
 						<uiaspectratioconstraint AspectRatio={1} />

@@ -65,7 +65,7 @@ export const DatastoreEvents = hooks((_, { useState, useEffect }) => {
 		});
 
 		return (): void => connection.Disconnect();
-	});
+	}, []);
 
 	const messagesToDisplay: Array<Roact.Element> = [];
 

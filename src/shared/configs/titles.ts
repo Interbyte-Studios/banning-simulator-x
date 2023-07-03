@@ -321,7 +321,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		]),
 		category: TitleType.Pets,
 		description: "Hatch a Prismatic+ rarity pet.",
-		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial > 1,
+		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial >= 1,
 	},
 	{
 		name: "Secret Champion",
@@ -335,7 +335,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		]),
 		category: TitleType.Pets,
 		description: "Hatch a Prismatic+ rarity pet 5 times.",
-		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial > 5,
+		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial >= 5,
 	},
 	{
 		name: "Secret Saint",
@@ -349,7 +349,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		]),
 		category: TitleType.Pets,
 		description: "Hatch a Prismatic+ rarity pet 10 times.",
-		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial > 10,
+		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial >= 10,
 	},
 
 	// Weapons (Weapon Level)
@@ -367,7 +367,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 1;
+			return maxLevels >= 1;
 		},
 	},
 	{
@@ -384,7 +384,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 2;
+			return maxLevels >= 2;
 		},
 	},
 	{
@@ -401,7 +401,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 5;
+			return maxLevels >= 5;
 		},
 	},
 	{
@@ -418,7 +418,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 10;
+			return maxLevels >= 10;
 		},
 	},
 	{
@@ -435,7 +435,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 15;
+			return maxLevels >= 15;
 		},
 	},
 	{
@@ -452,7 +452,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 20;
+			return maxLevels >= 20;
 		},
 	},
 	{
@@ -469,7 +469,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 25;
+			return maxLevels >= 25;
 		},
 	},
 	{
@@ -494,7 +494,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				}
 			});
 
-			return maxLevels > 30;
+			return maxLevels >= 30;
 		},
 	},
 
@@ -511,7 +511,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				bans += weaponData.bans;
 			});
 
-			return bans > 5000;
+			return bans >= 5_000;
 		},
 	},
 	{
@@ -526,7 +526,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				bans += weaponData.bans;
 			});
 
-			return bans > 10000;
+			return bans >= 10_000;
 		},
 	},
 	{
@@ -541,7 +541,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				bans += weaponData.bans;
 			});
 
-			return bans > 25000;
+			return bans >= 25_000;
 		},
 	},
 	{
@@ -556,7 +556,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				bans += weaponData.bans;
 			});
 
-			return bans > 50000;
+			return bans >= 50_000;
 		},
 	},
 	{
@@ -571,7 +571,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				bans += weaponData.bans;
 			});
 
-			return bans > 75000;
+			return bans >= 75_000;
 		},
 	},
 	{
@@ -586,7 +586,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				bans += weaponData.bans;
 			});
 
-			return bans > 1000000;
+			return bans >= 100_000;
 		},
 	},
 	{
@@ -601,7 +601,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				bans += weaponData.bans;
 			});
 
-			return bans > 250000;
+			return bans >= 250_000;
 		},
 	},
 	{
@@ -616,7 +616,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				bans += weaponData.bans;
 			});
 
-			return bans > 500000;
+			return bans >= 500_000;
 		},
 	},
 	{
@@ -631,7 +631,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				bans += weaponData.bans;
 			});
 
-			return bans > 750000;
+			return bans >= 750_000;
 		},
 	},
 	{
@@ -654,7 +654,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				bans += weaponData.bans;
 			});
 
-			return bans > 1000000;
+			return bans >= 1_000_000;
 		},
 	},
 	{
@@ -677,7 +677,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				bans += weaponData.bans;
 			});
 
-			return bans > 2500000;
+			return bans >= 2_500_000;
 		},
 	},
 	{
@@ -700,7 +700,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 				bans += weaponData.bans;
 			});
 
-			return bans > 5000000;
+			return bans >= 5_000_000;
 		},
 	},
 
@@ -719,7 +719,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		]),
 		category: TitleType.Misc,
 		description: "Members who are apart of the Interbyte Club.",
-		condition: (state): boolean => state.index.groupRank !== undefined && state.index.groupRank >= 247,
+		condition: (state): boolean => state.index.groupRank !== undefined && state.index.groupRank >= 246,
 	},
 	{
 		name: "VIP",
