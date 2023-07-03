@@ -4,7 +4,8 @@ import { ProfileState } from "../serde";
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const migrations =
-	script.Parent?.GetChildren()
+	script
+		.GetChildren()
 		.filter((file): file is ModuleScript => file.IsA("ModuleScript"))
 		.map((migrator) => {
 			const migrationHandler = require(migrator);
@@ -19,6 +20,7 @@ const migrations =
 			};
 		}) ?? [];
 
+// we need to run migrations in order of their numeric values
 table.sort(migrations, (a, b) => a.version < b.version);
 
 /**

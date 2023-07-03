@@ -46,7 +46,7 @@ return function(state)
 	local newPetIndex = {}
 	for stringPetId, value in state.index.pets do
 		value["petId"] = tonumber(stringPetId)
-		newPetIndex = value
+		table.insert(newPetIndex, value)
 	end
 	state.index.pets = newPetIndex
 
