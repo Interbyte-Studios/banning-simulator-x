@@ -79,6 +79,10 @@ remotes.Client.GetNamespace("rodux")
 	});
 
 Players.GetPlayers().forEach(async (player) => {
+	if (player.UserId === Players.LocalPlayer.UserId) {
+		return;
+	}
+
 	const storeState = await remotes.Client.GetNamespace("rodux").Get("requestStoreState").CallServerAsync(player);
 	if (storeState === undefined) {
 		// server did not have a store for the player when we requested in

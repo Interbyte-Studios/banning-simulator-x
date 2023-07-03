@@ -273,7 +273,7 @@ function createEnemyTag(enemy: Model): void {
 	tag.Adornee = head;
 	tag.Parent = enemyTags;
 
-	humanoid.GetPropertyChangedSignal("Health").Connect(() => {
+	const healthConnection = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
 		const health = humanoid.Health;
 		const maxHealth = humanoid.MaxHealth;
 
@@ -314,7 +314,13 @@ function createEnemyTag(enemy: Model): void {
 	});
 
 	humanoid.AncestryChanged.Connect(() => {
+		healthConnection.Disconnect();
+		tag.Parent = undefined;
 		tag.Destroy();
+		if (humanoid !== undefined) {
+			humanoid.Parent = undefined;
+			humanoid.Destroy();
+		}
 		return;
 	});
 }

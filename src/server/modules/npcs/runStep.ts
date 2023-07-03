@@ -21,7 +21,7 @@ const NPC_SPAWN_SURROUNDING = 15;
 const NPC_WANDER_COOLDOWN_MIN = 7;
 const NPC_WANDER_COOLDOWN_MAX = 15;
 // amount of NPCs in a zone
-const ZONE_NPC_AMOUNT = 10;
+const ZONE_NPC_AMOUNT = 11;
 const ZONE_NPC_BOSS_AMOUNT = 3;
 
 /*
@@ -179,7 +179,6 @@ export function runStep(
 		}
 
 		const damageAmount = weaponDamage + talismanStatEffects.damage + petDamageBonus;
-
 		npc.instance.Humanoid.TakeDamage(damageAmount);
 
 		// check if npc is dead
@@ -329,20 +328,63 @@ export function runStep(
 		// we need to investigate this further (TODO), but for now
 		// we want to just remove the npc if that happens
 		if (npc.instance.FindFirstChild("Head") === undefined) {
+			// kill npc
 			npcs.delete(npc);
-			npcCharacterToNpc.delete(npc.instance);
 
+			// remove from state
+			const npcZone = npc.world.zones.find((zone) => zone.spawn === npc.spawn);
+			npcZone?.npcs.unorderedRemove(npcZone.npcs.indexOf(npc));
+
+			// get rid of npc instance
 			npc.instance.Parent = undefined;
+			npcCharacterToNpc.delete(npc.instance);
 
 			continue;
 		}
 
 		const npcRoot = npc.instance.Humanoid.RootPart;
 		if (npcRoot === undefined) {
+			// kill npc
 			npcs.delete(npc);
+
+			// remove from state
+			const npcZone = npc.world.zones.find((zone) => zone.spawn === npc.spawn);
+			npcZone?.npcs.unorderedRemove(npcZone.npcs.indexOf(npc));
+
+			// get rid of npc instance
+			npc.instance.Parent = undefined;
 			npcCharacterToNpc.delete(npc.instance);
 
+			continue;
+		}
+
+		if (npcRoot.Position.sub(npc.spawn.floor.Position).Magnitude > 110) {
+			// kill npc
+			npcs.delete(npc);
+
+			// remove from state
+			const npcZone = npc.world.zones.find((zone) => zone.spawn === npc.spawn);
+			npcZone?.npcs.unorderedRemove(npcZone.npcs.indexOf(npc));
+
+			// get rid of npc instance
 			npc.instance.Parent = undefined;
+			npcCharacterToNpc.delete(npc.instance);
+
+			continue;
+		}
+
+		const leftFoot = npc.instance.FindFirstChild("LeftFoot") as BasePart;
+		if (leftFoot !== undefined && leftFoot.Position.Y < npc.spawn.floor.Position.Y - 1.5 - npc.spawn.floor.Size.Y / 2) {
+			// kill npc
+			npcs.delete(npc);
+
+			// remove from state
+			const npcZone = npc.world.zones.find((zone) => zone.spawn === npc.spawn);
+			npcZone?.npcs.unorderedRemove(npcZone.npcs.indexOf(npc));
+
+			// get rid of npc instance
+			npc.instance.Parent = undefined;
+			npcCharacterToNpc.delete(npc.instance);
 
 			continue;
 		}
