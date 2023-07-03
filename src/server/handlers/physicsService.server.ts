@@ -10,8 +10,16 @@ if (!PhysicsService.IsCollisionGroupRegistered(playerCollisionGroup)) {
 	PhysicsService.RegisterCollisionGroup(playerCollisionGroup);
 }
 
+const npcBarrierCollisionGroup = "NPCBarrier";
+if (!PhysicsService.IsCollisionGroupRegistered(npcBarrierCollisionGroup)) {
+	PhysicsService.RegisterCollisionGroup(npcBarrierCollisionGroup);
+}
+
 PhysicsService.CollisionGroupSetCollidable(npcCollisionGroup, npcCollisionGroup, false);
 PhysicsService.CollisionGroupSetCollidable(playerCollisionGroup, playerCollisionGroup, false);
+PhysicsService.CollisionGroupSetCollidable(npcCollisionGroup, npcBarrierCollisionGroup, true);
+PhysicsService.CollisionGroupSetCollidable(playerCollisionGroup, npcBarrierCollisionGroup, false);
+
 PhysicsService.CollisionGroupSetCollidable(npcCollisionGroup, playerCollisionGroup, false);
 PhysicsService.CollisionGroupSetCollidable(playerCollisionGroup, npcCollisionGroup, false);
 
@@ -21,13 +29,15 @@ PhysicsService.CollisionGroupSetCollidable(playerCollisionGroup, npcCollisionGro
  * @param character The character to register.
  */
 const onCharacterAdded = (character: Model): void => {
-	for (const part of character.GetDescendants()) {
-		if (!part.IsA("BasePart")) {
-			continue;
-		}
+	task.delay(5, () => {
+		for (const part of character.GetDescendants()) {
+			if (!part.IsA("BasePart")) {
+				continue;
+			}
 
-		part.CollisionGroup = playerCollisionGroup;
-	}
+			part.CollisionGroup = playerCollisionGroup;
+		}
+	});
 };
 
 /**

@@ -103,7 +103,7 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 
 		const petData = getPetData(props.petSelected);
 		const rarityId = RARITIES[petData.rarity].reverseId;
-		const maxFusions = props.gamepasses
+		const maxFusions = props.gamepasses["Better Fusion"]
 			? RARITIES[petData.rarity].betterMaxFusions
 			: RARITIES[petData.rarity].maxFusions;
 
