@@ -24,44 +24,31 @@ remotes.Server.GetNamespace("pets")
 		withPlayerStore((_, store, pets, unequipAll) => {
 			const currentState = store.getState();
 
-			if (!unequipAll) {
-				// verify that they own the pets
-				const petsToEquip: Array<{ guid: string; enabled: boolean }> = [];
-				for (const petToEquip of pets) {
-					const storedPet = currentState.pets.find((pet) => pet.guid === petToEquip.guid);
-					if (storedPet === undefined) {
-						continue;
-					}
-
-					petsToEquip.push(petToEquip);
+			// verify that they own the pets
+			const petsToEquip: Array<{ guid: string; enabled: boolean }> = [];
+			for (const petToEquip of pets) {
+				const storedPet = currentState.pets.find((pet) => pet.guid === petToEquip.guid);
+				if (storedPet === undefined) {
+					continue;
 				}
 
-				const currentlyEquippedPets = currentState.pets.filter(
-					(pet) => pet.equipped && !petsToEquip.find((newPet) => newPet.guid === pet.guid),
-				);
-				const newlyEquippedPets = petsToEquip.filter((pet) => pet.enabled);
+				petsToEquip.push(petToEquip);
+			}
+
+			const currentlyEquippedPets = currentState.pets.filter(
+				(pet) => pet.equipped && !petsToEquip.find((newPet) => newPet.guid === pet.guid),
+			);
+			const newlyEquippedPets = petsToEquip.filter((pet) => pet.enabled);
+			if (unequipAll) {
+				if (newlyEquippedPets.size() > getMaxPetEquip(currentState.gamepasses)) {
+					return;
+				}
+			} else {
 				if (currentlyEquippedPets.size() + newlyEquippedPets.size() > getMaxPetEquip(currentState.gamepasses)) {
 					return;
 				}
-
-				// equip the pets
-				store.dispatch(equipPets(petsToEquip, unequipAll));
-			} else {
-				if (pets.size() >= getMaxPetEquip(store.getState().gamepasses)) {
-					return;
-				}
-
-				// verify that they own the pets
-				const petsToEquip: Array<{ guid: string; enabled: boolean }> = [];
-				for (const petToEquip of pets) {
-					const storedPet = currentState.pets.find((pet) => pet.guid === petToEquip.guid);
-					if (storedPet === undefined) {
-						continue;
-					}
-
-					petsToEquip.push(petToEquip);
-				}
-				store.dispatch(equipPets(petsToEquip, unequipAll));
 			}
+
+			store.dispatch(equipPets(petsToEquip, unequipAll));
 		}),
 	);

@@ -91,7 +91,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		rarity: "Prismatic",
 		stats: {
 			additionalDamage: 8500,
-			additionalBans: 450,
+			additionalBans: 1000,
 		},
 	},
 };

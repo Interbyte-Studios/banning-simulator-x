@@ -231,7 +231,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 
 					if (humanoidRootPart.Position.sub(root.Position).Magnitude > 4) {
 						const direction = root.Position.sub(humanoidRootPart.Position).Unit;
-						const targetPosition = root.Position.sub(direction.mul(3));
+						const targetPosition = root.Position.sub(direction.mul(2));
 						humanoid.MoveTo(targetPosition);
 					}
 					return;
@@ -322,7 +322,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				}
 
 				const direction = npcRootPart.Position.sub(humanoidRootPart.Position).Unit;
-				const targetPosition = npcRootPart.Position.sub(direction.mul(3));
+				const targetPosition = npcRootPart.Position.sub(direction.mul(2));
 				humanoid.MoveTo(targetPosition);
 
 				focusedNpc = npcHumanoid;
@@ -400,235 +400,218 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 					return;
 				}
 
-				if (focusedNpc === humanoid) {
-					focusedNpc = undefined;
+				if (!props.gamepasses["Auto Fight"]) {
+					task.delay(1, (): void => {
+						if (focusedNpc === humanoid) {
+							focusedNpc = undefined;
+						}
+					});
+				} else {
+					if (focusedNpc === humanoid) {
+						focusedNpc = undefined;
+					}
 				}
 			});
 
 			return (): void => connection.Disconnect();
-		}, [isEnabled, props.boosts, props.bans]);
+		}, [isEnabled, props.boosts, props.gamepasses, props.bans]);
 
 		useEffect(() => {
-			toggleAutoFight(isEnabled, props.walkspeed);
+			if (!props.gamepasses["Auto Fight"]) {
+				toggleAutoFight(isEnabled, props.walkspeed);
+			}
 			setPurchasedAutoFight(isEnabled);
-		}, [isEnabled, props.walkspeed]);
+		}, [isEnabled, props.walkspeed, props.gamepasses]);
 
 		if (!isEnabled) {
-			if (!props.gamepasses["Auto Fight"]) {
-				return (
-					<ImageLabel
-						native={{
-							Position: UDim2.fromScale(0.5, 0.75),
-							Size: UDim2.fromScale(0.35, 0.4),
-							Image: assetIds.images.ui.autoFight.minimized,
-						}}
-					>
-						<uiaspectratioconstraint AspectRatio={3.2} />
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.2),
-								Size: UDim2.fromScale(0.985, 0.2),
-								Text: "You do not own Auto Fight!",
-							}}
-							stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
-						/>
-
-						<BaseFrame
-							BackgroundTransparency={0}
-							BackgroundColor3={Color3.fromRGB(13, 147, 230)}
-							Position={UDim2.fromScale(0.5, 0.65)}
-							Size={UDim2.fromScale(0.95, 0.5)}
-						>
-							<uicorner CornerRadius={new UDim(0.15, 0)} />
-							<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
-
-							<StrokeTextLabel
-								native={{
-									Position: UDim2.fromScale(0.3, 0.5),
-									Size: UDim2.fromScale(0.2, 0.4),
-									Text: "R$499",
-									TextColor3: Color3.fromRGB(85, 255, 127),
-								}}
-								stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
-							/>
-
-							<SpringImageButton
-								native={{
-									Position: UDim2.fromScale(0.85, 0.5),
-									Image: assetIds.images.ui.index.Claim,
-								}}
-								size={{ minSize: 0.6, maxSize: 0.7 }}
-								events={{
-									/* eslint-disable jsdoc/require-jsdoc */
-									Activated: (): void => {
-										playSFX(UIEngagement.MinorEngagement);
-										MarketplaceService.PromptProductPurchase(Players.LocalPlayer, GAMEPASSES["Auto Fight"]);
-									},
-									/* eslint-enable jsdoc/require-jsdoc */
-								}}
-							>
-								<uiaspectratioconstraint AspectRatio={2} />
-
-								<StrokeTextLabel
-									native={{
-										Size: UDim2.fromScale(0.8, 0.8),
-										Text: "Buy",
-									}}
-									stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(41, 120, 31) } }}
-								/>
-							</SpringImageButton>
-
-							<BaseFrame // todo: Convert to image label of auto fight gamepass
-								BackgroundTransparency={0}
-								BackgroundColor3={Color3.fromRGB(14, 165, 253)}
-								Position={UDim2.fromScale(0.1, 0.5)}
-								Size={UDim2.fromScale(0.9, 0.9)}
-							>
-								<uiaspectratioconstraint AspectRatio={1} />
-								<uicorner CornerRadius={new UDim(1, 0)} />
-								<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
-								<ImageLabel
-									native={{
-										Position: UDim2.fromScale(0.5, 0.5),
-										Size: UDim2.fromScale(1, 1),
-										Image: assetIds.images.decals.gamepasses["Auto Fight"],
-									}}
-								>
-									<uiaspectratioconstraint AspectRatio={1} />
-								</ImageLabel>
-							</BaseFrame>
-						</BaseFrame>
-
-						<ExitButton
-							Position={UDim2.fromScale(0.975, 0.05)}
-							minimizedSize={0.25}
-							maximizedSize={0.3}
-							onClosed={(): void => props.hideMenu()}
-						/>
-					</ImageLabel>
-				);
-			} else {
-				return (
-					<ImageLabel
-						native={{
-							Position: UDim2.fromScale(0.5, 0.75),
-							Size: UDim2.fromScale(0.35, 0.4),
-							Image: assetIds.images.ui.autoFight.minimized,
-						}}
-					>
-						<uiaspectratioconstraint AspectRatio={3.2} />
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.4),
-								Size: UDim2.fromScale(0.9, 0.3),
-								Text: "Auto fight is not enabled.",
-							}}
-							stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
-						/>
-
-						<SpringImageButton
-							native={{
-								Position: UDim2.fromScale(0.5, 0.9),
-								Image: assetIds.images.ui.index.Claim,
-							}}
-							size={{ minSize: 0.35, maxSize: 0.4 }}
-							events={{
-								/* eslint-disable jsdoc/require-jsdoc */
-								Activated: (): void => {
-									playSFX(UIEngagement.MinorEngagement);
-
-									const character = Players.LocalPlayer.Character;
-									if (character === undefined) {
-										addAnnouncement("There was an issue while enabling auto fight (E-1).", AnnouncementType.Error);
-										return;
-									}
-
-									const humanoid = character.FindFirstChildOfClass("Humanoid");
-									if (humanoid === undefined) {
-										addAnnouncement("There was an issue while enabling auto fight (E-2).", AnnouncementType.Error);
-										return;
-									}
-
-									const humanoidRootPart = humanoid.RootPart;
-									if (humanoidRootPart === undefined) {
-										addAnnouncement("There was an issue while enabling auto fight (E-3).", AnnouncementType.Error);
-										return;
-									}
-
-									const raycastParams = new RaycastParams();
-									raycastParams.FilterDescendantsInstances = [Workspace.worlds["Ban Land"].zones];
-									raycastParams.FilterType = Enum.RaycastFilterType.Whitelist;
-									raycastParams.IgnoreWater = false;
-
-									const raycastResult = Workspace.Raycast(
-										humanoidRootPart.Position,
-										new Vector3(0, -100, 0),
-										raycastParams,
-									);
-
-									if (raycastResult === undefined) {
-										addAnnouncement("Please enter the zone you wish to auto fight in.", AnnouncementType.Error);
-										return;
-									}
-
-									if (raycastResult.Instance.Name !== "floor") {
-										addAnnouncement("There was an issue while enabling auto fight (E-5).", AnnouncementType.Error);
-										return;
-									}
-
-									const landingFolder = raycastResult.Instance.Parent;
-									if (landingFolder === undefined) {
-										addAnnouncement("There was an issue while enabling auto fight (E-6).", AnnouncementType.Error);
-										return;
-									}
-
-									if (!isValidZone(landingFolder.Name)) {
-										addAnnouncement("There was an issue while enabling auto fight (E-8).", AnnouncementType.Error);
-										return;
-									}
-
-									if (getManualAutoFightState()) {
-										addAnnouncement("You're already fighting an NPC. Try again later.", AnnouncementType.Error);
-										return;
-									}
-									setSelectedZone(landingFolder.Name);
-									setIsEnabled(true);
-								},
-								/* eslint-enable jsdoc/require-jsdoc */
-							}}
-						>
-							<StrokeTextLabel
-								native={{
-									Size: UDim2.fromScale(0.85, 0.85),
-									Text: "Start",
-								}}
-								stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
-							/>
-						</SpringImageButton>
-
-						<ExitButton
-							Position={UDim2.fromScale(0.975, 0.05)}
-							minimizedSize={0.25}
-							maximizedSize={0.3}
-							onClosed={(): void => props.hideMenu()}
-						/>
-					</ImageLabel>
-				);
-			}
-		} else {
-			const currencyAmount = autoFightCache.obtainedCurrency.find((currency) => currency.name === farmingCurrency);
-
 			return (
 				<ImageLabel
 					native={{
-						Position: UDim2.fromScale(0.5, 0.75),
+						Position: UDim2.fromScale(0.5, 0.825),
 						Size: UDim2.fromScale(0.35, 0.4),
 						Image: assetIds.images.ui.autoFight.minimized,
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={3.2} />
+
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.5, 0.4),
+							Size: UDim2.fromScale(0.9, 0.3),
+							Text: "Auto fight is not enabled.",
+						}}
+						stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+					/>
+
+					<SpringImageButton
+						native={{
+							Position: UDim2.fromScale(0.5, 0.9),
+							Image: assetIds.images.ui.index.Claim,
+						}}
+						size={{ minSize: 0.35, maxSize: 0.4 }}
+						events={{
+							/* eslint-disable jsdoc/require-jsdoc */
+							Activated: (): void => {
+								playSFX(UIEngagement.MinorEngagement);
+
+								const character = Players.LocalPlayer.Character;
+								if (character === undefined) {
+									addAnnouncement("There was an issue while enabling auto fight (E-1).", AnnouncementType.Error);
+									return;
+								}
+
+								const humanoid = character.FindFirstChildOfClass("Humanoid");
+								if (humanoid === undefined) {
+									addAnnouncement("There was an issue while enabling auto fight (E-2).", AnnouncementType.Error);
+									return;
+								}
+
+								const humanoidRootPart = humanoid.RootPart;
+								if (humanoidRootPart === undefined) {
+									addAnnouncement("There was an issue while enabling auto fight (E-3).", AnnouncementType.Error);
+									return;
+								}
+
+								const raycastParams = new RaycastParams();
+								raycastParams.FilterDescendantsInstances = [Workspace.worlds["Ban Land"].zones];
+								raycastParams.FilterType = Enum.RaycastFilterType.Whitelist;
+								raycastParams.IgnoreWater = false;
+
+								const raycastResult = Workspace.Raycast(
+									humanoidRootPart.Position,
+									new Vector3(0, -100, 0),
+									raycastParams,
+								);
+
+								if (raycastResult === undefined) {
+									addAnnouncement("Please enter the zone you wish to auto fight in.", AnnouncementType.Error);
+									return;
+								}
+
+								if (raycastResult.Instance.Name !== "floor") {
+									addAnnouncement("There was an issue while enabling auto fight (E-5).", AnnouncementType.Error);
+									return;
+								}
+
+								const landingFolder = raycastResult.Instance.Parent;
+								if (landingFolder === undefined) {
+									addAnnouncement("There was an issue while enabling auto fight (E-6).", AnnouncementType.Error);
+									return;
+								}
+
+								if (!isValidZone(landingFolder.Name)) {
+									addAnnouncement("There was an issue while enabling auto fight (E-8).", AnnouncementType.Error);
+									return;
+								}
+
+								if (getManualAutoFightState()) {
+									addAnnouncement("You're already fighting an NPC. Try again later.", AnnouncementType.Error);
+									return;
+								}
+								setSelectedZone(landingFolder.Name);
+								setIsEnabled(true);
+							},
+							/* eslint-enable jsdoc/require-jsdoc */
+						}}
+					>
+						<StrokeTextLabel
+							native={{
+								Size: UDim2.fromScale(0.85, 0.85),
+								Text: "Start",
+							}}
+							stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
+						/>
+					</SpringImageButton>
+
+					<ExitButton
+						Position={UDim2.fromScale(0.975, 0.05)}
+						minimizedSize={0.25}
+						maximizedSize={0.3}
+						onClosed={(): void => props.hideMenu()}
+					/>
+				</ImageLabel>
+			);
+		} else {
+			const currencyAmount = autoFightCache.obtainedCurrency.find((currency) => currency.name === farmingCurrency);
+
+			const advertisement: Array<Roact.Element> = [];
+			if (!props.gamepasses["Auto Fight"]) {
+				const element = (
+					<BaseFrame
+						BackgroundTransparency={0}
+						BackgroundColor3={uiTextStrokeColor}
+						Position={UDim2.fromScale(0.5, -0.35)}
+						Size={UDim2.fromScale(1, 0.5)}
+					>
+						<uicorner CornerRadius={new UDim(0.2, 0)} />
+						<BaseUIStroke
+							native={{
+								Thickness: 2,
+								Color: uiDarkStrokeColor,
+							}}
+						/>
+
+						<SpringImageButton
+							native={{
+								Position: UDim2.fromScale(0.85, 0.5),
+								Image: assetIds.images.ui.index.Claim,
+							}}
+							size={{ minSize: 0.6, maxSize: 0.7 }}
+							events={{
+								/**
+								 * Prompts user to purchase Auto Fight.
+								 *
+								 * @returns Void.
+								 */
+								Activated: (): void =>
+									MarketplaceService.PromptGamePassPurchase(Players.LocalPlayer, GAMEPASSES["Auto Fight"]),
+							}}
+						>
+							<uiaspectratioconstraint AspectRatio={2} />
+							<StrokeTextLabel
+								native={{
+									Text: "R$499",
+									Position: UDim2.fromScale(0.5, 0.5),
+									Size: UDim2.fromScale(0.8, 0.8),
+								}}
+								stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
+							/>
+						</SpringImageButton>
+
+						<ImageLabel
+							native={{
+								Position: UDim2.fromScale(0.1, 0.5),
+								Size: UDim2.fromScale(1, 1),
+								Image: assetIds.images.decals.gamepasses["Auto Fight"],
+							}}
+						>
+							<uiaspectratioconstraint AspectRatio={1} />
+						</ImageLabel>
+						<StrokeTextLabel
+							native={{
+								Text: "Purchase the gamepass to fight much faster!",
+								Position: UDim2.fromScale(0.45, 0.5),
+								Size: UDim2.fromScale(0.55, 0.8),
+							}}
+							stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+						/>
+					</BaseFrame>
+				);
+
+				advertisement.push(element);
+			}
+
+			return (
+				<ImageLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.825),
+						Size: UDim2.fromScale(0.35, 0.4),
+						Image: assetIds.images.ui.autoFight.minimized,
+					}}
+				>
+					<uiaspectratioconstraint AspectRatio={3.2} />
+
+					{advertisement}
 
 					<StrokeTextLabel
 						native={{
