@@ -21,8 +21,8 @@ const NPC_SPAWN_SURROUNDING = 15;
 const NPC_WANDER_COOLDOWN_MIN = 7;
 const NPC_WANDER_COOLDOWN_MAX = 15;
 // amount of NPCs in a zone
-const ZONE_NPC_AMOUNT = 8;
-const ZONE_NPC_BOSS_AMOUNT = 2;
+const ZONE_NPC_AMOUNT = 10;
+const ZONE_NPC_BOSS_AMOUNT = 3;
 
 /*
 // distance units for following a player
