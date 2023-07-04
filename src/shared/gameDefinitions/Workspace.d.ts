@@ -15,6 +15,8 @@ declare global {
 			};
 		};
 		interactions: Folder & {
+			weaponShops: Folder;
+			talismanShops: Folder;
 			invites: Folder & {
 				interactions: Folder;
 			};

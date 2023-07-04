@@ -7,11 +7,11 @@ import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/stro
 import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
+import { shouldDisplay } from "client/util/shouldDisplay";
 import assetIds from "shared/assets";
 import { Variants } from "shared/configs/pets";
 import { ZoneNames } from "shared/configs/zones";
 
-import { shouldDisplay } from "../../shops/weaponShop/interactPrompt";
 import { DisplayPets } from "./displayPets";
 import { PetSelection } from "./petSelection";
 import { ZoneSelection } from "./zoneSelection";

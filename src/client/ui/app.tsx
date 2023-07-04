@@ -1,7 +1,7 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { ContextActionService, ReplicatedStorage } from "@rbxts/services";
+import { ContextActionService, Players, ReplicatedStorage, Workspace } from "@rbxts/services";
 import { Store } from "shared/rodux";
 
 import { LocalMessages } from "./components/announcements";
@@ -62,6 +62,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
 
 	useEffect(() => {
+		// Equip weapon on Z press.
 		ContextActionService.BindAction(
 			"equipWeapon",
 			async (_, state) => {
@@ -79,8 +80,72 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 			Enum.KeyCode.Z,
 		);
 
+		// Open weapon or talisman shop
+		ContextActionService.BindAction(
+			"openShop",
+			(_, state) => {
+				if (state !== Enum.UserInputState.Begin) {
+					return;
+				}
+
+				const character = Players.LocalPlayer.Character;
+				if (character === undefined) {
+					return;
+				}
+
+				const humanoid = character.FindFirstChildOfClass("Humanoid");
+				if (humanoid === undefined) {
+					return;
+				}
+
+				const rootPart = humanoid.RootPart;
+				if (rootPart === undefined) {
+					return;
+				}
+
+				let withinWeaponShopDistance = false;
+				for (const interaction of Workspace.interactions.weaponShops.GetChildren()) {
+					if (!interaction.IsA("BasePart")) {
+						continue;
+					}
+
+					const magnitude = rootPart.Position.sub(interaction.Position).Magnitude;
+					if (magnitude <= 30) {
+						withinWeaponShopDistance = true;
+						break;
+					}
+				}
+
+				if (withinWeaponShopDistance) {
+					setVisibility({ ...visibilityStates, weaponShop: true });
+					return;
+				}
+
+				let withinTalismanShopDistance = false;
+				for (const interaction of Workspace.interactions.talismanShops.GetChildren()) {
+					if (!interaction.IsA("BasePart")) {
+						continue;
+					}
+
+					const magnitude = rootPart.Position.sub(interaction.Position).Magnitude;
+					if (magnitude <= 30) {
+						withinTalismanShopDistance = true;
+						break;
+					}
+				}
+
+				if (withinTalismanShopDistance) {
+					setVisibility({ ...visibilityStates, talismanTower: true });
+					return;
+				}
+			},
+			false,
+			Enum.KeyCode.E,
+		);
+
 		return (): void => {
 			ContextActionService.UnbindAction("equipWeapon");
+			ContextActionService.UnbindAction("openShop");
 		};
 	});
 

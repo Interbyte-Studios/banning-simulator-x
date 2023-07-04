@@ -141,8 +141,9 @@ function createPlayerTag(player: Player, store: Store): t.static<typeof isPlayer
 	tag.Adornee = head;
 	tag.Parent = friendlyTags;
 
-	humanoid.AncestryChanged.Connect(() => {
+	const connection = humanoid.AncestryChanged.Connect(() => {
 		tag.Destroy();
+		connection.Disconnect();
 		return;
 	});
 
@@ -313,7 +314,7 @@ function createEnemyTag(enemy: Model): void {
 		)}]`;
 	});
 
-	humanoid.AncestryChanged.Connect(() => {
+	const ancestryChangedConnection = humanoid.AncestryChanged.Connect(() => {
 		healthConnection.Disconnect();
 		tag.Parent = undefined;
 		tag.Destroy();
@@ -321,6 +322,7 @@ function createEnemyTag(enemy: Model): void {
 			humanoid.Parent = undefined;
 			humanoid.Destroy();
 		}
+		ancestryChangedConnection.Disconnect();
 		return;
 	});
 }
