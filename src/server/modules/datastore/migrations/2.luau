@@ -67,6 +67,7 @@ return function(state)
 	if state.migratedBans ~= true then
 		state.bans.bans = 0
 	end
+	state.migratedBans = nil
 
 	-- make bans rodux state a flat structure
 	state.bans = state.bans.bans
