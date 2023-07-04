@@ -63,5 +63,13 @@ return function(state)
 		end
 	end
 
+	-- reset bans to zero if we havent already
+	if state.migratedBans ~= true then
+		state.bans.bans = 0
+	end
+
+	-- make bans rodux state a flat structure
+	state.bans = state.bans.bans
+
 	return state
 end
