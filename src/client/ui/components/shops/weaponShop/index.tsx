@@ -50,7 +50,7 @@ export const WeaponShopHandle = hooks((props: WeaponShopHandleProps, { useEffect
 				props.setVisibility(true);
 			},
 			false,
-			Enum.KeyCode.Q,
+			Enum.KeyCode.E,
 		);
 
 		return (): void => {
