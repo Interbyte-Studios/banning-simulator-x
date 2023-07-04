@@ -4,6 +4,7 @@ import { retrieveStore } from "server/playerStore";
 import {
 	BOOST_PRODUCTS,
 	EXCLUSIVE_PETS,
+	GAMEPASSES,
 	LIMITED_EGG,
 	LIMITED_EGG_DEVPRODUCT,
 	PURCHASE_PET_TEAM_PRODUCT,
@@ -11,6 +12,7 @@ import {
 import { remotes } from "shared/remotes";
 import { storeBoost } from "shared/rodux/boosts";
 import { claimDevProduct } from "shared/rodux/devProducts";
+import { claimGamepass } from "shared/rodux/gamepasses";
 import { addPets } from "shared/rodux/pets";
 import { purchasePetTeam } from "shared/rodux/petTeams";
 import { getEggData } from "shared/util/getEggData";
@@ -18,6 +20,18 @@ import { getEggData } from "shared/util/getEggData";
 const marketplaceRemotes = remotes.Server.GetNamespace("eggs");
 const hatchSingleExclusive = marketplaceRemotes.Get("hatchSingleExclusiveEgg");
 const tripleSingleExclusive = marketplaceRemotes.Get("hatchTripleExclusiveEgg");
+
+MarketplaceService.PromptGamePassPurchaseFinished.Connect((player, id, purchased) => {
+	if (!purchased) return;
+
+	const store = retrieveStore(player);
+	for (const [gamepassName, gamepassId] of pairs(GAMEPASSES)) {
+		if (gamepassId === id) {
+			store.dispatch(claimGamepass(gamepassName));
+			break;
+		}
+	}
+});
 
 // eslint-disable-next-line jsdoc/require-jsdoc
 MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision => {
