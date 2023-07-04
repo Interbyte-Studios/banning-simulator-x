@@ -63,6 +63,13 @@ function mapStateToProps(state: StoreState): EggHudMappedProps {
 }
 
 /**
+ * Disables auto hatch via a button.
+ */
+export function disableHatch(): void {
+	autoEnabled = false;
+}
+
+/**
  * Displays informational and interactable ui components for all eggs in the game.
  *
  * @param props Properties of the component.
@@ -359,14 +366,21 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 						}
 
 						const withinDistanceForRegular = withinDistanceToHatch(character, eggName, false);
-
 						if (withinDistanceForRegular) {
-							await handleHatch(eggName, "regular", 1);
+							if (autoEnabled) {
+								autoEnabled = false;
+							} else {
+								await handleHatch(eggName, "regular", 1);
+							}
 							break;
 						} else {
 							const withinDistanceForVoid = withinDistanceToHatch(character, eggName, true);
 							if (withinDistanceForVoid) {
-								await handleHatch(eggName, "void", 1);
+								if (autoEnabled) {
+									autoEnabled = false;
+								} else {
+									await handleHatch(eggName, "void", 1);
+								}
 								break;
 							}
 						}
@@ -404,14 +418,21 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 						}
 
 						const withinDistanceForRegular = withinDistanceToHatch(character, eggName, false);
-
 						if (withinDistanceForRegular) {
-							await handleHatch(eggName, "regular", 3);
+							if (autoEnabled) {
+								autoEnabled = false;
+							} else {
+								await handleHatch(eggName, "regular", 3);
+							}
 							break;
 						} else {
 							const withinDistanceForVoid = withinDistanceToHatch(character, eggName, true);
 							if (withinDistanceForVoid) {
-								await handleHatch(eggName, "void", 3);
+								if (autoEnabled) {
+									autoEnabled = false;
+								} else {
+									await handleHatch(eggName, "void", 3);
+								}
 								break;
 							}
 						}

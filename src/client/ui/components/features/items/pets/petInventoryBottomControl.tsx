@@ -66,7 +66,6 @@ export const EquipBestPets = RoactRodux.connect(mapStateToProps)(
 							}
 						}
 
-						print(petsToEquip.size());
 						equipPets.SendToServer(petsToEquip, true);
 					},
 				}}

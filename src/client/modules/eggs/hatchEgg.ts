@@ -36,6 +36,8 @@ const rightAutoDeleted = hatchGui.FindFirstChild("RightAutoDeleted") as TextLabe
 const rightName = hatchGui.FindFirstChild("RightName") as TextLabel;
 const rightDecal = rightName.FindFirstChild("ImageLabel") as ImageLabel;
 
+const stopButton = hatchGui.FindFirstChild("Stop") as ImageButton;
+
 const hatchLight = Lighting.WaitForChild("HatchLight") as ColorCorrectionEffect;
 
 /**
@@ -233,6 +235,8 @@ export const animateSingleEggHatch = (
 	task.wait(fastHatch ? 0.235 / 2 : 0.235);
 
 	// todo: show the pet information GUI
+	stopButton.Visible = true;
+
 	middleName.Text = petData.name;
 	middleDecal.Image = petDecal;
 	middleName.Visible = true;
@@ -289,6 +293,7 @@ export const animateSingleEggHatch = (
 	middleName.Visible = false;
 	middleRarity.Visible = false;
 	middleAutoDeleted.Visible = false;
+	stopButton.Visible = false;
 
 	// reset camera
 	const resetCameraAnimation = TweenService.Create(camera, cameraTweenInfo, {
@@ -546,6 +551,8 @@ export const animateTripleEggHatch = (
 	task.wait(fastHatch ? 0.235 / 2 : 0.235);
 
 	// todo: show the pet information GUI
+	stopButton.Visible = true;
+
 	middleName.Text = pet1Data.name;
 	middleDecal.Image = pet1Decal;
 	middleName.Visible = true;
@@ -636,6 +643,7 @@ export const animateTripleEggHatch = (
 	rightName.Visible = false;
 	rightRarity.Visible = false;
 	rightAutoDeleted.Visible = false;
+	stopButton.Visible = false;
 
 	// reset camera
 	const resetCameraAnimation = TweenService.Create(camera, cameraTweenInfo, {
