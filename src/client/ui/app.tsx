@@ -2,6 +2,7 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { ContextActionService, Players, ReplicatedStorage, Workspace } from "@rbxts/services";
+import { Variants } from "shared/configs/pets";
 import { Store } from "shared/rodux";
 
 import { LocalMessages } from "./components/announcements";
@@ -55,6 +56,7 @@ const visibilityStates = {
 
 export const app = hooks((props: AppProps, { useState, useEffect, useContext, useCallback, useMemo }) => {
 	const [visibility, setVisibility] = useState(visibilityStates);
+	const [fusingVariant, setFusingVariant] = useState<Exclude<Variants, "regular"> | undefined>(undefined);
 	const [tradingPlayer, setTradingPlayer] = useState<Player | undefined>(undefined);
 	const [activeTrade, setActiveTrade] = useState<boolean>(false);
 
@@ -80,13 +82,15 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 			Enum.KeyCode.Z,
 		);
 
-		// Open weapon or talisman shop
+		// Open weapon, talisman, or fusing
 		ContextActionService.BindAction(
 			"openShop",
 			(_, state) => {
 				if (state !== Enum.UserInputState.Begin) {
 					return;
 				}
+
+				warn(`Checking for shops...`);
 
 				const character = Players.LocalPlayer.Character;
 				if (character === undefined) {
@@ -103,7 +107,6 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					return;
 				}
 
-				let withinWeaponShopDistance = false;
 				for (const interaction of Workspace.interactions.weaponShops.GetChildren()) {
 					if (!interaction.IsA("BasePart")) {
 						continue;
@@ -111,17 +114,11 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 
 					const magnitude = rootPart.Position.sub(interaction.Position).Magnitude;
 					if (magnitude <= 30) {
-						withinWeaponShopDistance = true;
-						break;
+						setVisibility({ ...visibilityStates, weaponShop: true });
+						return;
 					}
 				}
 
-				if (withinWeaponShopDistance) {
-					setVisibility({ ...visibilityStates, weaponShop: true });
-					return;
-				}
-
-				let withinTalismanShopDistance = false;
 				for (const interaction of Workspace.interactions.talismanShops.GetChildren()) {
 					if (!interaction.IsA("BasePart")) {
 						continue;
@@ -129,14 +126,35 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 
 					const magnitude = rootPart.Position.sub(interaction.Position).Magnitude;
 					if (magnitude <= 30) {
-						withinTalismanShopDistance = true;
-						break;
+						setVisibility({ ...visibilityStates, talismanTower: true });
+						return;
 					}
 				}
 
-				if (withinTalismanShopDistance) {
-					setVisibility({ ...visibilityStates, talismanTower: true });
-					return;
+				for (const interaction of Workspace.interactions.radiantMachines.interactions.GetChildren()) {
+					if (!interaction.IsA("BasePart")) {
+						return;
+					}
+
+					const magnitude = rootPart.Position.sub(interaction.Position).Magnitude;
+					if (magnitude <= 30) {
+						setFusingVariant("radiant");
+						setVisibility({ ...visibilityStates, fusing: true });
+						return;
+					}
+				}
+
+				for (const interaction of Workspace.interactions.voidMachines.interactions.GetChildren()) {
+					if (!interaction.IsA("BasePart")) {
+						return;
+					}
+
+					const magnitude = rootPart.Position.sub(interaction.Position).Magnitude;
+					if (magnitude <= 30) {
+						setFusingVariant("void");
+						setVisibility({ ...visibilityStates, fusing: true });
+						return;
+					}
 				}
 			},
 			false,
@@ -211,7 +229,13 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 				/>,
 				<Fusing
 					isVisible={false}
-					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, fusing: value })}
+					variant={fusingVariant}
+					setVisibility={(value: boolean): void => {
+						if (!value) {
+							setFusingVariant(undefined);
+						}
+						setVisibility({ ...visibilityStates, fusing: value });
+					}}
 				/>,
 				<Trading
 					isEnabled={false}
@@ -232,7 +256,13 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 			components.push(
 				<Fusing
 					isVisible={true}
-					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, fusing: value })}
+					variant={fusingVariant}
+					setVisibility={(value: boolean): void => {
+						if (!value) {
+							setFusingVariant(undefined);
+						}
+						setVisibility({ ...visibilityStates, fusing: value });
+					}}
 				/>,
 				<Hud
 					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
