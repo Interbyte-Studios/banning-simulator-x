@@ -90,8 +90,6 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 					return;
 				}
 
-				warn(`Checking for shops...`);
-
 				const character = Players.LocalPlayer.Character;
 				if (character === undefined) {
 					return;
