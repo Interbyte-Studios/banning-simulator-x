@@ -27,7 +27,7 @@ export const WeaponShopInteractPrompt = hooks((props: { displayShop: () => void 
 						LightInfluence={0}
 						Size={UDim2.fromScale(12, 10)}
 						StudsOffsetWorldSpace={new Vector3(0, 5, 0)}
-						MaxDistance={120}
+						MaxDistance={80}
 						Adornee={interaction}
 					>
 						<SpringImageButton

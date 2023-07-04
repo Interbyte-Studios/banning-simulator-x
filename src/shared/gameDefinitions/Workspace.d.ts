@@ -15,6 +15,10 @@ declare global {
 			};
 		};
 		interactions: Folder & {
+			chests: Folder & {
+				vip: Folder;
+				group: Folder;
+			};
 			weaponShops: Folder;
 			talismanShops: Folder;
 			invites: Folder & {
@@ -50,12 +54,8 @@ declare global {
 			};
 			worlds: Folder & {
 				[P in keyof Worlds]: {
-					weaponShop: Folder & {
-						InteractPrompt: BasePart;
-					};
-					talismanTower: Folder & {
-						InteractPrompt: BasePart;
-					};
+					weaponShop: Folder;
+					talismanTower: Folder;
 					petMastery: Folder & {
 						petMasteryVendor: Model;
 					};
@@ -73,19 +73,8 @@ declare global {
 				};
 			};
 			rankUpgrade: Folder & {
-				meshPart: BasePart;
 				interact: BasePart;
 				teleport: BasePart;
-			};
-			GroupChest: Model & {
-				interact: BasePart & {
-					ProximityPrompt: ProximityPrompt;
-				};
-			};
-			"VIP Chest": Model & {
-				interact: BasePart & {
-					ProximityPrompt: ProximityPrompt;
-				};
 			};
 		};
 		decoration: Folder & {
