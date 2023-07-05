@@ -9,7 +9,6 @@ import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { VirtualScroll } from "client/ui/elements/petUtility/virtualScroll";
 import { hooks } from "client/ui/hooks";
-import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import { MAX_TRADE_OFFER_SIZE } from "shared/configs/game";
 import { PlayerTradeItem } from "shared/configs/trading";
@@ -101,7 +100,6 @@ export const PlayerHeadshot = (props: { player: Player }): Roact.Element => {
 export const ActiveTradeOffer = hooks((props: ActiveTradeOfferProps, { useContext, useState }) => {
 	const [currentSearch, setSearch] = useState("");
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
-	const clientTradeError = useContext(remoteContext).clientTradeError;
 
 	const isLocalPlayer = props.player.UserId === Players.LocalPlayer.UserId;
 
@@ -110,7 +108,6 @@ export const ActiveTradeOffer = hooks((props: ActiveTradeOfferProps, { useContex
 		addAnnouncement("There was an issue with the trade. It's been cancelled.", AnnouncementType.Error);
 
 		props.resetTrade();
-		clientTradeError.SendToServer();
 
 		return <></>;
 	}

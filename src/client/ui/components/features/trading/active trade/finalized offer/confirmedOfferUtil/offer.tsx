@@ -16,6 +16,7 @@ interface OfferProps {
 	player: Player;
 	offerData: PlayerTradeItem;
 	confirmed: boolean;
+	resetTrade: () => void; // for error handling, in case of abandoned trade
 }
 
 /**
@@ -27,7 +28,9 @@ interface OfferProps {
 export const Offer = (props: OfferProps): Roact.Element => {
 	const playerStore = retrieveStore(props.player);
 	if (playerStore === undefined) {
-		throw `Expected to get player store for player: "${props.player.Name}" | Trading Final Offer`;
+		props.resetTrade();
+
+		return <></>;
 	}
 
 	const petsToDisplay: Array<Pet> = [];

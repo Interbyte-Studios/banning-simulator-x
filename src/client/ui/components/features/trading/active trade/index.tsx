@@ -196,6 +196,10 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 								declineFinalConfirmation();
 							}
 						}}
+						resetTrade={(): void => {
+							finishTrade();
+							props.exitTrade();
+						}}
 					/>
 				);
 			case TradeState.Completed:

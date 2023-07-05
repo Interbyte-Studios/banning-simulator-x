@@ -10,6 +10,7 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { PlayerTradeItem } from "shared/configs/trading";
 
+import { canClickInActiveTrade } from "../canClick";
 import { ActiveTradeOffer } from "./offer";
 
 /**
@@ -80,6 +81,10 @@ export const ActiveOffer = hooks(
 								return;
 							}
 
+							if (!canClickInActiveTrade()) {
+								return;
+							}
+
 							props.setConfirmation(true);
 						},
 					}}
@@ -108,6 +113,9 @@ export const ActiveOffer = hooks(
 						 */
 						Activated: (): void => {
 							playSFX(UIEngagement.MinorEngagement);
+							if (!canClickInActiveTrade()) {
+								return;
+							}
 							props.setConfirmation(false);
 						},
 					}}

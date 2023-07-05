@@ -5,38 +5,39 @@ import { ContextActionService, Players, ReplicatedStorage, Workspace } from "@rb
 import { Variants } from "shared/configs/pets";
 import { Store } from "shared/rodux";
 
-import { LocalMessages } from "./components/announcements";
-import { EggHud } from "./components/eggs/control";
-import { EggCost } from "./components/eggs/costs";
-import { AccountHub } from "./components/features/account";
-import { AutoFight } from "./components/features/auto fight";
-import { Codes } from "./components/features/codes";
-import { ItemInventory } from "./components/features/items";
-import { PetMastery } from "./components/features/petMastery";
-import { Settings } from "./components/features/settings";
-import { Teleportation } from "./components/features/teleportation";
-import { Trading } from "./components/features/trading";
-import { RankUpgrade } from "./components/ranks/menu";
-import { TalismanTowerHandle } from "./components/shops/talismanShop";
-import { WeaponShopHandle } from "./components/shops/weaponShop";
-import { BoostCounter } from "./components/standalone/boostCounter";
-import { Fusing } from "./components/standalone/fusing";
-import { Hud } from "./components/standalone/hud";
-import { CurrencyGainAnimation } from "./components/standalone/notifications/currencyGainAnimation";
-import { DatastoreEvents } from "./components/standalone/notifications/datastoreEvents";
-import { TalismanLevelUpAnimation } from "./components/standalone/notifications/talismanLevelUp";
-import { WeaponLevelUpAnimation } from "./components/standalone/notifications/weaponLevelUp";
-import { Rewards } from "./components/standalone/rewards";
-import { RobuxShop } from "./components/standalone/robuxShop";
-import { WeaponEquip } from "./components/standalone/weaponEquip/weaponEquip";
-import { ZonesUI } from "./components/standalone/zones";
-import { AnnouncementContext, AnnouncementType } from "./context/AnnouncementsAPI";
-import { hooks } from "./hooks";
-import { remoteContext } from "./mocks/remoteContext";
+import { LocalMessages } from "../components/announcements";
+import { EggHud } from "../components/eggs/control";
+import { EggCost } from "../components/eggs/costs";
+import { AccountHub } from "../components/features/account";
+import { AutoFight } from "../components/features/auto fight";
+import { Codes } from "../components/features/codes";
+import { ItemInventory } from "../components/features/items";
+import { PetMastery } from "../components/features/petMastery";
+import { Settings } from "../components/features/settings";
+import { Teleportation } from "../components/features/teleportation";
+import { RankUpgrade } from "../components/ranks/menu";
+import { TalismanTowerHandle } from "../components/shops/talismanShop";
+import { WeaponShopHandle } from "../components/shops/weaponShop";
+import { BoostCounter } from "../components/standalone/boostCounter";
+import { Fusing } from "../components/standalone/fusing";
+import { Hud } from "../components/standalone/hud";
+import { CurrencyGainAnimation } from "../components/standalone/notifications/currencyGainAnimation";
+import { DatastoreEvents } from "../components/standalone/notifications/datastoreEvents";
+import { TalismanLevelUpAnimation } from "../components/standalone/notifications/talismanLevelUp";
+import { WeaponLevelUpAnimation } from "../components/standalone/notifications/weaponLevelUp";
+import { Rewards } from "../components/standalone/rewards";
+import { RobuxShop } from "../components/standalone/robuxShop";
+import { WeaponEquip } from "../components/standalone/weaponEquip/weaponEquip";
+import { ZonesUI } from "../components/standalone/zones";
+import { AnnouncementContext, AnnouncementType } from "../context/AnnouncementsAPI";
+import { hooks } from "../hooks";
+import { remoteContext } from "../mocks/remoteContext";
 
 interface AppProps {
 	player: Player;
 	store: Store;
+	tradingEnabled: boolean;
+	setTradingEnabled: () => void;
 }
 
 const visibilityStates = {
@@ -46,7 +47,6 @@ const visibilityStates = {
 	items: false,
 	autoFight: false,
 	accountHub: false,
-	trading: false,
 	petMastery: false,
 	fusing: false,
 	settings: false,
@@ -54,11 +54,9 @@ const visibilityStates = {
 	robuxShop: false,
 };
 
-export const app = hooks((props: AppProps, { useState, useEffect, useContext, useCallback, useMemo }) => {
+export const Main = hooks((props: AppProps, { useState, useEffect, useContext, useCallback, useMemo }) => {
 	const [visibility, setVisibility] = useState(visibilityStates);
 	const [fusingVariant, setFusingVariant] = useState<Exclude<Variants, "regular"> | undefined>(undefined);
-	const [tradingPlayer, setTradingPlayer] = useState<Player | undefined>(undefined);
-	const [activeTrade, setActiveTrade] = useState<boolean>(false);
 
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
@@ -173,11 +171,11 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 	 */
 	const isMenuVisible = useCallback(
 		(currentMenu?: keyof typeof visibilityStates) =>
-			activeTrade ||
+			props.tradingEnabled ||
 			Object.entries(visibility)
 				.filter(([menu]) => menu !== currentMenu)
 				.some(([, value]) => value),
-		[visibility, activeTrade],
+		[visibility, props.tradingEnabled],
 	);
 
 	/**
@@ -209,7 +207,7 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 							return;
 						}
 
-						setVisibility({ ...visibilityStates, trading: true });
+						props.setTradingEnabled();
 					}}
 					onlyShowCurrency={false}
 				/>,
@@ -234,14 +232,6 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 						}
 						setVisibility({ ...visibilityStates, fusing: value });
 					}}
-				/>,
-				<Trading
-					isEnabled={false}
-					tradingPlayer={tradingPlayer}
-					tradeActive={activeTrade}
-					setTradingPlayer={(player: Player | undefined): void => setTradingPlayer(player)}
-					setActiveTrade={(value: boolean): void => setActiveTrade(value)}
-					hideMenu={(): void => setVisibility((prev) => ({ ...prev, trading: false }))}
 				/>,
 				<WeaponLevelUpAnimation />,
 				<TalismanLevelUpAnimation />,
@@ -275,8 +265,6 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
 							return;
 						}
-
-						setVisibility({ ...visibilityStates, trading: true });
 					}}
 					onlyShowCurrency={true}
 				/>,
@@ -300,8 +288,6 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
 							return;
 						}
-
-						setVisibility({ ...visibilityStates, trading: true });
 					}}
 					onlyShowCurrency={true}
 				/>,
@@ -325,8 +311,6 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
 							return;
 						}
-
-						setVisibility({ ...visibilityStates, trading: true });
 					}}
 					onlyShowCurrency={true}
 				/>,
@@ -360,33 +344,12 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
 							return;
 						}
-
-						setVisibility({ ...visibilityStates, trading: true });
 					}}
 					onlyShowCurrency={true}
-				/>,
-				<Trading
-					isEnabled={false}
-					tradingPlayer={tradingPlayer}
-					tradeActive={activeTrade}
-					setTradingPlayer={(player: Player | undefined): void => setTradingPlayer(player)}
-					setActiveTrade={(value: boolean): void => setActiveTrade(value)}
-					hideMenu={(): void => setVisibility((prev) => ({ ...prev, trading: false }))}
 				/>,
 			);
 		} else if (isVisible("accountHub")) {
 			components.push(<AccountHub hideMenu={(): void => setVisibility((prev) => ({ ...prev, accountHub: false }))} />);
-		} else if (isVisible("trading") || activeTrade) {
-			components.push(
-				<Trading
-					isEnabled={true}
-					tradingPlayer={tradingPlayer}
-					tradeActive={activeTrade}
-					setTradingPlayer={(player: Player | undefined): void => setTradingPlayer(player)}
-					setActiveTrade={(value: boolean): void => setActiveTrade(value)}
-					hideMenu={(): void => setVisibility((prev) => ({ ...prev, trading: false }))}
-				/>,
-			);
 		} else if (isVisible("codes")) {
 			components.push(<Codes hideMenu={(): void => setVisibility((prev) => ({ ...prev, codes: false }))} />);
 		} else if (isVisible("settings")) {
@@ -395,26 +358,10 @@ export const app = hooks((props: AppProps, { useState, useEffect, useContext, us
 			components.push(<RobuxShop hideMenu={(): void => setVisibility((prev) => ({ ...prev, robuxShop: false }))} />);
 		}
 
-		components.push(
-			<ZonesUI />,
-			<Rewards />,
-			<LocalMessages />,
-			<EggCost />,
-			<EggHud />,
-			<BoostCounter />,
-			// Need to add trading so they can receive requests while in other UI's.
-			<Trading
-				isEnabled={false}
-				tradingPlayer={tradingPlayer}
-				tradeActive={activeTrade}
-				setTradingPlayer={(player: Player | undefined): void => setTradingPlayer(player)}
-				setActiveTrade={(value: boolean): void => setActiveTrade(value)}
-				hideMenu={(): void => setVisibility((prev) => ({ ...prev, trading: false }))}
-			/>,
-		);
+		components.push(<ZonesUI />, <Rewards />, <LocalMessages />, <EggCost />, <EggHud />, <BoostCounter />);
 
 		return components;
-	}, [visibility, isMenuVisible, activeTrade]);
+	}, [visibility, isMenuVisible]);
 
 	return (
 		<RoactRodux.StoreProvider store={props.store}>

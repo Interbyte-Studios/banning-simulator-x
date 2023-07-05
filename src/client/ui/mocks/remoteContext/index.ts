@@ -8,6 +8,7 @@ import { fusionRemoteContext } from "./remoteDefinitions/fusion";
 import { mediaRemoteContext } from "./remoteDefinitions/media";
 import { petMasteryRemoteContext } from "./remoteDefinitions/petMastery";
 import { petsRemoteContext } from "./remoteDefinitions/pets";
+import { playerLoadedContext } from "./remoteDefinitions/playerLoaded";
 import { questsRemoteContext } from "./remoteDefinitions/quests";
 import { ranksRemoteContext } from "./remoteDefinitions/ranks";
 import { rewardsRemoteContext } from "./remoteDefinitions/rewards";
@@ -23,6 +24,7 @@ import { zonesRemoteContext } from "./remoteDefinitions/zones";
  * This is the remote context for the remote functions.
  */
 export const fakeRemoteContext = {
+	...playerLoadedContext,
 	...petMasteryRemoteContext,
 	...weaponsRemoteContext,
 	...petsRemoteContext,

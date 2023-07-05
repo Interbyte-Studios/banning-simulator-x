@@ -8,7 +8,6 @@ import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image"
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
-import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
@@ -21,13 +20,10 @@ import assetIds from "shared/assets";
  * @returns A Roact element that displays a trade request.
  */
 export const TradeRequest = hooks(
-	(props: { player: Player; declineTrade: () => void; acceptTrade: () => void }, { useContext }) => {
+	(props: { player: Player; declineTrade: (player: Player) => void; acceptTrade: (player: Player) => void }) => {
 		const thumbnailType = Enum.ThumbnailType.HeadShot;
 		const thumbnailSize = Enum.ThumbnailSize.Size420x420;
 		const [content, isReady] = Players.GetUserThumbnailAsync(props.player.UserId, thumbnailType, thumbnailSize);
-
-		const declineTradeRemote = useContext(remoteContext).declineTradeRequest;
-		const acceptTradeRemote = useContext(remoteContext).acceptTradeRequest;
 
 		return (
 			<BaseFrame Size={UDim2.fromScale(0.975, 0.9)}>
@@ -62,8 +58,7 @@ export const TradeRequest = hooks(
 						// eslint-disable-next-line jsdoc/require-jsdoc
 						Activated: (): void => {
 							playSFX(UIEngagement.MinorEngagement);
-							acceptTradeRemote.SendToServer(props.player);
-							props.acceptTrade();
+							props.acceptTrade(props.player);
 						},
 					}}
 				>
@@ -88,8 +83,7 @@ export const TradeRequest = hooks(
 						// eslint-disable-next-line jsdoc/require-jsdoc
 						Activated: (): void => {
 							playSFX(UIEngagement.MinorEngagement);
-							declineTradeRemote.SendToServer(props.player);
-							props.declineTrade();
+							props.declineTrade(props.player);
 						},
 					}}
 				>

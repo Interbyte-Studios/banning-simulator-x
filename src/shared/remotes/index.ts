@@ -11,6 +11,7 @@ import { fusionRequestDefinition } from "./fusing";
 import { media } from "./media";
 import { petMastery } from "./petMastery";
 import { pets } from "./pets";
+import { playerLoaded } from "./playerLoaded";
 import { purchaseZoneDefinition } from "./purchaseZone";
 import { redeemQuestDefinition } from "./redeemQuest";
 import { rewardsDefinition } from "./rewards";
@@ -30,6 +31,7 @@ export const remotes = Net.Definitions.Create({
 	media: media,
 	pets: pets,
 	petMastery: petMastery,
+	playerLoaded: playerLoaded,
 	rewards: rewardsDefinition,
 	rodux: roduxDefinitions,
 	settings: settings,

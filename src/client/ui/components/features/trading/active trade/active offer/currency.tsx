@@ -12,6 +12,8 @@ import { remoteContext } from "client/ui/mocks/remoteContext";
 import { PlayerTradeItem } from "shared/configs/trading";
 import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
+import { canClickInActiveTrade } from "../canClick";
+
 interface ActiveCurrencyOfferProps {
 	player: Player;
 	currentOffer: PlayerTradeItem;
@@ -218,6 +220,10 @@ export const ActiveCurrencyOffer = hooks((props: ActiveCurrencyOfferProps, hooks
 					 */
 					Activated: (): void => {
 						if (!isLocalPlayer) {
+							return;
+						}
+
+						if (!canClickInActiveTrade()) {
 							return;
 						}
 

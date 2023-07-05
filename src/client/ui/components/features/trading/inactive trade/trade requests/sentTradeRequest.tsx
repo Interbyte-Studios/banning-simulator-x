@@ -32,6 +32,11 @@ export const SentTradeRequest = hooks((props: { player: Player; hideMenu: () => 
 			}
 			lastCheck = now;
 
+			if (timer <= 0) {
+				props.hideMenu();
+				return;
+			}
+
 			setTimer(timer - 1);
 		});
 

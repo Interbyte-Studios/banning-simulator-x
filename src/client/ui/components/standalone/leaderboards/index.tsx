@@ -10,61 +10,41 @@ import { EggLeaderboard } from "./eggsLeaderboards";
  *
  * @returns A Roact element.
  */
-export const Leaderboards = hooks((_, { useMemo }) => {
-	const banLeaderboards: Array<BasePart> = useMemo(() => {
-		const leaderboards: Array<BasePart> = [];
+export const Leaderboards = hooks(() => {
+	const banLeaderboards: Array<BasePart> = [];
+	Workspace.interactions.leaderboards.bans.GetChildren().forEach((leaderboard) => {
+		const basePart = leaderboard.FindFirstChild("board") as BasePart;
+		if (basePart === undefined) {
+			return;
+		}
 
-		Workspace.interactions.leaderboards.bans.GetChildren().forEach((leaderboard) => {
-			const basePart = leaderboard.FindFirstChild("board") as BasePart;
-			if (basePart === undefined) {
-				return;
-			}
-
-			leaderboards.push(basePart);
-		});
-
-		return leaderboards;
+		banLeaderboards.push(basePart);
 	});
 
-	const eggLeaderboards: Array<BasePart> = useMemo(() => {
-		const leaderboards: Array<BasePart> = [];
+	const eggLeaderboards: Array<BasePart> = [];
+	Workspace.interactions.leaderboards.eggs.GetChildren().forEach((leaderboard) => {
+		const basePart = leaderboard.FindFirstChild("board") as BasePart;
+		if (basePart === undefined) {
+			return;
+		}
 
-		Workspace.interactions.leaderboards.eggs.GetChildren().forEach((leaderboard) => {
-			const basePart = leaderboard.FindFirstChild("board") as BasePart;
-			if (basePart === undefined) {
-				return;
-			}
-
-			leaderboards.push(basePart);
-		});
-
-		return leaderboards;
+		eggLeaderboards.push(basePart);
 	});
 
-	const banLeaderboardComponents: Array<Roact.Element> = useMemo(() => {
-		const components: Array<Roact.Element> = [];
-
-		banLeaderboards.forEach((basePart) => {
-			components.push(<BanLeaderboard adornee={basePart} />);
-		});
-
-		return components;
+	const banBoardComponents: Array<Roact.Element> = [];
+	banLeaderboards.forEach((basePart) => {
+		banBoardComponents.push(<BanLeaderboard adornee={basePart} />);
 	});
 
-	const eggLeaderboardComponents: Array<Roact.Element> = useMemo(() => {
-		const components: Array<Roact.Element> = [];
-
-		eggLeaderboards.forEach((basePart) => {
-			components.push(<EggLeaderboard adornee={basePart} />);
-		});
-
-		return components;
+	const eggBoardComponents: Array<Roact.Element> = [];
+	eggLeaderboards.forEach((basePart) => {
+		eggBoardComponents.push(<EggLeaderboard adornee={basePart} />);
 	});
 
 	return (
 		<>
-			{banLeaderboardComponents}
-			{eggLeaderboardComponents}
+			{banBoardComponents}
+			{eggBoardComponents}
 		</>
 	);
 });
