@@ -31,8 +31,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 	const tradeAccepted = useValue(false);
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
-	warn(`Trade Active: ${tradeActive}`);
-
 	const {
 		tradeRequestAccepted,
 		tradeRequestDeclined,
@@ -108,7 +106,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 			}),
 			receiveTradeRequest.Connect((playerWhoSent) => {
 				if (tradeActive) {
-					warn(`Received a trade request from ${playerWhoSent.Name}, but there is an active trade. `);
 					return;
 				}
 
@@ -159,8 +156,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 			}),
 			Players.PlayerRemoving.Connect((player) => {
 				if (tradingPlayer === player) {
-					warn(`Player ${player.Name} left the game, cancelling the trade.`);
-
 					setIsTrading(false);
 
 					tradeAccepted.value = false;
@@ -171,7 +166,7 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 					setDisplayTradeRequest(false);
 					setTradingPlayer(undefined);
 					addAnnouncement(`The trade was cancelled because ${player.Name} left the game.`, AnnouncementType.Error);
-				} else warn(`Player ${player.Name} left the game, but they weren't trading with the local player.`);
+				}
 			}),
 		];
 
@@ -225,7 +220,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 						setTradingPlayer={(player: Player | undefined): void => setTradingPlayer(player)}
 						tradeActive={tradeActive}
 						setActiveTrade={(active: boolean): void => {
-							warn(`Setting active trade to ${active}`);
 							tradeAccepted.value = active;
 							setActiveTrade(active);
 						}}
