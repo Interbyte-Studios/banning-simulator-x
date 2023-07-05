@@ -30,7 +30,7 @@ interface TradingProps {
  * @returns The Roact element to render.
  */
 export const Trading = hooks((props: TradingProps) => {
-	if (props.tradeActive) {
+	if (props.isEnabled && props.tradeActive) {
 		if (props.tradingPlayer === undefined) {
 			return <></>;
 		}
