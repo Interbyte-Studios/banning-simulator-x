@@ -52,8 +52,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 					throw `Received a declined trade offer from ${receivingPlayer.Name}, but the local player is trading with ${tradingPlayer.Name}.`;
 				}
 
-				addAnnouncement(`${receivingPlayer.Name} declined your trade.`, AnnouncementType.Error);
-
 				tradeAccepted.value = false;
 				tradeDeclined.value = false;
 				setIsTrading(false);
@@ -62,6 +60,7 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 				setDisplayTradeRequest(false);
 				setActiveTrade(false);
 				setTradingPlayer(undefined);
+				addAnnouncement(`${receivingPlayer.Name} declined your trade.`, AnnouncementType.Error);
 			}),
 			tradeRequestAccepted.Connect((receivingPlayer) => {
 				if (tradingPlayer === undefined) {
@@ -78,8 +77,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 					return;
 				}
 
-				addAnnouncement(`${receivingPlayer.Name} accepted your trade request.`, AnnouncementType.Announcement);
-
 				tradeAccepted.value = false;
 				tradeDeclined.value = false;
 				setIsTrading(true);
@@ -87,6 +84,7 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 				setDisplayTradeRequest(false);
 				setActiveTrade(true);
 				setTradingEnabled(true);
+				addAnnouncement(`${receivingPlayer.Name} accepted your trade request.`, AnnouncementType.Announcement);
 			}),
 			tradeRequestDeclined.Connect((receivingPlayer) => {
 				if (tradingPlayer === undefined) {
@@ -97,8 +95,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 					throw `Received a declined trade request from ${receivingPlayer.Name}, but the local player is trading with ${tradingPlayer.Name}.`;
 				}
 
-				addAnnouncement(`${receivingPlayer.Name} declined your trade request.`, AnnouncementType.Error);
-
 				tradeAccepted.value = false;
 				tradeDeclined.value = true;
 				setIsTrading(false);
@@ -107,6 +103,8 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 				setDisplayTradeRequest(false);
 				setActiveTrade(false);
 				setTradingPlayer(undefined);
+
+				addAnnouncement(`${receivingPlayer.Name} declined your trade request.`, AnnouncementType.Error);
 			}),
 			receiveTradeRequest.Connect((playerWhoSent) => {
 				if (tradeActive) {
@@ -144,7 +142,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 					// if this client is faster than the other players client... the clients will become unsynced and it will result in issues.
 					// in the event that this happens, implement this feature on the server instead.
 					if (amountWaited === 11) {
-						addAnnouncement(`You declined a trade because you too too long.`, AnnouncementType.Error);
 						setIsTrading(false);
 
 						tradeAccepted.value = false;
@@ -155,13 +152,13 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 						setActiveTrade(false);
 						setTradingPlayer(undefined);
 						declineTradeRequest.SendToServer(playerWhoSent);
+						addAnnouncement(`You declined a trade because you too too long.`, AnnouncementType.Error);
 					}
 					task.wait(1);
 				}
 			}),
 			Players.PlayerRemoving.Connect((player) => {
 				if (tradingPlayer === player) {
-					addAnnouncement(`The trade was cancelled because ${player.Name} left the game.`, AnnouncementType.Error);
 					warn(`Player ${player.Name} left the game, cancelling the trade.`);
 
 					setIsTrading(false);
@@ -173,6 +170,7 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 					setActiveTrade(false);
 					setDisplayTradeRequest(false);
 					setTradingPlayer(undefined);
+					addAnnouncement(`The trade was cancelled because ${player.Name} left the game.`, AnnouncementType.Error);
 				} else warn(`Player ${player.Name} left the game, but they weren't trading with the local player.`);
 			}),
 		];
@@ -209,10 +207,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 							_disableActiveTrade: boolean,
 							_resetForeignPlayer: boolean,
 						): void => {
-							if (dislpayAnnouncement) {
-								addAnnouncement("The trade has either finished or been cancelled.", AnnouncementType.Announcement);
-							}
-
 							if (_resetForeignPlayer) {
 								setDisplayTradeRequest(false);
 								setTradingPlayer(undefined);
@@ -223,6 +217,9 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 							}
 
 							setTradingEnabled(false);
+							if (dislpayAnnouncement) {
+								addAnnouncement("The trade has either finished or been cancelled.", AnnouncementType.Announcement);
+							}
 						}}
 						tradingPlayer={tradingPlayer}
 						setTradingPlayer={(player: Player | undefined): void => setTradingPlayer(player)}
