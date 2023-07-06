@@ -1,5 +1,4 @@
 import Roact from "@rbxts/roact";
-import { hooks } from "client/ui/hooks";
 
 import { ActiveTrade } from "./active trade";
 import { InactiveTrade } from "./inactive trade";
@@ -29,7 +28,7 @@ interface TradingProps {
  * @param props.setActiveTrade Sets whether or not the active trade menus are visible.
  * @returns The Roact element to render.
  */
-export const Trading = hooks((props: TradingProps) => {
+export function Trading(props: TradingProps): Roact.Element {
 	if (props.isEnabled && props.tradeActive) {
 		if (props.tradingPlayer === undefined) {
 			return <></>;
@@ -49,4 +48,4 @@ export const Trading = hooks((props: TradingProps) => {
 			disableTradeRequest={props.disableTradeRequest}
 		/>
 	);
-});
+}

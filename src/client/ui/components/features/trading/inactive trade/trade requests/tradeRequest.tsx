@@ -17,105 +17,108 @@ import assetIds from "shared/assets";
  * @param props - The props for the TradeRequest component.
  * @param props.player - The player that sent the trade request.
  * @param props.declineTrade - A function that declines the trade.
+ * @param props.acceptTrade
  * @returns A Roact element that displays a trade request.
  */
-export const TradeRequest = hooks(
-	(props: { player: Player; declineTrade: (player: Player) => void; acceptTrade: (player: Player) => void }) => {
-		const thumbnailType = Enum.ThumbnailType.HeadShot;
-		const thumbnailSize = Enum.ThumbnailSize.Size420x420;
-		const [content, isReady] = Players.GetUserThumbnailAsync(props.player.UserId, thumbnailType, thumbnailSize);
+export function TradeRequest(props: {
+	player: Player;
+	declineTrade: (player: Player) => void;
+	acceptTrade: (player: Player) => void;
+}): Roact.Element {
+	const thumbnailType = Enum.ThumbnailType.HeadShot;
+	const thumbnailSize = Enum.ThumbnailSize.Size420x420;
+	const [content, isReady] = Players.GetUserThumbnailAsync(props.player.UserId, thumbnailType, thumbnailSize);
 
-		return (
-			<BaseFrame Size={UDim2.fromScale(0.975, 0.9)}>
-				<BaseFrame
-					BackgroundTransparency={0}
-					BackgroundColor3={Color3.fromRGB(44, 170, 249)}
-					Position={UDim2.fromScale(0.5, 0.115)}
-					Size={UDim2.fromScale(0.215, 0.275)}
+	return (
+		<BaseFrame Size={UDim2.fromScale(0.975, 0.9)}>
+			<BaseFrame
+				BackgroundTransparency={0}
+				BackgroundColor3={Color3.fromRGB(44, 170, 249)}
+				Position={UDim2.fromScale(0.5, 0.115)}
+				Size={UDim2.fromScale(0.215, 0.275)}
+			>
+				<uiaspectratioconstraint AspectRatio={1} />
+				<uicorner CornerRadius={new UDim(1, 0)} />
+
+				<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
+
+				<ImageLabel
+					native={{
+						Size: UDim2.fromScale(0.5, 0.5),
+						Image: isReady && content ? content : "",
+					}}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
-					<uicorner CornerRadius={new UDim(1, 0)} />
-
-					<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
-
-					<ImageLabel
-						native={{
-							Size: UDim2.fromScale(0.5, 0.5),
-							Image: isReady && content ? content : "",
-						}}
-					>
-						<uiaspectratioconstraint AspectRatio={1} />
-					</ImageLabel>
-				</BaseFrame>
-
-				<ImageButton
-					native={{
-						Position: UDim2.fromScale(0.825, 0.9),
-						Size: UDim2.fromScale(0.3, 0.3),
-						Image: assetIds.images.ui.index.Claim,
-					}}
-					events={{
-						// eslint-disable-next-line jsdoc/require-jsdoc
-						Activated: (): void => {
-							playSFX(UIEngagement.MinorEngagement);
-							props.acceptTrade(props.player);
-						},
-					}}
-				>
-					<uiaspectratioconstraint AspectRatio={2} />
-
-					<StrokeTextLabel
-						native={{
-							Size: UDim2.fromScale(0.8, 0.8),
-							Text: "Accept",
-						}}
-						stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
-					/>
-				</ImageButton>
-
-				<ImageButton
-					native={{
-						Position: UDim2.fromScale(0.175, 0.9),
-						Size: UDim2.fromScale(0.3, 0.3),
-						Image: assetIds.images.ui.index.Off,
-					}}
-					events={{
-						// eslint-disable-next-line jsdoc/require-jsdoc
-						Activated: (): void => {
-							playSFX(UIEngagement.MinorEngagement);
-							props.declineTrade(props.player);
-						},
-					}}
-				>
-					<uiaspectratioconstraint AspectRatio={2} />
-
-					<StrokeTextLabel
-						native={{
-							Size: UDim2.fromScale(0.8, 0.8),
-							Text: "Decline",
-						}}
-						stroke={{ native: { Thickness: 2, Color: uiOffButtonStrokeColor } }}
-					/>
-				</ImageButton>
-
-				<StrokeTextLabel
-					native={{
-						Position: UDim2.fromScale(0.5, 0.575),
-						Size: UDim2.fromScale(0.95, 0.07),
-						Text: "(You can turn off trading in settings)",
-					}}
-					stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
-				/>
-
-				<StrokeTextLabel
-					native={{
-						Position: UDim2.fromScale(0.5, 0.4),
-						Size: UDim2.fromScale(0.95, 0.23),
-						Text: `You've received a trade request from ${props.player.Name}.`,
-					}}
-					stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
-				/>
+				</ImageLabel>
 			</BaseFrame>
-		);
-	},
-);
+
+			<ImageButton
+				native={{
+					Position: UDim2.fromScale(0.825, 0.9),
+					Size: UDim2.fromScale(0.3, 0.3),
+					Image: assetIds.images.ui.index.Claim,
+				}}
+				events={{
+					// eslint-disable-next-line jsdoc/require-jsdoc
+					Activated: (): void => {
+						playSFX(UIEngagement.MinorEngagement);
+						props.acceptTrade(props.player);
+					},
+				}}
+			>
+				<uiaspectratioconstraint AspectRatio={2} />
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.8, 0.8),
+						Text: "Accept",
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
+				/>
+			</ImageButton>
+
+			<ImageButton
+				native={{
+					Position: UDim2.fromScale(0.175, 0.9),
+					Size: UDim2.fromScale(0.3, 0.3),
+					Image: assetIds.images.ui.index.Off,
+				}}
+				events={{
+					// eslint-disable-next-line jsdoc/require-jsdoc
+					Activated: (): void => {
+						playSFX(UIEngagement.MinorEngagement);
+						props.declineTrade(props.player);
+					},
+				}}
+			>
+				<uiaspectratioconstraint AspectRatio={2} />
+
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.8, 0.8),
+						Text: "Decline",
+					}}
+					stroke={{ native: { Thickness: 2, Color: uiOffButtonStrokeColor } }}
+				/>
+			</ImageButton>
+
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.5, 0.575),
+					Size: UDim2.fromScale(0.95, 0.07),
+					Text: "(You can turn off trading in settings)",
+				}}
+				stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+			/>
+
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.5, 0.4),
+					Size: UDim2.fromScale(0.95, 0.23),
+					Text: `You've received a trade request from ${props.player.Name}.`,
+				}}
+				stroke={{ native: { Thickness: 1.5, Color: uiDarkStrokeColor } }}
+			/>
+		</BaseFrame>
+	);
+}
