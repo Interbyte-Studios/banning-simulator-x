@@ -3,6 +3,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { ContextActionService, MarketplaceService, Players, Workspace } from "@rbxts/services";
 import { animateSingleEggHatch, animateTripleEggHatch } from "client/modules/eggs/hatchEgg";
+import { getIsHatching } from "client/modules/eggs/isHatching";
 import { getIsTrading } from "client/modules/isTradingCache";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { hooks } from "client/ui/hooks";
@@ -10,6 +11,7 @@ import { remoteContext } from "client/ui/mocks/remoteContext";
 import { EggName, EGGS, hatchDebounce } from "shared/configs/eggs";
 import { GAMEPASSES } from "shared/configs/game";
 import { Pet, Variants } from "shared/configs/pets";
+import { HatchEggFailKind } from "shared/remotes/eggs/hatchEgg";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
 import { EggsState } from "shared/rodux/eggs";
@@ -97,6 +99,11 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					return;
 				}
 
+				// Check that the user isn't already hatching an egg.
+				if (getIsHatching()) {
+					return;
+				}
+
 				// check that user owns world
 				const eggData = getEggData(eggName);
 				const ownsWorld = props.worlds.find((x) => x.name === eggData.world);
@@ -169,72 +176,119 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 				if (props.settings.gameplay.autoHatch) {
 					autoEnabled = true;
 
-					while (autoEnabled) {
-						// check to be sure they've waited long enough
-						const now = time();
-						const canHatch = now - lastHatchTime > hatchDebounce;
-						if (!canHatch) {
-							return;
-						}
-						lastHatchTime = now;
-
-						// make sure they're not trading
-						if (getIsTrading()) {
-							addAnnouncement(`You cannot hatch while your trading!`, AnnouncementType.Error);
-							autoEnabled = false;
-							return;
-						}
-
-						// check that character still exists (if it doesn't, neither does the camera)
-						const character = Players.LocalPlayer.Character;
-						if (character === undefined) {
-							addAnnouncement(`There was an issue hatching the egg. Try again later. [3]`, AnnouncementType.Error);
-							autoEnabled = false;
-							return;
-						}
-
-						// check cost
-						if (currencies.value[eggCost.currencyType] < eggCost.amount * amount) {
-							addAnnouncement(
-								`You need ${statsAbbreviator.numberToString(
-									eggCost.amount * amount - currencies.value[eggCost.currencyType],
-								)} more ${eggCost.currencyType} to hatch ${amount} ${eggName} eggs!`,
-								AnnouncementType.Error,
-							);
-							autoEnabled = false;
-							return;
-						}
-
-						// check inventory space
-						if (inventorySize.value + amount > getPetInventorySize(props.gamepasses)) {
-							addAnnouncement(`You do not have enough inventory space to hatch the egg!`, AnnouncementType.Error);
-							autoEnabled = false;
-							return;
-						}
-
-						const requestHatch = await hatchEgg.CallServerAsync(amount, eggName, variant === "void");
-						if (requestHatch.success) {
-							if (requestHatch.pets.size() === 3) {
-								animateTripleEggHatch(eggName, variant === "void", requestHatch.pets, props.gamepasses["Fast Hatch"]);
-								task.wait(1);
-							} else {
-								animateSingleEggHatch(
-									eggName,
-									requestHatch.pets[0].id,
-									variant === "void",
-									requestHatch.pets[0].autoDeleted,
-									props.gamepasses["Fast Hatch"],
-								);
-								task.wait(1);
+					task.spawn(async () => {
+						while (autoEnabled) {
+							// check to be sure they've waited long enough
+							const now = time();
+							const canHatch = now - lastHatchTime > hatchDebounce;
+							if (!canHatch) {
+								return;
 							}
-						} else {
-							if (autoEnabled) {
+							lastHatchTime = now;
+
+							// make sure they aren't still hatching
+							if (getIsHatching()) {
+								return;
+							}
+
+							// make sure they're not trading
+							if (getIsTrading()) {
+								addAnnouncement(`You cannot hatch while your trading!`, AnnouncementType.Error);
 								autoEnabled = false;
+								return;
 							}
 
-							addAnnouncement(`There was an issue hatching the egg. Try again later. [4]`, AnnouncementType.Error);
+							// check that character still exists (if it doesn't, neither does the camera)
+							const character = Players.LocalPlayer.Character;
+							if (character === undefined) {
+								addAnnouncement(`There was an issue hatching the egg. Try again later. [3]`, AnnouncementType.Error);
+								autoEnabled = false;
+								return;
+							}
+
+							// check cost
+							if (currencies.value[eggCost.currencyType] < eggCost.amount * amount) {
+								addAnnouncement(
+									`You need ${statsAbbreviator.numberToString(
+										eggCost.amount * amount - currencies.value[eggCost.currencyType],
+									)} more ${eggCost.currencyType} to hatch ${amount} ${eggName} eggs!`,
+									AnnouncementType.Error,
+								);
+								autoEnabled = false;
+								return;
+							}
+
+							// check inventory space
+							if (inventorySize.value + amount > getPetInventorySize(props.gamepasses)) {
+								addAnnouncement(`You do not have enough inventory space to hatch the egg!`, AnnouncementType.Error);
+								autoEnabled = false;
+								return;
+							}
+
+							const requestHatch = await hatchEgg.CallServerAsync(amount, eggName, variant === "void");
+							if (requestHatch.success) {
+								if (requestHatch.pets.size() === 3) {
+									animateTripleEggHatch(eggName, variant === "void", requestHatch.pets, props.gamepasses["Fast Hatch"]);
+									task.wait(1.5);
+								} else {
+									animateSingleEggHatch(
+										eggName,
+										requestHatch.pets[0].id,
+										variant === "void",
+										requestHatch.pets[0].autoDeleted,
+										props.gamepasses["Fast Hatch"],
+									);
+									task.wait(1.5);
+								}
+							} else {
+								task.wait(3);
+								switch (requestHatch.reason) {
+									case HatchEggFailKind.NoCharacter: {
+										addAnnouncement(
+											`You could not hatch because your character could not be found.`,
+											AnnouncementType.Error,
+										);
+										break;
+									}
+									case HatchEggFailKind.NoCurrency: {
+										addAnnouncement(`You do not have enough currency to hatch the egg!`, AnnouncementType.Error);
+										break;
+									}
+									case HatchEggFailKind.NoGamepass: {
+										addAnnouncement(
+											`You do not own the triple egg gamepass. You cannot hatch 3 eggs.`,
+											AnnouncementType.Error,
+										);
+										break;
+									}
+									case HatchEggFailKind.NoInventory: {
+										addAnnouncement(`You do not have enough inventory space to hatch eggs!`, AnnouncementType.Error);
+										break;
+									}
+									case HatchEggFailKind.NoWorld: {
+										addAnnouncement(`You don't own the world required to hatch that egg!`, AnnouncementType.Error);
+										break;
+									}
+									case HatchEggFailKind.NoZone: {
+										addAnnouncement(`You don't own the zone required to hatch that egg!`, AnnouncementType.Error);
+										break;
+									}
+									case HatchEggFailKind.NotWithinDistance: {
+										addAnnouncement(`You aren't close enough to hatch an egg.`, AnnouncementType.Error);
+										break;
+									}
+									case HatchEggFailKind.TooFast: {
+										addAnnouncement(`You are hatching too fast!`, AnnouncementType.Error);
+										break;
+									}
+									case HatchEggFailKind.Trading: {
+										addAnnouncement(`You cannot hatch while you are trading!`, AnnouncementType.Error);
+										break;
+									}
+								}
+							}
 						}
-					}
+					});
 				} else {
 					lastHatchTime = now;
 

@@ -495,6 +495,12 @@ declare namespace assetIds {
 				"Sunflower Field": string;
 				"Candy Land": string;
 				"Lava Lands": string;
+				"Enchanted Forest": string;
+				"Enchanted Forest Locked": string;
+				"Toxic Lands": string;
+				"Toxic Lands Locked": string;
+				"Jester Castle": string;
+				"Jester Castle Locked": string;
 				"Honeycomb Locked": string;
 				"Desert Locked": string;
 				Honeycomb: string;
@@ -642,6 +648,9 @@ declare namespace assetIds {
 				Prestige2: string;
 			};
 			friendly: {
+				Infintium: string;
+				Phoenix: string;
+				Celestial: string;
 				Pendulum: string;
 				Diamond: string;
 				Silver: string;

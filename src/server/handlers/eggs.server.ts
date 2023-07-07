@@ -5,6 +5,7 @@ import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { hatchDebounce } from "shared/configs/eggs";
 import { Rarities } from "shared/configs/rarities";
 import { remotes } from "shared/remotes";
+import { HatchEggFailKind } from "shared/remotes/eggs/hatchEgg";
 import { addEgg } from "shared/rodux/eggs";
 import { addPets, ConfirmedPet } from "shared/rodux/pets";
 import { isImmuneRarity } from "shared/rodux/settings";
@@ -31,6 +32,7 @@ hatchEgg.SetCallback(
 		if (!canHatch) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.TooFast,
 			};
 		}
 
@@ -38,6 +40,7 @@ hatchEgg.SetCallback(
 		if (isTrading) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.Trading,
 			};
 		}
 
@@ -46,6 +49,7 @@ hatchEgg.SetCallback(
 		if (amount > 1 && !currentState.gamepasses["Triple Hatch"]) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.NoGamepass,
 			};
 		}
 
@@ -59,6 +63,7 @@ hatchEgg.SetCallback(
 		if (ownsWorld === undefined) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.NoWorld,
 			};
 		}
 
@@ -67,6 +72,7 @@ hatchEgg.SetCallback(
 		if (ownsZone === undefined) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.NoZone,
 			};
 		}
 
@@ -74,6 +80,7 @@ hatchEgg.SetCallback(
 		if (currentState.currencies[eggCost.currencyType] < eggCost.amount * amount) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.NoCurrency,
 			};
 		}
 
@@ -81,6 +88,7 @@ hatchEgg.SetCallback(
 		if (currentState.pets.size() + amount > getPetInventorySize(currentState.gamepasses)) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.NoInventory,
 			};
 		}
 
@@ -89,6 +97,7 @@ hatchEgg.SetCallback(
 		if (character === undefined) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.NoCharacter,
 			};
 		}
 
@@ -96,6 +105,7 @@ hatchEgg.SetCallback(
 		if (!isWithinDistance) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.NotWithinDistance,
 			};
 		}
 

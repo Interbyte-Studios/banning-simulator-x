@@ -2048,6 +2048,11 @@ hash = "d43dff26054adf47dbaee9d02707cb6bc56883c9a7de5dd0d67404ee594f8dd4"
 id = 11866055470
 packable = false
 
+[inputs."images/ranks/friendly/Celestial.png"]
+hash = "585ce8e2c140a5db076e4c6a481ca3c17d3de8d3fb213a75f2bd124836ba3b10"
+id = 13979658120
+packable = false
+
 [inputs."images/ranks/friendly/Diamond.png"]
 hash = "232088c18d8db36459dc052236fc5b6b0b1b936198b818c59f116f652db0c44e"
 id = 11866055545
@@ -2068,9 +2073,19 @@ hash = "25ea149f529d5054dca66a4e098f2b0b80fd10a63ccffd1c387b947f60270dee"
 id = 11866055963
 packable = false
 
+[inputs."images/ranks/friendly/Infinitium.png"]
+hash = "4aae48031b3046c1771bd61ce84ca19811f215ec0a8a1a49cef5993461fac9cf"
+id = 13979653364
+packable = false
+
 [inputs."images/ranks/friendly/Pendulum.png"]
 hash = "06430115e507924f509b5e3a56fc9c9fcc638eb2fa0cbb6b4982bd450dad199f"
 id = 11866056106
+packable = false
+
+[inputs."images/ranks/friendly/Phoenix.png"]
+hash = "f9485725ae1336731f329f489099b699a52ed363c187e1ee00b076cdf5bae513"
+id = 13979653469
 packable = false
 
 [inputs."images/ranks/friendly/Silver.png"]
@@ -2578,6 +2593,15 @@ hash = "8a3705438495ee32f0cffac93dea15d0b63a5c3dd924f99b3691e0c351a886a7"
 id = 11704139824
 packable = false
 
+[inputs."images/ui/teleportation/Enchanted Forest Locked.png"]
+hash = "21cf38a0fa778872078f9665669ae34b813502903049abe038eb6073121c1deb"
+packable = false
+
+[inputs."images/ui/teleportation/Enchanted Forest.png"]
+hash = "0dfcb5a7fc0e99f32c6a0e95fbf0789d0a135e3b164d789282e99ec023a088e7"
+id = 13979855593
+packable = false
+
 [inputs."images/ui/teleportation/Forest Locked.png"]
 hash = "79d405b48436ceac9400d2f92292ced1e31d46de8125cd1c0a1c22f28a385f40"
 id = 11704139857
@@ -2608,6 +2632,16 @@ hash = "b3fc403e7b7a679abf8e8237c5176393b601124bf03cf1c3adba0b9e5c017ea8"
 id = 11704140031
 packable = false
 
+[inputs."images/ui/teleportation/Jester Castle Locked.png"]
+hash = "800633d72a7fa00b8669597695d29bbce1f78d6dcc2063cd92444b5043b21196"
+id = 13979855669
+packable = false
+
+[inputs."images/ui/teleportation/Jester Castle.png"]
+hash = "cb536be804e43374ca6b316c01ff31e87f24716cbb90a355a2e3c922cabe03d1"
+id = 13979855772
+packable = false
+
 [inputs."images/ui/teleportation/Lava Lands Locked.png"]
 hash = "b8e73e9a8ad541a15a7f6126a9026b251759d35b421e05803d0af3fe3fb3f683"
 id = 11704140073
@@ -2636,6 +2670,16 @@ packable = false
 [inputs."images/ui/teleportation/The Mines.png"]
 hash = "103cd1e0f49063cf926629ca973d6fa3276ee8c32a04d9bf6bd9a38b4571f2ef"
 id = 11704140370
+packable = false
+
+[inputs."images/ui/teleportation/Toxic Lands Locked.png"]
+hash = "862ed206199b502710a536d474a8fc82583fe98a0f14de41a66a7b2888d1db46"
+id = 13979855921
+packable = false
+
+[inputs."images/ui/teleportation/Toxic Lands.png"]
+hash = "2e6416eeb7b5208ab1c7227ef0ba84b83d0a25717a2b83da55466d94a5f17059"
+id = 13979855996
 packable = false
 
 [inputs."images/ui/teleportation/background.png"]
