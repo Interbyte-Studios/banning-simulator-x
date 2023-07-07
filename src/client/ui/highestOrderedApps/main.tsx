@@ -1,9 +1,10 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { ContextActionService, Players, ReplicatedStorage, Workspace } from "@rbxts/services";
+import { CollectionService, ContextActionService, Players, ReplicatedStorage, Workspace } from "@rbxts/services";
 import { Variants } from "shared/configs/pets";
 import { Store } from "shared/rodux";
+import { isValidWorld } from "shared/util/isValidWorld";
 
 import { LocalMessages } from "../components/announcements";
 import { EggHud } from "../components/eggs/control";
@@ -80,7 +81,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 			Enum.KeyCode.Z,
 		);
 
-		// Open weapon, talisman, or fusing
+		// Open weapon, talisman, fusing, or mastery
 		ContextActionService.BindAction(
 			"openShop",
 			(_, state) => {
@@ -152,6 +153,34 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 						return;
 					}
 				}
+
+				CollectionService.GetTagged("petMasteryVendor").forEach((petVendor) => {
+					assert(petVendor.IsA("Model"), `Expected pet mastery vendor "${petVendor.Name}" to be a model.`);
+
+					const primaryPart = petVendor.PrimaryPart;
+					assert(primaryPart, `Expected pet mastery vendor "${petVendor.Name}" to have a set PrimaryPart.`);
+
+					const petMasteryFolder = petVendor.Parent as Folder;
+					assert(petMasteryFolder, `Expected the parent of the pet mastery vendor "${petVendor.Name} to exist."`);
+
+					const world = petMasteryFolder.Parent as Folder;
+					assert(
+						world,
+						`Expected the extended parent of the pet mastery vendor "${petVendor.Name}" to be a world's interactions folder. `,
+					);
+
+					const worldName = world.Name;
+					assert(
+						isValidWorld(worldName),
+						`Expected the world folder parent to the pet mastery vendor "${petVendor.Name}" to be named after a valid world.`,
+					);
+
+					const magnitude = rootPart.Position.sub(primaryPart.Position).Magnitude;
+					if (magnitude <= 30) {
+						setVisibility({ ...visibilityStates, petMastery: true });
+						return;
+					}
+				});
 			},
 			false,
 			Enum.KeyCode.E,
@@ -161,7 +190,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 			ContextActionService.UnbindAction("equipWeapon");
 			ContextActionService.UnbindAction("openShop");
 		};
-	});
+	}, []);
 
 	/**
 	 * Determines if any menu is visible.

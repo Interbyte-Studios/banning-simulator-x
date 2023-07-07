@@ -64,6 +64,7 @@ declare global {
 			itemShop: Folder & {
 				[P in keyof Worlds]: Folder & {
 					cameraline: BasePart;
+					weapons: Folder;
 				};
 			};
 			talismanTowers: Folder & {

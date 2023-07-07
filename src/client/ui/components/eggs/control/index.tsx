@@ -9,7 +9,7 @@ import { AnnouncementContext, AnnouncementType } from "client/ui/context/Announc
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { EggName, EGGS, hatchDebounce } from "shared/configs/eggs";
-import { GAMEPASSES } from "shared/configs/game";
+import { GAMEPASSES, RADIOACTIVE_EGG_ONEHATCH, RADIOACTIVE_EGG_THREEHATCHES } from "shared/configs/game";
 import { Pet, Variants } from "shared/configs/pets";
 import { HatchEggFailKind } from "shared/remotes/eggs/hatchEgg";
 import { StoreState } from "shared/rodux";
@@ -99,8 +99,27 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					return;
 				}
 
+				// initial time check
+				const now = time();
+				const canHatch = now - lastHatchTime > hatchDebounce;
+				if (!canHatch) {
+					addAnnouncement(
+						`You must wait ${statsAbbreviator.numberToString(
+							hatchDebounce - (now - lastHatchTime),
+						)} seconds before hatching another egg!`,
+						AnnouncementType.Error,
+					);
+					return;
+				}
+
 				// Check that the user isn't already hatching an egg.
 				if (getIsHatching()) {
+					return;
+				}
+
+				// initial trading check
+				if (getIsTrading()) {
+					addAnnouncement(`You cannot hatch while your trading!`, AnnouncementType.Error);
 					return;
 				}
 
@@ -122,7 +141,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 				// check that character still exists (if it doesn't, neither does the camera)
 				const character = Players.LocalPlayer.Character;
 				if (character === undefined) {
-					addAnnouncement(`There was an issue hatching the egg. Try again later. [1]`, AnnouncementType.Error);
+					addAnnouncement(`Could not find your character. Please rejoin.`, AnnouncementType.Error);
 					return;
 				}
 
@@ -130,25 +149,6 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 				const isWithinDistance = withinDistanceToHatch(character, eggName, variant === "void");
 				if (!isWithinDistance) {
 					addAnnouncement(`You aren't close enough to hatch that egg!`, AnnouncementType.Error);
-					return;
-				}
-
-				// initial time check
-				const now = time();
-				const canHatch = now - lastHatchTime > hatchDebounce;
-				if (!canHatch) {
-					addAnnouncement(
-						`You must wait ${statsAbbreviator.numberToString(
-							hatchDebounce - (now - lastHatchTime),
-						)} seconds before hatching another egg!`,
-						AnnouncementType.Error,
-					);
-					return;
-				}
-
-				// initial trading check
-				if (getIsTrading()) {
-					addAnnouncement(`You cannot hatch while your trading!`, AnnouncementType.Error);
 					return;
 				}
 
@@ -426,10 +426,14 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							if (autoEnabled) {
 								autoEnabled = false;
 							} else {
-								await handleHatch(eggName, "regular", 1);
+								if (eggName === "Radioactive") {
+									MarketplaceService.PromptProductPurchase(Players.LocalPlayer, RADIOACTIVE_EGG_ONEHATCH);
+								} else {
+									await handleHatch(eggName, "regular", 1);
+								}
 							}
 							break;
-						} else {
+						} else if (eggName !== "Radioactive") {
 							const withinDistanceForVoid = withinDistanceToHatch(character, eggName, true);
 							if (withinDistanceForVoid) {
 								if (autoEnabled) {
@@ -478,10 +482,14 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							if (autoEnabled) {
 								autoEnabled = false;
 							} else {
-								await handleHatch(eggName, "regular", 3);
+								if (eggName === "Radioactive") {
+									MarketplaceService.PromptProductPurchase(Players.LocalPlayer, RADIOACTIVE_EGG_THREEHATCHES);
+								} else {
+									await handleHatch(eggName, "regular", 3);
+								}
 							}
 							break;
-						} else {
+						} else if (eggName !== "Radioactive") {
 							const withinDistanceForVoid = withinDistanceToHatch(character, eggName, true);
 							if (withinDistanceForVoid) {
 								if (autoEnabled) {
@@ -510,19 +518,31 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					if (!eggData.hatchable) {
 						return <></>;
 					}
-
 					const eggFolder = Workspace.interactions.eggs[eggName];
-
 					const regularEgg = eggFolder.regular.egg.PrimaryPart;
 					assert(regularEgg, `Expected PrimaryPart for regular ${eggName} egg`);
-
-					const voidEgg = eggFolder.void.egg.PrimaryPart;
-					assert(voidEgg, `Expected PrimaryPart for void ${eggName} egg`);
 
 					const pets: Array<Pet> = [];
 					for (const [, petData] of pairs(eggData.pets)) {
 						pets.push(petData);
 					}
+
+					if (eggName === "Radioactive") {
+						return (
+							<frame Visible={false}>
+								<EggHudDisplay
+									adornee={regularEgg}
+									eggName={eggName}
+									isVoid={false}
+									possiblePets={pets}
+									handleHatch={handleHatch}
+								/>
+							</frame>
+						);
+					}
+
+					const voidEgg = eggFolder.void.egg.PrimaryPart;
+					assert(voidEgg, `Expected PrimaryPart for void ${eggName} egg`);
 
 					return (
 						<frame Visible={false}>

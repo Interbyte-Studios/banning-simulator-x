@@ -10,7 +10,9 @@ import { DESERT_EGG_PETS } from "./pets/desert";
 import { EXCLUSIVE_PETS } from "./pets/exclusive";
 import { GROUP_CHEST_PETS } from "./pets/group";
 import { HONEYCOMB_EGG_PETS } from "./pets/honeycomb";
+import { JESTER_EGG_PETS } from "./pets/jester";
 import { MOLTEN_EGG_PETS } from "./pets/molten";
+import { RADIOACTIVE_EGG_PETS } from "./pets/radioactive";
 import { ROYALTY_EGG_PETS } from "./pets/royalty";
 import { STARTER_EGG_PETS } from "./pets/starter";
 import { WorldName } from "./worlds";
@@ -145,6 +147,24 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		zone: "Limited",
 		hatchable: false,
 		hidden: true,
+		luckApplies: true,
+	},
+	Radioactive: {
+		id: 11,
+		pets: RADIOACTIVE_EGG_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: true,
+		hidden: false,
+		luckApplies: false,
+	},
+	Jester: {
+		id: 12,
+		pets: JESTER_EGG_PETS,
+		world: "Ban Land",
+		zone: "Jester Castle",
+		hatchable: true,
+		hidden: false,
 		luckApplies: true,
 	},
 	Group: {

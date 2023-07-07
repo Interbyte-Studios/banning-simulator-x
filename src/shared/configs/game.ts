@@ -182,12 +182,15 @@ export const GROUP_ROLES: Record<number, { tag: string; color: Color3 }> = {
 export const VIP_PET_ID = 10002;
 export const GROUP_PET_ID = 10001;
 
+export const RADIOACTIVE_EGG_ONEHATCH = 1574455473;
+export const RADIOACTIVE_EGG_THREEHATCHES = 1574455645;
+
 export const LIMITED_EGG_DEVPRODUCT = {
 	OneEgg: 1563247508,
 	ThreeEggs: 1563247707,
 };
 
-export const LIMITED_EGG: EggName = "Royalty"; // The id of the robux egg currently on sale. In this case, id 6 means Royal egg.
+export const LIMITED_EGG: EggName = "Royalty";
 export const EXCLUSIVE_PETS = [
 	// The shop only supports adding 3 pets for exclusive pets. If we want to add more, we'll need to rework the shop a bit.
 	{

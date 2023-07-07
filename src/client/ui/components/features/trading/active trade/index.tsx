@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
+import { setIsTrading } from "client/modules/isTradingCache";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
@@ -205,6 +206,7 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 				return (
 					<CompletedTradeNotice
 						finishTrade={(): void => {
+							setIsTrading(false);
 							finishTrade();
 							props.exitTrade();
 						}}

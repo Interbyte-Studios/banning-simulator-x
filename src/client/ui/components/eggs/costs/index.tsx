@@ -38,8 +38,21 @@ export const EggCost = RoactRodux.connect(mapStateToProps)(
 					if (!eggData.hatchable) {
 						return <></>;
 					}
-
 					const eggModel = Workspace.interactions.eggs[eggName];
+
+					if (eggName === "Radioactive") {
+						return (
+							<>
+								<EggCostDisplay
+									adornee={eggModel.regular.cost}
+									cost={0}
+									currency={"coins"}
+									isVoid={false}
+									isLimited={true}
+								/>
+							</>
+						);
+					}
 
 					// find reduced egg cost provided by player mastery
 					const eggMasteryReducedMultiplier = getEggsMastery(props.eggs).reducedEggCostMultiplier;

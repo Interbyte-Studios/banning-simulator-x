@@ -1,9 +1,11 @@
 import Roact from "@rbxts/roact";
+import { MarketplaceService, Players } from "@rbxts/services";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
+import { RADIOACTIVE_EGG_ONEHATCH } from "shared/configs/game";
 import { Variants } from "shared/configs/pets";
 
 interface HatchEggProps {
@@ -33,6 +35,12 @@ export const HatchEggButton = (props: HatchEggProps): Roact.Element => {
 				// eslint-disable-next-line jsdoc/require-jsdoc
 				Activated: async (): Promise<void> => {
 					playSFX(UIEngagement.MajorEngagement);
+
+					if (props.eggName === "Radioactive") {
+						MarketplaceService.PromptProductPurchase(Players.LocalPlayer, RADIOACTIVE_EGG_ONEHATCH);
+						return;
+					}
+
 					props.handleHatch(props.eggName, props.isVoid ? "void" : "regular", 1);
 				},
 			}}

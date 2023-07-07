@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { Players, RunService } from "@rbxts/services";
+import { uiClaimButtonStrokeColor } from "client/ui/commonValues";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
@@ -66,38 +67,74 @@ export const PetMasteryInteractPrompt = hooks((props: { adornee: BasePart; displ
 			Active={true}
 			AlwaysOnTop={true}
 			LightInfluence={0}
-			Size={UDim2.fromScale(5, 5)}
+			Size={UDim2.fromScale(12, 10)}
+			StudsOffsetWorldSpace={new Vector3(0, 5, 0)}
+			MaxDistance={80}
 			Adornee={props.adornee}
 		>
-			<StrokeTextLabel
-				native={{
-					Position: UDim2.fromScale(0.5, 0),
-					Size: UDim2.fromScale(1.5, 0.4),
-					Text: "Pet Mastery",
-				}}
-				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(25, 147, 170) } }}
-			/>
 			<SpringImageButton
 				native={{
-					Image: assetIds.images.buttons["teal button"],
+					Position: UDim2.fromScale(0.5, 0.2),
+					Image: assetIds.images.vectors.Medal,
 				}}
-				size={{ maxSize: 0.7, minSize: 0.6 }}
+				size={{ minSize: 0.4, maxSize: 0.5 }}
+			>
+				<uiaspectratioconstraint AspectRatio={1} />
+			</SpringImageButton>
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.5, 0.5),
+					Size: UDim2.fromScale(1.5, 0.25),
+					FontFace: new Font("FredokaOne", Enum.FontWeight.Regular, Enum.FontStyle.Italic),
+					Text: "Pet Mastery",
+					TextColor3: Color3.fromRGB(255, 255, 255),
+				}}
+				stroke={{ native: { Thickness: 3.5, Color: Color3.fromRGB(0, 0, 0) } }}
+			>
+				<uigradient
+					Rotation={90}
+					Color={
+						new ColorSequence([
+							new ColorSequenceKeypoint(0, Color3.fromRGB(0, 255, 255)),
+							new ColorSequenceKeypoint(1, Color3.fromRGB(0, 85, 255)),
+						])
+					}
+				/>
+			</StrokeTextLabel>
+			<StrokeTextLabel
+				native={{
+					Position: UDim2.fromScale(0.5, 0.7),
+					Size: UDim2.fromScale(1.1, 0.2),
+					FontFace: new Font("FredokaOne", Enum.FontWeight.Regular, Enum.FontStyle.Italic),
+					Text: "Complete pet challenges!",
+				}}
+				stroke={{ native: { Thickness: 3.5, Color: Color3.fromRGB(0, 0, 0) } }}
+			/>
+
+			<SpringImageButton
+				native={{
+					Position: UDim2.fromScale(0.5, 0.95),
+					Image: assetIds.images.ui.index.Claim,
+				}}
+				size={{ minSize: 0.4, maxSize: 0.5 }}
 				events={{
-					/* eslint-disable jsdoc/require-jsdoc */
+					/**
+					 *
+					 */
 					Activated: (): void => {
-						playSFX(UIEngagement.MinorEngagement);
+						playSFX(UIEngagement.MajorEngagement);
 						props.displayPetMastery();
 					},
-					/* eslint-enable jsdoc/require-jsdoc */
 				}}
 			>
 				<StrokeTextLabel
 					native={{
-						Size: UDim2.fromScale(0.9, 0.9),
-						Text: "C",
+						Size: UDim2.fromScale(0.8, 0.8),
+						Text: "Open (E)",
 					}}
-					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(25, 147, 170) } }}
+					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
 				/>
+				<uiaspectratioconstraint AspectRatio={2} />
 			</SpringImageButton>
 		</billboardgui>
 	);

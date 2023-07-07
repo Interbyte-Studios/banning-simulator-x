@@ -1,5 +1,5 @@
 import { AsyncServerFunctionDeclaration } from "@rbxts/net/out/definitions/Types";
-import { HatchEggDefinition } from "shared/remotes/eggs/hatchEgg";
+import { HatchEggDefinition, HatchEggFailKind } from "shared/remotes/eggs/hatchEgg";
 
 import { fakeFunctionCall } from "./remoteContext/fakeFunctionCall";
 
@@ -38,6 +38,7 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 	// failure
 	{
 		success: false,
+		reason: HatchEggFailKind.NotWithinDistance,
 	},
 	// single hatch
 	{
