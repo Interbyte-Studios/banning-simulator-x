@@ -32,11 +32,13 @@ const ExclusivePet = hooks(
 		const petData = getPetData(props.petId);
 		const petDecal = getPetImage(props.petId, "regular");
 		useEffect(() => {
-			const productInfo = MarketplaceService.GetProductInfo(props.devProductId, Enum.InfoType.Product);
+			task.spawn(() => {
+				const productInfo = MarketplaceService.GetProductInfo(props.devProductId, Enum.InfoType.Product);
 
-			if (productInfo.PriceInRobux !== undefined) {
-				setItemCost(productInfo.PriceInRobux);
-			}
+				if (productInfo.PriceInRobux !== undefined) {
+					setItemCost(productInfo.PriceInRobux);
+				}
+			});
 		}, []);
 
 		return (
