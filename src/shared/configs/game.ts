@@ -13,7 +13,7 @@ export const LEADERBOARD_UPDATE_INTERVAL = 60;
 export const GAME_VERSION = "1.0.0";
 
 export const MAX_TRADE_OFFER_SIZE = 10;
-export const MAX_TRADE_LOGS = 10;
+export const MAX_TRADE_LOGS = 25;
 
 export type Gamepasses = keyof typeof GAMEPASSES;
 export const GAMEPASSES = {

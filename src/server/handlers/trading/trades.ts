@@ -645,10 +645,8 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 		};
 
 		if (store.getState().tradeLogs.size() >= MAX_TRADE_LOGS) {
-			warn("Player Trade Logs:");
 			let tradeToRemove: SavedTrade | undefined;
 			store.getState().tradeLogs.forEach((trade) => {
-				print(trade.timestamp.UnixTimestampMillis, tradeToRemove?.timestamp.UnixTimestamp);
 				if (
 					tradeToRemove === undefined ||
 					trade.timestamp.UnixTimestampMillis < tradeToRemove.timestamp.UnixTimestampMillis
@@ -663,10 +661,8 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 		}
 
 		if (otherPlayerStore.getState().tradeLogs.size() >= MAX_TRADE_LOGS) {
-			warn("Other Player Trade Logs:");
 			let tradeToRemove: SavedTrade | undefined;
 			otherPlayerStore.getState().tradeLogs.forEach((trade) => {
-				print(trade.timestamp.UnixTimestampMillis, tradeToRemove?.timestamp.UnixTimestamp);
 				if (
 					tradeToRemove === undefined ||
 					trade.timestamp.UnixTimestampMillis < tradeToRemove.timestamp.UnixTimestampMillis

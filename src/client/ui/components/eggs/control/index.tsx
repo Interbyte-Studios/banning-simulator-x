@@ -229,7 +229,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							if (requestHatch.success) {
 								if (requestHatch.pets.size() === 3) {
 									animateTripleEggHatch(eggName, variant === "void", requestHatch.pets, props.gamepasses["Fast Hatch"]);
-									task.wait(1.5);
+									task.wait(0.5);
 								} else {
 									animateSingleEggHatch(
 										eggName,
@@ -238,10 +238,10 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 										requestHatch.pets[0].autoDeleted,
 										props.gamepasses["Fast Hatch"],
 									);
-									task.wait(1.5);
+									task.wait(0.5);
 								}
 							} else {
-								task.wait(3);
+								task.wait(2);
 								switch (requestHatch.reason) {
 									case HatchEggFailKind.NoCharacter: {
 										addAnnouncement(

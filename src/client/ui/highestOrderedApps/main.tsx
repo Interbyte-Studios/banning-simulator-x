@@ -190,7 +190,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 			ContextActionService.UnbindAction("equipWeapon");
 			ContextActionService.UnbindAction("openShop");
 		};
-	}, []);
+	});
 
 	/**
 	 * Determines if any menu is visible.

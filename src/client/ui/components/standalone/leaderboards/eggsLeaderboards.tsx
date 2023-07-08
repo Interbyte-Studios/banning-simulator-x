@@ -46,47 +46,7 @@ export const EggLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 				continue;
 			}
 
-			const [success, result] = pcall((): string => Players.GetNameFromUserIdAsync(playerId));
-
-			let playerName = "unknown";
-			if (success) {
-				playerName = result;
-			}
-
-			newLeaderboardData.push({ playerId, playerName, amount, position });
-		}
-
-		setLeaderboardData(newLeaderboardData);
-
-		const connection = ReplicatedStorage.leaderboards.timeUpdated.GetPropertyChangedSignal("Value").Connect(() => {
-			task.wait(5);
-			const newLeaderboardData: Array<LeaderboardEntry> = [];
-
-			for (const configuration of ReplicatedStorage.leaderboards.eggs.GetChildren()) {
-				const playerId = tonumber(configuration.Name);
-				if (playerId === undefined) {
-					warn(`Error while updating eggs leaderboards on client: Invalid player ID: ${configuration.Name}`);
-					continue;
-				}
-
-				const amount = configuration.GetAttribute("amount") as number;
-				if (amount === undefined) {
-					warn(
-						`Error while updating eggs leaderboards on client: Invalid amount: ${configuration.GetAttribute("amount")}`,
-					);
-					continue;
-				}
-
-				const position = configuration.GetAttribute("position") as number;
-				if (position === undefined) {
-					warn(
-						`Error while updating eggs leaderboards on client: Invalid position: ${configuration.GetAttribute(
-							"position",
-						)}`,
-					);
-					continue;
-				}
-
+			task.spawn(() => {
 				const [success, result] = pcall((): string => Players.GetNameFromUserIdAsync(playerId));
 
 				let playerName = "unknown";
@@ -95,9 +55,56 @@ export const EggLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 				}
 
 				newLeaderboardData.push({ playerId, playerName, amount, position });
-			}
+			});
+		}
 
-			setLeaderboardData(newLeaderboardData);
+		setLeaderboardData(newLeaderboardData);
+
+		const connection = ReplicatedStorage.leaderboards.timeUpdated.GetPropertyChangedSignal("Value").Connect(() => {
+			task.delay(5, () => {
+				const newLeaderboardData: Array<LeaderboardEntry> = [];
+
+				for (const configuration of ReplicatedStorage.leaderboards.eggs.GetChildren()) {
+					const playerId = tonumber(configuration.Name);
+					if (playerId === undefined) {
+						warn(`Error while updating eggs leaderboards on client: Invalid player ID: ${configuration.Name}`);
+						continue;
+					}
+
+					const amount = configuration.GetAttribute("amount") as number;
+					if (amount === undefined) {
+						warn(
+							`Error while updating eggs leaderboards on client: Invalid amount: ${configuration.GetAttribute(
+								"amount",
+							)}`,
+						);
+						continue;
+					}
+
+					const position = configuration.GetAttribute("position") as number;
+					if (position === undefined) {
+						warn(
+							`Error while updating eggs leaderboards on client: Invalid position: ${configuration.GetAttribute(
+								"position",
+							)}`,
+						);
+						continue;
+					}
+
+					task.spawn(() => {
+						const [success, result] = pcall((): string => Players.GetNameFromUserIdAsync(playerId));
+
+						let playerName = "unknown";
+						if (success) {
+							playerName = result;
+						}
+
+						newLeaderboardData.push({ playerId, playerName, amount, position });
+					});
+				}
+
+				setLeaderboardData(newLeaderboardData);
+			});
 		});
 
 		return (): void => connection.Disconnect();

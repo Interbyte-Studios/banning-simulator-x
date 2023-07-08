@@ -49,6 +49,7 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 				if (tradingPlayer !== receivingPlayer) {
 					throw `Received a declined trade offer from ${receivingPlayer.Name}, but the local player is trading with ${tradingPlayer.Name}.`;
 				}
+				addAnnouncement(`${receivingPlayer.Name} declined your trade.`, AnnouncementType.Error);
 
 				tradeAccepted.value = false;
 				tradeDeclined.value = false;
@@ -58,7 +59,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 				setDisplayTradeRequest(false);
 				setActiveTrade(false);
 				setTradingPlayer(undefined);
-				addAnnouncement(`${receivingPlayer.Name} declined your trade.`, AnnouncementType.Error);
 			}),
 			tradeRequestAccepted.Connect((receivingPlayer) => {
 				if (tradingPlayer === undefined) {
@@ -92,17 +92,17 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 				if (tradingPlayer !== receivingPlayer) {
 					throw `Received a declined trade request from ${receivingPlayer.Name}, but the local player is trading with ${tradingPlayer.Name}.`;
 				}
-
-				tradeAccepted.value = false;
-				tradeDeclined.value = true;
 				setIsTrading(false);
 
-				setTradingEnabled(false);
-				setDisplayTradeRequest(false);
-				setActiveTrade(false);
-				setTradingPlayer(undefined);
-
 				addAnnouncement(`${receivingPlayer.Name} declined your trade request.`, AnnouncementType.Error);
+
+				tradeAccepted.value = false;
+				tradeDeclined.value = false;
+
+				setTradingEnabled(false);
+				setTradingPlayer(undefined);
+				setActiveTrade(false);
+				setDisplayTradeRequest(false);
 			}),
 			receiveTradeRequest.Connect((playerWhoSent) => {
 				if (tradeActive) {
@@ -129,6 +129,17 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
 					if (tradeAccepted.value || tradeDeclined.value) {
+						if (tradeDeclined.value) {
+							setIsTrading(false);
+
+							tradeAccepted.value = false;
+							tradeDeclined.value = false;
+
+							setTradingEnabled(false);
+							setDisplayTradeRequest(false);
+							setActiveTrade(false);
+							setTradingPlayer(undefined);
+						}
 						break;
 					}
 
