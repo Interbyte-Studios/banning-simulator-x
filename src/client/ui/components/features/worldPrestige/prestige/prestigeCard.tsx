@@ -56,27 +56,12 @@ export const PrestigeCard = RoactRodux.connect(mapStateToProps)(
 		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 		useEffect(() => {
-			const storedWorldData = props.worlds.find((storedWorld) => storedWorld.name === props.worldName);
-			if (storedWorldData === undefined) {
-				setMaxProgress(math.huge);
-				return;
-			}
-
 			const worldConfig = WORLDS[props.worldName];
 			let lastZoneId = 0;
-			let ownsAllZones = true;
-			for (const [zoneName, zoneData] of pairs(worldConfig.zones)) {
-				const ownsZone = storedWorldData.zones.includes(zoneName);
-				if (!ownsZone) {
-					ownsAllZones = false;
-				} else {
-					if (zoneData.id > lastZoneId) {
-						lastZoneId = zoneData.id;
-					}
+			for (const [, zoneData] of pairs(worldConfig.zones)) {
+				if (zoneData.id > lastZoneId) {
+					lastZoneId = zoneData.id;
 				}
-			}
-			if (!ownsAllZones) {
-				return;
 			}
 
 			const lastZone = Object.values(worldConfig.zones).find((zoneData) => zoneData.id === lastZoneId);
@@ -89,7 +74,7 @@ export const PrestigeCard = RoactRodux.connect(mapStateToProps)(
 			}
 
 			setMaxProgress(lastZone.cost.amount * 5);
-		}, [props.worlds, props.worldPrestige, props.prestigeNumber]);
+		}, [props.prestigeNumber]);
 
 		let iconToDisplay: Roact.Element = <></>;
 		switch (props.prestigeNumber) {

@@ -11,6 +11,7 @@ import { changeWeapon } from "shared/rodux/currentWeapon";
 import { resetExperience } from "shared/rodux/experience";
 import { addPets } from "shared/rodux/pets";
 import { resetRank } from "shared/rodux/rank";
+import { toggleWalkSpeed } from "shared/rodux/settings";
 import { claimPrestige } from "shared/rodux/worldPrestige";
 import { resetZones } from "shared/rodux/worlds";
 
@@ -79,6 +80,7 @@ remotes.Server.GetNamespace("worldPrestige")
 			store.dispatch(changeWeapon(1));
 			store.dispatch(unequipTalisman());
 			store.dispatch(resetExperience());
+			store.dispatch(toggleWalkSpeed(24));
 
 			// Now we check if they're prestige is a multiple of 10 up until 50, and if it is, we give them a special reward
 			const worldPrestigeRewards = WORLD_PRESTIGE.worldRewards[worldName];
@@ -94,16 +96,18 @@ remotes.Server.GetNamespace("worldPrestige")
 						throw `Could not find reward for world ${worldName} and prestige 10`;
 					}
 
-					addPets(0, "coins", [
-						{
-							id: reward.petReward,
-							variant: "regular",
-							method: "purchase",
-							tradeLocked: false,
-							autoDeleted: false,
-							guid: HttpService.GenerateGUID(false),
-						},
-					]);
+					store.dispatch(
+						addPets(0, "coins", [
+							{
+								id: reward.petReward,
+								variant: "regular",
+								method: "purchase",
+								tradeLocked: false,
+								autoDeleted: false,
+								guid: HttpService.GenerateGUID(false),
+							},
+						]),
+					);
 
 					modifyPetCount({
 						type: "addPet",
@@ -111,6 +115,9 @@ remotes.Server.GetNamespace("worldPrestige")
 						variant: "regular",
 					});
 					break;
+				}
+				default: {
+					warn(`No new pet for prestige: ${newPrestige}`);
 				}
 			}
 

@@ -18,6 +18,7 @@ import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { WorldName } from "shared/configs/worlds";
 import { StoreState } from "shared/rodux";
 import { WorldPrestigeState } from "shared/rodux/worldPrestige";
+import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 interface WorldPrestigeUpgradesProps extends WorldPrestigeUpgradesMappedProps {
 	worldName: WorldName;
@@ -128,7 +129,7 @@ export const WorldPrestigeUpgrades = RoactRodux.connect(mapStateToProps)(
 								native={{
 									Position: UDim2.fromScale(0.425, 0.56),
 									Size: UDim2.fromScale(0.4, 0.25),
-									Text: `Current Prestige: ${storedWorldPrestige.currentPrestige}`,
+									Text: `Current Prestige: ${twoDpAbbreviator.numberToString(storedWorldPrestige.currentPrestige)}`,
 									TextXAlignment: Enum.TextXAlignment.Left,
 								}}
 								stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
@@ -196,9 +197,9 @@ export const WorldPrestigeUpgrades = RoactRodux.connect(mapStateToProps)(
 								native={{
 									Position: UDim2.fromScale(0.575, 0.16),
 									Size: UDim2.fromScale(0.65, 0.325),
-									Text: `Currency Multiplier: +${
-										storedWorldPrestige.currencyUpgrades * WORLD_PRESTIGE.currency.multiplierIncrement
-									}x`,
+									Text: `Currency Multiplier: +${twoDpAbbreviator.numberToString(
+										storedWorldPrestige.currencyUpgrades * WORLD_PRESTIGE.currency.multiplierIncrement,
+									)}x`,
 								}}
 								stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
 							/>
@@ -412,10 +413,10 @@ export const WorldPrestigeUpgrades = RoactRodux.connect(mapStateToProps)(
 								native={{
 									Position: UDim2.fromScale(0.575, 0.16),
 									Size: UDim2.fromScale(0.65, 0.325),
-									Text: `Reduced Fusion Multiplier: ${
+									Text: `Reduced Fusion Multiplier: ${twoDpAbbreviator.numberToString(
 										storedWorldPrestige.reducedFusionCostUpgrades *
-										WORLD_PRESTIGE.reducedFusionCost.reducedCostMultiplier
-									}x`,
+											WORLD_PRESTIGE.reducedFusionCost.reducedCostMultiplier,
+									)}x`,
 								}}
 								stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
 							/>
@@ -424,7 +425,7 @@ export const WorldPrestigeUpgrades = RoactRodux.connect(mapStateToProps)(
 								native={{
 									Position: UDim2.fromScale(0.425, 0.56),
 									Size: UDim2.fromScale(0.4, 0.25),
-									Text: `Current Upgrades: ${storedWorldPrestige.additionalPetsUpgrades}`,
+									Text: `Current Upgrades: ${storedWorldPrestige.reducedFusionCostUpgrades}`,
 									TextXAlignment: Enum.TextXAlignment.Left,
 								}}
 								stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
@@ -522,10 +523,10 @@ export const WorldPrestigeUpgrades = RoactRodux.connect(mapStateToProps)(
 								native={{
 									Position: UDim2.fromScale(0.575, 0.16),
 									Size: UDim2.fromScale(0.65, 0.325),
-									Text: `Reduced Void Egg Cost: ${
+									Text: `Reduced Void Egg Cost: ${twoDpAbbreviator.numberToString(
 										storedWorldPrestige.reducedVoidEggCostUpgrades *
-										WORLD_PRESTIGE.reducedVoidEggCost.reducedCostMultiplier
-									}x`,
+											WORLD_PRESTIGE.reducedVoidEggCost.reducedCostMultiplier,
+									)}x`,
 								}}
 								stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
 							/>
@@ -534,7 +535,7 @@ export const WorldPrestigeUpgrades = RoactRodux.connect(mapStateToProps)(
 								native={{
 									Position: UDim2.fromScale(0.425, 0.56),
 									Size: UDim2.fromScale(0.4, 0.25),
-									Text: `Current Upgrades: ${storedWorldPrestige.additionalPetsUpgrades}`,
+									Text: `Current Upgrades: ${storedWorldPrestige.reducedVoidEggCostUpgrades}`,
 									TextXAlignment: Enum.TextXAlignment.Left,
 								}}
 								stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}

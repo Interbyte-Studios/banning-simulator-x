@@ -13,9 +13,16 @@ import { WorldPrestigeUpgrades } from "./upgrades";
  * A feature allowing the player to prestige any given world for given rewards.
  */
 export const WorldPrestige = hooks(
-	(props: { isVisible: boolean; setVisibility: (value: boolean) => void }, { useState, useEffect }) => {
+	(
+		props: {
+			isVisible: boolean;
+			setVisibility: (value: boolean) => void;
+			viewType: WorldPrestigeViewType;
+			setViewType: (viewType: WorldPrestigeViewType) => void;
+		},
+		{ useState, useEffect },
+	) => {
 		const [viewingWorld, setViewingWorld] = useState<WorldName>("Ban Land");
-		const [viewType, setViewType] = useState<WorldPrestigeViewType>(WorldPrestigeViewType.Prestige);
 
 		useEffect(() => {
 			if (!props.isVisible) {
@@ -35,7 +42,7 @@ export const WorldPrestige = hooks(
 		}, [props.isVisible]);
 
 		if (props.isVisible) {
-			if (viewType === WorldPrestigeViewType.Prestige) {
+			if (props.viewType === WorldPrestigeViewType.Prestige) {
 				return <WorldPrestigePath worldName={viewingWorld} setVisibility={props.setVisibility} />;
 			} else {
 				return <WorldPrestigeUpgrades worldName={viewingWorld} setVisibility={props.setVisibility} />;
@@ -66,7 +73,7 @@ export const WorldPrestige = hooks(
 								<WorldPrestigeInteractPrompt
 									adornee={prestigePrimaryPart}
 									display={(): void => {
-										setViewType(WorldPrestigeViewType.Prestige);
+										props.setViewType(WorldPrestigeViewType.Prestige);
 										props.setVisibility(true);
 									}}
 									interactType={WorldPrestigeViewType.Prestige}
@@ -74,7 +81,7 @@ export const WorldPrestige = hooks(
 								<WorldPrestigeInteractPrompt
 									adornee={upgradesPrimaryPart}
 									display={(): void => {
-										setViewType(WorldPrestigeViewType.Upgrades);
+										props.setViewType(WorldPrestigeViewType.Upgrades);
 										props.setVisibility(true);
 									}}
 									interactType={WorldPrestigeViewType.Upgrades}

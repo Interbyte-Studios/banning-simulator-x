@@ -17,7 +17,7 @@ remotes.Server.GetNamespace("weapons")
 				return;
 			}
 
-			const weaponData = Object.values(WEAPONS).find((weapon) => weapon.id === store.getState().currentWeapon.id);
+			const weaponData = Object.values(WEAPONS).find((weapon) => weapon.id === weaponId);
 			if (weaponData === undefined) {
 				return;
 			}

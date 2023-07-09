@@ -1,7 +1,9 @@
 import Flipper from "@rbxts/flipper";
+import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { uiDarkStrokeColor } from "client/ui/commonValues";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
@@ -16,9 +18,10 @@ import { remoteContext } from "client/ui/mocks/remoteContext";
 import { getWeaponDecal } from "client/util/getWeaponDecal";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { WEAPON_LEVELS } from "shared/configs/weapons";
+import { WEAPON_LEVELS, WEAPONS } from "shared/configs/weapons";
 import { StoreState } from "shared/rodux";
 import { CurrentWeaponState } from "shared/rodux/currentWeapon";
+import { RankState } from "shared/rodux/rank";
 import { Weapon, WeaponsState } from "shared/rodux/weapons";
 import { getWeaponDamage } from "shared/util/getWeaponDamage";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
@@ -82,6 +85,7 @@ interface EquipWeaponProps extends WeaponInfoDisplayMappedProps {
 interface WeaponInfoDisplayMappedProps {
 	weapons: WeaponsState;
 	currentWeapon: CurrentWeaponState;
+	rank: RankState;
 }
 
 /**
@@ -92,6 +96,7 @@ function mapStateToProps(state: StoreState): WeaponInfoDisplayMappedProps {
 	return {
 		weapons: state.weapons,
 		currentWeapon: state.currentWeapon,
+		rank: state.rank,
 	};
 }
 
@@ -102,6 +107,7 @@ const EquipWeapon = RoactRodux.connect(mapStateToProps)(
 	hooks((props: EquipWeaponProps, hooks) => {
 		const { useContext } = hooks;
 		const { changeWeapon, equipWeapon, unequipWeapon } = useContext(remoteContext);
+		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 		return (
 			<SpringImageButton
@@ -118,14 +124,32 @@ const EquipWeapon = RoactRodux.connect(mapStateToProps)(
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
 
+						const weaponData = Object.values(WEAPONS).find((weapon) => weapon.id === props.storedWeapon.id);
+						if (weaponData === undefined) {
+							warn(`Failed to equip weapon | Weapon data could not be found [Items - Weapons]`);
+							addAnnouncement(`There was an error while managing your weapon.`, AnnouncementType.Error);
+							return;
+						}
+
 						if (props.storedWeapon.id === props.currentWeapon.id) {
 							if (props.currentWeapon.equipped) {
 								unequipWeapon.SendToServer();
 								return;
 							} else {
+								if (props.rank < weaponData.cost.requiredRank) {
+									warn(props.rank, weaponData.cost.requiredRank);
+									addAnnouncement(`You aren't a high enough rank to equip that weapon!`, AnnouncementType.Error);
+									return;
+								}
+
 								equipWeapon.SendToServer();
 								return;
 							}
+						}
+
+						if (props.rank < weaponData.cost.requiredRank) {
+							addAnnouncement(`You aren't a high enough rank to equip that weapon!`, AnnouncementType.Error);
+							return;
 						}
 
 						changeWeapon.SendToServer(props.storedWeapon.id);

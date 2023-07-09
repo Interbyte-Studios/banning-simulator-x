@@ -113,7 +113,7 @@ remotes.Server.Create("requestFusion").SetCallback(
 						type: "deletePet",
 						petId: storedPet.id,
 						variant: storedPet.variant,
-						amount: 1,
+						amount: petsToFuse.size(),
 					});
 				}
 			}

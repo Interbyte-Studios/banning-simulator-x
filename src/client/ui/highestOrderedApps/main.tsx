@@ -17,6 +17,7 @@ import { PetMastery } from "../components/features/petMastery";
 import { Settings } from "../components/features/settings";
 import { Teleportation } from "../components/features/teleportation";
 import { WorldPrestige } from "../components/features/worldPrestige";
+import { WorldPrestigeViewType } from "../components/features/worldPrestige/prestigeEnum";
 import { RankUpgrade } from "../components/ranks/menu";
 import { TalismanTowerHandle } from "../components/shops/talismanShop";
 import { WeaponShopHandle } from "../components/shops/weaponShop";
@@ -60,6 +61,7 @@ const visibilityStates = {
 export const Main = hooks((props: AppProps, { useState, useEffect, useContext, useCallback, useMemo }) => {
 	const [visibility, setVisibility] = useState(visibilityStates);
 	const [fusingVariant, setFusingVariant] = useState<Exclude<Variants, "regular"> | undefined>(undefined);
+	const [prestigeViewType, setPrestigeViewType] = useState<WorldPrestigeViewType>(WorldPrestigeViewType.Prestige);
 
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
@@ -266,6 +268,8 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 				/>,
 				<WorldPrestige
 					isVisible={false}
+					viewType={prestigeViewType}
+					setViewType={(viewType: WorldPrestigeViewType): void => setPrestigeViewType(viewType)}
 					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, worldPrestige: value })}
 				/>,
 				<WeaponLevelUpAnimation />,
@@ -279,6 +283,8 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 			components.push(
 				<WorldPrestige
 					isVisible={true}
+					viewType={prestigeViewType}
+					setViewType={(viewType: WorldPrestigeViewType): void => setPrestigeViewType(viewType)}
 					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, worldPrestige: value })}
 				/>,
 			);

@@ -70,7 +70,11 @@ function unlockZones(worldState: WorldsState): void {
 								continue;
 							}
 
-							deco.Parent = Workspace.decoration[unlockedWorld.name][zoneName];
+							if (deco.Name === "sign") {
+								deco.Parent = Workspace.decoration[unlockedWorld.name][zoneName];
+							} else {
+								deco.Parent = Workspace.decoration[unlockedWorld.name][zoneName].door;
+							}
 						}
 					}
 				}
