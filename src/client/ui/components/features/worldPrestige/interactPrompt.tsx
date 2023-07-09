@@ -58,7 +58,10 @@ export const WorldPrestigeInteractPrompt = hooks(
 						Position: UDim2.fromScale(0.5, 0.7),
 						Size: UDim2.fromScale(1.1, 0.2),
 						FontFace: new Font("FredokaOne", Enum.FontWeight.Regular, Enum.FontStyle.Italic),
-						Text: "Prestige for rewards!",
+						Text:
+							props.interactType === WorldPrestigeViewType.Prestige
+								? "Prestige for Rewards!"
+								: "Purchase Permanent Upgrades!",
 					}}
 					stroke={{ native: { Thickness: 3.5, Color: Color3.fromRGB(0, 0, 0) } }}
 				/>

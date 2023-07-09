@@ -8,13 +8,11 @@ export type WeaponType = "Hammer" | "Lance" | "Sword";
 export interface Weapon {
 	id: number;
 
-	cost:
-		| {
-				requiredRank?: number;
-				currency: Currency;
-				amount: number;
-		  }
-		| undefined;
+	cost: {
+		requiredRank: number;
+		currency: Currency;
+		amount: number;
+	};
 
 	damage: number;
 
@@ -30,7 +28,11 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	/* First Zone */
 	"Stone Hammer": {
 		id: 1,
-		cost: undefined,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 0,
+		},
 		damage: 10,
 		world: "Ban Land",
 		weaponType: "Hammer",
@@ -39,6 +41,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Basic Blade": {
 		id: 2,
 		cost: {
+			requiredRank: 1,
 			currency: "coins",
 			amount: 100,
 		},
@@ -50,6 +53,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Flower Blade": {
 		id: 3,
 		cost: {
+			requiredRank: 1,
 			currency: "coins",
 			amount: 150,
 		},
@@ -61,6 +65,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Stone Smacker": {
 		id: 4,
 		cost: {
+			requiredRank: 1,
 			currency: "coins",
 			amount: 200,
 		},

@@ -9,7 +9,7 @@ import { CurrentTalismanActions, currentTalismanReducer, CurrentTalismanState } 
 import { CurrentWeaponActions, currentWeaponReducer, CurrentWeaponState } from "./currentWeapon";
 import { DevProductActions, devProductReducer, DevProductState } from "./devProducts";
 import { EggsActions, eggsReducer, EggsState } from "./eggs";
-import { experienceReducer, ExperienceState } from "./experience";
+import { ExperienceActions, experienceReducer, ExperienceState } from "./experience";
 import { GamepassActions, gamepassesReducer, GamepassesState } from "./gamepasses";
 import { InvitedFriendActions, invitedFriendReducer, InvitedFriendState } from "./invitedFriend";
 import { MediaActions, mediaReducer, MediaState } from "./media";
@@ -65,6 +65,7 @@ export type StoreActions = (
 	| CurrenciesActions
 	| CurrentWeaponActions
 	| EggsActions
+	| ExperienceActions
 	| GamepassActions
 	| MediaActions
 	| MigratedBansActions

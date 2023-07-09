@@ -151,7 +151,7 @@ export const PrestigeCard = RoactRodux.connect(mapStateToProps)(
 		let currencyProgress = props.currencies[worldData.reward] / maxCurrencyProgress;
 		currencyProgress = currencyProgress > 1 ? 1 : currencyProgress;
 
-		let prestigeProgress = props.worldPrestige[props.worldName].currentPrestige / props.prestigeNumber;
+		let prestigeProgress = props.worldPrestige[props.worldName].currentPrestige / (props.prestigeNumber - 1);
 		prestigeProgress = prestigeProgress > 1 ? 1 : prestigeProgress;
 		prestigeProgress =
 			truePrestige === 1 && props.worldPrestige[props.worldName].currentPrestige === 0 ? 1 : prestigeProgress;

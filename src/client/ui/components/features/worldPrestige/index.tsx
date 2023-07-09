@@ -7,6 +7,7 @@ import { WorldName } from "shared/configs/worlds";
 import { WorldPrestigeInteractPrompt } from "./interactPrompt";
 import { WorldPrestigePath } from "./prestige";
 import { WorldPrestigeViewType } from "./prestigeEnum";
+import { WorldPrestigeUpgrades } from "./upgrades";
 
 /**
  * A feature allowing the player to prestige any given world for given rewards.
@@ -36,8 +37,9 @@ export const WorldPrestige = hooks(
 		if (props.isVisible) {
 			if (viewType === WorldPrestigeViewType.Prestige) {
 				return <WorldPrestigePath worldName={viewingWorld} setVisibility={props.setVisibility} />;
+			} else {
+				return <WorldPrestigeUpgrades worldName={viewingWorld} setVisibility={props.setVisibility} />;
 			}
-			return <></>;
 		} else {
 			return (
 				<>

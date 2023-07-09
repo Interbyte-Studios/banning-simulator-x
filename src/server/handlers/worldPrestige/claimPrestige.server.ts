@@ -6,6 +6,9 @@ import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { WORLDS } from "shared/configs/worlds";
 import { remotes } from "shared/remotes";
 import { awardCurrency } from "shared/rodux/currencies";
+import { unequipTalisman } from "shared/rodux/currentTalisman";
+import { changeWeapon } from "shared/rodux/currentWeapon";
+import { resetExperience } from "shared/rodux/experience";
 import { addPets } from "shared/rodux/pets";
 import { resetRank } from "shared/rodux/rank";
 import { claimPrestige } from "shared/rodux/worldPrestige";
@@ -71,6 +74,11 @@ remotes.Server.GetNamespace("worldPrestige")
 			store.dispatch(awardCurrency(worldConfig.reward, -store.getState().currencies[worldConfig.reward]));
 			store.dispatch(resetRank());
 			store.dispatch(resetZones(worldName));
+
+			// need to change this to the first weapon of the specified world
+			store.dispatch(changeWeapon(1));
+			store.dispatch(unequipTalisman());
+			store.dispatch(resetExperience());
 
 			// Now we check if they're prestige is a multiple of 10 up until 50, and if it is, we give them a special reward
 			const worldPrestigeRewards = WORLD_PRESTIGE.worldRewards[worldName];
