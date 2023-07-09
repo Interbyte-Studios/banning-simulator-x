@@ -16,6 +16,7 @@ import { ItemInventory } from "../components/features/items";
 import { PetMastery } from "../components/features/petMastery";
 import { Settings } from "../components/features/settings";
 import { Teleportation } from "../components/features/teleportation";
+import { WorldPrestige } from "../components/features/worldPrestige";
 import { RankUpgrade } from "../components/ranks/menu";
 import { TalismanTowerHandle } from "../components/shops/talismanShop";
 import { WeaponShopHandle } from "../components/shops/weaponShop";
@@ -53,6 +54,7 @@ const visibilityStates = {
 	settings: false,
 	codes: false,
 	robuxShop: false,
+	worldPrestige: false,
 };
 
 export const Main = hooks((props: AppProps, { useState, useEffect, useContext, useCallback, useMemo }) => {
@@ -262,12 +264,23 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 						setVisibility({ ...visibilityStates, fusing: value });
 					}}
 				/>,
+				<WorldPrestige
+					isVisible={false}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, worldPrestige: value })}
+				/>,
 				<WeaponLevelUpAnimation />,
 				<TalismanLevelUpAnimation />,
 				<CurrencyGainAnimation />,
 				<WeaponEquip />,
 				<RankUpgrade />,
 				<DatastoreEvents />,
+			);
+		} else if (isVisible("worldPrestige")) {
+			components.push(
+				<WorldPrestige
+					isVisible={true}
+					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, worldPrestige: value })}
+				/>,
 			);
 		} else if (isVisible("fusing")) {
 			components.push(

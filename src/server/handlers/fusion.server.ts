@@ -2,11 +2,13 @@ import { HttpService } from "@rbxts/services";
 import { modifyPetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { RARITIES } from "shared/configs/rarities";
+import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { remotes } from "shared/remotes";
 import { FusionFailKind } from "shared/remotes/fusing";
 import { awardCurrency } from "shared/rodux/currencies";
 import { addPets, ConfirmedPet, deletePets } from "shared/rodux/pets";
 import { getEggCost } from "shared/util/getEggCost";
+import { getEggData } from "shared/util/getEggData";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetData } from "shared/util/getPetData";
 
@@ -76,12 +78,20 @@ remotes.Server.Create("requestFusion").SetCallback(
 
 		// check that player has enough money
 		const eggName = getEggNameFromPetId(petId);
+		const eggData = getEggData(eggName);
 		const eggCost = getEggCost(eggName, true, 0);
 		let fusionCost = eggCost.amount / rarityId;
 		if (petData.fusionCost !== undefined) {
 			fusionCost = petData.fusionCost;
 		}
 		fusionCost = fusionCost * petsToFuse.size() * (variant === "radiant" ? 3 : variant === "void" ? 2 : 1);
+
+		if (eggData.world !== "Limited" && currentState.worldPrestige[eggData.world] !== undefined) {
+			fusionCost -=
+				fusionCost *
+				currentState.worldPrestige[eggData.world].reducedFusionCostUpgrades *
+				WORLD_PRESTIGE.reducedFusionCost.reducedCostMultiplier;
+		}
 
 		if (currentState.currencies[eggCost.currencyType] < fusionCost) {
 			return {

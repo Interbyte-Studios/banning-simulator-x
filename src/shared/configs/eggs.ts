@@ -15,6 +15,7 @@ import { MOLTEN_EGG_PETS } from "./pets/molten";
 import { RADIOACTIVE_EGG_PETS } from "./pets/radioactive";
 import { ROYALTY_EGG_PETS } from "./pets/royalty";
 import { STARTER_EGG_PETS } from "./pets/starter";
+import { WORLD_PRESTIGE_PETS } from "./pets/worldPrestige";
 import { WorldName } from "./worlds";
 import { ZoneNames } from "./zones";
 
@@ -179,6 +180,15 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 	Exclusive: {
 		id: 500,
 		pets: EXCLUSIVE_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: false,
+		hidden: false,
+		luckApplies: false,
+	},
+	WorldPrestige: {
+		id: 501,
+		pets: WORLD_PRESTIGE_PETS,
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,

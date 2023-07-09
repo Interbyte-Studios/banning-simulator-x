@@ -25,6 +25,7 @@ import { TalismanActions, talismanReducer, TalismansState } from "./talismans";
 import { TitleActions, titleReducer, TitleState } from "./title";
 import { TradeLogActions, tradeLogsReducer, TradeLogsState } from "./tradeLogs";
 import { WeaponsActions, weaponsReducer, WeaponsState } from "./weapons";
+import { WorldPrestigeActions, worldPrestigeReducer, WorldPrestigeState } from "./worldPrestige";
 import { WorldActions, worldsReducer, WorldsState } from "./worlds";
 
 export type StoreState = {
@@ -54,6 +55,7 @@ export type StoreState = {
 	tradeLogs: TradeLogsState;
 	weapons: WeaponsState;
 	worlds: WorldsState;
+	worldPrestige: WorldPrestigeState;
 };
 
 export type StoreActions = (
@@ -73,6 +75,7 @@ export type StoreActions = (
 	| TitleActions
 	| WeaponsActions
 	| WorldActions
+	| WorldPrestigeActions
 	| TalismanActions
 	| CurrentTalismanActions
 	| PetMasteryActions
@@ -102,6 +105,7 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	title: titleReducer,
 	weapons: weaponsReducer,
 	worlds: worldsReducer,
+	worldPrestige: worldPrestigeReducer,
 	talismans: talismanReducer,
 	currentTalisman: currentTalismanReducer,
 	index: playerIndexReducer,

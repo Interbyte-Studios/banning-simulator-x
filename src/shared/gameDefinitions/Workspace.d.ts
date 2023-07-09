@@ -15,6 +15,20 @@ declare global {
 			};
 		};
 		interactions: Folder & {
+			worldPrestige: Folder & {
+				[WORLD in keyof Worlds]: Folder & {
+					prestige: Folder & {
+						vendor: Model & {
+							primary: BasePart;
+						};
+					};
+					upgrades: Folder & {
+						vendor: Model & {
+							primary: BasePart;
+						};
+					};
+				};
+			};
 			chests: Folder & {
 				vip: Folder;
 				group: Folder;

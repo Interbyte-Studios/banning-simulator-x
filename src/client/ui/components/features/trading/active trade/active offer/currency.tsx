@@ -8,7 +8,6 @@ import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { hooks } from "client/ui/hooks";
-import { remoteContext } from "client/ui/mocks/remoteContext";
 import { PlayerTradeItem } from "shared/configs/trading";
 import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
@@ -34,7 +33,6 @@ enum TradedCurrency {
 export const ActiveCurrencyOffer = hooks((props: ActiveCurrencyOfferProps, hooks) => {
 	const { useState, useEffect, useContext } = hooks;
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
-	const clientTradeError = useContext(remoteContext).clientTradeError;
 
 	// state to cache when the currency is updated
 	const [updateTime, setUpdateTime] = useState(0);
@@ -53,7 +51,6 @@ export const ActiveCurrencyOffer = hooks((props: ActiveCurrencyOfferProps, hooks
 		addAnnouncement("There was an issue with the trade. It's been cancelled.", AnnouncementType.Error);
 
 		props.resetTrade();
-		clientTradeError.SendToServer();
 
 		return <></>;
 	}

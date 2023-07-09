@@ -23,6 +23,7 @@ import { talismans } from "./talismans";
 import { trading } from "./trading";
 import { unlockRankDefinition } from "./unlockRank";
 import { weapons } from "./weapons";
+import { worldPrestige } from "./worldPrestige";
 
 export const remotes = Net.Definitions.Create({
 	accolades: accolades,
@@ -36,6 +37,7 @@ export const remotes = Net.Definitions.Create({
 	rodux: roduxDefinitions,
 	settings: settings,
 	weapons: weapons,
+	worldPrestige: worldPrestige,
 	talismans: talismans,
 	trades: trading,
 

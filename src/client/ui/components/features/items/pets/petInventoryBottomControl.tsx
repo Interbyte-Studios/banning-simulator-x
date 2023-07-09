@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { Players } from "@rbxts/services";
 import { sortPets } from "client/modules/pets/sort";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
@@ -11,6 +12,7 @@ import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { GamepassesState } from "shared/rodux/gamepasses";
 import { PetsState } from "shared/rodux/pets";
+import { WorldPrestigeState } from "shared/rodux/worldPrestige";
 import { getMaxPetEquip } from "shared/util/getMaxPetEquip";
 
 interface PetInventoryBottomControlProps extends PetInventoryBottomControlMappedProps {
@@ -20,6 +22,7 @@ interface PetInventoryBottomControlProps extends PetInventoryBottomControlMapped
 interface PetInventoryBottomControlMappedProps {
 	pets: PetsState;
 	gamepasses: GamepassesState;
+	worldPrestige: WorldPrestigeState;
 }
 
 /**
@@ -30,6 +33,7 @@ function mapStateToProps(state: StoreState): PetInventoryBottomControlMappedProp
 	return {
 		pets: state.pets,
 		gamepasses: state.gamepasses,
+		worldPrestige: state.worldPrestige,
 	};
 }
 
@@ -54,7 +58,7 @@ export const EquipBestPets = RoactRodux.connect(mapStateToProps)(
 						playSFX(UIEngagement.MinorEngagement);
 						sortPets(props.pets, false, false);
 
-						const maxPetsEquipped = getMaxPetEquip(props.gamepasses);
+						const maxPetsEquipped = getMaxPetEquip(Players.LocalPlayer, props.gamepasses, props.worldPrestige);
 						const petsToEquip: Array<{ guid: string; enabled: boolean }> = [];
 						for (let i = 0; i < maxPetsEquipped; i++) {
 							const petToEquip = props.pets[i];

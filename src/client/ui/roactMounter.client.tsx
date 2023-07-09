@@ -24,6 +24,7 @@ import { titlesRemtoes } from "./remotes/titles";
 import { tradingRemotes } from "./remotes/trading";
 import { weaponsRemotes } from "./remotes/weapons";
 import { wheelSpinRemotes } from "./remotes/wheelSpin";
+import { worldPrestigeRemotes } from "./remotes/worldPrestige";
 import { zonesRemotes } from "./remotes/zones";
 
 const player = Players.LocalPlayer;
@@ -55,6 +56,7 @@ onStoreCreated(player)
 					...tradingRemotes,
 					...weaponsRemotes,
 					...wheelSpinRemotes,
+					...worldPrestigeRemotes,
 					...zonesRemotes,
 				}}
 			>

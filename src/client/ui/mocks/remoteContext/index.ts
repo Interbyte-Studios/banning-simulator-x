@@ -18,6 +18,7 @@ import { titlesRemoteContext } from "./remoteDefinitions/titles";
 import { tradingRemoteContext } from "./remoteDefinitions/trading";
 import { weaponsRemoteContext } from "./remoteDefinitions/weapons";
 import { wheelSpinRemoteContext } from "./remoteDefinitions/wheelSpin";
+import { worldPrestigeRemoteContext } from "./remoteDefinitions/worldPrestige";
 import { zonesRemoteContext } from "./remoteDefinitions/zones";
 
 /**
@@ -43,6 +44,7 @@ export const fakeRemoteContext = {
 	...fusionRemoteContext,
 	...tradingRemoteContext,
 	...boostsRemoteContext,
+	...worldPrestigeRemoteContext,
 };
 
 export const remoteContext = createContext(fakeRemoteContext);

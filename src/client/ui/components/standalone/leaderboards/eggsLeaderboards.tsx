@@ -113,7 +113,7 @@ export const EggLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 	const uiListLayoutRef = useValue(Roact.createRef<UIListLayout>());
 	useEffect(() => {
 		const uiListLayout = uiListLayoutRef.value.getValue();
-		assert(uiListLayout, `Failed to get Egg Leaderboards UIListLayout.`);
+		if (uiListLayout === undefined) return;
 
 		const scrollingFrame = uiListLayout.Parent;
 		assert(scrollingFrame, `Failed to get Egg Leaderboards ScrollingFrame.`);

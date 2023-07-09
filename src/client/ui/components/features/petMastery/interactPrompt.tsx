@@ -1,67 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
-import { Players, RunService } from "@rbxts/services";
 import { uiClaimButtonStrokeColor } from "client/ui/commonValues";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { getMagnitudeBetweenPlayerAndObject } from "shared/util/getDistanceFromObject";
-
-/**
- * The distance in studs that the player must be near the vendor adornee to display the interaction prompt.
- */
-const DISPLAY_DISTANCE = 25;
-
-/**
- * Checks if the pet mastery vendor's interaction prompt should display.
- *
- * @param character The character to check the magnitude for.
- * @param adornee The adornee to determine the distance from.
- * @returns If the egg hud should display.
- */
-function shouldDisplay(character: Model | undefined, adornee: BasePart): boolean {
-	if (!character) {
-		return false;
-	}
-
-	return (getMagnitudeBetweenPlayerAndObject(character, adornee) ?? math.huge) <= DISPLAY_DISTANCE;
-}
 
 /**
  * Displays a custom proximity prompt interface allowing the player to intract with the pet mastery component.
  */
-export const PetMasteryInteractPrompt = hooks((props: { adornee: BasePart; displayPetMastery: () => void }, hooks) => {
-	const { useState, useEffect } = hooks;
-	const [isDisplayed, setDisplay] = useState(false);
-
-	useEffect(() => {
-		const player = Players.LocalPlayer;
-
-		const connection = RunService.RenderStepped.Connect(() => {
-			debug.profilebegin("petMasteryInteractPrompt");
-			if (shouldDisplay(player.Character, props.adornee)) {
-				if (!isDisplayed) {
-					setDisplay(true);
-				}
-			} else {
-				if (isDisplayed) {
-					setDisplay(false);
-				}
-			}
-			debug.profileend();
-		});
-
-		return (): void => {
-			connection.Disconnect();
-		};
-	});
-
-	if (!isDisplayed) {
-		return <></>;
-	}
-
+export const PetMasteryInteractPrompt = hooks((props: { adornee: BasePart; displayPetMastery: () => void }) => {
 	return (
 		<billboardgui
 			Active={true}

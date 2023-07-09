@@ -109,7 +109,7 @@ export const Fusing = hooks(
 					<SpringImageButton
 						native={{
 							Position: UDim2.fromScale(0.5, 0.2),
-							Image: assetIds.images.vectors.PetPaw,
+							Image: assetIds.images.vectors.trading.Upgrade,
 						}}
 						size={{ minSize: 0.4, maxSize: 0.5 }}
 					>

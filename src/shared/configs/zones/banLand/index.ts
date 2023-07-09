@@ -108,7 +108,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		color: Color3.fromRGB(213, 115, 61),
 	},
 
-	// zone 9
+	// zone 10
 	"Enchanted Forest": {
 		id: 10,
 		npcs: [BAN_LAND_NPCS.enchantedGolem, BAN_LAND_NPCS.udzal],
@@ -120,7 +120,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		color: Color3.fromRGB(87, 122, 245),
 	},
 
-	// zone 9
+	// zone 11
 	"Toxic Lands": {
 		id: 11,
 		npcs: [BAN_LAND_NPCS.toxicSparkletimeKing, BAN_LAND_NPCS.toxicWastelander],
@@ -132,7 +132,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		color: Color3.fromRGB(66, 250, 10),
 	},
 
-	// zone 9
+	// zone 12
 	"Jester Castle": {
 		id: 12,
 		npcs: [BAN_LAND_NPCS.neonJester, BAN_LAND_NPCS.prince],
@@ -143,8 +143,4 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		},
 		color: Color3.fromRGB(247, 166, 99),
 	},
-
-	// zone 10 (Emerald)
-	// zone 11 (Draconic)
-	// zone 12 (Pendulum)
 });

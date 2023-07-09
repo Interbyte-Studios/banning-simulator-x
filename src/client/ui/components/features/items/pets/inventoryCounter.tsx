@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { Players } from "@rbxts/services";
 import { uiDarkStrokeColor } from "client/ui/commonValues";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
@@ -8,12 +9,14 @@ import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { GamepassesState } from "shared/rodux/gamepasses";
 import { PetsState } from "shared/rodux/pets";
+import { WorldPrestigeState } from "shared/rodux/worldPrestige";
 import { getMaxPetEquip } from "shared/util/getMaxPetEquip";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
 
 interface PetInventoryCounterMappedProps {
 	pets: PetsState;
 	gamepassesSize: GamepassesState;
+	worldPrestige: WorldPrestigeState;
 }
 
 /**
@@ -24,6 +27,7 @@ function petInventoryCounterMapStateToProps(state: StoreState): PetInventoryCoun
 	return {
 		pets: state.pets,
 		gamepassesSize: state.gamepasses,
+		worldPrestige: state.worldPrestige,
 	};
 }
 
@@ -47,7 +51,11 @@ export const PetsEquippedCounter = RoactRodux.connect(petInventoryCounterMapStat
 					native={{
 						Position: UDim2.fromScale(0.3, 0.5),
 						Size: UDim2.fromScale(0.3, 0.7),
-						Text: `${props.pets.filter((pet) => pet.equipped).size()}/${getMaxPetEquip(props.gamepassesSize)}`,
+						Text: `${props.pets.filter((pet) => pet.equipped).size()}/${getMaxPetEquip(
+							Players.LocalPlayer,
+							props.gamepassesSize,
+							props.worldPrestige,
+						)}`,
 						TextXAlignment: Enum.TextXAlignment.Left,
 					}}
 					stroke={{ native: { Thickness: 1.25, Color: uiDarkStrokeColor } }}
