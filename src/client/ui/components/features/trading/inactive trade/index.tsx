@@ -36,8 +36,7 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 	const [displaySendTradeRequest, setDisplaySentTradeRequest] = useState<Player | undefined>(undefined);
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
-	const { acceptTradeRequest, declineTradeRequest, requestTrading, declineOffer, tradeRequestDeclined } =
-		useContext(remoteContext);
+	const { acceptTradeRequest, declineTradeRequest, requestTrading, tradeRequestDeclined } = useContext(remoteContext);
 
 	useEffect(() => {
 		const connection = tradeRequestDeclined.Connect((player) => {
@@ -71,8 +70,7 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 					player={props.tradingPlayer}
 					acceptTrade={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
-							addAnnouncement(`Trading has been disabled. Try again later.`, AnnouncementType.Error);
-							declineOffer.SendToServer();
+							addAnnouncement(`Trading has been disabled. Rejoin.`, AnnouncementType.Error);
 							return;
 						}
 
@@ -89,10 +87,11 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 							throw `Attempted to decline a trade request, but the trading player is undefined.`;
 						}
 
-						addAnnouncement(`You declined ${props.tradingPlayer}'s trade request.`, AnnouncementType.Error);
+						warn(`Declined trade request`);
 						declineTradeRequest.SendToServer(props.tradingPlayer);
 						props.disableTradeRequest();
 						props.setTradingPlayer(undefined);
+						addAnnouncement(`You declined ${props.tradingPlayer}'s trade request.`, AnnouncementType.Error);
 					}}
 				/>
 			);

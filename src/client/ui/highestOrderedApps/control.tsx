@@ -51,6 +51,8 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 				}
 				addAnnouncement(`${receivingPlayer.Name} declined your trade.`, AnnouncementType.Error);
 
+				warn(`Receive trade offer decline`);
+
 				tradeAccepted.value = false;
 				tradeDeclined.value = false;
 				setIsTrading(false);
@@ -75,6 +77,8 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 					return;
 				}
 
+				warn(`Receive trade request accepted`);
+
 				tradeAccepted.value = false;
 				tradeDeclined.value = false;
 				setIsTrading(true);
@@ -98,6 +102,7 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 
 				tradeAccepted.value = false;
 				tradeDeclined.value = false;
+				warn(`Receive trade request declined`);
 
 				setTradingEnabled(false);
 				setTradingPlayer(undefined);
@@ -114,6 +119,8 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 					declineOffer.SendToServer();
 					return;
 				}
+
+				warn(`Received Trade Request`);
 
 				// we set trading enabled to true so that we can display only the trade request, and the player won't get distracted.
 				tradeAccepted.value = false;

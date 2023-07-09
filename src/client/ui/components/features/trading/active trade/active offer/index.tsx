@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
+import { setIsTrading } from "client/modules/isTradingCache";
 import { uiClaimButtonStrokeColor, uiOffButtonStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
@@ -116,6 +117,8 @@ export const ActiveOffer = hooks(
 							if (!canClickInActiveTrade()) {
 								return;
 							}
+
+							setIsTrading(false);
 							props.setConfirmation(false);
 						},
 					}}
