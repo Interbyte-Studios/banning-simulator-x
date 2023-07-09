@@ -7,7 +7,7 @@ export type WorldsState = Array<{
 	name: WorldName;
 	zones: Array<ZoneNames>;
 }>;
-export type WorldActions = UnlockWorld | UnlockZone;
+export type WorldActions = UnlockWorld | UnlockZone | ResetZones;
 
 export interface UnlockWorld extends Rodux.Action<"unlockWorld"> {
 	currency: {
@@ -27,12 +27,9 @@ export interface UnlockZone extends Rodux.Action<"unlockZone"> {
 	zoneName: ZoneNames;
 }
 
-export const defaultWorlds: WorldsState = [
-	{
-		name: "Ban Land",
-		zones: ["Forest"],
-	},
-];
+export interface ResetZones extends Rodux.Action<"resetZones"> {
+	worldName: WorldName;
+}
 
 /**
  * Purchases a zone, saving it to players owned zones.
@@ -48,6 +45,24 @@ export function unlockZone(data: Omit<UnlockZone, "type">): UnlockZone & Rodux.A
 		currency: data.currency,
 	};
 }
+
+/**
+ * @param worldName The name of the world to unlock.
+ * @returns The Rodux action to dispatch.
+ */
+export function resetZones(worldName: WorldName): ResetZones & Rodux.AnyAction {
+	return {
+		type: "resetZones",
+		worldName: worldName,
+	};
+}
+
+export const defaultWorlds: WorldsState = [
+	{
+		name: "Ban Land",
+		zones: ["Forest"],
+	},
+];
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const worldsReducer = Rodux.createReducer<WorldsState, WorldActions>(defaultWorlds, {
@@ -74,6 +89,22 @@ export const worldsReducer = Rodux.createReducer<WorldsState, WorldActions>(defa
 		newState[worldDataIndex] = newWorldData;
 
 		newWorldData.zones = [...newWorldData.zones, action.zoneName];
+
+		return newState;
+	},
+	resetZones: (state, action) => {
+		const newState = [...state];
+
+		// get existing unlocked world
+		const worldDataIndex = newState.findIndex((x) => x.name === action.worldName);
+		if (worldDataIndex === -1) {
+			warn(`[ Worlds Reducer | Unlock Zone ] - Failed to find world data for ${action.worldName}.`);
+			return newState;
+		}
+
+		const defaultWorldData = defaultWorlds.find((x) => x.name === action.worldName);
+		const newWorldData = defaultWorldData !== undefined ? defaultWorldData : { ...newState[worldDataIndex] };
+		newState[worldDataIndex] = newWorldData;
 
 		return newState;
 	},

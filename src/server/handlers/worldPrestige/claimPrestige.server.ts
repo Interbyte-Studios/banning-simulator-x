@@ -9,6 +9,7 @@ import { awardCurrency } from "shared/rodux/currencies";
 import { addPets } from "shared/rodux/pets";
 import { resetRank } from "shared/rodux/rank";
 import { claimPrestige } from "shared/rodux/worldPrestige";
+import { resetZones } from "shared/rodux/worlds";
 
 remotes.Server.GetNamespace("worldPrestige")
 	.Get("claimPrestige")
@@ -69,6 +70,7 @@ remotes.Server.GetNamespace("worldPrestige")
 			store.dispatch(claimPrestige(worldName, currentPrestige));
 			store.dispatch(awardCurrency(worldConfig.reward, -store.getState().currencies[worldConfig.reward]));
 			store.dispatch(resetRank());
+			store.dispatch(resetZones(worldName));
 
 			// Now we check if they're prestige is a multiple of 10 up until 50, and if it is, we give them a special reward
 			const worldPrestigeRewards = WORLD_PRESTIGE.worldRewards[worldName];
