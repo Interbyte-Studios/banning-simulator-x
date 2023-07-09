@@ -20,6 +20,7 @@ import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
 import { WorldPrestigeState } from "shared/rodux/worldPrestige";
 import { WorldsState } from "shared/rodux/worlds";
+import { isValidWorld } from "shared/util/isValidWorld";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 interface PrestigeCardProps extends PrestigeCardMappedProps {
@@ -155,7 +156,9 @@ export const PrestigeCard = RoactRodux.connect(mapStateToProps)(
 		prestigeProgress =
 			truePrestige === 1 && props.worldPrestige[props.worldName].currentPrestige === 0 ? 1 : prestigeProgress;
 
-		const accumulatedProgress = currencyProgress * 0.5 + prestigeProgress * 0.5;
+		let accumulatedProgress = currencyProgress * 0.5 + prestigeProgress * 0.5;
+		accumulatedProgress =
+			props.worldPrestige[props.worldName].currentPrestige >= props.prestigeNumber ? 1 : accumulatedProgress;
 
 		return (
 			<BaseFrame Size={UDim2.fromScale(1, 0.3)} LayoutOrder={truePrestige}>
@@ -242,19 +245,21 @@ export const PrestigeCard = RoactRodux.connect(mapStateToProps)(
 
 								// check to be sure this is the next rank
 								if (truePrestige > props.worldPrestige[props.worldName].currentPrestige + 1) {
-									warn(`Too high of a prestige`);
 									addAnnouncement("That prestige is too high to upgrade to!", AnnouncementType.Error);
 									return;
 								}
 
 								// not enough currency to unlock rank
 								if (props.currencies[worldData.reward] < maxCurrencyProgress) {
-									warn(`Not enough currency`);
 									addAnnouncement("Not enough currency to prestige.", AnnouncementType.Error);
 									return;
 								}
 
-								warn(`Claiming prestige!`);
+								if (!isValidWorld(props.worldName)) {
+									addAnnouncement("There is an issue. Please try again later.", AnnouncementType.Error);
+									return;
+								}
+
 								claimPrestige.SendToServer(props.worldName);
 							},
 							/* eslint-enable jsdoc/require-jsdoc */

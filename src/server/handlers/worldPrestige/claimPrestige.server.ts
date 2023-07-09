@@ -1,5 +1,5 @@
 import Object from "@rbxts/object-utils";
-import { HttpService } from "@rbxts/services";
+import { HttpService, Workspace } from "@rbxts/services";
 import { modifyPetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
@@ -12,15 +12,13 @@ import { claimPrestige } from "shared/rodux/worldPrestige";
 remotes.Server.GetNamespace("worldPrestige")
 	.Get("claimPrestige")
 	.Connect(
-		withPlayerStore((_, store, worldName) => {
-			warn(`Received claim prestige request for world ${worldName}`);
+		withPlayerStore((player, store, worldName) => {
 			const currentState = store.getState();
 
 			// check that user owns the world and all zones of the world they're prestiging
 			const worldConfig = WORLDS[worldName];
 			const storedWorldData = currentState.worlds.find((storedWorld) => storedWorld.name === worldName);
 			if (storedWorldData === undefined) {
-				warn(`No stored world data`);
 				return;
 			}
 
@@ -42,7 +40,6 @@ remotes.Server.GetNamespace("worldPrestige")
 				}
 			}
 			if (!ownsAllZones) {
-				warn(`Does not own all zones`);
 				return;
 			}
 
@@ -63,11 +60,9 @@ remotes.Server.GetNamespace("worldPrestige")
 
 			// now we check if the player has enough to prestige
 			if (currentState.currencies[lastZone.cost.currency] < prestigeCost) {
-				warn(`Not enough currency`);
 				return;
 			}
 
-			warn(`Prestige can be claimed`);
 			// they have all the zones, and have enough coins, so they can claim the prestige!
 			const currentPrestige = currentState.worldPrestige[worldName].currentPrestige;
 			store.dispatch(claimPrestige(worldName, currentPrestige));
@@ -106,5 +101,25 @@ remotes.Server.GetNamespace("worldPrestige")
 					break;
 				}
 			}
+
+			// set character back to spawn
+			const character = player.Character;
+			if (character === undefined) {
+				return;
+			}
+
+			const humanoid = character.FindFirstChildOfClass("Humanoid");
+			if (humanoid === undefined) {
+				return;
+			}
+
+			const rootPart = humanoid.RootPart as BasePart;
+			if (rootPart === undefined) {
+				return;
+			}
+
+			// set character back to spawn
+			// will need to change this to be the spawn of the world
+			rootPart.CFrame = new CFrame(Workspace.interactions.teleports.Forest.Position);
 		}),
 	);
