@@ -30,10 +30,10 @@ requestTradeRemote.Connect(
 			return;
 		}
 
-		requestTrade(player, store, targetPlayer);
-
-		// alert targetPlayer that a trade request was made
-		sendTradeRequestRemote.SendToPlayer(targetPlayer, player);
+		if (requestTrade(player, store, targetPlayer)) {
+			// alert targetPlayer that a trade request was made
+			sendTradeRequestRemote.SendToPlayer(targetPlayer, player);
+		}
 	}),
 );
 
