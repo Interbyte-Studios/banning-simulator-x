@@ -1,6 +1,7 @@
 import Roact from "@rbxts/roact";
 import { Workspace } from "@rbxts/services";
 import { hooks } from "client/ui/hooks";
+import { findFirstChildByNameWhichIsA } from "shared/util/findFirstChildByNameWhichIsA";
 
 import { BanLeaderboard } from "./bansLeaderboards";
 import { EggLeaderboard } from "./eggsLeaderboards";
@@ -13,7 +14,7 @@ import { EggLeaderboard } from "./eggsLeaderboards";
 export const Leaderboards = hooks(() => {
 	const banLeaderboards: Array<BasePart> = [];
 	Workspace.interactions.leaderboards.bans.GetChildren().forEach((leaderboard) => {
-		const basePart = leaderboard.FindFirstChild("board") as BasePart;
+		const basePart = findFirstChildByNameWhichIsA(leaderboard, "board", "BasePart");
 		if (basePart === undefined) {
 			return;
 		}
@@ -23,7 +24,7 @@ export const Leaderboards = hooks(() => {
 
 	const eggLeaderboards: Array<BasePart> = [];
 	Workspace.interactions.leaderboards.eggs.GetChildren().forEach((leaderboard) => {
-		const basePart = leaderboard.FindFirstChild("board") as BasePart;
+		const basePart = findFirstChildByNameWhichIsA(leaderboard, "board", "BasePart");
 		if (basePart === undefined) {
 			return;
 		}
@@ -31,15 +32,8 @@ export const Leaderboards = hooks(() => {
 		eggLeaderboards.push(basePart);
 	});
 
-	const banBoardComponents: Array<Roact.Element> = [];
-	banLeaderboards.forEach((basePart) => {
-		banBoardComponents.push(<BanLeaderboard adornee={basePart} />);
-	});
-
-	const eggBoardComponents: Array<Roact.Element> = [];
-	eggLeaderboards.forEach((basePart) => {
-		eggBoardComponents.push(<EggLeaderboard adornee={basePart} />);
-	});
+	const banBoardComponents = banLeaderboards.map((basePart) => <BanLeaderboard adornee={basePart} />);
+	const eggBoardComponents = eggLeaderboards.map((basePart) => <EggLeaderboard adornee={basePart} />);
 
 	return (
 		<>
