@@ -238,7 +238,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 										requestHatch.pets[0].autoDeleted,
 										props.gamepasses["Fast Hatch"],
 									);
-									task.wait(0.5);
+									task.wait(0.25);
 								}
 							} else {
 								task.wait(2);
