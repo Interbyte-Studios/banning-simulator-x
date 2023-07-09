@@ -24,10 +24,7 @@ export function requestTrade(player: Player, store: Store, targetPlayer: Player)
 
 	// make sure both players have trades enabled
 	const hasPrivateTrader =
-		playerStores
-			.map((store) => store.getState().settings.privacy.tradesEnabled)
-			.filter((hasTradesEnabled) => hasTradesEnabled)
-			.size() === 0;
+		playerStores.mapFiltered((store) => !store.getState().settings.privacy.tradesEnabled).size() > 0;
 	if (hasPrivateTrader) {
 		return;
 	}
