@@ -30,7 +30,7 @@ import { TalismanLevelUpAnimation } from "../components/standalone/notifications
 import { WeaponLevelUpAnimation } from "../components/standalone/notifications/weaponLevelUp";
 import { Rewards } from "../components/standalone/rewards";
 import { RobuxShop } from "../components/standalone/robuxShop";
-import { WeaponEquip } from "../components/standalone/weaponEquip/weaponEquip";
+import { WeaponEquip } from "../components/standalone/weapons/weaponEquip";
 import { ZonesUI } from "../components/standalone/zones";
 import { AnnouncementContext, AnnouncementType } from "../context/AnnouncementsAPI";
 import { hooks } from "../hooks";
@@ -67,24 +67,6 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
 
 	useEffect(() => {
-		// Equip weapon on Z press.
-		ContextActionService.BindAction(
-			"equipWeapon",
-			async (_, state) => {
-				if (state !== Enum.UserInputState.Begin) {
-					return;
-				}
-
-				if (props.store.getState().currentWeapon.equipped) {
-					unequipWeapon.SendToServer();
-				} else {
-					equipWeapon.SendToServer();
-				}
-			},
-			false,
-			Enum.KeyCode.Z,
-		);
-
 		// Open weapon, talisman, fusing, or mastery
 		ContextActionService.BindAction(
 			"openShop",

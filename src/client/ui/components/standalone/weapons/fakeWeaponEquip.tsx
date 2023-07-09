@@ -1,6 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { ContextActionService } from "@rbxts/services";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
@@ -21,6 +22,12 @@ interface FakeWeaponEquipMappedProps {
 	weaponEquipped: boolean;
 }
 
+const maximizedSize = 0.3;
+const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
+
+const minimizedSize = 0;
+const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
+
 /**
  * Maps the Rodux store's state to the props.
  *
@@ -35,17 +42,36 @@ function mapStateToProps(state: StoreState): FakeWeaponEquipMappedProps {
 
 export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 	hooks((props: FakeWeaponEquipProps, hooks) => {
-		const { useState, useContext } = hooks;
+		const { useState, useContext, useEffect } = hooks;
+
 		const [isHovering, setHovering] = useState(false);
 		const { equipWeapon, unequipWeapon } = useContext(remoteContext);
 
-		const maximizedSize = 0.3;
-		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-		const minimizedSize = 0;
-		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
-
 		const { motor, binding } = useBindingMotor(hooks, minimizedSize);
+
+		// bind to Z hotkey
+		useEffect(() => {
+			ContextActionService.BindAction(
+				"equipWeapon",
+				async (_, state) => {
+					if (state !== Enum.UserInputState.Begin) {
+						return;
+					}
+
+					if (props.weaponEquipped) {
+						unequipWeapon.SendToServer();
+					} else {
+						equipWeapon.SendToServer();
+					}
+				},
+				false,
+				Enum.KeyCode.Z,
+			);
+
+			return (): void => {
+				ContextActionService.UnbindAction("equipWeapon");
+			};
+		}, []);
 
 		return (
 			<ImageButton
@@ -56,8 +82,6 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 					// eslint-disable-next-line jsdoc/require-jsdoc
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
-
-						print(props.weaponEquipped);
 
 						if (props.weaponEquipped) {
 							unequipWeapon.SendToServer();
@@ -77,6 +101,7 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 					},
 				}}
 			>
+				{/* draw weapon name */}
 				<ImageLabel
 					native={{
 						Position: UDim2.fromScale(0.5, 0),
@@ -94,6 +119,7 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 					/>
 				</ImageLabel>
 
+				{/* draw "Z" activation key */}
 				<ImageLabel
 					native={{
 						BackgroundTransparency: 0,
@@ -115,6 +141,7 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 					/>
 				</ImageLabel>
 
+				{/* draw equipped green/red icon */}
 				<ImageLabel
 					native={{
 						BackgroundTransparency: 0,
