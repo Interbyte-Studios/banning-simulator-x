@@ -25,6 +25,11 @@ const requestTradeRemote = tradesNamespace.Get("requestTrade");
 const sendTradeRequestRemote = tradesNamespace.Get("sendTradeRequest");
 requestTradeRemote.Connect(
 	withPlayerStore((player, store, targetPlayer) => {
+		// ensure we are not trading with ourselves
+		if (targetPlayer === player) {
+			return;
+		}
+
 		requestTrade(player, store, targetPlayer);
 
 		// alert targetPlayer that a trade request was made
