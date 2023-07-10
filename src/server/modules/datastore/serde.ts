@@ -23,6 +23,7 @@ import { defaultSpinWheel } from "shared/rodux/spinWheel";
 import { defaultTalismans } from "shared/rodux/talismans";
 import { SerializedTradeLogState } from "shared/rodux/tradeLogs";
 import { defaultWeaponsState } from "shared/rodux/weapons";
+import { defaultWorldPrestigeState } from "shared/rodux/worldPrestige";
 import { defaultWorlds } from "shared/rodux/worlds";
 import { Modify } from "shared/util/modify";
 
@@ -72,6 +73,7 @@ export const profileTemplate: ProfileState = {
 	weapons: defaultWeaponsState,
 	worlds: defaultWorlds,
 	invitedFriend: defaultInvitedFriendState,
+	worldPrestige: defaultWorldPrestigeState,
 };
 
 /**

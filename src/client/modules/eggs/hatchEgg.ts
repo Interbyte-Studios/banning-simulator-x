@@ -16,6 +16,8 @@ import { ConfirmedPet } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
+import { setIsHatching } from "./isHatching";
+
 const player = Players.LocalPlayer;
 const playerGui = player.WaitForChild("PlayerGui") as PlayerGui;
 
@@ -80,6 +82,8 @@ export const animateSingleEggHatch = (
 ): void => {
 	const camera = Workspace.CurrentCamera;
 	assert(camera, `Failed to animate single egg hatch | Couldn't find camera.`);
+
+	setIsHatching(true);
 
 	// disable UI | note: would use roact, but due to Roact batching stateful updates, it's not possible to manipulate roact the way we need to :(
 	playerGui.GetChildren().forEach((instance) => {
@@ -316,6 +320,7 @@ export const animateSingleEggHatch = (
 			});
 		}
 	});
+	setIsHatching(false);
 };
 
 /**
@@ -334,6 +339,7 @@ export const animateTripleEggHatch = (
 ): void => {
 	const camera = Workspace.CurrentCamera;
 	assert(camera, `Failed to animate single egg hatch | Couldn't find camera.`);
+	setIsHatching(true);
 
 	// disable UI | note: would use roact, but due to Roact batching stateful updates, it's not possible to manipulate roact the way we need to :(
 	playerGui.GetChildren().forEach((instance) => {
@@ -666,4 +672,5 @@ export const animateTripleEggHatch = (
 			});
 		}
 	});
+	setIsHatching(false);
 };

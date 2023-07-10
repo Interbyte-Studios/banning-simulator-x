@@ -9,7 +9,7 @@ import { CurrentTalismanActions, currentTalismanReducer, CurrentTalismanState } 
 import { CurrentWeaponActions, currentWeaponReducer, CurrentWeaponState } from "./currentWeapon";
 import { DevProductActions, devProductReducer, DevProductState } from "./devProducts";
 import { EggsActions, eggsReducer, EggsState } from "./eggs";
-import { experienceReducer, ExperienceState } from "./experience";
+import { ExperienceActions, experienceReducer, ExperienceState } from "./experience";
 import { GamepassActions, gamepassesReducer, GamepassesState } from "./gamepasses";
 import { InvitedFriendActions, invitedFriendReducer, InvitedFriendState } from "./invitedFriend";
 import { MediaActions, mediaReducer, MediaState } from "./media";
@@ -25,6 +25,7 @@ import { TalismanActions, talismanReducer, TalismansState } from "./talismans";
 import { TitleActions, titleReducer, TitleState } from "./title";
 import { TradeLogActions, tradeLogsReducer, TradeLogsState } from "./tradeLogs";
 import { WeaponsActions, weaponsReducer, WeaponsState } from "./weapons";
+import { WorldPrestigeActions, worldPrestigeReducer, WorldPrestigeState } from "./worldPrestige";
 import { WorldActions, worldsReducer, WorldsState } from "./worlds";
 
 export type StoreState = {
@@ -54,6 +55,7 @@ export type StoreState = {
 	tradeLogs: TradeLogsState;
 	weapons: WeaponsState;
 	worlds: WorldsState;
+	worldPrestige: WorldPrestigeState;
 };
 
 export type StoreActions = (
@@ -63,6 +65,7 @@ export type StoreActions = (
 	| CurrenciesActions
 	| CurrentWeaponActions
 	| EggsActions
+	| ExperienceActions
 	| GamepassActions
 	| MediaActions
 	| MigratedBansActions
@@ -73,6 +76,7 @@ export type StoreActions = (
 	| TitleActions
 	| WeaponsActions
 	| WorldActions
+	| WorldPrestigeActions
 	| TalismanActions
 	| CurrentTalismanActions
 	| PetMasteryActions
@@ -102,6 +106,7 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	title: titleReducer,
 	weapons: weaponsReducer,
 	worlds: worldsReducer,
+	worldPrestige: worldPrestigeReducer,
 	talismans: talismanReducer,
 	currentTalisman: currentTalismanReducer,
 	index: playerIndexReducer,

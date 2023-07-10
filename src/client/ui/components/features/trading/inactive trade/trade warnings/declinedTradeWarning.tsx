@@ -12,11 +12,10 @@ import assetIds from "shared/assets";
  * Displays a warning when a trade is declined.
  *
  * @param props The props for the component.
- * @param props.player The player to display the warning for.
  * @param props.hideMenu The function to hide the menu.
  * @returns The Roact element to render.
  */
-export const DeclinedTradeWarning = (props: { player: Player; hideMenu: () => void }): Roact.Element => {
+export const DeclinedTradeWarning = (props: { hideMenu: () => void }): Roact.Element => {
 	return (
 		<BaseFrame Size={UDim2.fromScale(0.975, 0.9)}>
 			<ImageButton

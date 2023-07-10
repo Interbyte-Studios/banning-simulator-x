@@ -11,11 +11,14 @@ import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
 import { Pet, Variants } from "shared/configs/pets";
+import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { StoreState } from "shared/rodux";
 import { EggsState } from "shared/rodux/eggs";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
+import { WorldPrestigeState } from "shared/rodux/worldPrestige";
 import { getMagnitudeBetweenPlayerAndObject } from "shared/util/getDistanceFromObject";
 import { getEggCost } from "shared/util/getEggCost";
+import { getEggData } from "shared/util/getEggData";
 import { getEggsMastery } from "shared/util/getEggsMastery";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
@@ -39,6 +42,7 @@ interface EggHudProps extends EggHudMappedProps {
 interface EggHudMappedProps {
 	index: PlayerIndexState;
 	eggs: EggsState;
+	worldPrestige: WorldPrestigeState;
 }
 
 /**
@@ -51,6 +55,7 @@ function mapStateToProps(state: StoreState): EggHudMappedProps {
 	return {
 		index: state.index,
 		eggs: state.eggs,
+		worldPrestige: state.worldPrestige,
 	};
 }
 
@@ -89,6 +94,13 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 		const eggMasteryReducedMultiplier = getEggsMastery(props.eggs).reducedEggCostMultiplier;
 		const eggCost = getEggCost(props.eggName, props.isVoid, eggMasteryReducedMultiplier);
 
+		const eggData = getEggData(props.eggName);
+		let reducedVoidCost = 0;
+		if (eggData.world !== "Limited" && props.isVoid) {
+			const worldPrestigeReducer = props.worldPrestige[eggData.world].reducedVoidEggCostUpgrades;
+			reducedVoidCost = eggCost.amount * worldPrestigeReducer * WORLD_PRESTIGE.reducedVoidEggCost.reducedCostMultiplier;
+		}
+
 		useEffect(() => {
 			const player = Players.LocalPlayer;
 
@@ -125,7 +137,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 				>
 					<HatchEggButton eggName={props.eggName} isVoid={props.isVoid} handleHatch={props.handleHatch} />
 					<TripleHatchEggButton eggName={props.eggName} isVoid={props.isVoid} handleHatch={props.handleHatch} />
-					<ToggleAutoHatchButton petsSize={props.possiblePets.size()} />
+					{props.eggName !== "Radioactive" && <ToggleAutoHatchButton petsSize={props.possiblePets.size()} />}
 
 					<ImageLabel
 						native={{
@@ -193,25 +205,32 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 							})}
 						</BaseFrame>
 
-						<StrokeTextLabel
-							native={{
-								Position: props.possiblePets.size() <= 6 ? UDim2.fromScale(0.65, 0.9) : UDim2.fromScale(0.65, 0.91),
-								Size: props.possiblePets.size() <= 6 ? UDim2.fromScale(0.3, 0.15) : UDim2.fromScale(0.3, 0.125),
-								Text: twoDpAbbreviator.numberToString(eggCost.amount),
-								TextXAlignment: Enum.TextXAlignment.Left,
-							}}
-							stroke={{
-								native: { Thickness: 2.5, Color: Color3.fromRGB(255, 255, 255) },
-								currencyGradient: eggCost.currencyType,
-							}}
-						>
-							<CurrencyIcon
-								anchorPoint={new Vector2(1, 0.5)}
-								position={UDim2.fromScale(-0.03, 0.5)}
-								size={{ minimizedSize: 0.9, maximizedSize: 1 }}
-								currency={eggCost.currencyType}
-							/>
-						</StrokeTextLabel>
+						{props.eggName !== "Radioactive" && (
+							<StrokeTextLabel
+								native={{
+									Position: props.possiblePets.size() <= 6 ? UDim2.fromScale(0.65, 0.9) : UDim2.fromScale(0.65, 0.91),
+									Size: props.possiblePets.size() <= 6 ? UDim2.fromScale(0.3, 0.15) : UDim2.fromScale(0.3, 0.125),
+									Text: twoDpAbbreviator.numberToString(
+										props.isVoid ? eggCost.amount - reducedVoidCost : eggCost.amount,
+									),
+									TextXAlignment: Enum.TextXAlignment.Left,
+								}}
+								stroke={{
+									native: {
+										Thickness: 2.5,
+										Color: Color3.fromRGB(255, 255, 255),
+									},
+									currencyGradient: eggCost.currencyType,
+								}}
+							>
+								<CurrencyIcon
+									anchorPoint={new Vector2(1, 0.5)}
+									position={UDim2.fromScale(-0.03, 0.5)}
+									size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+									currency={eggCost.currencyType}
+								/>
+							</StrokeTextLabel>
+						)}
 					</ImageLabel>
 				</billboardgui>
 			);

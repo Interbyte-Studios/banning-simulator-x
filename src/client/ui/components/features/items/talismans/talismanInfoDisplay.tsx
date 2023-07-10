@@ -1,7 +1,9 @@
 import Flipper from "@rbxts/flipper";
+import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { font, vec2Middle } from "client/ui/commonValues";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { ExitButton } from "client/ui/elements/common/exitButton";
@@ -14,9 +16,10 @@ import { remoteContext } from "client/ui/mocks/remoteContext";
 import { getTalismanDecal } from "client/util/getTalismanDecal";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { TALISMAN_PHASES } from "shared/configs/talismans";
+import { TALISMAN_PHASES, TALISMANS } from "shared/configs/talismans";
 import { StoreState } from "shared/rodux";
 import { CurrentTalismanState } from "shared/rodux/currentTalisman";
+import { RankState } from "shared/rodux/rank";
 import { Talisman, TalismansState } from "shared/rodux/talismans";
 import { getTalismanStatEffect } from "shared/util/getTalismanDamage";
 import { getTalismanData } from "shared/util/getTalismanData";
@@ -82,6 +85,7 @@ interface EquipTalismanProps extends TalismanInfoDisplayMappedProps {
 interface TalismanInfoDisplayMappedProps {
 	talismans: TalismansState;
 	currentTalisman: CurrentTalismanState;
+	rank: RankState;
 }
 
 /**
@@ -92,6 +96,7 @@ function mapStateToProps(state: StoreState): TalismanInfoDisplayMappedProps {
 	return {
 		talismans: state.talismans,
 		currentTalisman: state.currentTalisman,
+		rank: state.rank,
 	};
 }
 
@@ -111,6 +116,7 @@ const EquipTalisman = RoactRodux.connect(mapStateToProps)(
 
 		const { useContext } = hooks;
 		const { equipTalisman, unequipTalisman } = useContext(remoteContext);
+		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 		return (
 			<imagebutton
@@ -133,6 +139,16 @@ const EquipTalisman = RoactRodux.connect(mapStateToProps)(
 						if (props.storedTalisman.id === props.currentTalisman) {
 							unequipTalisman.SendToServer();
 						} else {
+							const talismanData = Object.values(TALISMANS).find((talisman) => talisman.id === props.storedTalisman.id);
+							if (talismanData === undefined) {
+								warn(`Failed to equip weapon | Weapon data could not be found [Items - Weapons]`);
+								addAnnouncement(`There was an error while equipping your talisman.`, AnnouncementType.Error);
+								return;
+							}
+							if (props.rank < talismanData.cost.rank) {
+								addAnnouncement(`You aren't a high enough rank to equip that talisman!`, AnnouncementType.Error);
+								return;
+							}
 							equipTalisman.SendToServer(props.storedTalisman.id);
 						}
 					},

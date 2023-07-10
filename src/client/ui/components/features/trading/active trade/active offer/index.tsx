@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
+import { setIsTrading } from "client/modules/isTradingCache";
 import { uiClaimButtonStrokeColor, uiOffButtonStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
@@ -10,6 +11,7 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { PlayerTradeItem } from "shared/configs/trading";
 
+import { canClickInActiveTrade } from "../canClick";
 import { ActiveTradeOffer } from "./offer";
 
 /**
@@ -80,6 +82,10 @@ export const ActiveOffer = hooks(
 								return;
 							}
 
+							if (!canClickInActiveTrade()) {
+								return;
+							}
+
 							props.setConfirmation(true);
 						},
 					}}
@@ -108,6 +114,11 @@ export const ActiveOffer = hooks(
 						 */
 						Activated: (): void => {
 							playSFX(UIEngagement.MinorEngagement);
+							if (!canClickInActiveTrade()) {
+								return;
+							}
+
+							setIsTrading(false);
 							props.setConfirmation(false);
 						},
 					}}

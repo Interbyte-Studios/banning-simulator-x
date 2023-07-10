@@ -10,6 +10,7 @@ import assetIds from "shared/assets";
 import { PlayerTradeItem } from "shared/configs/trading";
 
 import { PlayerHeadshot } from "../active offer/offer";
+import { canClickInActiveTrade } from "../canClick";
 import { Offer } from "./confirmedOfferUtil/offer";
 
 /**
@@ -29,12 +30,23 @@ export const FinalizedTradeOffer = hooks(
 			confirmed: boolean;
 		};
 		setConfirmed: (value: boolean) => void;
+		resetTrade: () => void; // for error handling, in case of abandoned trade
 	}) => {
 		return (
 			<>
 				<BaseFrame Position={UDim2.fromScale(0.5, 0.5)} Size={UDim2.fromScale(1, 1)}>
-					<Offer player={Players.LocalPlayer} confirmed={props.local.confirmed} offerData={props.local.offer} />
-					<Offer player={props.foreign.player} confirmed={props.foreign.confirmed} offerData={props.foreign.offer} />
+					<Offer
+						player={Players.LocalPlayer}
+						confirmed={props.local.confirmed}
+						offerData={props.local.offer}
+						resetTrade={props.resetTrade}
+					/>
+					<Offer
+						player={props.foreign.player}
+						confirmed={props.foreign.confirmed}
+						offerData={props.foreign.offer}
+						resetTrade={props.resetTrade}
+					/>
 
 					<PlayerHeadshot player={Players.LocalPlayer} />
 					<PlayerHeadshot player={props.foreign.player} />
@@ -65,6 +77,10 @@ export const FinalizedTradeOffer = hooks(
 									return;
 								}
 
+								if (!canClickInActiveTrade()) {
+									return;
+								}
+
 								props.setConfirmed(true);
 							},
 						}}
@@ -90,6 +106,11 @@ export const FinalizedTradeOffer = hooks(
 							 */
 							Activated: (): void => {
 								playSFX(UIEngagement.MinorEngagement);
+
+								if (!canClickInActiveTrade()) {
+									return;
+								}
+
 								props.setConfirmed(false);
 							},
 						}}

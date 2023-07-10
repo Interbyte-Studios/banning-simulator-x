@@ -11,6 +11,7 @@ import { fusionRequestDefinition } from "./fusing";
 import { media } from "./media";
 import { petMastery } from "./petMastery";
 import { pets } from "./pets";
+import { playerLoaded } from "./playerLoaded";
 import { purchaseZoneDefinition } from "./purchaseZone";
 import { redeemQuestDefinition } from "./redeemQuest";
 import { rewardsDefinition } from "./rewards";
@@ -22,6 +23,7 @@ import { talismans } from "./talismans";
 import { trading } from "./trading";
 import { unlockRankDefinition } from "./unlockRank";
 import { weapons } from "./weapons";
+import { worldPrestige } from "./worldPrestige";
 
 export const remotes = Net.Definitions.Create({
 	accolades: accolades,
@@ -30,10 +32,12 @@ export const remotes = Net.Definitions.Create({
 	media: media,
 	pets: pets,
 	petMastery: petMastery,
+	playerLoaded: playerLoaded,
 	rewards: rewardsDefinition,
 	rodux: roduxDefinitions,
 	settings: settings,
 	weapons: weapons,
+	worldPrestige: worldPrestige,
 	talismans: talismans,
 	trades: trading,
 

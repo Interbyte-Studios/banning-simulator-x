@@ -36,27 +36,92 @@ export const TradeList = hooks(
 		{ useValue, useEffect, useState },
 	) => {
 		// state of the players in the game
-		const [playersInGame, setPlayersInGame] = useState<Array<Player>>(
-			Players.GetPlayers().filter((player) => player !== Players.LocalPlayer),
-		);
+		const [playersInGame, setPlayersInGame] = useState<Array<Player>>([]);
 
-		// updates the state of the players in the game
+		// populates the initial state
 		useEffect(() => {
-			const addedConnection = Players.PlayerAdded.Connect(() => {
-				task.delay(8, (): void =>
-					setPlayersInGame(Players.GetPlayers().filter((player) => player !== Players.LocalPlayer)),
-				);
+			for (const player of Players.GetPlayers()) {
+				if (player.UserId === Players.LocalPlayer.UserId) {
+					continue;
+				}
+
+				let hasClickedPlay = player.FindFirstChild("HasClickedPlay") !== undefined;
+				let roactMounted = player.FindFirstChild("RoactMounted") !== undefined;
+				if (hasClickedPlay && roactMounted) {
+					if (playersInGame.includes(player)) {
+						return;
+					}
+
+					setPlayersInGame([...playersInGame, player]);
+				}
+
+				player.ChildAdded.Connect((child) => {
+					if (playersInGame.includes(player)) {
+						return;
+					}
+
+					if (!hasClickedPlay) {
+						hasClickedPlay = child.Name === "HasClickedPlay";
+					}
+
+					if (!roactMounted) {
+						roactMounted = child.Name === "RoactMounted";
+					}
+
+					if (hasClickedPlay && roactMounted) {
+						setPlayersInGame([...playersInGame, player]);
+					}
+				});
+			}
+
+			const addedConnection = Players.PlayerAdded.Connect((player) => {
+				let hasClickedPlay = player.FindFirstChild("HasClickedPlay") !== undefined;
+				let roactMounted = player.FindFirstChild("RoactMounted") !== undefined;
+				if (hasClickedPlay && roactMounted) {
+					if (playersInGame.includes(player)) {
+						return;
+					}
+					setPlayersInGame([...playersInGame, player]);
+				}
+
+				player.ChildAdded.Connect((child) => {
+					if (playersInGame.includes(player)) {
+						return;
+					}
+
+					if (!hasClickedPlay) {
+						hasClickedPlay = child.Name === "HasClickedPlay";
+					}
+
+					if (!roactMounted) {
+						roactMounted = child.Name === "RoactMounted";
+					}
+
+					if (hasClickedPlay && roactMounted) {
+						setPlayersInGame([...playersInGame, player]);
+					}
+				});
 			});
 
-			const removedConnection = Players.PlayerRemoving.Connect(() =>
-				setPlayersInGame(Players.GetPlayers().filter((player) => player !== Players.LocalPlayer)),
-			);
+			const removedConnection = Players.PlayerRemoving.Connect(() => {
+				const players: Array<Player> = [];
+				for (const player of Players.GetPlayers()) {
+					if (player !== Players.LocalPlayer) {
+						const hasClickedPlay = player.FindFirstChild("HasClickedPlay") !== undefined;
+						const roactMounted = player.FindFirstChild("RoactMounted") !== undefined;
+						if (hasClickedPlay && roactMounted) {
+							players.push(player);
+						}
+					}
+				}
+				setPlayersInGame(players);
+			});
 
 			return (): void => {
 				addedConnection.Disconnect();
 				removedConnection.Disconnect();
 			};
-		});
+		}, [playersInGame]);
 
 		// scaling of the list
 		const uiListLayoutRef = useValue(Roact.createRef<UIListLayout>());

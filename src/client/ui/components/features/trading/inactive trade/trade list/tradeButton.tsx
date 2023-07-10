@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Players } from "@rbxts/services";
+import { Players, ReplicatedStorage } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
 import { uiClaimButtonStrokeColor } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
@@ -9,6 +9,7 @@ import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/stro
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
+import { TRADING_ATTRIBUTE } from "shared/trading/tradingAttributes";
 
 interface TradeButtonProps extends TradeButtonMappedProps {
 	player: Player;
@@ -41,26 +42,79 @@ function mapStateToProps(state: StoreState): TradeButtonMappedProps {
  */
 export const TradeButton = RoactRodux.connect(mapStateToProps)(
 	hooks((props: TradeButtonProps, hooks) => {
-		const playerStore = retrieveStore(props.player);
+		const { useContext, useEffect, useState } = hooks;
+		const [canTrade, setCanTrade] = useState(false);
 
-		const { useContext } = hooks;
+		const playerStore = retrieveStore(props.player);
 		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
-		const hasPrivateTrader =
-			!props.tradesEnabled || (playerStore !== undefined && !playerStore.getState().settings.privacy.tradesEnabled);
+		useEffect(() => {
+			const tradingEnabled = ReplicatedStorage.events.trading.enabled.Value;
 
-		const hasSentTrade = Players.LocalPlayer.GetAttribute("tradingPair");
-		const otherPlayerHasSentTrade = props.player.GetAttribute("tradingPair");
+			const hasPrivateTrader =
+				!props.tradesEnabled || (playerStore !== undefined && !playerStore.getState().settings.privacy.tradesEnabled);
+
+			const hasSentTrade = Players.LocalPlayer.GetAttribute(TRADING_ATTRIBUTE);
+			const otherPlayerHasSentTrade = props.player.GetAttribute(TRADING_ATTRIBUTE);
+
+			setCanTrade(
+				tradingEnabled && !hasPrivateTrader && hasSentTrade === undefined && otherPlayerHasSentTrade === undefined,
+			);
+
+			const connections = [
+				ReplicatedStorage.events.trading.enabled.Changed.Connect(() => {
+					const tradingEnabled = ReplicatedStorage.events.trading.enabled.Value;
+
+					const hasPrivateTrader =
+						!props.tradesEnabled ||
+						(playerStore !== undefined && !playerStore.getState().settings.privacy.tradesEnabled);
+
+					const hasSentTrade = Players.LocalPlayer.GetAttribute(TRADING_ATTRIBUTE);
+					const otherPlayerHasSentTrade = props.player.GetAttribute(TRADING_ATTRIBUTE);
+
+					setCanTrade(
+						tradingEnabled && !hasPrivateTrader && hasSentTrade === undefined && otherPlayerHasSentTrade === undefined,
+					);
+				}),
+				Players.LocalPlayer.GetAttributeChangedSignal(TRADING_ATTRIBUTE).Connect(() => {
+					const tradingEnabled = ReplicatedStorage.events.trading.enabled.Value;
+
+					const hasPrivateTrader =
+						!props.tradesEnabled ||
+						(playerStore !== undefined && !playerStore.getState().settings.privacy.tradesEnabled);
+
+					const hasSentTrade = Players.LocalPlayer.GetAttribute(TRADING_ATTRIBUTE);
+					const otherPlayerHasSentTrade = props.player.GetAttribute(TRADING_ATTRIBUTE);
+
+					setCanTrade(
+						tradingEnabled && !hasPrivateTrader && hasSentTrade === undefined && otherPlayerHasSentTrade === undefined,
+					);
+				}),
+				props.player.GetAttributeChangedSignal(TRADING_ATTRIBUTE).Connect(() => {
+					const tradingEnabled = ReplicatedStorage.events.trading.enabled.Value;
+
+					const hasPrivateTrader =
+						!props.tradesEnabled ||
+						(playerStore !== undefined && !playerStore.getState().settings.privacy.tradesEnabled);
+
+					const hasSentTrade = Players.LocalPlayer.GetAttribute(TRADING_ATTRIBUTE);
+					const otherPlayerHasSentTrade = props.player.GetAttribute(TRADING_ATTRIBUTE);
+
+					setCanTrade(
+						tradingEnabled && !hasPrivateTrader && hasSentTrade === undefined && otherPlayerHasSentTrade === undefined,
+					);
+				}),
+			];
+
+			return (): void => connections.forEach((connection) => connection.Disconnect());
+		}, [props.tradesEnabled]);
 
 		return (
 			<SpringImageButton
 				native={{
 					Position: UDim2.fromScale(0.85, 0.5),
 					Image: assetIds.images.ui.index.Claim,
-					ImageColor3:
-						!hasPrivateTrader && hasSentTrade === undefined && otherPlayerHasSentTrade === undefined
-							? Color3.fromRGB(255, 255, 255)
-							: Color3.fromRGB(129, 129, 129),
+					ImageColor3: canTrade ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(129, 129, 129),
 				}}
 				size={{ maxSize: 0.7, minSize: 0.6 }}
 				events={{
@@ -71,17 +125,22 @@ export const TradeButton = RoactRodux.connect(mapStateToProps)(
 							return;
 						}
 
+						if (playerStore === undefined) {
+							addAnnouncement("There was an issue with your trades. Please rejoin.", AnnouncementType.Error);
+							return;
+						}
+
 						if (playerStore !== undefined && !playerStore.getState().settings.privacy.tradesEnabled) {
 							addAnnouncement(`${props.player.Name}'s trades are currently disabled.`, AnnouncementType.Announcement);
 							return;
 						}
 
-						if (hasSentTrade !== undefined) {
+						if (Players.LocalPlayer.GetAttribute(TRADING_ATTRIBUTE) !== undefined) {
 							addAnnouncement("You already have a sent trade.", AnnouncementType.Announcement);
 							return;
 						}
 
-						if (otherPlayerHasSentTrade !== undefined) {
+						if (props.player.GetAttribute(TRADING_ATTRIBUTE) !== undefined) {
 							addAnnouncement(`${props.player.Name} is in a trade.`, AnnouncementType.Announcement);
 							return;
 						}
@@ -99,7 +158,7 @@ export const TradeButton = RoactRodux.connect(mapStateToProps)(
 						Position: UDim2.fromScale(0.5, 0.5),
 						Size: UDim2.fromScale(0.8, 0.8),
 						Text: "Trade",
-						TextColor3: !hasPrivateTrader ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(175, 175, 175),
+						TextColor3: canTrade ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(175, 175, 175),
 					}}
 					stroke={{ native: { Thickness: 1.5, Color: uiClaimButtonStrokeColor } }}
 				/>

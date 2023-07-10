@@ -1,27 +1,12 @@
-import { Players } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
-import { onStoreCreated } from "server/playerStore";
 import { remotes } from "shared/remotes";
 import { equipPets } from "shared/rodux/pets";
 import { getMaxPetEquip } from "shared/util/getMaxPetEquip";
 
-Players.PlayerAdded.Connect(async (player) => {
-	const store = await onStoreCreated(player);
-
-	if (
-		store
-			.getState()
-			.pets.filter((pet) => pet.equipped)
-			.size() > getMaxPetEquip(store.getState().gamepasses)
-	) {
-		store.dispatch(equipPets([], true));
-	}
-});
-
 remotes.Server.GetNamespace("pets")
 	.Create("equipPets")
 	.Connect(
-		withPlayerStore((_, store, pets, unequipAll) => {
+		withPlayerStore((player, store, pets, unequipAll) => {
 			const currentState = store.getState();
 
 			// verify that they own the pets
@@ -35,16 +20,18 @@ remotes.Server.GetNamespace("pets")
 				petsToEquip.push(petToEquip);
 			}
 
+			const maxPetEquip = getMaxPetEquip(player, currentState.gamepasses, currentState.worldPrestige);
+
 			const currentlyEquippedPets = currentState.pets.filter(
 				(pet) => pet.equipped && !petsToEquip.find((newPet) => newPet.guid === pet.guid),
 			);
 			const newlyEquippedPets = petsToEquip.filter((pet) => pet.enabled);
 			if (unequipAll) {
-				if (newlyEquippedPets.size() > getMaxPetEquip(currentState.gamepasses)) {
+				if (newlyEquippedPets.size() > maxPetEquip) {
 					return;
 				}
 			} else {
-				if (currentlyEquippedPets.size() + newlyEquippedPets.size() > getMaxPetEquip(currentState.gamepasses)) {
+				if (currentlyEquippedPets.size() + newlyEquippedPets.size() > maxPetEquip) {
 					return;
 				}
 			}

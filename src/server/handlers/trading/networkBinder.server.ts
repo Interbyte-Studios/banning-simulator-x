@@ -25,10 +25,15 @@ const requestTradeRemote = tradesNamespace.Get("requestTrade");
 const sendTradeRequestRemote = tradesNamespace.Get("sendTradeRequest");
 requestTradeRemote.Connect(
 	withPlayerStore((player, store, targetPlayer) => {
-		requestTrade(player, store, targetPlayer);
+		// ensure we are not trading with ourselves
+		if (targetPlayer === player) {
+			return;
+		}
 
-		// alert targetPlayer that a trade request was made
-		sendTradeRequestRemote.SendToPlayer(targetPlayer, player);
+		if (requestTrade(player, store, targetPlayer)) {
+			// alert targetPlayer that a trade request was made
+			sendTradeRequestRemote.SendToPlayer(targetPlayer, player);
+		}
 	}),
 );
 
@@ -65,7 +70,6 @@ modifyOffer.Connect(
 		if (!modifyTrade(player, store, offer)) {
 			// failed to modify trade
 			// we should tell the player to not modify
-			print("Issue with modified trade. Not finalizing the modification.");
 			return offerChanged.SendToPlayer(player, player, getTradeItems(player));
 		}
 
@@ -86,7 +90,6 @@ confirmOffer.Connect((player) => {
 	if (!confirmTradeOffer(player)) {
 		// failed to confirm trade
 		// we should tell the player to not confirm
-		print("Issue with confirming trade. Not finalizing the trade.");
 		return offerConfirmed.SendToPlayer(player, player, getTradeItems(player));
 	}
 	offerConfirmed.SendToPlayer(getTradingCounterParty(player), player, getTradeItems(player));
@@ -123,7 +126,6 @@ confirmFinalizedTrade.Connect(
 		if (!confirmFinalizedTradeOffer(player, store)) {
 			// failed to confirm trade
 			// we should tell the player to not confirm
-			print("Issue with confirming trade. Not finalizing the trade.");
 			return finalizedTradeConfirmed.SendToPlayer(player, player, getTradeItems(player));
 		}
 		finalizedTradeConfirmed.SendToPlayer(getTradingCounterParty(player), player, getTradeItems(player));

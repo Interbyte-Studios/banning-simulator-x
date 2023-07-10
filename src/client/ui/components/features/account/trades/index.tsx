@@ -34,10 +34,19 @@ interface TradeHistoryProps {
  * @param props.size The component's size.
  * @returns The player's image.
  */
-const PlayerImage = (props: { playerId: number; position: UDim2; size: UDim2 }): Roact.Element => {
+const PlayerImage = hooks((props: { playerId: number; position: UDim2; size: UDim2 }, { useState, useEffect }) => {
 	const thumbnailType = Enum.ThumbnailType.HeadShot;
 	const thumbnailSize = Enum.ThumbnailSize.Size420x420;
-	const [content, isReady] = Players.GetUserThumbnailAsync(props.playerId, thumbnailType, thumbnailSize);
+
+	const [content, setContent] = useState("");
+	useEffect(() => {
+		task.spawn(() => {
+			const [content, isReady] = Players.GetUserThumbnailAsync(props.playerId, thumbnailType, thumbnailSize);
+			if (isReady && content) {
+				setContent(content);
+			}
+		});
+	}, [props.playerId]);
 
 	return (
 		<BaseFrame
@@ -52,14 +61,14 @@ const PlayerImage = (props: { playerId: number; position: UDim2; size: UDim2 }):
 
 			<ImageLabel
 				native={{
-					Image: isReady && content ? content : "",
+					Image: content,
 				}}
 			>
 				<uicorner CornerRadius={new UDim(1, 0)} />
 			</ImageLabel>
 		</BaseFrame>
 	);
-};
+});
 
 /**
  * A player pet offer.

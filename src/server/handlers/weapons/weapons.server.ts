@@ -1,5 +1,7 @@
+import Object from "@rbxts/object-utils";
 import { Players, ReplicatedStorage } from "@rbxts/services";
 import { onStoreCreated } from "server/playerStore";
+import { WEAPONS } from "shared/configs/weapons";
 import { remotes } from "shared/remotes";
 import { changeWeapon, equipWeapon, unequipWeapon } from "shared/rodux/currentWeapon";
 import { getItemById } from "shared/util/getItemById";
@@ -15,13 +17,36 @@ remotes.Server.GetNamespace("weapons")
 				return;
 			}
 
+			const weaponData = Object.values(WEAPONS).find((weapon) => weapon.id === weaponId);
+			if (weaponData === undefined) {
+				return;
+			}
+
+			if (store.getState().rank < weaponData.cost.requiredRank) {
+				return;
+			}
+
 			store.dispatch(changeWeapon(weaponId));
 		}),
 	);
 
 remotes.Server.GetNamespace("weapons")
 	.Get("equipWeapon")
-	.Connect(withPlayerStore((_, store) => store.dispatch(equipWeapon())));
+	.Connect(
+		withPlayerStore((_, store) => {
+			const weaponData = Object.values(WEAPONS).find((weapon) => weapon.id === store.getState().currentWeapon.id);
+			if (weaponData === undefined) {
+				return;
+			}
+
+			if (store.getState().rank < weaponData.cost.requiredRank) {
+				return;
+			}
+
+			store.dispatch(equipWeapon());
+			return;
+		}),
+	);
 
 remotes.Server.GetNamespace("weapons")
 	.Get("unequipWeapon")

@@ -8,6 +8,7 @@ import { fusionRemoteContext } from "./remoteDefinitions/fusion";
 import { mediaRemoteContext } from "./remoteDefinitions/media";
 import { petMasteryRemoteContext } from "./remoteDefinitions/petMastery";
 import { petsRemoteContext } from "./remoteDefinitions/pets";
+import { playerLoadedContext } from "./remoteDefinitions/playerLoaded";
 import { questsRemoteContext } from "./remoteDefinitions/quests";
 import { ranksRemoteContext } from "./remoteDefinitions/ranks";
 import { rewardsRemoteContext } from "./remoteDefinitions/rewards";
@@ -17,12 +18,14 @@ import { titlesRemoteContext } from "./remoteDefinitions/titles";
 import { tradingRemoteContext } from "./remoteDefinitions/trading";
 import { weaponsRemoteContext } from "./remoteDefinitions/weapons";
 import { wheelSpinRemoteContext } from "./remoteDefinitions/wheelSpin";
+import { worldPrestigeRemoteContext } from "./remoteDefinitions/worldPrestige";
 import { zonesRemoteContext } from "./remoteDefinitions/zones";
 
 /**
  * This is the remote context for the remote functions.
  */
 export const fakeRemoteContext = {
+	...playerLoadedContext,
 	...petMasteryRemoteContext,
 	...weaponsRemoteContext,
 	...petsRemoteContext,
@@ -41,6 +44,7 @@ export const fakeRemoteContext = {
 	...fusionRemoteContext,
 	...tradingRemoteContext,
 	...boostsRemoteContext,
+	...worldPrestigeRemoteContext,
 };
 
 export const remoteContext = createContext(fakeRemoteContext);

@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
+import { setIsTrading } from "client/modules/isTradingCache";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
@@ -40,7 +41,6 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 		tradeOfferDeclined,
 		finalizedTradeConfirmed,
 		finalizedTradeDeclined,
-		abandonTradeAssertion,
 		clientTradeError,
 	} = useContext(remoteContext);
 	// manages the state of the active trade
@@ -196,12 +196,17 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 								declineFinalConfirmation();
 							}
 						}}
+						resetTrade={(): void => {
+							finishTrade();
+							props.exitTrade();
+						}}
 					/>
 				);
 			case TradeState.Completed:
 				return (
 					<CompletedTradeNotice
 						finishTrade={(): void => {
+							setIsTrading(false);
 							finishTrade();
 							props.exitTrade();
 						}}
@@ -390,30 +395,23 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 			}
 		});
 
-		const abandonTradeAssertionConnection = abandonTradeAssertion.Connect(() => {
-			setLocalOffer(defaultOffer);
-			setForeignOffer(defaultOffer);
-
-			setLocalReady(false);
-			setForeignReady(false);
-
-			setLocalConfirmed(false);
-			setForeignConfirmed(false);
-
-			setTradeState(TradeState.Offering);
-			props.exitTrade();
-		});
-
 		const connections: Array<RBXScriptConnection> = [
 			offerChangedConnection,
 			tradeOfferConfirmedConnection,
 			tradeOfferDeclinedConnection,
 			finalizedTradeConfirmedConnection,
 			finalizedTradeDeclinedConnection,
-			abandonTradeAssertionConnection,
 		];
 		return (): void => connections.forEach((connection) => connection.Disconnect());
-	});
+	}, [
+		localOffer,
+		foreignConfirmed,
+		offerChanged,
+		tradeOfferConfirmed,
+		tradeOfferDeclined,
+		finalizedTradeConfirmed,
+		finalizedTradeDeclined,
+	]);
 
 	return (
 		<ImageLabel

@@ -42,6 +42,10 @@ async function onPlayerAdded(player: Player): Promise<void> {
 
 	const profile = playerDataStore.LoadProfileAsync(tostring(player.UserId));
 	if (profile === undefined) {
+		GameAnalytics.addErrorEvent(player.UserId, {
+			severity: "error",
+			message: "ProfileService failed to acquire lock on profile",
+		});
 		player.Kick("Failed to load your data. Please rejoin.");
 		return;
 	}

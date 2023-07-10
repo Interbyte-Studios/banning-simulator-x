@@ -21,6 +21,12 @@ interface FakeWeaponEquipMappedProps {
 	weaponEquipped: boolean;
 }
 
+const maximizedSize = 0.3;
+const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
+
+const minimizedSize = 0;
+const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
+
 /**
  * Maps the Rodux store's state to the props.
  *
@@ -36,14 +42,9 @@ function mapStateToProps(state: StoreState): FakeWeaponEquipMappedProps {
 export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 	hooks((props: FakeWeaponEquipProps, hooks) => {
 		const { useState, useContext } = hooks;
+
 		const [isHovering, setHovering] = useState(false);
 		const { equipWeapon, unequipWeapon } = useContext(remoteContext);
-
-		const maximizedSize = 0.3;
-		const maximizedSpring = new Flipper.Spring(maximizedSize, { frequency: 5 });
-
-		const minimizedSize = 0;
-		const minimizedSpring = new Flipper.Spring(minimizedSize, { frequency: 5 });
 
 		const { motor, binding } = useBindingMotor(hooks, minimizedSize);
 
@@ -56,8 +57,6 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 					// eslint-disable-next-line jsdoc/require-jsdoc
 					Activated: (): void => {
 						playSFX(UIEngagement.MinorEngagement);
-
-						print(props.weaponEquipped);
 
 						if (props.weaponEquipped) {
 							unequipWeapon.SendToServer();
@@ -77,6 +76,7 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 					},
 				}}
 			>
+				{/* draw weapon name */}
 				<ImageLabel
 					native={{
 						Position: UDim2.fromScale(0.5, 0),
@@ -94,6 +94,7 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 					/>
 				</ImageLabel>
 
+				{/* draw "Z" activation key */}
 				<ImageLabel
 					native={{
 						BackgroundTransparency: 0,
@@ -115,6 +116,7 @@ export const FakeWeaponEquip = RoactRodux.connect(mapStateToProps)(
 					/>
 				</ImageLabel>
 
+				{/* draw equipped green/red icon */}
 				<ImageLabel
 					native={{
 						BackgroundTransparency: 0,

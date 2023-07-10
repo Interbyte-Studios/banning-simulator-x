@@ -45,7 +45,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		id: 38,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 665,
+			additionalDamage: 600,
 			additionalBans: 80,
 		},
 	},
@@ -54,7 +54,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		id: 39,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 720,
+			additionalDamage: 650,
 			additionalBans: 85,
 		},
 	},
@@ -63,7 +63,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		id: 40,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 770,
+			additionalDamage: 700,
 			additionalBans: 90,
 		},
 	},
@@ -72,7 +72,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		id: 41,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 870,
+			additionalDamage: 1000,
 			additionalBans: 110,
 		},
 	},
@@ -81,7 +81,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 		id: 42,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 950,
+			additionalDamage: 1150,
 			additionalBans: 125,
 		},
 	},

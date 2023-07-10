@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import { getCurrencyIcon } from "client/util/getCurrencyIcon";
+import assetIds from "shared/assets";
 import { Currency } from "shared/configs/currencies";
 
 import { hooks } from "../../hooks";
@@ -16,13 +17,13 @@ interface CurrencyIconProps {
 				maximizedSize: number;
 		  }
 		| UDim2;
-	currency: Currency;
+	currency: Currency | "robux";
 	events?: Roact.JsxInstanceEvents<ImageButton>;
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const CurrencyIcon = hooks((props: CurrencyIconProps) => {
-	const currency = getCurrencyIcon(props.currency);
+	const currency = props.currency === "robux" ? assetIds.images.vectors.Robux : getCurrencyIcon(props.currency);
 
 	if (typeIs(props.size, "UDim2")) {
 		return (

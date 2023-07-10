@@ -4,7 +4,9 @@ import { modifyPetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { hatchDebounce } from "shared/configs/eggs";
 import { Rarities } from "shared/configs/rarities";
+import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { remotes } from "shared/remotes";
+import { HatchEggFailKind } from "shared/remotes/eggs/hatchEgg";
 import { addEgg } from "shared/rodux/eggs";
 import { addPets, ConfirmedPet } from "shared/rodux/pets";
 import { isImmuneRarity } from "shared/rodux/settings";
@@ -31,6 +33,7 @@ hatchEgg.SetCallback(
 		if (!canHatch) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.TooFast,
 			};
 		}
 
@@ -38,6 +41,7 @@ hatchEgg.SetCallback(
 		if (isTrading) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.Trading,
 			};
 		}
 
@@ -46,6 +50,7 @@ hatchEgg.SetCallback(
 		if (amount > 1 && !currentState.gamepasses["Triple Hatch"]) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.NoGamepass,
 			};
 		}
 
@@ -59,6 +64,7 @@ hatchEgg.SetCallback(
 		if (ownsWorld === undefined) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.NoWorld,
 			};
 		}
 
@@ -67,20 +73,38 @@ hatchEgg.SetCallback(
 		if (ownsZone === undefined) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.NoZone,
 			};
 		}
 
 		// check cost
-		if (currentState.currencies[eggCost.currencyType] < eggCost.amount * amount) {
-			return {
-				success: false,
-			};
+		if (isVoid && eggData.world !== "Limited" && currentState.worldPrestige[eggData.world] !== undefined) {
+			const trueCost =
+				eggCost.amount -
+				eggCost.amount *
+					currentState.worldPrestige[eggData.world].reducedVoidEggCostUpgrades *
+					WORLD_PRESTIGE.reducedVoidEggCost.reducedCostMultiplier;
+
+			if (currentState.currencies[eggCost.currencyType] < trueCost * amount) {
+				return {
+					success: false,
+					reason: HatchEggFailKind.NoCurrency,
+				};
+			}
+		} else {
+			if (currentState.currencies[eggCost.currencyType] < eggCost.amount * amount) {
+				return {
+					success: false,
+					reason: HatchEggFailKind.NoCurrency,
+				};
+			}
 		}
 
 		// check inventory space
 		if (currentState.pets.size() + amount > getPetInventorySize(currentState.gamepasses)) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.NoInventory,
 			};
 		}
 
@@ -89,6 +113,7 @@ hatchEgg.SetCallback(
 		if (character === undefined) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.NoCharacter,
 			};
 		}
 
@@ -96,6 +121,7 @@ hatchEgg.SetCallback(
 		if (!isWithinDistance) {
 			return {
 				success: false,
+				reason: HatchEggFailKind.NotWithinDistance,
 			};
 		}
 

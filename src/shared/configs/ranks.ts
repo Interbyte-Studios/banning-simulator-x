@@ -2,7 +2,18 @@ import { t } from "@rbxts/t";
 
 import { Currency } from "./currencies";
 
-export const isRankName = t.literal("Bronze", "Silver", "Gold", "Diamond", "Emerald", "Draconic", "Pendulum");
+export const isRankName = t.literal(
+	"Bronze",
+	"Silver",
+	"Gold",
+	"Diamond",
+	"Emerald",
+	"Draconic",
+	"Pendulum",
+	"Infinitium",
+	"Phoenix",
+	"Celestial",
+);
 export type RankName = t.static<typeof isRankName>;
 
 interface Rank {
@@ -22,7 +33,7 @@ interface Rank {
 	requiredExperience: number;
 }
 
-export const MAX_RANK = 7;
+export const MAX_RANK = 10;
 export const RANKS: Array<Rank> = [
 	{
 		name: "Bronze",
@@ -113,6 +124,45 @@ export const RANKS: Array<Rank> = [
 			beginningColor: Color3.fromRGB(245, 252, 99),
 			endingColor: Color3.fromRGB(64, 181, 255),
 		},
-		requiredExperience: 8_750_000,
+		requiredExperience: 3_600_000, // 600 the mines normal npcs
+	},
+	{
+		name: "Infinitium",
+		id: 8,
+		cost: {
+			amount: 8_192_000,
+			currency: "coins",
+		},
+		gradient: {
+			beginningColor: Color3.fromRGB(133, 5, 217),
+			endingColor: Color3.fromRGB(186, 46, 250),
+		},
+		requiredExperience: 6_500_000, // 650 lava lands npcs
+	},
+	{
+		name: "Phoenix",
+		id: 9,
+		cost: {
+			amount: 16_384_000,
+			currency: "coins",
+		},
+		gradient: {
+			beginningColor: Color3.fromRGB(212, 61, 15),
+			endingColor: Color3.fromRGB(247, 191, 112),
+		},
+		requiredExperience: 18_000_000, // 900 enchanted forest npcs
+	},
+	{
+		name: "Celestial",
+		id: 10,
+		cost: {
+			amount: 32_768_000,
+			currency: "coins",
+		},
+		gradient: {
+			beginningColor: Color3.fromRGB(224, 120, 255),
+			endingColor: Color3.fromRGB(64, 181, 255),
+		},
+		requiredExperience: 40_000_000, // 1000 toxic land npcs
 	},
 ];

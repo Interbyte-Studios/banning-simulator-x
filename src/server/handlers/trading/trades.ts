@@ -266,7 +266,6 @@ export function rejectTrade(receiver: Player, creator: Player): boolean {
 export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeItem): boolean {
 	const trade = currentTrades.get(player);
 	if (trade === undefined) {
-		warn("Attempt to modify trade when not in a trade");
 		return false;
 	}
 
@@ -298,7 +297,6 @@ export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeI
 		// this case is for when the other player has confirmed their offer and we are modifying our offer
 		const otherPlayerTrade = currentTrades.get(otherPlayer.player);
 		if (otherPlayerTrade !== undefined && otherPlayerTrade.status === TradeStatus.ConfirmedOffer) {
-			warn("Set other player to trading status");
 			// update the trade status to trading for other player
 			const newTradeStatus: Trading = {
 				status: TradeStatus.Trading,
@@ -320,10 +318,11 @@ export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeI
 		return false;
 	}
 
-	// ensure if currency was specified, the player has enough
+	// ensure if currency was specified, the player has enough, also check that it's a positive amount
 	if (
 		newOffer.currency === undefined ||
-		newOffer.currency.amount > store.getState().currencies[newOffer.currency.type]
+		newOffer.currency.amount > store.getState().currencies[newOffer.currency.type] ||
+		newOffer.currency.amount < 0
 	) {
 		return false;
 	}
@@ -498,7 +497,6 @@ export function declineTradeOffer(player: Player): boolean {
 	}
 
 	// remove the trade
-	warn("Declined and removed the trade from registry");
 	removeTrade(player);
 	return true;
 }
@@ -645,10 +643,8 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 		};
 
 		if (store.getState().tradeLogs.size() >= MAX_TRADE_LOGS) {
-			warn("Player Trade Logs:");
 			let tradeToRemove: SavedTrade | undefined;
 			store.getState().tradeLogs.forEach((trade) => {
-				print(trade.timestamp.UnixTimestampMillis, tradeToRemove?.timestamp.UnixTimestamp);
 				if (
 					tradeToRemove === undefined ||
 					trade.timestamp.UnixTimestampMillis < tradeToRemove.timestamp.UnixTimestampMillis
@@ -663,10 +659,8 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 		}
 
 		if (otherPlayerStore.getState().tradeLogs.size() >= MAX_TRADE_LOGS) {
-			warn("Other Player Trade Logs:");
 			let tradeToRemove: SavedTrade | undefined;
 			otherPlayerStore.getState().tradeLogs.forEach((trade) => {
-				print(trade.timestamp.UnixTimestampMillis, tradeToRemove?.timestamp.UnixTimestamp);
 				if (
 					tradeToRemove === undefined ||
 					trade.timestamp.UnixTimestampMillis < tradeToRemove.timestamp.UnixTimestampMillis

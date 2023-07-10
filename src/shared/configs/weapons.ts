@@ -8,13 +8,11 @@ export type WeaponType = "Hammer" | "Lance" | "Sword";
 export interface Weapon {
 	id: number;
 
-	cost:
-		| {
-				requiredRank?: number;
-				currency: Currency;
-				amount: number;
-		  }
-		| undefined;
+	cost: {
+		requiredRank: number;
+		currency: Currency;
+		amount: number;
+	};
 
 	damage: number;
 
@@ -25,12 +23,16 @@ export interface Weapon {
 	isBossWeapon: boolean;
 }
 
-export const MAX_WEAPON_ID = 35;
+export const MAX_WEAPON_ID = 47;
 export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	/* First Zone */
 	"Stone Hammer": {
 		id: 1,
-		cost: undefined,
+		cost: {
+			requiredRank: 1,
+			currency: "coins",
+			amount: 0,
+		},
 		damage: 10,
 		world: "Ban Land",
 		weaponType: "Hammer",
@@ -39,6 +41,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Basic Blade": {
 		id: 2,
 		cost: {
+			requiredRank: 1,
 			currency: "coins",
 			amount: 100,
 		},
@@ -50,6 +53,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Flower Blade": {
 		id: 3,
 		cost: {
+			requiredRank: 1,
 			currency: "coins",
 			amount: 150,
 		},
@@ -61,6 +65,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Stone Smacker": {
 		id: 4,
 		cost: {
+			requiredRank: 1,
 			currency: "coins",
 			amount: 200,
 		},
@@ -458,78 +463,77 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		isBossWeapon: false,
 	},
 
-	/*
 	// Enchanted Forest Zone
 	"Enchanted Greatsword": {
 		id: 36,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 8,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("350M"),
+			amount: 1_350_000,
 		},
-		damage: twoDpAbbreviator.stringToNumber("20M"),
-		world: "Ban Land",
-		weaponType: "Sword",
-		isBossWeapon: false,
-	},
-	"Enchanted Hammer": {
-		id: 37,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("350M"),
-		},
-		damage: twoDpAbbreviator.stringToNumber("20M"),
-		world: "Ban Land",
-		weaponType: "Hammer",
-		isBossWeapon: false,
-	},
-	"Enchanted Scythe": {
-		id: 38,
-		cost: {
-			requiredRank: 1,
-			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("350M"),
-		},
-		damage: twoDpAbbreviator.stringToNumber("20M"),
+		damage: 5_500,
 		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
 	"Enchanted Lance": {
-		id: 39,
+		id: 37,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 8,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("350M"),
+			amount: 1_650_000,
 		},
-		damage: twoDpAbbreviator.stringToNumber("20M"),
+		damage: 6_200,
 		world: "Ban Land",
 		weaponType: "Lance",
 		isBossWeapon: false,
 	},
-
-	// Radioactive Zone
-	"Radioactive Smasher": {
-		id: 40,
+	"Enchanted Scythe": {
+		id: 38,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 8,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("350M"),
+			amount: 2_025_000,
 		},
-		damage: twoDpAbbreviator.stringToNumber("20M"),
+		damage: 6_950,
 		world: "Ban Land",
 		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"Enchanted Hammer": {
+		id: 39,
+		cost: {
+			requiredRank: 8,
+			currency: "coins",
+			amount: 2_520_000,
+		},
+		damage: 8_192,
+		world: "Ban Land",
+		weaponType: "Hammer",
+		isBossWeapon: false,
+	},
+
+	// Radioactive Zone
+	"Radioactive Lance": {
+		id: 40,
+		cost: {
+			requiredRank: 9,
+			currency: "coins",
+			amount: 4_250_000,
+		},
+		damage: 12_900,
+		world: "Ban Land",
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
 	"Radioactive Greatsword": {
 		id: 41,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 9,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("350M"),
+			amount: 5_000_000,
 		},
-		damage: twoDpAbbreviator.stringToNumber("20M"),
+		damage: 13_875,
 		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
@@ -537,78 +541,77 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 	"Radioactive Scythe": {
 		id: 42,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 9,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("350M"),
+			amount: 5_850_000,
 		},
-		damage: twoDpAbbreviator.stringToNumber("20M"),
+		damage: 15_000,
 		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
-	"Radioactive Lance": {
+	"Radioactive Smasher": {
 		id: 43,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 9,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("350M"),
+			amount: 6_720_000,
 		},
-		damage: twoDpAbbreviator.stringToNumber("20M"),
+		damage: 16_384,
 		world: "Ban Land",
-		weaponType: "Lance",
+		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
 
 	// Castle Zone
-	"Radiant Smaher": {
+	"Radiant Lance": {
 		id: 44,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 10,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("350M"),
+			amount: 10_500_000,
 		},
-		damage: twoDpAbbreviator.stringToNumber("20M"),
+		damage: 22_000,
 		world: "Ban Land",
-		weaponType: "Sword",
+		weaponType: "Lance",
 		isBossWeapon: false,
 	},
 	"Radiant Greatsword": {
 		id: 45,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 10,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("350M"),
+			amount: 15_000_000,
 		},
-		damage: twoDpAbbreviator.stringToNumber("20M"),
+		damage: 25_000,
 		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
-	"Radiant  Scythe": {
+	"Radiant Scythe": {
 		id: 46,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 10,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("350M"),
+			amount: 25_000_000,
 		},
-		damage: twoDpAbbreviator.stringToNumber("20M"),
+		damage: 29_500,
 		world: "Ban Land",
 		weaponType: "Sword",
 		isBossWeapon: false,
 	},
-	"Radiant Lance": {
+	"Radiant Smasher": {
 		id: 47,
 		cost: {
-			requiredRank: 1,
+			requiredRank: 10,
 			currency: "coins",
-			amount: twoDpAbbreviator.stringToNumber("350M"),
+			amount: 33_600_000,
 		},
-		damage: twoDpAbbreviator.stringToNumber("20M"),
+		damage: 32_768,
 		world: "Ban Land",
-		weaponType: "Lance",
+		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
-	*/
 });
 
 export const WEAPON_LEVELS: Array<{ level: number; requiredBans: number }> = [

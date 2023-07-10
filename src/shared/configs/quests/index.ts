@@ -72,6 +72,9 @@ export const QUESTS: {
 			Beach: [],
 			Forest: [],
 			Honeycomb: [],
+			"Enchanted Forest": [],
+			"Toxic Lands": [],
+			"Jester Castle": [],
 		},
 		world: [
 			{
