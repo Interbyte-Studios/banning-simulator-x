@@ -40,7 +40,7 @@ remotes.Server.GetNamespace("admin")
 				variant: petData.variant,
 				method: "admin",
 				//enhancements: {},
-				tradeLocked: groupRank >= 254,
+				tradeLocked: groupRank !== 254,
 			};
 
 			GameAnalytics.addErrorEvent(adminPlayer.UserId, {

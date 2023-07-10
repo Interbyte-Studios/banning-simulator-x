@@ -1,15 +1,12 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Players } from "@rbxts/services";
-import { retrieveStore } from "client/clientStores";
 import { font, uiTextStrokeColor, vec2Middle } from "client/ui/commonValues";
-import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { hooks } from "client/ui/hooks";
-import { remoteContext } from "client/ui/mocks/remoteContext";
 import { PlayerTradeItem } from "shared/configs/trading";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
@@ -51,9 +48,7 @@ function mapStateToProps(state: StoreState): MappedActiveCurrencyOfferProps {
  */
 export const ActiveCurrencyOffer = RoactRodux.connect(mapStateToProps)(
 	hooks((props: ActiveCurrencyOfferProps, hooks) => {
-		const { useState, useEffect, useContext } = hooks;
-
-		const { modifyOffer } = useContext(remoteContext);
+		const { useState, useEffect } = hooks;
 
 		// state to cache when the currency is updated
 		const [updateTime, setUpdateTime] = useState(0);
@@ -95,17 +90,13 @@ export const ActiveCurrencyOffer = RoactRodux.connect(mapStateToProps)(
 			) {
 				return;
 			}
-
-			const newOffer = {
+			props.setOffer({
 				...props.currentOffer,
 				currency: {
 					type: offeredCurrencyType,
 					amount: offeredCurrency,
 				},
-			};
-
-			modifyOffer.SendToServer(newOffer);
-			props.setOffer(newOffer);
+			});
 		}, [updateTime, offeredCurrencyType]);
 
 		const isLocalPlayer = props.player.UserId === Players.LocalPlayer.UserId;

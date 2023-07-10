@@ -108,7 +108,6 @@ export const ActiveTradeOffer = hooks((props: ActiveTradeOfferProps, { useContex
 		addAnnouncement("There was an issue with the trade. It's been cancelled.", AnnouncementType.Error);
 
 		props.resetTrade();
-
 		return <></>;
 	}
 
@@ -122,7 +121,6 @@ export const ActiveTradeOffer = hooks((props: ActiveTradeOfferProps, { useContex
 			}
 		}
 	}
-
 	return (
 		<>
 			<StrokeTextLabel
@@ -200,7 +198,7 @@ export const ActiveTradeOffer = hooks((props: ActiveTradeOfferProps, { useContex
 							newPets.push(guid);
 
 							const newOffer = { ...props.currentOffer, pets: newPets };
-
+							print(props.currentOffer.currency?.amount);
 							props.setOffer(newOffer);
 						}
 					}}

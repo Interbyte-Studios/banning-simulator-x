@@ -41,7 +41,6 @@ const acceptTradeRequestRemote = tradesNamespace.Get("acceptTradeRequest");
 const tradeRequestAccepted = tradesNamespace.Get("tradeRequestAccepted");
 acceptTradeRequestRemote.Connect((receiver, creator) => {
 	acceptTrade(receiver, creator);
-	warn(`Trade request between ${receiver.Name} and ${creator.Name} was accepted.`);
 
 	// alert creator that the trade request was accepted
 	tradeRequestAccepted.SendToPlayer(creator, receiver);
@@ -53,8 +52,6 @@ declineTradeRequest.Connect((receiver, creator) => {
 	if (rejectTrade(receiver, creator)) {
 		// alert `creator` that the trade got cancelled
 		tradeRequestDeclined.SendToPlayer(creator, receiver);
-
-		warn(`Trade request between ${receiver.Name} and ${creator.Name} was declined.`);
 
 		receiver.SetAttribute(TRADING_ATTRIBUTE, undefined);
 		creator.SetAttribute(TRADING_ATTRIBUTE, undefined);
@@ -73,10 +70,8 @@ modifyOffer.Connect(
 		if (!modifyTrade(player, store, offer)) {
 			// failed to modify trade
 			// we should tell the player to not modify
-			print("Issue with modified trade. Not finalizing the modification.");
 			return offerChanged.SendToPlayer(player, player, getTradeItems(player));
 		}
-		print("Modified trade");
 
 		// alert the other player that the offer changed
 		offerChanged.SendToPlayer(getTradingCounterParty(player), player, offer);
@@ -95,10 +90,8 @@ confirmOffer.Connect((player) => {
 	if (!confirmTradeOffer(player)) {
 		// failed to confirm trade
 		// we should tell the player to not confirm
-		print("Issue with confirming trade. Not finalizing the trade.");
 		return offerConfirmed.SendToPlayer(player, player, getTradeItems(player));
 	}
-	print("offer confirmed");
 	offerConfirmed.SendToPlayer(getTradingCounterParty(player), player, getTradeItems(player));
 });
 
@@ -118,7 +111,6 @@ declineOffer.Connect((player) => {
 		player.SetAttribute(TRADING_ATTRIBUTE, undefined);
 		otherPlayer.SetAttribute(TRADING_ATTRIBUTE, undefined);
 	}
-	print("offer declined");
 });
 
 const confirmFinalizedTrade = tradesNamespace.Get("confirmFinalizedTrade");
@@ -134,7 +126,6 @@ confirmFinalizedTrade.Connect(
 		if (!confirmFinalizedTradeOffer(player, store)) {
 			// failed to confirm trade
 			// we should tell the player to not confirm
-			print("Issue with confirming trade. Not finalizing the trade.");
 			return finalizedTradeConfirmed.SendToPlayer(player, player, getTradeItems(player));
 		}
 		finalizedTradeConfirmed.SendToPlayer(getTradingCounterParty(player), player, getTradeItems(player));

@@ -403,7 +403,15 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 			finalizedTradeDeclinedConnection,
 		];
 		return (): void => connections.forEach((connection) => connection.Disconnect());
-	});
+	}, [
+		localOffer,
+		foreignConfirmed,
+		offerChanged,
+		tradeOfferConfirmed,
+		tradeOfferDeclined,
+		finalizedTradeConfirmed,
+		finalizedTradeDeclined,
+	]);
 
 	return (
 		<ImageLabel
