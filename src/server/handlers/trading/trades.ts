@@ -263,7 +263,23 @@ export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeI
 		return false;
 	}
 
-	if (trade.status === TradeStatus.ConfirmedOffer) {
+	// this ViewingFinalizedTrade case is only with with high latency from clients, so we handle those cases here
+	if (trade.status === TradeStatus.ViewingFinalizedTrade) {
+		const otherPlayer = trade.items.find((playerItems) => playerItems.player !== player);
+		if (otherPlayer === undefined) {
+			return false;
+		}
+
+		currentTrades.set(player, {
+			status: TradeStatus.Trading,
+			items: trade.items,
+		});
+
+		currentTrades.set(otherPlayer.player, {
+			status: TradeStatus.Trading,
+			items: trade.items,
+		});
+	} else if (trade.status === TradeStatus.ConfirmedOffer) {
 		const otherPlayer = trade.items.find((playerItems) => playerItems.player !== player);
 		if (otherPlayer === undefined) {
 			return false;
@@ -301,12 +317,17 @@ export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeI
 		}
 	}
 
-	if (trade.status !== TradeStatus.Trading && trade.status !== TradeStatus.ConfirmedOffer) {
-		warn(`Attempt to modify trade when not in a trade | Incorrect Status: ${trade.status}`);
+	const updatedTrade = currentTrades.get(player);
+	if (updatedTrade === undefined) {
 		return false;
 	}
 
-	const playerItems = trade.items.find((playerItems) => playerItems.player === player);
+	if (updatedTrade.status !== TradeStatus.Trading && updatedTrade.status !== TradeStatus.ConfirmedOffer) {
+		warn(`Attempt to modify trade when not in a trade | Incorrect Status: ${updatedTrade.status}`);
+		return false;
+	}
+
+	const playerItems = updatedTrade.items.find((playerItems) => playerItems.player === player);
 	if (!playerItems) {
 		// this case should never happen
 		return false;
@@ -406,6 +427,25 @@ export function getTradingCounterParty(player: Player): Player {
 	}
 
 	return counterParty.player;
+}
+
+/**
+ * @param player The player to check if they are in a trade.
+ * @param targetPlayer The player to check if the specific player is in a trade with.
+ * @returns Whether or not the specific player is in a trade with the target player.
+ */
+export function verifyTradingCounterParty(player: Player, targetPlayer: Player): boolean {
+	const trade = currentTrades.get(player);
+	if (trade === undefined || !isActiveTrade(trade)) {
+		return false;
+	}
+
+	const counterParty = trade.items.find((p) => p.player !== player);
+	if (counterParty === undefined) {
+		return false;
+	}
+
+	return counterParty.player === targetPlayer;
 }
 
 /**

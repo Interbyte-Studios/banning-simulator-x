@@ -19,7 +19,7 @@ interface ControlProps {
 /**
  * This is the highest ordered component in the game's UI.
  */
-export const Control = hooks((props: ControlProps, { useState, useEffect, useContext, useValue }) => {
+export const Control = hooks((props: ControlProps, { useState, useEffect, useContext }) => {
 	const { player, store } = props;
 
 	const [tradingEnabled, setTradingEnabled] = useState(false);
@@ -27,8 +27,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 	const [tradeActive, setActiveTrade] = useState(false);
 	const [displayTradeRequest, setDisplayTradeRequest] = useState(false);
 
-	const tradeDeclined = useValue(false);
-	const tradeAccepted = useValue(false);
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 	const {
@@ -51,10 +49,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 				}
 				addAnnouncement(`${receivingPlayer.Name} declined your trade.`, AnnouncementType.Error);
 
-				warn(`Receive trade offer decline`);
-
-				tradeAccepted.value = false;
-				tradeDeclined.value = false;
 				setIsTrading(false);
 
 				setTradingEnabled(false);
@@ -77,10 +71,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 					return;
 				}
 
-				warn(`Receive trade request accepted`);
-
-				tradeAccepted.value = false;
-				tradeDeclined.value = false;
 				setIsTrading(true);
 
 				setDisplayTradeRequest(false);
@@ -89,20 +79,23 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 				addAnnouncement(`${receivingPlayer.Name} accepted your trade request.`, AnnouncementType.Announcement);
 			}),
 			tradeRequestDeclined.Connect((receivingPlayer) => {
-				if (tradingPlayer === undefined) {
-					throw `Received a declined trade request from ${receivingPlayer.Name}, but the local player isn't in a trade.`;
-				}
+				if (receivingPlayer !== Players.LocalPlayer) {
+					if (tradingPlayer === undefined) {
+						throw `Received a declined trade request from ${receivingPlayer.Name}, but the local player isn't in a trade.`;
+					}
 
-				if (tradingPlayer !== receivingPlayer) {
-					throw `Received a declined trade request from ${receivingPlayer.Name}, but the local player is trading with ${tradingPlayer.Name}.`;
+					if (tradingPlayer !== receivingPlayer) {
+						throw `Received a declined trade request from ${receivingPlayer.Name}, but the local player is trading with ${tradingPlayer.Name}.`;
+					}
 				}
 				setIsTrading(false);
 
-				addAnnouncement(`${receivingPlayer.Name} declined your trade request.`, AnnouncementType.Error);
-
-				tradeAccepted.value = false;
-				tradeDeclined.value = false;
-				warn(`Receive trade request declined`);
+				addAnnouncement(
+					receivingPlayer === Players.LocalPlayer
+						? `Trade cancelled because you took too long.`
+						: `${receivingPlayer.Name} declined your trade request.`,
+					AnnouncementType.Error,
+				);
 
 				setTradingEnabled(false);
 				setTradingPlayer(undefined);
@@ -120,64 +113,19 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 					return;
 				}
 
-				warn(`Received Trade Request`);
+				warn(`Received request from ${playerWhoSent}`);
 
 				// we set trading enabled to true so that we can display only the trade request, and the player won't get distracted.
-				tradeAccepted.value = false;
-				tradeDeclined.value = false;
 				setIsTrading(false);
 
 				setTradingPlayer(playerWhoSent);
 				setDisplayTradeRequest(true);
 				setActiveTrade(false);
 				setTradingEnabled(true);
-
-				let amountWaited = 0;
-				// eslint-disable-next-line no-constant-condition
-				while (true) {
-					if (tradeAccepted.value || tradeDeclined.value) {
-						if (tradeDeclined.value) {
-							setIsTrading(false);
-
-							tradeAccepted.value = false;
-							tradeDeclined.value = false;
-
-							setTradingEnabled(false);
-							setDisplayTradeRequest(false);
-							setActiveTrade(false);
-							setTradingPlayer(undefined);
-						}
-						break;
-					}
-
-					amountWaited += 1;
-
-					// we're giving an additional second here, so 11 instead of 10, specifically to let the timer in the lower component
-					// catch up and update it's state.
-					// if this client is faster than the other players client... the clients will become unsynced and it will result in issues.
-					// in the event that this happens, implement this feature on the server instead.
-					if (amountWaited === 11) {
-						setIsTrading(false);
-
-						tradeAccepted.value = false;
-						tradeDeclined.value = false;
-
-						setTradingEnabled(false);
-						setDisplayTradeRequest(false);
-						setActiveTrade(false);
-						setTradingPlayer(undefined);
-						declineTradeRequest.SendToServer(playerWhoSent);
-						addAnnouncement(`You declined a trade because you too too long.`, AnnouncementType.Error);
-					}
-					task.wait(1);
-				}
 			}),
 			Players.PlayerRemoving.Connect((player) => {
 				if (tradingPlayer === player) {
 					setIsTrading(false);
-
-					tradeAccepted.value = false;
-					tradeDeclined.value = false;
 
 					setTradingEnabled(false);
 					setActiveTrade(false);
@@ -237,10 +185,7 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 						tradingPlayer={tradingPlayer}
 						setTradingPlayer={(player: Player | undefined): void => setTradingPlayer(player)}
 						tradeActive={tradeActive}
-						setActiveTrade={(active: boolean): void => {
-							tradeAccepted.value = active;
-							setActiveTrade(active);
-						}}
+						setActiveTrade={(active: boolean): void => setActiveTrade(active)}
 						displayTradeRequest={displayTradeRequest}
 						disableTradeRequest={(): void => setDisplayTradeRequest(false)}
 					/>
