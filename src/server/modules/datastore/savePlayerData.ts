@@ -14,10 +14,10 @@ const profiles: Map<Player, Profile<ProfileState>> = new Map();
  * @param player The player to get the profile for.
  * @returns The player's profile.
  */
-export const getProfile = (player: Player): Profile<ProfileState> | undefined => {
+export function getProfile(player: Player): Profile<ProfileState> | undefined {
 	const profile = profiles.get(player);
 	return profile;
-};
+}
 
 /**
  * Sets a player's profile.
@@ -25,18 +25,18 @@ export const getProfile = (player: Player): Profile<ProfileState> | undefined =>
  * @param player The player to set the profile for.
  * @param profile The profile to set.
  */
-export const setProfile = (player: Player, profile: Profile<ProfileState>): void => {
+export function setProfile(player: Player, profile: Profile<ProfileState>): void {
 	profiles.set(player, profile);
-};
+}
 
 /**
  * Deletes a player's profile.
  *
  * @param player The player to delete the profile for.
  */
-export const deleteProfile = (player: Player): void => {
+export function deleteProfile(player: Player): void {
 	profiles.delete(player);
-};
+}
 
 /**
  * Attempts to save a player's profile to the DataStore.
