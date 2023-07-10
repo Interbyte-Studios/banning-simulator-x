@@ -14,17 +14,11 @@ const profiles: Map<Player, Profile<ProfileState>> = new Map();
  * @param player The player to get the profile for.
  * @returns The player's profile.
  */
-export const getProfile = (player: Player): Profile<ProfileState> => {
+export const getProfile = (player: Player): Profile<ProfileState> | undefined => {
 	const profile = profiles.get(player);
-	if (profile === undefined) {
-		GameAnalytics.addErrorEvent(player.UserId, {
-			severity: "error",
-			message: `Failed to retrieve store for player with id: ${player.UserId}`,
-		});
-		throw `Player ${player.UserId} does not have a profile`;
+	if (profile !== undefined) {
+		return profile;
 	}
-
-	return profile;
 };
 
 /**

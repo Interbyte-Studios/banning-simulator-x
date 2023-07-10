@@ -78,6 +78,9 @@ async function onPlayerAdded(player: Player): Promise<void> {
 async function savePlayerData(player: Player): Promise<void> {
 	// retrieve the profile and remove it from the cache to avoid the player having a double save
 	const profile = getProfile(player);
+	if (profile === undefined) {
+		return;
+	}
 	deleteProfile(player);
 
 	const [getStoreSuccess, store] = pcall(retrieveStore, player);
@@ -118,6 +121,18 @@ async function savePlayerData(player: Player): Promise<void> {
 
 Players.PlayerRemoving.Connect(async (player) => {
 	await savePlayerData(player);
+
+	const profile = getProfile(player);
+	if (profile === undefined) {
+		GameAnalytics.addErrorEvent(player.UserId, {
+			severity: "critical",
+			message: "Failed to retrieve player store on `PlayerRemoving`.",
+		});
+		return;
+	}
+	deleteProfile(player);
+	profile.Release();
+	removeStore(player);
 });
 
 /**
