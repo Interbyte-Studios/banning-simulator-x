@@ -1,5 +1,7 @@
+import { GameAnalytics } from "@rbxts/gameanalytics";
 import { HttpService, MarketplaceService, Players } from "@rbxts/services";
 import { modifyPetCount } from "server/modules/datastore/pets";
+import { savePlayerData } from "server/modules/datastore/savePlayerData";
 import { retrieveStore } from "server/playerStore";
 import {
 	BOOST_PRODUCTS,
@@ -271,5 +273,14 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 	if (!purchaseProcessed) throw `Product of id ${receiptInfo.ProductId} was not processed.`;
 
 	store.dispatch(claimDevProduct(receiptInfo.ProductId, receiptInfo.PurchaseId));
+	const successfullySaved = savePlayerData(player).await();
+	if (!(successfullySaved[0] && successfullySaved[1])) {
+		GameAnalytics.addErrorEvent(player.UserId, {
+			severity: "critical",
+			message: `Failed to save player data after purchasing dev product with an id of: "${receiptInfo.ProductId}".`,
+		});
+		return Enum.ProductPurchaseDecision.NotProcessedYet;
+	}
+
 	return Enum.ProductPurchaseDecision.PurchaseGranted;
 };
