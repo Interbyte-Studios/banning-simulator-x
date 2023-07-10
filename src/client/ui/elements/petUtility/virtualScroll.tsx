@@ -250,6 +250,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 		props.inventoryFrame?.addPetToDeletionRegistry,
 		props.inventoryFrame?.removePetFromDeletionRegistry,
 		props.inventoryFrame?.displayPetInfo,
+		props.onActivated,
 	]);
 
 	return (
