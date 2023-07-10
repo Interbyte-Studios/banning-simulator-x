@@ -3,18 +3,12 @@ import { MAX_TRADE_LOGS } from "shared/configs/game";
 import { PlayerTradeItem } from "shared/configs/trading";
 import { Store } from "shared/rodux";
 import { awardCurrency } from "shared/rodux/currencies";
-import { addPets, ConfirmedPet, deletePets } from "shared/rodux/pets";
+import { deletePets, Pet, tradePets } from "shared/rodux/pets";
 import { removeTradeLog, SavedTrade, saveTrade } from "shared/rodux/tradeLogs";
 import { getPetLevel } from "shared/util/getPetLevel";
 import { UnreachableCaseError } from "shared/util/unreachableCaseError";
 
 const currentTrades: Map<Player, Trade> = new Map();
-
-interface TradedPet extends ConfirmedPet {
-	bans: number;
-	equipped: boolean;
-	locked: boolean;
-}
 
 interface BaseTrade {
 	status: TradeStatus;
@@ -559,7 +553,7 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 
 	if (playerOffer && otherPlayerOffer) {
 		// create tables of pets to transfer between players
-		const playerOfferPets: Array<TradedPet> = [];
+		const playerOfferPets: Array<Pet> = [];
 		for (const pet of playerOffer.pets) {
 			const storedPet = store.getState().pets.find((storedPet) => storedPet.guid === pet);
 
@@ -569,10 +563,10 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 				return false;
 			}
 
-			playerOfferPets.push({ ...storedPet, autoDeleted: false, method: "trade" });
+			playerOfferPets.push({ ...storedPet });
 		}
 
-		const otherPlayerOfferPets: Array<TradedPet> = [];
+		const otherPlayerOfferPets: Array<Pet> = [];
 		for (const pet of otherPlayerOffer.pets) {
 			const storedPet = otherPlayerStore.getState().pets.find((storedPet) => storedPet.guid === pet);
 
@@ -582,7 +576,7 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 				return false;
 			}
 
-			otherPlayerOfferPets.push({ ...storedPet, autoDeleted: false, method: "trade" });
+			otherPlayerOfferPets.push({ ...storedPet });
 		}
 
 		// remove the pets from the players
@@ -590,8 +584,8 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 		otherPlayerStore.dispatch(deletePets(otherPlayerOffer.pets));
 
 		// add the new pets to the players
-		store.dispatch(addPets(0, "coins", otherPlayerOfferPets));
-		otherPlayerStore.dispatch(addPets(0, "coins", playerOfferPets));
+		store.dispatch(tradePets(otherPlayerOfferPets));
+		otherPlayerStore.dispatch(tradePets(playerOfferPets));
 
 		if (playerOffer.currency !== undefined) {
 			// remove the currency from the player

@@ -202,6 +202,8 @@ export const BanLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 		);
 	});
 
+	warn(`Updating bans leaderboard`);
+
 	return (
 		<surfacegui LightInfluence={0} Adornee={props.adornee} SizingMode={Enum.SurfaceGuiSizingMode.PixelsPerStud}>
 			{positions}
