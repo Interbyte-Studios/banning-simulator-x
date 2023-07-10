@@ -64,27 +64,8 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 	const [prestigeViewType, setPrestigeViewType] = useState<WorldPrestigeViewType>(WorldPrestigeViewType.Prestige);
 
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
-	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
 
 	useEffect(() => {
-		// Equip weapon on Z press.
-		ContextActionService.BindAction(
-			"equipWeapon",
-			async (_, state) => {
-				if (state !== Enum.UserInputState.Begin) {
-					return;
-				}
-
-				if (props.store.getState().currentWeapon.equipped) {
-					unequipWeapon.SendToServer();
-				} else {
-					equipWeapon.SendToServer();
-				}
-			},
-			false,
-			Enum.KeyCode.Z,
-		);
-
 		// Open weapon, talisman, fusing, or mastery
 		ContextActionService.BindAction(
 			"openShop",
@@ -93,21 +74,12 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					return;
 				}
 
-				const character = Players.LocalPlayer.Character;
-				if (character === undefined) {
+				const rootPart = Players.LocalPlayer.Character?.FindFirstChildWhichIsA("Humanoid")?.RootPart;
+				if (!rootPart) {
 					return;
 				}
 
-				const humanoid = character.FindFirstChildOfClass("Humanoid");
-				if (humanoid === undefined) {
-					return;
-				}
-
-				const rootPart = humanoid.RootPart;
-				if (rootPart === undefined) {
-					return;
-				}
-
+				// check if we are interacting with a weapon shop
 				for (const interaction of Workspace.interactions.weaponShops.GetChildren()) {
 					if (!interaction.IsA("BasePart")) {
 						continue;
@@ -120,6 +92,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					}
 				}
 
+				// check if we are interacting with a talisman
 				for (const interaction of Workspace.interactions.talismanShops.GetChildren()) {
 					if (!interaction.IsA("BasePart")) {
 						continue;
@@ -132,6 +105,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					}
 				}
 
+				// check if we are interacting with the radiants
 				for (const interaction of Workspace.interactions.radiantMachines.interactions.GetChildren()) {
 					if (!interaction.IsA("BasePart")) {
 						return;
