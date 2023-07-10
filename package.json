@@ -22,7 +22,7 @@
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-jsdoc": "^41.1.2",
-    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-prettier": "^5.0.0-alpha.2",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-roblox-ts": "^0.0.35",
     "eslint-plugin-simple-import-sort": "^10.0.0",
