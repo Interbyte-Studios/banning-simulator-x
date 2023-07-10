@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { Workspace } from "@rbxts/services";
+import { CollectionService, Workspace } from "@rbxts/services";
 import { hooks } from "client/ui/hooks";
 import { getCurrentWorld } from "client/util/getCurrentWorld";
 import { WorldName } from "shared/configs/worlds";
@@ -52,20 +52,12 @@ export const WorldPrestige = hooks(
 				<>
 					{Workspace.interactions.worldPrestige.GetChildren().map((worldPrestigeFolder) => {
 						const prestige = worldPrestigeFolder.FindFirstChild("prestige") as Folder;
-						const upgrades = worldPrestigeFolder.FindFirstChild("upgrades") as Folder;
 
 						const prestigeVendor = prestige.FindFirstChild("vendor") as Model;
 						const prestigePrimaryPart = prestigeVendor.FindFirstChild("primary") as BasePart;
 						assert(
 							prestigePrimaryPart,
 							`Expected prestige vendor from ${worldPrestigeFolder.Name} to have a primary part.`,
-						);
-
-						const upgradesVendor = upgrades.FindFirstChild("vendor") as Model;
-						const upgradesPrimaryPart = upgradesVendor.FindFirstChild("primary") as BasePart;
-						assert(
-							upgradesPrimaryPart,
-							`Expected upgrades vendor from ${worldPrestigeFolder.Name} to have a primary part.`,
 						);
 
 						return (
@@ -78,14 +70,22 @@ export const WorldPrestige = hooks(
 									}}
 									interactType={WorldPrestigeViewType.Prestige}
 								/>
-								<WorldPrestigeInteractPrompt
-									adornee={upgradesPrimaryPart}
-									display={(): void => {
-										props.setViewType(WorldPrestigeViewType.Upgrades);
-										props.setVisibility(true);
-									}}
-									interactType={WorldPrestigeViewType.Upgrades}
-								/>
+								{CollectionService.GetTagged("prestigeUpgrade").map((interaction) => {
+									if (!interaction.IsA("BasePart")) {
+										return <></>;
+									}
+
+									return (
+										<WorldPrestigeInteractPrompt
+											adornee={interaction}
+											display={(): void => {
+												props.setViewType(WorldPrestigeViewType.Upgrades);
+												props.setVisibility(true);
+											}}
+											interactType={WorldPrestigeViewType.Upgrades}
+										/>
+									);
+								})}
 							</>
 						);
 					})}

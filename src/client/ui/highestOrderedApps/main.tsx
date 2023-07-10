@@ -67,6 +67,24 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
 
 	useEffect(() => {
+		// Equip weapon on Z press.
+		ContextActionService.BindAction(
+			"equipWeapon",
+			async (_, state) => {
+				if (state !== Enum.UserInputState.Begin) {
+					return;
+				}
+
+				if (props.store.getState().currentWeapon.equipped) {
+					unequipWeapon.SendToServer();
+				} else {
+					equipWeapon.SendToServer();
+				}
+			},
+			false,
+			Enum.KeyCode.Z,
+		);
+
 		// Open weapon, talisman, fusing, or mastery
 		ContextActionService.BindAction(
 			"openShop",
