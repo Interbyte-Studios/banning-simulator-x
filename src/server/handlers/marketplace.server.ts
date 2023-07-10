@@ -277,8 +277,9 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 	if (!didSave) {
 		GameAnalytics.addErrorEvent(player.UserId, {
 			severity: "critical",
-			message: `Failed to handle data saving during Heartbeat:\n${saveError}`,
+			message: `Failed to save player data after purchasing dev product with an id of: "${receiptInfo.ProductId}". Error: ${saveError}`,
 		});
+		return Enum.ProductPurchaseDecision.NotProcessedYet;
 	}
 
 	return Enum.ProductPurchaseDecision.PurchaseGranted;
