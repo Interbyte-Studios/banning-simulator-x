@@ -16,9 +16,7 @@ const profiles: Map<Player, Profile<ProfileState>> = new Map();
  */
 export const getProfile = (player: Player): Profile<ProfileState> | undefined => {
 	const profile = profiles.get(player);
-	if (profile !== undefined) {
-		return profile;
-	}
+	return profile;
 };
 
 /**
