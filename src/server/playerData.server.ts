@@ -81,7 +81,6 @@ async function savePlayerData(player: Player): Promise<void> {
 	if (profile === undefined) {
 		return;
 	}
-	deleteProfile(player);
 
 	const [getStoreSuccess, store] = pcall(retrieveStore, player);
 	if (!getStoreSuccess) {
@@ -112,11 +111,6 @@ async function savePlayerData(player: Player): Promise<void> {
 
 	// serialize the player's data
 	profile.Data = serialize(state);
-	// release the profile lock
-	profile.Release();
-
-	// remove the store
-	removeStore(player);
 }
 
 Players.PlayerRemoving.Connect(async (player) => {
