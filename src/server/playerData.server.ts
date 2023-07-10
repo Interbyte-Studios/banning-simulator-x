@@ -1,11 +1,11 @@
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import { deepEquals } from "@rbxts/object-utils";
 import ProfileService from "@rbxts/profileservice";
-import { Profile } from "@rbxts/profileservice/globals";
-import { HttpService, Players } from "@rbxts/services";
+import { HttpService, Players, RunService } from "@rbxts/services";
 import { STORE_SCOPE } from "shared/configs/game";
 
-import { deserialize, ProfileState, profileTemplate, serialize } from "./modules/datastore/serde";
+import { deleteProfile, getProfile, setProfile } from "./modules/datastore/savePlayerData";
+import { deserialize, profileTemplate, serialize } from "./modules/datastore/serde";
 import { createPlayerStore, removeStore, retrieveStore } from "./playerStore";
 
 /**
@@ -25,8 +25,6 @@ const playerDataStore = ProfileService.GetProfileStore(
  * In such a case, we reject all new incoming players.
  */
 let IS_SHUTTING_DOWN = false;
-
-const profiles: Map<Player, Profile<ProfileState>> = new Map();
 
 /**
  * Attempts to initialize a game state for a player that just joined.
@@ -58,7 +56,7 @@ async function onPlayerAdded(player: Player): Promise<void> {
 
 	profile.AddUserId(player.UserId);
 	profile.Reconcile();
-	profiles.set(player, profile);
+	setProfile(player, profile);
 
 	profile.ListenToRelease(() => {
 		player.Kick(`There was an issue. Please rejoin.`);
@@ -79,12 +77,8 @@ async function onPlayerAdded(player: Player): Promise<void> {
  */
 async function savePlayerData(player: Player): Promise<void> {
 	// retrieve the profile and remove it from the cache to avoid the player having a double save
-	const profile = profiles.get(player);
-	if (profile === undefined) {
-		return;
-	}
-
-	profiles.delete(player);
+	const profile = getProfile(player);
+	deleteProfile(player);
 
 	const [getStoreSuccess, store] = pcall(retrieveStore, player);
 	if (!getStoreSuccess) {
@@ -158,3 +152,22 @@ Players.GetPlayers().forEach(async (player) => {
 Players.PlayerAdded.Connect(async (player) => {
 	await onPlayerAdded(player);
 });
+
+let lastSaveTime = 0;
+while (RunService.Heartbeat.Wait()) {
+	const now = time();
+	if (now - lastSaveTime > 60) {
+		lastSaveTime = now;
+
+		// save data for all players
+		for (const player of Players.GetPlayers()) {
+			const [didSave, saveError] = pcall(savePlayerData, player);
+			if (!didSave) {
+				GameAnalytics.addErrorEvent(player.UserId, {
+					severity: "critical",
+					message: `Failed to handle data saving during Heartbeat:\n${saveError}`,
+				});
+			}
+		}
+	}
+}

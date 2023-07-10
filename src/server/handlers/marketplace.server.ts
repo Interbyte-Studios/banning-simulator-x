@@ -1,5 +1,7 @@
+import { GameAnalytics } from "@rbxts/gameanalytics";
 import { HttpService, MarketplaceService, Players } from "@rbxts/services";
 import { modifyPetCount } from "server/modules/datastore/pets";
+import { savePlayerData } from "server/modules/datastore/savePlayerData";
 import { retrieveStore } from "server/playerStore";
 import {
 	BOOST_PRODUCTS,
@@ -271,5 +273,13 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 	if (!purchaseProcessed) throw `Product of id ${receiptInfo.ProductId} was not processed.`;
 
 	store.dispatch(claimDevProduct(receiptInfo.ProductId, receiptInfo.PurchaseId));
+	const [didSave, saveError] = pcall(savePlayerData, player);
+	if (!didSave) {
+		GameAnalytics.addErrorEvent(player.UserId, {
+			severity: "critical",
+			message: `Failed to handle data saving during Heartbeat:\n${saveError}`,
+		});
+	}
+
 	return Enum.ProductPurchaseDecision.PurchaseGranted;
 };
