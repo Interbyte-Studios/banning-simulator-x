@@ -274,7 +274,7 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 
 	store.dispatch(claimDevProduct(receiptInfo.ProductId, receiptInfo.PurchaseId));
 	const successfullySaved = savePlayerData(player).await();
-	if (successfullySaved[1] !== true) {
+	if (!(successfullySaved[0] && successfullySaved[1])) {
 		GameAnalytics.addErrorEvent(player.UserId, {
 			severity: "critical",
 			message: `Failed to save player data after purchasing dev product with an id of: "${receiptInfo.ProductId}".`,
