@@ -273,17 +273,8 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 	if (!purchaseProcessed) throw `Product of id ${receiptInfo.ProductId} was not processed.`;
 
 	store.dispatch(claimDevProduct(receiptInfo.ProductId, receiptInfo.PurchaseId));
-	const [didSave, saveError] = pcall(savePlayerData, player);
-	if (!didSave) {
-		GameAnalytics.addErrorEvent(player.UserId, {
-			severity: "critical",
-			message: `Save Player Data errored after purchasing dev product with an id of: "${receiptInfo.ProductId}". Error: ${saveError}`,
-		});
-		return Enum.ProductPurchaseDecision.NotProcessedYet;
-	}
-
-	const successfullySaved = saveError.await();
-	if (!successfullySaved[0]) {
+	const successfullySaved = savePlayerData(player).await();
+	if (successfullySaved[1] !== true) {
 		GameAnalytics.addErrorEvent(player.UserId, {
 			severity: "critical",
 			message: `Failed to save player data after purchasing dev product with an id of: "${receiptInfo.ProductId}".`,
