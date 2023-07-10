@@ -2,7 +2,7 @@ import { GameAnalytics } from "@rbxts/gameanalytics";
 import { deepEquals } from "@rbxts/object-utils";
 import { Profile } from "@rbxts/profileservice/globals";
 import { HttpService } from "@rbxts/services";
-import { removeStore, retrieveStore } from "server/playerStore";
+import { retrieveStore } from "server/playerStore";
 
 import { deserialize, ProfileState, serialize } from "./serde";
 
@@ -47,14 +47,12 @@ export function deleteProfile(player: Player): void {
  *
  * @param player The player to save data for.
  */
-export async function savePlayerData(player: Player): Promise<void> {
+export async function savePlayerData(player: Player): Promise<boolean> {
 	// retrieve the profile and remove it from the cache to avoid the player having a double save
 	const profile = profiles.get(player);
 	if (profile === undefined) {
-		return;
+		return false;
 	}
-
-	profiles.delete(player);
 
 	const [getStoreSuccess, store] = pcall(retrieveStore, player);
 	if (!getStoreSuccess) {
@@ -64,7 +62,7 @@ export async function savePlayerData(player: Player): Promise<void> {
 		});
 
 		profile.Release();
-		return;
+		return false;
 	}
 
 	// check that serialize -> deserialize isn't lossy
@@ -85,9 +83,5 @@ export async function savePlayerData(player: Player): Promise<void> {
 
 	// serialize the player's data
 	profile.Data = serialize(state);
-	// release the profile lock
-	profile.Release();
-
-	// remove the store
-	removeStore(player);
+	return true;
 }

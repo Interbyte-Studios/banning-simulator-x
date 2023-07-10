@@ -1,12 +1,11 @@
 import { GameAnalytics } from "@rbxts/gameanalytics";
-import { deepEquals } from "@rbxts/object-utils";
 import ProfileService from "@rbxts/profileservice";
-import { HttpService, Players, RunService } from "@rbxts/services";
+import { Players, RunService } from "@rbxts/services";
 import { STORE_SCOPE } from "shared/configs/game";
 
-import { deleteProfile, getProfile, setProfile } from "./modules/datastore/savePlayerData";
-import { deserialize, profileTemplate, serialize } from "./modules/datastore/serde";
-import { createPlayerStore, removeStore, retrieveStore } from "./playerStore";
+import { deleteProfile, getProfile, savePlayerData, setProfile } from "./modules/datastore/savePlayerData";
+import { deserialize, profileTemplate } from "./modules/datastore/serde";
+import { createPlayerStore, removeStore } from "./playerStore";
 
 /**
  * The data store used to save player data.
@@ -64,53 +63,6 @@ async function onPlayerAdded(player: Player): Promise<void> {
 
 	// create the store
 	createPlayerStore(player, deserialize(profile.Data));
-}
-
-/**
- * Attempts to save a player's profile to the DataStore.
- *
- * If the player does not have a profile, no errors are thrown, as this could be the second time we attempt to save the user's data.
- *
- * A player should be evicted from the game after their profile is released to avoid progression lost.
- *
- * @param player The player to save data for.
- */
-async function savePlayerData(player: Player): Promise<void> {
-	// retrieve the profile and remove it from the cache to avoid the player having a double save
-	const profile = getProfile(player);
-	if (profile === undefined) {
-		return;
-	}
-
-	const [getStoreSuccess, store] = pcall(retrieveStore, player);
-	if (!getStoreSuccess) {
-		GameAnalytics.addErrorEvent(player.UserId, {
-			severity: "error",
-			message: `Failed to retrieve store when saving player data`,
-		});
-
-		profile.Release();
-		return;
-	}
-
-	// check that serialize -> deserialize isn't lossy
-	const state = store.getState();
-	if (!deepEquals(state, deserialize(serialize(state)))) {
-		const warningMessage = `Player ${player.UserId} has lossy serialize -> Deserialize procedure.
-		Data before:
-		${HttpService.JSONEncode(state)}
-		Data after:
-		${HttpService.JSONEncode(deserialize(serialize(state)))}`;
-
-		warn(warningMessage);
-		GameAnalytics.addErrorEvent(player.UserId, {
-			severity: "critical",
-			message: warningMessage,
-		});
-	}
-
-	// serialize the player's data
-	profile.Data = serialize(state);
 }
 
 Players.PlayerRemoving.Connect(async (player) => {
