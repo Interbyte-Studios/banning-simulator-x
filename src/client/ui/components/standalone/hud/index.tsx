@@ -29,6 +29,7 @@ export const Hud = hooks((props: HudProps) => {
 				Size={UDim2.fromScale(0.25, 0.5)}
 			>
 				<uiaspectratioconstraint AspectRatio={0.8} />
+				<RanksViewer />
 				<CoinsCurrency onlyShowCurrencyEnabled={props.onlyShowCurrency} />
 				<GemsCurrency onlyShowCurrencyEnabled={props.onlyShowCurrency} />
 			</BaseFrame>

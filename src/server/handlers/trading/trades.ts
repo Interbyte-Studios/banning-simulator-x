@@ -3,18 +3,12 @@ import { MAX_TRADE_LOGS } from "shared/configs/game";
 import { PlayerTradeItem } from "shared/configs/trading";
 import { Store } from "shared/rodux";
 import { awardCurrency } from "shared/rodux/currencies";
-import { addPets, ConfirmedPet, deletePets } from "shared/rodux/pets";
+import { deletePets, Pet, tradePets } from "shared/rodux/pets";
 import { removeTradeLog, SavedTrade, saveTrade } from "shared/rodux/tradeLogs";
 import { getPetLevel } from "shared/util/getPetLevel";
 import { UnreachableCaseError } from "shared/util/unreachableCaseError";
 
 const currentTrades: Map<Player, Trade> = new Map();
-
-interface TradedPet extends ConfirmedPet {
-	bans: number;
-	equipped: boolean;
-	locked: boolean;
-}
 
 interface BaseTrade {
 	status: TradeStatus;
@@ -269,7 +263,23 @@ export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeI
 		return false;
 	}
 
-	if (trade.status === TradeStatus.ConfirmedOffer) {
+	// this ViewingFinalizedTrade case is only with with high latency from clients, so we handle those cases here
+	if (trade.status === TradeStatus.ViewingFinalizedTrade) {
+		const otherPlayer = trade.items.find((playerItems) => playerItems.player !== player);
+		if (otherPlayer === undefined) {
+			return false;
+		}
+
+		currentTrades.set(player, {
+			status: TradeStatus.Trading,
+			items: trade.items,
+		});
+
+		currentTrades.set(otherPlayer.player, {
+			status: TradeStatus.Trading,
+			items: trade.items,
+		});
+	} else if (trade.status === TradeStatus.ConfirmedOffer) {
 		const otherPlayer = trade.items.find((playerItems) => playerItems.player !== player);
 		if (otherPlayer === undefined) {
 			return false;
@@ -307,12 +317,17 @@ export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeI
 		}
 	}
 
-	if (trade.status !== TradeStatus.Trading && trade.status !== TradeStatus.ConfirmedOffer) {
-		warn(`Attempt to modify trade when not in a trade | Incorrect Status: ${trade.status}`);
+	const updatedTrade = currentTrades.get(player);
+	if (updatedTrade === undefined) {
 		return false;
 	}
 
-	const playerItems = trade.items.find((playerItems) => playerItems.player === player);
+	if (updatedTrade.status !== TradeStatus.Trading && updatedTrade.status !== TradeStatus.ConfirmedOffer) {
+		warn(`Attempt to modify trade when not in a trade | Incorrect Status: ${updatedTrade.status}`);
+		return false;
+	}
+
+	const playerItems = updatedTrade.items.find((playerItems) => playerItems.player === player);
 	if (!playerItems) {
 		// this case should never happen
 		return false;
@@ -412,6 +427,25 @@ export function getTradingCounterParty(player: Player): Player {
 	}
 
 	return counterParty.player;
+}
+
+/**
+ * @param player The player to check if they are in a trade.
+ * @param targetPlayer The player to check if the specific player is in a trade with.
+ * @returns Whether or not the specific player is in a trade with the target player.
+ */
+export function verifyTradingCounterParty(player: Player, targetPlayer: Player): boolean {
+	const trade = currentTrades.get(player);
+	if (trade === undefined || !isActiveTrade(trade)) {
+		return false;
+	}
+
+	const counterParty = trade.items.find((p) => p.player !== player);
+	if (counterParty === undefined) {
+		return false;
+	}
+
+	return counterParty.player === targetPlayer;
 }
 
 /**
@@ -559,7 +593,7 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 
 	if (playerOffer && otherPlayerOffer) {
 		// create tables of pets to transfer between players
-		const playerOfferPets: Array<TradedPet> = [];
+		const playerOfferPets: Array<Pet> = [];
 		for (const pet of playerOffer.pets) {
 			const storedPet = store.getState().pets.find((storedPet) => storedPet.guid === pet);
 
@@ -569,10 +603,10 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 				return false;
 			}
 
-			playerOfferPets.push({ ...storedPet, autoDeleted: false, method: "trade" });
+			playerOfferPets.push({ ...storedPet });
 		}
 
-		const otherPlayerOfferPets: Array<TradedPet> = [];
+		const otherPlayerOfferPets: Array<Pet> = [];
 		for (const pet of otherPlayerOffer.pets) {
 			const storedPet = otherPlayerStore.getState().pets.find((storedPet) => storedPet.guid === pet);
 
@@ -582,7 +616,7 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 				return false;
 			}
 
-			otherPlayerOfferPets.push({ ...storedPet, autoDeleted: false, method: "trade" });
+			otherPlayerOfferPets.push({ ...storedPet });
 		}
 
 		// remove the pets from the players
@@ -590,8 +624,8 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 		otherPlayerStore.dispatch(deletePets(otherPlayerOffer.pets));
 
 		// add the new pets to the players
-		store.dispatch(addPets(0, "coins", otherPlayerOfferPets));
-		otherPlayerStore.dispatch(addPets(0, "coins", playerOfferPets));
+		store.dispatch(tradePets(otherPlayerOfferPets));
+		otherPlayerStore.dispatch(tradePets(playerOfferPets));
 
 		if (playerOffer.currency !== undefined) {
 			// remove the currency from the player

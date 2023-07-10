@@ -7,11 +7,11 @@ export const WORLD_PRESTIGE = {
 		maxUpgrades: 2,
 	},
 	reducedVoidEggCost: {
-		reducedCostMultiplier: 0.1,
+		reducedCostMultiplier: 0.025,
 		maxUpgrades: 10,
 	},
 	reducedFusionCost: {
-		reducedCostMultiplier: 0.1,
+		reducedCostMultiplier: 0.025,
 		maxUpgrades: 10,
 	},
 	worldRewards: {
