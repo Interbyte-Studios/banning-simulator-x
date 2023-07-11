@@ -181,13 +181,17 @@ const TradeCard = hooks(
 	(props: { playerViewing: Player; tradeLog: SavedTrade; viewTrade: () => void }, { useState, useEffect }) => {
 		const [otherPlayerName, setOtherPlayerName] = useState("unknown");
 		useEffect(() => {
+			if (otherPlayerName !== "unknown") {
+				return;
+			}
+
 			task.spawn((): void => {
 				const [success, result] = pcall(() => Players.GetNameFromUserIdAsync(props.tradeLog.otherPlayerId));
 				if (success) {
 					setOtherPlayerName(result);
 				}
 			});
-		});
+		}, [otherPlayerName]);
 
 		return (
 			<BaseFrame Size={UDim2.fromScale(1, 0.5)}>
