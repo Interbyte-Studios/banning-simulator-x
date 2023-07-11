@@ -103,9 +103,9 @@ Players.PlayerAdded.Connect(async (player) => {
 
 		// remove from character
 		const oldWeapon = backpack.FindFirstChild(oldWeaponModel.Name) ?? characterWeapon;
-		assert(oldWeapon, `Failed to get old weapon "${oldWeaponModel.Name}" from player`);
-		oldWeapon.Parent = undefined;
-		oldWeapon.Destroy();
+		if (oldWeapon) {
+			oldWeapon.Destroy();
+		}
 
 		// give player new weapon
 		const newWeaponModel = getItemById(ReplicatedStorage.assetObjects.weapons, newState.currentWeapon.id);
