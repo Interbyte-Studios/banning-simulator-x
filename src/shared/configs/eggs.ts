@@ -213,4 +213,4 @@ export function isEggName(name: unknown): name is EggName {
 /**
  * How long a player must wait between egg hatches.
  */
-export const hatchDebounce = 3;
+export const hatchDebounce = 2;

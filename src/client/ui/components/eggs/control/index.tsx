@@ -238,10 +238,9 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 										requestHatch.pets[0].autoDeleted,
 										props.gamepasses["Fast Hatch"],
 									);
-									task.wait(0.25);
+									task.wait(0.5);
 								}
 							} else {
-								task.wait(2);
 								switch (requestHatch.reason) {
 									case HatchEggFailKind.NoCharacter: {
 										addAnnouncement(

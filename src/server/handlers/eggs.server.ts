@@ -77,8 +77,8 @@ hatchEgg.SetCallback(
 
 		// check that user owns zone
 		const ownsZone = ownsWorld.zones.find((x) => x === eggData.zone);
-		warn(`Player does not own the zone the egg is from!`)
 		if (ownsZone === undefined) {
+			warn(`Player does not own the zone the egg is from!`);
 			return {
 				success: false,
 				reason: HatchEggFailKind.NoZone,
