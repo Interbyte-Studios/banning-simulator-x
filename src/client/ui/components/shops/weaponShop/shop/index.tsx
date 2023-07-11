@@ -51,32 +51,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 		const minimumWeaponId = 1;
 		const maximumWeaponId = MAX_WEAPON_ID;
 
-		const exitButton: Array<Roact.Element> = [];
-
 		const weaponInfo = getWeaponInfo(viewedWeapon);
-		if (weaponInfo.data.cost === undefined) {
-			const exitButtonElement = (
-				<ExitButton
-					Position={UDim2.fromScale(0.5, 0.925)}
-					minimizedSize={0.06}
-					maximizedSize={0.07}
-					onClosed={(): void => props.hideMenu()}
-				/>
-			);
-
-			exitButton.push(exitButtonElement);
-		} else {
-			const exitButtonElement = (
-				<ExitButton
-					Position={UDim2.fromScale(0.58, 0.925)}
-					minimizedSize={0.06}
-					maximizedSize={0.07}
-					onClosed={(): void => props.hideMenu()}
-				/>
-			);
-
-			exitButton.push(exitButtonElement);
-		}
 
 		useEffect(() => {
 			const camera = Workspace.CurrentCamera;
@@ -134,8 +109,13 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 					}}
 				/>
 				<WeaponShopWeaponInfo currentWeapon={viewedWeapon} />
-				<PurchaseWeapon currentWeapon={viewedWeapon} />
-				{exitButton}
+				<PurchaseWeapon weaponId={viewedWeapon} />
+				<ExitButton
+					Position={UDim2.fromScale(0.58, 0.925)}
+					minimizedSize={0.06}
+					maximizedSize={0.07}
+					onClosed={(): void => props.hideMenu()}
+				/>
 			</>
 		);
 	}),
