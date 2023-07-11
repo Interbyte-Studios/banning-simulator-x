@@ -177,133 +177,138 @@ const PlayerCurrencyOffer = (props: {
 /**
  * A trade card displaying a trade log.
  */
-const TradeCard = hooks((props: { playerViewing: Player; tradeLog: SavedTrade; viewTrade: () => void }) => {
-	const [success, result] = pcall(() => Players.GetNameFromUserIdAsync(props.tradeLog.otherPlayerId));
+const TradeCard = hooks(
+	(props: { playerViewing: Player; tradeLog: SavedTrade; viewTrade: () => void }, { useState, useEffect }) => {
+		const [otherPlayerName, setOtherPlayerName] = useState("unknown");
+		useEffect(() => {
+			task.spawn((): void => {
+				const [success, result] = pcall(() => Players.GetNameFromUserIdAsync(props.tradeLog.otherPlayerId));
+				if (success) {
+					setOtherPlayerName(result);
+				}
+			});
+		});
 
-	let otherPlayerName: string | undefined;
-	if (success) {
-		otherPlayerName = result;
-	}
-
-	return (
-		<BaseFrame Size={UDim2.fromScale(1, 0.5)}>
-			<uiaspectratioconstraint AspectRatio={4.1} />
-			<BaseFrame
-				BackgroundColor3={uiTextStrokeColor}
-				BackgroundTransparency={0}
-				Position={UDim2.fromScale(0.5, 0.5)}
-				Size={UDim2.fromScale(0.99, 0.95)}
-			>
-				<uicorner CornerRadius={new UDim(0.15, 0)} />
-				<BaseUIStroke native={{ Color: Color3.fromRGB(5, 56, 88), Thickness: 2 }} />
-
-				<PlayerImage
-					playerId={props.playerViewing.UserId}
-					position={UDim2.fromScale(0.055, 0.25)}
-					size={UDim2.fromScale(0.4, 0.4)}
-				/>
-
-				<PlayerImage
-					playerId={props.tradeLog.otherPlayerId}
-					position={UDim2.fromScale(0.945, 0.25)}
-					size={UDim2.fromScale(0.4, 0.4)}
-				/>
-
-				<StrokeTextLabel
-					native={{
-						Position: UDim2.fromScale(0.215, 0.15),
-						Size: UDim2.fromScale(0.2, 0.25),
-						Text: props.playerViewing.Name,
-						TextXAlignment: Enum.TextXAlignment.Left,
-					}}
-					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(5, 56, 88) } }}
-				/>
-
-				<StrokeTextLabel
-					native={{
-						Position: UDim2.fromScale(0.785, 0.15),
-						Size: UDim2.fromScale(0.2, 0.25),
-						Text: otherPlayerName,
-						TextXAlignment: Enum.TextXAlignment.Right,
-					}}
-					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(5, 56, 88) } }}
-				/>
-
-				<PlayerPetOffer
-					pets={props.tradeLog.localOffer.pets}
-					position={UDim2.fromScale(0.215, 0.735)}
-					size={UDim2.fromScale(0.4, 0.45)}
-					displayBackground={true}
-				/>
-
-				<PlayerPetOffer
-					pets={props.tradeLog.otherOffer.pets}
-					position={UDim2.fromScale(0.785, 0.735)}
-					size={UDim2.fromScale(0.4, 0.45)}
-					displayBackground={true}
-				/>
-
-				<PlayerCurrencyOffer
-					isLocal={true}
-					currencyType={props.tradeLog.localOffer.currency.currencyType}
-					amount={props.tradeLog.localOffer.currency.amount}
-					isFocused={false}
-				/>
-
-				<PlayerCurrencyOffer
-					isLocal={false}
-					currencyType={props.tradeLog.otherOffer.currency.currencyType}
-					amount={props.tradeLog.otherOffer.currency.amount}
-					isFocused={false}
-				/>
-
-				<StrokeTextLabel
-					native={{
-						Position: UDim2.fromScale(0.5, 0.115),
-						Size: UDim2.fromScale(0.225, 0.2),
-						Text: props.tradeLog.timestamp.FormatLocalTime("LL", "en-us"),
-					}}
-					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(5, 56, 88) } }}
-				/>
-
-				<StrokeTextLabel
-					native={{
-						Position: UDim2.fromScale(0.5, 0.3),
-						Size: UDim2.fromScale(0.225, 0.2),
-						Text: props.tradeLog.timestamp.FormatLocalTime("LT", "en-us"),
-					}}
-					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(5, 56, 88) } }}
-				/>
-
-				<SpringImageButton
-					native={{
-						Position: UDim2.fromScale(0.5, 0.78),
-						Image: assetIds.images.ui.index.Claim,
-					}}
-					size={{ minSize: 0.25, maxSize: 0.3 }}
-					events={{
-						/**
-						 * View the trade.
-						 */
-						Activated: (): void => {
-							playSFX(UIEngagement.MinorEngagement);
-							props.viewTrade();
-						},
-					}}
+		return (
+			<BaseFrame Size={UDim2.fromScale(1, 0.5)}>
+				<uiaspectratioconstraint AspectRatio={4.1} />
+				<BaseFrame
+					BackgroundColor3={uiTextStrokeColor}
+					BackgroundTransparency={0}
+					Position={UDim2.fromScale(0.5, 0.5)}
+					Size={UDim2.fromScale(0.99, 0.95)}
 				>
-					<uiaspectratioconstraint AspectRatio={2} />
+					<uicorner CornerRadius={new UDim(0.15, 0)} />
+					<BaseUIStroke native={{ Color: Color3.fromRGB(5, 56, 88), Thickness: 2 }} />
+
+					<PlayerImage
+						playerId={props.playerViewing.UserId}
+						position={UDim2.fromScale(0.055, 0.25)}
+						size={UDim2.fromScale(0.4, 0.4)}
+					/>
+
+					<PlayerImage
+						playerId={props.tradeLog.otherPlayerId}
+						position={UDim2.fromScale(0.945, 0.25)}
+						size={UDim2.fromScale(0.4, 0.4)}
+					/>
+
 					<StrokeTextLabel
 						native={{
-							Size: UDim2.fromScale(0.8, 0.8),
-							Text: "View",
+							Position: UDim2.fromScale(0.215, 0.15),
+							Size: UDim2.fromScale(0.2, 0.25),
+							Text: props.playerViewing.Name,
+							TextXAlignment: Enum.TextXAlignment.Left,
 						}}
-						stroke={{ native: { Thickness: 1.5, Color: uiClaimButtonStrokeColor } }}
+						stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(5, 56, 88) } }}
 					/>
-				</SpringImageButton>
+
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.785, 0.15),
+							Size: UDim2.fromScale(0.2, 0.25),
+							Text: otherPlayerName,
+							TextXAlignment: Enum.TextXAlignment.Right,
+						}}
+						stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(5, 56, 88) } }}
+					/>
+
+					<PlayerPetOffer
+						pets={props.tradeLog.localOffer.pets}
+						position={UDim2.fromScale(0.215, 0.735)}
+						size={UDim2.fromScale(0.4, 0.45)}
+						displayBackground={true}
+					/>
+
+					<PlayerPetOffer
+						pets={props.tradeLog.otherOffer.pets}
+						position={UDim2.fromScale(0.785, 0.735)}
+						size={UDim2.fromScale(0.4, 0.45)}
+						displayBackground={true}
+					/>
+
+					<PlayerCurrencyOffer
+						isLocal={true}
+						currencyType={props.tradeLog.localOffer.currency.currencyType}
+						amount={props.tradeLog.localOffer.currency.amount}
+						isFocused={false}
+					/>
+
+					<PlayerCurrencyOffer
+						isLocal={false}
+						currencyType={props.tradeLog.otherOffer.currency.currencyType}
+						amount={props.tradeLog.otherOffer.currency.amount}
+						isFocused={false}
+					/>
+
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.5, 0.115),
+							Size: UDim2.fromScale(0.225, 0.2),
+							Text: props.tradeLog.timestamp.FormatLocalTime("LL", "en-us"),
+						}}
+						stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(5, 56, 88) } }}
+					/>
+
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.5, 0.3),
+							Size: UDim2.fromScale(0.225, 0.2),
+							Text: props.tradeLog.timestamp.FormatLocalTime("LT", "en-us"),
+						}}
+						stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(5, 56, 88) } }}
+					/>
+
+					<SpringImageButton
+						native={{
+							Position: UDim2.fromScale(0.5, 0.78),
+							Image: assetIds.images.ui.index.Claim,
+						}}
+						size={{ minSize: 0.25, maxSize: 0.3 }}
+						events={{
+							/**
+							 * View the trade.
+							 */
+							Activated: (): void => {
+								playSFX(UIEngagement.MinorEngagement);
+								props.viewTrade();
+							},
+						}}
+					>
+						<uiaspectratioconstraint AspectRatio={2} />
+						<StrokeTextLabel
+							native={{
+								Size: UDim2.fromScale(0.8, 0.8),
+								Text: "View",
+							}}
+							stroke={{ native: { Thickness: 1.5, Color: uiClaimButtonStrokeColor } }}
+						/>
+					</SpringImageButton>
+				</BaseFrame>
 			</BaseFrame>
-		</BaseFrame>
-	);
-});
+		);
+	},
+);
 
 /**
  * Displays a players trade history.
@@ -334,6 +339,19 @@ export const TradeHistory = hooks((props: TradeHistoryProps, { useEffect, useVal
 	}
 
 	const [viewedTrade, setViewedTrade] = useState<SavedTrade | undefined>(undefined);
+	const [otherPlayerName, setOtherPlayerName] = useState("unknown");
+	useEffect(() => {
+		if (viewedTrade === undefined) {
+			return;
+		}
+
+		task.spawn((): void => {
+			const [success, result] = pcall(() => Players.GetNameFromUserIdAsync(viewedTrade.otherPlayerId));
+			if (success) {
+				setOtherPlayerName(result);
+			}
+		});
+	}, [viewedTrade]);
 
 	if (viewedTrade === undefined) {
 		const listRef = useValue(Roact.createRef<UIListLayout>());
@@ -387,13 +405,6 @@ export const TradeHistory = hooks((props: TradeHistoryProps, { useEffect, useVal
 			</>
 		);
 	} else {
-		const [success, result] = pcall(() => Players.GetNameFromUserIdAsync(viewedTrade.otherPlayerId));
-
-		let otherPlayerName: string | undefined;
-		if (success) {
-			otherPlayerName = result;
-		}
-
 		return (
 			<>
 				<FullComponentHeader
