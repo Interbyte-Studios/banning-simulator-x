@@ -75,7 +75,7 @@ export const TalismanTower = hooks((props: TalismanTowerProps, { useState, useEf
 				}}
 			/>
 			<TalismanTowerTalismanInfo currentTalisman={viewedTalisman} />
-			<PurchaseTalisman currentTalisman={viewedTalisman} />
+			<PurchaseTalisman talismanId={viewedTalisman} />
 			<ExitButton
 				Position={UDim2.fromScale(0.58, 0.925)}
 				minimizedSize={0.06}

@@ -136,9 +136,8 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 								: "Purchase",
 					}}
 					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
-				>
-					<uiaspectratioconstraint AspectRatio={4} />
-				</StrokeTextLabel>
+				/>
+				<uiaspectratioconstraint AspectRatio={4} />
 			</SpringImageButton>
 		);
 	}),
