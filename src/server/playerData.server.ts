@@ -66,6 +66,10 @@ async function onPlayerAdded(player: Player): Promise<void> {
 }
 
 Players.PlayerRemoving.Connect(async (player) => {
+	if (IS_SHUTTING_DOWN) {
+		return;
+	}
+
 	await savePlayerData(player);
 
 	const profile = getProfile(player);
