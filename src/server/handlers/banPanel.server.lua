@@ -19,6 +19,7 @@ if RunService:IsStudio() then
 end
 
 if game.PlaceId ~= 8617208257 then
+	print("Place id is " + game.PlaceId)
 	return
 end
 

@@ -141,7 +141,7 @@ export function runStep(
 		}
 
 		// check distance between player and npc
-		if (humanoidRootPart.Position.sub(playerRootPart.Position).Magnitude > 8) {
+		if (playerRootPart.Position.sub(humanoidRootPart.Position).Magnitude > 8) {
 			continue;
 		}
 
