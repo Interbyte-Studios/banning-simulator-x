@@ -30,8 +30,6 @@ table.sort(migrations, (a, b) => a.version < b.version);
  * @returns The migrated state.
  */
 export function runMigrations(state: ProfileState): ProfileState {
-	// if this is the update that released the migration functionality
-	// then we want to default to a data version of 1
 	migrations
 		.filter((migration) => migration.version > state.dataVersion)
 		.forEach((migrator) => {
