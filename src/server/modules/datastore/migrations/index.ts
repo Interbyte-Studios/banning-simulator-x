@@ -1,3 +1,4 @@
+import { deepCopy } from "@rbxts/object-utils";
 import { t } from "@rbxts/t";
 
 import { ProfileState } from "../serde";
@@ -34,10 +35,23 @@ export function runMigrations(state: ProfileState): ProfileState {
 		.filter((migration) => migration.version > state.dataVersion)
 		.forEach((migrator) => {
 			print(`Running migration to version ${migrator.version}`);
-			state = migrator.migrator(state) as ProfileState;
+
+			// we deep copy the state so that if the migrator fails, we haven't
+			// changed the real state (and can then roll-back)
+			state = migrator.migrator(deepCopy(state)) as ProfileState;
 			// update the version of the state
 			state.dataVersion = migrator.version;
 		});
 
 	return state;
+}
+
+/**
+ * Checks to see if a migrated state has a data version that is within this servers expected data version.
+ *
+ * @param state The migrated state of the profile.
+ * @returns If the profile has the expected data version.
+ */
+export function hasExpectedDataVersion(state: ProfileState): boolean {
+	return state.dataVersion === migrations[migrations.size() - 1].version;
 }
