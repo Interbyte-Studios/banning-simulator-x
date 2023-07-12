@@ -63,7 +63,7 @@ async function onPlayerAdded(player: Player): Promise<void> {
 		profile.Data.dataVersion = 1;
 	}
 
-	runMigrations(profile.Data);
+	profile.Data = runMigrations(profile.Data);
 
 	if (!hasExpectedDataVersion(profile.Data)) {
 		GameAnalytics.addErrorEvent(player.UserId, {
