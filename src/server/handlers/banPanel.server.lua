@@ -19,7 +19,7 @@ if RunService:IsStudio() then
 end
 
 if game.PlaceId ~= 8617208257 then
-	print("Place id is " + game.PlaceId)
+	print("Place ID is: ", tostring(game.PlaceId))
 	return
 end
 
