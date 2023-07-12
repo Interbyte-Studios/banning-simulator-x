@@ -2,7 +2,8 @@ import Object from "@rbxts/object-utils";
 import Rodux from "@rbxts/rodux";
 import { currencies, Currency } from "shared/configs/currencies";
 
-import { AddPet, EnhancePet, Pet } from "./pets";
+import { HatchEgg } from "./eggs";
+import { EnhancePet, FusePet, Pet } from "./pets";
 import { RedeemQuest } from "./quests";
 import { UnlockRank } from "./rank";
 import { PurchaseTalisman } from "./talismans";
@@ -88,11 +89,12 @@ export const currenciesReducer = Rodux.createReducer<
 	| PurchaseWeapon
 	| UnlockWorld
 	| UnlockZone
-	| AddPet
+	| HatchEgg
 	| RedeemQuest
 	| PurchaseTalisman
 	| EnhancePet
 	| UnlockRank
+	| FusePet
 >(defaultCurrencies, {
 	purchaseWeapon: (state, action) => {
 		return {
@@ -118,7 +120,7 @@ export const currenciesReducer = Rodux.createReducer<
 			[action.currency.type]: state[action.currency.type] - action.currency.amount,
 		};
 	},
-	addPet: (state, action) => {
+	hatchEgg: (state, action) => {
 		return {
 			...state,
 			[action.currencyType]: state[action.currencyType] - action.cost,
@@ -156,6 +158,12 @@ export const currenciesReducer = Rodux.createReducer<
 		return {
 			...state,
 			[action.currency]: state[action.currency] + action.amount,
+		};
+	},
+	fusePet: (state, action) => {
+		return {
+			...state,
+			[action.currencyType]: state[action.currencyType] - action.fusionCost,
 		};
 	},
 });

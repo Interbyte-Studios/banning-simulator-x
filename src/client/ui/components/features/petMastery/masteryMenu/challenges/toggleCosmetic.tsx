@@ -10,12 +10,8 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
-import {
-	PetMasteryState,
-	radiantVariantMasteryData,
-	regularVariantMasteryData,
-	voidVariantMasteryData,
-} from "shared/rodux/petMastery";
+import { PetMasteryState, PetMasteryStateVariant } from "shared/rodux/petMastery";
+import { UnreachableCaseError } from "shared/util/unreachableCaseError";
 
 interface ToggleCosmeticProps extends ToggleCosmeticMappedProps {
 	pet: number;
@@ -43,31 +39,33 @@ function mapStateToProps(state: StoreState): ToggleCosmeticMappedProps {
  */
 export const TogglePetMasteryCosmetic = RoactRodux.connect(mapStateToProps)(
 	hooks((props: ToggleCosmeticProps, hooks) => {
-		const petsMastery = props.petMastery.get(tostring(props.pet));
+		const petsMastery = props.petMastery.get(props.pet);
 
 		let canToggleCosmetic = false;
 		if (petsMastery !== undefined) {
-			const masteryData = petsMastery[props.variant];
+			const _masteryData = petsMastery[props.variant];
 
 			switch (props.variant) {
 				case "regular": {
-					assert(regularVariantMasteryData(masteryData), `Mastery data didn't meet strict interface expectations.`);
+					const masteryData = _masteryData as PetMasteryStateVariant[typeof props.variant];
 
 					canToggleCosmetic = masteryData.hatchClaimed && masteryData.maxLevelClaimed;
 					break;
 				}
 				case "void": {
-					assert(voidVariantMasteryData(masteryData), `Mastery data didn't meet strict interface expectations.`);
+					const masteryData = _masteryData as PetMasteryStateVariant[typeof props.variant];
 
 					canToggleCosmetic = masteryData.hatchClaimed && masteryData.maxLevelClaimed && masteryData.fuseClaimed;
 					break;
 				}
 				case "radiant": {
-					assert(radiantVariantMasteryData(masteryData), `Mastery data didn't meet strict interface expectations.`);
+					const masteryData = _masteryData as PetMasteryStateVariant[typeof props.variant];
 
 					canToggleCosmetic = masteryData.maxLevelClaimed && masteryData.fuseClaimed;
 					break;
 				}
+				default:
+					throw new UnreachableCaseError(props.variant);
 			}
 		}
 

@@ -14,7 +14,6 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 				id: 1,
 				guid: "1",
 				variant: "regular",
-				method: "hatch",
 				tradeLocked: false,
 			},
 			{
@@ -22,7 +21,6 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 				id: 2,
 				guid: "2",
 				variant: "regular",
-				method: "hatch",
 				tradeLocked: false,
 			},
 			{
@@ -30,7 +28,6 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 				id: 3,
 				guid: "3",
 				variant: "regular",
-				method: "hatch",
 				tradeLocked: false,
 			},
 		],
@@ -48,8 +45,7 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 				id: 1,
 				guid: "1",
 				autoDeleted: false,
-				variant: "radiant",
-				method: "hatch",
+				variant: "void",
 				tradeLocked: false,
 			},
 		],
@@ -63,7 +59,6 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 				guid: "2",
 				autoDeleted: false,
 				variant: "void",
-				method: "hatch",
 				tradeLocked: false,
 			},
 			{
@@ -71,7 +66,6 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 				guid: "3",
 				autoDeleted: false,
 				variant: "regular",
-				method: "hatch",
 				tradeLocked: false,
 			},
 		],
@@ -81,19 +75,10 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 		success: true,
 		pets: [
 			{
-				id: 1,
-				guid: "1",
-				autoDeleted: false,
-				variant: "radiant",
-				method: "hatch",
-				tradeLocked: false,
-			},
-			{
 				id: 2,
 				guid: "2",
 				autoDeleted: false,
 				variant: "void",
-				method: "hatch",
 				tradeLocked: false,
 			},
 			{
@@ -101,7 +86,6 @@ const results: Array<HatchEggDefinition extends AsyncServerFunctionDeclaration<A
 				guid: "3",
 				autoDeleted: true,
 				variant: "regular",
-				method: "hatch",
 				tradeLocked: false,
 			},
 		],

@@ -14,7 +14,7 @@ Players.PlayerAdded.Connect(async (player) => {
 
 	task.defer(async () => {
 		const { bans, eggs } = store.getState();
-		await bansOds.setAsync(playerId, bans.bans);
+		await bansOds.setAsync(playerId, bans);
 		await eggsOds.setAsync(playerId, eggs.eggs);
 	});
 
@@ -29,7 +29,7 @@ Players.PlayerAdded.Connect(async (player) => {
 
 		const { bans, eggs } = store.getState();
 		task.defer(async () => {
-			await bansOds.setAsync(playerId, bans.bans);
+			await bansOds.setAsync(playerId, bans);
 			await eggsOds.setAsync(playerId, eggs.eggs);
 		});
 	});

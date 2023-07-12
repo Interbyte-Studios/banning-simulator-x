@@ -55,7 +55,7 @@ function updateGlobalCache(): void {
 	});
 
 	if (writeSuccess) {
-		for (const petData of newCache) {
+		for (const petData of newCache ?? []) {
 			for (const [name, amount] of pairs(petData.variants)) {
 				setPetCount(petData.id, name, amount);
 			}

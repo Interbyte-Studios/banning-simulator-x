@@ -1,12 +1,12 @@
 import Rodux from "@rbxts/rodux";
 
 import { AccoladeActions, accoladeReducer, AccoladeState } from "./accolade";
-import { MigratedBansActions, migratedBansReducer, MigratedBansState } from "./banMigration";
 import { BansActions, bansReducer, BansState } from "./bans";
 import { BoostActions, boostsReducer, BoostsState } from "./boosts";
 import { CurrenciesActions, currenciesReducer, CurrenciesState } from "./currencies";
 import { CurrentTalismanActions, currentTalismanReducer, CurrentTalismanState } from "./currentTalisman";
 import { CurrentWeaponActions, currentWeaponReducer, CurrentWeaponState } from "./currentWeapon";
+import { dataVersionReducer, DataVersionState } from "./dataVersion";
 import { DevProductActions, devProductReducer, DevProductState } from "./devProducts";
 import { EggsActions, eggsReducer, EggsState } from "./eggs";
 import { ExperienceActions, experienceReducer, ExperienceState } from "./experience";
@@ -42,7 +42,6 @@ export type StoreState = {
 	index: PlayerIndexState;
 	invitedFriend: InvitedFriendState;
 	media: MediaState;
-	migratedBans: MigratedBansState;
 	pets: PetsState;
 	petMastery: PetMasteryState;
 	petTeams: PetTeamsState;
@@ -55,6 +54,7 @@ export type StoreState = {
 	tradeLogs: TradeLogsState;
 	weapons: WeaponsState;
 	worlds: WorldsState;
+	dataVersion: DataVersionState;
 	worldPrestige: WorldPrestigeState;
 };
 
@@ -68,7 +68,6 @@ export type StoreActions = (
 	| ExperienceActions
 	| GamepassActions
 	| MediaActions
-	| MigratedBansActions
 	| PetsActions
 	| QuestsAction
 	| RankActions
@@ -116,7 +115,7 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	petTeams: petTeamsReducer,
 	devProducts: devProductReducer,
 	tradeLogs: tradeLogsReducer,
-	migratedBans: migratedBansReducer,
+	dataVersion: dataVersionReducer,
 });
 
 export type Store = Rodux.Store<StoreState, StoreActions>;

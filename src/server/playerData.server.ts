@@ -3,6 +3,7 @@ import ProfileService from "@rbxts/profileservice";
 import { Players, RunService } from "@rbxts/services";
 import { STORE_SCOPE } from "shared/configs/game";
 
+import { runMigrations } from "./modules/datastore/migrations";
 import { deleteProfile, getProfile, savePlayerData, setProfile } from "./modules/datastore/savePlayerData";
 import { deserialize, profileTemplate } from "./modules/datastore/serde";
 import { createPlayerStore, removeStore } from "./playerStore";
@@ -31,6 +32,7 @@ let IS_SHUTTING_DOWN = false;
  * Fires off data retrieval and Rodux store creation.
  *
  * @param player The player that joined.
+ * @returns A promise that resolves once the data is loaded.
  */
 async function onPlayerAdded(player: Player): Promise<void> {
 	if (IS_SHUTTING_DOWN) {
@@ -55,6 +57,9 @@ async function onPlayerAdded(player: Player): Promise<void> {
 
 	profile.AddUserId(player.UserId);
 	profile.Reconcile();
+
+	runMigrations(profile.Data);
+
 	setProfile(player, profile);
 
 	profile.ListenToRelease(() => {

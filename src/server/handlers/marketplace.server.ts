@@ -91,13 +91,11 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 		}
 
 		store.dispatch(
-			addPets(0, "coins", [
+			addPets([
 				{
 					id: selectedPet,
 					variant: "regular",
-					method: "purchase",
 					tradeLocked: false,
-					autoDeleted: false,
 					guid: HttpService.GenerateGUID(false),
 				},
 			]),
@@ -141,15 +139,11 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 
 		store.dispatch(
 			addPets(
-				0,
-				"coins",
 				selectedPets.map((petId) => {
 					return {
 						id: petId,
 						variant: "regular",
-						method: "purchase",
 						tradeLocked: false,
-						autoDeleted: false,
 						guid: HttpService.GenerateGUID(false),
 					};
 				}),
@@ -177,13 +171,11 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 		}
 
 		store.dispatch(
-			addPets(0, "coins", [
+			addPets([
 				{
 					id: selectedPet,
 					variant: "regular",
-					method: "purchase",
 					tradeLocked: false,
-					autoDeleted: false,
 					guid: HttpService.GenerateGUID(false),
 				},
 			]),
@@ -227,15 +219,11 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 
 		store.dispatch(
 			addPets(
-				0,
-				"coins",
 				selectedPets.map((petId) => {
 					return {
 						id: petId,
 						variant: "regular",
-						method: "purchase",
 						tradeLocked: false,
-						autoDeleted: false,
 						guid: HttpService.GenerateGUID(false),
 					};
 				}),
@@ -249,13 +237,11 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 	for (const exclusivePet of EXCLUSIVE_PETS) {
 		if (receiptInfo.ProductId === exclusivePet.devproductId) {
 			store.dispatch(
-				addPets(0, "coins", [
+				addPets([
 					{
 						id: exclusivePet.petId,
 						variant: "regular",
-						method: "purchase",
 						tradeLocked: false,
-						autoDeleted: false,
 						guid: HttpService.GenerateGUID(false),
 					},
 				]),

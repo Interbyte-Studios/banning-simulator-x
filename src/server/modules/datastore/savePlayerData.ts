@@ -46,6 +46,7 @@ export function deleteProfile(player: Player): void {
  * A player should be evicted from the game after their profile is released to avoid progression lost.
  *
  * @param player The player to save data for.
+ * @returns A promise that indicates if the data was saved successfully.
  */
 export async function savePlayerData(player: Player): Promise<boolean> {
 	// retrieve the profile and remove it from the cache to avoid the player having a double save

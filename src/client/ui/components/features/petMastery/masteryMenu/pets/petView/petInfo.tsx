@@ -200,11 +200,7 @@ function mapIndexStateToIndexStatProps(state: StoreState): IndexStatsMappedProps
  */
 const IndexStats = RoactRodux.connect(mapIndexStateToIndexStatProps)(
 	hooks((props: IndexStatsProps) => {
-		const stringId = tostring(props.pet);
-		if (stringId === undefined) {
-			throw `Failed to get string id for pet ${props.pet}!`;
-		}
-		const petsIndex = props.index.pets.get(stringId);
+		const petsIndex = props.index.pets.get(props.pet);
 
 		let hatches = 0;
 		let fuses = 0;

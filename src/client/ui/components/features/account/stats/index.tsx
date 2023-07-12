@@ -32,7 +32,7 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 
 	const storeState = playerStore.getState();
 	const [npcBans, setNPCBans] = useState(0);
-	const [bans, setBans] = useState(storeState.bans.bans);
+	const [bans, setBans] = useState(storeState.bans);
 	const [hatches, setHatches] = useState(storeState.index.eggs);
 	const [timePlayed, setTimePlayed] = useState(storeState.index.timePlayed);
 	const [groupRank, setGroupRank] = useState(storeState.index.groupRank);
@@ -117,8 +117,8 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 				setNPCBans(newBans);
 			}
 
-			if (newState.bans.bans !== oldState.bans.bans) {
-				setBans(newState.bans.bans);
+			if (newState.bans !== oldState.bans) {
+				setBans(newState.bans);
 			}
 
 			if (newState.index.eggs !== oldState.index.eggs) {
@@ -179,7 +179,7 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 		}
 
 		setNPCBans(newBans);
-		setBans(currentState.bans.bans);
+		setBans(currentState.bans);
 		setHatches(currentState.index.eggs);
 		setTimePlayed(currentState.index.timePlayed);
 		setGroupRank(currentState.index.groupRank);

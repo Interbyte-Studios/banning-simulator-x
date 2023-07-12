@@ -2,8 +2,9 @@ import { PET_MASTERY_REQUIREMENTS, PET_MASTERY_REWARDS } from "shared/configs/pe
 import { remotes } from "shared/remotes";
 import { ClaimPetMasteryFailKind } from "shared/remotes/petMastery/claimMastery";
 import { storeBoost } from "shared/rodux/boosts";
-import { claimMastery } from "shared/rodux/petMastery";
+import { claimFuseMastery, claimHatchMastery, claimMaxLevelMastery } from "shared/rodux/petMastery";
 import { getPetData } from "shared/util/getPetData";
+import { UnreachableCaseError } from "shared/util/unreachableCaseError";
 
 import { withPlayerStore } from "../../modules/net/withPlayerStore";
 
@@ -14,19 +15,10 @@ remotes.Server.GetNamespace("petMastery")
 			const state = store.getState();
 
 			// check to be sure they've not already claimed it
-			const petMastery = state.petMastery.get(tostring(id));
-
-			const stringId = tostring(id);
-			if (stringId === undefined) {
-				warn(`Could not get string id`);
-				return {
-					success: false,
-					reason: ClaimPetMasteryFailKind.InternalError,
-				};
-			}
+			const petMastery = state.petMastery.get(id);
 
 			// Check to be sure they've discovered the pet.
-			const petsIndex = state.index.pets.get(stringId);
+			const petsIndex = state.index.pets.get(id);
 			if (petsIndex === undefined) {
 				return {
 					success: false,
@@ -48,7 +40,7 @@ remotes.Server.GetNamespace("petMastery")
 							};
 						}
 
-						if (petsIndex.maxLevel[variant].masteryCache.size() < variantMasteryRequirements.maxLevel) {
+						if (petsIndex.maxLevel[variant].cachedMaxLevel.size() < variantMasteryRequirements.maxLevel) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
@@ -92,7 +84,7 @@ remotes.Server.GetNamespace("petMastery")
 							};
 						}
 
-						if (petsIndex.maxLevel[variant].masteryCache.size() < variantMasteryRequirements.maxLevel) {
+						if (petsIndex.maxLevel[variant].cachedMaxLevel.size() < variantMasteryRequirements.maxLevel) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
@@ -148,7 +140,7 @@ remotes.Server.GetNamespace("petMastery")
 							};
 						}
 
-						if (petsIndex.maxLevel[variant].masteryCache.size() < variantMasteryRequirements.maxLevel) {
+						if (petsIndex.maxLevel[variant].cachedMaxLevel.size() < variantMasteryRequirements.maxLevel) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
@@ -185,7 +177,36 @@ remotes.Server.GetNamespace("petMastery")
 				}
 			}
 
-			store.dispatch(claimMastery(id, variant, method));
+			switch (method) {
+				case "hatch": {
+					if (variant === "radiant") {
+						return {
+							success: false,
+							reason: ClaimPetMasteryFailKind.InternalError,
+						};
+					}
+
+					store.dispatch(claimHatchMastery(id, variant));
+					break;
+				}
+				case "maxLevel": {
+					store.dispatch(claimMaxLevelMastery(id, variant));
+					break;
+				}
+				case "fuse": {
+					if (variant === "regular") {
+						return {
+							success: false,
+							reason: ClaimPetMasteryFailKind.InternalError,
+						};
+					}
+
+					store.dispatch(claimFuseMastery(id, variant));
+					break;
+				}
+				default:
+					throw new UnreachableCaseError(method);
+			}
 
 			return {
 				success: true,

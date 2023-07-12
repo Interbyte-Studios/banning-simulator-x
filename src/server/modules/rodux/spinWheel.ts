@@ -3,7 +3,7 @@ import { spinRewards } from "shared/configs/spinWheel";
 import { Store } from "shared/rodux";
 import { claimBoost } from "shared/rodux/boosts";
 import { awardCurrency } from "shared/rodux/currencies";
-import { addPets, ConfirmedPet } from "shared/rodux/pets";
+import { AddedPet, addPets } from "shared/rodux/pets";
 import { updateWheelTime, updateWheelUses } from "shared/rodux/spinWheel";
 import { getPetData } from "shared/util/getPetData";
 
@@ -57,18 +57,16 @@ export function spinWheelReward(store: Store, rewardIndex: number): void {
 		}
 
 		const petData = getPetData(rewardData.rewardData.petId);
-		const selectedPets: Array<ConfirmedPet> = [];
+		const selectedPets: Array<AddedPet> = [];
 
 		selectedPets.push({
-			autoDeleted: false,
 			id: petData.id,
 			guid: HttpService.GenerateGUID(false),
 			variant: "regular",
-			method: "hatch",
 			tradeLocked: false,
 		});
 
-		store.dispatch(addPets(0, "coins", selectedPets));
+		store.dispatch(addPets(selectedPets));
 	} else if (rewardData.rewardType === "currency") {
 		store.dispatch(awardCurrency(rewardData.rewardData.name ?? "coins", rewardData.rewardData.amount ?? 1));
 	}

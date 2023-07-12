@@ -47,11 +47,7 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 	hooks((props: IndexPetCardProps, hooks) => {
 		const petData = getPetData(props.pet);
 
-		const stringId = tostring(props.pet);
-		if (stringId === undefined) {
-			throw `Failed to get pet mastery data for pet ${props.pet} because the pet id could not be converted to a string.`;
-		}
-		const isDiscovered = props.index.pets.get(stringId) !== undefined;
+		const isDiscovered = props.index.pets.get(props.pet) !== undefined;
 
 		const raisedPosition = 0.4;
 		const raisedSpring = new Flipper.Spring(raisedPosition, { frequency: 5 });

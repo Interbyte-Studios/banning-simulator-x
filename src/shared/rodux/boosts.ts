@@ -1,13 +1,17 @@
+import Object from "@rbxts/object-utils";
 import Rodux from "@rbxts/rodux";
 import { t } from "@rbxts/t";
 import { BoostProduct } from "shared/configs/game";
+import { Modify } from "shared/util/modify";
 
-import { ClaimClubReward, ClaimGroupReward, ClaimVIPReward } from "./playerIndex";
+import { ClaimClubReward } from "./playerIndex/clubRewards";
+import { ClaimGroupReward } from "./playerIndex/groupRewards";
+import { ClaimVIPReward } from "./playerIndex/vipRewards";
 
 export interface BoostsState {
 	storage: {
 		[boost in BoostProduct]: {
-			[time in ValidStoredBoostTime]: number;
+			[time in ValidBoostTime]: number;
 		};
 	};
 	active: {
@@ -17,11 +21,22 @@ export interface BoostsState {
 }
 export type BoostActions = StoreBoost | ClaimBoost | UseBoosts;
 
+export type SerializedBoostsState = Modify<
+	BoostsState,
+	{
+		storage: Modify<
+			BoostsState["storage"],
+			{
+				[boost in BoostProduct]: {
+					[time in `${ValidBoostTime}`]: number;
+				};
+			}
+		>;
+	}
+>;
+
 export const validBoostTime = t.union(t.literal(15), t.literal(30), t.literal(60), t.literal(120));
 export type ValidBoostTime = t.static<typeof validBoostTime>;
-
-export const validStoredBoostTime = t.union(t.literal("15"), t.literal("30"), t.literal("60"), t.literal("120"));
-export type ValidStoredBoostTime = t.static<typeof validStoredBoostTime>;
 
 export type ValidBoostUseRecord = Array<BoostProduct>;
 
@@ -125,22 +140,19 @@ export const boostsReducer = Rodux.createReducer<
 	BoostActions | ClaimGroupReward | ClaimClubReward | ClaimVIPReward
 >(defaultBoosts, {
 	storeBoost: (state, action) => {
-		const timeIndex = tostring(action.boostTime) as ValidStoredBoostTime;
-
 		return {
 			...state,
 			storage: {
 				...state.storage,
 				[action.name]: {
 					...state.storage[action.name],
-					[timeIndex]: state.storage[action.name][timeIndex] + 1,
+					[action.boostTime]: state.storage[action.name][action.boostTime] + 1,
 				},
 			},
 		};
 	},
 	claimBoost: (state, action) => {
-		const timeIndex = tostring(action.boostTime) as ValidStoredBoostTime;
-		const storedBoost = state.storage[action.name][timeIndex];
+		const storedBoost = state.storage[action.name][action.boostTime];
 		if (storedBoost === undefined || storedBoost < 1) {
 			return state;
 		}
@@ -148,7 +160,6 @@ export const boostsReducer = Rodux.createReducer<
 		const additionalTime = action.boostTime * 60;
 
 		return {
-			...state,
 			active: {
 				...state.active,
 				[action.name]: state.active[action.name] + additionalTime * action.extendedDurationMultiplier,
@@ -157,7 +168,7 @@ export const boostsReducer = Rodux.createReducer<
 				...state.storage,
 				[action.name]: {
 					...state.storage[action.name],
-					[timeIndex]: state.storage[action.name][timeIndex] - 1,
+					[action.boostTime]: state.storage[action.name][action.boostTime] - 1,
 				},
 			},
 			uses: state.uses + 1,
@@ -170,7 +181,7 @@ export const boostsReducer = Rodux.createReducer<
 				...state.storage,
 				[action.boostName]: {
 					...state.storage[action.boostName],
-					"15": state.storage[action.boostName]["15"] + 1,
+					15: state.storage[action.boostName][15] + 1,
 				},
 			},
 		};
@@ -182,7 +193,7 @@ export const boostsReducer = Rodux.createReducer<
 				...state.storage,
 				[action.boostName]: {
 					...state.storage[action.boostName],
-					"15": state.storage[action.boostName]["15"] + 1,
+					15: state.storage[action.boostName][15] + 1,
 				},
 			},
 		};
@@ -194,7 +205,7 @@ export const boostsReducer = Rodux.createReducer<
 				...state.storage,
 				[action.boostName]: {
 					...state.storage[action.boostName],
-					"15": state.storage[action.boostName]["15"] + 1,
+					15: state.storage[action.boostName][15] + 1,
 				},
 			},
 		};
@@ -221,3 +232,48 @@ export const boostsReducer = Rodux.createReducer<
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */
+
+/**
+ * Serializes the boosts Rodux state to a savable format.
+ *
+ * @param store The Rodux state to serialize.
+ * @returns The serialized format.
+ */
+export function serializeBoosts(store: BoostsState): SerializedBoostsState {
+	return {
+		...store,
+		storage: Object.fromEntries(
+			Object.entries(store.storage).map(([boost, lengths]) => {
+				// we need to make the lengths string keys
+				return [
+					boost,
+					Object.fromEntries(
+						Object.entries(lengths).map(([length, amount]) => [tostring(length) as `${typeof length}`, amount]),
+					),
+				];
+			}),
+		),
+	};
+}
+
+/**
+ * Deserializes the boosts DataStore state to the Rodux state.
+ *
+ * @param state The DataStore state to deserialize.
+ * @returns The deserialized format of boosts.
+ */
+export function deserializeBoosts(state: SerializedBoostsState): BoostsState {
+	return {
+		...state,
+		storage: Object.fromEntries(
+			Object.entries(state.storage).map(([boost, lengths]) => {
+				return [
+					boost,
+					Object.fromEntries(
+						Object.entries(lengths).map(([length, amount]) => [tonumber(length) as ValidBoostTime, amount]),
+					),
+				];
+			}),
+		),
+	};
+}

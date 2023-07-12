@@ -15,13 +15,11 @@ remotes.Server.Get("claimInvitedFriend").Connect(
 
 		store.dispatch(claimInvitedFriend());
 		store.dispatch(
-			addPets(0, "coins", [
+			addPets([
 				{
 					id: 10007,
 					variant: "regular",
-					method: "hatch",
 					tradeLocked: false,
-					autoDeleted: false,
 					guid: HttpService.GenerateGUID(false),
 				},
 			]),

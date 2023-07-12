@@ -1,8 +1,7 @@
 import { StoreState } from "shared/rodux";
 import { defaultAccoladeState } from "shared/rodux/accolade";
-import { defaultMigratedBans } from "shared/rodux/banMigration";
 import { defaultBansState } from "shared/rodux/bans";
-import { defaultBoosts } from "shared/rodux/boosts";
+import { defaultBoosts, deserializeBoosts, serializeBoosts, SerializedBoostsState } from "shared/rodux/boosts";
 import { defaultCurrencies } from "shared/rodux/currencies";
 import { defaultTalismanId } from "shared/rodux/currentTalisman";
 import { defaultCurrentWeaponState } from "shared/rodux/currentWeapon";
@@ -12,10 +11,15 @@ import { defaultExperienceState } from "shared/rodux/experience";
 import { defaultGamepasses } from "shared/rodux/gamepasses";
 import { defaultInvitedFriendState } from "shared/rodux/invitedFriend";
 import { defaultMediaState } from "shared/rodux/media";
-import { defaultPetMasteryState } from "shared/rodux/petMastery";
+import { deserializePetMastery, SerializedPetMasteryState, serializePetMastery } from "shared/rodux/petMastery";
 import { defaultPets } from "shared/rodux/pets";
 import { defaultPetTeamsState } from "shared/rodux/petTeams";
-import { defaultPlayerIndex } from "shared/rodux/playerIndex";
+import { defaultPlayerIndexState } from "shared/rodux/playerIndex";
+import {
+	deserializePetIndexState,
+	SerializedPetIndexState,
+	serializePetIndexState,
+} from "shared/rodux/playerIndex/pets";
 import { defaultQuestsState } from "shared/rodux/quests";
 import { defaultRank } from "shared/rodux/rank";
 import { defaultSettings } from "shared/rodux/settings";
@@ -30,12 +34,33 @@ import { Modify } from "shared/util/modify";
 export type ProfileState = Modify<
 	StoreState,
 	{
+		boosts: SerializedBoostsState;
 		index: Modify<
 			StoreState["index"],
 			{
+				clubRewards: Modify<
+					StoreState["index"]["clubRewards"],
+					{
+						lastClaimed: number;
+					}
+				>;
+				groupRewards: Modify<
+					StoreState["index"]["groupRewards"],
+					{
+						lastClaimed: number;
+					}
+				>;
 				joinDate: number;
+				pets: SerializedPetIndexState;
+				vipRewards: Modify<
+					StoreState["index"]["vipRewards"],
+					{
+						lastClaimed: number;
+					}
+				>;
 			}
 		>;
+		petMastery: SerializedPetMasteryState;
 		tradeLogs: SerializedTradeLogState;
 	}
 >;
@@ -55,13 +80,25 @@ export const profileTemplate: ProfileState = {
 	experience: defaultExperienceState,
 	gamepasses: defaultGamepasses,
 	index: {
-		...defaultPlayerIndex,
+		...defaultPlayerIndexState,
+		clubRewards: {
+			...defaultPlayerIndexState["clubRewards"],
+			lastClaimed: 0,
+		},
+		groupRewards: {
+			...defaultPlayerIndexState["groupRewards"],
+			lastClaimed: 0,
+		},
+		pets: [],
 		joinDate: DateTime.now().UnixTimestampMillis,
+		vipRewards: {
+			...defaultPlayerIndexState["vipRewards"],
+			lastClaimed: 0,
+		},
 	},
 	media: defaultMediaState,
-	migratedBans: defaultMigratedBans,
 	pets: defaultPets,
-	petMastery: defaultPetMasteryState,
+	petMastery: [],
 	petTeams: defaultPetTeamsState,
 	quests: defaultQuestsState,
 	rank: defaultRank,
@@ -72,6 +109,7 @@ export const profileTemplate: ProfileState = {
 	tradeLogs: [],
 	weapons: defaultWeaponsState,
 	worlds: defaultWorlds,
+	dataVersion: 1,
 	invitedFriend: defaultInvitedFriendState,
 	worldPrestige: defaultWorldPrestigeState,
 };
@@ -85,10 +123,25 @@ export const profileTemplate: ProfileState = {
 export function serialize(store: StoreState): ProfileState {
 	return {
 		...store,
+		boosts: serializeBoosts(store.boosts),
 		index: {
 			...store.index,
+			clubRewards: {
+				...store.index.clubRewards,
+				lastClaimed: store.index.clubRewards.lastClaimed.UnixTimestampMillis,
+			},
+			groupRewards: {
+				...store.index.groupRewards,
+				lastClaimed: store.index.groupRewards.lastClaimed.UnixTimestampMillis,
+			},
 			joinDate: store.index.joinDate.UnixTimestampMillis,
+			pets: serializePetIndexState(store.index.pets),
+			vipRewards: {
+				...store.index.vipRewards,
+				lastClaimed: store.index.vipRewards.lastClaimed.UnixTimestampMillis,
+			},
 		},
+		petMastery: serializePetMastery(store.petMastery),
 		tradeLogs: store.tradeLogs.map((log) => {
 			return {
 				...log,
@@ -107,10 +160,25 @@ export function serialize(store: StoreState): ProfileState {
 export function deserialize(state: ProfileState): StoreState {
 	return {
 		...state,
+		boosts: deserializeBoosts(state.boosts),
 		index: {
 			...state.index,
+			clubRewards: {
+				...state.index.clubRewards,
+				lastClaimed: DateTime.fromUnixTimestampMillis(state.index.clubRewards.lastClaimed),
+			},
+			groupRewards: {
+				...state.index.groupRewards,
+				lastClaimed: DateTime.fromUnixTimestampMillis(state.index.groupRewards.lastClaimed),
+			},
 			joinDate: DateTime.fromUnixTimestampMillis(state.index.joinDate),
+			pets: deserializePetIndexState(state.index.pets),
+			vipRewards: {
+				...state.index.vipRewards,
+				lastClaimed: DateTime.fromUnixTimestampMillis(state.index.vipRewards.lastClaimed),
+			},
 		},
+		petMastery: deserializePetMastery(state.petMastery),
 		tradeLogs: state.tradeLogs.map((log) => {
 			return {
 				...log,
