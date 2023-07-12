@@ -3,7 +3,7 @@ import ProfileService from "@rbxts/profileservice";
 import { Players, RunService } from "@rbxts/services";
 import { STORE_SCOPE } from "shared/configs/game";
 
-import { runMigrations } from "./modules/datastore/migrations";
+import { hasExpectedDataVersion, runMigrations } from "./modules/datastore/migrations";
 import { deleteProfile, getProfile, savePlayerData, setProfile } from "./modules/datastore/savePlayerData";
 import { deserialize, profileTemplate } from "./modules/datastore/serde";
 import { createPlayerStore, removeStore } from "./playerStore";
@@ -59,6 +59,14 @@ async function onPlayerAdded(player: Player): Promise<void> {
 	profile.Reconcile();
 
 	runMigrations(profile.Data);
+
+	if (!hasExpectedDataVersion(profile.Data)) {
+		GameAnalytics.addErrorEvent(player.UserId, {
+			severity: "error",
+			message: `Attempt to join server with dataVersion ${profile.Data.dataVersion}, but we cannot process it.`,
+		});
+		return player.Kick("This server may be outdated. Please rejoin.");
+	}
 
 	setProfile(player, profile);
 
