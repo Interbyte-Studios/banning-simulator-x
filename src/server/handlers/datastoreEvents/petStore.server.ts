@@ -4,7 +4,7 @@ import { STORE_SCOPE } from "shared/configs/game";
 
 const datastoreEventsStore = DataStoreService.GetDataStore("DataStoreEvents", STORE_SCOPE);
 const PET_HATCH_KEY = "BSX_PetsStore";
-const getAsyncInterval = 30;
+const getAsyncInterval = 60;
 
 /**
  * Attempts to write the server cache of newly hatched pets to the global cache.
@@ -55,7 +55,7 @@ function updateGlobalCache(): void {
 	});
 
 	if (writeSuccess) {
-		for (const petData of newCache) {
+		for (const petData of newCache ?? []) {
 			for (const [name, amount] of pairs(petData.variants)) {
 				setPetCount(petData.id, name, amount);
 			}

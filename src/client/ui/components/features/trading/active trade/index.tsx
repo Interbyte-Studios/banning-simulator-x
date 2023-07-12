@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
+import { setIsTrading } from "client/modules/isTradingCache";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
@@ -40,8 +41,6 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 		tradeOfferDeclined,
 		finalizedTradeConfirmed,
 		finalizedTradeDeclined,
-		abandonTradeAssertion,
-		clientTradeError,
 	} = useContext(remoteContext);
 	// manages the state of the active trade
 	const [tradeState, setTradeState] = useState<TradeState>(TradeState.Offering);
@@ -53,6 +52,7 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 	// state that logs a player's offer confirmation status
 	const [localReady, setLocalReady] = useState(false);
 	const [foreignReady, setForeignReady] = useState(false);
+	const [canReady, setCanReady] = useState(false);
 
 	// state that logs a player's final offer confirmation statusghfjdkslghvd
 	const [localConfirmed, setLocalConfirmed] = useState(false);
@@ -163,9 +163,36 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 							tradeOffer: foreignOffer,
 							confirmed: foreignReady,
 						}}
-						setOffer={setOffer}
+						setOffer={(offerData: PlayerTradeItem): void => {
+							setOffer(offerData);
+							setCanReady(false);
+
+							if (localReady) {
+								setLocalReady(false);
+							}
+
+							if (foreignReady) {
+								setForeignReady(false);
+							}
+
+							if (localConfirmed) {
+								setLocalConfirmed(false);
+							}
+
+							if (foreignConfirmed) {
+								setForeignConfirmed(false);
+							}
+
+							if (tradeState !== TradeState.Offering) {
+								setTradeState(TradeState.Offering);
+							}
+						}}
 						setConfirmation={(value: boolean): void => {
 							if (value) {
+								if (!canReady) {
+									return;
+								}
+
 								setReady();
 							} else {
 								declineTradeOffer();
@@ -196,12 +223,17 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 								declineFinalConfirmation();
 							}
 						}}
+						resetTrade={(): void => {
+							finishTrade();
+							props.exitTrade();
+						}}
 					/>
 				);
 			case TradeState.Completed:
 				return (
 					<CompletedTradeNotice
 						finishTrade={(): void => {
+							setIsTrading(false);
 							finishTrade();
 							props.exitTrade();
 						}}
@@ -256,61 +288,42 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 				setLocalOffer(newOffer);
 			} else if (player.UserId === props.targetPlayer.UserId) {
 				setForeignOffer(newOffer);
-				setLocalReady(false);
-				setForeignReady(false);
-			} else {
-				setLocalOffer(defaultOffer);
-				setForeignOffer(defaultOffer);
-
-				setLocalReady(false);
-				setForeignReady(false);
-
-				setLocalConfirmed(false);
-				setForeignConfirmed(false);
-
-				setTradeState(TradeState.Offering);
-
-				props.exitTrade();
-
-				clientTradeError.SendToServer();
-				return;
 			}
 
-			setLocalReady(false);
-			setForeignReady(false);
+			if (localReady) {
+				setLocalReady(false);
+			}
+
+			if (foreignReady) {
+				setForeignReady(false);
+			}
+
+			if (localConfirmed) {
+				setLocalConfirmed(false);
+			}
+
+			if (foreignConfirmed) {
+				setForeignConfirmed(false);
+			}
+
+			if (tradeState !== TradeState.Offering) {
+				setTradeState(TradeState.Offering);
+			}
+
+			setCanReady(true);
 		});
 
 		const tradeOfferConfirmedConnection = tradeOfferConfirmed.Connect(
 			(player: Player, confirmedOffer: PlayerTradeItem) => {
+				print(`${player.UserId} has confirmed offer`);
 				if (player.UserId === Players.LocalPlayer.UserId) {
 					warn(`Received trade offer confirmed remote from local player. This should never happen.`);
 					return;
 				} else if (player.UserId === props.targetPlayer.UserId) {
-					setForeignReady(true);
-
 					if (!evaluateOffers(foreignOffer, confirmedOffer)) {
 						setForeignOffer(confirmedOffer);
 					}
-
-					if (localReady) {
-						setTradeState(TradeState.ViewingFinalizedOffer);
-					}
-				} else {
-					setLocalOffer(defaultOffer);
-					setForeignOffer(defaultOffer);
-
-					setLocalReady(false);
-					setForeignReady(false);
-
-					setLocalConfirmed(false);
-					setForeignConfirmed(false);
-
-					setTradeState(TradeState.Offering);
-
-					props.exitTrade();
-
-					clientTradeError.SendToServer();
-					return;
+					setForeignReady(true);
 				}
 			},
 		);
@@ -344,30 +357,10 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 					warn(`Received finalized trade confirmed remote from local player. This should never happen.`);
 					return;
 				} else if (player.UserId === props.targetPlayer.UserId) {
-					setForeignConfirmed(true);
-
 					if (!evaluateOffers(foreignOffer, finalizedOffer)) {
 						setForeignOffer(finalizedOffer);
 					}
-
-					if (localConfirmed) {
-						setTradeState(TradeState.Completed);
-					}
-				} else {
-					setLocalOffer(defaultOffer);
-					setForeignOffer(defaultOffer);
-
-					setLocalReady(false);
-					setForeignReady(false);
-
-					setLocalConfirmed(false);
-					setForeignConfirmed(false);
-
-					setTradeState(TradeState.Offering);
-
-					props.exitTrade();
-					clientTradeError.SendToServer();
-					return;
+					setForeignConfirmed(true);
 				}
 			},
 		);
@@ -390,30 +383,42 @@ export const ActiveTrade = hooks((props: { targetPlayer: Player; exitTrade: () =
 			}
 		});
 
-		const abandonTradeAssertionConnection = abandonTradeAssertion.Connect(() => {
-			setLocalOffer(defaultOffer);
-			setForeignOffer(defaultOffer);
-
-			setLocalReady(false);
-			setForeignReady(false);
-
-			setLocalConfirmed(false);
-			setForeignConfirmed(false);
-
-			setTradeState(TradeState.Offering);
-			props.exitTrade();
-		});
-
 		const connections: Array<RBXScriptConnection> = [
 			offerChangedConnection,
 			tradeOfferConfirmedConnection,
 			tradeOfferDeclinedConnection,
 			finalizedTradeConfirmedConnection,
 			finalizedTradeDeclinedConnection,
-			abandonTradeAssertionConnection,
 		];
 		return (): void => connections.forEach((connection) => connection.Disconnect());
-	});
+	}, [
+		offerChanged,
+		tradeOfferConfirmed,
+		tradeOfferDeclined,
+		finalizedTradeConfirmed,
+		finalizedTradeDeclined,
+		localOffer,
+		foreignOffer,
+		localReady,
+		foreignReady,
+		localConfirmed,
+		foreignConfirmed,
+		tradeState,
+	]);
+
+	// Properly respond to ready state changes
+	useEffect(() => {
+		if (localReady && foreignReady) {
+			setTradeState(TradeState.ViewingFinalizedOffer);
+		}
+	}, [localReady, foreignReady]);
+
+	// Properly respond to confirm state changes
+	useEffect(() => {
+		if (localConfirmed && foreignConfirmed) {
+			setTradeState(TradeState.Completed);
+		}
+	}, [localConfirmed, foreignConfirmed]);
 
 	return (
 		<ImageLabel

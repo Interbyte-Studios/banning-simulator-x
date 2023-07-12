@@ -22,7 +22,15 @@ export interface Pet {
 }
 
 export type PetsState = Array<Pet>;
-export type PetsActions = DeletePet | EnhancePet | EquipPet | LockPet | Admin_ModifyPetLevel | FusePet | AddPets;
+export type PetsActions =
+	| DeletePet
+	| EnhancePet
+	| EquipPet
+	| LockPet
+	| Admin_ModifyPetLevel
+	| FusePet
+	| AddPets
+	| TradePets;
 
 export interface HatchedPet extends HatchablePet {
 	autoDeleted: boolean;
@@ -68,6 +76,10 @@ export interface PetData {
 	tradeLocked: boolean;
 }
 
+export interface TradePets extends Rodux.Action<"tradePets"> {
+	pets: Array<Pet>;
+}
+
 export interface DeletePet extends Rodux.Action<"deletePet"> {
 	pets: Array<string>;
 }
@@ -102,6 +114,17 @@ export interface FusePet extends Rodux.Action<"fusePet"> {
 
 export interface AddPets extends Rodux.Action<"addPets"> {
 	pets: Array<AddedPet>;
+}
+
+/**
+ * @param pets The pets to add.
+ * @returns The Rodux action to dispatch.
+ */
+export function tradePets(pets: Array<Pet>): TradePets & Rodux.AnyAction {
+	return {
+		type: "tradePets",
+		pets,
+	};
 }
 
 /**
@@ -247,6 +270,21 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 				tradeLocked: action.pet.tradeLocked,
 			},
 		];
+	},
+	tradePets: (state, action) => {
+		const newPets = action.pets.map((pet) => {
+			return {
+				id: pet.id,
+				bans: pet.bans,
+				guid: pet.guid,
+				equipped: false,
+				locked: false,
+				variant: pet.variant,
+				tradeLocked: pet.tradeLocked,
+			};
+		});
+
+		return [...state, ...newPets];
 	},
 	addPets: (state, action) => {
 		return [

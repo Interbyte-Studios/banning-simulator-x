@@ -37,6 +37,11 @@ local function CacheNewBanList(newBanList)
 			end
 			continue
 		end
+
+		if v.rbx_id == nil then
+			error(`Failed to get ban list for {GetUsersArray()}: ban list was {HttpService:JSONEncode(newBanList)}`)
+		end
+
 		newList[v.rbx_id] = v
 	end
 

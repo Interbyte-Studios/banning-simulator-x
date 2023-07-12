@@ -37,7 +37,6 @@ export function toggleWeaponEquipped(player: Player, weaponId: number, isEquippe
 				`[ Weapon Handler ] - Found weapon "${weaponId}", but the model was a ${weaponModel.ClassName}, not a Tool`,
 			);
 		}
-
 		humanoid.EquipTool(weaponModel);
 	} else {
 		humanoid.UnequipTools();

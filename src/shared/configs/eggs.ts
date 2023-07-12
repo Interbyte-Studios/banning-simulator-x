@@ -10,9 +10,12 @@ import { DESERT_EGG_PETS } from "./pets/desert";
 import { EXCLUSIVE_PETS } from "./pets/exclusive";
 import { GROUP_CHEST_PETS } from "./pets/group";
 import { HONEYCOMB_EGG_PETS } from "./pets/honeycomb";
+import { JESTER_EGG_PETS } from "./pets/jester";
 import { MOLTEN_EGG_PETS } from "./pets/molten";
+import { RADIOACTIVE_EGG_PETS } from "./pets/radioactive";
 import { ROYALTY_EGG_PETS } from "./pets/royalty";
 import { STARTER_EGG_PETS } from "./pets/starter";
+import { WORLD_PRESTIGE_PETS } from "./pets/worldPrestige";
 import { WorldName } from "./worlds";
 import { ZoneNames } from "./zones";
 
@@ -147,6 +150,24 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		hidden: true,
 		luckApplies: true,
 	},
+	Radioactive: {
+		id: 11,
+		pets: RADIOACTIVE_EGG_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: true,
+		hidden: false,
+		luckApplies: false,
+	},
+	Jester: {
+		id: 12,
+		pets: JESTER_EGG_PETS,
+		world: "Ban Land",
+		zone: "Jester Castle",
+		hatchable: true,
+		hidden: false,
+		luckApplies: true,
+	},
 	Group: {
 		id: 499,
 		pets: GROUP_CHEST_PETS,
@@ -159,6 +180,15 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 	Exclusive: {
 		id: 500,
 		pets: EXCLUSIVE_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: false,
+		hidden: false,
+		luckApplies: false,
+	},
+	WorldPrestige: {
+		id: 501,
+		pets: WORLD_PRESTIGE_PETS,
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,
@@ -183,4 +213,4 @@ export function isEggName(name: unknown): name is EggName {
 /**
  * How long a player must wait between egg hatches.
  */
-export const hatchDebounce = 3.5;
+export const hatchDebounce = 3;

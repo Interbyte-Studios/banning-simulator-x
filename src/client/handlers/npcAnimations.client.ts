@@ -19,14 +19,23 @@ function handleRunningAnimation(npc: Model): void {
 		return;
 	}
 
-	const runAnim = animator.LoadAnimation(runningAnimation);
+	pcall(() => {
+		const runAnim = animator.LoadAnimation(runningAnimation);
 
-	humanoid.Running.Connect((speed) => {
-		if (speed > 0) {
-			runAnim.Play();
-		} else {
+		const runningAnimConnection = humanoid.Running.Connect((speed) => {
+			if (speed > 0) {
+				runAnim.Play();
+			} else {
+				runAnim.Stop();
+			}
+		});
+
+		const ancestryChangedConnection = humanoid.AncestryChanged.Connect(() => {
 			runAnim.Stop();
-		}
+			runAnim.Destroy();
+			runningAnimConnection.Disconnect();
+			ancestryChangedConnection.Disconnect();
+		});
 	});
 }
 
@@ -35,7 +44,7 @@ npcs.ChildAdded.Connect((npc) => {
 		return;
 	}
 
-	handleRunningAnimation(npc);
+	task.delay(2, (): void => handleRunningAnimation(npc));
 });
 
 npcs.GetChildren().forEach((npc) => {
@@ -43,5 +52,5 @@ npcs.GetChildren().forEach((npc) => {
 		return;
 	}
 
-	handleRunningAnimation(npc);
+	task.delay(2, (): void => handleRunningAnimation(npc));
 });

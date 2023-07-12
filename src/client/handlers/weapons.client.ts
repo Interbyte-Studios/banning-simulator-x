@@ -19,6 +19,13 @@ const npcsFolder = Workspace.WaitForChild("npcs") as Folder;
 // cache connections
 const connections: Array<RBXScriptConnection> = [];
 
+// weapon highlight
+const highlight = new Instance("Highlight");
+highlight.DepthMode = Enum.HighlightDepthMode.Occluded;
+highlight.Parent = undefined;
+highlight.FillTransparency = 1;
+highlight.OutlineColor = Color3.fromRGB(0, 0, 0);
+
 /**
  * Handles equipping the player's weapon.
  *
@@ -224,6 +231,8 @@ function equipWeapon(weaponName: WeaponIndex): void {
 
 	// equip the tool
 	humanoid.UnequipTools();
+
+	highlight.Parent = weapon;
 	humanoid.EquipTool(weapon);
 }
 

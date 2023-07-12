@@ -37,8 +37,6 @@ export function checkRedeemCode(
 		};
 	}
 
-	store.dispatch(redeemCode(codeData.name));
-
 	for (const boostReward of codeData.reward.boosts) {
 		store.dispatch(storeBoost(boostReward.name, boostReward.time));
 	}

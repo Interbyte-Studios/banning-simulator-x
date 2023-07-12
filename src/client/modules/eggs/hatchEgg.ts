@@ -16,6 +16,8 @@ import { HatchedPet } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
+import { setIsHatching } from "./isHatching";
+
 const player = Players.LocalPlayer;
 const playerGui = player.WaitForChild("PlayerGui") as PlayerGui;
 
@@ -35,6 +37,8 @@ const rightRarity = hatchGui.FindFirstChild("RightRarity") as TextLabel;
 const rightAutoDeleted = hatchGui.FindFirstChild("RightAutoDeleted") as TextLabel;
 const rightName = hatchGui.FindFirstChild("RightName") as TextLabel;
 const rightDecal = rightName.FindFirstChild("ImageLabel") as ImageLabel;
+
+const stopButton = hatchGui.FindFirstChild("Stop") as ImageButton;
 
 const hatchLight = Lighting.WaitForChild("HatchLight") as ColorCorrectionEffect;
 
@@ -78,6 +82,8 @@ export const animateSingleEggHatch = (
 ): void => {
 	const camera = Workspace.CurrentCamera;
 	assert(camera, `Failed to animate single egg hatch | Couldn't find camera.`);
+
+	setIsHatching(true);
 
 	// disable UI | note: would use roact, but due to Roact batching stateful updates, it's not possible to manipulate roact the way we need to :(
 	playerGui.GetChildren().forEach((instance) => {
@@ -233,6 +239,8 @@ export const animateSingleEggHatch = (
 	task.wait(fastHatch ? 0.235 / 2 : 0.235);
 
 	// todo: show the pet information GUI
+	stopButton.Visible = true;
+
 	middleName.Text = petData.name;
 	middleDecal.Image = petDecal;
 	middleName.Visible = true;
@@ -289,6 +297,7 @@ export const animateSingleEggHatch = (
 	middleName.Visible = false;
 	middleRarity.Visible = false;
 	middleAutoDeleted.Visible = false;
+	stopButton.Visible = false;
 
 	// reset camera
 	const resetCameraAnimation = TweenService.Create(camera, cameraTweenInfo, {
@@ -311,6 +320,7 @@ export const animateSingleEggHatch = (
 			});
 		}
 	});
+	setIsHatching(false);
 };
 
 /**
@@ -329,6 +339,7 @@ export const animateTripleEggHatch = (
 ): void => {
 	const camera = Workspace.CurrentCamera;
 	assert(camera, `Failed to animate single egg hatch | Couldn't find camera.`);
+	setIsHatching(true);
 
 	// disable UI | note: would use roact, but due to Roact batching stateful updates, it's not possible to manipulate roact the way we need to :(
 	playerGui.GetChildren().forEach((instance) => {
@@ -546,6 +557,8 @@ export const animateTripleEggHatch = (
 	task.wait(fastHatch ? 0.235 / 2 : 0.235);
 
 	// todo: show the pet information GUI
+	stopButton.Visible = true;
+
 	middleName.Text = pet1Data.name;
 	middleDecal.Image = pet1Decal;
 	middleName.Visible = true;
@@ -636,6 +649,7 @@ export const animateTripleEggHatch = (
 	rightName.Visible = false;
 	rightRarity.Visible = false;
 	rightAutoDeleted.Visible = false;
+	stopButton.Visible = false;
 
 	// reset camera
 	const resetCameraAnimation = TweenService.Create(camera, cameraTweenInfo, {
@@ -658,4 +672,5 @@ export const animateTripleEggHatch = (
 			});
 		}
 	});
+	setIsHatching(false);
 };

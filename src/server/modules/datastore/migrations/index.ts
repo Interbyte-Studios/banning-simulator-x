@@ -35,6 +35,7 @@ export function runMigrations(state: ProfileState): ProfileState {
 	migrations
 		.filter((migration) => migration.version > state.dataVersion)
 		.forEach((migrator) => {
+			print(`Running migration to version ${migrator.version}`);
 			state = migrator.migrator(state) as ProfileState;
 			// update the version of the state
 			state.dataVersion = migrator.version;

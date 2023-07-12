@@ -1,7 +1,8 @@
 import { GameAnalytics } from "@rbxts/gameanalytics";
-import { Players, Workspace } from "@rbxts/services";
+import Make from "@rbxts/make";
+import { Lighting, Players, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
-import { WorldName } from "shared/configs/worlds";
+import { WorldName, WORLDS } from "shared/configs/worlds";
 import { isStarterZone, ZoneNames } from "shared/configs/zones";
 import { WorldsState } from "shared/rodux/worlds";
 
@@ -17,19 +18,27 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 	const zoneDecoration = Workspace.decoration[world][zone];
 	const door = zoneDecoration.door;
 
+	let zoneFolder = Lighting.FindFirstChild(zone);
+	if (zoneFolder === undefined) {
+		zoneFolder = Make("Folder", {
+			Parent: Lighting,
+			Name: zone,
+		});
+	}
+
 	const lock = door.FindFirstChild("lock");
 	if (lock !== undefined) {
-		lock.Destroy();
+		lock.Parent = zoneFolder;
 	}
 
 	const passage = door.FindFirstChild("passage");
 	if (passage !== undefined) {
-		passage.Destroy();
+		passage.Parent = zoneFolder;
 	}
 
 	const sign = zoneDecoration.FindFirstChild("sign");
 	if (sign !== undefined) {
-		sign.Destroy();
+		sign.Parent = zoneFolder;
 	}
 }
 
@@ -40,12 +49,36 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
  */
 function unlockZones(worldState: WorldsState): void {
 	for (const unlockedWorld of worldState) {
-		for (const unlockedZone of unlockedWorld.zones) {
-			if (isStarterZone(unlockedZone)) {
+		for (const [worldName, worldData] of pairs(WORLDS)) {
+			if (worldName !== unlockedWorld.name) {
 				continue;
 			}
 
-			grantZoneEntry(unlockedWorld.name, unlockedZone);
+			for (const [zoneName] of pairs(worldData.zones)) {
+				if (isStarterZone(zoneName)) {
+					continue;
+				}
+
+				const ownsZone = unlockedWorld.zones.includes(zoneName);
+				if (ownsZone) {
+					grantZoneEntry(unlockedWorld.name, zoneName);
+				} else {
+					const zoneDecoration = Lighting.FindFirstChild(zoneName);
+					if (zoneDecoration !== undefined) {
+						for (const deco of zoneDecoration.GetChildren()) {
+							if (!deco.IsA("Instance")) {
+								continue;
+							}
+
+							if (deco.Name === "sign") {
+								deco.Parent = Workspace.decoration[unlockedWorld.name][zoneName];
+							} else {
+								deco.Parent = Workspace.decoration[unlockedWorld.name][zoneName].door;
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

@@ -7,7 +7,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	// zone 1
 	Forest: {
 		id: 1,
-		npcs: [BAN_LAND_NPCS.bronzePiece, BAN_LAND_NPCS.russoTalks],
+		npcs: [BAN_LAND_NPCS.forestWizard, BAN_LAND_NPCS.mushroomKing],
 		cost: undefined,
 		color: Color3.fromRGB(37, 135, 43),
 	},
@@ -15,7 +15,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	// zone 2
 	Desert: {
 		id: 2,
-		npcs: [BAN_LAND_NPCS.nyxun, BAN_LAND_NPCS.sonsofFun_YT],
+		npcs: [BAN_LAND_NPCS.desertBandit, BAN_LAND_NPCS.desertScout],
 		cost: {
 			currency: "coins",
 			amount: 1_000,
@@ -27,7 +27,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	// zone 3
 	"Sunflower Field": {
 		id: 3,
-		npcs: [BAN_LAND_NPCS.rellhub, BAN_LAND_NPCS.carbonMeister],
+		npcs: [BAN_LAND_NPCS.floralGirl, BAN_LAND_NPCS.magicFloralMan],
 		cost: {
 			currency: "coins",
 			amount: 3_000,
@@ -39,7 +39,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	// zone 4
 	Honeycomb: {
 		id: 4,
-		npcs: [BAN_LAND_NPCS.onett, BAN_LAND_NPCS.sabrinaBrite],
+		npcs: [BAN_LAND_NPCS.beeKing, BAN_LAND_NPCS.onett],
 		cost: {
 			currency: "coins",
 			amount: 9_000,
@@ -51,7 +51,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	// zone 5
 	"Ice Land": {
 		id: 5,
-		npcs: [BAN_LAND_NPCS.buildIntoGames, BAN_LAND_NPCS.djMonopoli],
+		npcs: [BAN_LAND_NPCS.iceSkier, BAN_LAND_NPCS.iceGolem],
 		cost: {
 			currency: "coins",
 			amount: 27_000,
@@ -63,7 +63,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	// zone 6
 	Beach: {
 		id: 6,
-		npcs: [BAN_LAND_NPCS.foreverDev, BAN_LAND_NPCS.merely],
+		npcs: [BAN_LAND_NPCS.beachBoy, BAN_LAND_NPCS.pufferfishKing],
 		cost: {
 			currency: "coins",
 			amount: 81_000,
@@ -75,7 +75,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	// zone 7
 	"Candy Land": {
 		id: 7,
-		npcs: [BAN_LAND_NPCS.snickTrix, BAN_LAND_NPCS.alvin_Blox],
+		npcs: [BAN_LAND_NPCS.sparkletimeKing, BAN_LAND_NPCS.pastelGuardian],
 		cost: {
 			currency: "coins",
 			amount: 243_000,
@@ -87,7 +87,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	// zone 8
 	"The Mines": {
 		id: 8,
-		npcs: [BAN_LAND_NPCS.mygame43, BAN_LAND_NPCS.deeterPlays],
+		npcs: [BAN_LAND_NPCS.miningGuy, BAN_LAND_NPCS.elementalKing],
 		cost: {
 			currency: "coins",
 			amount: 729_000,
@@ -99,7 +99,7 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 	// zone 9
 	"Lava Lands": {
 		id: 9,
-		npcs: [BAN_LAND_NPCS.gamesReborn, BAN_LAND_NPCS.beeism],
+		npcs: [BAN_LAND_NPCS.lavaLord, BAN_LAND_NPCS.headlessDoombringer],
 		cost: {
 			currency: "coins",
 			amount: 1_500_000,
@@ -108,7 +108,39 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		color: Color3.fromRGB(213, 115, 61),
 	},
 
-	// zone 10 (Emerald)
-	// zone 11 (Draconic)
-	// zone 12 (Pendulum)
+	// zone 10
+	"Enchanted Forest": {
+		id: 10,
+		npcs: [BAN_LAND_NPCS.enchantedGolem, BAN_LAND_NPCS.udzal],
+		cost: {
+			currency: "coins",
+			amount: 2_100_000, // 200 regular of lava zone
+			requiredRank: 8,
+		},
+		color: Color3.fromRGB(87, 122, 245),
+	},
+
+	// zone 11
+	"Toxic Lands": {
+		id: 11,
+		npcs: [BAN_LAND_NPCS.toxicSparkletimeKing, BAN_LAND_NPCS.toxicWastelander],
+		cost: {
+			currency: "coins",
+			amount: 5_000_000,
+			requiredRank: 9,
+		},
+		color: Color3.fromRGB(66, 250, 10),
+	},
+
+	// zone 12
+	"Jester Castle": {
+		id: 12,
+		npcs: [BAN_LAND_NPCS.neonJester, BAN_LAND_NPCS.prince],
+		cost: {
+			currency: "coins",
+			amount: 13_500_000,
+			requiredRank: 10,
+		},
+		color: Color3.fromRGB(247, 166, 99),
+	},
 });

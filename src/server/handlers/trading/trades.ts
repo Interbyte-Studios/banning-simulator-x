@@ -3,7 +3,7 @@ import { MAX_TRADE_LOGS } from "shared/configs/game";
 import { PlayerTradeItem } from "shared/configs/trading";
 import { Store } from "shared/rodux";
 import { awardCurrency } from "shared/rodux/currencies";
-import { addPets, deletePets, Pet } from "shared/rodux/pets";
+import { deletePets, Pet, tradePets } from "shared/rodux/pets";
 import { removeTradeLog, SavedTrade, saveTrade } from "shared/rodux/tradeLogs";
 import { getPetLevel } from "shared/util/getPetLevel";
 import { UnreachableCaseError } from "shared/util/unreachableCaseError";
@@ -260,11 +260,26 @@ export function rejectTrade(receiver: Player, creator: Player): boolean {
 export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeItem): boolean {
 	const trade = currentTrades.get(player);
 	if (trade === undefined) {
-		warn("Attempt to modify trade when not in a trade");
 		return false;
 	}
 
-	if (trade.status === TradeStatus.ConfirmedOffer) {
+	// this ViewingFinalizedTrade case is only with with high latency from clients, so we handle those cases here
+	if (trade.status === TradeStatus.ViewingFinalizedTrade) {
+		const otherPlayer = trade.items.find((playerItems) => playerItems.player !== player);
+		if (otherPlayer === undefined) {
+			return false;
+		}
+
+		currentTrades.set(player, {
+			status: TradeStatus.Trading,
+			items: trade.items,
+		});
+
+		currentTrades.set(otherPlayer.player, {
+			status: TradeStatus.Trading,
+			items: trade.items,
+		});
+	} else if (trade.status === TradeStatus.ConfirmedOffer) {
 		const otherPlayer = trade.items.find((playerItems) => playerItems.player !== player);
 		if (otherPlayer === undefined) {
 			return false;
@@ -292,7 +307,6 @@ export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeI
 		// this case is for when the other player has confirmed their offer and we are modifying our offer
 		const otherPlayerTrade = currentTrades.get(otherPlayer.player);
 		if (otherPlayerTrade !== undefined && otherPlayerTrade.status === TradeStatus.ConfirmedOffer) {
-			warn("Set other player to trading status");
 			// update the trade status to trading for other player
 			const newTradeStatus: Trading = {
 				status: TradeStatus.Trading,
@@ -303,21 +317,27 @@ export function modifyTrade(player: Player, store: Store, newOffer: PlayerTradeI
 		}
 	}
 
-	if (trade.status !== TradeStatus.Trading && trade.status !== TradeStatus.ConfirmedOffer) {
-		warn(`Attempt to modify trade when not in a trade | Incorrect Status: ${trade.status}`);
+	const updatedTrade = currentTrades.get(player);
+	if (updatedTrade === undefined) {
 		return false;
 	}
 
-	const playerItems = trade.items.find((playerItems) => playerItems.player === player);
+	if (updatedTrade.status !== TradeStatus.Trading && updatedTrade.status !== TradeStatus.ConfirmedOffer) {
+		warn(`Attempt to modify trade when not in a trade | Incorrect Status: ${updatedTrade.status}`);
+		return false;
+	}
+
+	const playerItems = updatedTrade.items.find((playerItems) => playerItems.player === player);
 	if (!playerItems) {
 		// this case should never happen
 		return false;
 	}
 
-	// ensure if currency was specified, the player has enough
+	// ensure if currency was specified, the player has enough, also check that it's a positive amount
 	if (
 		newOffer.currency === undefined ||
-		newOffer.currency.amount > store.getState().currencies[newOffer.currency.type]
+		newOffer.currency.amount > store.getState().currencies[newOffer.currency.type] ||
+		newOffer.currency.amount < 0
 	) {
 		return false;
 	}
@@ -410,6 +430,25 @@ export function getTradingCounterParty(player: Player): Player {
 }
 
 /**
+ * @param player The player to check if they are in a trade.
+ * @param targetPlayer The player to check if the specific player is in a trade with.
+ * @returns Whether or not the specific player is in a trade with the target player.
+ */
+export function verifyTradingCounterParty(player: Player, targetPlayer: Player): boolean {
+	const trade = currentTrades.get(player);
+	if (trade === undefined || !isActiveTrade(trade)) {
+		return false;
+	}
+
+	const counterParty = trade.items.find((p) => p.player !== player);
+	if (counterParty === undefined) {
+		return false;
+	}
+
+	return counterParty.player === targetPlayer;
+}
+
+/**
  * Confirms a trade offer from a player.
  *
  * @param player The player who is confirming their trade offer.
@@ -492,7 +531,6 @@ export function declineTradeOffer(player: Player): boolean {
 	}
 
 	// remove the trade
-	warn("Declined and removed the trade from registry");
 	removeTrade(player);
 	return true;
 }
@@ -586,8 +624,8 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 		otherPlayerStore.dispatch(deletePets(otherPlayerOffer.pets));
 
 		// add the new pets to the players
-		store.dispatch(addPets(otherPlayerOfferPets));
-		otherPlayerStore.dispatch(addPets(playerOfferPets));
+		store.dispatch(tradePets(otherPlayerOfferPets));
+		otherPlayerStore.dispatch(tradePets(playerOfferPets));
 
 		if (playerOffer.currency !== undefined) {
 			// remove the currency from the player
@@ -639,10 +677,8 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 		};
 
 		if (store.getState().tradeLogs.size() >= MAX_TRADE_LOGS) {
-			warn("Player Trade Logs:");
 			let tradeToRemove: SavedTrade | undefined;
 			store.getState().tradeLogs.forEach((trade) => {
-				print(trade.timestamp.UnixTimestampMillis, tradeToRemove?.timestamp.UnixTimestamp);
 				if (
 					tradeToRemove === undefined ||
 					trade.timestamp.UnixTimestampMillis < tradeToRemove.timestamp.UnixTimestampMillis
@@ -657,10 +693,8 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 		}
 
 		if (otherPlayerStore.getState().tradeLogs.size() >= MAX_TRADE_LOGS) {
-			warn("Other Player Trade Logs:");
 			let tradeToRemove: SavedTrade | undefined;
 			otherPlayerStore.getState().tradeLogs.forEach((trade) => {
-				print(trade.timestamp.UnixTimestampMillis, tradeToRemove?.timestamp.UnixTimestamp);
 				if (
 					tradeToRemove === undefined ||
 					trade.timestamp.UnixTimestampMillis < tradeToRemove.timestamp.UnixTimestampMillis

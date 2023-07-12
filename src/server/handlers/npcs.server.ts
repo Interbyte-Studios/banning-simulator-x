@@ -11,7 +11,7 @@ import { NpcWorldState } from "../modules/npcs/worldState";
 
 // log npc attacks
 const _lastAttack: Map<number, number> = new Map();
-const attackDownTime = 0.3;
+const attackDownTime = 0.1;
 
 let npcAttacks: Array<{ player: Player; store: Store; character: NpcCharacter }> = [];
 remotes.Server.Get("damageNPC").Connect(
@@ -45,7 +45,6 @@ remotes.Server.Get("damageNPC").Connect(
 
 				const ownsWorld = currentState.worlds.find((storedWorld) => storedWorld.name === worldName);
 				if (ownsWorld === undefined) {
-					warn("Doesn't own world");
 					return;
 				}
 
@@ -73,10 +72,6 @@ remotes.Server.Get("damageNPC").Connect(
 
 		const npcRoot = character.Humanoid.RootPart;
 		if (npcRoot === undefined) {
-			return;
-		}
-
-		if (playerRoot.Position.sub(npcRoot.Position).Magnitude > 8) {
 			return;
 		}
 
@@ -117,7 +112,7 @@ for (const [worldName, worldInfo] of pairs(WORLDS)) {
 		const halfSize = size.div(2).mul(new Vector3(1, 0, 1));
 
 		const halfHeight = new Vector3(0, size.Y / 2, 0);
-		const fiveStuds = new Vector3(0, 5, 0);
+		const fiveStuds = new Vector3(0, 10, 0);
 
 		zones.push({
 			name: zoneName,

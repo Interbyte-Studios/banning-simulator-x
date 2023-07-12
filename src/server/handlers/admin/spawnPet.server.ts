@@ -35,7 +35,7 @@ remotes.Server.GetNamespace("admin")
 				guid: HttpService.GenerateGUID(false),
 				variant: petData.variant,
 				//enhancements: {},
-				tradeLocked: groupRank >= 254,
+				tradeLocked: groupRank !== 254,
 			};
 
 			GameAnalytics.addErrorEvent(adminPlayer.UserId, {

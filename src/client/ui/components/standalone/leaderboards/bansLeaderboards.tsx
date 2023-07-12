@@ -45,7 +45,6 @@ export const BanLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 				);
 				continue;
 			}
-
 			const [success, result] = pcall((): string => Players.GetNameFromUserIdAsync(playerId));
 
 			let playerName = "unknown";
@@ -59,8 +58,7 @@ export const BanLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 		setLeaderboardData(newLeaderboardData);
 
 		const connection = ReplicatedStorage.leaderboards.timeUpdated.GetPropertyChangedSignal("Value").Connect(() => {
-			task.wait(5);
-
+			task.wait(1);
 			const newLeaderboardData: Array<LeaderboardEntry> = [];
 
 			for (const configuration of ReplicatedStorage.leaderboards.bans.GetChildren()) {
@@ -107,7 +105,7 @@ export const BanLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 	const uiListLayoutRef = useValue(Roact.createRef<UIListLayout>());
 	useEffect(() => {
 		const uiListLayout = uiListLayoutRef.value.getValue();
-		assert(uiListLayout, `Failed to get Ban Leaderboards UIListLayout.`);
+		if (uiListLayout === undefined) return;
 
 		const scrollingFrame = uiListLayout.Parent;
 		assert(scrollingFrame, `Failed to get Ban Leaderboards ScrollingFrame.`);

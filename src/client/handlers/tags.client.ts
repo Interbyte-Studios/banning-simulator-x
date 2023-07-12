@@ -141,8 +141,9 @@ function createPlayerTag(player: Player, store: Store): t.static<typeof isPlayer
 	tag.Adornee = head;
 	tag.Parent = friendlyTags;
 
-	humanoid.AncestryChanged.Connect(() => {
+	const connection = humanoid.AncestryChanged.Connect(() => {
 		tag.Destroy();
+		connection.Disconnect();
 		return;
 	});
 
@@ -273,7 +274,7 @@ function createEnemyTag(enemy: Model): void {
 	tag.Adornee = head;
 	tag.Parent = enemyTags;
 
-	humanoid.GetPropertyChangedSignal("Health").Connect(() => {
+	const healthConnection = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
 		const health = humanoid.Health;
 		const maxHealth = humanoid.MaxHealth;
 
@@ -293,17 +294,35 @@ function createEnemyTag(enemy: Model): void {
 		healthTween.Play();
 		healthTween.Completed.Wait();
 
-		if (tag.hold === undefined) {
+		const hold = tag.FindFirstChild("hold");
+		if (hold === undefined) {
 			return;
 		}
 
-		tag.hold.fillBackground.health.Text = `[${twoDpAbbreviator.numberToString(
-			humanoid.Health,
-		)} / ${twoDpAbbreviator.numberToString(humanoid.MaxHealth)}]`;
+		const fillBackground = hold.FindFirstChild("fillBackground");
+		if (fillBackground === undefined) {
+			return;
+		}
+
+		const healthText = fillBackground.FindFirstChild("health") as TextLabel;
+		if (healthText === undefined) {
+			return;
+		}
+
+		healthText.Text = `[${twoDpAbbreviator.numberToString(humanoid.Health)} / ${twoDpAbbreviator.numberToString(
+			humanoid.MaxHealth,
+		)}]`;
 	});
 
-	humanoid.AncestryChanged.Connect(() => {
+	const ancestryChangedConnection = humanoid.AncestryChanged.Connect(() => {
+		healthConnection.Disconnect();
+		tag.Parent = undefined;
 		tag.Destroy();
+		if (humanoid !== undefined) {
+			humanoid.Parent = undefined;
+			humanoid.Destroy();
+		}
+		ancestryChangedConnection.Disconnect();
 		return;
 	});
 }

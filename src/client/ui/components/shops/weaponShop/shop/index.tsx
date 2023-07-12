@@ -33,13 +33,19 @@ function mapStateToProps(state: StoreState): WeaponShopMappedProps {
 		currentWeapon: state.currentWeapon,
 	};
 }
+
+const highlight = new Instance("Highlight");
+highlight.Parent = undefined;
+highlight.FillTransparency = 1;
+highlight.OutlineColor = Color3.fromRGB(0, 0, 0);
+
 /**
  * A "camera scrolling" component that allows the player to browse through purchaseable weapons.
  */
 export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 	hooks((props: WeaponShopProps, { useState, useEffect }) => {
 		/* Whether or not the interface has been interacted with or not. Used to determine whether or not to tween camera pos.*/
-		const [justOpened, interactedWith] = useState(true);
+		const [justOpened, setJustOpened] = useState(true);
 
 		const [viewedWeapon, setViewedWeapon] = useState(props.currentWeapon.id);
 		const minimumWeaponId = 1;
@@ -81,6 +87,10 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 			) as BasePart;
 			assert(weaponViewpoint, `Failed to get weapon viewpoint in item shop for weapon with id: "${viewedWeapon}"`);
 
+			const weaponModel = Workspace.interactions.itemShop["Ban Land"].weapons.FindFirstChild(weaponInfo.name);
+			assert(weaponModel, `Failed to get weapon model for ${weaponInfo.name}`);
+			highlight.Parent = weaponModel;
+
 			camera.CameraType = Enum.CameraType.Scriptable;
 			camera.FieldOfView = 70;
 
@@ -103,6 +113,10 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 							return;
 						}
 
+						if (justOpened) {
+							setJustOpened(false);
+						}
+
 						setViewedWeapon(viewedWeapon - 1);
 					}}
 				/>
@@ -113,7 +127,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 						}
 
 						if (justOpened) {
-							interactedWith(false);
+							setJustOpened(false);
 						}
 
 						setViewedWeapon(viewedWeapon + 1);

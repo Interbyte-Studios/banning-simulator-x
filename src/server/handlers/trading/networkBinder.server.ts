@@ -23,12 +23,29 @@ const tradesNamespace = remotes.Server.GetNamespace("trades");
 
 const requestTradeRemote = tradesNamespace.Get("requestTrade");
 const sendTradeRequestRemote = tradesNamespace.Get("sendTradeRequest");
+const tradeRequestDeclined = tradesNamespace.Get("tradeRequestDeclined");
 requestTradeRemote.Connect(
 	withPlayerStore((player, store, targetPlayer) => {
-		requestTrade(player, store, targetPlayer);
+		// ensure we are not trading with ourselves
+		if (targetPlayer === player) {
+			return;
+		}
 
-		// alert targetPlayer that a trade request was made
-		sendTradeRequestRemote.SendToPlayer(targetPlayer, player);
+		if (requestTrade(player, store, targetPlayer)) {
+			// alert targetPlayer that a trade request was made
+			sendTradeRequestRemote.SendToPlayer(targetPlayer, player);
+
+			// timeout trade
+			task.delay(10, (): void => {
+				if (rejectTrade(targetPlayer, player)) {
+					tradeRequestDeclined.SendToPlayer(targetPlayer, targetPlayer);
+					tradeRequestDeclined.SendToPlayer(player, targetPlayer);
+
+					player.SetAttribute(TRADING_ATTRIBUTE, undefined);
+					targetPlayer.SetAttribute(TRADING_ATTRIBUTE, undefined);
+				}
+			});
+		}
 	}),
 );
 
@@ -42,7 +59,6 @@ acceptTradeRequestRemote.Connect((receiver, creator) => {
 });
 
 const declineTradeRequest = tradesNamespace.Get("declineTradeRequest");
-const tradeRequestDeclined = tradesNamespace.Get("tradeRequestDeclined");
 declineTradeRequest.Connect((receiver, creator) => {
 	if (rejectTrade(receiver, creator)) {
 		// alert `creator` that the trade got cancelled
@@ -57,20 +73,35 @@ const modifyOffer = tradesNamespace.Get("modifyOffer");
 const offerChanged = tradesNamespace.Get("offerChanged");
 modifyOffer.Connect(
 	withPlayerStore((player, store, offer) => {
+		const tradeStatus = getTradeStatus(player);
 		// first, ensure a player is in a trade
-		if (getTradeStatus(player) !== TradeStatus.Trading && getTradeStatus(player) !== TradeStatus.ConfirmedOffer) {
+		if (
+			tradeStatus !== TradeStatus.Trading &&
+			tradeStatus !== TradeStatus.ConfirmedOffer &&
+			tradeStatus !== TradeStatus.ViewingFinalizedTrade
+		) {
 			return;
 		}
 
 		if (!modifyTrade(player, store, offer)) {
 			// failed to modify trade
 			// we should tell the player to not modify
-			print("Issue with modified trade. Not finalizing the modification.");
-			return offerChanged.SendToPlayer(player, player, getTradeItems(player));
+			return offerChanged.SendToPlayer(
+				player,
+				player,
+				getTradeItems(player),
+				tradeStatus === TradeStatus.ViewingFinalizedTrade,
+			);
 		}
 
-		// alert the other player that the offer changed
-		offerChanged.SendToPlayer(getTradingCounterParty(player), player, offer);
+		// alert both players of the modification
+		offerChanged.SendToPlayer(
+			getTradingCounterParty(player),
+			player,
+			offer,
+			tradeStatus === TradeStatus.ViewingFinalizedTrade,
+		);
+		offerChanged.SendToPlayer(player, player, offer, tradeStatus === TradeStatus.ViewingFinalizedTrade);
 	}),
 );
 
@@ -86,7 +117,6 @@ confirmOffer.Connect((player) => {
 	if (!confirmTradeOffer(player)) {
 		// failed to confirm trade
 		// we should tell the player to not confirm
-		print("Issue with confirming trade. Not finalizing the trade.");
 		return offerConfirmed.SendToPlayer(player, player, getTradeItems(player));
 	}
 	offerConfirmed.SendToPlayer(getTradingCounterParty(player), player, getTradeItems(player));
@@ -123,7 +153,6 @@ confirmFinalizedTrade.Connect(
 		if (!confirmFinalizedTradeOffer(player, store)) {
 			// failed to confirm trade
 			// we should tell the player to not confirm
-			print("Issue with confirming trade. Not finalizing the trade.");
 			return finalizedTradeConfirmed.SendToPlayer(player, player, getTradeItems(player));
 		}
 		finalizedTradeConfirmed.SendToPlayer(getTradingCounterParty(player), player, getTradeItems(player));
@@ -145,9 +174,7 @@ declineFinalizedTrade.Connect((player) => {
 	}
 });
 
-const clientTradeError = tradesNamespace.Get("clientTradeError");
 const abandonTradeAssertion = tradesNamespace.Get("abandonTradeAssertion");
-clientTradeError.Connect(() => {});
 
 Players.PlayerRemoving.Connect((player) => {
 	// remove a trade if it exists

@@ -1,11 +1,10 @@
 import Roact from "@rbxts/roact";
-import RoactRodux from "@rbxts/roact-rodux";
 import { Players } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
+import { remotes } from "shared/remotes";
 
-import { app as App } from "./app";
-import { Leaderboards } from "./components/standalone/leaderboards";
 import { AnnouncementAPI } from "./context/AnnouncementsAPI";
+import { Control } from "./highestOrderedApps/control";
 import { remoteContext } from "./mocks/remoteContext";
 import { accoladeRemotes } from "./remotes/accolades";
 import { adminRemotes } from "./remotes/admin";
@@ -15,6 +14,7 @@ import { fusionRemtoes } from "./remotes/fusion";
 import { mediaRemotes } from "./remotes/media";
 import { petMasteryRemotes } from "./remotes/petMastery";
 import { petRemtoes } from "./remotes/pets";
+import { playerLoadedRemtoes } from "./remotes/playerLoaded";
 import { questsRemotes } from "./remotes/quests";
 import { ranksRemotes } from "./remotes/ranks";
 import { rewardRemotes } from "./remotes/rewards";
@@ -24,6 +24,7 @@ import { titlesRemtoes } from "./remotes/titles";
 import { tradingRemotes } from "./remotes/trading";
 import { weaponsRemotes } from "./remotes/weapons";
 import { wheelSpinRemotes } from "./remotes/wheelSpin";
+import { worldPrestigeRemotes } from "./remotes/worldPrestige";
 import { zonesRemotes } from "./remotes/zones";
 
 const player = Players.LocalPlayer;
@@ -45,6 +46,7 @@ onStoreCreated(player)
 					...mediaRemotes,
 					...petRemtoes,
 					...petMasteryRemotes,
+					...playerLoadedRemtoes,
 					...questsRemotes,
 					...ranksRemotes,
 					...rewardRemotes,
@@ -54,18 +56,14 @@ onStoreCreated(player)
 					...tradingRemotes,
 					...weaponsRemotes,
 					...wheelSpinRemotes,
+					...worldPrestigeRemotes,
 					...zonesRemotes,
 				}}
 			>
 				<AnnouncementAPI>
-					<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
-						{<App player={player} store={store} />}
-					</screengui>
-					<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
-						<RoactRodux.StoreProvider store={store}>
-							<Leaderboards />
-						</RoactRodux.StoreProvider>
-					</screengui>
+					<>
+						<Control player={player} store={store} />
+					</>
 				</AnnouncementAPI>
 			</remoteContext.Provider>,
 			playerGui,
@@ -73,6 +71,9 @@ onStoreCreated(player)
 		);
 
 		print(`Mounted Roact app in ${math.floor((os.clock() - start) * secondLength)}ms`);
+	})
+	.andThen(() => {
+		remotes.Client.GetNamespace("playerLoaded").Get("roactMounted").SendToServer();
 	})
 	.catch((e) => {
 		throw `Failed to mount Roact app due to ${e}`;

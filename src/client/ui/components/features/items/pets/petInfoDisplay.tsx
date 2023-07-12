@@ -1,6 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { Players } from "@rbxts/services";
 import { uiDarkStrokeColor } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
@@ -23,6 +24,7 @@ import { RARITIES } from "shared/configs/rarities";
 import { StoreState } from "shared/rodux";
 import { GamepassesState } from "shared/rodux/gamepasses";
 import { Pet, PetsState } from "shared/rodux/pets";
+import { WorldPrestigeState } from "shared/rodux/worldPrestige";
 import { getMaxPetEquip } from "shared/util/getMaxPetEquip";
 import { getPetData } from "shared/util/getPetData";
 import { getPetLevel } from "shared/util/getPetLevel";
@@ -95,6 +97,7 @@ interface DeletePetProps extends EquipPetProps, PetInfoDisplayMappedProps {
 interface PetInfoDisplayMappedProps {
 	pets: PetsState;
 	gamepassesState: GamepassesState;
+	worldPrestige: WorldPrestigeState;
 }
 
 /**
@@ -105,6 +108,7 @@ function mapStateToProps(state: StoreState): PetInfoDisplayMappedProps {
 	return {
 		pets: state.pets,
 		gamepassesState: state.gamepasses,
+		worldPrestige: state.worldPrestige,
 	};
 }
 
@@ -132,7 +136,7 @@ const EquipPet = RoactRodux.connect(mapStateToProps)(
 						if (props.storedPet.equipped) {
 							equipPets.SendToServer([{ guid: props.storedPet.guid, enabled: false }], false);
 						} else {
-							const maxPetsEquipped = getMaxPetEquip(props.gamepassesState);
+							const maxPetsEquipped = getMaxPetEquip(Players.LocalPlayer, props.gamepassesState, props.worldPrestige);
 							const equippedPets = props.pets.filter((pet) => pet.equipped).size();
 
 							if (equippedPets >= maxPetsEquipped) {

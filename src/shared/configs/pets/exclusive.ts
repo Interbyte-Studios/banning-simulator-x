@@ -34,6 +34,16 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 120,
 		},
 	},
+	"Developer Gummy Bunny": {
+		chance: 0,
+		id: 10006,
+		rarity: "Exclusive",
+		fusionCost: 50000000000,
+		stats: {
+			additionalDamage: 5_000_000_000_000_000,
+			additionalBans: 1,
+		},
+	},
 	"Radioactive Gryphon": {
 		chance: 0,
 		id: 10007,
@@ -42,16 +52,6 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 		stats: {
 			additionalDamage: 120,
 			additionalBans: 40,
-		},
-	},
-	"Developer Gummy Bunny": {
-		chance: 0,
-		id: 10006,
-		rarity: "Exclusive",
-		fusionCost: 50000000000,
-		stats: {
-			additionalDamage: 5000000000000000,
-			additionalBans: 100,
 		},
 	},
 };

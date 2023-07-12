@@ -51,14 +51,24 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 		totalVoidEggHatches += egg.void;
 	});
 
-	const groupRankInfo = groupRank !== undefined && GROUP_ROLES[groupRank];
-	const groupRankName = groupRank === undefined ? "No Rank" : groupRankInfo !== false ? groupRankInfo.tag : "No Rank";
-	const groupRankColor =
-		groupRank === undefined
-			? Color3.fromRGB(255, 255, 255)
-			: groupRankInfo !== false
-			? groupRankInfo.color
-			: Color3.fromRGB(255, 255, 255);
+	let groupTag = "No Rank";
+	let groupColor = Color3.fromRGB(255, 255, 255);
+
+	pcall(() => {
+		for (const [rankIndex, rankData] of pairs(GROUP_ROLES)) {
+			if (groupRank === undefined) {
+				continue;
+			}
+
+			if (groupRank === rankIndex) {
+				groupTag = rankData.tag;
+				groupColor = rankData.color;
+			}
+		}
+	});
+
+	const groupRankName = groupTag;
+	const groupRankColor = groupColor;
 
 	const titleSpecialElement: Array<Roact.Element> = [];
 	const titleName = title ?? "No Title";

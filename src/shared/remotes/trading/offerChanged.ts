@@ -9,5 +9,5 @@ import { PlayerTradeItem } from "shared/configs/trading";
  * `newOffer` contains the player's offer.
  */
 export const offerChangedDefinition =
-	Net.Definitions.ServerToClientEvent<[player: Player, newOffer: Readonly<PlayerTradeItem>]>();
+	Net.Definitions.ServerToClientEvent<[player: Player, newOffer: Readonly<PlayerTradeItem>, wasFinalized: boolean]>();
 export type OfferChangedDefinition = typeof offerChangedDefinition;

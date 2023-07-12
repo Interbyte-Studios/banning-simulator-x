@@ -47,10 +47,12 @@ const Gamepass = hooks(
 	) => {
 		const [itemPrice, setItemPrice] = useState(0);
 		useEffect(() => {
-			const productInfo = MarketplaceService.GetProductInfo(props.devProductId, Enum.InfoType.GamePass);
-			if (productInfo.PriceInRobux !== undefined) {
-				setItemPrice(productInfo.PriceInRobux);
-			}
+			task.spawn(() => {
+				const productInfo = MarketplaceService.GetProductInfo(props.devProductId, Enum.InfoType.GamePass);
+				if (productInfo.PriceInRobux !== undefined) {
+					setItemPrice(productInfo.PriceInRobux);
+				}
+			});
 		}, []);
 
 		const layoutOrder = GAMEPASS_ORDER[props.gamepassName];

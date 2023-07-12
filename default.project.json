@@ -1,6 +1,6 @@
 {
   "name": "banning-simulator-x",
-  "servePlaceIds": [9230782910, 9230784292, 9290121231, 9994197393],
+  "servePlaceIds": [13945382721, 13947591086],
   "globIgnorePaths": ["**/package.json", "**/tsconfig.json"],
   "tree": {
     "$className": "DataModel",

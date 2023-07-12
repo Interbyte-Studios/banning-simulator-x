@@ -80,6 +80,10 @@ export const Accolades = hooks((props: AccoladesProps, hooks) => {
 					SortOrder={Enum.SortOrder.LayoutOrder}
 				/>
 				{ACCOLADES.map((accoladeData): Roact.Element => {
+					if (accoladeData.id === 7) {
+						return <></>;
+					}
+
 					const ownsAccolade = storeState.accolades.find((accoladeId) => accoladeId === accoladeData.id);
 					const accoladeProgress = accoladeData.progress(storeState);
 

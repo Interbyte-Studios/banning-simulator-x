@@ -7,11 +7,23 @@ import { HatchedPet } from "shared/rodux/pets";
 export const validEggEmount = t.literal(1, 2, 3);
 export type ValidEggAmount = t.static<typeof validEggEmount>;
 
+export enum HatchEggFailKind {
+	TooFast,
+	Trading,
+	NoGamepass,
+	NoWorld,
+	NoZone,
+	NoCurrency,
+	NoInventory,
+	NotWithinDistance,
+	NoCharacter,
+}
+
 export const hatchEggDefinition = Net.Definitions.ServerAsyncFunction<
 	(
 		amount: ValidEggAmount,
 		egg: EggName,
 		isVoid: boolean,
-	) => { success: false } | { success: true; pets: Array<HatchedPet> }
+	) => { success: false; reason: HatchEggFailKind } | { success: true; pets: Array<HatchedPet> }
 >([createTypeChecker(t.literal(1, 2, 3), isEggName, t.boolean)]);
 export type HatchEggDefinition = typeof hatchEggDefinition;

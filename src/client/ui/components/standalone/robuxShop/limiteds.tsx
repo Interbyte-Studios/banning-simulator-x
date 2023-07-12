@@ -32,11 +32,13 @@ const ExclusivePet = hooks(
 		const petData = getPetData(props.petId);
 		const petDecal = getPetImage(props.petId, "regular");
 		useEffect(() => {
-			const productInfo = MarketplaceService.GetProductInfo(props.devProductId, Enum.InfoType.Product);
+			task.spawn(() => {
+				const productInfo = MarketplaceService.GetProductInfo(props.devProductId, Enum.InfoType.Product);
 
-			if (productInfo.PriceInRobux !== undefined) {
-				setItemCost(productInfo.PriceInRobux);
-			}
+				if (productInfo.PriceInRobux !== undefined) {
+					setItemCost(productInfo.PriceInRobux);
+				}
+			});
 		}, []);
 
 		return (
@@ -164,16 +166,6 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 
 				<StrokeTextLabel
 					native={{
-						Position: UDim2.fromScale(0.06, 0.005),
-						Size: UDim2.fromScale(0.215, 0.265),
-						TextColor3: Color3.fromRGB(255, 71, 74),
-						Text: "New!",
-					}}
-					stroke={{ native: { Thickness: 2.5, Color: Color3.fromRGB(116, 32, 34) } }}
-				/>
-
-				<StrokeTextLabel
-					native={{
 						Position: UDim2.fromScale(0.5, 0.2),
 						Size: UDim2.fromScale(0.415, 0.394),
 						TextColor3: Color3.fromRGB(255, 71, 74),
@@ -191,6 +183,16 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 				</ImageLabel>
+
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.06, 0.005),
+						Size: UDim2.fromScale(0.215, 0.265),
+						TextColor3: Color3.fromRGB(255, 71, 74),
+						Text: "New!",
+					}}
+					stroke={{ native: { Thickness: 2.5, Color: Color3.fromRGB(116, 32, 34) } }}
+				/>
 
 				<BaseFrame
 					AnchorPoint={vec2Middle}
