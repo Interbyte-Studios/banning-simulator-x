@@ -12,7 +12,7 @@ export const getBanningMastery = (bansState: BansState): BanningMastery => {
 	assert(mastery, `Failed to get default banning mastery. [getBanningMastery() util]`);
 
 	for (const banningMastery of AccountMastery.banning) {
-		if (bansState.bans >= banningMastery.requiredBans) {
+		if (bansState >= banningMastery.requiredBans) {
 			if (banningMastery.level < mastery.level) {
 				continue;
 			}

@@ -1,6 +1,6 @@
 /// <reference types="@rbxts/testez/globals" />
 
-import { addEgg, eggsReducer } from "../eggs";
+import { eggsReducer, hatchEgg } from "../eggs";
 import { testAction } from "./testAction";
 
 export = (): void => {
@@ -31,13 +31,12 @@ export = (): void => {
 				},
 			};
 
-			const action = addEgg([
+			const action = hatchEgg(0, "coins", [
 				{
 					autoDeleted: false,
 					id: petId,
 					guid: petGuid,
 					variant: "regular",
-					method: "hatch",
 					tradeLocked: false,
 				},
 			]);

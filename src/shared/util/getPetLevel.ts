@@ -20,3 +20,13 @@ export function getPetLevel(pet: Pet): number {
 
 	return math.floor(petLevel);
 }
+
+/**
+ * Calculates the amount of extra bans to add for a pet.
+ *
+ * @param petExperienceMultiplier The experience multiplier for bans.
+ * @returns The amount of extra bans to add.
+ */
+export function getPetExtraBans(petExperienceMultiplier: number): number {
+	return 1 * math.ceil(petExperienceMultiplier);
+}

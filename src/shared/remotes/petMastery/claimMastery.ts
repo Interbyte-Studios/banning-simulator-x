@@ -2,7 +2,7 @@ import Net from "@rbxts/net";
 import { createTypeChecker } from "@rbxts/net/out/middleware";
 import { t } from "@rbxts/t";
 import { isVariant, Variants } from "shared/configs/pets";
-import { PetAttainMethod } from "shared/rodux/pets";
+import { PetMasteryChallengeType } from "shared/rodux/petMastery";
 
 export enum ClaimPetMasteryFailKind {
 	InternalError,
@@ -18,7 +18,7 @@ export const claimPetMasteryDefinition = Net.Definitions.ServerAsyncFunction<
 	(
 		petId: number,
 		variant: Variants,
-		method: PetAttainMethod,
+		method: PetMasteryChallengeType,
 	) => { success: true } | { success: false; reason: ClaimPetMasteryFailKind }
 >([createTypeChecker(t.number, isVariant, t.literal("maxLevel", "hatch", "fuse"))]);
 export type ClaimPetMasteryDefinition = typeof claimPetMasteryDefinition;

@@ -57,19 +57,19 @@ export const Rewards = RoactRodux.connect(mapStateToProps)(
 				const now = DateTime.now();
 
 				if (props.gamepasses.VIP) {
-					if (now.UnixTimestamp - props.index.vipRewardClaimed.lastClaimed > 86400) {
+					if (now.UnixTimestamp - props.index.vipRewards.lastClaimed.UnixTimestamp > 86400) {
 						if (vipClaimTime !== 0) {
 							setVIPClaimTime(0);
 						}
 					} else {
-						const timeUntilClaim = 86400 - (now.UnixTimestamp - props.index.vipRewardClaimed.lastClaimed);
+						const timeUntilClaim = 86400 - (now.UnixTimestamp - props.index.vipRewards.lastClaimed.UnixTimestamp);
 						setVIPClaimTime(timeUntilClaim);
 					}
 				}
 
 				if (props.index.groupRank !== undefined) {
-					const timeSinceGroupClaim = now.UnixTimestamp - props.index.groupRewardClaimed.lastClaimed;
-					const timeSinceClubClaim = now.UnixTimestamp - props.index.clubRewardClaimed.lastClaimed;
+					const timeSinceGroupClaim = now.UnixTimestamp - props.index.groupRewards.lastClaimed.UnixTimestamp;
+					const timeSinceClubClaim = now.UnixTimestamp - props.index.clubRewards.lastClaimed.UnixTimestamp;
 
 					if (timeSinceClubClaim > 86400) {
 						if (clubClaimTime !== 0) {
@@ -190,8 +190,8 @@ export const Rewards = RoactRodux.connect(mapStateToProps)(
 
 											const newItems: RewardsCache = [];
 
-											const claimGroup = timeStamp - props.index.groupRewardClaimed.lastClaimed;
-											const claimClub = timeStamp - props.index.clubRewardClaimed.lastClaimed;
+											const claimGroup = timeStamp - props.index.groupRewards.lastClaimed.UnixTimestamp;
+											const claimClub = timeStamp - props.index.clubRewards.lastClaimed.UnixTimestamp;
 
 											const canClaimGroup = claimGroup > 86400;
 
@@ -342,7 +342,7 @@ export const Rewards = RoactRodux.connect(mapStateToProps)(
 
 											const newItems: RewardsCache = [];
 
-											const canClaimVIP = timeStamp - props.index.vipRewardClaimed.lastClaimed > 86400;
+											const canClaimVIP = timeStamp - props.index.vipRewards.lastClaimed.UnixTimestamp > 86400;
 											if (canClaimVIP) {
 												const result = await claimVIPReward.CallServerAsync();
 												if (result.success) {

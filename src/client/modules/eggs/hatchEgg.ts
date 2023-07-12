@@ -12,7 +12,7 @@ import { getPetDecal } from "client/util/getPetDecal";
 import { HatchEffect, playSFX } from "client/util/playSound";
 import { EggName } from "shared/configs/eggs";
 import { RARITIES } from "shared/configs/rarities";
-import { ConfirmedPet } from "shared/rodux/pets";
+import { HatchedPet } from "shared/rodux/pets";
 import { getPetData } from "shared/util/getPetData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
 
@@ -334,7 +334,7 @@ export const animateSingleEggHatch = (
 export const animateTripleEggHatch = (
 	egg: EggName,
 	isVoid: boolean,
-	pets: Array<ConfirmedPet>,
+	pets: Array<HatchedPet>,
 	fastHatch: boolean,
 ): void => {
 	const camera = Workspace.CurrentCamera;

@@ -4,9 +4,8 @@ import { modifyPetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { retrieveStore } from "server/playerStore";
 import { ADMIN_RANK } from "shared/configs/admin";
-import { Currency } from "shared/configs/currencies";
 import { remotes } from "shared/remotes";
-import { addPets, ConfirmedPet } from "shared/rodux/pets";
+import { AddedPet, addPets } from "shared/rodux/pets";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetData } from "shared/util/getPetData";
 
@@ -31,14 +30,10 @@ remotes.Server.GetNamespace("admin")
 			const eggName = getEggNameFromPetId(isValidPet.id);
 			if (!eggName) return;
 
-			const cost = 0;
-			const currency: Currency = "coins";
-			const pet: ConfirmedPet = {
-				autoDeleted: false,
+			const pet: AddedPet = {
 				id: petData.petId,
 				guid: HttpService.GenerateGUID(false),
 				variant: petData.variant,
-				method: "admin",
 				//enhancements: {},
 				tradeLocked: groupRank !== 254,
 			};
@@ -55,6 +50,6 @@ remotes.Server.GetNamespace("admin")
 				petId: petData.petId,
 				variant: petData.variant,
 			});
-			targetPlayerStore.dispatch(addPets(cost, currency, [pet]));
+			targetPlayerStore.dispatch(addPets([pet]));
 		}),
 	);

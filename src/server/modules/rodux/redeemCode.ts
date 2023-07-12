@@ -4,7 +4,7 @@ import { Store } from "shared/rodux";
 import { storeBoost } from "shared/rodux/boosts";
 import { awardCurrency } from "shared/rodux/currencies";
 import { redeemCode } from "shared/rodux/media";
-import { addPets, ConfirmedPet } from "shared/rodux/pets";
+import { AddedPet, addPets } from "shared/rodux/pets";
 
 import { getCodesCache } from "../datastore/codes";
 
@@ -45,19 +45,17 @@ export function checkRedeemCode(
 		store.dispatch(awardCurrency(codeData.reward.currency.name, codeData.reward.currency.amount));
 	}
 
-	const petsToAdd: Array<ConfirmedPet> = [];
+	const petsToAdd: Array<AddedPet> = [];
 	for (const pet of codeData.reward.pets) {
 		petsToAdd.push({
 			id: pet.id,
 			variant: pet.variant,
-			method: "hatch",
 			tradeLocked: false,
-			autoDeleted: false,
 			guid: HttpService.GenerateGUID(false),
 		});
 	}
 
-	store.dispatch(addPets(0, "coins", petsToAdd));
+	store.dispatch(addPets(petsToAdd));
 	store.dispatch(redeemCode(code));
 
 	return {

@@ -97,13 +97,11 @@ remotes.Server.GetNamespace("worldPrestige")
 					}
 
 					store.dispatch(
-						addPets(0, "coins", [
+						addPets([
 							{
 								id: reward.petReward,
 								variant: "regular",
-								method: "purchase",
 								tradeLocked: false,
-								autoDeleted: false,
 								guid: HttpService.GenerateGUID(false),
 							},
 						]),

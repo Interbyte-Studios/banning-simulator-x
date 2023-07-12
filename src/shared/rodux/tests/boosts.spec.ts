@@ -17,7 +17,7 @@ export = (): void => {
 						15: 0,
 						30: 0,
 						60: 0,
-						120: 0,
+						120: 1,
 					},
 					["x2 Rank Experience"]: {
 						15: 0,
@@ -88,13 +88,13 @@ export = (): void => {
 					},
 				},
 				active: {
-					["x2 Currency"]: claimedBoostTime,
+					["x2 Currency"]: claimedBoostTime * 60,
 					["x2 Rank Experience"]: defaultBoost,
 					["x2 Talisman Experience"]: defaultBoost,
 					["x2 Pet Experience"]: defaultBoost,
 					["x2 Hatching Luck"]: defaultBoost,
 				},
-				uses: 0,
+				uses: 1,
 			};
 
 			const action = claimBoost("x2 Currency", claimedBoostTime, 1);
