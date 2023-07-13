@@ -46,6 +46,10 @@ return {
 				["x2 Experience"] = "rbxassetid://13815335356",
 				["x2 Luck"] = "rbxassetid://13815335534",
 			},
+			leaderboard = {
+				bans = "rbxassetid://14048595336",
+				eggs = "rbxassetid://14048595403",
+			},
 			pets = {
 				["All Seeing Jester"] = "rbxassetid://13989137836",
 				["Armored Angel"] = "rbxassetid://11440086828",

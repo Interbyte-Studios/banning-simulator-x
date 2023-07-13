@@ -178,6 +178,16 @@ hash = "8ca9c06c81cd6efeff61b273207558f550d77bc66e7879969cb5c8f424aef7b2"
 id = 13815335534
 packable = false
 
+[inputs."images/decals/leaderboard/bans.png"]
+hash = "d807b07447b7ba00f7be13d0fa995cc8461c227f46d5535beac4508e8a99be49"
+id = 14048595336
+packable = false
+
+[inputs."images/decals/leaderboard/eggs.png"]
+hash = "c891a2622ad64df3d1dbcbf0573c609067bb3cfea78430982884d84b35a30996"
+id = 14048595403
+packable = false
+
 [inputs."images/decals/pets/All Seeing Jester.png"]
 hash = "a137dc624a4af8730877a5b1f89aafe657ab4348753f24048ff052e1de587a01"
 id = 13989137836

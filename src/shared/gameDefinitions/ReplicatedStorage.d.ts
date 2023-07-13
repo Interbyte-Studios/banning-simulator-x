@@ -23,6 +23,17 @@ declare global {
 				playerTag: BillboardGui & {
 					hold: Frame & {
 						UIListLayout: UIListLayout;
+						badges: Frame & {
+							bans: ImageLabel & {
+								amount: TextLabel;
+							};
+							eggs: ImageLabel & {
+								amount: TextLabel;
+							};
+							prestige: ImageLabel & {
+								amount: TextLabel;
+							};
+						};
 						name: TextLabel & {
 							UIStroke: UIStroke;
 							rank: ImageLabel & {
