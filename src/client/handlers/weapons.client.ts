@@ -27,7 +27,7 @@ highlight.FillTransparency = 1;
 highlight.OutlineColor = Color3.fromRGB(0, 0, 0);
 
 // npc highlight
-const npcHighlights: Array<{ object: Highlight; timeDisplayed: number; numberOfHits: number }> = [];
+const npcHighlights: Array<{ object: Highlight; timeDisplayed: number }> = [];
 
 /**
  * Handles equipping the player's weapon.
@@ -230,34 +230,6 @@ function equipWeapon(weaponName: WeaponIndex): void {
 		const npcHighlight = npcHighlights.find((highlightData) => highlightData.object.Parent === npcCharacter);
 		if (npcHighlight !== undefined) {
 			npcHighlight.timeDisplayed = time();
-			npcHighlight.numberOfHits += 1;
-
-			TweenService.Create(npcHighlight.object, new TweenInfo(0.75), {
-				OutlineColor:
-					npcHighlight.numberOfHits > 5
-						? Color3.fromRGB(8, 247, 69)
-						: npcHighlight.numberOfHits > 4
-						? Color3.fromRGB(13, 237, 245)
-						: npcHighlight.numberOfHits > 3
-						? Color3.fromRGB(3, 69, 252)
-						: npcHighlight.numberOfHits > 2
-						? Color3.fromRGB(255, 0, 242)
-						: npcHighlight.numberOfHits > 1
-						? Color3.fromRGB(163, 0, 255)
-						: Color3.fromRGB(227, 74, 74),
-				FillColor:
-					npcHighlight.numberOfHits > 5
-						? Color3.fromRGB(8, 247, 69)
-						: npcHighlight.numberOfHits > 4
-						? Color3.fromRGB(13, 237, 245)
-						: npcHighlight.numberOfHits > 3
-						? Color3.fromRGB(3, 69, 252)
-						: npcHighlight.numberOfHits > 2
-						? Color3.fromRGB(255, 0, 242)
-						: npcHighlight.numberOfHits > 1
-						? Color3.fromRGB(163, 0, 255)
-						: Color3.fromRGB(227, 74, 74),
-			}).Play();
 		} else {
 			const npcNPCHighlight = new Instance("Highlight");
 			npcNPCHighlight.DepthMode = Enum.HighlightDepthMode.Occluded;
@@ -265,9 +237,9 @@ function equipWeapon(weaponName: WeaponIndex): void {
 			npcNPCHighlight.OutlineColor = Color3.fromRGB(227, 74, 74);
 			npcNPCHighlight.OutlineTransparency = 1;
 			npcNPCHighlight.Parent = npcCharacter;
-			npcHighlights.push({ object: npcNPCHighlight, timeDisplayed: time(), numberOfHits: 1 });
+			npcHighlights.push({ object: npcNPCHighlight, timeDisplayed: time() });
 
-			TweenService.Create(npcNPCHighlight, new TweenInfo(0.75), {
+			TweenService.Create(npcNPCHighlight, new TweenInfo(0.25), {
 				FillTransparency: 0.5,
 				OutlineTransparency: 0,
 			}).Play();

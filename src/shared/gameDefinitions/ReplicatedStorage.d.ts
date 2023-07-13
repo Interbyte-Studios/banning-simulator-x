@@ -37,6 +37,9 @@ declare global {
 						};
 					};
 				};
+				damagecounter: BillboardGui & {
+					template: TextLabel;
+				};
 				enemyTag: BillboardGui & {
 					hold: Frame & {
 						UIListLayout: UIListLayout;
@@ -62,6 +65,10 @@ declare global {
 				};
 			};
 			emitters: Folder & {
+				icons: Folder & {
+					coins: BasePart;
+					experience: BasePart;
+				};
 				"hatching emitters": Folder & {
 					flare: Part & {
 						attachment: Attachment & {
