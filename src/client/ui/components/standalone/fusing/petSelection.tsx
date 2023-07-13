@@ -120,6 +120,7 @@ export const PetSelection = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.5, 0.62)}
 					Size={UDim2.fromScale(0.95, 0.675)}
 					ScrollBarThickness={12}
+				BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uigridlayout

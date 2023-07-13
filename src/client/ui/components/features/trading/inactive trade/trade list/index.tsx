@@ -173,6 +173,7 @@ export const TradeList = hooks(
 					Size={UDim2.fromScale(0.975, 0.795)}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 					ScrollBarThickness={12}
+				BorderSizePixel={0}
 				>
 					<uilistlayout
 						HorizontalAlignment={Enum.HorizontalAlignment.Center}

@@ -81,6 +81,7 @@ export const Settings = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.5, 0.575)}
 					Size={UDim2.fromScale(0.925, 0.785)}
 					ScrollBarThickness={12}
+				BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 					CanvasSize={UDim2.fromScale(0, 4)}
 				>

@@ -62,6 +62,7 @@ export const WorldPrestigePath = hooks(
 							Activated: (): void => {
 								playSFX(UIEngagement.MajorEngagement);
 								claimPrestige.SendToServer(props.worldName);
+								props.setVisibility(false);
 							},
 						}}
 					>

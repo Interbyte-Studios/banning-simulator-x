@@ -148,6 +148,7 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 						Position={UDim2.fromScale(0.5, 0.5)}
 						Size={UDim2.fromScale(0.95, 0.95)}
 						ScrollBarThickness={12}
+				BorderSizePixel={0}
 						ScrollingDirection={Enum.ScrollingDirection.Y}
 					>
 						<uigridlayout

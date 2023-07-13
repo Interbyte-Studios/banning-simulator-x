@@ -94,6 +94,7 @@ export const WorldPrestigeUpgrades = RoactRodux.connect(mapStateToProps)(
 					Size={UDim2.fromScale(0.97, 0.845)}
 					ScrollBarImageColor3={Color3.fromRGB(0, 109, 176)}
 					ScrollBarThickness={15}
+				BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					{/* World Prestige Upgrades [ Needs to be refactored obviously to reduce copy pasta ] */}

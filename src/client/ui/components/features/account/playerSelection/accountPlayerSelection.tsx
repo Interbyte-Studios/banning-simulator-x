@@ -46,6 +46,7 @@ export const AccountPlayerSelection = hooks(
 					Position={UDim2.fromScale(0.5, 0.5)}
 					Size={UDim2.fromScale(0.95, 0.95)}
 					ScrollBarThickness={12}
+				BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uilistlayout Padding={new UDim(0.02, 0)} HorizontalAlignment={Enum.HorizontalAlignment.Center} />

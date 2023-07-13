@@ -260,6 +260,7 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 			Size={props.size}
 			Position={props.position}
 			ScrollBarThickness={props.scrollBarThickness ?? 0}
+			BorderSizePixel={0}
 			ScrollBarImageColor3={props.scrollBarImageColor ?? Color3.fromRGB(0, 0, 0)}
 			Ref={scrollingFrameRef.value}
 			ScrollingDirection={Enum.ScrollingDirection.Y}

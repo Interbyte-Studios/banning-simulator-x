@@ -80,6 +80,7 @@ export const Teleportation = hooks((props: TeleportationProps, { useState, useVa
 					Position={UDim2.fromScale(0.5, 0.6)}
 					Size={UDim2.fromScale(0.95, 0.7)}
 					ScrollBarThickness={12}
+				BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uilistlayout
@@ -135,6 +136,7 @@ export const Teleportation = hooks((props: TeleportationProps, { useState, useVa
 					Position={UDim2.fromScale(0.5, 0.6)}
 					Size={UDim2.fromScale(0.95, 0.7)}
 					ScrollBarThickness={12}
+				BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uilistlayout
