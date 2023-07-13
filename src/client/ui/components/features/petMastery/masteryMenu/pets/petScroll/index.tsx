@@ -57,7 +57,7 @@ export const IndexPetScroll = hooks(
 				BackgroundTransparency={1}
 				Position={UDim2.fromScale(0.225, 0.55)}
 				Size={UDim2.fromScale(0.4, 0.775)}
-				ScrollBarThickness={0}
+				ScrollBarThickness={12}
 				ScrollingDirection={Enum.ScrollingDirection.Y}
 			>
 				<uilistlayout

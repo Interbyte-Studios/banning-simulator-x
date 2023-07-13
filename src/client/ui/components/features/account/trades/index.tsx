@@ -112,7 +112,7 @@ const PlayerPetOffer = (props: {
 				pets={fakeStoredData}
 				size={UDim2.fromScale(0.99, 0.915)}
 				position={UDim2.fromScale(0.5, 0.52)}
-				scrollBarThickness={0}
+				scrollBarThickness={12}
 				fillDirectionMaxCells={4}
 				noToolTipDispay={props.displayBackground}
 			/>
