@@ -47,11 +47,20 @@ export function runMigrations(state: ProfileState): ProfileState {
 }
 
 /**
+ * Retrieves the version of data that this server is up to.
+ *
+ * @returns The current server data version.
+ */
+export function getServerDataVersion(): number {
+	return migrations[migrations.size() - 1].version;
+}
+
+/**
  * Checks to see if a migrated state has a data version that is within this servers expected data version.
  *
  * @param state The migrated state of the profile.
  * @returns If the profile has the expected data version.
  */
 export function hasExpectedDataVersion(state: ProfileState): boolean {
-	return state.dataVersion === migrations[migrations.size() - 1].version;
+	return state.dataVersion === getServerDataVersion();
 }
