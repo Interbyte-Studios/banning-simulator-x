@@ -18,7 +18,6 @@ import { EGGS } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
 import { RARITIES } from "shared/configs/rarities";
 import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
-import { ZoneNames } from "shared/configs/zones";
 import { FusionFailKind } from "shared/remotes/fusing";
 import { StoreState } from "shared/rodux";
 import { GamepassesState } from "shared/rodux/gamepasses";
@@ -34,7 +33,6 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 interface DisplayPetsProps extends DisplayPetsMappedProps {
 	variant: Variants;
 	returnToSelection: () => void;
-	selectedZone: ZoneNames | "Exclusive";
 	petSelected: number;
 }
 
@@ -87,19 +85,16 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 			const eggData = EGGS[eggName];
 			const variantToDisplay = props.variant === "radiant" ? "void" : props.variant === "void" ? "regular" : "regular";
 
-			if (props.selectedZone === "Exclusive" && eggData.zone === "Limited" && !eggData.hidden) {
+			if (eggData.zone === "Limited" && !eggData.hidden) {
 				if (petData.variant !== variantToDisplay || petData.id !== props.petSelected) {
 					return;
 				}
 
 				petsSelection.push(petData);
+				return;
 			}
 
-			if (
-				eggData.zone !== props.selectedZone ||
-				petData.variant !== variantToDisplay ||
-				petData.id !== props.petSelected
-			) {
+			if (petData.variant !== variantToDisplay || petData.id !== props.petSelected) {
 				return;
 			}
 

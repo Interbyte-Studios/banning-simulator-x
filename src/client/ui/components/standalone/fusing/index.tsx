@@ -11,11 +11,9 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import { shouldDisplay } from "client/util/shouldDisplay";
 import assetIds from "shared/assets";
 import { Variants } from "shared/configs/pets";
-import { ZoneNames } from "shared/configs/zones";
 
 import { DisplayPets } from "./displayPets";
 import { PetSelection } from "./petSelection";
-import { ZoneSelection } from "./zoneSelection";
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const Fusing = hooks(
@@ -29,31 +27,22 @@ export const Fusing = hooks(
 	) => {
 		const { useState, useEffect } = hooks;
 
-		const [zoneSelected, setZoneSelected] = useState<ZoneNames | "Exclusive" | undefined>(undefined);
 		const [petSelected, setPetSelected] = useState<number | undefined>(undefined);
 		const [fusingVariant, setFusingVariant] = useState<Exclude<Variants, "regular">>(props.variant ?? "void");
 
 		const screenToDisplay: Array<Roact.Element> = [];
-		if (petSelected !== undefined && zoneSelected !== undefined) {
+		if (petSelected !== undefined) {
 			screenToDisplay.push(
 				<DisplayPets
 					variant={fusingVariant}
 					returnToSelection={(): void => setPetSelected(undefined)}
-					selectedZone={zoneSelected}
 					petSelected={petSelected}
 				/>,
 			);
-		} else if (zoneSelected !== undefined) {
-			screenToDisplay.push(
-				<PetSelection
-					variant={fusingVariant}
-					returnToSelection={(): void => setZoneSelected(undefined)}
-					setPetSelected={(petId: number): void => setPetSelected(petId)}
-					selectedZone={zoneSelected}
-				/>,
-			);
 		} else {
-			screenToDisplay.push(<ZoneSelection setZone={(zone: ZoneNames | "Exclusive"): void => setZoneSelected(zone)} />);
+			screenToDisplay.push(
+				<PetSelection variant={fusingVariant} setPetSelected={(petId: number): void => setPetSelected(petId)} />,
+			);
 		}
 
 		const radiantPrompts: Array<BasePart> = [];
@@ -205,7 +194,6 @@ export const Fusing = hooks(
 						minimizedSize={0.09}
 						maximizedSize={0.1}
 						onClosed={(): void => {
-							setZoneSelected(undefined);
 							setPetSelected(undefined);
 							props.setVisibility(false);
 						}}
