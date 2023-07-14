@@ -31,6 +31,8 @@ import { defaultWorldPrestigeState } from "shared/rodux/worldPrestige";
 import { defaultWorlds } from "shared/rodux/worlds";
 import { Modify } from "shared/util/modify";
 
+import { getServerDataVersion } from "./migrations";
+
 export type ProfileState = Modify<
 	StoreState,
 	{
@@ -109,7 +111,7 @@ export const profileTemplate: ProfileState = {
 	tradeLogs: [],
 	weapons: defaultWeaponsState,
 	worlds: defaultWorlds,
-	dataVersion: 1,
+	dataVersion: getServerDataVersion(),
 	invitedFriend: defaultInvitedFriendState,
 	worldPrestige: defaultWorldPrestigeState,
 };
