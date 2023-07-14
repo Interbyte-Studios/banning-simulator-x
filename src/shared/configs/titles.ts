@@ -1,5 +1,4 @@
 import { StoreState } from "shared/rodux";
-import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 
 export enum TitleType {
 	Pets,
@@ -19,7 +18,7 @@ interface Title {
 }
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
+export const TITLES = [
 	// Pets (Hatching)
 	{
 		name: "Pet Incubator",
@@ -785,7 +784,7 @@ export const TITLES = preserveWithConstraint<ReadonlyArray<Title>>()([
 		description: "Administrators of Interbyte Studios.",
 		condition: (state): boolean => state.index.groupRank !== undefined && state.index.groupRank >= 253,
 	},
-] as const);
+] satisfies ReadonlyArray<Title>;
 /* eslint-enable jsdoc/require-jsdoc */
 export type ValidTitle = (typeof TITLES)[number]["name"];
 

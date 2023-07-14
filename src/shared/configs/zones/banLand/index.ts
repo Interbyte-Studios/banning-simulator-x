@@ -1,9 +1,7 @@
-import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
-
 import type { Zone } from "..";
 import { BAN_LAND_NPCS } from "./npcs";
 
-export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
+export const BAN_LAND_ZONES = {
 	// zone 1
 	Forest: {
 		id: 1,
@@ -143,4 +141,4 @@ export const BAN_LAND_ZONES = preserveWithConstraint<Record<string, Zone>>()({
 		},
 		color: Color3.fromRGB(247, 166, 99),
 	},
-});
+} satisfies Record<string, Zone>;

@@ -1,5 +1,3 @@
-import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
-
 import { Currency } from "./currencies";
 import { WorldName } from "./worlds";
 
@@ -24,7 +22,7 @@ export interface Weapon {
 }
 
 export const MAX_WEAPON_ID = 47;
-export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
+export const WEAPONS = {
 	/* First Zone */
 	"Stone Hammer": {
 		id: 1,
@@ -612,7 +610,7 @@ export const WEAPONS = preserveWithConstraint<Record<string, Weapon>>()({
 		weaponType: "Hammer",
 		isBossWeapon: false,
 	},
-});
+} satisfies Record<string, Weapon>;
 
 export const WEAPON_LEVELS: Array<{ level: number; requiredBans: number }> = [
 	{

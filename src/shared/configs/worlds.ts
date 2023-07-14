@@ -1,5 +1,3 @@
-import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
-
 import { Currency } from "./currencies";
 import { Zones } from "./zones";
 import { BAN_LAND_ZONES } from "./zones/banLand";
@@ -13,6 +11,10 @@ interface World {
 	 * The currency to reward players with.
 	 */
 	reward: Currency;
+	/**
+	 * The songs that exist to play in this world.
+	 */
+	music: { [index: string]: number };
 
 	/**
 	 * The id of the world.
@@ -23,7 +25,7 @@ interface World {
 /**
  * All the worlds in the game.
  */
-export const WORLDS = preserveWithConstraint<Record<string, World>>()({
+export const WORLDS = {
 	"Ban Land": {
 		zones: BAN_LAND_ZONES,
 		reward: "coins",
@@ -36,7 +38,7 @@ export const WORLDS = preserveWithConstraint<Record<string, World>>()({
 			//SonicSunrise: 1838587765, -- may not use
 		},
 	},
-});
+} satisfies Record<string, World>;
 
 export type WorldName = keyof typeof WORLDS;
 export type Worlds = typeof WORLDS;

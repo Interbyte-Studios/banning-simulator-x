@@ -1,5 +1,4 @@
 import { t } from "@rbxts/t";
-import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 
 import { Rarities, RarityGradient } from "../rarities";
 
@@ -89,7 +88,7 @@ export const DEFAULT_EQUIP_AMOUNT = 4;
 export const isVariant = t.literal("regular", "void", "radiant");
 export type Variants = t.static<typeof isVariant>;
 
-export const VARIANT_GRADIENTS = preserveWithConstraint<Record<Variants, RarityGradient>>()({
+export const VARIANT_GRADIENTS = {
 	regular: {
 		id: 1,
 		reverseId: 3,
@@ -117,7 +116,7 @@ export const VARIANT_GRADIENTS = preserveWithConstraint<Record<Variants, RarityG
 		EndingColor: Color3.fromRGB(250, 196, 61),
 		SpecialColor: undefined,
 	},
-});
+} satisfies Record<Variants, RarityGradient>;
 export type VariantGradients = keyof typeof VARIANT_GRADIENTS;
 
 export const PET_MAX_LEVELS = {

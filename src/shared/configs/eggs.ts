@@ -1,5 +1,3 @@
-import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
-
 import { Pet } from "./pets";
 import { ARMORED_EGG_PETS } from "./pets/armored";
 import { CANDY_EGG_PETS } from "./pets/candy";
@@ -59,7 +57,7 @@ export interface Egg {
 /**
  * All the eggs in the game.
  */
-export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
+export const EGGS = {
 	Starter: {
 		id: 1,
 		pets: STARTER_EGG_PETS,
@@ -195,7 +193,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		hidden: false,
 		luckApplies: false,
 	},
-});
+} satisfies Record<string, Egg>;
 
 export type EggName = keyof typeof EGGS;
 export type Eggs = typeof EGGS;
