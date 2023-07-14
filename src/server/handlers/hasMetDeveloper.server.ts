@@ -12,7 +12,9 @@ function playerAdded(player: Player): void {
 		for (const oPlayer of Players.GetPlayers()) {
 			task.spawn(async () => {
 				const store = await onStoreCreated(oPlayer);
-				store.dispatch(setHasMetDeveloper());
+				if (!store.getState().index.hasMetDeveloper) {
+					store.dispatch(setHasMetDeveloper());
+				}
 			});
 		}
 	}
