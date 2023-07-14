@@ -23,6 +23,8 @@ remotes.Server.Create("requestFusion").SetCallback(
 			};
 		}
 
+		const previousVariant = variant === "radiant" ? "void" : "regular";
+
 		// check that all pets have the same id and are the same variant
 		const cachedGuids: Array<string> = [];
 		let petId: number | undefined;
@@ -42,7 +44,7 @@ remotes.Server.Create("requestFusion").SetCallback(
 				};
 			}
 
-			if (storedPet.variant !== variant) {
+			if (storedPet.variant !== previousVariant) {
 				return {
 					success: false,
 					reason: FusionFailKind.InternalError,
@@ -115,11 +117,12 @@ remotes.Server.Create("requestFusion").SetCallback(
 			for (const petGuid of petsToFuse) {
 				const storedPet = currentState.pets.find((_pet) => _pet.guid === petGuid);
 				if (storedPet !== undefined) {
+					warn(`Removed one ${storedPet.variant} pet: ${storedPet.id}`);
 					modifyPetCount({
 						type: "deletePet",
 						petId: storedPet.id,
 						variant: storedPet.variant,
-						amount: petsToFuse.size(),
+						amount: 1,
 					});
 				}
 			}
@@ -143,6 +146,13 @@ remotes.Server.Create("requestFusion").SetCallback(
 			type: "addPet",
 			petId: petData.id,
 			variant,
+		});
+
+		modifyPetCount({
+			type: "deletePet",
+			petId: petData.id,
+			variant: previousVariant,
+			amount: petsToFuse.size(),
 		});
 
 		store.dispatch(deletePets(petsToFuse));
