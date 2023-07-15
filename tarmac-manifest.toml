@@ -58,6 +58,11 @@ hash = "0c9dcc4ad1148352abdec79609dfde379dc1d044bc01c9ceebe160f60453a603"
 id = 10705288749
 packable = false
 
+[inputs."images/decals/UpdateLog.png"]
+hash = "7707bf6e3aa22dfa587cc2af26b45fc3a34782afc6da4fe3b03e14fa294ca38f"
+id = 14070307985
+packable = false
+
 [inputs."images/decals/boosts/luck.png"]
 hash = "3ade169784bccee8b79fe4648df19def3d288411b44545593f48d7c5fbc84c3b"
 id = 11676506054

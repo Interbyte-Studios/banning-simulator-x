@@ -10,7 +10,7 @@ export const BANS_LEADERBOARD_ODS = `${STORE_SCOPE}_BANS_ODS_1`;
 export const EGGS_LEADERBOARD_ODS = `${STORE_SCOPE}_EGGS_ODS_1`;
 export const LEADERBOARD_UPDATE_INTERVAL = 60;
 
-export const GAME_VERSION = "1.2.0";
+export const GAME_VERSION = "2.0";
 
 export const MAX_TRADE_OFFER_SIZE = 10;
 export const MAX_TRADE_LOGS = 25;

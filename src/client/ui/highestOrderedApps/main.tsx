@@ -2,6 +2,9 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { CollectionService, ContextActionService, Players, ReplicatedStorage, Workspace } from "@rbxts/services";
+import Icon from "@rbxts/topbar-plus";
+import { playSFX, UIEngagement } from "client/util/playSound";
+import assetIds from "shared/assets";
 import { Variants } from "shared/configs/pets";
 import { Store } from "shared/rodux";
 import { isValidWorld } from "shared/util/isValidWorld";
@@ -30,6 +33,7 @@ import { TalismanLevelUpAnimation } from "../components/standalone/notifications
 import { WeaponLevelUpAnimation } from "../components/standalone/notifications/weaponLevelUp";
 import { Rewards } from "../components/standalone/rewards";
 import { RobuxShop } from "../components/standalone/robuxShop";
+import { UpdateLog } from "../components/standalone/updateLog";
 import { WeaponEquip } from "../components/standalone/weapons/weaponEquip";
 import { ZonesUI } from "../components/standalone/zones";
 import { AnnouncementContext, AnnouncementType } from "../context/AnnouncementsAPI";
@@ -56,7 +60,10 @@ const visibilityStates = {
 	codes: false,
 	robuxShop: false,
 	worldPrestige: false,
+	updateLog: false,
 };
+
+const updateLogIcon = new Icon().setImage(assetIds.images.decals.UpdateLog).setLabel("Update Log");
 
 export const Main = hooks((props: AppProps, { useState, useEffect, useContext, useCallback, useMemo }) => {
 	const [visibility, setVisibility] = useState(visibilityStates);
@@ -196,6 +203,23 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 		};
 	});
 
+	useEffect(() => {
+		const connection = updateLogIcon.selected.Connect(() => {
+			playSFX(UIEngagement.MajorEngagement);
+			setVisibility({ ...visibilityStates, updateLog: true });
+		});
+
+		const deselectedConnection = updateLogIcon.deselected.Connect(() => {
+			playSFX(UIEngagement.MajorEngagement);
+			setVisibility({ ...visibilityStates, updateLog: false });
+		});
+
+		return (): void => {
+			connection.Disconnect();
+			deselectedConnection.Disconnect();
+		};
+	});
+
 	/**
 	 * Determines if any menu is visible.
 	 *
@@ -279,6 +303,8 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 				<RankUpgrade />,
 				<DatastoreEvents />,
 			);
+		} else if (isVisible("updateLog")) {
+			components.push(<UpdateLog />);
 		} else if (isVisible("worldPrestige")) {
 			components.push(
 				<WorldPrestige

@@ -16,6 +16,7 @@ return {
 			["teal button"] = "rbxassetid://10705288749",
 		},
 		decals = {
+			UpdateLog = "rbxassetid://14070307985",
 			boosts = {
 				luck = "rbxassetid://11676506054",
 			},

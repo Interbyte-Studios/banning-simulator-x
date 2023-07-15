@@ -20,6 +20,7 @@ declare namespace assetIds {
 			"purple button": string;
 		};
 		decals: {
+			UpdateLog: string;
 			pets: {
 				"Void Desert Scorpilord": string;
 				"Void Balloon Dragon": string;
