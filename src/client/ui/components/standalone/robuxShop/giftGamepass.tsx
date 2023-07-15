@@ -171,15 +171,6 @@ export const GiftGamepass = hooks(
 							stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
 						/>
 					</SpringImageButton>
-					<ExitButton
-						Position={UDim2.fromScale(0.975, 0.025)}
-						minimizedSize={0.095}
-						maximizedSize={0.11}
-						onClosed={(): void => {
-							playSFX(UIEngagement.MinorEngagement);
-							setPlayerToGift(undefined);
-						}}
-					/>
 				</ImageLabel>
 			);
 		} else {
