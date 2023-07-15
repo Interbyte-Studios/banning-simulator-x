@@ -8,8 +8,6 @@ import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
-import { OpenShop } from "./openShop";
-
 interface CoinsCurrencyProps extends CoinsCurrencyMappedProps {
 	onlyShowCurrencyEnabled: boolean;
 }
@@ -40,9 +38,6 @@ export const CoinsCurrency = RoactRodux.connect(mapStateToProps)(
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={4.8} />
-				{!props.onlyShowCurrencyEnabled && (
-					<OpenShop minimizedSize={0.8} maximizedSize={0.9} position={UDim2.fromScale(0.95, 0.5)} />
-				)}
 				<CurrencyIcon
 					position={UDim2.fromScale(0.075, 0.5)}
 					size={{ minimizedSize: 0.9, maximizedSize: 1.05 }}

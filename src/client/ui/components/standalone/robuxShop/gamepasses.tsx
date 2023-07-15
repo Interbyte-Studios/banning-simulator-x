@@ -15,6 +15,10 @@ import { GAMEPASS_DESCRIPTIONS, GAMEPASS_ORDER, GAMEPASSES } from "shared/config
 import { StoreState } from "shared/rodux";
 import { GamepassesState } from "shared/rodux/gamepasses";
 
+interface GamepassProps extends GamepassesMappedProps {
+	giftGamepass: (gamepassName: keyof typeof GAMEPASSES) => void;
+}
+
 interface GamepassesMappedProps {
 	gamepasses: GamepassesState;
 }
@@ -42,7 +46,7 @@ const mapStateToProps = (state: StoreState): GamepassesMappedProps => {
  */
 const Gamepass = hooks(
 	(
-		props: { gamepassName: keyof typeof GAMEPASSES; devProductId: number; isOwned: boolean },
+		props: { gamepassName: keyof typeof GAMEPASSES; devProductId: number; isOwned: boolean; giftGamepass: () => void },
 		{ useState, useEffect },
 	) => {
 		const [itemPrice, setItemPrice] = useState(0);
@@ -98,7 +102,7 @@ const Gamepass = hooks(
 				<StrokeTextLabel
 					native={{
 						Text: `R$${itemPrice}`,
-						Position: UDim2.fromScale(0.885, 0.37),
+						Position: UDim2.fromScale(0.885, 0.34),
 						Size: UDim2.fromScale(0.175, 0.2),
 						TextColor3: Color3.fromRGB(134, 252, 122),
 					}}
@@ -106,8 +110,8 @@ const Gamepass = hooks(
 				/>
 
 				<SpringImageButton
-					native={{ Position: UDim2.fromScale(0.885, 0.615), Image: assetIds.images.ui.index.Claim }}
-					size={{ minSize: 0.225, maxSize: 0.275 }}
+					native={{ Position: UDim2.fromScale(0.885, 0.565), Image: assetIds.images.ui.index.Claim }}
+					size={{ minSize: 0.2, maxSize: 0.25 }}
 					events={{
 						/**
 						 * Activated when the button is clicked.
@@ -132,6 +136,30 @@ const Gamepass = hooks(
 						stroke={{ native: { Thickness: 2.5, Color: uiClaimButtonStrokeColor } }}
 					/>
 				</SpringImageButton>
+
+				<SpringImageButton
+					native={{ Position: UDim2.fromScale(0.885, 0.85), Image: assetIds.images.ui.index.Claim }}
+					size={{ minSize: 0.2, maxSize: 0.25 }}
+					events={{
+						/**
+						 * Activated when the button is clicked.
+						 */
+						Activated: (): void => {
+							playSFX(UIEngagement.MajorEngagement);
+							props.giftGamepass();
+						},
+					}}
+				>
+					<uiaspectratioconstraint AspectRatio={2} />
+
+					<StrokeTextLabel
+						native={{
+							Text: "Gift",
+							Size: UDim2.fromScale(0.735, 0.735),
+						}}
+						stroke={{ native: { Thickness: 2.5, Color: uiClaimButtonStrokeColor } }}
+					/>
+				</SpringImageButton>
 			</BaseFrame>
 		);
 	},
@@ -144,7 +172,7 @@ const Gamepass = hooks(
  * @param props.gamepasses The gamepasses state.
  * @returns A Roact element of the Gamepasses.
  */
-export const Gamepasses = RoactRodux.connect(mapStateToProps)((props: GamepassesMappedProps) => {
+export const Gamepasses = RoactRodux.connect(mapStateToProps)((props: GamepassProps) => {
 	return (
 		<>
 			<StrokeTextLabel
@@ -168,6 +196,7 @@ export const Gamepasses = RoactRodux.connect(mapStateToProps)((props: Gamepasses
 							gamepassName={gamepassName}
 							devProductId={devProductId}
 							isOwned={props.gamepasses[gamepassName]}
+							giftGamepass={(): void => props.giftGamepass(gamepassName)}
 						/>
 					);
 				})}

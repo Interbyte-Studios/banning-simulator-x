@@ -9,6 +9,7 @@ import { defaultDevProductState } from "shared/rodux/devProducts";
 import { defaultEggs } from "shared/rodux/eggs";
 import { defaultExperienceState } from "shared/rodux/experience";
 import { defaultGamepasses } from "shared/rodux/gamepasses";
+import { defaultGamepassGifts } from "shared/rodux/gamepassGifts";
 import { defaultInvitedFriendState } from "shared/rodux/invitedFriend";
 import { defaultMediaState } from "shared/rodux/media";
 import { deserializePetMastery, SerializedPetMasteryState, serializePetMastery } from "shared/rodux/petMastery";
@@ -81,6 +82,7 @@ export const profileTemplate: ProfileState = {
 	eggs: defaultEggs,
 	experience: defaultExperienceState,
 	gamepasses: defaultGamepasses,
+	gamepassGifts: defaultGamepassGifts,
 	index: {
 		...defaultPlayerIndexState,
 		clubRewards: {

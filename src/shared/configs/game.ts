@@ -10,12 +10,28 @@ export const BANS_LEADERBOARD_ODS = `${STORE_SCOPE}_BANS_ODS_1`;
 export const EGGS_LEADERBOARD_ODS = `${STORE_SCOPE}_EGGS_ODS_1`;
 export const LEADERBOARD_UPDATE_INTERVAL = 60;
 
-export const GAME_VERSION = "1.0.0";
+export const GAME_VERSION = "1.2.0";
 
 export const MAX_TRADE_OFFER_SIZE = 10;
 export const MAX_TRADE_LOGS = 25;
 
-export type Gamepasses = keyof typeof GAMEPASSES;
+export const isGamepass = t.literal(
+	"x2 Luck",
+	"Fast Hatch",
+	"Triple Hatch",
+	"x2 Currency",
+	"x2 Experience",
+	"Better Fusion",
+	"VIP",
+	"+800 Inventory",
+	"+450 Inventory",
+	"+250 Inventory",
+	"+2 Pets Equipped",
+	"+3 Pets Equipped",
+	"Teleportation",
+	"Auto Fight",
+);
+export type Gamepasses = t.static<typeof isGamepass>;
 export const GAMEPASSES = {
 	//["Auto Hatch"]: 27753255,
 	["x2 Luck"]: 27753234, // Implemented
@@ -66,6 +82,23 @@ export const GAMEPASS_DESCRIPTIONS = {
 	["+450 Inventory"]: "Get 450 extra pet inventory space!", // Implemented
 	["+250 Inventory"]: "Get 250 extra pet inventory space!", // Implemented
 	Teleportation: "Teleport to any zone that you own!", // Implemented
+};
+
+export const GAMEPASS_GIFTS = {
+	["x2 Luck"]: 1580200704, // Implemented
+	["Fast Hatch"]: 1580200893, // Implemented
+	["Triple Hatch"]: 1580201093, // Implemented
+	["x2 Currency"]: 1580201344, // Implemented
+	["x2 Experience"]: 1580203585, // Implemented
+	["Better Fusion"]: 1580203394,
+	VIP: 1580201651, // Implemented
+	["+800 Inventory"]: 1580203192, // Implemented
+	["+450 Inventory"]: 1580202063, // Implemented
+	["+250 Inventory"]: 1580202273, // Implemented
+	["+2 Pets Equipped"]: 1580202541, // Implemented
+	["+3 Pets Equipped"]: 1580202723, // Implemented
+	Teleportation: 1580202907, // Implemented
+	["Auto Fight"]: 1580203795, // Implemented
 };
 
 export const isBoost = t.literal("x2 Currency", "x2 Hatching Luck", "x2 Pet Experience", "x2 Rank Experience");
