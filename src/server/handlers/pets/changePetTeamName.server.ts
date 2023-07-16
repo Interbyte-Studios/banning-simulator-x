@@ -3,11 +3,19 @@ import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
 import { updateTeamName } from "shared/rodux/petTeams";
 
+const MAX_TEAM_LENGTH = 50;
+
 remotes.Server.GetNamespace("pets")
-	.Create("changePetTeamName")
+	.Get("changePetTeamName")
 	.Connect(
 		withPlayerStore((player, store, teamId, newName) => {
 			const currentState = store.getState();
+
+			// ensure team name is serializable
+			const nameLength = utf8.len(newName)[0];
+			if (!(typeIs(nameLength, "number") && nameLength < MAX_TEAM_LENGTH)) {
+				return;
+			}
 
 			// find the team they're modifying
 			const storedTeam = currentState.petTeams.teams.find((team) => team.id === teamId);

@@ -6,11 +6,11 @@ import { remotes } from "shared/remotes";
 import { admin_modifyTalismanLevel } from "shared/rodux/talismans";
 
 remotes.Server.GetNamespace("admin")
-	.Create("admin_ModifyTalismanLevel")
+	.Get("admin_ModifyTalismanLevel")
 	.Connect(
 		withPlayerStore((adminPlayer, store, targetPlayerId, talismanData) => {
 			const groupRank = store.getState().index.groupRank;
-			if (groupRank === undefined || groupRank < MODERATOR_RANK) {
+			if (groupRank < MODERATOR_RANK) {
 				return;
 			}
 

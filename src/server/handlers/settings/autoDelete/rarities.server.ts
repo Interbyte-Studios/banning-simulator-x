@@ -4,5 +4,5 @@ import { toggleRarityDelete } from "shared/rodux/settings";
 
 remotes.Server.GetNamespace("settings")
 	.GetNamespace("autoDelete")
-	.Create("toggleAutoDelete")
+	.Get("toggleAutoDelete")
 	.Connect(withPlayerStore((_, store, rarity) => store.dispatch(toggleRarityDelete(rarity))));

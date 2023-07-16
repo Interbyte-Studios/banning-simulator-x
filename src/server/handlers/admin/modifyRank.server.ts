@@ -7,11 +7,11 @@ import { remotes } from "shared/remotes";
 import { unlockRank } from "shared/rodux/rank";
 
 remotes.Server.GetNamespace("admin")
-	.Create("admin_ModifyRank")
+	.Get("admin_ModifyRank")
 	.Connect(
 		withPlayerStore((adminPlayer, store, targetPlayerId, targetRank) => {
 			const groupRank = store.getState().index.groupRank;
-			if (groupRank === undefined || groupRank < MODERATOR_RANK) {
+			if (groupRank < MODERATOR_RANK) {
 				return;
 			}
 

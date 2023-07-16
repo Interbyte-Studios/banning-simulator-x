@@ -3,9 +3,7 @@ import { remotes } from "shared/remotes";
 import { toggleWalkSpeed } from "shared/rodux/settings";
 import { getTalismanData } from "shared/util/getTalismanData";
 
-const toggleWalkSpeedRemote = remotes.Server.GetNamespace("settings")
-	.GetNamespace("gameplay")
-	.Create("toggleWalkSpeed");
+const toggleWalkSpeedRemote = remotes.Server.GetNamespace("settings").GetNamespace("gameplay").Get("toggleWalkSpeed");
 toggleWalkSpeedRemote.Connect(
 	withPlayerStore((_, store, walkSpeed) => {
 		if (walkSpeed < 24) {

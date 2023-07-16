@@ -3,7 +3,7 @@ import { RANKS } from "shared/configs/ranks";
 import { remotes } from "shared/remotes";
 import { unlockRank } from "shared/rodux/rank";
 
-remotes.Server.Create("unlockRank").Connect(
+remotes.Server.Get("unlockRank").Connect(
 	withPlayerStore((_, store) => {
 		const currentRank = store.getState().rank;
 		const nextRank = currentRank + 1;

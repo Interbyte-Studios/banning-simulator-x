@@ -4,7 +4,7 @@ import { unequipTalisman } from "shared/rodux/currentTalisman";
 import { toggleWalkSpeed } from "shared/rodux/settings";
 
 remotes.Server.GetNamespace("talismans")
-	.Create("unequipTalisman")
+	.Get("unequipTalisman")
 	.Connect(
 		withPlayerStore((_, store) => {
 			store.dispatch(toggleWalkSpeed(24));

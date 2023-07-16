@@ -4,7 +4,7 @@ import { togglePetsDisplayed } from "shared/rodux/settings";
 
 const togglePetsDisplayedRemote = remotes.Server.GetNamespace("settings")
 	.GetNamespace("visual")
-	.Create("togglePetsDisplayed");
+	.Get("togglePetsDisplayed");
 togglePetsDisplayedRemote.Connect(
 	withPlayerStore((_, store, displayed) => store.dispatch(togglePetsDisplayed(displayed))),
 );

@@ -4,7 +4,7 @@ import { equipPets } from "shared/rodux/pets";
 import { getMaxPetEquip } from "shared/util/getMaxPetEquip";
 
 remotes.Server.GetNamespace("pets")
-	.Create("equipPets")
+	.Get("equipPets")
 	.Connect(
 		withPlayerStore((player, store, pets, unequipAll) => {
 			const currentState = store.getState();

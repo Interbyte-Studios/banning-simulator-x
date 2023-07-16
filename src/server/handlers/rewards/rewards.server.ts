@@ -14,7 +14,7 @@ rewardRemotes.Get("claimClubReward").SetCallback(
 		const now = DateTime.now();
 
 		const currentState = store.getState();
-		if (currentState.index.groupRank === undefined) {
+		if (currentState.index.groupRank === 0) {
 			return {
 				success: false,
 			};
@@ -64,7 +64,7 @@ rewardRemotes.Get("claimGroupReward").SetCallback(
 		const now = DateTime.now();
 
 		const currentState = store.getState();
-		if (currentState.index.groupRank === undefined) {
+		if (currentState.index.groupRank === 0) {
 			return {
 				success: false,
 			};

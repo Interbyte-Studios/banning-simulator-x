@@ -52,6 +52,8 @@ export interface FusedPet extends FusablePet {
 }
 
 export const isValidFusableVariant = t.literal("void", "radiant");
+export type FusableVariant = t.static<typeof isValidFusableVariant>;
+
 export type FusablePet = Omit<
 	Modify<
 		PetData,
