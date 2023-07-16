@@ -3,9 +3,10 @@ import ProfileService from "@rbxts/profileservice";
 import { Players, RunService } from "@rbxts/services";
 import { STORE_SCOPE } from "shared/configs/game";
 
+import { deserialize } from "../shared/datastore/serde";
 import { getServerDataVersion, hasExpectedDataVersion, runMigrations } from "./modules/datastore/migrations";
+import { profileTemplate } from "./modules/datastore/profile";
 import { deleteProfile, getProfile, savePlayerData, setProfile } from "./modules/datastore/savePlayerData";
-import { deserialize, profileTemplate } from "./modules/datastore/serde";
 import { createPlayerStore, removeStore } from "./playerStore";
 
 /**

@@ -1,4 +1,5 @@
 import Net from "@rbxts/net";
-import { StoreState } from "shared/rodux";
+import { ProfileState } from "server/modules/datastore/profile";
 
-export const storeStateCreatedDefinition = Net.Definitions.ServerToClientEvent<[player: Player, store: StoreState]>();
+export const storeStateCreatedDefinition =
+	Net.Definitions.ServerToClientEvent<[player: Player, serializedState: ProfileState]>();

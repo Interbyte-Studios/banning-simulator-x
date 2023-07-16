@@ -4,7 +4,8 @@ import { Profile } from "@rbxts/profileservice/globals";
 import { HttpService } from "@rbxts/services";
 import { retrieveStore } from "server/playerStore";
 
-import { deserialize, ProfileState, serialize } from "./serde";
+import { deserialize, serialize } from "../../../shared/datastore/serde";
+import { ProfileState } from "./profile";
 
 const profiles: Map<Player, Profile<ProfileState>> = new Map();
 
