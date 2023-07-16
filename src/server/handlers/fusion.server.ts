@@ -77,6 +77,13 @@ remotes.Server.Get("requestFusion").SetCallback(
 			? RARITIES[petData.rarity].betterMaxFusions
 			: RARITIES[petData.rarity].maxFusions;
 
+		if (petData.rarity === "Prismatic" || petData.rarity === "Primordial") {
+			return {
+				success: false,
+				reason: FusionFailKind.InternalError,
+			};
+		}
+
 		// check that player has enough money
 		const eggName = getEggNameFromPetId(petId);
 		const eggData = getEggData(eggName);
