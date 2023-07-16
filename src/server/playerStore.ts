@@ -4,6 +4,7 @@ import { remotes } from "shared/remotes";
 import { Store, StoreActions, storeReducer, StoreState } from "shared/rodux";
 import { getOrSetDefault } from "shared/util/getOrSetDefault";
 
+import { serialize } from "../shared/datastore/serde";
 import { replicationMiddleware } from "./modules/rodux/middlewares/replicationMiddleware";
 
 /**
@@ -35,7 +36,7 @@ type DeepPartial<T> = { [K in keyof T]?: DeepPartial<T[K]> };
  */
 export function createPlayerStore(player: Player, initialState: DeepPartial<StoreState>): void {
 	const store = new Rodux.Store(storeReducer, initialState, [replicationMiddleware(player)]);
-	remotes.Server.GetNamespace("rodux").Get("storeStateCreated").SendToAllPlayers(player, store.getState());
+	remotes.Server.GetNamespace("rodux").Get("storeStateCreated").SendToAllPlayers(player, serialize(store.getState()));
 	playerStores.set(player, store);
 
 	// call creation callbacks
@@ -142,7 +143,5 @@ remotes.Server.GetNamespace("rodux")
 			return undefined;
 		}
 
-		return {
-			state: store.getState(),
-		};
+		return serialize(store.getState());
 	});

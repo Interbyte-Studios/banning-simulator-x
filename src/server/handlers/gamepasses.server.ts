@@ -1,8 +1,28 @@
 import { MarketplaceService, Players } from "@rbxts/services";
-import { onStoreCreated } from "server/playerStore";
+import { withPlayerStore } from "server/modules/net/withPlayerStore";
+import { onStoreCreated, retrieveStore } from "server/playerStore";
 import { GAMEPASSES, GROUP_ID } from "shared/configs/game";
+import { remotes } from "shared/remotes";
 import { claimGamepass } from "shared/rodux/gamepasses";
+import { useGamepassGift } from "shared/rodux/gamepassGifts";
 import { setGroupRank } from "shared/rodux/playerIndex/groupRank";
+
+remotes.Server.Get("useGamepassGift").Connect(
+	withPlayerStore((player, store, gamepass, targetPlayer) => {
+		if (store.getState().gamepassGifts[gamepass] < 1) {
+			return;
+		}
+
+		const otherPlayerStore = retrieveStore(targetPlayer);
+		if (otherPlayerStore === undefined) {
+			return;
+		}
+
+		otherPlayerStore.dispatch(claimGamepass(gamepass));
+		store.dispatch(useGamepassGift(gamepass));
+		remotes.Server.Get("gamepassGiftReceived").SendToPlayer(targetPlayer, gamepass, player);
+	}),
+);
 
 Players.PlayerAdded.Connect(async (player) => {
 	const store = await onStoreCreated(player);

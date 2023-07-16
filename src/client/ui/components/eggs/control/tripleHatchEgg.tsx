@@ -6,7 +6,7 @@ import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/stro
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
-import { GAMEPASSES, RADIOACTIVE_EGG_THREEHATCHES } from "shared/configs/game";
+import { GAMEPASSES } from "shared/configs/game";
 import { Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
 import { GamepassesState } from "shared/rodux/gamepasses";
@@ -48,11 +48,6 @@ export const TripleHatchEggButton = RoactRodux.connect(mapStateToProps)((props: 
 				// eslint-disable-next-line jsdoc/require-jsdoc
 				Activated: async (): Promise<void> => {
 					playSFX(UIEngagement.MajorEngagement);
-
-					if (props.eggName === "Radioactive") {
-						MarketplaceService.PromptProductPurchase(Players.LocalPlayer, RADIOACTIVE_EGG_THREEHATCHES);
-						return;
-					}
 
 					if (!props.gamepassesState["Triple Hatch"]) {
 						MarketplaceService.PromptProductPurchase(Players.LocalPlayer, GAMEPASSES["Triple Hatch"]);

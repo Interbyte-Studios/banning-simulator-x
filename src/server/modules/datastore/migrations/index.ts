@@ -1,9 +1,8 @@
 import { deepCopy } from "@rbxts/object-utils";
 import { t } from "@rbxts/t";
 
-import { ProfileState } from "../serde";
+import { ProfileState } from "../profile";
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const migrations =
 	script
 		.GetChildren()

@@ -6,11 +6,11 @@ import { remotes } from "shared/remotes";
 import { awardCurrency } from "shared/rodux/currencies";
 
 remotes.Server.GetNamespace("admin")
-	.Create("admin_ModifyCurrency")
+	.Get("admin_ModifyCurrency")
 	.Connect(
 		withPlayerStore((adminPlayer, store, targetPlayerId, currency, amount) => {
 			const groupRank = store.getState().index.groupRank;
-			if (groupRank === undefined || groupRank < ADMIN_RANK) {
+			if (groupRank < ADMIN_RANK) {
 				return;
 			}
 

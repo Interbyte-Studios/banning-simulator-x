@@ -6,11 +6,11 @@ import { remotes } from "shared/remotes";
 import { admin_ModifyWeaponLevel } from "shared/rodux/weapons";
 
 remotes.Server.GetNamespace("admin")
-	.Create("admin_ModifyWeaponLevel")
+	.Get("admin_ModifyWeaponLevel")
 	.Connect(
 		withPlayerStore((adminPlayer, store, targetPlayerId, weaponData) => {
 			const groupRank = store.getState().index.groupRank;
-			if (groupRank === undefined || groupRank < MODERATOR_RANK) {
+			if (groupRank < MODERATOR_RANK) {
 				return;
 			}
 

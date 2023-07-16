@@ -20,6 +20,7 @@ declare namespace assetIds {
 			"purple button": string;
 		};
 		decals: {
+			UpdateLog: string;
 			pets: {
 				"Void Desert Scorpilord": string;
 				"Void Balloon Dragon": string;
@@ -472,6 +473,7 @@ declare namespace assetIds {
 				Candy: string;
 				Molten: string;
 				Royal: string;
+				"Angelic Egg": string;
 			};
 		};
 		vectors: {

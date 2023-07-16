@@ -23,6 +23,17 @@ declare global {
 				playerTag: BillboardGui & {
 					hold: Frame & {
 						UIListLayout: UIListLayout;
+						badges: Frame & {
+							bans: ImageLabel & {
+								amount: TextLabel;
+							};
+							eggs: ImageLabel & {
+								amount: TextLabel;
+							};
+							prestige: ImageLabel & {
+								amount: TextLabel;
+							};
+						};
 						name: TextLabel & {
 							UIStroke: UIStroke;
 							rank: ImageLabel & {
@@ -36,6 +47,9 @@ declare global {
 							UIStroke: UIStroke;
 						};
 					};
+				};
+				damagecounter: BillboardGui & {
+					template: TextLabel;
 				};
 				enemyTag: BillboardGui & {
 					hold: Frame & {
@@ -62,6 +76,10 @@ declare global {
 				};
 			};
 			emitters: Folder & {
+				icons: Folder & {
+					coins: BasePart;
+					experience: BasePart;
+				};
 				"hatching emitters": Folder & {
 					flare: Part & {
 						attachment: Attachment & {

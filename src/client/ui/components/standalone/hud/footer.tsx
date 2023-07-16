@@ -12,6 +12,7 @@ interface HUDFooterProps {
 	displayCodes: () => void;
 	displaySettings: () => void;
 	displayShop: () => void;
+	displaySpinWheel: () => void;
 }
 
 export const HUDFooter = hooks((props: HUDFooterProps) => {
@@ -21,11 +22,11 @@ export const HUDFooter = hooks((props: HUDFooterProps) => {
 			Size={UDim2.fromScale(0.9, 0.15)}
 			Position={UDim2.fromScale(0.03, 0.84)}
 		>
-			<uilistlayout
-				Padding={new UDim(0.05, 0)}
-				FillDirection={Enum.FillDirection.Horizontal}
+			<uigridlayout
+				CellPadding={UDim2.fromScale(0, 0.2)}
+				CellSize={UDim2.fromScale(0.24, 0.95)}
+				FillDirectionMaxCells={4}
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
-				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>
 			<TradingIcon displayTrading={props.displayTradingMenu} />
 			<CodesIcon displayIcon={props.displayCodes} />

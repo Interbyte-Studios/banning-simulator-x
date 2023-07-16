@@ -1,8 +1,11 @@
 import Net from "@rbxts/net";
-import { BOOST_PRODUCTS } from "shared/configs/game";
+import { createTypeChecker } from "@rbxts/net/out/middleware";
+import { BoostProduct, isBoost } from "shared/configs/game";
 import { ValidBoostTime } from "shared/rodux/boosts";
 
+import { validBoostTime } from "../rodux/boosts";
+
 export const useBoostDefinition = Net.Definitions.ClientToServerEvent<
-	[boostName: keyof typeof BOOST_PRODUCTS, boostTime: ValidBoostTime]
->([]);
+	[boostName: BoostProduct, boostTime: ValidBoostTime]
+>([createTypeChecker(isBoost, validBoostTime)]);
 export type UseBoostDefinition = typeof useBoostDefinition;

@@ -4,6 +4,7 @@ import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { TalismanGradient } from "client/ui/elements/gradients/talismanGradient";
+import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { TalismanViewport } from "client/ui/elements/viewports/talismanViewport";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -14,11 +15,25 @@ import { getTalismanData } from "shared/util/getTalismanData";
  * An item frame for a specified talisman.
  */
 export const TalismanItemFrame = hooks(
-	(props: { storedTalisman: Talisman; isEquipped: boolean; displayTalismanInfo: (talismanId: number) => void }) => {
+	(props: {
+		storedTalisman: Talisman;
+		isEquipped: boolean;
+		displayTalismanInfo: (talismanId: number) => void;
+		requiredRank: number | undefined;
+	}) => {
 		const talismanData = getTalismanData(props.storedTalisman.id);
 
 		const additionalElements: Array<Roact.Element> = [];
-		if (props.storedTalisman.phase !== "normal") {
+		if (props.requiredRank !== undefined) {
+			const requiredRankElement = (
+				<RankIcon
+					position={UDim2.fromScale(0.5, 0.95)}
+					size={{ minimizedSize: 0.25, maximizedSize: 0.35 }}
+					rank={props.requiredRank}
+				/>
+			);
+			additionalElements.push(requiredRankElement);
+		} else if (props.storedTalisman.phase !== "normal") {
 			const capitalizedPhaseName =
 				props.storedTalisman.phase === "artifact"
 					? "Artifact"

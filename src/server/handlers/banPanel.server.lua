@@ -18,6 +18,11 @@ if RunService:IsStudio() then
 	return
 end
 
+if game.PlaceId ~= 8617208257 then
+	print("Place ID is: ", tostring(game.PlaceId))
+	return
+end
+
 local ActiveBanList = {}
 
 local function GetUsersArray()

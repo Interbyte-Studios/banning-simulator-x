@@ -10,7 +10,6 @@ import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { hooks } from "client/ui/hooks";
-import { remoteContext } from "client/ui/mocks/remoteContext";
 import { getPetImage } from "client/util/getPetImage";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
@@ -26,6 +25,7 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 interface PrestigeCardProps extends PrestigeCardMappedProps {
 	worldName: WorldName;
 	prestigeNumber: number;
+	displayVerification: () => void;
 }
 
 interface PrestigeCardMappedProps {
@@ -52,7 +52,6 @@ const mapStateToProps = (state: StoreState): PrestigeCardMappedProps => {
 export const PrestigeCard = RoactRodux.connect(mapStateToProps)(
 	hooks((props: PrestigeCardProps, { useState, useEffect, useContext }) => {
 		const [maxCurrencyProgress, setMaxProgress] = useState(1);
-		const { claimPrestige } = useContext(remoteContext);
 		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 		useEffect(() => {
@@ -131,6 +130,10 @@ export const PrestigeCard = RoactRodux.connect(mapStateToProps)(
 			props.prestigeNumber === 51 && props.worldPrestige[props.worldName].currentPrestige >= 51
 				? props.worldPrestige[props.worldName].currentPrestige + 1
 				: props.prestigeNumber;
+
+		if (truePrestige < props.worldPrestige[props.worldName].currentPrestige) {
+			return <></>;
+		}
 
 		const worldData = WORLDS[props.worldName];
 		let currencyProgress = props.currencies[worldData.reward] / maxCurrencyProgress;
@@ -245,7 +248,7 @@ export const PrestigeCard = RoactRodux.connect(mapStateToProps)(
 									return;
 								}
 
-								claimPrestige.SendToServer(props.worldName);
+								props.displayVerification();
 							},
 							/* eslint-enable jsdoc/require-jsdoc */
 						}}

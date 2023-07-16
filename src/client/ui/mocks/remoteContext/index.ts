@@ -5,6 +5,7 @@ import { adminRemoteContext } from "./remoteDefinitions/admin";
 import { boostsRemoteContext } from "./remoteDefinitions/boosts";
 import { eggsRemoteContext } from "./remoteDefinitions/eggs";
 import { fusionRemoteContext } from "./remoteDefinitions/fusion";
+import { gamepassEremoteContext } from "./remoteDefinitions/gamepasses";
 import { mediaRemoteContext } from "./remoteDefinitions/media";
 import { petMasteryRemoteContext } from "./remoteDefinitions/petMastery";
 import { petsRemoteContext } from "./remoteDefinitions/pets";
@@ -45,6 +46,7 @@ export const fakeRemoteContext = {
 	...tradingRemoteContext,
 	...boostsRemoteContext,
 	...worldPrestigeRemoteContext,
+	...gamepassEremoteContext,
 };
 
 export const remoteContext = createContext(fakeRemoteContext);

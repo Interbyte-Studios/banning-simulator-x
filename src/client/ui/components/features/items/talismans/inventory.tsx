@@ -8,7 +8,9 @@ import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScro
 import { hooks } from "client/ui/hooks";
 import { StoreState } from "shared/rodux";
 import { CurrentTalismanState } from "shared/rodux/currentTalisman";
+import { RankState } from "shared/rodux/rank";
 import { TalismansState } from "shared/rodux/talismans";
+import { getTalismanData } from "shared/util/getTalismanData";
 
 import { TalismanItemFrame } from "./talismanFrame";
 import { TalismanInfoDisplay } from "./talismanInfoDisplay";
@@ -16,6 +18,7 @@ import { TalismanInfoDisplay } from "./talismanInfoDisplay";
 interface TalismanItemsMappedProps {
 	talismans: TalismansState;
 	currentTalisman: CurrentTalismanState;
+	rank: RankState;
 }
 
 /**
@@ -26,6 +29,7 @@ function mapStateToProps(state: StoreState): TalismanItemsMappedProps {
 	return {
 		talismans: state.talismans,
 		currentTalisman: state.currentTalisman,
+		rank: state.rank,
 	};
 }
 
@@ -84,7 +88,8 @@ export const TalismanItems = RoactRodux.connect(mapStateToProps)(
 						BackgroundTransparency={1}
 						Size={UDim2.fromScale(1, 1)}
 						Position={UDim2.fromScale(0.5, 0.5)}
-						ScrollBarThickness={0}
+						ScrollBarThickness={12}
+				BorderSizePixel={0}
 					>
 						<uigridlayout
 							CellPadding={UDim2.fromOffset(6, 6)}
@@ -94,11 +99,14 @@ export const TalismanItems = RoactRodux.connect(mapStateToProps)(
 							Ref={uiGridLayoutRef.value}
 						/>
 						{props.talismans.map((talisman) => {
+							const talismanData = getTalismanData(talisman.id);
+
 							return (
 								<TalismanItemFrame
 									storedTalisman={talisman}
 									isEquipped={props.currentTalisman === talisman.id}
 									displayTalismanInfo={(talismanId: number): void => displayTalismanInfo(talismanId)}
+									requiredRank={props.rank >= talismanData.cost.rank ? undefined : talismanData.cost.rank}
 								/>
 							);
 						})}

@@ -1,6 +1,7 @@
 import Roact from "@rbxts/roact";
-import { MarketplaceService, Players, RunService } from "@rbxts/services";
+import { MarketplaceService, Players, PolicyService, RunService } from "@rbxts/services";
 import { uiClaimButtonStrokeColor, uiDarkStrokeColor, uiTextStrokeColor, vec2Middle } from "client/ui/commonValues";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
@@ -26,8 +27,11 @@ let lastTimerCheck = 0;
  *  @returns A Roact element displaying an exclusive pet.
  */
 const ExclusivePet = hooks(
-	(props: { position: UDim2; petId: number; devProductId: number }, { useState, useEffect }) => {
+	(props: { position: UDim2; petId: number; devProductId: number }, { useState, useEffect, useContext }) => {
+		const [canBuy, setCanBuy] = useState(true);
 		const [itemCost, setItemCost] = useState(0);
+
+		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 		const petData = getPetData(props.petId);
 		const petDecal = getPetImage(props.petId, "regular");
@@ -40,6 +44,19 @@ const ExclusivePet = hooks(
 				}
 			});
 		}, []);
+
+		useEffect(() => {
+			if (!canBuy) {
+				return;
+			}
+
+			task.spawn(() => {
+				const playerRestrictions = PolicyService.GetPolicyInfoForPlayerAsync(Players.LocalPlayer);
+				if (playerRestrictions.ArePaidRandomItemsRestricted) {
+					setCanBuy(false);
+				}
+			});
+		});
 
 		return (
 			<BaseFrame
@@ -102,6 +119,12 @@ const ExclusivePet = hooks(
 						 */
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
+
+							if (!canBuy) {
+								addAnnouncement(`Your region does not allow you to purchase that!`, AnnouncementType.Error);
+								return;
+							}
+
 							MarketplaceService.PromptProductPurchase(Players.LocalPlayer, props.devProductId);
 						},
 					}}
@@ -125,11 +148,14 @@ const ExclusivePet = hooks(
  *
  * @returns A Roact element displaying the limiteds.
  */
-export const Limiteds = hooks((_, { useState, useEffect }) => {
+export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
+	const [canBuy, setCanBuy] = useState(true);
 	const [timer, setTimer] = useState(0);
 
+	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
+
 	useEffect(() => {
-		const newLimiteds = DateTime.fromUniversalTime(2023, 7, 14, 12).UnixTimestamp;
+		const newLimiteds = DateTime.fromUniversalTime(2023, 7, 23, 12).UnixTimestamp;
 		const connection = RunService.Heartbeat.Connect(() => {
 			const timeCheck = time();
 			if (timeCheck - lastTimerCheck < 1) {
@@ -143,6 +169,19 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 
 		return (): void => connection.Disconnect();
 	}, [timer]);
+
+	useEffect(() => {
+		if (!canBuy) {
+			return;
+		}
+
+		task.spawn(() => {
+			const playerRestrictions = PolicyService.GetPolicyInfoForPlayerAsync(Players.LocalPlayer);
+			if (playerRestrictions.ArePaidRandomItemsRestricted) {
+				setCanBuy(false);
+			}
+		});
+	});
 
 	return (
 		<>
@@ -169,7 +208,7 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 						Position: UDim2.fromScale(0.5, 0.2),
 						Size: UDim2.fromScale(0.415, 0.394),
 						TextColor3: Color3.fromRGB(255, 71, 74),
-						Text: "Royal Egg!",
+						Text: "Divine Egg!",
 					}}
 					stroke={{ native: { Thickness: 2.5, Color: Color3.fromRGB(116, 32, 34) } }}
 				/>
@@ -178,7 +217,7 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 					native={{
 						Position: UDim2.fromScale(0.11, 0.5),
 						Size: UDim2.fromScale(1, 1),
-						Image: assetIds.images.decals.eggs.Royal,
+						Image: assetIds.images.decals.eggs["Angelic Egg"],
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
@@ -198,7 +237,7 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(15, 163, 255)}
-					Position={UDim2.fromScale(0.33, 0.685)}
+					Position={UDim2.fromScale(0.25, 0.685)}
 					Size={UDim2.fromScale(0.4, 0.4)}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
@@ -208,7 +247,7 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(44, "regular"),
+							Image: getPetImage(97, "regular"),
 						}}
 					/>
 
@@ -226,7 +265,7 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(15, 163, 255)}
-					Position={UDim2.fromScale(0.485, 0.685)}
+					Position={UDim2.fromScale(0.405, 0.685)}
 					Size={UDim2.fromScale(0.45, 0.45)}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
@@ -236,13 +275,13 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(45, "regular"),
+							Image: getPetImage(98, "regular"),
 						}}
 					/>
 
 					<StrokeTextLabel
 						native={{
-							Text: "23%",
+							Text: "20%",
 							Position: UDim2.fromScale(0.8, 0.96),
 							Size: UDim2.fromScale(0.646, 0.56),
 						}}
@@ -254,7 +293,7 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 					AnchorPoint={vec2Middle}
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(15, 163, 255)}
-					Position={UDim2.fromScale(0.65, 0.685)}
+					Position={UDim2.fromScale(0.575, 0.685)}
 					Size={UDim2.fromScale(0.5, 0.5)}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
@@ -264,13 +303,41 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(46, "regular"),
+							Image: getPetImage(99, "regular"),
 						}}
 					/>
 
 					<StrokeTextLabel
 						native={{
-							Text: "2%",
+							Text: "3.5%",
+							Position: UDim2.fromScale(0.8, 0.96),
+							Size: UDim2.fromScale(0.646, 0.56),
+						}}
+						stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
+					/>
+				</BaseFrame>
+
+				<BaseFrame
+					AnchorPoint={vec2Middle}
+					BackgroundTransparency={0}
+					BackgroundColor3={Color3.fromRGB(15, 163, 255)}
+					Position={UDim2.fromScale(0.75, 0.685)}
+					Size={UDim2.fromScale(0.5, 0.5)}
+				>
+					<uiaspectratioconstraint AspectRatio={1} />
+					<uicorner CornerRadius={new UDim(1, 0)} />
+					<BaseUIStroke native={{ Thickness: 5, Color: uiDarkStrokeColor }} />
+
+					<ImageLabel
+						native={{
+							Size: UDim2.fromScale(1, 1),
+							Image: getPetImage(100, "regular"),
+						}}
+					/>
+
+					<StrokeTextLabel
+						native={{
+							Text: "1.5%",
 							Position: UDim2.fromScale(0.8, 0.96),
 							Size: UDim2.fromScale(0.646, 0.56),
 						}}
@@ -299,6 +366,12 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 						 */
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
+
+							if (!canBuy) {
+								addAnnouncement(`Your region does not allow you to purchase that!`, AnnouncementType.Error);
+								return;
+							}
+
 							MarketplaceService.PromptProductPurchase(Players.LocalPlayer, LIMITED_EGG_DEVPRODUCT.OneEgg);
 						},
 					}}
@@ -333,6 +406,12 @@ export const Limiteds = hooks((_, { useState, useEffect }) => {
 						 */
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
+
+							if (!canBuy) {
+								addAnnouncement(`Your region does not allow you to purchase that!`, AnnouncementType.Error);
+								return;
+							}
+
 							MarketplaceService.PromptProductPurchase(Players.LocalPlayer, LIMITED_EGG_DEVPRODUCT.ThreeEggs);
 						},
 					}}

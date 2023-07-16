@@ -3,6 +3,7 @@ import { uiDarkStrokeColor } from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { WeaponViewport } from "client/ui/elements/viewports/weaponViewport";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -13,11 +14,25 @@ import { getWeaponInfo } from "shared/util/getWeaponInfo";
  * An item frame for a specified weapon.
  */
 export const WeaponItemFrame = hooks(
-	(props: { storedWeapon: Weapon; isEquipped: boolean; displayWeaponInfo: (weaponId: number) => void }) => {
+	(props: {
+		storedWeapon: Weapon;
+		isEquipped: boolean;
+		displayWeaponInfo: (weaponId: number) => void;
+		requiredRank: number | undefined;
+	}) => {
 		const weaponData = getWeaponInfo(props.storedWeapon.id);
 
 		const additionalElements: Array<Roact.Element> = [];
-		if (props.storedWeapon.level > 1) {
+		if (props.requiredRank !== undefined) {
+			const requiredRankElement = (
+				<RankIcon
+					position={UDim2.fromScale(0.5, 0.95)}
+					size={{ minimizedSize: 0.25, maximizedSize: 0.35 }}
+					rank={props.requiredRank}
+				/>
+			);
+			additionalElements.push(requiredRankElement);
+		} else if (props.storedWeapon.level > 1) {
 			const storedWeaponElement = (
 				<StrokeTextLabel
 					native={{

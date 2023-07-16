@@ -35,6 +35,48 @@ const isPlayerTag = t.intersection(
 			t.instanceIsA("Frame"),
 			t.children({
 				UIListLayout: t.instanceIsA("UIListLayout"),
+				badges: t.intersection(
+					t.instanceIsA("Frame"),
+					t.children({
+						UIListLayout: t.instanceIsA("UIListLayout"),
+						bans: t.intersection(
+							t.instanceIsA("ImageLabel"),
+							t.children({
+								UIAspectRatioConstraint: t.instanceIsA("UIAspectRatioConstraint"),
+								amount: t.intersection(
+									t.instanceIsA("TextLabel"),
+									t.children({
+										UIStroke: t.instanceIsA("UIStroke"),
+									}),
+								),
+							}),
+						),
+						eggs: t.intersection(
+							t.instanceIsA("ImageLabel"),
+							t.children({
+								UIAspectRatioConstraint: t.instanceIsA("UIAspectRatioConstraint"),
+								amount: t.intersection(
+									t.instanceIsA("TextLabel"),
+									t.children({
+										UIStroke: t.instanceIsA("UIStroke"),
+									}),
+								),
+							}),
+						),
+						prestige: t.intersection(
+							t.instanceIsA("ImageLabel"),
+							t.children({
+								UIAspectRatioConstraint: t.instanceIsA("UIAspectRatioConstraint"),
+								amount: t.intersection(
+									t.instanceIsA("TextLabel"),
+									t.children({
+										UIStroke: t.instanceIsA("UIStroke"),
+									}),
+								),
+							}),
+						),
+					}),
+				),
 				name: t.intersection(
 					t.instanceIsA("TextLabel"),
 					t.children({
@@ -69,9 +111,8 @@ const isPlayerTag = t.intersection(
  *
  * @param player The player.
  * @param store The player's store.
- * @returns The tag of the player.
  */
-function createPlayerTag(player: Player, store: Store): t.static<typeof isPlayerTag> | undefined {
+function createPlayerTag(player: Player, store: Store): void {
 	const playerTag = ReplicatedStorage.assetObjects.tags.playerTag;
 	assert(playerTag, `Failed to get player tag from rep storage`);
 
@@ -92,6 +133,53 @@ function createPlayerTag(player: Player, store: Store): t.static<typeof isPlayer
 	tag.hold.name.rank.Image = getRankIcon(storeState.rank);
 	tag.hold.title.Visible = storeState.title !== undefined;
 	tag.hold.staff.Visible = false;
+
+	if (storeState.worldPrestige["Ban Land"].currentPrestige > 0) {
+		tag.hold.badges.prestige.amount.Text = `P. ${storeState.worldPrestige["Ban Land"].currentPrestige}`;
+		tag.hold.badges.prestige.Visible = true;
+	}
+
+	const bansLeaderboard = ReplicatedStorage.leaderboards.bans.FindFirstChild(tostring(player.UserId));
+	if (bansLeaderboard !== undefined) {
+		const position = bansLeaderboard.GetAttribute("position") as number;
+		let title = "Top 100";
+		if (position !== undefined) {
+			if (position === 1) {
+				title = "Top 1";
+			} else if (position <= 3) {
+				title = "Top 3";
+			} else if (position <= 10) {
+				title = "Top 10";
+			} else if (position <= 25) {
+				title = "Top 25";
+			} else if (position <= 50) {
+				title = "Top 50";
+			}
+		}
+		tag.hold.badges.bans.amount.Text = title;
+		tag.hold.badges.bans.Visible = true;
+	}
+
+	const eggsLeaderboard = ReplicatedStorage.leaderboards.eggs.FindFirstChild(tostring(player.UserId));
+	if (eggsLeaderboard !== undefined) {
+		const position = eggsLeaderboard.GetAttribute("position") as number;
+		let title = "Top 100";
+		if (position !== undefined) {
+			if (position === 1) {
+				title = "Top 1";
+			} else if (position <= 3) {
+				title = "Top 3";
+			} else if (position <= 10) {
+				title = "Top 10";
+			} else if (position <= 25) {
+				title = "Top 25";
+			} else if (position <= 50) {
+				title = "Top 50";
+			}
+		}
+		tag.hold.badges.eggs.amount.Text = title;
+		tag.hold.badges.eggs.Visible = true;
+	}
 
 	if (storeState.title !== undefined) {
 		const titleData = TITLES.find((title) => title.name === storeState.title);
@@ -146,8 +234,6 @@ function createPlayerTag(player: Player, store: Store): t.static<typeof isPlayer
 		connection.Disconnect();
 		return;
 	});
-
-	return tag;
 }
 
 /**
@@ -185,15 +271,64 @@ function updatePlayerTag(player: Player, store: Store): void {
 		break;
 	}
 	if (tag === undefined) {
-		tag = createPlayerTag(player, store);
-		if (tag === undefined) {
-			warn(`Failed to find player tag for ${player.Name}`);
-			return;
-		}
+		createPlayerTag(player, store);
 	}
 	assert(isPlayerTag(tag), `Player tag for ${player.Name} was not a valid player tag.`);
 
 	tag.hold.name.rank.Image = getRankIcon(storeState.rank);
+
+	if (storeState.worldPrestige["Ban Land"].currentPrestige > 0) {
+		tag.hold.badges.prestige.amount.Text = `P. ${storeState.worldPrestige["Ban Land"].currentPrestige}`;
+		tag.hold.badges.prestige.Visible = true;
+	} else {
+		tag.hold.badges.prestige.Visible = false;
+	}
+
+	const bansLeaderboard = ReplicatedStorage.leaderboards.bans.FindFirstChild(tostring(player.UserId));
+	if (bansLeaderboard !== undefined) {
+		const position = bansLeaderboard.GetAttribute("position") as number;
+		let title = "Top 100";
+		if (position !== undefined) {
+			if (position === 1) {
+				title = "Top 1";
+			} else if (position <= 3) {
+				title = "Top 3";
+			} else if (position <= 10) {
+				title = "Top 10";
+			} else if (position <= 25) {
+				title = "Top 25";
+			} else if (position <= 50) {
+				title = "Top 50";
+			}
+		}
+		tag.hold.badges.bans.amount.Text = title;
+		tag.hold.badges.bans.Visible = true;
+	} else {
+		tag.hold.badges.bans.Visible = false;
+	}
+
+	const eggsLeaderboard = ReplicatedStorage.leaderboards.eggs.FindFirstChild(tostring(player.UserId));
+	if (eggsLeaderboard !== undefined) {
+		const position = eggsLeaderboard.GetAttribute("position") as number;
+		let title = "Top 100";
+		if (position !== undefined) {
+			if (position === 1) {
+				title = "Top 1";
+			} else if (position <= 3) {
+				title = "Top 3";
+			} else if (position <= 10) {
+				title = "Top 10";
+			} else if (position <= 25) {
+				title = "Top 25";
+			} else if (position <= 50) {
+				title = "Top 50";
+			}
+		}
+		tag.hold.badges.eggs.amount.Text = title;
+		tag.hold.badges.eggs.Visible = true;
+	} else {
+		tag.hold.badges.eggs.Visible = false;
+	}
 
 	if (storeState.title !== undefined && storeState.title !== tag.hold.title.Text) {
 		const titleData = TITLES.find((title) => title.name === storeState.title);
@@ -342,11 +477,21 @@ function onPlayerAdded(player: Player): void {
 			player.CharacterAdded.Connect(() => createPlayerTag(player, store));
 
 			store.changed.connect((newState, oldState) => {
-				if (newState.rank === oldState.rank && newState.title === oldState.title) {
-					return;
+				if (newState.rank !== oldState.rank) {
+					updatePlayerTag(player, store);
 				}
 
-				updatePlayerTag(player, store);
+				if (newState.title !== oldState.title) {
+					updatePlayerTag(player, store);
+				}
+
+				if (newState.worldPrestige["Ban Land"].currentPrestige !== oldState.worldPrestige["Ban Land"].currentPrestige) {
+					updatePlayerTag(player, store);
+				}
+			});
+
+			ReplicatedStorage.leaderboards.timeUpdated.GetPropertyChangedSignal("Value").Connect(() => {
+				task.delay(3, (): void => updatePlayerTag(player, store));
 			});
 		})
 		.catch((e) => {

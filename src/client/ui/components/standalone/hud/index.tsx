@@ -17,6 +17,7 @@ interface HudProps {
 	displayCodes: () => void;
 	displaySettings: () => void;
 	displayShop: () => void;
+	displaySpinWheel: () => void;
 	onlyShowCurrency: boolean;
 }
 
@@ -56,6 +57,7 @@ export const Hud = hooks((props: HudProps) => {
 					displayCodes={props.displayCodes}
 					displaySettings={props.displaySettings}
 					displayShop={props.displayShop}
+					displaySpinWheel={props.displaySpinWheel}
 				/>
 			</BaseFrame>
 		);

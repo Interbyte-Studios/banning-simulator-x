@@ -4,5 +4,5 @@ import { togglePublicTradeHistory } from "shared/rodux/settings";
 
 const togglePublicHistoryRemote = remotes.Server.GetNamespace("settings")
 	.GetNamespace("privacy")
-	.Create("publicTradeHistory");
+	.Get("publicTradeHistory");
 togglePublicHistoryRemote.Connect(withPlayerStore((_, store) => store.dispatch(togglePublicTradeHistory())));

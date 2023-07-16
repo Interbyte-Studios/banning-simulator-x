@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { uiTextStrokeColor } from "client/ui/commonValues";
+import { uiClaimButtonStrokeColor, uiOffButtonStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
@@ -39,31 +39,6 @@ export const WeaponShopWeaponInfo = RoactRodux.connect(mapStateToProps)(
 	hooks((props: WeaponShopWeaponInfoProps) => {
 		const weaponData = getWeaponInfo(props.currentWeapon);
 
-		const rankRequiredWarning: Array<Roact.Element> = [];
-		if (weaponData.data.cost !== undefined && weaponData.data.cost.requiredRank !== undefined) {
-			if (props.rank < weaponData.data.cost.requiredRank) {
-				const rankRequiredElement = (
-					<StrokeTextLabel
-						native={{
-							Position: UDim2.fromScale(0.45, -0.15),
-							Size: UDim2.fromScale(0.5, 0.3),
-							Text: "REQUIRES",
-							TextColor3: Color3.fromRGB(237, 61, 61),
-						}}
-						stroke={{ native: { Thickness: 2 } }}
-					>
-						<RankIcon
-							position={UDim2.fromScale(1.15, 0.5)}
-							size={{ maximizedSize: 1, minimizedSize: 0.9 }}
-							rank={weaponData.data.cost.requiredRank}
-						/>
-					</StrokeTextLabel>
-				);
-
-				rankRequiredWarning.push(rankRequiredElement);
-			}
-		}
-
 		return (
 			<ImageLabel
 				native={{
@@ -74,7 +49,22 @@ export const WeaponShopWeaponInfo = RoactRodux.connect(mapStateToProps)(
 			>
 				<uiaspectratioconstraint AspectRatio={2.2} />
 
-				{rankRequiredWarning}
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.45, -0.15),
+						Size: UDim2.fromScale(0.5, 0.3),
+						Text: "REQUIRES",
+						TextColor3:
+							props.rank >= weaponData.data.cost.requiredRank ? uiClaimButtonStrokeColor : uiOffButtonStrokeColor,
+					}}
+					stroke={{ native: { Thickness: 2 } }}
+				>
+					<RankIcon
+						position={UDim2.fromScale(1.15, 0.5)}
+						size={{ maximizedSize: 1, minimizedSize: 0.9 }}
+						rank={weaponData.data.cost.requiredRank}
+					/>
+				</StrokeTextLabel>
 
 				<StrokeTextLabel
 					native={{

@@ -11,18 +11,20 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
+import { CurrentWeaponState } from "shared/rodux/currentWeapon";
 import { RankState } from "shared/rodux/rank";
 import { WeaponsState } from "shared/rodux/weapons";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 interface PurchaseWeaponProps extends PurchaseWeaponMappedProps {
-	currentWeapon: number;
+	weaponId: number;
 }
 
 interface PurchaseWeaponMappedProps {
 	weapons: WeaponsState;
 	rank: RankState;
 	currencies: CurrenciesState;
+	currentWeapon: CurrentWeaponState;
 }
 
 /**
@@ -36,6 +38,7 @@ function mapStateToProps(state: StoreState): PurchaseWeaponMappedProps {
 		weapons: state.weapons,
 		rank: state.rank,
 		currencies: state.currencies,
+		currentWeapon: state.currentWeapon,
 	};
 }
 
@@ -44,18 +47,16 @@ function mapStateToProps(state: StoreState): PurchaseWeaponMappedProps {
  */
 export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 	hooks((props: PurchaseWeaponProps, hooks) => {
-		if (props.weapons.find((weapon) => weapon.id === props.currentWeapon)) {
-			return <></>;
-		}
-
-		const weaponInfo = getWeaponInfo(props.currentWeapon);
-		if (weaponInfo.data.cost === undefined) {
-			return <></>;
-		}
-
 		const { useContext } = hooks;
-		const { purchaseWeapon } = useContext(remoteContext);
+		const { purchaseWeapon, equipWeapon, unequipWeapon, changeWeapon } = useContext(remoteContext);
 		const { addAnnouncement } = useContext(AnnouncementContext);
+
+		const storedWeapon = props.weapons.find((weapon) => weapon.id === props.weaponId);
+		const weaponInfo = getWeaponInfo(props.weaponId);
+
+		const weaponOwned = storedWeapon !== undefined;
+		const weaponEquipped = weaponOwned && props.currentWeapon.id === props.weaponId;
+		const weaponIsSheathed = weaponEquipped && !props.currentWeapon.equipped;
 
 		return (
 			<SpringImageButton
@@ -69,26 +70,46 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 					Activated: (): void => {
 						playSFX(UIEngagement.MajorEngagement);
 
-						// check to be sure weapon can be purchased
-						if (weaponInfo.data.cost === undefined) {
-							addAnnouncement(
-								`There was an internal issue while purchasing "${weaponInfo.name}" (105).`,
-								AnnouncementType.Error,
-							);
-							return;
-						}
+						warn(`Clicked button`);
+						print(weaponOwned, weaponIsSheathed, props.currentWeapon.id !== props.weaponId);
 
-						// check to be sure player has enough currency to purchase weapon
-						if (props.currencies[weaponInfo.data.cost.currency] < weaponInfo.data.cost.amount) {
-							addAnnouncement(
-								`You don't have enough currency to purchase "${weaponInfo.name}".`,
-								AnnouncementType.Error,
-							);
-							return;
-						}
+						// If they own the weapon, handle equip/unequip instead
+						if (weaponOwned) {
+							// if weapon is owned, but not equipped, handle equipping
+							if (props.currentWeapon.id !== props.weaponId) {
+								// check that they have the required rank to equip the weapon
+								if (props.rank < weaponInfo.data.cost.requiredRank) {
+									addAnnouncement(`You aren't a high enough rank to equip that weapon!`, AnnouncementType.Error);
+									return;
+								}
 
-						// check to be sure player is required rank
-						if (weaponInfo.data.cost.requiredRank !== undefined) {
+								changeWeapon.SendToServer(props.weaponId);
+							}
+							// if the weapon is equipped, but sheathed, handle unsheathing
+							else if (weaponIsSheathed) {
+								// check that they have the required rank to equip the weapon
+								if (props.rank < weaponInfo.data.cost.requiredRank) {
+									addAnnouncement(`You aren't a high enough rank to equip that weapon!`, AnnouncementType.Error);
+									return;
+								}
+
+								equipWeapon.SendToServer();
+							}
+							// unequip if no other conditions are met.
+							else {
+								unequipWeapon.SendToServer();
+							}
+						} else {
+							// check to be sure player has enough currency to purchase weapon
+							if (props.currencies[weaponInfo.data.cost.currency] < weaponInfo.data.cost.amount) {
+								addAnnouncement(
+									`You don't have enough currency to purchase "${weaponInfo.name}".`,
+									AnnouncementType.Error,
+								);
+								return;
+							}
+
+							// check to be sure player owns the required rank
 							if (props.rank < weaponInfo.data.cost.requiredRank) {
 								addAnnouncement(
 									`You're not a high enough rank to purchase "${weaponInfo.name}".`,
@@ -96,21 +117,27 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 								);
 								return;
 							}
-						}
 
-						purchaseWeapon.SendToServer(props.currentWeapon);
-						addAnnouncement(`You've purchased the "${weaponInfo.name}" weapon!`, AnnouncementType.Announcement);
+							purchaseWeapon.SendToServer(props.weaponId);
+							addAnnouncement(`You've purchased the "${weaponInfo.name}" weapon!`, AnnouncementType.Announcement);
+						}
 					},
 					/* eslint-enable jsdoc/require-jsdoc */
 				}}
 			>
 				<StrokeTextLabel
 					native={{
-						Size: UDim2.fromScale(0.9, 0.9),
-						Text: "Purchase",
+						Size: UDim2.fromScale(1, 1),
+						Text:
+							weaponIsSheathed || (weaponOwned && props.currentWeapon.id !== props.weaponId)
+								? "Equip"
+								: weaponEquipped
+								? "Unequip"
+								: "Purchase",
 					}}
 					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
 				/>
+				<uiaspectratioconstraint AspectRatio={4} />
 			</SpringImageButton>
 		);
 	}),

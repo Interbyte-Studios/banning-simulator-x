@@ -150,6 +150,7 @@ export const ActiveTradeOffer = hooks((props: ActiveTradeOfferProps, { useContex
 					searchText={currentSearch}
 					size={UDim2.fromScale(0.98, 0.765)}
 					position={UDim2.fromScale(0.508, 0.52)}
+					scrollBarThickness={12}
 					scrollBarImageColor={Color3.fromRGB(8, 82, 129)}
 					fillDirectionMaxCells={4}
 					onActivated={(guid: string): void => {

@@ -30,6 +30,10 @@ export function IndexEggScroll(props: {
 				Padding={new UDim(0.05, 0)}
 			/>
 			{eggs.map((eggData) => {
+				if (eggData[0] === "500k Event") {
+					return <></>;
+				}
+
 				return (
 					<IndexEggCard
 						egg={eggData[0]}

@@ -3,7 +3,7 @@ import { remotes } from "shared/remotes";
 import { createPetTeam } from "shared/rodux/petTeams";
 
 remotes.Server.GetNamespace("pets")
-	.Create("createPetTeam")
+	.Get("createPetTeam")
 	.Connect(
 		withPlayerStore((_, store, pets) => {
 			const currentState = store.getState();

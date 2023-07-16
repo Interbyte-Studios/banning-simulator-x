@@ -52,6 +52,7 @@ export const Offer = (props: OfferProps): Roact.Element => {
 				<uicorner CornerRadius={new UDim(0.125, 0)} />
 				<BaseUIStroke native={{ Thickness: 4, Color: uiTextStrokeColor }} />
 				<VirtualScroll
+					scrollBarThickness={12}
 					pets={petsToDisplay}
 					size={UDim2.fromScale(0.98, 0.765)}
 					position={UDim2.fromScale(0.508, 0.52)}

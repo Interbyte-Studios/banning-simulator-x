@@ -7,7 +7,9 @@ import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScro
 import { hooks } from "client/ui/hooks";
 import { StoreState } from "shared/rodux";
 import { CurrentWeaponState } from "shared/rodux/currentWeapon";
+import { RankState } from "shared/rodux/rank";
 import { WeaponsState } from "shared/rodux/weapons";
+import { getWeaponInfo } from "shared/util/getWeaponInfo";
 
 import { WeaponItemFrame } from "./weaponFrame";
 import { WeaponInfoDisplay } from "./weaponInfoDisplay";
@@ -15,6 +17,7 @@ import { WeaponInfoDisplay } from "./weaponInfoDisplay";
 interface WeaponItemsMappedProps {
 	weapons: WeaponsState;
 	currentWeapon: CurrentWeaponState;
+	rank: RankState;
 }
 
 /**
@@ -25,6 +28,7 @@ function mapStateToProps(state: StoreState): WeaponItemsMappedProps {
 	return {
 		weapons: state.weapons,
 		currentWeapon: state.currentWeapon,
+		rank: state.rank,
 	};
 }
 
@@ -69,7 +73,8 @@ export const WeaponItems = RoactRodux.connect(mapStateToProps)(
 					BackgroundTransparency={1}
 					Size={UDim2.fromScale(1, 1)}
 					Position={UDim2.fromScale(0.5, 0.5)}
-					ScrollBarThickness={0}
+					ScrollBarThickness={12}
+				BorderSizePixel={0}
 				>
 					<uigridlayout
 						CellPadding={UDim2.fromOffset(6, 6)}
@@ -79,11 +84,16 @@ export const WeaponItems = RoactRodux.connect(mapStateToProps)(
 						Ref={uiGridLayoutRef.value}
 					/>
 					{props.weapons.map((weapon) => {
+						const weaponData = getWeaponInfo(weapon.id);
+
 						return (
 							<WeaponItemFrame
 								storedWeapon={weapon}
 								isEquipped={props.currentWeapon.id === weapon.id}
 								displayWeaponInfo={(weaponId: number): void => displayWeaponInfo(weaponId)}
+								requiredRank={
+									props.rank >= weaponData.data.cost.requiredRank ? undefined : weaponData.data.cost.requiredRank
+								}
 							/>
 						);
 					})}

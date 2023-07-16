@@ -1,3 +1,4 @@
+import { t } from "@rbxts/t";
 import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 
 import { Currency } from "./currencies";
@@ -8,7 +9,8 @@ export interface TalismanStatEffects {
 	walkspeed: number;
 }
 
-export type TalismanPhases = "normal" | "awakend" | "artifact";
+export const isTalismanPhase = t.literal("normal", "awakend", "artifact");
+export type TalismanPhases = t.static<typeof isTalismanPhase>;
 
 export interface Talisman {
 	id: number;

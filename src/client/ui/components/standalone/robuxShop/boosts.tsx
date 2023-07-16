@@ -164,7 +164,7 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 
 								<StrokeTextLabel
 									native={{
-										Text: `${props.boosts.storage[key]["15"]} Owned`,
+										Text: `${props.boosts.storage[key][15]} Owned`,
 										Position: UDim2.fromScale(0.5, 0.75),
 										Size: UDim2.fromScale(0.95, 0.175),
 									}}
@@ -194,6 +194,7 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 										 */
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
+
 											MarketplaceService.PromptProductPurchase(Players.LocalPlayer, BOOST_PRODUCTS[key][15]);
 										},
 									}}
@@ -220,7 +221,7 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 										 */
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
-											if (props.boosts.storage[key]["15"] < 1) {
+											if (props.boosts.storage[key][15] < 1) {
 												addAnnouncement(`You don't have any of that boost!`, AnnouncementType.Error);
 												return;
 											}
@@ -278,7 +279,7 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 
 								<StrokeTextLabel
 									native={{
-										Text: `${props.boosts.storage[key]["30"]} Owned`,
+										Text: `${props.boosts.storage[key][30]} Owned`,
 										Position: UDim2.fromScale(0.5, 0.75),
 										Size: UDim2.fromScale(0.95, 0.175),
 									}}
@@ -308,6 +309,7 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 										 */
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
+
 											MarketplaceService.PromptProductPurchase(Players.LocalPlayer, BOOST_PRODUCTS[key][30]);
 										},
 									}}
@@ -334,11 +336,10 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 										 */
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
-											if (props.boosts.storage[key]["30"] < 1) {
+											if (props.boosts.storage[key][30] < 1) {
 												addAnnouncement(`You don't have any of that boost!`, AnnouncementType.Error);
 												return;
 											}
-
 											useBoost.SendToServer(key, 30);
 										},
 									}}
@@ -392,7 +393,7 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 
 								<StrokeTextLabel
 									native={{
-										Text: `${props.boosts.storage[key]["60"]} Owned`,
+										Text: `${props.boosts.storage[key][60]} Owned`,
 										Position: UDim2.fromScale(0.5, 0.75),
 										Size: UDim2.fromScale(0.95, 0.175),
 									}}
@@ -448,11 +449,10 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 										 */
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
-											if (props.boosts.storage[key]["60"] < 1) {
+											if (props.boosts.storage[key][60] < 1) {
 												addAnnouncement(`You don't have any of that boost!`, AnnouncementType.Error);
 												return;
 											}
-
 											useBoost.SendToServer(key, 60);
 										},
 									}}
@@ -506,7 +506,7 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 
 								<StrokeTextLabel
 									native={{
-										Text: `${props.boosts.storage[key]["120"]} Owned`,
+										Text: `${props.boosts.storage[key][120]} Owned`,
 										Position: UDim2.fromScale(0.5, 0.75),
 										Size: UDim2.fromScale(0.95, 0.175),
 									}}
@@ -562,11 +562,10 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 										 */
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
-											if (props.boosts.storage[key]["120"] < 1) {
+											if (props.boosts.storage[key][120] < 1) {
 												addAnnouncement(`You don't have any of that boost!`, AnnouncementType.Error);
 												return;
 											}
-
 											useBoost.SendToServer(key, 120);
 										},
 									}}

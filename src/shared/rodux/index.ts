@@ -11,6 +11,7 @@ import { DevProductActions, devProductReducer, DevProductState } from "./devProd
 import { EggsActions, eggsReducer, EggsState } from "./eggs";
 import { ExperienceActions, experienceReducer, ExperienceState } from "./experience";
 import { GamepassActions, gamepassesReducer, GamepassesState } from "./gamepasses";
+import { GamepassGiftsActions, gamepassGiftsReducer, GamepassGiftsState } from "./gamepassGifts";
 import { InvitedFriendActions, invitedFriendReducer, InvitedFriendState } from "./invitedFriend";
 import { MediaActions, mediaReducer, MediaState } from "./media";
 import { PetMasteryActions, petMasteryReducer, PetMasteryState } from "./petMastery";
@@ -39,6 +40,7 @@ export type StoreState = {
 	eggs: EggsState;
 	experience: ExperienceState;
 	gamepasses: GamepassesState;
+	gamepassGifts: GamepassGiftsState;
 	index: PlayerIndexState;
 	invitedFriend: InvitedFriendState;
 	media: MediaState;
@@ -67,6 +69,7 @@ export type StoreActions = (
 	| EggsActions
 	| ExperienceActions
 	| GamepassActions
+	| GamepassGiftsActions
 	| MediaActions
 	| PetsActions
 	| QuestsAction
@@ -97,6 +100,7 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	eggs: eggsReducer,
 	experience: experienceReducer,
 	gamepasses: gamepassesReducer,
+	gamepassGifts: gamepassGiftsReducer,
 	media: mediaReducer,
 	pets: petsReducer,
 	quests: questsReducer,

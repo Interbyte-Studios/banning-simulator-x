@@ -1,5 +1,5 @@
 import { GameAnalytics } from "@rbxts/gameanalytics";
-import { Players, ReplicatedStorage, StarterGui, Workspace } from "@rbxts/services";
+import { Players, ReplicatedStorage, RunService, StarterGui, TweenService, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { NPCImpact, playSFX, WeaponSlash } from "client/util/playSound";
 import { WeaponIndex, WEAPONS } from "shared/configs/weapons";
@@ -25,6 +25,9 @@ highlight.DepthMode = Enum.HighlightDepthMode.Occluded;
 highlight.Parent = undefined;
 highlight.FillTransparency = 1;
 highlight.OutlineColor = Color3.fromRGB(0, 0, 0);
+
+// npc highlight
+const npcHighlights: Array<{ object: Highlight; timeDisplayed: number }> = [];
 
 /**
  * Handles equipping the player's weapon.
@@ -224,6 +227,24 @@ function equipWeapon(weaponName: WeaponIndex): void {
 			return;
 		}
 
+		const npcHighlight = npcHighlights.find((highlightData) => highlightData.object.Parent === npcCharacter);
+		if (npcHighlight !== undefined) {
+			npcHighlight.timeDisplayed = time();
+		} else {
+			const npcNPCHighlight = new Instance("Highlight");
+			npcNPCHighlight.DepthMode = Enum.HighlightDepthMode.Occluded;
+			npcNPCHighlight.FillTransparency = 1;
+			npcNPCHighlight.OutlineColor = Color3.fromRGB(227, 74, 74);
+			npcNPCHighlight.OutlineTransparency = 1;
+			npcNPCHighlight.Parent = npcCharacter;
+			npcHighlights.push({ object: npcNPCHighlight, timeDisplayed: time() });
+
+			TweenService.Create(npcNPCHighlight, new TweenInfo(0.25), {
+				FillTransparency: 0.5,
+				OutlineTransparency: 0,
+			}).Play();
+		}
+
 		playSFX(NPCImpact.NPCImpact1);
 		remotes.Client.Get("damageNPC").SendToServer(npcCharacter);
 	});
@@ -320,3 +341,20 @@ onStoreCreated(player)
 		});
 		throw `[ Weapon Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 	});
+
+let lastCheck = 0;
+RunService.RenderStepped.Connect(() => {
+	const now = time();
+	if (now - lastCheck < 0.5) {
+		return;
+	}
+	lastCheck = now;
+
+	npcHighlights.forEach((highlightData) => {
+		const highlightObject = highlightData.object;
+		if (now - highlightData.timeDisplayed > 1) {
+			npcHighlights.unorderedRemove(npcHighlights.findIndex((x) => x === highlightData));
+			highlightObject.Destroy();
+		}
+	});
+});

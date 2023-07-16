@@ -107,6 +107,14 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 			eggCost.currencyType = zoneData.cost.currency;
 			break;
 		}
+		case 14: {
+			const cost = 5_000;
+			const voidCost = cost * 25;
+			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
+			eggCost.amount = math.ceil(eggCost.amount);
+			eggCost.currencyType = "coins";
+			break;
+		}
 		default: {
 			if (zoneData.cost === undefined) {
 				throw `Unexpected issue while finding cost for "${egg}"`;

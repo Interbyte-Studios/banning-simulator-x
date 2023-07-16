@@ -6,7 +6,7 @@ import { storeBoost, validBoostTime } from "shared/rodux/boosts";
 import { awardCurrency } from "shared/rodux/currencies";
 import { getAccolade } from "shared/util/getAccolade";
 
-const claimAccoladeRemote = remotes.Server.GetNamespace("accolades").Create("claimAccolade");
+const claimAccoladeRemote = remotes.Server.GetNamespace("accolades").Get("claimAccolade");
 claimAccoladeRemote.SetCallback(
 	withPlayerStore((_, store, accoladeId) => {
 		// check if they've already claimed

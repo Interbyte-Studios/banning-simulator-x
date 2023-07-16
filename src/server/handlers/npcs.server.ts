@@ -75,6 +75,10 @@ remotes.Server.Get("damageNPC").Connect(
 			return;
 		}
 
+		if (playerRoot.Position.sub(npcRoot.Position).Magnitude > 10) {
+			return;
+		}
+
 		const npcAttack = {
 			player,
 			store,

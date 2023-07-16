@@ -4,7 +4,7 @@ import { togglePetsStudsOfDistance } from "shared/rodux/settings";
 
 const togglePetsStudsOfDistanceRemote = remotes.Server.GetNamespace("settings")
 	.GetNamespace("visual")
-	.Create("togglePetsStudsOfDistance");
+	.Get("togglePetsStudsOfDistance");
 togglePetsStudsOfDistanceRemote.Connect(
 	withPlayerStore((_, store, studs) => store.dispatch(togglePetsStudsOfDistance(studs))),
 );
