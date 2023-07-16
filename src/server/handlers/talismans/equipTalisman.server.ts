@@ -5,7 +5,7 @@ import { TALISMANS } from "shared/configs/talismans";
 import { remotes } from "shared/remotes";
 
 remotes.Server.GetNamespace("talismans")
-	.Create("equipTalisman")
+	.Get("equipTalisman")
 	.Connect(
 		withPlayerStore((_, store, talismanId) => {
 			const storedTalisman = store.getState().talismans.find((talisman) => talisman.id === talismanId);

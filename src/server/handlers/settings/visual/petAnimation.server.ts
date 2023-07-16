@@ -4,7 +4,7 @@ import { togglePetAnimationType } from "shared/rodux/settings";
 
 const togglePetAnimationTypeRemote = remotes.Server.GetNamespace("settings")
 	.GetNamespace("visual")
-	.Create("togglePetAnimationType");
+	.Get("togglePetAnimationType");
 togglePetAnimationTypeRemote.Connect(
 	withPlayerStore((_, store, animationType) => store.dispatch(togglePetAnimationType(animationType))),
 );

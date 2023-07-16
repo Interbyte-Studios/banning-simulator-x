@@ -6,22 +6,15 @@ import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { remotes } from "shared/remotes";
 import { FusionFailKind } from "shared/remotes/fusing";
 import { awardCurrency } from "shared/rodux/currencies";
-import { deletePets, FusedPet, fusePets, isValidFusableVariant } from "shared/rodux/pets";
+import { deletePets, FusedPet, fusePets } from "shared/rodux/pets";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetData } from "shared/util/getPetData";
 
-remotes.Server.Create("requestFusion").SetCallback(
+remotes.Server.Get("requestFusion").SetCallback(
 	withPlayerStore((_, store, petsToFuse, variant) => {
 		const currentState = store.getState();
-
-		if (!isValidFusableVariant(variant)) {
-			return {
-				success: false,
-				reason: FusionFailKind.InternalError,
-			};
-		}
 
 		const previousVariant = variant === "radiant" ? "void" : "regular";
 

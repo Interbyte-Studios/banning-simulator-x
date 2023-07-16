@@ -6,7 +6,7 @@ import { getZoneDataById } from "shared/util/getZoneDataById";
 
 import { withPlayerStore } from "../modules/net/withPlayerStore";
 
-remotes.Server.Create("purchaseZone").SetCallback(
+remotes.Server.Get("purchaseZone").SetCallback(
 	withPlayerStore((_, store, worldName, zoneName) => {
 		const currentState = store.getState();
 

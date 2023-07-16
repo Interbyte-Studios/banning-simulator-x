@@ -4,5 +4,5 @@ import { togglePublicInventory } from "shared/rodux/settings";
 
 const togglePublicInventoryRemote = remotes.Server.GetNamespace("settings")
 	.GetNamespace("privacy")
-	.Create("publicInventory");
+	.Get("publicInventory");
 togglePublicInventoryRemote.Connect(withPlayerStore((_, store) => store.dispatch(togglePublicInventory())));

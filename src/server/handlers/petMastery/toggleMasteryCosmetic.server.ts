@@ -1,10 +1,11 @@
 import { remotes } from "shared/remotes";
 import { PetMasteryStateVariant, toggleMasteryCosmetic } from "shared/rodux/petMastery";
+import { UnreachableCaseError } from "shared/util/unreachableCaseError";
 
 import { withPlayerStore } from "../../modules/net/withPlayerStore";
 
 remotes.Server.GetNamespace("petMastery")
-	.Create("toggleCosmetic")
+	.Get("toggleCosmetic")
 	.Connect(
 		withPlayerStore((_, store, id, variant) => {
 			const state = store.getState();
@@ -41,7 +42,10 @@ remotes.Server.GetNamespace("petMastery")
 					if (!(masteryData.maxLevelClaimed && masteryData.fuseClaimed)) {
 						return;
 					}
+					break;
 				}
+				default:
+					throw new UnreachableCaseError(variant);
 			}
 
 			store.dispatch(toggleMasteryCosmetic(id, variant));
