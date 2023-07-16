@@ -9,7 +9,7 @@ import { AnnouncementContext, AnnouncementType } from "client/ui/context/Announc
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { EggName, EGGS, hatchDebounce } from "shared/configs/eggs";
-import { GAMEPASSES, RADIOACTIVE_EGG_ONEHATCH, RADIOACTIVE_EGG_THREEHATCHES } from "shared/configs/game";
+import { GAMEPASSES } from "shared/configs/game";
 import { Pet, Variants } from "shared/configs/pets";
 import { HatchEggFailKind } from "shared/remotes/eggs/hatchEgg";
 import { StoreState } from "shared/rodux";
@@ -425,11 +425,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							if (autoEnabled) {
 								autoEnabled = false;
 							} else {
-								if (eggName === "Radioactive") {
-									MarketplaceService.PromptProductPurchase(Players.LocalPlayer, RADIOACTIVE_EGG_ONEHATCH);
-								} else {
-									await handleHatch(eggName, "regular", 1);
-								}
+								await handleHatch(eggName, "regular", 1);
 							}
 							break;
 						} else if (eggName !== "Radioactive") {
@@ -481,11 +477,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							if (autoEnabled) {
 								autoEnabled = false;
 							} else {
-								if (eggName === "Radioactive") {
-									MarketplaceService.PromptProductPurchase(Players.LocalPlayer, RADIOACTIVE_EGG_THREEHATCHES);
-								} else {
-									await handleHatch(eggName, "regular", 3);
-								}
+								await handleHatch(eggName, "regular", 3);
 							}
 							break;
 						} else if (eggName !== "Radioactive") {
@@ -526,7 +518,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 						pets.push(petData);
 					}
 
-					if (eggName === "Radioactive") {
+					if (eggName === "Radioactive" || eggName === "500k Event") {
 						return (
 							<frame Visible={false}>
 								<EggHudDisplay

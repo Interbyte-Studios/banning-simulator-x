@@ -46,6 +46,10 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 		let totalChallenges = 0;
 		let completedChallenges = 0;
 		for (const [, data] of pairs(eggData.pets)) {
+			if (data.rarity === "Primordial" || data.rarity === "Prismatic") {
+				continue;
+			}
+
 			if (props.variant === "regular") {
 				totalChallenges += 2;
 			} else if (props.variant === "void") {

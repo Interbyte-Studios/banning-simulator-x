@@ -1,5 +1,4 @@
-import { Players, ReplicatedStorage, TweenService, Workspace } from "@rbxts/services";
-import { getNPCByName } from "shared/util/getNpcByName";
+import { ReplicatedStorage, TweenService, Workspace } from "@rbxts/services";
 import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
 const damageCounter = ReplicatedStorage.assetObjects.tags.damagecounter;
@@ -19,8 +18,6 @@ export function createDamageCounter(npc: Model): void {
 	if (head === undefined) {
 		return;
 	}
-
-	const npcInfo = getNPCByName(npc.Name);
 
 	const damageCounterClone = damageCounter.Clone();
 	damageCounterClone.Parent = head;
@@ -55,62 +52,7 @@ export function createDamageCounter(npc: Model): void {
 		});
 	});
 
-	const ancestryConnection = npc.AncestryChanged.Connect((npcInstance) => {
-		const humanoidRootPart = npcInstance.FindFirstChild("HumanoidRootPart") as BasePart;
-		if (humanoidRootPart !== undefined) {
-			const humanoidRootPartPosition = humanoidRootPart.Position;
-			if (npcInfo !== undefined) {
-				task.spawn(() => {
-					for (let i = 0; i < 3; i++) {
-						task.defer(() => {
-							const currencyIcon = ReplicatedStorage.assetObjects.emitters.icons.FindFirstChild(
-								npcInfo.reward.currencyType.lower(),
-							) as BasePart;
-							if (currencyIcon !== undefined) {
-								const newCurrencyIcon = currencyIcon.Clone();
-								newCurrencyIcon.CFrame = new CFrame(humanoidRootPartPosition);
-								newCurrencyIcon.Parent = Workspace;
-
-								const blowOutAnim = TweenService.Create(newCurrencyIcon, new TweenInfo(0.3, Enum.EasingStyle.Linear), {
-									CFrame: new CFrame(
-										humanoidRootPartPosition.add(
-											new Vector3(math.random(-5, 5), math.random(3, 10), math.random(-5, 5)),
-										),
-									),
-								});
-								blowOutAnim.Play();
-								blowOutAnim.Completed.Wait();
-
-								const localCharacter = Players.LocalPlayer.Character;
-								if (localCharacter === undefined) {
-									newCurrencyIcon.Destroy();
-									return;
-								}
-
-								const humanoidRootPart = localCharacter.FindFirstChild("HumanoidRootPart") as BasePart;
-								if (humanoidRootPart === undefined) {
-									newCurrencyIcon.Destroy();
-									return;
-								}
-
-								const toCharacterAnim = TweenService.Create(
-									newCurrencyIcon,
-									new TweenInfo(1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
-									{
-										CFrame: new CFrame(humanoidRootPart.Position),
-									},
-								);
-								toCharacterAnim.Play();
-								toCharacterAnim.Completed.Wait();
-
-								newCurrencyIcon.Destroy();
-							}
-						});
-					}
-				});
-			}
-		}
-
+	const ancestryConnection = npc.AncestryChanged.Connect(() => {
 		healthConnection.Disconnect();
 
 		if (damageCounterClone !== undefined) {

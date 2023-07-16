@@ -137,7 +137,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 				>
 					<HatchEggButton eggName={props.eggName} isVoid={props.isVoid} handleHatch={props.handleHatch} />
 					<TripleHatchEggButton eggName={props.eggName} isVoid={props.isVoid} handleHatch={props.handleHatch} />
-					{props.eggName !== "Radioactive" && <ToggleAutoHatchButton petsSize={props.possiblePets.size()} />}
+					<ToggleAutoHatchButton petsSize={props.possiblePets.size()} />
 
 					<ImageLabel
 						native={{
@@ -200,32 +200,28 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 							})}
 						</BaseFrame>
 
-						{props.eggName !== "Radioactive" && (
-							<StrokeTextLabel
-								native={{
-									Position: props.possiblePets.size() <= 6 ? UDim2.fromScale(0.65, 0.9) : UDim2.fromScale(0.65, 0.91),
-									Size: props.possiblePets.size() <= 6 ? UDim2.fromScale(0.3, 0.15) : UDim2.fromScale(0.3, 0.125),
-									Text: twoDpAbbreviator.numberToString(
-										props.isVoid ? eggCost.amount - reducedVoidCost : eggCost.amount,
-									),
-									TextXAlignment: Enum.TextXAlignment.Left,
-								}}
-								stroke={{
-									native: {
-										Thickness: 2.5,
-										Color: Color3.fromRGB(255, 255, 255),
-									},
-									currencyGradient: eggCost.currencyType,
-								}}
-							>
-								<CurrencyIcon
-									anchorPoint={new Vector2(1, 0.5)}
-									position={UDim2.fromScale(-0.03, 0.5)}
-									size={{ minimizedSize: 0.9, maximizedSize: 1 }}
-									currency={eggCost.currencyType}
-								/>
-							</StrokeTextLabel>
-						)}
+						<StrokeTextLabel
+							native={{
+								Position: props.possiblePets.size() <= 6 ? UDim2.fromScale(0.65, 0.9) : UDim2.fromScale(0.65, 0.91),
+								Size: props.possiblePets.size() <= 6 ? UDim2.fromScale(0.3, 0.15) : UDim2.fromScale(0.3, 0.125),
+								Text: twoDpAbbreviator.numberToString(props.isVoid ? eggCost.amount - reducedVoidCost : eggCost.amount),
+								TextXAlignment: Enum.TextXAlignment.Left,
+							}}
+							stroke={{
+								native: {
+									Thickness: 2.5,
+									Color: Color3.fromRGB(255, 255, 255),
+								},
+								currencyGradient: eggCost.currencyType,
+							}}
+						>
+							<CurrencyIcon
+								anchorPoint={new Vector2(1, 0.5)}
+								position={UDim2.fromScale(-0.03, 0.5)}
+								size={{ minimizedSize: 0.9, maximizedSize: 1 }}
+								currency={eggCost.currencyType}
+							/>
+						</StrokeTextLabel>
 					</ImageLabel>
 				</billboardgui>
 			);

@@ -473,6 +473,7 @@ declare namespace assetIds {
 				Candy: string;
 				Molten: string;
 				Royal: string;
+				"Angelic Egg": string;
 			};
 		};
 		vectors: {

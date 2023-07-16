@@ -18,6 +18,7 @@ import { Codes } from "../components/features/codes";
 import { ItemInventory } from "../components/features/items";
 import { PetMastery } from "../components/features/petMastery";
 import { Settings } from "../components/features/settings";
+import { SpinWheel } from "../components/features/spinWheel";
 import { Teleportation } from "../components/features/teleportation";
 import { WorldPrestige } from "../components/features/worldPrestige";
 import { WorldPrestigeViewType } from "../components/features/worldPrestige/prestigeEnum";
@@ -61,6 +62,7 @@ const visibilityStates = {
 	robuxShop: false,
 	worldPrestige: false,
 	updateLog: false,
+	spinWheel: false,
 };
 
 const updateLogIcon = new Icon().setImage(assetIds.images.decals.UpdateLog).setLabel("Update Log");
@@ -258,6 +260,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
+					displaySpinWheel={(): void => setVisibility({ ...visibilityStates, spinWheel: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -334,6 +337,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
+					displaySpinWheel={(): void => setVisibility({ ...visibilityStates, spinWheel: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -357,6 +361,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
+					displaySpinWheel={(): void => setVisibility({ ...visibilityStates, spinWheel: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -380,6 +385,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
+					displaySpinWheel={(): void => setVisibility({ ...visibilityStates, spinWheel: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -413,6 +419,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
+					displaySpinWheel={(): void => setVisibility({ ...visibilityStates, spinWheel: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -430,6 +437,8 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 			components.push(<Settings hideMenu={(): void => setVisibility((prev) => ({ ...prev, settings: false }))} />);
 		} else if (isVisible("robuxShop")) {
 			components.push(<RobuxShop hideMenu={(): void => setVisibility((prev) => ({ ...prev, robuxShop: false }))} />);
+		} else if (isVisible("spinWheel")) {
+			components.push(<SpinWheel hideMenu={(): void => setVisibility((prev) => ({ ...prev, spinWheel: false }))} />);
 		}
 
 		components.push(<ZonesUI />, <Rewards />, <LocalMessages />, <EggCost />, <EggHud />, <BoostCounter />);

@@ -24,7 +24,6 @@ interface SpinWheelMappedProps {
 }
 
 interface SpinWheelProps extends SpinWheelMappedProps {
-	visible: boolean;
 	hideMenu: () => void;
 }
 
@@ -80,10 +79,6 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 			image: "",
 			amount: 0,
 		});
-
-		if (!props.visible) {
-			return <></>;
-		}
 
 		const defaultButtonScale = 1;
 		const updatedButtonScale = 0.9;

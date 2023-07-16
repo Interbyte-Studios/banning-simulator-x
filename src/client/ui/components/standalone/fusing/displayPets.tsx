@@ -231,6 +231,16 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 						Activated: async (): Promise<void> => {
 							playSFX(UIEngagement.MinorEngagement);
 
+							if (petData.rarity === "Primordial" || petData.rarity === "Prismatic") {
+								if (selectedPets.size() !== maxFusions) {
+									addAnnouncement(
+										`You must reach 100% chance to fuse a pet of that rarity!`,
+										AnnouncementType.Announcement,
+									);
+									return;
+								}
+							}
+
 							const petsToFuse = selectedPets.map((guid) => {
 								return guid;
 							});

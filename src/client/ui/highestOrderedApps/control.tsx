@@ -1,6 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Players, ReplicatedStorage } from "@rbxts/services";
+import { Players, PolicyService, ReplicatedStorage } from "@rbxts/services";
 import { setIsTrading } from "client/modules/isTradingCache";
 import { Store } from "shared/rodux";
 
@@ -22,6 +22,7 @@ interface ControlProps {
 export const Control = hooks((props: ControlProps, { useState, useEffect, useContext }) => {
 	const { player, store } = props;
 
+	const [canTrade, setCanTrade] = useState(true);
 	const [tradingEnabled, setTradingEnabled] = useState(false);
 	const [tradingPlayer, setTradingPlayer] = useState<Player | undefined>(undefined);
 	const [tradeActive, setActiveTrade] = useState(false);
@@ -37,6 +38,20 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 		tradeOfferDeclined,
 		declineOffer,
 	} = useContext(remoteContext);
+
+	useEffect(() => {
+		if (!canTrade) {
+			return;
+		}
+
+		task.spawn(() => {
+			const userRestrictions = PolicyService.GetPolicyInfoForPlayerAsync(Players.LocalPlayer);
+			if (!userRestrictions.IsPaidItemTradingAllowed) {
+				setCanTrade(false);
+			}
+		});
+	}, []);
+
 	useEffect(() => {
 		const connections = [
 			tradeOfferDeclined.Connect((receivingPlayer) => {
@@ -113,7 +128,10 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 					return;
 				}
 
-				warn(`Received request from ${playerWhoSent}`);
+				if (!canTrade) {
+					declineTradeRequest.SendToServer(playerWhoSent);
+					declineOffer.SendToServer();
+				}
 
 				// we set trading enabled to true so that we can display only the trade request, and the player won't get distracted.
 				setIsTrading(false);

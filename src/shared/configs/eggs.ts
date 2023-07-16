@@ -7,6 +7,8 @@ import { CITY_EGG_PETS } from "./pets/city";
 import { CORRUPT_EGG_PETS } from "./pets/corrupt";
 import { CYBER_EGG_PETS } from "./pets/cyber";
 import { DESERT_EGG_PETS } from "./pets/desert";
+import { DIVINE_EGG_PETS } from "./pets/divine";
+import { EVENT_500k_EGG_PETS } from "./pets/event500k";
 import { EXCLUSIVE_PETS } from "./pets/exclusive";
 import { GROUP_CHEST_PETS } from "./pets/group";
 import { HONEYCOMB_EGG_PETS } from "./pets/honeycomb";
@@ -155,7 +157,7 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		pets: RADIOACTIVE_EGG_PETS,
 		world: "Limited",
 		zone: "Limited",
-		hatchable: true,
+		hatchable: false,
 		hidden: false,
 		luckApplies: false,
 	},
@@ -194,6 +196,24 @@ export const EGGS = preserveWithConstraint<Record<string, Egg>>()({
 		hatchable: false,
 		hidden: false,
 		luckApplies: false,
+	},
+	Divine: {
+		id: 13,
+		pets: DIVINE_EGG_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: false,
+		hidden: false,
+		luckApplies: false,
+	},
+	"500k Event": {
+		id: 14,
+		pets: EVENT_500k_EGG_PETS,
+		world: "Ban Land",
+		zone: "Forest",
+		hatchable: true,
+		hidden: false,
+		luckApplies: true,
 	},
 });
 

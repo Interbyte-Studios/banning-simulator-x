@@ -24,7 +24,7 @@ const LeaderboardCard = hooks((props: { entry: LeaderboardEntry }, { useState, u
 				setPlayerName(result);
 			}
 		});
-	}, []);
+	}, [props.entry, props.entry.playerId, props.entry.position]);
 
 	return (
 		<frame BackgroundTransparency={1} Size={UDim2.fromScale(1.5, 0.125)} LayoutOrder={props.entry.position}>
