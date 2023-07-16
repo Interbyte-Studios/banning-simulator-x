@@ -60,8 +60,8 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 		rarity: "Exclusive",
 		fusionCost: 100,
 		stats: {
-			additionalDamage: 18000,
-			additionalBans: 425,
+			additionalDamage: 7000,
+			additionalBans: 280,
 		},
 	},
 	"Serene Bunny": {
@@ -70,8 +70,8 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 		rarity: "Exclusive",
 		fusionCost: 1000,
 		stats: {
-			additionalDamage: 27500,
-			additionalBans: 900,
+			additionalDamage: 13500,
+			additionalBans: 550,
 		},
 	},
 	"Shattered Diety": {
@@ -80,8 +80,8 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 		rarity: "Exclusive",
 		fusionCost: 20000,
 		stats: {
-			additionalDamage: 39000,
-			additionalBans: 1500,
+			additionalDamage: 17000,
+			additionalBans: 800,
 		},
 	},
 };

@@ -30,7 +30,7 @@ export const DIVINE_EGG_PETS: Record<string, Pet> = {
 		rarity: "Exclusive",
 		fusionCost: 30000,
 		stats: {
-			additionalDamage: 40000,
+			additionalDamage: 27500,
 			additionalBans: 1650,
 		},
 	},
@@ -40,7 +40,7 @@ export const DIVINE_EGG_PETS: Record<string, Pet> = {
 		rarity: "Exclusive",
 		fusionCost: 30000,
 		stats: {
-			additionalDamage: 65000,
+			additionalDamage: 45000,
 			additionalBans: 2250,
 		},
 	},

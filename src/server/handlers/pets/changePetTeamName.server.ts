@@ -15,6 +15,14 @@ remotes.Server.GetNamespace("pets")
 				return;
 			}
 
+			if (newName.size() > 30) {
+				return;
+			}
+
+			if (utf8.len(newName) === undefined) {
+				return;
+			}
+
 			// filter text
 			const [filterText, result] = pcall(() => {
 				return TextService.FilterStringAsync(newName, player.UserId);

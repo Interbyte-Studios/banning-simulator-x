@@ -74,8 +74,12 @@ export const ACCOLADES: Array<Accolade> = [
 			let totalObjectives = 0;
 			let completedObjectives = 0;
 
-			for (const [, eggData] of pairs(EGGS)) {
+			for (const [eggName, eggData] of pairs(EGGS)) {
 				if (eggData.world !== "Ban Land") {
+					continue;
+				}
+
+				if (eggName === "500k Event") {
 					continue;
 				}
 

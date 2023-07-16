@@ -117,7 +117,6 @@ remotes.Server.Create("requestFusion").SetCallback(
 			for (const petGuid of petsToFuse) {
 				const storedPet = currentState.pets.find((_pet) => _pet.guid === petGuid);
 				if (storedPet !== undefined) {
-					warn(`Removed one ${storedPet.variant} pet: ${storedPet.id}`);
 					modifyPetCount({
 						type: "deletePet",
 						petId: storedPet.id,

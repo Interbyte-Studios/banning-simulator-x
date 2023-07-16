@@ -91,25 +91,7 @@ export const Update2Log = (): Roact.Element => {
 			/>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.485, 0.485),
-					Size: UDim2.fromScale(0.96, 0.025),
-					Text: "- Wheel spin has been added and is available to Premium Users.",
-					TextXAlignment: Enum.TextXAlignment.Left,
-				}}
-				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(0, 108, 176) } }}
-			/>
-			<StrokeTextLabel
-				native={{
-					Position: UDim2.fromScale(0.485, 0.53),
-					Size: UDim2.fromScale(0.96, 0.05),
-					Text: "- Boost Bundles have been added to the game. Get more boost for significantly cheaper.",
-					TextXAlignment: Enum.TextXAlignment.Left,
-				}}
-				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(0, 108, 176) } }}
-			/>
-			<StrokeTextLabel
-				native={{
-					Position: UDim2.fromScale(0.485, 0.575),
+					Position: UDim2.fromScale(0.485, 0.49),
 					Size: UDim2.fromScale(0.96, 0.025),
 					Text: "- In-game Update Log has been added",
 					TextXAlignment: Enum.TextXAlignment.Left,
@@ -118,7 +100,7 @@ export const Update2Log = (): Roact.Element => {
 			/>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.485, 0.62),
+					Position: UDim2.fromScale(0.485, 0.54),
 					Size: UDim2.fromScale(0.96, 0.05),
 					Text: "- Pet Mastery no longer counts Prismatics or Primordials towards progress",
 					TextXAlignment: Enum.TextXAlignment.Left,
@@ -127,7 +109,7 @@ export const Update2Log = (): Roact.Element => {
 			/>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.485, 0.665),
+					Position: UDim2.fromScale(0.485, 0.69),
 					Size: UDim2.fromScale(0.96, 0.025),
 					Text: "- New 500k visits Event Egg (2 Prismatics, 1 Primordial)",
 					TextXAlignment: Enum.TextXAlignment.Left,
@@ -136,7 +118,7 @@ export const Update2Log = (): Roact.Element => {
 			/>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.485, 0.735),
+					Position: UDim2.fromScale(0.485, 0.59),
 					Size: UDim2.fromScale(0.96, 0.025),
 					Text: "- New exclusive pets available in the shop for purchase",
 					TextXAlignment: Enum.TextXAlignment.Left,
@@ -145,18 +127,9 @@ export const Update2Log = (): Roact.Element => {
 			/>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.485, 0.78),
+					Position: UDim2.fromScale(0.485, 0.64),
 					Size: UDim2.fromScale(0.96, 0.05),
 					Text: "- Premium players are now boosted with an inherent 10% additional luck when hatching",
-					TextXAlignment: Enum.TextXAlignment.Left,
-				}}
-				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(0, 108, 176) } }}
-			/>
-			<StrokeTextLabel
-				native={{
-					Position: UDim2.fromScale(0.485, 0.835),
-					Size: UDim2.fromScale(0.96, 0.05),
-					Text: "- Pet Mastery now has an option for Exclusive Pets, however, there are no challenges for limited pets.",
 					TextXAlignment: Enum.TextXAlignment.Left,
 				}}
 				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(0, 108, 176) } }}
