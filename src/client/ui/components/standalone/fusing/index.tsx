@@ -11,6 +11,7 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import { shouldDisplay } from "client/util/shouldDisplay";
 import assetIds from "shared/assets";
 import { Variants } from "shared/configs/pets";
+import { FusableVariant } from "shared/rodux/pets";
 
 import { DisplayPets } from "./displayPets";
 import { PetSelection } from "./petSelection";
@@ -21,14 +22,14 @@ export const Fusing = hooks(
 		props: {
 			isVisible: boolean;
 			setVisibility: (value: boolean) => void;
-			variant: Exclude<Variants, "regular"> | undefined;
+			variant: FusableVariant | undefined;
 		},
 		hooks,
 	) => {
 		const { useState, useEffect } = hooks;
 
 		const [petSelected, setPetSelected] = useState<number | undefined>(undefined);
-		const [fusingVariant, setFusingVariant] = useState<Exclude<Variants, "regular">>(props.variant ?? "void");
+		const [fusingVariant, setFusingVariant] = useState<FusableVariant>(props.variant ?? "void");
 
 		const screenToDisplay: Array<Roact.Element> = [];
 		if (petSelected !== undefined) {

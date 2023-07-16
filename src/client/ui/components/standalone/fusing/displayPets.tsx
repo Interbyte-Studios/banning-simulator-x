@@ -15,13 +15,12 @@ import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EGGS } from "shared/configs/eggs";
-import { Variants } from "shared/configs/pets";
 import { RARITIES } from "shared/configs/rarities";
 import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { FusionFailKind } from "shared/remotes/fusing";
 import { StoreState } from "shared/rodux";
 import { GamepassesState } from "shared/rodux/gamepasses";
-import { Pet, PetsState } from "shared/rodux/pets";
+import { FusableVariant, Pet, PetsState } from "shared/rodux/pets";
 import { WorldPrestigeState } from "shared/rodux/worldPrestige";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
@@ -31,7 +30,7 @@ import { getPetLevel } from "shared/util/getPetLevel";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 interface DisplayPetsProps extends DisplayPetsMappedProps {
-	variant: Variants;
+	variant: FusableVariant;
 	returnToSelection: () => void;
 	petSelected: number;
 }

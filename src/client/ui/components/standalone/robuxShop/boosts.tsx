@@ -56,10 +56,6 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 					stroke={{ native: { Thickness: 2.5, Color: uiDarkStrokeColor } }}
 				/>
 				{Object.entries(BOOST_PRODUCTS).map(([key]) => {
-					if (key === "x2 Rank Experience") {
-						print(props.boosts.storage[key]);
-					}
-
 					let boostName: string;
 					let boostColor: Color3;
 					let colorStroke: Color3;
@@ -199,9 +195,6 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
 
-											addAnnouncement(`Purchasing boost is currently disabled`, AnnouncementType.Error);
-											return;
-
 											MarketplaceService.PromptProductPurchase(Players.LocalPlayer, BOOST_PRODUCTS[key][15]);
 										},
 									}}
@@ -233,10 +226,6 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 												return;
 											}
 
-											addAnnouncement(
-												`Due to a temporary issue, you will need to rejoin to activate the boost.`,
-												AnnouncementType.Announcement,
-											);
 											useBoost.SendToServer(key, 15);
 										},
 									}}
@@ -321,8 +310,6 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
 
-											addAnnouncement(`Purchasing boost is currently disabled`, AnnouncementType.Error);
-											return;
 											MarketplaceService.PromptProductPurchase(Players.LocalPlayer, BOOST_PRODUCTS[key][30]);
 										},
 									}}
@@ -353,11 +340,6 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 												addAnnouncement(`You don't have any of that boost!`, AnnouncementType.Error);
 												return;
 											}
-
-											addAnnouncement(
-												`Due to a temporary issue, you will need to rejoin to activate the boost.`,
-												AnnouncementType.Announcement,
-											);
 											useBoost.SendToServer(key, 30);
 										},
 									}}
@@ -441,9 +423,6 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 										 */
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
-
-											addAnnouncement(`Purchasing boost is currently disabled`, AnnouncementType.Error);
-											return;
 											MarketplaceService.PromptProductPurchase(Players.LocalPlayer, BOOST_PRODUCTS[key][60]);
 										},
 									}}
@@ -474,11 +453,6 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 												addAnnouncement(`You don't have any of that boost!`, AnnouncementType.Error);
 												return;
 											}
-
-											addAnnouncement(
-												`Due to a temporary issue, you will need to rejoin to activate the boost.`,
-												AnnouncementType.Announcement,
-											);
 											useBoost.SendToServer(key, 60);
 										},
 									}}
@@ -562,9 +536,6 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 										 */
 										Activated: (): void => {
 											playSFX(UIEngagement.MajorEngagement);
-
-											addAnnouncement(`Purchasing boost is currently disabled`, AnnouncementType.Error);
-											return;
 											MarketplaceService.PromptProductPurchase(Players.LocalPlayer, BOOST_PRODUCTS[key][120]);
 										},
 									}}
@@ -595,11 +566,6 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 												addAnnouncement(`You don't have any of that boost!`, AnnouncementType.Error);
 												return;
 											}
-
-											addAnnouncement(
-												`Due to a temporary issue, you will need to rejoin to activate the boost.`,
-												AnnouncementType.Announcement,
-											);
 											useBoost.SendToServer(key, 120);
 										},
 									}}
