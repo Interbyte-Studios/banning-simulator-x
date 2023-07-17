@@ -78,10 +78,21 @@ remotes.Server.Get("requestFusion").SetCallback(
 			: RARITIES[petData.rarity].maxFusions;
 
 		if (petData.rarity === "Prismatic" || petData.rarity === "Primordial") {
-			return {
-				success: false,
-				reason: FusionFailKind.InternalError,
-			};
+			if (cachedGuids.size() !== maxFusions) {
+				return {
+					success: false,
+					reason: FusionFailKind.InternalError,
+				};
+			}
+		}
+
+		if (petData.rarity === "Exclusive") {
+			if (cachedGuids.size() / maxFusions < 0.7) {
+				return {
+					success: false,
+					reason: FusionFailKind.InternalError,
+				};
+			}
 		}
 
 		// check that player has enough money
