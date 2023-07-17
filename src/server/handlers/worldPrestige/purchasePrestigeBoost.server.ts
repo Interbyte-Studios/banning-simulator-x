@@ -21,21 +21,21 @@ remotes.Server.GetNamespace("worldPrestige")
 					break;
 				}
 				case 30: {
-					cost = 1;
-					if (currentState.worldPrestige[worldName].prestigeTokens < cost) {
-						hasEnoughTokens = false;
-					}
-					break;
-				}
-				case 60: {
 					cost = 2;
 					if (currentState.worldPrestige[worldName].prestigeTokens < cost) {
 						hasEnoughTokens = false;
 					}
 					break;
 				}
+				case 60: {
+					cost = 4;
+					if (currentState.worldPrestige[worldName].prestigeTokens < cost) {
+						hasEnoughTokens = false;
+					}
+					break;
+				}
 				case 120: {
-					cost = 3;
+					cost = 6;
 					if (currentState.worldPrestige[worldName].prestigeTokens < cost) {
 						hasEnoughTokens = false;
 					}
