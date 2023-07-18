@@ -240,6 +240,11 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 								}
 							}
 
+							if (petData.rarity === "Exclusive" && selectedPets.size() / maxFusions < 0.7) {
+								addAnnouncement(`You must reach 70% chance to fuse an Exclusive pet!`, AnnouncementType.Announcement);
+								return;
+							}
+
 							const petsToFuse = selectedPets.map((guid) => {
 								return guid;
 							});
