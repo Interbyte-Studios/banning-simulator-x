@@ -1,7 +1,15 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { CollectionService, ContextActionService, Players, ReplicatedStorage, Workspace } from "@rbxts/services";
+import {
+	CollectionService,
+	ContextActionService,
+	Lighting,
+	Players,
+	ReplicatedStorage,
+	TweenService,
+	Workspace,
+} from "@rbxts/services";
 import Icon from "@rbxts/topbar-plus";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
@@ -66,6 +74,9 @@ const visibilityStates = {
 };
 
 const updateLogIcon = new Icon().setImage(assetIds.images.decals.UpdateLog).setLabel("Update Log");
+const blurEffect = new Instance("BlurEffect");
+blurEffect.Size = 0;
+blurEffect.Parent = Lighting;
 
 export const Main = hooks((props: AppProps, { useState, useEffect, useContext, useCallback, useMemo }) => {
 	const [visibility, setVisibility] = useState(visibilityStates);
@@ -244,6 +255,15 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 	 * @returns Whether or not the menu is visible.
 	 */
 	const isVisible = useCallback((currentMenu: keyof typeof visibilityStates) => visibility[currentMenu], [visibility]);
+
+	useEffect(() => {
+		if (isMenuVisible()) {
+			blurEffect.Size = 0;
+			TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 20 }).Play();
+		} else {
+			TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 0 }).Play();
+		}
+	}, [visibility, isVisible]);
 
 	/**
 	 * The components that are visible.

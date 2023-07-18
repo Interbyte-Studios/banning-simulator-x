@@ -21,12 +21,12 @@ export const spinRewards: Record<
 		};
 	}
 > = {
-	1: { rewardType: "currency", rewardData: { name: "coins", amount: 100 } },
-	2: { rewardType: "currency", rewardData: { name: "gems", amount: 20 } },
-	3: { rewardType: "currency", rewardData: { name: "coins", amount: 600 } },
-	4: { rewardType: "boosts", rewardData: { boostName: "x2 Currency", boostAmount: 15 } },
+	1: { rewardType: "currency", rewardData: { name: "coins", amount: 2500 } },
+	2: { rewardType: "currency", rewardData: { name: "coins", amount: 5000 } },
+	3: { rewardType: "boosts", rewardData: { boostName: "x2 Hatching Luck", boostAmount: 15 } },
+	4: { rewardType: "boosts", rewardData: { boostName: "x2 Pet Experience", boostAmount: 15 } },
 	5: { rewardType: "pet", rewardData: { petId: 1, amount: 1 } },
-	6: { rewardType: "pet", rewardData: { petId: 12, amount: 1 } },
-	7: { rewardType: "pet", rewardData: { petId: 5, amount: 1 } },
-	8: { rewardType: "pet", rewardData: { petId: 2, amount: 1 } },
+	6: { rewardType: "pet", rewardData: { petId: 40, amount: 1 } },
+	7: { rewardType: "pet", rewardData: { petId: 92, amount: 1 } },
+	8: { rewardType: "pet", rewardData: { petId: 10011, amount: 1 } },
 };
