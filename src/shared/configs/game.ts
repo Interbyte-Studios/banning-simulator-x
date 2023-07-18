@@ -10,10 +10,13 @@ export const BANS_LEADERBOARD_ODS = `${STORE_SCOPE}_BANS_ODS_1`;
 export const EGGS_LEADERBOARD_ODS = `${STORE_SCOPE}_EGGS_ODS_1`;
 export const LEADERBOARD_UPDATE_INTERVAL = 60;
 
-export const GAME_VERSION = "2.0";
+export const GAME_VERSION = "3.0";
 
 export const MAX_TRADE_OFFER_SIZE = 10;
 export const MAX_TRADE_LOGS = 25;
+
+export const TEN_SPINS = 1583558881;
+export const ONE_HUNDRED_SPINS = 1583561170;
 
 export const isGamepass = t.literal(
 	"x2 Luck",

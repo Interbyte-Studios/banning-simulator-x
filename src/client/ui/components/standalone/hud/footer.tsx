@@ -6,6 +6,7 @@ import { CodesIcon } from "./codesIcon";
 import { SettingsIcon } from "./settingsIcon";
 import { ShopIcon } from "./shopIcon";
 import { TradingIcon } from "./tradingIcon";
+import { WheelSpinIcon } from "./wheelSpingIcon";
 
 interface HUDFooterProps {
 	displayTradingMenu: () => void;
@@ -32,6 +33,7 @@ export const HUDFooter = hooks((props: HUDFooterProps) => {
 			<CodesIcon displayIcon={props.displayCodes} />
 			<SettingsIcon displayIcon={props.displaySettings} />
 			<ShopIcon displayIcon={props.displayShop} />
+			<WheelSpinIcon displayIcon={props.displaySpinWheel} />
 		</BaseFrame>
 	);
 });

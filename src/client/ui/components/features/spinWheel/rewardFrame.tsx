@@ -7,6 +7,7 @@ import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 
 interface SpinRewardFrameProps {
+	rewardType: "boost" | "pet" | "currency";
 	rewardData: {
 		image: string;
 		amount: number;
@@ -80,7 +81,7 @@ export const SpinRewardFrame = hooks((props: SpinRewardFrameProps, hooks) => {
 						<uiaspectratioconstraint AspectRatio={1} />
 					</imagelabel>
 					<textlabel
-						Text={"x" + tostring(props.rewardData.amount)}
+						Text={props.rewardType === "boost" ? `15m` : `x${props.rewardData.amount}`}
 						TextScaled={true}
 						Position={UDim2.fromScale(0.65, 0.35)}
 						AnchorPoint={vec2Middle}

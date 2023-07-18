@@ -84,4 +84,14 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 800,
 		},
 	},
+	"Googly Chest": {
+		chance: 0,
+		id: 10011,
+		rarity: "Exclusive",
+		fusionCost: 20000,
+		stats: {
+			additionalDamage: 2500,
+			additionalBans: 200,
+		},
+	},
 };

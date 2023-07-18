@@ -1,42 +1,12 @@
 import { HttpService } from "@rbxts/services";
 import { spinRewards } from "shared/configs/spinWheel";
 import { Store } from "shared/rodux";
-import { claimBoost } from "shared/rodux/boosts";
+import { storeBoost } from "shared/rodux/boosts";
 import { awardCurrency } from "shared/rodux/currencies";
 import { AddedPet, addPets } from "shared/rodux/pets";
-import { updateWheelTime, updateWheelUses } from "shared/rodux/spinWheel";
+import { spinTheWheel } from "shared/rodux/spinWheel";
 import { getPetData } from "shared/util/getPetData";
-
-// Values
-const spinWaitTime = 60 * 60;
-const spinDayTime = 24 * (60 * 60);
-
 /**
- *
- * @param store The store of the player.
- */
-export function updateSpinWheelInfo(store: Store): void {
-	const spinWheel = store.getState().spinWheel;
-	const currentTime = DateTime.now().UnixTimestamp;
-
-	if (spinWheel.spinsDone === 0) {
-		store.dispatch(updateWheelTime(currentTime, currentTime, currentTime + spinDayTime));
-		return;
-	}
-
-	if (spinWheel.spinsDone < 6) {
-		return;
-	}
-
-	if (currentTime > spinWheel.dayEndTime) {
-		store.dispatch(updateWheelTime(currentTime, currentTime + spinWaitTime, currentTime + spinDayTime));
-		store.dispatch(updateWheelUses(0));
-		return;
-	}
-}
-
-/**
- *
  * @param store The current store of the player.
  * @param rewardIndex The index of the reward won.
  */
@@ -49,7 +19,7 @@ export function spinWheelReward(store: Store, rewardIndex: number): void {
 
 	if (rewardData.rewardType === "boosts") {
 		store.dispatch(
-			claimBoost(rewardData.rewardData.boostName ?? "x2 Currency", rewardData.rewardData.boostAmount ?? 15, 0),
+			storeBoost(rewardData.rewardData.boostName ?? "x2 Currency", rewardData.rewardData.boostAmount ?? 15),
 		);
 	} else if (rewardData.rewardType === "pet") {
 		if (rewardData.rewardData.petId === undefined) {
@@ -79,22 +49,13 @@ export function spinWheelReward(store: Store, rewardIndex: number): void {
  */
 export function spinWheel(store: Store): { reward: number | undefined } {
 	const spinWheel = store.getState().spinWheel;
+	if (spinWheel.spinsAvailable <= 0) {
+		return { reward: undefined };
+	}
+
 	const currentTime = DateTime.now().UnixTimestamp;
 	const prizeWon = new Random().NextInteger(1, 8);
-
-	updateSpinWheelInfo(store);
-
-	if (spinWheel.spinsDone === 6) {
-		return { reward: undefined };
-	}
-
-	if (currentTime < spinWheel.endTime) {
-		return { reward: undefined };
-	}
-
-	store.dispatch(updateWheelTime(currentTime, currentTime + spinWaitTime, spinWheel.dayEndTime));
-	store.dispatch(updateWheelUses(spinWheel.spinsDone + 1));
-
 	spinWheelReward(store, prizeWon);
+	store.dispatch(spinTheWheel(currentTime));
 	return { reward: prizeWon };
 }
