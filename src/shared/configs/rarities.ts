@@ -66,8 +66,8 @@ export const RARITIES = {
 	Prismatic: {
 		id: 6,
 		reverseId: 3,
-		maxFusions: 4,
-		betterMaxFusions: 3,
+		maxFusions: 6,
+		betterMaxFusions: 5,
 		BeginningColor: Color3.fromRGB(255, 222, 222),
 		EndingColor: Color3.fromRGB(255, 62, 62),
 		SpecialColor: new ColorSequence([
@@ -83,8 +83,8 @@ export const RARITIES = {
 	Primordial: {
 		id: 7,
 		reverseId: 2,
-		maxFusions: 3,
-		betterMaxFusions: 2,
+		maxFusions: 4,
+		betterMaxFusions: 3,
 		BeginningColor: Color3.fromRGB(255, 185, 186),
 		EndingColor: Color3.fromRGB(255, 186, 12),
 		SpecialColor: new ColorSequence([

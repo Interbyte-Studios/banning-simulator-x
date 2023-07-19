@@ -54,4 +54,44 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 40,
 		},
 	},
+	"Minty Kitty": {
+		chance: 0,
+		id: 10008,
+		rarity: "Exclusive",
+		fusionCost: 100,
+		stats: {
+			additionalDamage: 7000,
+			additionalBans: 280,
+		},
+	},
+	"Serene Bunny": {
+		chance: 0,
+		id: 10009,
+		rarity: "Exclusive",
+		fusionCost: 1000,
+		stats: {
+			additionalDamage: 13500,
+			additionalBans: 550,
+		},
+	},
+	"Shattered Diety": {
+		chance: 0,
+		id: 10010,
+		rarity: "Exclusive",
+		fusionCost: 20000,
+		stats: {
+			additionalDamage: 17000,
+			additionalBans: 800,
+		},
+	},
+	"Googly Chest": {
+		chance: 0,
+		id: 10011,
+		rarity: "Exclusive",
+		fusionCost: 20000,
+		stats: {
+			additionalDamage: 2500,
+			additionalBans: 200,
+		},
+	},
 };

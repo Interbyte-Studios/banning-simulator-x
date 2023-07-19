@@ -211,7 +211,7 @@ export const WeaponInfoDisplay = RoactRodux.connect(mapStateToProps)(
 		const levelReq = WEAPON_LEVELS.find((wepReq) => wepReq.level === nextLevel);
 		assert(levelReq, `Failed to get level requirements for weapon level: "${nextLevel}"`);
 
-		const progress = nextLevel === 10 ? 1 : storedWeapon.bans / levelReq.requiredBans;
+		const progress = storedWeapon.level === 10 ? 1 : storedWeapon.bans / levelReq.requiredBans;
 
 		useEffect(() => {
 			if (!props.shouldAnimate) {

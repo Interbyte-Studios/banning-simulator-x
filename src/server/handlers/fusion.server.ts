@@ -6,22 +6,17 @@ import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { remotes } from "shared/remotes";
 import { FusionFailKind } from "shared/remotes/fusing";
 import { awardCurrency } from "shared/rodux/currencies";
-import { deletePets, FusedPet, fusePets, isValidFusableVariant } from "shared/rodux/pets";
+import { deletePets, FusedPet, fusePets } from "shared/rodux/pets";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetData } from "shared/util/getPetData";
 
-remotes.Server.Create("requestFusion").SetCallback(
+remotes.Server.Get("requestFusion").SetCallback(
 	withPlayerStore((_, store, petsToFuse, variant) => {
 		const currentState = store.getState();
 
-		if (!isValidFusableVariant(variant)) {
-			return {
-				success: false,
-				reason: FusionFailKind.InternalError,
-			};
-		}
+		const previousVariant = variant === "radiant" ? "void" : "regular";
 
 		// check that all pets have the same id and are the same variant
 		const cachedGuids: Array<string> = [];
@@ -42,7 +37,7 @@ remotes.Server.Create("requestFusion").SetCallback(
 				};
 			}
 
-			if (storedPet.variant !== variant) {
+			if (storedPet.variant !== previousVariant) {
 				return {
 					success: false,
 					reason: FusionFailKind.InternalError,
@@ -82,6 +77,24 @@ remotes.Server.Create("requestFusion").SetCallback(
 			? RARITIES[petData.rarity].betterMaxFusions
 			: RARITIES[petData.rarity].maxFusions;
 
+		if (petData.rarity === "Prismatic" || petData.rarity === "Primordial") {
+			if (cachedGuids.size() !== maxFusions) {
+				return {
+					success: false,
+					reason: FusionFailKind.InternalError,
+				};
+			}
+		}
+
+		if (petData.rarity === "Exclusive") {
+			if (cachedGuids.size() / maxFusions < 0.7) {
+				return {
+					success: false,
+					reason: FusionFailKind.InternalError,
+				};
+			}
+		}
+
 		// check that player has enough money
 		const eggName = getEggNameFromPetId(petId);
 		const eggData = getEggData(eggName);
@@ -119,7 +132,7 @@ remotes.Server.Create("requestFusion").SetCallback(
 						type: "deletePet",
 						petId: storedPet.id,
 						variant: storedPet.variant,
-						amount: petsToFuse.size(),
+						amount: 1,
 					});
 				}
 			}
@@ -143,6 +156,13 @@ remotes.Server.Create("requestFusion").SetCallback(
 			type: "addPet",
 			petId: petData.id,
 			variant,
+		});
+
+		modifyPetCount({
+			type: "deletePet",
+			petId: petData.id,
+			variant: previousVariant,
+			amount: petsToFuse.size(),
 		});
 
 		store.dispatch(deletePets(petsToFuse));

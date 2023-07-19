@@ -2,6 +2,7 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Workspace } from "@rbxts/services";
+import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { hooks } from "client/ui/hooks";
 import { EGGS } from "shared/configs/eggs";
 import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
@@ -37,57 +38,55 @@ function mapStateToProps(state: StoreState): EggCostMappedProps {
 export const EggCost = RoactRodux.connect(mapStateToProps)(
 	hooks((props: EggCostMappedProps) => {
 		return (
-			<>
-				{Object.entries(EGGS).map(([eggName, eggData]) => {
-					if (!eggData.hatchable) {
-						return <></>;
-					}
-					const eggModel = Workspace.interactions.eggs[eggName];
+			<BaseFrame>
+				<>
+					{Object.entries(EGGS).map(([eggName, eggData]) => {
+						if (!eggData.hatchable) {
+							return <></>;
+						}
+						const eggModel = Workspace.interactions.eggs[eggName];
 
-					if (eggName === "Radioactive") {
+						// find reduced egg cost provided by player mastery
+						const eggMasteryReducedMultiplier = getEggsMastery(props.eggs).reducedEggCostMultiplier;
+						const eggCostRegular = getEggCost(eggName, false, eggMasteryReducedMultiplier);
+						const eggCostVoid = getEggCost(eggName, true, eggMasteryReducedMultiplier);
+
+						const worldPrestigeReducer = props.worldPrestige[eggData.world].reducedVoidEggCostUpgrades;
+						const reducedVoidCost =
+							eggCostVoid.amount * worldPrestigeReducer * WORLD_PRESTIGE.reducedVoidEggCost.reducedCostMultiplier;
+
+						if (eggName === "500k Event") {
+							return (
+								<>
+									<EggCostDisplay
+										adornee={eggModel.regular.cost}
+										cost={eggCostRegular.amount}
+										currency={eggCostRegular.currencyType}
+										isVoid={false}
+									/>
+								</>
+							);
+						}
+
 						return (
 							<>
 								<EggCostDisplay
 									adornee={eggModel.regular.cost}
-									cost={0}
-									currency={"coins"}
+									cost={eggCostRegular.amount}
+									currency={eggCostRegular.currencyType}
 									isVoid={false}
-									isLimited={true}
+								/>
+								<EggCostDisplay
+									adornee={eggModel.void.cost}
+									cost={eggCostVoid.amount - reducedVoidCost}
+									currency={eggCostVoid.currencyType}
+									isVoid={true}
 								/>
 							</>
 						);
-					}
-
-					// find reduced egg cost provided by player mastery
-					const eggMasteryReducedMultiplier = getEggsMastery(props.eggs).reducedEggCostMultiplier;
-					const eggCostRegular = getEggCost(eggName, false, eggMasteryReducedMultiplier);
-					const eggCostVoid = getEggCost(eggName, true, eggMasteryReducedMultiplier);
-
-					let reducedVoidCost = 0;
-					if (eggData.world !== "Limited") {
-						const worldPrestigeReducer = props.worldPrestige[eggData.world].reducedVoidEggCostUpgrades;
-						reducedVoidCost =
-							eggCostVoid.amount * worldPrestigeReducer * WORLD_PRESTIGE.reducedVoidEggCost.reducedCostMultiplier;
-					}
-
-					return (
-						<>
-							<EggCostDisplay
-								adornee={eggModel.regular.cost}
-								cost={eggCostRegular.amount}
-								currency={eggCostRegular.currencyType}
-								isVoid={false}
-							/>
-							<EggCostDisplay
-								adornee={eggModel.void.cost}
-								cost={eggCostVoid.amount - reducedVoidCost}
-								currency={eggCostVoid.currencyType}
-								isVoid={true}
-							/>
-						</>
-					);
-				})}
-			</>
+					})}
+				</>
+			</BaseFrame>
 		);
 	}),
 );

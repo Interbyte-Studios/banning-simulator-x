@@ -175,7 +175,8 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 					CanvasPosition={new Vector2(0, 0)}
 					Position={UDim2.fromScale(0.5, 0.62)}
 					Size={UDim2.fromScale(0.95, 0.675)}
-					ScrollBarThickness={0}
+					ScrollBarThickness={12}
+				BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uilistlayout
@@ -242,7 +243,8 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 					CanvasPosition={new Vector2(0, 0)}
 					Position={UDim2.fromScale(0.5, 0.62)}
 					Size={UDim2.fromScale(0.95, 0.675)}
-					ScrollBarThickness={0}
+					ScrollBarThickness={12}
+				BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uigridlayout

@@ -6,11 +6,11 @@ import { remotes } from "shared/remotes";
 import { admin_ModifyPetLevel } from "shared/rodux/pets";
 
 remotes.Server.GetNamespace("admin")
-	.Create("admin_ModifyPetLevel")
+	.Get("admin_ModifyPetLevel")
 	.Connect(
 		withPlayerStore((adminPlayer, store, targetPlayerId, petData) => {
 			const groupRank = store.getState().index.groupRank;
-			if (groupRank === undefined || groupRank < MODERATOR_RANK) {
+			if (groupRank < MODERATOR_RANK) {
 				return;
 			}
 

@@ -9,7 +9,7 @@ import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getZoneData } from "shared/util/getZoneData";
 
 remotes.Server.GetNamespace("pets")
-	.Create("enhancePet")
+	.Get("enhancePet")
 	.SetCallback(
 		withPlayerStore((_, store, guid, id, variant) => {
 			const currentState = store.getState();

@@ -1,4 +1,4 @@
-import { ReplicatedStorage, Workspace } from "@rbxts/services";
+import { ReplicatedStorage } from "@rbxts/services";
 import { playerStores } from "server/playerStore";
 import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { WORLDS } from "shared/configs/worlds";
@@ -35,8 +35,6 @@ const NPC_ATTACK_COOLDOWN = 2;
 */
 
 const random = new Random();
-
-const emitters = ReplicatedStorage.assetObjects.emitters;
 
 /**
  * Runs a simulation step for NPCs.
@@ -79,13 +77,6 @@ export function runStep(
 				npcCharacter.Humanoid.Health = selectedNpc.health;
 				npcCharacter.PivotTo(getRandomCFrame(zone.spawn.min, zone.spawn.max, random));
 				npcCharacter.Parent = getNpcFolder();
-
-				const impactEmitter = emitters["impact emitters"].Impact.Clone();
-				const attachment = impactEmitter.FindFirstChildOfClass("Attachment");
-				assert(attachment, `Failed to get attachment for impact emitter.`);
-				attachment.Parent = npcCharacter.Humanoid.RootPart;
-				attachment.Name = "ImpactEmitter";
-				impactEmitter.Destroy();
 
 				zone.npcs.push({
 					npc: selectedNpc,
@@ -141,7 +132,7 @@ export function runStep(
 		}
 
 		// check distance between player and npc
-		if (humanoidRootPart.Position.sub(playerRootPart.Position).Magnitude > 8) {
+		if (playerRootPart.Position.sub(humanoidRootPart.Position).Magnitude > 8) {
 			continue;
 		}
 
@@ -254,42 +245,6 @@ export function runStep(
 				),
 			);
 
-			// display ban emitter
-			const banEmitters =
-				weaponDamage >= npc.instance.Humanoid.MaxHealth ? emitters["crit ban emitters"] : emitters["ban emitters"];
-
-			const randomBanEmitterIndex = math.ceil(math.random(1, banEmitters.GetChildren().size())) - 1;
-			const randomBanEmitter = banEmitters.GetChildren()[randomBanEmitterIndex] as BasePart;
-			if (randomBanEmitter === undefined) {
-				warn(`[ NPC RunStep ] - Failed to get ban emitter for index ${randomBanEmitterIndex}`);
-				continue;
-			}
-
-			const banEmitter = randomBanEmitter.Clone();
-			banEmitter.CFrame = humanoidRootPart.CFrame;
-			banEmitter.Parent = Workspace;
-
-			const impactEmitter = humanoidRootPart.FindFirstChild("ImpactEmitter") as Attachment;
-			if (impactEmitter !== undefined) {
-				impactEmitter.Parent = banEmitter;
-
-				for (const particleEmitter of impactEmitter.GetChildren()) {
-					if (!particleEmitter.IsA("ParticleEmitter")) {
-						continue;
-					}
-
-					particleEmitter.Emit(1);
-					task.delay(particleEmitter.Lifetime.Max, () => {
-						particleEmitter.Clear();
-					});
-				}
-			}
-
-			const emitter = banEmitter.FindFirstChild("Attachment")?.FindFirstChild("Banned") as ParticleEmitter;
-			if (emitter !== undefined) {
-				emitter.Emit(1);
-			} else warn("[ NPC RunStep ] - emitter is undefined");
-
 			// kill npc
 			npcs.delete(npc);
 
@@ -300,28 +255,6 @@ export function runStep(
 			// get rid of npc instance
 			npc.instance.Parent = undefined;
 			npcCharacterToNpc.delete(character);
-
-			task.delay(emitter.Lifetime.Max, () => {
-				emitter.Clear();
-				banEmitter.Destroy();
-			});
-		} else {
-			const emitter = humanoidRootPart.FindFirstChild("ImpactEmitter") as Attachment;
-			if (emitter === undefined) {
-				warn(`[ NPC RunStep ] - Failed to get impact emitter for npc ${npc.instance.Name}`);
-				continue;
-			}
-
-			for (const particleEmitter of emitter.GetChildren()) {
-				if (!particleEmitter.IsA("ParticleEmitter")) {
-					continue;
-				}
-
-				particleEmitter.Emit(1);
-				task.delay(particleEmitter.Lifetime.Max, () => {
-					particleEmitter.Clear();
-				});
-			}
 		}
 	}
 

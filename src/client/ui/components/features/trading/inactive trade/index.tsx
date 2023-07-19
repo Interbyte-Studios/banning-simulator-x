@@ -87,8 +87,8 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 							throw `Attempted to decline a trade request, but the trading player is undefined.`;
 						}
 
-						warn(`Declined trade request`);
 						declineTradeRequest.SendToServer(props.tradingPlayer);
+						setIsTrading(false);
 						props.disableTradeRequest();
 						props.setTradingPlayer(undefined);
 						addAnnouncement(`You declined ${props.tradingPlayer}'s trade request.`, AnnouncementType.Error);

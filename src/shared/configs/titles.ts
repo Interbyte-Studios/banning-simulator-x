@@ -705,8 +705,24 @@ export const TITLES = [
 
 	// Misc titles
 	{
-		name: "Interbyte Club",
+		name: "Official Fan",
 		id: 44,
+		effect: new ColorSequence([
+			new ColorSequenceKeypoint(0, Color3.fromRGB(85, 255, 127)),
+			new ColorSequenceKeypoint(0.15, Color3.fromRGB(85, 255, 0)),
+			new ColorSequenceKeypoint(0.4, Color3.fromRGB(85, 170, 255)),
+			new ColorSequenceKeypoint(0.5, Color3.fromRGB(85, 170, 255)),
+			new ColorSequenceKeypoint(0.6, Color3.fromRGB(85, 170, 255)),
+			new ColorSequenceKeypoint(0.85, Color3.fromRGB(85, 255, 0)),
+			new ColorSequenceKeypoint(1, Color3.fromRGB(85, 255, 127)),
+		]),
+		category: TitleType.Misc,
+		description: "Players who've met an Interbyte developer.",
+		condition: (state): boolean => state.index.hasMetDeveloper,
+	},
+	{
+		name: "Interbyte Club",
+		id: 45,
 		effect: new ColorSequence([
 			new ColorSequenceKeypoint(0, Color3.fromRGB(32, 43, 255)),
 			new ColorSequenceKeypoint(0.15, Color3.fromRGB(70, 141, 255)),
@@ -722,7 +738,7 @@ export const TITLES = [
 	},
 	{
 		name: "VIP",
-		id: 45,
+		id: 46,
 		effect: new ColorSequence([
 			new ColorSequenceKeypoint(0, Color3.fromRGB(255, 0, 0)),
 			new ColorSequenceKeypoint(0.15, Color3.fromRGB(255, 126, 61)),
@@ -737,8 +753,24 @@ export const TITLES = [
 		condition: (state): boolean => state.gamepasses.VIP,
 	},
 	{
+		name: "Contributor",
+		id: 47,
+		effect: new ColorSequence([
+			new ColorSequenceKeypoint(0, Color3.fromRGB(28, 126, 255)),
+			new ColorSequenceKeypoint(0.15, Color3.fromRGB(82, 255, 203)),
+			new ColorSequenceKeypoint(0.4, Color3.fromRGB(148, 255, 157)),
+			new ColorSequenceKeypoint(0.5, Color3.fromRGB(255, 244, 245)),
+			new ColorSequenceKeypoint(0.6, Color3.fromRGB(148, 255, 157)),
+			new ColorSequenceKeypoint(0.85, Color3.fromRGB(82, 255, 203)),
+			new ColorSequenceKeypoint(1, Color3.fromRGB(28, 126, 255)),
+		]),
+		category: TitleType.Misc,
+		description: "Contributors to Interbyte Studios.",
+		condition: (state): boolean => state.index.groupRank !== undefined && state.index.groupRank >= 248,
+	},
+	{
 		name: "Verified",
-		id: 46,
+		id: 48,
 		effect: new ColorSequence([
 			new ColorSequenceKeypoint(0, Color3.fromRGB(255, 85, 127)),
 			new ColorSequenceKeypoint(0.15, Color3.fromRGB(255, 152, 154)),
@@ -754,7 +786,7 @@ export const TITLES = [
 	},
 	{
 		name: "Staff Team",
-		id: 47,
+		id: 49,
 		effect: new ColorSequence([
 			new ColorSequenceKeypoint(0, Color3.fromRGB(0, 85, 255)),
 			new ColorSequenceKeypoint(0.15, Color3.fromRGB(12, 182, 255)),
@@ -770,7 +802,7 @@ export const TITLES = [
 	},
 	{
 		name: "Admin",
-		id: 48,
+		id: 50,
 		effect: new ColorSequence([
 			new ColorSequenceKeypoint(0, Color3.fromRGB(255, 0, 0)),
 			new ColorSequenceKeypoint(0.15, Color3.fromRGB(132, 0, 2)),

@@ -3,7 +3,7 @@ import { remotes } from "shared/remotes";
 import { deletePetTeam } from "shared/rodux/petTeams";
 
 remotes.Server.GetNamespace("pets")
-	.Create("deletePetTeam")
+	.Get("deletePetTeam")
 	.Connect(
 		withPlayerStore((_, store, teamId) => {
 			const currentState = store.getState();

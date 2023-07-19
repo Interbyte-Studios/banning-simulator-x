@@ -8,9 +8,11 @@ import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
+import { GAMEPASSES } from "shared/configs/game";
 
 import { Boosts } from "./boosts";
 import { Gamepasses } from "./gamepasses";
+import { GiftGamepass } from "./giftGamepass";
 import { Limiteds } from "./limiteds";
 
 interface RobuxShopProps {
@@ -26,6 +28,11 @@ interface RobuxShopProps {
  */
 export const RobuxShop = hooks((props: RobuxShopProps, { useState }) => {
 	const [purchaseSuccessful, setPurchaseSuccess] = useState(false);
+	const [giftGamepass, setGiftGamepass] = useState<keyof typeof GAMEPASSES | undefined>(undefined);
+
+	if (giftGamepass !== undefined) {
+		return <GiftGamepass gamepassName={giftGamepass} returnToShop={(): void => setGiftGamepass(undefined)} />;
+	}
 
 	let elementToDisplay: Roact.Element = <></>;
 	if (purchaseSuccessful) {
@@ -96,12 +103,12 @@ export const RobuxShop = hooks((props: RobuxShopProps, { useState }) => {
 					BorderSizePixel={0}
 					Position={UDim2.fromScale(0.5, 0.56)}
 					Size={UDim2.fromScale(0.99, 0.815)}
-					CanvasSize={UDim2.fromScale(0, 5)}
+					CanvasSize={UDim2.fromScale(0, 6)}
 					ScrollBarImageColor3={Color3.fromRGB(22, 0, 190)}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<Limiteds />
-					<Gamepasses />
+					<Gamepasses giftGamepass={(gamepassName: keyof typeof GAMEPASSES): void => setGiftGamepass(gamepassName)} />
 					<Boosts />
 				</scrollingframe>
 			</>

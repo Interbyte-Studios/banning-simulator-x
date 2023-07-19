@@ -1,5 +1,6 @@
 import Rodux from "@rbxts/rodux";
 import { Players, RunService } from "@rbxts/services";
+import { deserialize } from "shared/datastore/serde";
 import { remotes } from "shared/remotes";
 import { Store, storeReducer } from "shared/rodux";
 import { getOrSetDefault } from "shared/util/getOrSetDefault";
@@ -66,7 +67,7 @@ function onPlayerRemoving(player: Player): void {
 remotes.Client.GetNamespace("rodux")
 	.Get("storeStateCreated")
 	.Connect((player, state) => {
-		const store = new Rodux.Store(storeReducer, state);
+		const store = new Rodux.Store(storeReducer, deserialize(state));
 		stores.set(player, store);
 
 		// call creation callbacks
@@ -94,7 +95,7 @@ Players.GetPlayers().forEach(async (player) => {
 		return;
 	}
 
-	const store = new Rodux.Store(storeReducer, storeState.state);
+	const store = new Rodux.Store(storeReducer, deserialize(storeState));
 	stores.set(player, store);
 
 	// call creation callbacks

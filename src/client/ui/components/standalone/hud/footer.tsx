@@ -6,12 +6,14 @@ import { CodesIcon } from "./codesIcon";
 import { SettingsIcon } from "./settingsIcon";
 import { ShopIcon } from "./shopIcon";
 import { TradingIcon } from "./tradingIcon";
+import { WheelSpinIcon } from "./wheelSpingIcon";
 
 interface HUDFooterProps {
 	displayTradingMenu: () => void;
 	displayCodes: () => void;
 	displaySettings: () => void;
 	displayShop: () => void;
+	displaySpinWheel: () => void;
 }
 
 export const HUDFooter = hooks((props: HUDFooterProps) => {
@@ -21,16 +23,17 @@ export const HUDFooter = hooks((props: HUDFooterProps) => {
 			Size={UDim2.fromScale(0.9, 0.15)}
 			Position={UDim2.fromScale(0.03, 0.84)}
 		>
-			<uilistlayout
-				Padding={new UDim(0.05, 0)}
-				FillDirection={Enum.FillDirection.Horizontal}
+			<uigridlayout
+				CellPadding={UDim2.fromScale(0, 0.2)}
+				CellSize={UDim2.fromScale(0.24, 0.95)}
+				FillDirectionMaxCells={4}
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
-				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>
 			<TradingIcon displayTrading={props.displayTradingMenu} />
 			<CodesIcon displayIcon={props.displayCodes} />
 			<SettingsIcon displayIcon={props.displaySettings} />
 			<ShopIcon displayIcon={props.displayShop} />
+			<WheelSpinIcon displayIcon={props.displaySpinWheel} />
 		</BaseFrame>
 	);
 });

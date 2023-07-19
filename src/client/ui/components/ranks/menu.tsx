@@ -331,7 +331,8 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 					BackgroundTransparency={1}
 					Position={UDim2.fromScale(0.5, 0.55)}
 					Size={UDim2.fromScale(0.95, 0.835)}
-					ScrollBarThickness={0}
+					ScrollBarThickness={12}
+				BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uilistlayout

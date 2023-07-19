@@ -64,7 +64,8 @@ export const PetTeams = RoactRodux.connect(mapStateToProps)(
 				BackgroundTransparency={1}
 				Position={UDim2.fromScale(0.5, 0.61)}
 				Size={UDim2.fromScale(0.975, 0.75)}
-				ScrollBarThickness={0}
+				ScrollBarThickness={12}
+				BorderSizePixel={0}
 				ScrollingDirection={Enum.ScrollingDirection.Y}
 			>
 				<uilistlayout

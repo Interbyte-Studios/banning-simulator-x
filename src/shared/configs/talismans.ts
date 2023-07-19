@@ -6,7 +6,8 @@ export interface TalismanStatEffects {
 	walkspeed: number;
 }
 
-export type TalismanPhases = "normal" | "awakend" | "artifact";
+export const isTalismanPhase = t.literal("normal", "awakend", "artifact");
+export type TalismanPhases = t.static<typeof isTalismanPhase>;
 
 export interface Talisman {
 	id: number;

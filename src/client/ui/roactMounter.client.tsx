@@ -11,6 +11,7 @@ import { adminRemotes } from "./remotes/admin";
 import { boostRemotes } from "./remotes/boosts";
 import { eggsRemotes } from "./remotes/eggs";
 import { fusionRemtoes } from "./remotes/fusion";
+import { gamepassRemotes } from "./remotes/gamepasses";
 import { mediaRemotes } from "./remotes/media";
 import { petMasteryRemotes } from "./remotes/petMastery";
 import { petRemtoes } from "./remotes/pets";
@@ -43,6 +44,7 @@ onStoreCreated(player)
 					...boostRemotes,
 					...eggsRemotes,
 					...fusionRemtoes,
+					...gamepassRemotes,
 					...mediaRemotes,
 					...petRemtoes,
 					...petMasteryRemotes,

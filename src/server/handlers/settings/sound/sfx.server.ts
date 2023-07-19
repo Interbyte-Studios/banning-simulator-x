@@ -4,7 +4,7 @@ import { toggleSoundEffectsVolume } from "shared/rodux/settings";
 
 const toggleSoundEffectsVolumeRemote = remotes.Server.GetNamespace("settings")
 	.GetNamespace("sound")
-	.Create("toggleSoundEffectsVolume");
+	.Get("toggleSoundEffectsVolume");
 toggleSoundEffectsVolumeRemote.Connect(
 	withPlayerStore((_, store, volume) => store.dispatch(toggleSoundEffectsVolume(volume))),
 );

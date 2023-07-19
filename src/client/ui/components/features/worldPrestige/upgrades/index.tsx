@@ -6,19 +6,19 @@ import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
-import { SpringImageLabel } from "client/ui/elements/baseElements/imagelabels/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { BOOST_IMAGES } from "shared/configs/game";
 import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { WorldName } from "shared/configs/worlds";
 import { StoreState } from "shared/rodux";
 import { WorldPrestigeState } from "shared/rodux/worldPrestige";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
+
+import { WorldPrestigeBoostPurchase } from "./boostPurchase";
 
 interface WorldPrestigeUpgradesProps extends WorldPrestigeUpgradesMappedProps {
 	worldName: WorldName;
@@ -39,6 +39,9 @@ const mapStateToProps = (state: StoreState): WorldPrestigeUpgradesMappedProps =>
 	};
 };
 
+/**
+ * A component to display the possible upgrades for a world prestige.
+ */
 export const WorldPrestigeUpgrades = RoactRodux.connect(mapStateToProps)(
 	hooks((props: WorldPrestigeUpgradesProps, { useContext }) => {
 		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
@@ -47,7 +50,6 @@ export const WorldPrestigeUpgrades = RoactRodux.connect(mapStateToProps)(
 			purchaseWorldPrestigeFusionUpgrade,
 			purchaseWorldPrestigePetsUpgrade,
 			purchaseWorldPrestigeVoidEggUpgrade,
-			purchasePrestigeBoost,
 		} = useContext(remoteContext);
 
 		const storedWorldPrestige = props.worldPrestige[props.worldName];
@@ -94,6 +96,7 @@ export const WorldPrestigeUpgrades = RoactRodux.connect(mapStateToProps)(
 					Size={UDim2.fromScale(0.97, 0.845)}
 					ScrollBarImageColor3={Color3.fromRGB(0, 109, 176)}
 					ScrollBarThickness={15}
+					BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					{/* World Prestige Upgrades [ Needs to be refactored obviously to reduce copy pasta ] */}
@@ -622,600 +625,78 @@ export const WorldPrestigeUpgrades = RoactRodux.connect(mapStateToProps)(
 						}}
 						stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
 					/>
-					<BaseFrame
-						BackgroundColor3={Color3.fromRGB(12, 134, 211)}
-						BackgroundTransparency={0}
-						Position={UDim2.fromScale(0.145, 0.581)}
-						Size={UDim2.fromScale(0.28, 0.28)}
-					>
-						<uiaspectratioconstraint AspectRatio={1} />
-						<uicorner CornerRadius={new UDim(0.2, 0)} />
-						<BaseUIStroke native={{ Thickness: 3, Color: uiDarkStrokeColor }} />
-
-						<SpringImageButton
-							native={{
-								Position: UDim2.fromScale(0.9, 0.85),
-								Image: assetIds.images.vectors.trading.Upgrade,
-								ImageColor3:
-									storedWorldPrestige.prestigeTokens < 1
-										? Color3.fromRGB(127, 127, 127)
-										: Color3.fromRGB(255, 255, 255),
-							}}
-							size={{ minSize: 0.23, maxSize: 0.28 }}
-							events={{
-								/**
-								 *
-								 */
-								Activated: (): void => {
-									if (storedWorldPrestige.prestigeTokens < 1) {
-										addAnnouncement(`You don't have enough prestige tokens!`, AnnouncementType.Error);
-										return;
-									}
-
-									purchasePrestigeBoost.SendToServer(props.worldName, "x2 Currency", 30);
-								},
-							}}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageButton>
-
-						<SpringImageLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.45),
-								Image: BOOST_IMAGES["x2 Currency"][30],
-							}}
-							size={{ minSize: 0.6, maxSize: 0.7 }}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageLabel>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.025),
-								Size: UDim2.fromScale(1, 0.155),
-								Text: "x2 Currency (30m)",
-							}}
-							stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
-						/>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.4, 0.87),
-								Size: UDim2.fromScale(0.7, 0.2),
-								Text: "Buy (1 Token)",
-								TextXAlignment: Enum.TextXAlignment.Right,
-							}}
-							stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(12, 129, 6) } }}
-						/>
-					</BaseFrame>
-					<BaseFrame
-						BackgroundColor3={Color3.fromRGB(12, 134, 211)}
-						BackgroundTransparency={0}
-						Position={UDim2.fromScale(0.485, 0.581)}
-						Size={UDim2.fromScale(0.28, 0.28)}
-					>
-						<uiaspectratioconstraint AspectRatio={1} />
-						<uicorner CornerRadius={new UDim(0.2, 0)} />
-						<BaseUIStroke native={{ Thickness: 3, Color: uiDarkStrokeColor }} />
-
-						<SpringImageButton
-							native={{
-								Position: UDim2.fromScale(0.9, 0.85),
-								Image: assetIds.images.vectors.trading.Upgrade,
-								ImageColor3:
-									storedWorldPrestige.prestigeTokens < 2
-										? Color3.fromRGB(127, 127, 127)
-										: Color3.fromRGB(255, 255, 255),
-							}}
-							size={{ minSize: 0.23, maxSize: 0.28 }}
-							events={{
-								/**
-								 *
-								 */
-								Activated: (): void => {
-									if (storedWorldPrestige.prestigeTokens < 2) {
-										addAnnouncement(`You don't have enough prestige tokens!`, AnnouncementType.Error);
-										return;
-									}
-
-									purchasePrestigeBoost.SendToServer(props.worldName, "x2 Currency", 60);
-								},
-							}}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageButton>
-
-						<SpringImageLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.45),
-								Image: BOOST_IMAGES["x2 Currency"][60],
-							}}
-							size={{ minSize: 0.6, maxSize: 0.7 }}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageLabel>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.025),
-								Size: UDim2.fromScale(1, 0.155),
-								Text: "x2 Currency (60m)",
-							}}
-							stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
-						/>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.4, 0.87),
-								Size: UDim2.fromScale(0.7, 0.2),
-								Text: "Buy (2 Tokens)",
-								TextXAlignment: Enum.TextXAlignment.Right,
-							}}
-							stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(12, 129, 6) } }}
-						/>
-					</BaseFrame>
-					<BaseFrame
-						BackgroundColor3={Color3.fromRGB(12, 134, 211)}
-						BackgroundTransparency={0}
-						Position={UDim2.fromScale(0.824, 0.581)}
-						Size={UDim2.fromScale(0.28, 0.28)}
-					>
-						<uiaspectratioconstraint AspectRatio={1} />
-						<uicorner CornerRadius={new UDim(0.2, 0)} />
-						<BaseUIStroke native={{ Thickness: 3, Color: uiDarkStrokeColor }} />
-
-						<SpringImageButton
-							native={{
-								Position: UDim2.fromScale(0.9, 0.85),
-								Image: assetIds.images.vectors.trading.Upgrade,
-								ImageColor3:
-									storedWorldPrestige.prestigeTokens < 3
-										? Color3.fromRGB(127, 127, 127)
-										: Color3.fromRGB(255, 255, 255),
-							}}
-							size={{ minSize: 0.23, maxSize: 0.28 }}
-							events={{
-								/**
-								 *
-								 */
-								Activated: (): void => {
-									if (storedWorldPrestige.prestigeTokens < 3) {
-										addAnnouncement(`You don't have enough prestige tokens!`, AnnouncementType.Error);
-										return;
-									}
-
-									purchasePrestigeBoost.SendToServer(props.worldName, "x2 Currency", 120);
-								},
-							}}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageButton>
-
-						<SpringImageLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.45),
-								Image: BOOST_IMAGES["x2 Currency"][120],
-							}}
-							size={{ minSize: 0.6, maxSize: 0.7 }}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageLabel>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.025),
-								Size: UDim2.fromScale(1, 0.155),
-								Text: "x2 Currency (2H)",
-							}}
-							stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
-						/>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.4, 0.87),
-								Size: UDim2.fromScale(0.7, 0.2),
-								Text: "Buy (3 Tokens)",
-								TextXAlignment: Enum.TextXAlignment.Right,
-							}}
-							stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(12, 129, 6) } }}
-						/>
-					</BaseFrame>
-					<BaseFrame
-						BackgroundColor3={Color3.fromRGB(12, 134, 211)}
-						BackgroundTransparency={0}
-						Position={UDim2.fromScale(0.145, 0.747)}
-						Size={UDim2.fromScale(0.28, 0.28)}
-					>
-						<uiaspectratioconstraint AspectRatio={1} />
-						<uicorner CornerRadius={new UDim(0.2, 0)} />
-						<BaseUIStroke native={{ Thickness: 3, Color: uiDarkStrokeColor }} />
-
-						<SpringImageButton
-							native={{
-								Position: UDim2.fromScale(0.9, 0.85),
-								Image: assetIds.images.vectors.trading.Upgrade,
-								ImageColor3:
-									storedWorldPrestige.prestigeTokens < 1
-										? Color3.fromRGB(127, 127, 127)
-										: Color3.fromRGB(255, 255, 255),
-							}}
-							size={{ minSize: 0.23, maxSize: 0.28 }}
-							events={{
-								/**
-								 *
-								 */
-								Activated: (): void => {
-									if (storedWorldPrestige.prestigeTokens < 1) {
-										addAnnouncement(`You don't have enough prestige tokens!`, AnnouncementType.Error);
-										return;
-									}
-
-									purchasePrestigeBoost.SendToServer(props.worldName, "x2 Hatching Luck", 30);
-								},
-							}}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageButton>
-
-						<SpringImageLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.45),
-								Image: BOOST_IMAGES["x2 Hatching Luck"][30],
-							}}
-							size={{ minSize: 0.6, maxSize: 0.7 }}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageLabel>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.025),
-								Size: UDim2.fromScale(1, 0.155),
-								Text: "x2 Luck (30m)",
-							}}
-							stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
-						/>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.4, 0.87),
-								Size: UDim2.fromScale(0.7, 0.2),
-								Text: "Buy (1 Token)",
-								TextXAlignment: Enum.TextXAlignment.Right,
-							}}
-							stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(12, 129, 6) } }}
-						/>
-					</BaseFrame>
-					<BaseFrame
-						BackgroundColor3={Color3.fromRGB(12, 134, 211)}
-						BackgroundTransparency={0}
-						Position={UDim2.fromScale(0.485, 0.747)}
-						Size={UDim2.fromScale(0.28, 0.28)}
-					>
-						<uiaspectratioconstraint AspectRatio={1} />
-						<uicorner CornerRadius={new UDim(0.2, 0)} />
-						<BaseUIStroke native={{ Thickness: 3, Color: uiDarkStrokeColor }} />
-
-						<SpringImageButton
-							native={{
-								Position: UDim2.fromScale(0.9, 0.85),
-								Image: assetIds.images.vectors.trading.Upgrade,
-								ImageColor3:
-									storedWorldPrestige.prestigeTokens < 2
-										? Color3.fromRGB(127, 127, 127)
-										: Color3.fromRGB(255, 255, 255),
-							}}
-							size={{ minSize: 0.23, maxSize: 0.28 }}
-							events={{
-								/**
-								 *
-								 */
-								Activated: (): void => {
-									if (storedWorldPrestige.prestigeTokens < 2) {
-										addAnnouncement(`You don't have enough prestige tokens!`, AnnouncementType.Error);
-										return;
-									}
-
-									purchasePrestigeBoost.SendToServer(props.worldName, "x2 Hatching Luck", 60);
-								},
-							}}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageButton>
-
-						<SpringImageLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.45),
-								Image: BOOST_IMAGES["x2 Hatching Luck"][60],
-							}}
-							size={{ minSize: 0.6, maxSize: 0.7 }}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageLabel>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.025),
-								Size: UDim2.fromScale(1, 0.155),
-								Text: "x2 Luck (60m)",
-							}}
-							stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
-						/>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.4, 0.87),
-								Size: UDim2.fromScale(0.7, 0.2),
-								Text: "Buy (2 Tokens)",
-								TextXAlignment: Enum.TextXAlignment.Right,
-							}}
-							stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(12, 129, 6) } }}
-						/>
-					</BaseFrame>
-					<BaseFrame
-						BackgroundColor3={Color3.fromRGB(12, 134, 211)}
-						BackgroundTransparency={0}
-						Position={UDim2.fromScale(0.824, 0.747)}
-						Size={UDim2.fromScale(0.28, 0.28)}
-					>
-						<uiaspectratioconstraint AspectRatio={1} />
-						<uicorner CornerRadius={new UDim(0.2, 0)} />
-						<BaseUIStroke native={{ Thickness: 3, Color: uiDarkStrokeColor }} />
-
-						<SpringImageButton
-							native={{
-								Position: UDim2.fromScale(0.9, 0.85),
-								Image: assetIds.images.vectors.trading.Upgrade,
-								ImageColor3:
-									storedWorldPrestige.prestigeTokens < 3
-										? Color3.fromRGB(127, 127, 127)
-										: Color3.fromRGB(255, 255, 255),
-							}}
-							size={{ minSize: 0.23, maxSize: 0.28 }}
-							events={{
-								/**
-								 *
-								 */
-								Activated: (): void => {
-									if (storedWorldPrestige.prestigeTokens < 3) {
-										addAnnouncement(`You don't have enough prestige tokens!`, AnnouncementType.Error);
-										return;
-									}
-
-									purchasePrestigeBoost.SendToServer(props.worldName, "x2 Hatching Luck", 120);
-								},
-							}}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageButton>
-
-						<SpringImageLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.45),
-								Image: BOOST_IMAGES["x2 Hatching Luck"][120],
-							}}
-							size={{ minSize: 0.6, maxSize: 0.7 }}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageLabel>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.025),
-								Size: UDim2.fromScale(1, 0.155),
-								Text: "x2 Luck (2H)",
-							}}
-							stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
-						/>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.4, 0.87),
-								Size: UDim2.fromScale(0.7, 0.2),
-								Text: "Buy (3 Tokens)",
-								TextXAlignment: Enum.TextXAlignment.Right,
-							}}
-							stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(12, 129, 6) } }}
-						/>
-					</BaseFrame>
-					<BaseFrame
-						BackgroundColor3={Color3.fromRGB(12, 134, 211)}
-						BackgroundTransparency={0}
-						Position={UDim2.fromScale(0.145, 0.913)}
-						Size={UDim2.fromScale(0.28, 0.28)}
-					>
-						<uiaspectratioconstraint AspectRatio={1} />
-						<uicorner CornerRadius={new UDim(0.2, 0)} />
-						<BaseUIStroke native={{ Thickness: 3, Color: uiDarkStrokeColor }} />
-
-						<SpringImageButton
-							native={{
-								Position: UDim2.fromScale(0.9, 0.85),
-								Image: assetIds.images.vectors.trading.Upgrade,
-								ImageColor3:
-									storedWorldPrestige.prestigeTokens < 1
-										? Color3.fromRGB(127, 127, 127)
-										: Color3.fromRGB(255, 255, 255),
-							}}
-							size={{ minSize: 0.23, maxSize: 0.28 }}
-							events={{
-								/**
-								 *
-								 */
-								Activated: (): void => {
-									if (storedWorldPrestige.prestigeTokens < 1) {
-										addAnnouncement(`You don't have enough prestige tokens!`, AnnouncementType.Error);
-										return;
-									}
-
-									purchasePrestigeBoost.SendToServer(props.worldName, "x2 Rank Experience", 30);
-								},
-							}}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageButton>
-
-						<SpringImageLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.45),
-								Image: BOOST_IMAGES["x2 Rank Experience"][30],
-							}}
-							size={{ minSize: 0.6, maxSize: 0.7 }}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageLabel>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.025),
-								Size: UDim2.fromScale(1, 0.155),
-								Text: "x2 RankXP (30m)",
-							}}
-							stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
-						/>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.4, 0.87),
-								Size: UDim2.fromScale(0.7, 0.2),
-								Text: "Buy (1 Token)",
-								TextXAlignment: Enum.TextXAlignment.Right,
-							}}
-							stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(12, 129, 6) } }}
-						/>
-					</BaseFrame>
-					<BaseFrame
-						BackgroundColor3={Color3.fromRGB(12, 134, 211)}
-						BackgroundTransparency={0}
-						Position={UDim2.fromScale(0.485, 0.913)}
-						Size={UDim2.fromScale(0.28, 0.28)}
-					>
-						<uiaspectratioconstraint AspectRatio={1} />
-						<uicorner CornerRadius={new UDim(0.2, 0)} />
-						<BaseUIStroke native={{ Thickness: 3, Color: uiDarkStrokeColor }} />
-
-						<SpringImageButton
-							native={{
-								Position: UDim2.fromScale(0.9, 0.85),
-								Image: assetIds.images.vectors.trading.Upgrade,
-								ImageColor3:
-									storedWorldPrestige.prestigeTokens < 2
-										? Color3.fromRGB(127, 127, 127)
-										: Color3.fromRGB(255, 255, 255),
-							}}
-							size={{ minSize: 0.23, maxSize: 0.28 }}
-							events={{
-								/**
-								 *
-								 */
-								Activated: (): void => {
-									if (storedWorldPrestige.prestigeTokens < 2) {
-										addAnnouncement(`You don't have enough prestige tokens!`, AnnouncementType.Error);
-										return;
-									}
-
-									purchasePrestigeBoost.SendToServer(props.worldName, "x2 Rank Experience", 60);
-								},
-							}}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageButton>
-
-						<SpringImageLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.45),
-								Image: BOOST_IMAGES["x2 Rank Experience"][60],
-							}}
-							size={{ minSize: 0.6, maxSize: 0.7 }}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageLabel>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.025),
-								Size: UDim2.fromScale(1, 0.155),
-								Text: "x2 RankXP (60m)",
-							}}
-							stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
-						/>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.4, 0.87),
-								Size: UDim2.fromScale(0.7, 0.2),
-								Text: "Buy (2 Tokens)",
-								TextXAlignment: Enum.TextXAlignment.Right,
-							}}
-							stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(12, 129, 6) } }}
-						/>
-					</BaseFrame>
-					<BaseFrame
-						BackgroundColor3={Color3.fromRGB(12, 134, 211)}
-						BackgroundTransparency={0}
-						Position={UDim2.fromScale(0.824, 0.913)}
-						Size={UDim2.fromScale(0.28, 0.28)}
-					>
-						<uiaspectratioconstraint AspectRatio={1} />
-						<uicorner CornerRadius={new UDim(0.2, 0)} />
-						<BaseUIStroke native={{ Thickness: 3, Color: uiDarkStrokeColor }} />
-
-						<SpringImageButton
-							native={{
-								Position: UDim2.fromScale(0.9, 0.85),
-								Image: assetIds.images.vectors.trading.Upgrade,
-								ImageColor3:
-									storedWorldPrestige.prestigeTokens < 3
-										? Color3.fromRGB(127, 127, 127)
-										: Color3.fromRGB(255, 255, 255),
-							}}
-							size={{ minSize: 0.23, maxSize: 0.28 }}
-							events={{
-								/**
-								 *
-								 */
-								Activated: (): void => {
-									if (storedWorldPrestige.prestigeTokens < 3) {
-										addAnnouncement(`You don't have enough prestige tokens!`, AnnouncementType.Error);
-										return;
-									}
-
-									purchasePrestigeBoost.SendToServer(props.worldName, "x2 Rank Experience", 120);
-								},
-							}}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageButton>
-
-						<SpringImageLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.45),
-								Image: BOOST_IMAGES["x2 Rank Experience"][120],
-							}}
-							size={{ minSize: 0.6, maxSize: 0.7 }}
-						>
-							<uiaspectratioconstraint AspectRatio={1} />
-						</SpringImageLabel>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.025),
-								Size: UDim2.fromScale(1, 0.155),
-								Text: "x2 RankXP (2H)",
-							}}
-							stroke={{ native: { Thickness: 3, Color: uiDarkStrokeColor } }}
-						/>
-
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.4, 0.87),
-								Size: UDim2.fromScale(0.7, 0.2),
-								Text: "Buy (3 Tokens)",
-								TextXAlignment: Enum.TextXAlignment.Right,
-							}}
-							stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(12, 129, 6) } }}
-						/>
-					</BaseFrame>
+					<WorldPrestigeBoostPurchase
+						worldName={props.worldName}
+						boostName={"x2 Currency"}
+						boostTime={30}
+						prestigeTokens={storedWorldPrestige.prestigeTokens}
+						cost={2}
+						position={UDim2.fromScale(0.145, 0.581)}
+					/>
+					<WorldPrestigeBoostPurchase
+						worldName={props.worldName}
+						boostName={"x2 Currency"}
+						boostTime={60}
+						prestigeTokens={storedWorldPrestige.prestigeTokens}
+						cost={4}
+						position={UDim2.fromScale(0.485, 0.581)}
+					/>
+					<WorldPrestigeBoostPurchase
+						worldName={props.worldName}
+						boostName={"x2 Currency"}
+						boostTime={120}
+						prestigeTokens={storedWorldPrestige.prestigeTokens}
+						cost={6}
+						position={UDim2.fromScale(0.824, 0.581)}
+					/>
+					<WorldPrestigeBoostPurchase
+						worldName={props.worldName}
+						boostName={"x2 Hatching Luck"}
+						boostTime={30}
+						prestigeTokens={storedWorldPrestige.prestigeTokens}
+						cost={2}
+						position={UDim2.fromScale(0.145, 0.747)}
+					/>
+					<WorldPrestigeBoostPurchase
+						worldName={props.worldName}
+						boostName={"x2 Hatching Luck"}
+						boostTime={60}
+						prestigeTokens={storedWorldPrestige.prestigeTokens}
+						cost={4}
+						position={UDim2.fromScale(0.485, 0.747)}
+					/>
+					<WorldPrestigeBoostPurchase
+						worldName={props.worldName}
+						boostName={"x2 Hatching Luck"}
+						boostTime={120}
+						prestigeTokens={storedWorldPrestige.prestigeTokens}
+						cost={6}
+						position={UDim2.fromScale(0.824, 0.747)}
+					/>
+					<WorldPrestigeBoostPurchase
+						worldName={props.worldName}
+						boostName={"x2 Rank Experience"}
+						boostTime={30}
+						prestigeTokens={storedWorldPrestige.prestigeTokens}
+						cost={2}
+						position={UDim2.fromScale(0.145, 0.913)}
+					/>
+					<WorldPrestigeBoostPurchase
+						worldName={props.worldName}
+						boostName={"x2 Rank Experience"}
+						boostTime={60}
+						prestigeTokens={storedWorldPrestige.prestigeTokens}
+						cost={4}
+						position={UDim2.fromScale(0.485, 0.913)}
+					/>
+					<WorldPrestigeBoostPurchase
+						worldName={props.worldName}
+						boostName={"x2 Rank Experience"}
+						boostTime={120}
+						prestigeTokens={storedWorldPrestige.prestigeTokens}
+						cost={6}
+						position={UDim2.fromScale(0.824, 0.913)}
+					/>
 				</scrollingframe>
 				<ExitButton
 					Position={UDim2.fromScale(0.985, 0.09)}

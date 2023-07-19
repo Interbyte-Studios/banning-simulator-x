@@ -8,6 +8,7 @@ import { damageNPCDefinition } from "./damageNPC";
 import { eggs } from "./eggs";
 import { equipTitleDefinition } from "./equipTitle";
 import { fusionRequestDefinition } from "./fusing";
+import { gamepassGiftReceivedDefinition, useGamepassGiftDefinition } from "./gamepasses";
 import { media } from "./media";
 import { petMastery } from "./petMastery";
 import { pets } from "./pets";
@@ -41,6 +42,8 @@ export const remotes = Net.Definitions.Create({
 	talismans: talismans,
 	trades: trading,
 
+	useGamepassGift: useGamepassGiftDefinition,
+	gamepassGiftReceived: gamepassGiftReceivedDefinition,
 	claimInvitedFriend: claimInvitedFriendDefinition,
 	equipTitle: equipTitleDefinition,
 	damageNPC: damageNPCDefinition,

@@ -20,6 +20,7 @@ declare namespace assetIds {
 			"purple button": string;
 		};
 		decals: {
+			UpdateLog: string;
 			pets: {
 				"Void Desert Scorpilord": string;
 				"Void Balloon Dragon": string;
@@ -435,6 +436,8 @@ declare namespace assetIds {
 				"Auto Fight": string;
 			};
 			boosts: {
+				BigCrateBundle: string;
+				ExtremeExperienceBundle: string;
 				luck: string;
 			};
 			talismans: {
@@ -472,6 +475,7 @@ declare namespace assetIds {
 				Candy: string;
 				Molten: string;
 				Royal: string;
+				"Angelic Egg": string;
 			};
 		};
 		vectors: {

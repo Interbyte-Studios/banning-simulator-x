@@ -15,14 +15,12 @@ import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EGGS } from "shared/configs/eggs";
-import { Variants } from "shared/configs/pets";
 import { RARITIES } from "shared/configs/rarities";
 import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
-import { ZoneNames } from "shared/configs/zones";
 import { FusionFailKind } from "shared/remotes/fusing";
 import { StoreState } from "shared/rodux";
 import { GamepassesState } from "shared/rodux/gamepasses";
-import { Pet, PetsState } from "shared/rodux/pets";
+import { FusableVariant, Pet, PetsState } from "shared/rodux/pets";
 import { WorldPrestigeState } from "shared/rodux/worldPrestige";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
@@ -32,9 +30,8 @@ import { getPetLevel } from "shared/util/getPetLevel";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 interface DisplayPetsProps extends DisplayPetsMappedProps {
-	variant: Variants;
+	variant: FusableVariant;
 	returnToSelection: () => void;
-	selectedZone: ZoneNames | "Exclusive";
 	petSelected: number;
 }
 
@@ -87,19 +84,16 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 			const eggData = EGGS[eggName];
 			const variantToDisplay = props.variant === "radiant" ? "void" : props.variant === "void" ? "regular" : "regular";
 
-			if (props.selectedZone === "Exclusive" && eggData.zone === "Limited" && !eggData.hidden) {
+			if (eggData.zone === "Limited" && !eggData.hidden) {
 				if (petData.variant !== variantToDisplay || petData.id !== props.petSelected) {
 					return;
 				}
 
 				petsSelection.push(petData);
+				return;
 			}
 
-			if (
-				eggData.zone !== props.selectedZone ||
-				petData.variant !== variantToDisplay ||
-				petData.id !== props.petSelected
-			) {
+			if (petData.variant !== variantToDisplay || petData.id !== props.petSelected) {
 				return;
 			}
 
@@ -147,7 +141,8 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 						BackgroundTransparency={1}
 						Position={UDim2.fromScale(0.5, 0.5)}
 						Size={UDim2.fromScale(0.95, 0.95)}
-						ScrollBarThickness={0}
+						ScrollBarThickness={12}
+						BorderSizePixel={0}
 						ScrollingDirection={Enum.ScrollingDirection.Y}
 					>
 						<uigridlayout
@@ -234,6 +229,21 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 					events={{
 						Activated: async (): Promise<void> => {
 							playSFX(UIEngagement.MinorEngagement);
+
+							if (petData.rarity === "Primordial" || petData.rarity === "Prismatic") {
+								if (selectedPets.size() !== maxFusions) {
+									addAnnouncement(
+										`You must reach 100% chance to fuse a pet of that rarity!`,
+										AnnouncementType.Announcement,
+									);
+									return;
+								}
+							}
+
+							if (petData.rarity === "Exclusive" && selectedPets.size() / maxFusions < 0.7) {
+								addAnnouncement(`You must reach 70% chance to fuse an Exclusive pet!`, AnnouncementType.Announcement);
+								return;
+							}
 
 							const petsToFuse = selectedPets.map((guid) => {
 								return guid;

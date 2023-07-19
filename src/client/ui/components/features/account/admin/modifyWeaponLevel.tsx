@@ -243,7 +243,8 @@ export const ModifyWeaponLevel = hooks((props: { playerViewing: Player; setActiv
 					BackgroundTransparency={1}
 					Position={UDim2.fromScale(0.5, 0.62)}
 					Size={UDim2.fromScale(0.95, 0.675)}
-					ScrollBarThickness={0}
+					ScrollBarThickness={12}
+				BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uigridlayout

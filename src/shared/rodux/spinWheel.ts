@@ -1,77 +1,63 @@
 import Rodux from "@rbxts/rodux";
 
 export interface SpinWheelState {
-	startTime: number;
-	endTime: number;
-	dayEndTime: number;
-	spinsDone: number;
+	totalSpins: number;
+	spinsAvailable: number;
+	lastSpinTime: number;
 }
 
-export type SpinWheelActions = UpdateWheelTime | UpdateWheelUses;
+export type SpinWheelActions = SpinTheWheel | AddAvailableSpins;
 
-interface UpdateWheelTime extends Rodux.Action<"updateWheelTime"> {
-	startTime: number;
-	endTime: number;
-	dayEndTime: number;
+interface SpinTheWheel extends Rodux.Action<"spinTheWheel"> {
+	timeSpun: number;
 }
 
-interface UpdateWheelUses extends Rodux.Action<"updateWheelUses"> {
-	timesSpinned: number;
+interface AddAvailableSpins extends Rodux.Action<"addAvailableSpins"> {
+	amount: number;
 }
 
 /**
- *
- * @param startTime The time when player first spun the wheel.
- * @param endTime The time when player reaches max spins for a day.
- * @param dayEndTime The time when the spins get reset.
+ * @param timeSpun The time the wheel was spun.
  * @returns The Rodux action to dispatch.
  */
-export function updateWheelTime(
-	startTime: number,
-	endTime: number,
-	dayEndTime: number,
-): UpdateWheelTime & Rodux.AnyAction {
+export function spinTheWheel(timeSpun: number): SpinTheWheel & Rodux.AnyAction {
 	return {
-		type: "updateWheelTime",
-		startTime: startTime,
-		endTime: endTime,
-		dayEndTime: dayEndTime,
+		type: "spinTheWheel",
+		timeSpun: timeSpun,
 	};
 }
 
 /**
- *
- * @param timesSpinned Amount of uses added.
+ * @param amount The amount of spins to add.
  * @returns The Rodux action to dispatch.
  */
-export function updateWheelUses(timesSpinned: number): UpdateWheelUses & Rodux.AnyAction {
+export function addAvailableSpins(amount: number): AddAvailableSpins & Rodux.AnyAction {
 	return {
-		type: "updateWheelUses",
-		timesSpinned: timesSpinned,
+		type: "addAvailableSpins",
+		amount,
 	};
 }
 
 export const defaultSpinWheel: SpinWheelState = {
-	startTime: 0,
-	endTime: 0,
-	spinsDone: 0,
-	dayEndTime: 0,
+	totalSpins: 0,
+	spinsAvailable: 0,
+	lastSpinTime: 0,
 };
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const spinWheelReducer = Rodux.createReducer<SpinWheelState, SpinWheelActions>(defaultSpinWheel, {
-	updateWheelTime: (state, action) => {
+	spinTheWheel: (state, action) => {
 		return {
 			...state,
-			startTime: action.startTime,
-			endTime: action.endTime,
-			dayEndTime: action.dayEndTime,
+			totalSpins: state.totalSpins + 1,
+			spinsAvailable: state.spinsAvailable - 1,
+			lastSpinTime: action.timeSpun,
 		};
 	},
-	updateWheelUses: (state, action) => {
+	addAvailableSpins: (state, action) => {
 		return {
 			...state,
-			spinsDone: action.timesSpinned,
+			spinsAvailable: state.spinsAvailable + action.amount,
 		};
 	},
 });

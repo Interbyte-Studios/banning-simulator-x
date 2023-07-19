@@ -3,7 +3,7 @@ import { remotes } from "shared/remotes";
 import { lockPets } from "shared/rodux/pets";
 
 remotes.Server.GetNamespace("pets")
-	.Create("lockPets")
+	.Get("lockPets")
 	.Connect(
 		withPlayerStore((_, store, pets) => {
 			const currentState = store.getState();

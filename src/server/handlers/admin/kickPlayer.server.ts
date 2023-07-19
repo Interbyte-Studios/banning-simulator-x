@@ -4,11 +4,11 @@ import { MODERATOR_RANK } from "shared/configs/admin";
 import { remotes } from "shared/remotes";
 
 remotes.Server.GetNamespace("admin")
-	.Create("admin_KickPlayer")
+	.Get("admin_KickPlayer")
 	.Connect(
 		withPlayerStore((adminPlayer, store, targetPlayerId) => {
 			const groupRank = store.getState().index.groupRank;
-			if (groupRank === undefined || groupRank < MODERATOR_RANK) {
+			if (groupRank < MODERATOR_RANK) {
 				return;
 			}
 

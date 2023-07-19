@@ -5,6 +5,7 @@ import { hooks } from "client/ui/hooks";
 
 interface RewardSlotProps {
 	pos: UDim2;
+	rewardType: "boost" | "pet" | "currency";
 	image: string;
 	amount: number;
 	rot?: number;
@@ -33,7 +34,7 @@ export const RewardSlot = hooks((props: RewardSlotProps) => {
 				Position={UDim2.fromScale(0.5, 0.8)}
 				Size={UDim2.fromScale(0.55, 0.25)}
 				TextColor3={Color3.fromRGB(255, 255, 255)}
-				Text={"x" + tostring(props.amount)}
+				Text={props.rewardType === "boost" ? "15m" : `x${props.amount}`}
 				TextScaled={true}
 				Font={font}
 				BackgroundTransparency={1}

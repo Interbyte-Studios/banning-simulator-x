@@ -14,7 +14,7 @@ remotes.Server.GetNamespace("admin")
 	.Connect(
 		withPlayerStore((adminPlayer, store, targetPlayerId, petData) => {
 			const groupRank = store.getState().index.groupRank;
-			if (groupRank === undefined || groupRank < ADMIN_RANK) {
+			if (groupRank < ADMIN_RANK) {
 				return;
 			}
 

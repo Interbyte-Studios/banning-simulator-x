@@ -11,18 +11,20 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
+import { CurrentTalismanState } from "shared/rodux/currentTalisman";
 import { RankState } from "shared/rodux/rank";
 import { TalismansState } from "shared/rodux/talismans";
 import { getTalismanData } from "shared/util/getTalismanData";
 
 interface PurchaseTalismanProps extends PurchaseTalismanMappedProps {
-	currentTalisman: number;
+	talismanId: number;
 }
 
 interface PurchaseTalismanMappedProps {
 	talismans: TalismansState;
 	rank: RankState;
 	currencies: CurrenciesState;
+	curerntTalisman: CurrentTalismanState;
 }
 
 /**
@@ -36,6 +38,7 @@ function mapStateToProps(state: StoreState): PurchaseTalismanMappedProps {
 		talismans: state.talismans,
 		rank: state.rank,
 		currencies: state.currencies,
+		curerntTalisman: state.currentTalisman,
 	};
 }
 
@@ -44,16 +47,15 @@ function mapStateToProps(state: StoreState): PurchaseTalismanMappedProps {
  */
 export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 	hooks((props: PurchaseTalismanProps, hooks) => {
-		const storedTalisman = props.talismans.find((talisman) => talisman.id === props.currentTalisman);
-		if (storedTalisman !== undefined) {
-			return <></>;
-		}
-
 		const { useContext } = hooks;
-		const { purchaseTalisman } = useContext(remoteContext);
+		const { equipTalisman, unequipTalisman, purchaseTalisman } = useContext(remoteContext);
 		const { addAnnouncement } = useContext(AnnouncementContext);
 
-		const talismanInfo = getTalismanData(props.currentTalisman);
+		const storedTalisman = props.talismans.find((talisman) => talisman.id === props.talismanId);
+		const talismanData = getTalismanData(props.talismanId);
+
+		const talismanOwned = storedTalisman !== undefined;
+		const talismanEquipped = talismanOwned && props.curerntTalisman === props.talismanId;
 
 		return (
 			<SpringImageButton
@@ -67,48 +69,65 @@ export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 					Activated: (): void => {
 						playSFX(UIEngagement.MajorEngagement);
 
-						// check to be sure they've bought the previous talisman
-						const previousTalismanId = props.currentTalisman - 1;
-						if (previousTalismanId > 0) {
-							const ownsPreviousTalisman = props.talismans.find((talisman) => talisman.id === previousTalismanId);
-							if (ownsPreviousTalisman === undefined) {
-								addAnnouncement(`You don't own the previous talisman!`, AnnouncementType.Error);
-								return;
+						// Handle equipping/unequipping
+						if (talismanOwned) {
+							if (talismanEquipped) {
+								unequipTalisman.SendToServer();
+							} else {
+								// check that user is a high enough rank to equip the talisman
+								if (props.rank < talismanData.cost.rank) {
+									addAnnouncement(`You aren't a high enough rank to equip that talisman!`, AnnouncementType.Error);
+									return;
+								}
+
+								equipTalisman.SendToServer(props.talismanId);
 							}
 						}
+						// Handle purchasing
+						else {
+							// check to be sure they've bought the previous talisman
+							const previousTalismanId = props.talismanId - 1;
+							if (previousTalismanId > 0) {
+								const ownsPreviousTalisman = props.talismans.find((talisman) => talisman.id === previousTalismanId);
+								if (ownsPreviousTalisman === undefined) {
+									addAnnouncement(`You don't own the previous talisman!`, AnnouncementType.Error);
+									return;
+								}
+							}
 
-						// check to be sure player has enough currency to purchase talisman
-						if (props.currencies[talismanInfo.cost.currency] < talismanInfo.cost.amount) {
-							addAnnouncement(
-								`You don't have enough currency to purchase "${talismanInfo.name}".`,
-								AnnouncementType.Error,
-							);
-							return;
+							// check to be sure player has enough currency to purchase talisman
+							if (props.currencies[talismanData.cost.currency] < talismanData.cost.amount) {
+								addAnnouncement(
+									`You don't have enough currency to purchase "${talismanData.name}".`,
+									AnnouncementType.Error,
+								);
+								return;
+							}
+
+							// check to be sure player is required rank
+							if (props.rank < talismanData.cost.rank) {
+								addAnnouncement(
+									`You're not a high enough rank to purchase "${talismanData.name}".`,
+									AnnouncementType.Error,
+								);
+								return;
+							}
+
+							addAnnouncement(`You've purchased the "${talismanData.name}" talisman!`, AnnouncementType.Announcement);
+							purchaseTalisman.SendToServer(props.talismanId);
 						}
-
-						// check to be sure player is required rank
-						if (props.rank < talismanInfo.cost.rank) {
-							addAnnouncement(
-								`You're not a high enough rank to purchase "${talismanInfo.name}".`,
-								AnnouncementType.Error,
-							);
-							return;
-						}
-
-						addAnnouncement(`You've purchased the "${talismanInfo.name}" talisman!`, AnnouncementType.Announcement);
-
-						purchaseTalisman.SendToServer(props.currentTalisman);
 					},
 					/* eslint-enable jsdoc/require-jsdoc */
 				}}
 			>
 				<StrokeTextLabel
 					native={{
-						Size: UDim2.fromScale(0.9, 0.9),
-						Text: "Purchase",
+						Size: UDim2.fromScale(1, 1),
+						Text: talismanEquipped ? "Unequip" : talismanOwned ? "Equip" : "Purchase",
 					}}
 					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
 				/>
+				<uiaspectratioconstraint AspectRatio={4} />
 			</SpringImageButton>
 		);
 	}),

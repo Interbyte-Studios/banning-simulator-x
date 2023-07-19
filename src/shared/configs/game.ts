@@ -10,12 +10,34 @@ export const BANS_LEADERBOARD_ODS = `${STORE_SCOPE}_BANS_ODS_1`;
 export const EGGS_LEADERBOARD_ODS = `${STORE_SCOPE}_EGGS_ODS_1`;
 export const LEADERBOARD_UPDATE_INTERVAL = 60;
 
-export const GAME_VERSION = "1.0.0";
+export const GAME_VERSION = "3.0";
 
 export const MAX_TRADE_OFFER_SIZE = 10;
 export const MAX_TRADE_LOGS = 25;
 
-export type Gamepasses = keyof typeof GAMEPASSES;
+export const TEN_SPINS = 1583558881;
+export const ONE_HUNDRED_SPINS = 1583561170;
+
+export const BIG_CRATE_BUNDLE = 1584133242;
+export const EXTREME_EXPERIENCE_BUNDLE = 1584133443;
+
+export const isGamepass = t.literal(
+	"x2 Luck",
+	"Fast Hatch",
+	"Triple Hatch",
+	"x2 Currency",
+	"x2 Experience",
+	"Better Fusion",
+	"VIP",
+	"+800 Inventory",
+	"+450 Inventory",
+	"+250 Inventory",
+	"+2 Pets Equipped",
+	"+3 Pets Equipped",
+	"Teleportation",
+	"Auto Fight",
+);
+export type Gamepasses = t.static<typeof isGamepass>;
 export const GAMEPASSES = {
 	//["Auto Hatch"]: 27753255,
 	["x2 Luck"]: 27753234, // Implemented
@@ -66,6 +88,23 @@ export const GAMEPASS_DESCRIPTIONS = {
 	["+450 Inventory"]: "Get 450 extra pet inventory space!", // Implemented
 	["+250 Inventory"]: "Get 250 extra pet inventory space!", // Implemented
 	Teleportation: "Teleport to any zone that you own!", // Implemented
+};
+
+export const GAMEPASS_GIFTS = {
+	["x2 Luck"]: 1580200704, // Implemented
+	["Fast Hatch"]: 1580200893, // Implemented
+	["Triple Hatch"]: 1580201093, // Implemented
+	["x2 Currency"]: 1580201344, // Implemented
+	["x2 Experience"]: 1580203585, // Implemented
+	["Better Fusion"]: 1580203394,
+	VIP: 1580201651, // Implemented
+	["+800 Inventory"]: 1580203192, // Implemented
+	["+450 Inventory"]: 1580202063, // Implemented
+	["+250 Inventory"]: 1580202273, // Implemented
+	["+2 Pets Equipped"]: 1580202541, // Implemented
+	["+3 Pets Equipped"]: 1580202723, // Implemented
+	Teleportation: 1580202907, // Implemented
+	["Auto Fight"]: 1580203795, // Implemented
 };
 
 export const isBoost = t.literal("x2 Currency", "x2 Hatching Luck", "x2 Pet Experience", "x2 Rank Experience");
@@ -182,30 +221,27 @@ export const GROUP_ROLES: Record<number, { tag: string; color: Color3 }> = {
 export const VIP_PET_ID = 10002;
 export const GROUP_PET_ID = 10001;
 
-export const RADIOACTIVE_EGG_ONEHATCH = 1574455473;
-export const RADIOACTIVE_EGG_THREEHATCHES = 1574455645;
-
 export const LIMITED_EGG_DEVPRODUCT = {
-	OneEgg: 1563247508,
-	ThreeEggs: 1563247707,
+	OneEgg: 1581589143,
+	ThreeEggs: 1581589299,
 };
 
-export const LIMITED_EGG: EggName = "Royalty";
+export const LIMITED_EGG: EggName = "Divine";
 export const EXCLUSIVE_PETS = [
 	// The shop only supports adding 3 pets for exclusive pets. If we want to add more, we'll need to rework the shop a bit.
 	{
 		id: 1,
-		petId: 10003,
-		devproductId: 1563218005,
+		petId: 10008,
+		devproductId: 1581587749,
 	},
 	{
 		id: 2,
-		petId: 10004,
-		devproductId: 1563218181,
+		petId: 10009,
+		devproductId: 1581587940,
 	},
 	{
 		id: 3,
-		petId: 10005,
-		devproductId: 1563218391,
+		petId: 10010,
+		devproductId: 1581588209,
 	},
 ];

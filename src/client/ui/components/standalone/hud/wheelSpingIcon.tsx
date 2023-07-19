@@ -6,7 +6,7 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 interface WheelSpinIconProps {
-	displayWheelSpinMenu: () => void;
+	displayIcon: () => void;
 }
 
 const minimizedSize = 0.8;
@@ -27,14 +27,14 @@ export const WheelSpinIcon = hooks((props: WheelSpinIconProps) => {
 			events={{
 				Activated: async (): Promise<void> => {
 					playSFX(UIEngagement.MinorEngagement);
-					props.displayWheelSpinMenu();
+					props.displayIcon();
 				},
 			}}
 		>
 			<StrokeTextLabel
 				native={{
 					Size: UDim2.fromScale(0.9, 0.35),
-					Position: UDim2.fromScale(0.5, 0.1),
+					Position: UDim2.fromScale(0.5, 1),
 					Text: "Spin",
 				}}
 				stroke={{

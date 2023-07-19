@@ -10,6 +10,12 @@ import {
 } from "./gameVersionsPlayed";
 import { defaultGroupRankState, GroupRankActions, groupRankReducer, GroupRankState } from "./groupRank";
 import { defaultGroupRewardsState, GroupRewardsActions, groupRewardsReducer, GroupRewardsState } from "./groupRewards";
+import {
+	defaultHasMetDeveloperState,
+	HasMetDeveloperActions,
+	hasMetDeveloperReducer,
+	HasMetDeveloperState,
+} from "./hasMetDeveloper";
 import { defaultJoinDateState, JoinDateActions, joinDateReducer, JoinDateState } from "./joinDate";
 import { defaultPetIndexReducerState, petIndexReducer, PetIndexState } from "./pets";
 import { defaultTimePlayedState, TimePlayedActions, timePlayedReducer, TimePlayedState } from "./timePlayed";
@@ -25,6 +31,7 @@ export interface PlayerIndexState {
 	clubRewards: ClubRewardsState;
 	vipRewards: VipRewardsState;
 	joinDate: JoinDateState;
+	hasMetDeveloper: HasMetDeveloperState;
 }
 
 export type PlayerIndexActions =
@@ -34,7 +41,8 @@ export type PlayerIndexActions =
 	| ClubRewardsActions
 	| VipRewardsActions
 	| JoinDateActions
-	| GameVersionsPlayedActions;
+	| GameVersionsPlayedActions
+	| HasMetDeveloperActions;
 
 export const defaultPlayerIndexState: PlayerIndexState = {
 	pets: defaultPetIndexReducerState,
@@ -46,6 +54,7 @@ export const defaultPlayerIndexState: PlayerIndexState = {
 	groupRewards: defaultGroupRewardsState,
 	joinDate: defaultJoinDateState,
 	vipRewards: defaultVipRewardsState,
+	hasMetDeveloper: defaultHasMetDeveloperState,
 };
 
 export const playerIndexReducer = Rodux.combineReducers({
@@ -58,4 +67,5 @@ export const playerIndexReducer = Rodux.combineReducers({
 	clubRewards: clubRewardsReducer,
 	vipRewards: vipRewardsReducer,
 	joinDate: joinDateReducer,
+	hasMetDeveloper: hasMetDeveloperReducer,
 });

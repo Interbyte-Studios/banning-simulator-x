@@ -1,6 +1,11 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { uiDarkStrokeColor, uiOffButtonStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
+import {
+	uiClaimButtonStrokeColor,
+	uiDarkStrokeColor,
+	uiOffButtonStrokeColor,
+	uiTextStrokeColor,
+} from "client/ui/commonValues";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
@@ -42,29 +47,6 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 	hooks((props: TalismanTowerTalismanInfoProps) => {
 		const talismanInfo = getTalismanData(props.currentTalisman);
 
-		const rankRequiredWarning: Array<Roact.Element> = [];
-		if (props.rank < talismanInfo.cost.rank) {
-			const rankRequiredElement = (
-				<StrokeTextLabel
-					native={{
-						Position: UDim2.fromScale(0.45, -0.15),
-						Size: UDim2.fromScale(0.5, 0.3),
-						Text: "REQUIRES",
-						TextColor3: Color3.fromRGB(237, 61, 61),
-					}}
-					stroke={{ native: { Thickness: 2 } }}
-				>
-					<RankIcon
-						position={UDim2.fromScale(1.15, 0.5)}
-						size={{ maximizedSize: 1, minimizedSize: 0.9 }}
-						rank={talismanInfo.cost.rank}
-					/>
-				</StrokeTextLabel>
-			);
-
-			rankRequiredWarning.push(rankRequiredElement);
-		}
-
 		return (
 			<>
 				<ImageLabel
@@ -76,7 +58,22 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 				>
 					<uiaspectratioconstraint AspectRatio={2.35} />
 
-					{rankRequiredWarning}
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.45, -0.15),
+							Size: UDim2.fromScale(0.5, 0.3),
+							Text: "REQUIRES",
+							TextColor3: props.rank >= talismanInfo.cost.rank ? uiClaimButtonStrokeColor : uiOffButtonStrokeColor,
+						}}
+						stroke={{ native: { Thickness: 2 } }}
+					>
+						<RankIcon
+							position={UDim2.fromScale(1.15, 0.5)}
+							size={{ maximizedSize: 1, minimizedSize: 0.9 }}
+							rank={talismanInfo.cost.rank}
+						/>
+					</StrokeTextLabel>
+
 					<StrokeTextLabel
 						native={{
 							Position: UDim2.fromScale(0.5, 0.2),
@@ -92,7 +89,10 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 							Text: twoDpAbbreviator.numberToString(talismanInfo.cost.amount),
 							TextXAlignment: Enum.TextXAlignment.Left,
 						}}
-						stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) }, currencyGradient: talismanInfo.cost.currency }}
+						stroke={{
+							native: { Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) },
+							currencyGradient: talismanInfo.cost.currency,
+						}}
 					>
 						<CurrencyIcon
 							anchorPoint={new Vector2(1, 0.5)}
@@ -105,7 +105,7 @@ export const TalismanTowerTalismanInfo = RoactRodux.connect(mapStateToProps)(
 
 				<ImageLabel
 					native={{
-						Position: UDim2.fromScale(0.1, 0.335),
+						Position: UDim2.fromScale(0.1, 0.25),
 						Size: UDim2.fromScale(0.175, 0.335),
 						Image: assetIds.images.ui.talismanTower.sidebar,
 					}}
