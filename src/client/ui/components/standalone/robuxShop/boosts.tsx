@@ -13,7 +13,7 @@ import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { BOOST_IMAGES, BOOST_PRODUCTS } from "shared/configs/game";
+import { BIG_CRATE_BUNDLE, BOOST_IMAGES, BOOST_PRODUCTS, EXTREME_EXPERIENCE_BUNDLE } from "shared/configs/game";
 import { StoreState } from "shared/rodux";
 import { BoostsState } from "shared/rodux/boosts";
 
@@ -50,11 +50,258 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 				<StrokeTextLabel
 					native={{
 						Text: "Boosts",
-						Position: UDim2.fromScale(0.5, 0.632),
+						Position: UDim2.fromScale(0.5, 0.525),
 						Size: UDim2.fromScale(0.5, 0.015),
 					}}
 					stroke={{ native: { Thickness: 2.5, Color: uiDarkStrokeColor } }}
 				/>
+				<BaseFrame
+					BackgroundTransparency={0}
+					BackgroundColor3={Color3.fromRGB(12, 134, 211)}
+					Position={UDim2.fromScale(0.25, 0.58)}
+					Size={UDim2.fromScale(0.98, 0.085)}
+				>
+					<uicorner CornerRadius={new UDim(0.1, 0)} />
+					<uiaspectratioconstraint AspectRatio={1.2} />
+					<BaseUIStroke
+						native={{
+							Thickness: 4,
+							Color: Color3.fromRGB(0, 75, 122),
+						}}
+					/>
+
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.5, 0.075),
+							Size: UDim2.fromScale(0.92, 0.15),
+							Text: "Big Crate Bundle",
+							TextColor3: Color3.fromRGB(255, 225, 154),
+						}}
+						stroke={{
+							native: { Thickness: 2, Color: Color3.fromRGB(141, 124, 85) },
+						}}
+					/>
+
+					<ImageLabel
+						native={{
+							Position: UDim2.fromScale(0.25, 0.5),
+							Size: UDim2.fromScale(0.6, 0.6),
+							Image: assetIds.images.decals.boosts.BigCrateBundle,
+						}}
+					>
+						<uiaspectratioconstraint AspectRatio={1} />
+					</ImageLabel>
+
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.75, 0.3),
+							Size: UDim2.fromScale(0.5, 0.15),
+							Text: "- 3 x2 Luck (2h)",
+							TextColor3: Color3.fromRGB(85, 255, 127),
+						}}
+						stroke={{
+							native: { Thickness: 2, Color: Color3.fromRGB(32, 95, 46) },
+						}}
+					/>
+
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.75, 0.445),
+							Size: UDim2.fromScale(0.5, 0.15),
+							Text: "- 3 x2 Pet XP (2h)",
+							TextColor3: Color3.fromRGB(255, 130, 28),
+						}}
+						stroke={{
+							native: { Thickness: 2, Color: Color3.fromRGB(103, 74, 32) },
+						}}
+					/>
+
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.75, 0.58),
+							Size: UDim2.fromScale(0.5, 0.15),
+							Text: "- 3 x2 Rank XP (2h)",
+							TextColor3: Color3.fromRGB(170, 0, 255),
+						}}
+						stroke={{
+							native: { Thickness: 2, Color: Color3.fromRGB(85, 0, 127) },
+						}}
+					/>
+
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.75, 0.7),
+							Size: UDim2.fromScale(0.5, 0.15),
+							Text: "- 3 x2 Currency (2h)",
+							TextColor3: Color3.fromRGB(27, 68, 255),
+						}}
+						stroke={{
+							native: { Thickness: 2, Color: Color3.fromRGB(15, 38, 139) },
+						}}
+					/>
+
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.551, 0.82),
+							Size: UDim2.fromScale(0.175, 0.11),
+							Text: "3200",
+						}}
+						stroke={{
+							native: { Thickness: 2, Color: Color3.fromRGB(102, 57, 16) },
+						}}
+					/>
+
+					<ImageLabel
+						native={{
+							Position: UDim2.fromScale(0.418, 0.82),
+							Size: UDim2.fromScale(0.096, 0.11),
+							Image: assetIds.images.vectors.Robux,
+						}}
+					>
+						<uiaspectratioconstraint AspectRatio={1} />
+					</ImageLabel>
+
+					<SpringImageButton
+						native={{
+							Position: UDim2.fromScale(0.5, 0.969),
+							Image: assetIds.images.ui.index.Claim,
+						}}
+						size={{ minSize: 0.2, maxSize: 0.3 }}
+						events={{
+							/**
+							 *
+							 */
+							Activated: (): void => {
+								playSFX(UIEngagement.MajorEngagement);
+								MarketplaceService.PromptProductPurchase(Players.LocalPlayer, BIG_CRATE_BUNDLE);
+							},
+						}}
+					>
+						<uiaspectratioconstraint AspectRatio={2} />
+						<StrokeTextLabel
+							native={{
+								Position: UDim2.fromScale(0.5, 0.5),
+								Size: UDim2.fromScale(0.8, 0.8),
+								Text: "Buy",
+							}}
+							stroke={{
+								native: { Thickness: 2, Color: uiClaimButtonStrokeColor },
+							}}
+						/>
+					</SpringImageButton>
+				</BaseFrame>
+				<BaseFrame
+					BackgroundTransparency={0}
+					BackgroundColor3={Color3.fromRGB(12, 134, 211)}
+					Position={UDim2.fromScale(0.75, 0.58)}
+					Size={UDim2.fromScale(0.98, 0.085)}
+				>
+					<uicorner CornerRadius={new UDim(0.1, 0)} />
+					<uiaspectratioconstraint AspectRatio={1.2} />
+					<BaseUIStroke
+						native={{
+							Thickness: 4,
+							Color: Color3.fromRGB(0, 75, 122),
+						}}
+					/>
+
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.5, 0.075),
+							Size: UDim2.fromScale(0.92, 0.15),
+							Text: "Extreme Experience Bundle",
+							TextColor3: Color3.fromRGB(214, 151, 255),
+						}}
+						stroke={{
+							native: { Thickness: 2, Color: Color3.fromRGB(110, 78, 131) },
+						}}
+					/>
+
+					<ImageLabel
+						native={{
+							Position: UDim2.fromScale(0.25, 0.5),
+							Size: UDim2.fromScale(0.6, 0.6),
+							Image: assetIds.images.decals.boosts.ExtremeExperienceBundle,
+						}}
+					>
+						<uiaspectratioconstraint AspectRatio={1} />
+					</ImageLabel>
+
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.75, 0.445),
+							Size: UDim2.fromScale(0.5, 0.15),
+							Text: "- 3 x2 Pet XP (1h)",
+							TextColor3: Color3.fromRGB(255, 130, 28),
+						}}
+						stroke={{
+							native: { Thickness: 2, Color: Color3.fromRGB(103, 74, 32) },
+						}}
+					/>
+
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.75, 0.58),
+							Size: UDim2.fromScale(0.5, 0.15),
+							Text: "- 3 x2 Rank XP (1h)",
+							TextColor3: Color3.fromRGB(170, 0, 255),
+						}}
+						stroke={{
+							native: { Thickness: 2, Color: Color3.fromRGB(85, 0, 127) },
+						}}
+					/>
+
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.551, 0.82),
+							Size: UDim2.fromScale(0.175, 0.11),
+							Text: "800",
+						}}
+						stroke={{
+							native: { Thickness: 2, Color: Color3.fromRGB(102, 57, 16) },
+						}}
+					/>
+
+					<ImageLabel
+						native={{
+							Position: UDim2.fromScale(0.418, 0.82),
+							Size: UDim2.fromScale(0.096, 0.11),
+							Image: assetIds.images.vectors.Robux,
+						}}
+					>
+						<uiaspectratioconstraint AspectRatio={1} />
+					</ImageLabel>
+
+					<SpringImageButton
+						native={{
+							Position: UDim2.fromScale(0.5, 0.969),
+							Image: assetIds.images.ui.index.Claim,
+						}}
+						size={{ minSize: 0.2, maxSize: 0.3 }}
+						events={{
+							/**
+							 *
+							 */
+							Activated: (): void => {
+								playSFX(UIEngagement.MajorEngagement);
+								MarketplaceService.PromptProductPurchase(Players.LocalPlayer, EXTREME_EXPERIENCE_BUNDLE);
+							},
+						}}
+					>
+						<uiaspectratioconstraint AspectRatio={2} />
+						<uiaspectratioconstraint AspectRatio={2} />
+						<StrokeTextLabel
+							native={{
+								Position: UDim2.fromScale(0.5, 0.5),
+								Size: UDim2.fromScale(0.8, 0.8),
+								Text: "Buy",
+							}}
+							stroke={{
+								native: { Thickness: 2, Color: uiClaimButtonStrokeColor },
+							}}
+						/>
+					</SpringImageButton>
+				</BaseFrame>
 				{Object.entries(BOOST_PRODUCTS).map(([key]) => {
 					let boostName: string;
 					let boostColor: Color3;
@@ -65,28 +312,28 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 							boostName = "💰x2 Currency💰";
 							boostColor = Color3.fromRGB(27, 68, 255);
 							colorStroke = Color3.fromRGB(15, 38, 139);
-							position = UDim2.fromScale(0.5, 0.685);
+							position = UDim2.fromScale(0.5, 0.67);
 							break;
 						}
 						case "x2 Hatching Luck": {
 							boostName = "🍀x2 Luck🍀";
 							boostColor = Color3.fromRGB(85, 255, 127);
 							colorStroke = Color3.fromRGB(32, 95, 46);
-							position = UDim2.fromScale(0.5, 0.775);
+							position = UDim2.fromScale(0.5, 0.75);
 							break;
 						}
 						case "x2 Pet Experience": {
 							boostName = "⭐x2 Pet Experience⭐";
 							boostColor = Color3.fromRGB(255, 130, 28);
 							colorStroke = Color3.fromRGB(103, 74, 32);
-							position = UDim2.fromScale(0.5, 0.865);
+							position = UDim2.fromScale(0.5, 0.83);
 							break;
 						}
 						case "x2 Rank Experience": {
 							boostName = "⭐x2 Rank Experience⭐";
 							boostColor = Color3.fromRGB(170, 0, 255);
 							colorStroke = Color3.fromRGB(85, 0, 127);
-							position = UDim2.fromScale(0.5, 0.955);
+							position = UDim2.fromScale(0.5, 0.91);
 							break;
 						}
 					}
@@ -98,6 +345,7 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 							Position={position}
 							Size={UDim2.fromScale(0.95, 0.085)}
 						>
+							<uiaspectratioconstraint AspectRatio={3.35} />
 							<uicorner CornerRadius={new UDim(0.1, 0)} />
 							<BaseUIStroke
 								native={{
