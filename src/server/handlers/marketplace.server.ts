@@ -4,8 +4,10 @@ import { modifyPetCount } from "server/modules/datastore/pets";
 import { savePlayerData } from "server/modules/datastore/savePlayerData";
 import { retrieveStore } from "server/playerStore";
 import {
+	BIG_CRATE_BUNDLE,
 	BOOST_PRODUCTS,
 	EXCLUSIVE_PETS,
+	EXTREME_EXPERIENCE_BUNDLE,
 	GAMEPASS_GIFTS,
 	GAMEPASSES,
 	LIMITED_EGG,
@@ -66,6 +68,32 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 
 	if (receiptInfo.ProductId === ONE_HUNDRED_SPINS) {
 		store.dispatch(addAvailableSpins(10));
+		purchaseProcessed = true;
+	}
+
+	if (receiptInfo.ProductId === BIG_CRATE_BUNDLE) {
+		store.dispatch(storeBoost("x2 Currency", 120));
+		store.dispatch(storeBoost("x2 Currency", 120));
+		store.dispatch(storeBoost("x2 Currency", 120));
+		store.dispatch(storeBoost("x2 Hatching Luck", 120));
+		store.dispatch(storeBoost("x2 Hatching Luck", 120));
+		store.dispatch(storeBoost("x2 Hatching Luck", 120));
+		store.dispatch(storeBoost("x2 Pet Experience", 120));
+		store.dispatch(storeBoost("x2 Pet Experience", 120));
+		store.dispatch(storeBoost("x2 Pet Experience", 120));
+		store.dispatch(storeBoost("x2 Rank Experience", 120));
+		store.dispatch(storeBoost("x2 Rank Experience", 120));
+		store.dispatch(storeBoost("x2 Rank Experience", 120));
+		purchaseProcessed = true;
+	}
+
+	if (receiptInfo.ProductId === EXTREME_EXPERIENCE_BUNDLE) {
+		store.dispatch(storeBoost("x2 Pet Experience", 60));
+		store.dispatch(storeBoost("x2 Pet Experience", 60));
+		store.dispatch(storeBoost("x2 Pet Experience", 60));
+		store.dispatch(storeBoost("x2 Rank Experience", 60));
+		store.dispatch(storeBoost("x2 Rank Experience", 60));
+		store.dispatch(storeBoost("x2 Rank Experience", 60));
 		purchaseProcessed = true;
 	}
 

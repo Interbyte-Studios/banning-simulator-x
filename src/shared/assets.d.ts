@@ -436,6 +436,8 @@ declare namespace assetIds {
 				"Auto Fight": string;
 			};
 			boosts: {
+				BigCrateBundle: string;
+				ExtremeExperienceBundle: string;
 				luck: string;
 			};
 			talismans: {

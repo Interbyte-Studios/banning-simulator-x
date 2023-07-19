@@ -194,7 +194,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 				stroke={{ native: { Thickness: 2.5, Color: uiTextStrokeColor } }}
 			/>
 			<BaseFrame
-				Position={UDim2.fromScale(0.5, 0.065)}
+				Position={UDim2.fromScale(0.5, 0.05)}
 				Size={UDim2.fromScale(0.95, 0.065)}
 				BackgroundColor3={Color3.fromRGB(12, 134, 211)}
 				BackgroundTransparency={0}
@@ -427,19 +427,19 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 			</BaseFrame>
 
 			<ExclusivePet
-				position={UDim2.fromScale(0.15, 0.145)}
+				position={UDim2.fromScale(0.15, 0.115)}
 				petId={EXCLUSIVE_PETS[0].petId}
 				devProductId={EXCLUSIVE_PETS[0].devproductId}
 			/>
 
 			<ExclusivePet
-				position={UDim2.fromScale(0.5, 0.145)}
+				position={UDim2.fromScale(0.5, 0.115)}
 				petId={EXCLUSIVE_PETS[1].petId}
 				devProductId={EXCLUSIVE_PETS[1].devproductId}
 			/>
 
 			<ExclusivePet
-				position={UDim2.fromScale(0.85, 0.145)}
+				position={UDim2.fromScale(0.85, 0.115)}
 				petId={EXCLUSIVE_PETS[2].petId}
 				devProductId={EXCLUSIVE_PETS[2].devproductId}
 			/>

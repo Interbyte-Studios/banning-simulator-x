@@ -103,7 +103,7 @@ export const RobuxShop = hooks((props: RobuxShopProps, { useState }) => {
 					BorderSizePixel={0}
 					Position={UDim2.fromScale(0.5, 0.56)}
 					Size={UDim2.fromScale(0.99, 0.815)}
-					CanvasSize={UDim2.fromScale(0, 5)}
+					CanvasSize={UDim2.fromScale(0, 6)}
 					ScrollBarImageColor3={Color3.fromRGB(22, 0, 190)}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>

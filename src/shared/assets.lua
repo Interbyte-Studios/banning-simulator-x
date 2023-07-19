@@ -18,6 +18,8 @@ return {
 		decals = {
 			UpdateLog = "rbxassetid://14070307985",
 			boosts = {
+				BigCrateBundle = "rbxassetid://14112095898",
+				ExtremeExperienceBundle = "rbxassetid://14112096396",
 				luck = "rbxassetid://11676506054",
 			},
 			eggs = {
@@ -127,7 +129,7 @@ return {
 				Doggy = "rbxassetid://11440322527",
 				["Doggy Bee"] = "rbxassetid://11440409910",
 				["Evil Bee"] = "rbxassetid://11440091073",
-				["Googly Chest"] = "rbxassetid://14078492473",
+				["Googly Chest"] = "rbxassetid://14112092959",
 				Gumdrop = "rbxassetid://11440447407",
 				["Gummy Bear"] = "rbxassetid://11440091157",
 				["Gummy Bee"] = "rbxassetid://11440091247",

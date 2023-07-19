@@ -63,6 +63,16 @@ hash = "7707bf6e3aa22dfa587cc2af26b45fc3a34782afc6da4fe3b03e14fa294ca38f"
 id = 14070307985
 packable = false
 
+[inputs."images/decals/boosts/BigCrateBundle.png"]
+hash = "b326da60f6789fedbe5757d6b07a16825e2b79f32531dbf7ef15c5bd3be8f50d"
+id = 14112095898
+packable = false
+
+[inputs."images/decals/boosts/ExtremeExperienceBundle.png"]
+hash = "1aa6328f257657fdd4959d37af740264024b8b4801e001fdb618fc73101763cb"
+id = 14112096396
+packable = false
+
 [inputs."images/decals/boosts/luck.png"]
 hash = "3ade169784bccee8b79fe4648df19def3d288411b44545593f48d7c5fbc84c3b"
 id = 11676506054
@@ -569,8 +579,8 @@ id = 11440091073
 packable = false
 
 [inputs."images/decals/pets/Googly Chest.png"]
-hash = "e912d5dc61eda2f835f3605daab405fe7c4bb6b309b2e1c7c79661bc1b89151c"
-id = 14078492473
+hash = "4fca2db3b68aacfb6e1514d7a937afbc5f09cddeb9d7dbc6b4364f53b2448ec2"
+id = 14112092959
 packable = false
 
 [inputs."images/decals/pets/Gumdrop.png"]
