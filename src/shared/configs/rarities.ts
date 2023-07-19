@@ -1,5 +1,3 @@
-import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
-
 export interface RarityGradient {
 	id: number;
 	reverseId: number;
@@ -11,7 +9,7 @@ export interface RarityGradient {
 }
 
 export type Rarity = keyof typeof RARITIES;
-export const RARITIES = preserveWithConstraint<Record<string, RarityGradient>>()({
+export const RARITIES = {
 	Basic: {
 		id: 1,
 		reverseId: 8,
@@ -116,5 +114,5 @@ export const RARITIES = preserveWithConstraint<Record<string, RarityGradient>>()
 			new ColorSequenceKeypoint(1, Color3.fromRGB(140, 0, 255)),
 		]),
 	},
-});
+} satisfies Record<string, RarityGradient>;
 export type Rarities = keyof typeof RARITIES;

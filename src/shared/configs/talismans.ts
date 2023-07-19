@@ -1,6 +1,3 @@
-import { t } from "@rbxts/t";
-import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
-
 import { Currency } from "./currencies";
 
 export interface TalismanStatEffects {
@@ -24,7 +21,7 @@ export interface Talisman {
 	stats: TalismanStatEffects;
 }
 
-export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
+export const TALISMANS = {
 	"All Seeing Talisman": {
 		id: 1,
 		cost: {
@@ -129,7 +126,7 @@ export const TALISMANS = preserveWithConstraint<Record<string, Talisman>>()({
 			walkspeed: 45,
 		},
 	},
-});
+} satisfies Record<string, Talisman>;
 
 export const TALISMAN_PHASES: Array<{
 	phase: TalismanPhases;

@@ -1,8 +1,6 @@
-import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
-
 import { Npc } from "..";
 
-export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
+export const BAN_LAND_NPCS = {
 	forestWizard: {
 		name: "Forest Wizard",
 		health: 100,
@@ -27,7 +25,7 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		rank: 1,
 		isBoss: false,
 	},
-	floralGirl: identity<Npc>({
+	floralGirl: {
 		name: "Floral Girl",
 		health: 400,
 		reward: {
@@ -38,8 +36,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 1,
 		isBoss: false,
-	}),
-	beeKing: identity<Npc>({
+	},
+	beeKing: {
 		name: "Bee King",
 		health: 800,
 		reward: {
@@ -50,8 +48,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 2,
 		isBoss: false,
-	}),
-	iceSkier: identity<Npc>({
+	},
+	iceSkier: {
 		name: "Ice Skier",
 		health: 1_600,
 		reward: {
@@ -62,8 +60,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 3,
 		isBoss: false,
-	}),
-	beachBoy: identity<Npc>({
+	},
+	beachBoy: {
 		name: "Beach Boy",
 		health: 3_200,
 		reward: {
@@ -74,8 +72,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 4,
 		isBoss: false,
-	}),
-	sparkletimeKing: identity<Npc>({
+	},
+	sparkletimeKing: {
 		name: "Sparkletime King",
 		health: 6_400,
 		reward: {
@@ -86,8 +84,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 5,
 		isBoss: false,
-	}),
-	miningGuy: identity<Npc>({
+	},
+	miningGuy: {
 		name: "Mining Guy",
 		health: 12_800,
 		reward: {
@@ -98,8 +96,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 6,
 		isBoss: false,
-	}),
-	lavaLord: identity<Npc>({
+	},
+	lavaLord: {
 		name: "Lava Lord",
 		health: 25_600,
 		reward: {
@@ -110,8 +108,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 7,
 		isBoss: false,
-	}),
-	enchantedGolem: identity<Npc>({
+	},
+	enchantedGolem: {
 		name: "Enchanted Golem",
 		health: 51_200,
 		reward: {
@@ -122,8 +120,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 8,
 		isBoss: false,
-	}),
-	toxicSparkletimeKing: identity<Npc>({
+	},
+	toxicSparkletimeKing: {
 		name: "Toxic Sparkletime King",
 		health: 102_400,
 		reward: {
@@ -134,8 +132,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 9,
 		isBoss: false,
-	}),
-	neonJester: identity<Npc>({
+	},
+	neonJester: {
 		name: "Neon Jester",
 		health: 204800,
 		reward: {
@@ -146,10 +144,10 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 10,
 		isBoss: false,
-	}),
+	},
 
 	// Bosses
-	mushroomKing: identity<Npc>({
+	mushroomKing: {
 		name: "Mushroom King",
 		health: 300,
 		reward: {
@@ -160,8 +158,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 1,
 		isBoss: true,
-	}),
-	desertScout: identity<Npc>({
+	},
+	desertScout: {
 		name: "Desert Scout",
 		health: 600,
 		reward: {
@@ -172,8 +170,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 1,
 		isBoss: true,
-	}),
-	magicFloralMan: identity<Npc>({
+	},
+	magicFloralMan: {
 		name: "Magic Floral Man",
 		health: 1_200,
 		reward: {
@@ -184,8 +182,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 1,
 		isBoss: true,
-	}),
-	onett: identity<Npc>({
+	},
+	onett: {
 		name: "Onett",
 		health: 2_400,
 		reward: {
@@ -196,8 +194,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 2,
 		isBoss: true,
-	}),
-	iceGolem: identity<Npc>({
+	},
+	iceGolem: {
 		name: "Ice Golem",
 		health: 4_800,
 		reward: {
@@ -208,8 +206,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 3,
 		isBoss: true,
-	}),
-	pufferfishKing: identity<Npc>({
+	},
+	pufferfishKing: {
 		name: "Pufferfish King",
 		health: 9_600,
 		reward: {
@@ -220,8 +218,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 4,
 		isBoss: true,
-	}),
-	pastelGuardian: identity<Npc>({
+	},
+	pastelGuardian: {
 		name: "Pastel Guardian",
 		health: 19_200,
 		reward: {
@@ -232,8 +230,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 5,
 		isBoss: true,
-	}),
-	elementalKing: identity<Npc>({
+	},
+	elementalKing: {
 		name: "Elemental King",
 		health: 38_400,
 		reward: {
@@ -244,8 +242,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 6,
 		isBoss: true,
-	}),
-	headlessDoombringer: identity<Npc>({
+	},
+	headlessDoombringer: {
 		name: "Headless Doombringer",
 		health: 76_800,
 		reward: {
@@ -256,8 +254,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 7,
 		isBoss: true,
-	}),
-	udzal: identity<Npc>({
+	},
+	udzal: {
 		name: "Ud'zal",
 		health: 153_600,
 		reward: {
@@ -268,8 +266,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 8,
 		isBoss: true,
-	}),
-	toxicWastelander: identity<Npc>({
+	},
+	toxicWastelander: {
 		name: "Toxic Wastelander",
 		health: 307_200,
 		reward: {
@@ -280,8 +278,8 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 9,
 		isBoss: true,
-	}),
-	prince: identity<Npc>({
+	},
+	prince: {
 		name: "Prince",
 		health: 614_400,
 		reward: {
@@ -292,5 +290,5 @@ export const BAN_LAND_NPCS = preserveWithConstraint<Record<string, Npc>>()({
 		},
 		rank: 10,
 		isBoss: true,
-	}),
-});
+	},
+} satisfies Record<string, Npc>;

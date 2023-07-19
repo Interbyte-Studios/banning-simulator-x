@@ -1,5 +1,4 @@
 import { t } from "@rbxts/t";
-import { preserveWithConstraint } from "shared/util/preserveWithConstraint";
 
 export const currencies = ["coins", "gems"] as const;
 
@@ -11,7 +10,7 @@ export interface CurrencyGradient {
 	EndingColor: Color3;
 }
 
-export const CURRENCY_GRADIENTS = preserveWithConstraint<Record<string, CurrencyGradient>>()({
+export const CURRENCY_GRADIENTS = {
 	coins: {
 		BeginningColor: Color3.fromRGB(94, 64, 28),
 		EndingColor: Color3.fromRGB(207, 140, 43),
@@ -20,4 +19,4 @@ export const CURRENCY_GRADIENTS = preserveWithConstraint<Record<string, Currency
 		BeginningColor: Color3.fromRGB(173, 82, 102),
 		EndingColor: Color3.fromRGB(240, 64, 110),
 	},
-});
+} satisfies Record<string, CurrencyGradient>;
