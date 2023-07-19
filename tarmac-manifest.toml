@@ -3398,6 +3398,11 @@ hash = "15093d77c171183ef9994a24660863f159ea8688bfda6984e2a78acabfe6ebfa"
 id = 11591957751
 packable = false
 
+[inputs."images/vectors/Gear.png"]
+hash = "5219850105124814b35bd99a6aa46f3f0a3d573db19cb8119373b08172f529ea"
+id = 14115103174
+packable = false
+
 [inputs."images/vectors/Gem.png"]
 hash = "db6ea11523413280d91b1d5ee292e33cda8e7b55cdc01f6f4447562db489e810"
 id = 11591957802

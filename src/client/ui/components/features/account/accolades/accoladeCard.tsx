@@ -175,6 +175,8 @@ export const AccoladeCard = hooks(
 									? assetIds.images.vectors.Coin
 									: props.accoladeData.reward.rewardType === "gems"
 									? assetIds.images.vectors.GemBag
+									: props.accoladeData.reward.rewardType === "gears"
+									? assetIds.images.vectors.Gear
 									: BOOST_IMAGES[props.accoladeData.reward.rewardType][
 											props.accoladeData.reward.amount as ValidBoostTime
 									  ],

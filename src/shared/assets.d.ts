@@ -479,6 +479,7 @@ declare namespace assetIds {
 			};
 		};
 		vectors: {
+			Gear: string;
 			Egg: string;
 			trading: {
 				Wantit: string;

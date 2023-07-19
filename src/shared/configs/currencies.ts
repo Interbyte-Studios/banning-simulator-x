@@ -1,6 +1,6 @@
 import { t } from "@rbxts/t";
 
-export const currencies = ["coins", "gems"] as const;
+export const currencies = ["coins", "gems", "gears"] as const;
 
 export const isCurrency = t.literal(...currencies);
 export type Currency = t.static<typeof isCurrency>;
@@ -19,4 +19,8 @@ export const CURRENCY_GRADIENTS = {
 		BeginningColor: Color3.fromRGB(173, 82, 102),
 		EndingColor: Color3.fromRGB(240, 64, 110),
 	},
+	gears: {
+		BeginningColor: Color3.fromRGB(166, 163, 5),
+		EndingColor: Color3.fromRGB(237, 235, 74),
+	}
 } satisfies Record<string, CurrencyGradient>;

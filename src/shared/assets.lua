@@ -766,6 +766,7 @@ return {
 			Error = "rbxassetid://11887192861",
 			Experience = "rbxassetid://11866056920",
 			FewGems = "rbxassetid://11591957751",
+			Gear = "rbxassetid://14115103174",
 			Gem = "rbxassetid://11591957802",
 			GemBag = "rbxassetid://11591957880",
 			GemChest = "rbxassetid://11591958036",

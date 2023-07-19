@@ -1,3 +1,5 @@
+import { t } from "@rbxts/t";
+
 import { Currency } from "./currencies";
 
 export interface TalismanStatEffects {
