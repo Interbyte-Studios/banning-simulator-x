@@ -440,7 +440,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					}
 				},
 				false,
-				Enum.KeyCode.E,
+				Enum.KeyCode.R,
 			);
 
 			ContextActionService.BindAction(
@@ -499,7 +499,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 				ContextActionService.UnbindAction("hatchEgg");
 				ContextActionService.UnbindAction("hatchEggTriple");
 			};
-		});
+		}, []);
 
 		return (
 			<frame Visible={false}>

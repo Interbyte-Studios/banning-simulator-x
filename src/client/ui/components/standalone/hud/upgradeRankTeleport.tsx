@@ -1,5 +1,5 @@
 import Roact from "@rbxts/roact";
-import { Players, Workspace } from "@rbxts/services";
+import { Players } from "@rbxts/services";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
@@ -76,14 +76,8 @@ export const UpgradeRankTeleport = hooks((props: UpgradeRankTeleportProps) => {
 					const humanoidRootPart = humanoid.RootPart;
 					assert(humanoidRootPart, `Failed to get HumanoidRootPart while teleporting to rank upgrade zone.`);
 
-					const rankTeleport = Workspace.interactions.rankUpgrade.teleport;
-					if (rankTeleport === undefined) {
-						player.RequestStreamAroundAsync(TELEPORTATIONS.ZONES.Forest);
-						humanoidRootPart.CFrame = new CFrame(TELEPORTATIONS.ZONES.Forest);
-						return;
-					}
-
-					humanoidRootPart.CFrame = new CFrame(rankTeleport.Position);
+					player.RequestStreamAroundAsync(TELEPORTATIONS["Ban Land"].RANK_UPGRADE);
+					humanoidRootPart.CFrame = new CFrame(TELEPORTATIONS["Ban Land"].RANK_UPGRADE);
 				},
 			}}
 		>

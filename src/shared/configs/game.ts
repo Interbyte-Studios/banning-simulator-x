@@ -122,6 +122,9 @@ export const TELEPORTATIONS = {
 		"Toxic Lands": new Vector3(22826.715, 46.523, 2333.504),
 		"Jester Castle": new Vector3(22826.715, 46.523, 2560.72),
 	},
+	"Ban Land": {
+		RANK_UPGRADE: new Vector3(22918.633, 46.567, -194.273),
+	},
 };
 
 export const isBoost = t.literal("x2 Currency", "x2 Hatching Luck", "x2 Pet Experience", "x2 Rank Experience");

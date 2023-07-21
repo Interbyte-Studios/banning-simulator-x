@@ -216,7 +216,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 			ContextActionService.UnbindAction("equipWeapon");
 			ContextActionService.UnbindAction("openShop");
 		};
-	});
+	}, [visibility]);
 
 	useEffect(() => {
 		const connection = updateLogIcon.selected.Connect(() => {

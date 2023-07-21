@@ -41,7 +41,7 @@ export const HatchEggButton = (props: HatchEggProps): Roact.Element => {
 			<StrokeTextLabel
 				native={{
 					Size: UDim2.fromScale(1, 1),
-					Text: "E",
+					Text: "R",
 				}}
 				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(122, 54, 133) }, isBillboard: true }}
 			>
