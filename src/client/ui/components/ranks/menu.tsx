@@ -73,6 +73,11 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 				}
 				lastInteraction = now;
 
+				const rankInteraction = Workspace.interactions.rankUpgrade.FindFirstChild("teleport") as BasePart;
+				if (rankInteraction === undefined) {
+					return;
+				}
+
 				const character = player.Character;
 				if (character === undefined) {
 					return;
@@ -88,7 +93,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 					return;
 				}
 
-				const magnitude = humanoidRootPart.Position.sub(Workspace.interactions.rankUpgrade.teleport.Position).Magnitude;
+				const magnitude = humanoidRootPart.Position.sub(rankInteraction.Position).Magnitude;
 				if (magnitude > 15) {
 					if (withinRange) {
 						setWithinRange(false);
@@ -332,7 +337,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.5, 0.55)}
 					Size={UDim2.fromScale(0.95, 0.835)}
 					ScrollBarThickness={12}
-				BorderSizePixel={0}
+					BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uilistlayout

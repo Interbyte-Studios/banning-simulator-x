@@ -2398,6 +2398,26 @@ hash = "4b7f2b9f515660871c8f1f26582edd77fb9805956ac40cd46c55602b0765297a"
 id = 11827148010
 packable = false
 
+[inputs."images/decals/weapons/GearWorx Blade.png"]
+hash = "cc9ab45485d9e5dafb0566fd5a2ebb69be029d0914aad8af1475d7e57c27619a"
+id = 14116430247
+packable = false
+
+[inputs."images/decals/weapons/GearWorx Lance.png"]
+hash = "61d887f13698ad12bdbdf05c49459a1d0b6b4620d65b38d9b0900252514dcaf7"
+id = 14116430393
+packable = false
+
+[inputs."images/decals/weapons/GearWorx Scythe.png"]
+hash = "64fd05d0184990631baea7e552641357cc6cd8b6a05996abe5cb29e6e45c9a3b"
+id = 14116430493
+packable = false
+
+[inputs."images/decals/weapons/GearWorx Striker.png"]
+hash = "f13a784871d14789dde0166af2c6aef784d2b1cf05b20553bc0dd11ada059c40"
+id = 14116430602
+packable = false
+
 [inputs."images/decals/weapons/Gooey Brawler.png"]
 hash = "e593d1b8728c86846c212cc472ae7b4cabc07ecc6fa39e26b996b44ee5305d36"
 id = 11827148161

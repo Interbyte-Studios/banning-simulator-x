@@ -182,7 +182,9 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					assert(petVendor.IsA("Model"), `Expected pet mastery vendor "${petVendor.Name}" to be a model.`);
 
 					const primaryPart = petVendor.PrimaryPart;
-					assert(primaryPart, `Expected pet mastery vendor "${petVendor.Name}" to have a set PrimaryPart.`);
+					if (primaryPart === undefined) {
+						return;
+					}
 
 					const petMasteryFolder = petVendor.Parent as Folder;
 					assert(petMasteryFolder, `Expected the parent of the pet mastery vendor "${petVendor.Name} to exist."`);
@@ -257,7 +259,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 	const isVisible = useCallback((currentMenu: keyof typeof visibilityStates) => visibility[currentMenu], [visibility]);
 
 	useEffect(() => {
-		if (isMenuVisible()) {
+		if (isMenuVisible() && !isVisible("autoFight") && !isVisible("weaponShop") && !isVisible("talismanTower")) {
 			blurEffect.Size = 0;
 			TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 20 }).Play();
 		} else {

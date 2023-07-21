@@ -417,6 +417,10 @@ declare namespace assetIds {
 				"Radioactive Greatsword": string;
 				"Stinger Scythe": string;
 				"Tropical Thrasher": string;
+				"GearWorx Lance": string;
+				"GearWorx Striker": string;
+				"GearWorx Scythe": string;
+				"GearWorx Blade": string;
 			};
 			gamepasses: {
 				"Fast Hatch": string;

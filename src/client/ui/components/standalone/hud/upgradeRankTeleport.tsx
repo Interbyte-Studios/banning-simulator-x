@@ -6,6 +6,7 @@ import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
+import { TELEPORTATIONS } from "shared/configs/game";
 import { MAX_RANK, RANKS } from "shared/configs/ranks";
 
 const player = Players.LocalPlayer;
@@ -75,7 +76,14 @@ export const UpgradeRankTeleport = hooks((props: UpgradeRankTeleportProps) => {
 					const humanoidRootPart = humanoid.RootPart;
 					assert(humanoidRootPart, `Failed to get HumanoidRootPart while teleporting to rank upgrade zone.`);
 
-					humanoidRootPart.CFrame = new CFrame(Workspace.interactions.rankUpgrade.teleport.Position);
+					const rankTeleport = Workspace.interactions.rankUpgrade.teleport;
+					if (rankTeleport === undefined) {
+						player.RequestStreamAroundAsync(TELEPORTATIONS.ZONES.Forest);
+						humanoidRootPart.CFrame = new CFrame(TELEPORTATIONS.ZONES.Forest);
+						return;
+					}
+
+					humanoidRootPart.CFrame = new CFrame(rankTeleport.Position);
 				},
 			}}
 		>

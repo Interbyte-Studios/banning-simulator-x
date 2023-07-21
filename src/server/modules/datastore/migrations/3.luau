@@ -10,5 +10,7 @@ return function(state)
 	state.spinWheel.spinsAvailable = 0
 	state.spinWheel.lastSpinTime = 0
 
+	state.currencies.gears = 0
+
 	return state
 end

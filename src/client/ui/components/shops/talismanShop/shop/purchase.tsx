@@ -122,12 +122,12 @@ export const PurchaseTalisman = RoactRodux.connect(mapStateToProps)(
 			>
 				<StrokeTextLabel
 					native={{
-						Size: UDim2.fromScale(1, 1),
+						Size: UDim2.fromScale(0.9, 0.9),
 						Text: talismanEquipped ? "Unequip" : talismanOwned ? "Equip" : "Purchase",
 					}}
 					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
 				/>
-				<uiaspectratioconstraint AspectRatio={4} />
+				<uiaspectratioconstraint AspectRatio={3.4} />
 			</SpringImageButton>
 		);
 	}),

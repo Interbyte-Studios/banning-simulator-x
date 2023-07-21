@@ -209,12 +209,11 @@ export const EGGS = {
 		pets: EVENT_500k_EGG_PETS,
 		world: "Ban Land",
 		zone: "Forest",
-		hatchable: true,
+		hatchable: false,
 		hidden: false,
 		luckApplies: true,
 	},
 } satisfies Record<string, Egg>;
-
 
 export type EggName = keyof typeof EGGS;
 export type Eggs = typeof EGGS;

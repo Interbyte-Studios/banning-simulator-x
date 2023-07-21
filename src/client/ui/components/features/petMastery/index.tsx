@@ -41,7 +41,9 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 					assert(petVendor.IsA("Model"), `Expected pet mastery vendor "${petVendor.Name}" to be a model.`);
 
 					const primaryPart = petVendor.PrimaryPart;
-					assert(primaryPart, `Expected pet mastery vendor "${petVendor.Name}" to have a set PrimaryPart.`);
+					if (primaryPart === undefined) {
+						return <></>;
+					}
 
 					return (
 						<PetMasteryInteractPrompt

@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Players, Workspace } from "@rbxts/services";
+import { Players } from "@rbxts/services";
 import { uiClaimButtonStrokeColor, uiTextStrokeColor } from "client/ui/commonValues";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
@@ -10,6 +10,7 @@ import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/stro
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
+import { TELEPORTATIONS } from "shared/configs/game";
 import { WorldName } from "shared/configs/worlds";
 import { ZoneNames } from "shared/configs/zones";
 import { StoreState } from "shared/rodux";
@@ -109,10 +110,8 @@ export const ZoneTeleportCard = RoactRodux.connect(mapStateToProps)(
 							const humanoidRootPart = humanoid.RootPart;
 							assert(humanoidRootPart, `Failed to get HumanoidRootPart for ${player.Name} | Teleporation`);
 
-							const teleport = Workspace.interactions.teleports[props.zone];
-							assert(teleport, `Failed to get teleportation part for "${props.zone}" from "${props.world}".`);
-
-							humanoidRootPart.PivotTo(teleport.CFrame);
+							player.RequestStreamAroundAsync(TELEPORTATIONS.ZONES[props.zone]);
+							humanoidRootPart.PivotTo(new CFrame(TELEPORTATIONS.ZONES[props.zone]));
 						},
 						/* eslint-enable jsdoc/require-jsdoc */
 					}}

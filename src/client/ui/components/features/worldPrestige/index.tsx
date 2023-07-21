@@ -55,10 +55,6 @@ export const WorldPrestige = hooks(
 
 						const prestigeVendor = prestige.FindFirstChild("vendor") as Model;
 						const prestigePrimaryPart = prestigeVendor.FindFirstChild("primary") as BasePart;
-						assert(
-							prestigePrimaryPart,
-							`Expected prestige vendor from ${worldPrestigeFolder.Name} to have a primary part.`,
-						);
 
 						return (
 							<>

@@ -1,7 +1,8 @@
 import Object from "@rbxts/object-utils";
-import { HttpService, Workspace } from "@rbxts/services";
+import { HttpService } from "@rbxts/services";
 import { modifyPetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
+import { TELEPORTATIONS } from "shared/configs/game";
 import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { WORLDS } from "shared/configs/worlds";
 import { remotes } from "shared/remotes";
@@ -137,6 +138,6 @@ remotes.Server.GetNamespace("worldPrestige")
 
 			// set character back to spawn
 			// will need to change this to be the spawn of the world
-			rootPart.CFrame = new CFrame(Workspace.interactions.teleports.Forest.Position);
+			rootPart.CFrame = new CFrame(TELEPORTATIONS.ZONES.Forest);
 		}),
 	);

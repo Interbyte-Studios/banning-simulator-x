@@ -57,7 +57,7 @@ export const WeaponShop = RoactRodux.connect(mapStateToProps)(
 			const camera = Workspace.CurrentCamera;
 			assert(camera, `Workspace current camera was undefined. Cannot open shop.`);
 
-			const weaponViewpoint = Workspace.interactions.itemShop["Ban Land"].cameraline.FindFirstChild(
+			const weaponViewpoint = Workspace.interactions.itemShop["Ban Land"].cameraline.cameraline.FindFirstChild(
 				viewedWeapon,
 			) as BasePart;
 			assert(weaponViewpoint, `Failed to get weapon viewpoint in item shop for weapon with id: "${viewedWeapon}"`);

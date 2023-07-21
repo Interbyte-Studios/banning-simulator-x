@@ -375,90 +375,116 @@ function createEnemyTag(enemy: Model): void {
 	const enemyTag = ReplicatedStorage.assetObjects.tags.enemyTag;
 	assert(enemyTag, `Failed to get enemy tag from rep storage`);
 
-	const humanoid = enemy.FindFirstChildOfClass("Humanoid");
-	if (humanoid === undefined) {
-		return;
-	}
-
-	const head = enemy.FindFirstChild("Head") as BasePart;
-	if (head === undefined) {
-		return;
-	}
-
-	const npcData = getNPCByName(enemy.Name);
-	if (npcData === undefined) {
-		warn(`Failed to create enemy tag. Did not find data for npc "${enemy.Name}"`);
-		return;
-	}
-
-	const tag = enemyTag.Clone();
-	tag.hold.name.Text = enemy.Name;
-	tag.hold.name.rank.Image = getRankIcon(npcData.rank);
-	tag.hold.title.Visible = npcData.isBoss;
-	tag.hold.title.Text = npcData.isBoss ? `Boss` : `NPC`;
-	tag.hold.title.TextColor3 = npcData.isBoss ? Color3.fromRGB(250, 112, 112) : Color3.fromRGB(255, 255, 255);
-
-	tag.hold.fillBackground.fill.Size = UDim2.fromScale(1, 1);
-	tag.hold.fillBackground.health.Text = `[${twoDpAbbreviator.numberToString(
-		humanoid.Health,
-	)} / ${twoDpAbbreviator.numberToString(humanoid.MaxHealth)}]`;
-
-	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
-	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
-
-	tag.Adornee = head;
-	tag.Parent = enemyTags;
-
-	const healthConnection = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
-		const health = humanoid.Health;
-		const maxHealth = humanoid.MaxHealth;
-
-		const healthPercentage = health / maxHealth;
-
-		if (healthPercentage > 0.7) {
-			tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(85, 255, 127);
-		} else if (healthPercentage > 0.3) {
-			tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(255, 237, 84);
-		} else {
-			tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(255, 92, 84);
+	task.spawn(() => {
+		let humanoid = enemy.FindFirstChildOfClass("Humanoid");
+		if (humanoid === undefined) {
+			// eslint-disable-next-line no-constant-condition
+			while (true) {
+				task.wait(1);
+				if (enemy.FindFirstChildOfClass("Humanoid")) {
+					humanoid = enemy.FindFirstChildOfClass("Humanoid");
+					break;
+				}
+			}
+		}
+		if (humanoid === undefined) {
+			return;
 		}
 
-		const healthTween = TweenService.Create(tag.hold.fillBackground.fill, healthbarTween, {
-			Size: UDim2.fromScale(healthPercentage, 1),
+		let head = enemy.FindFirstChild("Head") as BasePart;
+		if (head === undefined) {
+			// eslint-disable-next-line no-constant-condition
+			while (true) {
+				task.wait(1);
+				if (enemy.FindFirstChild("Head")) {
+					head = enemy.FindFirstChild("Head") as BasePart;
+					break;
+				}
+			}
+		}
+		if (head === undefined) {
+			return;
+		}
+
+		const npcData = getNPCByName(enemy.Name);
+		if (npcData === undefined) {
+			warn(`Failed to create enemy tag. Did not find data for npc "${enemy.Name}"`);
+			return;
+		}
+
+		const tag = enemyTag.Clone();
+		tag.hold.name.Text = enemy.Name;
+		tag.hold.name.rank.Image = getRankIcon(npcData.rank);
+		tag.hold.title.Visible = npcData.isBoss;
+		tag.hold.title.Text = npcData.isBoss ? `Boss` : `NPC`;
+		tag.hold.title.TextColor3 = npcData.isBoss ? Color3.fromRGB(250, 112, 112) : Color3.fromRGB(255, 255, 255);
+
+		tag.hold.fillBackground.fill.Size = UDim2.fromScale(1, 1);
+		tag.hold.fillBackground.health.Text = `[${twoDpAbbreviator.numberToString(
+			humanoid.Health,
+		)} / ${twoDpAbbreviator.numberToString(humanoid.MaxHealth)}]`;
+
+		humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
+		humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
+
+		tag.Adornee = head;
+		tag.Parent = enemyTags;
+
+		const healthConnection = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
+			if (humanoid === undefined) {
+				return;
+			}
+
+			const health = humanoid.Health;
+			const maxHealth = humanoid.MaxHealth;
+
+			const healthPercentage = health / maxHealth;
+
+			if (healthPercentage > 0.7) {
+				tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(85, 255, 127);
+			} else if (healthPercentage > 0.3) {
+				tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(255, 237, 84);
+			} else {
+				tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(255, 92, 84);
+			}
+
+			const healthTween = TweenService.Create(tag.hold.fillBackground.fill, healthbarTween, {
+				Size: UDim2.fromScale(healthPercentage, 1),
+			});
+			healthTween.Play();
+			healthTween.Completed.Wait();
+
+			const hold = tag.FindFirstChild("hold");
+			if (hold === undefined) {
+				return;
+			}
+
+			const fillBackground = hold.FindFirstChild("fillBackground");
+			if (fillBackground === undefined) {
+				return;
+			}
+
+			const healthText = fillBackground.FindFirstChild("health") as TextLabel;
+			if (healthText === undefined) {
+				return;
+			}
+
+			healthText.Text = `[${twoDpAbbreviator.numberToString(humanoid.Health)} / ${twoDpAbbreviator.numberToString(
+				humanoid.MaxHealth,
+			)}]`;
 		});
-		healthTween.Play();
-		healthTween.Completed.Wait();
 
-		const hold = tag.FindFirstChild("hold");
-		if (hold === undefined) {
+		const ancestryChangedConnection = humanoid.AncestryChanged.Connect(() => {
+			healthConnection.Disconnect();
+			tag.Parent = undefined;
+			tag.Destroy();
+			if (humanoid !== undefined) {
+				humanoid.Parent = undefined;
+				humanoid.Destroy();
+			}
+			ancestryChangedConnection.Disconnect();
 			return;
-		}
-
-		const fillBackground = hold.FindFirstChild("fillBackground");
-		if (fillBackground === undefined) {
-			return;
-		}
-
-		const healthText = fillBackground.FindFirstChild("health") as TextLabel;
-		if (healthText === undefined) {
-			return;
-		}
-
-		healthText.Text = `[${twoDpAbbreviator.numberToString(humanoid.Health)} / ${twoDpAbbreviator.numberToString(
-			humanoid.MaxHealth,
-		)}]`;
-	});
-
-	const ancestryChangedConnection = humanoid.AncestryChanged.Connect(() => {
-		healthConnection.Disconnect();
-		tag.Parent = undefined;
-		tag.Destroy();
-		if (humanoid !== undefined) {
-			humanoid.Parent = undefined;
-			humanoid.Destroy();
-		}
-		ancestryChangedConnection.Disconnect();
-		return;
+		});
 	});
 }
 

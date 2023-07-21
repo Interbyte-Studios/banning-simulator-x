@@ -60,7 +60,10 @@ export const ZonesUI = RoactRodux.connect(mapStateToProps)(
 
 				const zoneFolder = worldFolder[zoneName];
 				const sign = zoneFolder.sign;
-				const adorneePart = sign.description.infoPart;
+				const adorneePart = sign.description.FindFirstChild("infoPart") as BasePart;
+				if (adorneePart === undefined) {
+					continue;
+				}
 
 				props.worlds.forEach((world) => {
 					const ownsZone = world.zones.find((zoneName) => zoneName === zoneName);

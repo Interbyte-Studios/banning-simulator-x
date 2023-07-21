@@ -107,6 +107,23 @@ export const GAMEPASS_GIFTS = {
 	["Auto Fight"]: 1580203795, // Implemented
 };
 
+export const TELEPORTATIONS = {
+	ZONES: {
+		Forest: new Vector3(22825.732, 46.523, -16.729),
+		Desert: new Vector3(22844.158, 46.523, 218.889),
+		"Sunflower Field": new Vector3(22844.158, 46.523, 461.079),
+		Honeycomb: new Vector3(22844.158, 46.523, 698.185),
+		"Ice Land": new Vector3(22844.158, 46.523, 946.085),
+		Beach: new Vector3(22844.158, 46.523, 1178.183),
+		"Candy Land": new Vector3(22844.158, 46.523, 1423.812),
+		"The Mines": new Vector3(22844.158, 46.523, 1638.864),
+		"Lava Lands": new Vector3(22844.158, 46.523, 1876.721),
+		"Enchanted Forest": new Vector3(22838.814, 46.523, 2110.527),
+		"Toxic Lands": new Vector3(22826.715, 46.523, 2333.504),
+		"Jester Castle": new Vector3(22826.715, 46.523, 2560.72),
+	},
+};
+
 export const isBoost = t.literal("x2 Currency", "x2 Hatching Luck", "x2 Pet Experience", "x2 Rank Experience");
 export type BoostProduct = t.static<typeof isBoost>;
 export const BOOST_PRODUCTS = {

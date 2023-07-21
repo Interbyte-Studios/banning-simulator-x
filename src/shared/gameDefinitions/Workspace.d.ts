@@ -1,6 +1,6 @@
 import { Eggs } from "shared/configs/eggs";
 import { Worlds } from "shared/configs/worlds";
-import { ZoneNames, Zones } from "shared/configs/zones";
+import { Zones } from "shared/configs/zones";
 
 declare global {
 	interface Workspace extends WorldRoot {
@@ -48,9 +48,6 @@ declare global {
 			voidMachines: Folder & {
 				interactions: Folder;
 			};
-			teleports: Folder & {
-				[P in ZoneNames]: BasePart;
-			};
 			eggs: Folder & {
 				[P in keyof Eggs]: Folder & {
 					deco: Folder;
@@ -77,14 +74,18 @@ declare global {
 			};
 			itemShop: Folder & {
 				[P in keyof Worlds]: Folder & {
-					cameraline: BasePart;
+					cameraline: Model & {
+						cameraline: BasePart;
+					};
 					weapons: Folder;
 				};
 			};
 			talismanTowers: Folder & {
 				[P in keyof Worlds]: Folder & {
 					talismans: Folder;
-					cameraline: BasePart;
+					cameraline: Model & {
+						cameraline: BasePart;
+					};
 				};
 			};
 			rankUpgrade: Folder & {

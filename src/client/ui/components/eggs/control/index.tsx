@@ -229,7 +229,6 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							if (requestHatch.success) {
 								if (requestHatch.pets.size() === 3) {
 									animateTripleEggHatch(eggName, variant === "void", requestHatch.pets, props.gamepasses["Fast Hatch"]);
-									task.wait(0.5);
 								} else {
 									animateSingleEggHatch(
 										eggName,
@@ -238,7 +237,6 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 										requestHatch.pets[0].autoDeleted,
 										props.gamepasses["Fast Hatch"],
 									);
-									task.wait(0.5);
 								}
 							} else {
 								switch (requestHatch.reason) {
@@ -511,16 +509,16 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					}
 					const eggFolder = Workspace.interactions.eggs[eggName];
 					const regularEgg = eggFolder.regular.egg.PrimaryPart;
-					assert(regularEgg, `Expected PrimaryPart for regular ${eggName} egg`);
+					const voidEgg = eggFolder.void.egg.PrimaryPart;
 
 					const pets: Array<Pet> = [];
 					for (const [, petData] of pairs(eggData.pets)) {
 						pets.push(petData);
 					}
 
-					if (eggName === "Radioactive" || eggName === "500k Event") {
-						return (
-							<frame Visible={false}>
+					return (
+						<frame Visible={false}>
+							{regularEgg && (
 								<EggHudDisplay
 									adornee={regularEgg}
 									eggName={eggName}
@@ -528,29 +526,16 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 									possiblePets={pets}
 									handleHatch={handleHatch}
 								/>
-							</frame>
-						);
-					}
-
-					const voidEgg = eggFolder.void.egg.PrimaryPart;
-					assert(voidEgg, `Expected PrimaryPart for void ${eggName} egg`);
-
-					return (
-						<frame Visible={false}>
-							<EggHudDisplay
-								adornee={regularEgg}
-								eggName={eggName}
-								isVoid={false}
-								possiblePets={pets}
-								handleHatch={handleHatch}
-							/>
-							<EggHudDisplay
-								adornee={voidEgg}
-								eggName={eggName}
-								isVoid={true}
-								possiblePets={pets}
-								handleHatch={handleHatch}
-							/>
+							)}
+							{voidEgg && (
+								<EggHudDisplay
+									adornee={voidEgg}
+									eggName={eggName}
+									isVoid={true}
+									possiblePets={pets}
+									handleHatch={handleHatch}
+								/>
+							)}
 						</frame>
 					);
 				})}

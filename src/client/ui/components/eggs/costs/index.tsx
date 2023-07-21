@@ -45,6 +45,8 @@ export const EggCost = RoactRodux.connect(mapStateToProps)(
 							return <></>;
 						}
 						const eggModel = Workspace.interactions.eggs[eggName];
+						const regularCost = eggModel.regular.FindFirstChild("cost") as BasePart;
+						const voidCost = eggModel.void.FindFirstChild("cost") as BasePart;
 
 						// find reduced egg cost provided by player mastery
 						const eggMasteryReducedMultiplier = getEggsMastery(props.eggs).reducedEggCostMultiplier;
@@ -55,33 +57,24 @@ export const EggCost = RoactRodux.connect(mapStateToProps)(
 						const reducedVoidCost =
 							eggCostVoid.amount * worldPrestigeReducer * WORLD_PRESTIGE.reducedVoidEggCost.reducedCostMultiplier;
 
-						if (eggName === "500k Event") {
-							return (
-								<>
+						return (
+							<>
+								{regularCost !== undefined && (
 									<EggCostDisplay
-										adornee={eggModel.regular.cost}
+										adornee={regularCost}
 										cost={eggCostRegular.amount}
 										currency={eggCostRegular.currencyType}
 										isVoid={false}
 									/>
-								</>
-							);
-						}
-
-						return (
-							<>
-								<EggCostDisplay
-									adornee={eggModel.regular.cost}
-									cost={eggCostRegular.amount}
-									currency={eggCostRegular.currencyType}
-									isVoid={false}
-								/>
-								<EggCostDisplay
-									adornee={eggModel.void.cost}
-									cost={eggCostVoid.amount - reducedVoidCost}
-									currency={eggCostVoid.currencyType}
-									isVoid={true}
-								/>
+								)}
+								{voidCost !== undefined && (
+									<EggCostDisplay
+										adornee={voidCost}
+										cost={eggCostVoid.amount - reducedVoidCost}
+										currency={eggCostVoid.currencyType}
+										isVoid={true}
+									/>
+								)}
 							</>
 						);
 					})}

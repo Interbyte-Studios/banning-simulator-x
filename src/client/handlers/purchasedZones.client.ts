@@ -1,4 +1,3 @@
-import { GameAnalytics } from "@rbxts/gameanalytics";
 import Make from "@rbxts/make";
 import { Lighting, Players, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
@@ -87,6 +86,18 @@ onStoreCreated(player)
 	.andThen((store) => {
 		unlockZones(store.getState().worlds);
 
+		for (const [worldName, worldData] of pairs(WORLDS)) {
+			const worldDeco = Workspace.decoration[worldName];
+			for (const [zoneName] of pairs(worldData.zones)) {
+				if (isStarterZone(zoneName)) {
+					continue;
+				}
+
+				const zoneDeco = worldDeco[zoneName];
+				zoneDeco.door.ChildAdded.Connect(() => unlockZones(store.getState().worlds));
+			}
+		}
+
 		store.changed.connect((newState, oldState) => {
 			if (newState.worlds === oldState.worlds) {
 				return;
@@ -96,10 +107,5 @@ onStoreCreated(player)
 		});
 	})
 	.catch((e) => {
-		// do not include player names. against the rules apparently.
-		GameAnalytics.addErrorEvent(Players.LocalPlayer.UserId, {
-			severity: "error",
-			message: `[ Purchased Zones Handler ] - Failed to run promise callback on "onStoreCreated" | ${e}`,
-		});
 		throw `[ Purchased Zones Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 	});

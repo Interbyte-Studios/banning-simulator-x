@@ -99,7 +99,7 @@ export const animateSingleEggHatch = (
 	});
 
 	// zoom camera out for animation
-	const cameraTweenInfo = new TweenInfo(0.35, Enum.EasingStyle.Quart, Enum.EasingDirection.Out);
+	const cameraTweenInfo = new TweenInfo(0.25, Enum.EasingStyle.Quart, Enum.EasingDirection.Out);
 	const cameraTweenAnimation = TweenService.Create(camera, cameraTweenInfo, {
 		CFrame: camera.CFrame.mul(new CFrame(0, 0, 30)),
 	});
@@ -177,18 +177,18 @@ export const animateSingleEggHatch = (
 
 	// animate
 	// move egg to center
-	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 1.5 / 2 : 1.5, Enum.EasingStyle.Quint), {
+	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.75 / 2 : 0.75, Enum.EasingStyle.Quint), {
 		Value: -5,
 	}).Play();
 
 	positionValue.Value = -6;
 	rotationValue.Value = 0;
 
-	TweenService.Create(positionValue, new TweenInfo(fastHatch ? 0.6 : 1, Enum.EasingStyle.Quint), {
+	TweenService.Create(positionValue, new TweenInfo(fastHatch ? 0.25 : 5, Enum.EasingStyle.Quint), {
 		Value: 0,
 	}).Play();
 
-	task.wait(fastHatch ? 0.75 / 2 : 0.75);
+	task.wait(fastHatch ? 0.5 / 2 : 0.5);
 
 	// rock egg to left and right
 	for (let i = 0; i < 2; i++) {
@@ -220,7 +220,7 @@ export const animateSingleEggHatch = (
 	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.75 / 2 : 0.75, Enum.EasingStyle.Quint), {
 		Value: -15.5,
 	}).Play();
-	task.wait(fastHatch ? 0.65 / 2 : 0.65);
+	task.wait(fastHatch ? 0.375 / 2 : 0.375);
 	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.15 / 2 : 0.15, Enum.EasingStyle.Quint), {
 		Value: -1,
 	});
@@ -252,7 +252,7 @@ export const animateSingleEggHatch = (
 	middleAutoDeleted.Visible = wasAutoDeleted;
 
 	// animate pet and hide flash effect
-	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 1.5 / 2 : 1.5, Enum.EasingStyle.Quint), {
+	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.75 / 2 : 0.75, Enum.EasingStyle.Quint), {
 		Brightness: 0,
 	}).Play();
 	distanceValue.Value = -8.5;
@@ -266,21 +266,21 @@ export const animateSingleEggHatch = (
 
 	spin = true;
 	playSFX(HatchEffect.HatchReveal);
-	task.wait(fastHatch ? 0.5 / 2 : 0.5);
+	task.wait(fastHatch ? 0.25 / 2 : 0.25);
 	rarityParticleEmitter.Emit(1);
-	task.wait(fastHatch ? 1.5 / 2 : 1.5);
+	task.wait(fastHatch ? 0.75 / 2 : 0.75);
 	// todo: hide pet information gui
 	spin = false;
 
 	task.wait(fastHatch ? 0.05 / 2 : 0.05);
 	TweenService.Create(
 		positionValue,
-		new TweenInfo(fastHatch ? 0.6 / 2 : 0.6, Enum.EasingStyle.Back, Enum.EasingDirection.In),
+		new TweenInfo(fastHatch ? 0.3 / 2 : 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In),
 		{
 			Value: -7,
 		},
 	).Play();
-	task.wait(fastHatch ? 0.7 / 2 : 0.7);
+	task.wait(fastHatch ? 0.35 / 2 : 0.35);
 
 	// end pet animation and clean up entire animation
 	petAnimation.Disconnect();
@@ -355,7 +355,7 @@ export const animateTripleEggHatch = (
 	});
 
 	// zoom camera out for animation
-	const cameraTweenInfo = new TweenInfo(0.35, Enum.EasingStyle.Quart, Enum.EasingDirection.Out);
+	const cameraTweenInfo = new TweenInfo(0.25, Enum.EasingStyle.Quart, Enum.EasingDirection.Out);
 	const cameraTweenAnimation = TweenService.Create(camera, cameraTweenInfo, {
 		CFrame: camera.CFrame.mul(new CFrame(0, 0, 30)),
 	});
@@ -493,18 +493,18 @@ export const animateTripleEggHatch = (
 
 	// animate
 	// move egg to center
-	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 1 : 1.5, Enum.EasingStyle.Quint), {
+	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.75 / 2 : 0.75, Enum.EasingStyle.Quint), {
 		Value: -5,
 	}).Play();
 
 	positionValue.Value = -6;
 	rotationValue.Value = 0;
 
-	TweenService.Create(positionValue, new TweenInfo(fastHatch ? 0.6 : 1, Enum.EasingStyle.Quint), {
+	TweenService.Create(positionValue, new TweenInfo(fastHatch ? 0.3 : 0.6, Enum.EasingStyle.Quint), {
 		Value: 0,
 	}).Play();
 
-	task.wait(fastHatch ? 0.75 / 2 : 0.75);
+	task.wait(fastHatch ? 0.5 / 2 : 0.5);
 
 	// rock egg to left and right
 	for (let i = 0; i < 2; i++) {
@@ -536,7 +536,7 @@ export const animateTripleEggHatch = (
 	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.75 / 2 : 0.75, Enum.EasingStyle.Quint), {
 		Value: -15.5,
 	}).Play();
-	task.wait(fastHatch ? 0.65 / 2 : 0.65);
+	task.wait(fastHatch ? 0.375 / 2 : 0.375);
 	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.15 / 2 : 0.15, Enum.EasingStyle.Quint), {
 		Value: -1,
 	});
@@ -606,9 +606,9 @@ export const animateTripleEggHatch = (
 
 	spin = true;
 	playSFX(HatchEffect.HatchReveal);
-	task.wait(fastHatch ? 0.5 / 2 : 0.5);
+	task.wait(fastHatch ? 0.25 / 2 : 0.25);
 	rarityParticleEmitter.Emit(1);
-	task.wait(fastHatch ? 1.5 / 2 : 1.5);
+	task.wait(fastHatch ? 0.75 / 2 : 0.75);
 	// todo: hide pet information gui
 	spin = false;
 
@@ -620,7 +620,7 @@ export const animateTripleEggHatch = (
 			Value: -7,
 		},
 	).Play();
-	task.wait(fastHatch ? 0.7 / 2 : 0.7);
+	task.wait(fastHatch ? 0.35 / 2 : 0.35);
 
 	// end pet animation and clean up entire animation
 	petAnimation.Disconnect();
