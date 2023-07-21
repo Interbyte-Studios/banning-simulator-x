@@ -182,20 +182,20 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							const now = time();
 							const canHatch = now - lastHatchTime > hatchDebounce;
 							if (!canHatch) {
-								return;
+								continue;
 							}
 							lastHatchTime = now;
 
 							// make sure they aren't still hatching
 							if (getIsHatching()) {
-								return;
+								continue;
 							}
 
 							// make sure they're not trading
 							if (getIsTrading()) {
 								addAnnouncement(`You cannot hatch while your trading!`, AnnouncementType.Error);
 								autoEnabled = false;
-								return;
+								break;
 							}
 
 							// check that character still exists (if it doesn't, neither does the camera)
@@ -203,7 +203,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							if (character === undefined) {
 								addAnnouncement(`There was an issue hatching the egg. Try again later. [3]`, AnnouncementType.Error);
 								autoEnabled = false;
-								return;
+								break;
 							}
 
 							// check cost
@@ -215,14 +215,14 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 									AnnouncementType.Error,
 								);
 								autoEnabled = false;
-								return;
+								break;
 							}
 
 							// check inventory space
 							if (inventorySize.value + amount > getPetInventorySize(props.gamepasses)) {
 								addAnnouncement(`You do not have enough inventory space to hatch the egg!`, AnnouncementType.Error);
 								autoEnabled = false;
-								return;
+								break;
 							}
 
 							const requestHatch = await hatchEgg.CallServerAsync(amount, eggName, variant === "void");
@@ -440,7 +440,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					}
 				},
 				false,
-				Enum.KeyCode.R,
+				Enum.KeyCode.Q,
 			);
 
 			ContextActionService.BindAction(
