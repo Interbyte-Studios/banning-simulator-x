@@ -13,11 +13,7 @@ remotes.Server.GetNamespace("playerLoaded")
 			Parent: player,
 			Value: true,
 		});
-	});
 
-remotes.Server.GetNamespace("playerLoaded")
-	.Get("hasClickedPlay")
-	.Connect((player) => {
 		if (player.FindFirstChild("HasClickedPlay")) {
 			return;
 		}
