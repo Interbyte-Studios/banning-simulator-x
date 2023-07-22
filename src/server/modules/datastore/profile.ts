@@ -22,6 +22,7 @@ import { defaultRank } from "shared/rodux/rank";
 import { defaultSettings } from "shared/rodux/settings";
 import { defaultSpinWheel } from "shared/rodux/spinWheel";
 import { defaultTalismans } from "shared/rodux/talismans";
+import { defaultTimeTrialsState } from "shared/rodux/timeTrials";
 import { SerializedTradeLogState } from "shared/rodux/tradeLogs";
 import { defaultWeaponsState } from "shared/rodux/weapons";
 import { defaultWorldPrestigeState } from "shared/rodux/worldPrestige";
@@ -105,6 +106,7 @@ export const profileTemplate: ProfileState = {
 	settings: defaultSettings,
 	spinWheel: defaultSpinWheel,
 	talismans: defaultTalismans,
+	timeTrials: defaultTimeTrialsState,
 	title: undefined,
 	tradeLogs: [],
 	weapons: defaultWeaponsState,

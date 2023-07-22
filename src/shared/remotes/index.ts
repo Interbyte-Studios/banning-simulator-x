@@ -21,6 +21,7 @@ import { settings } from "./settings";
 import { spinWheelDefinition } from "./spinWheel";
 import { spinWheelInfoDefinition } from "./spinWheelnfo";
 import { talismans } from "./talismans";
+import { timeTrials } from "./timeTrials";
 import { trading } from "./trading";
 import { unlockRankDefinition } from "./unlockRank";
 import { weapons } from "./weapons";
@@ -40,6 +41,7 @@ export const remotes = Net.Definitions.Create({
 	weapons: weapons,
 	worldPrestige: worldPrestige,
 	talismans: talismans,
+	timeTrials: timeTrials,
 	trades: trading,
 
 	useGamepassGift: useGamepassGiftDefinition,
