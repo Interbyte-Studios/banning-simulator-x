@@ -185,6 +185,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 								continue;
 							}
 							lastHatchTime = now;
+							warn(`hatch`);
 
 							// make sure they aren't still hatching
 							if (getIsHatching()) {
@@ -239,49 +240,50 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 									);
 								}
 							} else {
-								switch (requestHatch.reason) {
-									case HatchEggFailKind.NoCharacter: {
-										addAnnouncement(
-											`You could not hatch because your character could not be found.`,
-											AnnouncementType.Error,
-										);
-										break;
-									}
-									case HatchEggFailKind.NoCurrency: {
-										addAnnouncement(`You do not have enough currency to hatch the egg!`, AnnouncementType.Error);
-										break;
-									}
-									case HatchEggFailKind.NoGamepass: {
-										addAnnouncement(
-											`You do not own the triple egg gamepass. You cannot hatch 3 eggs.`,
-											AnnouncementType.Error,
-										);
-										break;
-									}
-									case HatchEggFailKind.NoInventory: {
-										addAnnouncement(`You do not have enough inventory space to hatch eggs!`, AnnouncementType.Error);
-										break;
-									}
-									case HatchEggFailKind.NoWorld: {
-										addAnnouncement(`You don't own the world required to hatch that egg!`, AnnouncementType.Error);
-										break;
-									}
-									case HatchEggFailKind.NoZone: {
-										addAnnouncement(`You don't own the zone required to hatch that egg!`, AnnouncementType.Error);
-										break;
-									}
-									case HatchEggFailKind.NotWithinDistance: {
-										addAnnouncement(`You aren't close enough to hatch an egg.`, AnnouncementType.Error);
-										break;
-									}
-									case HatchEggFailKind.TooFast: {
-										addAnnouncement(`You are hatching too fast!`, AnnouncementType.Error);
-										break;
-									}
-									case HatchEggFailKind.Trading: {
-										addAnnouncement(`You cannot hatch while you are trading!`, AnnouncementType.Error);
-										break;
-									}
+								if (requestHatch.reason === HatchEggFailKind.NoCharacter) {
+									addAnnouncement(
+										`You could not hatch because your character could not be found.`,
+										AnnouncementType.Error,
+									);
+								} else if (requestHatch.reason === HatchEggFailKind.NoCurrency) {
+									addAnnouncement(
+										`You could not hatch because you do not have enough currency.`,
+										AnnouncementType.Error,
+									);
+								} else if (requestHatch.reason === HatchEggFailKind.NoGamepass) {
+									addAnnouncement(
+										`You could not hatch because you do not own the triple egg gamepass.`,
+										AnnouncementType.Error,
+									);
+								} else if (requestHatch.reason === HatchEggFailKind.NoInventory) {
+									addAnnouncement(
+										`You could not hatch because you do not have enough inventory space.`,
+										AnnouncementType.Error,
+									);
+								} else if (requestHatch.reason === HatchEggFailKind.NoWorld) {
+									addAnnouncement(
+										`You could not hatch because you do not own the world required to hatch that egg.`,
+										AnnouncementType.Error,
+									);
+								} else if (requestHatch.reason === HatchEggFailKind.NoZone) {
+									addAnnouncement(
+										`You could not hatch because you do not own the zone required to hatch that egg.`,
+										AnnouncementType.Error,
+									);
+								} else if (requestHatch.reason === HatchEggFailKind.NotWithinDistance) {
+									addAnnouncement(
+										`You could not hatch because you are not close enough to hatch an egg.`,
+										AnnouncementType.Error,
+									);
+								} else if (requestHatch.reason === HatchEggFailKind.TooFast) {
+									addAnnouncement(`You could not hatch because you are hatching too fast.`, AnnouncementType.Error);
+								} else if (requestHatch.reason === HatchEggFailKind.Trading) {
+									addAnnouncement(
+										`You could not hatch because you cannot hatch while you are trading.`,
+										AnnouncementType.Error,
+									);
+								} else {
+									addAnnouncement(`There was an issue hatching the egg. Try again later. [4]`, AnnouncementType.Error);
 								}
 							}
 						}
