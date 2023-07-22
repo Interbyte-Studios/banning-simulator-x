@@ -185,7 +185,6 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 								continue;
 							}
 							lastHatchTime = now;
-							warn(`hatch`);
 
 							// make sure they aren't still hatching
 							if (getIsHatching()) {

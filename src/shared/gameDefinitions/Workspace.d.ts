@@ -15,6 +15,9 @@ declare global {
 			};
 		};
 		interactions: Folder & {
+			timeTrials: Folder & {
+				[P in keyof Worlds]: BasePart;
+			};
 			worldPrestige: Folder & {
 				[WORLD in keyof Worlds]: Folder & {
 					prestige: Folder & {

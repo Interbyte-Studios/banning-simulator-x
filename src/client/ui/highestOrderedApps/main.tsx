@@ -28,6 +28,7 @@ import { PetMastery } from "../components/features/petMastery";
 import { Settings } from "../components/features/settings";
 import { SpinWheel } from "../components/features/spinWheel";
 import { Teleportation } from "../components/features/teleportation";
+import { TimeTrials } from "../components/features/timeTrials";
 import { WorldPrestige } from "../components/features/worldPrestige";
 import { WorldPrestigeViewType } from "../components/features/worldPrestige/prestigeEnum";
 import { RankUpgrade } from "../components/ranks/menu";
@@ -71,6 +72,7 @@ const visibilityStates = {
 	worldPrestige: false,
 	updateLog: false,
 	spinWheel: false,
+	timeTrials: false,
 };
 
 const updateLogIcon = new Icon().setImage(assetIds.images.decals.UpdateLog).setLabel("Update Log");
@@ -126,6 +128,18 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 				const rootPart = humanoid.RootPart;
 				if (rootPart === undefined) {
 					return;
+				}
+
+				for (const interaction of Workspace.interactions.timeTrials.GetChildren()) {
+					if (!interaction.IsA("BasePart")) {
+						continue;
+					}
+
+					const magnitude = rootPart.Position.sub(interaction.Position).Magnitude;
+					if (magnitude <= 30) {
+						setVisibility({ ...visibilityStates, timeTrials: true });
+						return;
+					}
 				}
 
 				for (const interaction of Workspace.interactions.weaponShops.GetChildren()) {
@@ -293,6 +307,10 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					}}
 					onlyShowCurrency={false}
 				/>,
+				<TimeTrials
+					isVisible={false}
+					setVisibility={(value): void => setVisibility({ ...visibilityStates, timeTrials: value })}
+				/>,
 				<WeaponShopHandle
 					isVisible={false}
 					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, weaponShop: value })}
@@ -327,6 +345,13 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 				<WeaponEquip />,
 				<RankUpgrade />,
 				<DatastoreEvents />,
+			);
+		} else if (isVisible("timeTrials")) {
+			components.push(
+				<TimeTrials
+					isVisible={true}
+					setVisibility={(value): void => setVisibility({ ...visibilityStates, timeTrials: value })}
+				/>,
 			);
 		} else if (isVisible("updateLog")) {
 			components.push(<UpdateLog />);
