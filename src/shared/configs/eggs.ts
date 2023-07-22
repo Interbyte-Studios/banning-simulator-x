@@ -8,6 +8,7 @@ import { DESERT_EGG_PETS } from "./pets/desert";
 import { DIVINE_EGG_PETS } from "./pets/divine";
 import { EVENT_500k_EGG_PETS } from "./pets/event500k";
 import { EXCLUSIVE_PETS } from "./pets/exclusive";
+import { GEARWORX_EGG_PETS } from "./pets/gearworx";
 import { GROUP_CHEST_PETS } from "./pets/group";
 import { HONEYCOMB_EGG_PETS } from "./pets/honeycomb";
 import { JESTER_EGG_PETS } from "./pets/jester";
@@ -210,6 +211,15 @@ export const EGGS = {
 		world: "Ban Land",
 		zone: "Forest",
 		hatchable: false,
+		hidden: false,
+		luckApplies: true,
+	},
+	GearWorx: {
+		id: 15,
+		pets: GEARWORX_EGG_PETS,
+		world: "Ban Land",
+		zone: "Forest",
+		hatchable: true,
 		hidden: false,
 		luckApplies: true,
 	},
