@@ -1,7 +1,7 @@
 import { Players, ServerStorage } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
-import { cleanupTrial, createTrial, hasTrial } from "server/modules/timeTrials/createTrial";
-import { TIME_TRIAL_LENGTH, TIME_TRIAL_TIMER_ATTRIBUTE } from "shared/configs/timeTrials";
+import { cleanupTrial, createTrial, getTrialStatus } from "server/modules/timeTrials/createTrial";
+import { TIME_TRIAL_TIMER_ATTRIBUTE, TIME_TRIAL_WAITING_ATTRIBUTE } from "shared/configs/timeTrials";
 import { remotes } from "shared/remotes";
 
 assert(
@@ -18,7 +18,7 @@ remotes.Server.GetNamespace("timeTrials")
 	.Connect(
 		withPlayerStore((player, store, difficulty) => {
 			// prevent player from having two time trials
-			if (hasTrial(player)) {
+			if (getTrialStatus(player) !== undefined) {
 				return;
 			}
 
@@ -29,7 +29,7 @@ remotes.Server.GetNamespace("timeTrials")
 				return;
 			}
 
-			const { cleanupHandler, spawnLocation } = createTrial(player);
+			const { cleanupHandler, spawnLocation } = createTrial(player, difficulty);
 			rootPart.CFrame = spawnLocation;
 
 			// if player dies, then we cleanup immediately
@@ -41,7 +41,7 @@ remotes.Server.GetNamespace("timeTrials")
 			);
 
 			// set timer to initial value
-			player.SetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE, TIME_TRIAL_LENGTH);
+			player.SetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE, TIME_TRIAL_WAITING_ATTRIBUTE);
 		}),
 	);
 

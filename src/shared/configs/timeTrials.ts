@@ -53,3 +53,9 @@ export const TIME_TRIAL_LENGTH = 10 * 60;
  * remaining in the time trial.
  */
 export const TIME_TRIAL_TIMER_ATTRIBUTE = "timeTrialTimer";
+
+/**
+ * The attribute set on `TIME_TRIAL_TIMER_ATTRIBUTE` when waiting for the
+ * player to start the time trial.
+ */
+export const TIME_TRIAL_WAITING_ATTRIBUTE = "waiting";

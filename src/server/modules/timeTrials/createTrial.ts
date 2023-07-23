@@ -1,12 +1,13 @@
 import { Janitor } from "@rbxts/janitor";
 import { ServerStorage, Workspace } from "@rbxts/services";
+import { TIME_TRIAL_LENGTH, TimeTrialDifficulty } from "shared/configs/timeTrials";
+
+import { currentTimeTrials, TimeTrialStatus } from ".";
 
 /**
  * The amount of studs to have as a gap between time trials spawned.
  */
 const GAP_BETWEEN_TRIALS = 100;
-
-const currentTimeTrials: Map<Player, Janitor> = new Map();
 
 /**
  * Checks if a given player has a trial created.
@@ -14,24 +15,33 @@ const currentTimeTrials: Map<Player, Janitor> = new Map();
  * @param player The player to check has a trial.
  * @returns If the player has a time trial active.
  */
-export function hasTrial(player: Player): boolean {
-	return currentTimeTrials.has(player);
+export function getTrialStatus(player: Player): TimeTrialStatus | undefined {
+	return currentTimeTrials.get(player)?.status;
 }
 
 /**
  * Creates a new time trial for a given player.
  *
  * @param player The player to create the time trial for.
+ * @param difficulty The difficulty of the time trial.
  * @returns The time trial spawn location and cleanup handler.
  */
-export function createTrial(player: Player): {
+export function createTrial(
+	player: Player,
+	difficulty: TimeTrialDifficulty,
+): {
 	spawnLocation: CFrame;
 	cleanupHandler: Janitor;
 } {
-	assert(!hasTrial(player), `Attempted to create a trial for ${player}, but they already have one!`);
+	assert(getTrialStatus(player) === undefined, `Attempted to create a trial for ${player}, but they already have one!`);
 
 	const cleanup = new Janitor();
-	currentTimeTrials.set(player, cleanup);
+	currentTimeTrials.set(player, {
+		cleanupHandler: cleanup,
+		difficulty,
+		status: TimeTrialStatus.WaitingForStart,
+		timeRemaining: TIME_TRIAL_LENGTH,
+	});
 	cleanup.Add(() => currentTimeTrials.delete(player));
 
 	const playerTimeTrial = ServerStorage.timeTrials.map.Clone();
@@ -58,5 +68,5 @@ export function createTrial(player: Player): {
  * @param player The player to clean the time trial up for.
  */
 export function cleanupTrial(player: Player): void {
-	currentTimeTrials.get(player)?.Cleanup();
+	currentTimeTrials.get(player)?.cleanupHandler.Cleanup();
 }
