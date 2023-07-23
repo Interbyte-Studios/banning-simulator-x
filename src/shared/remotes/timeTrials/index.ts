@@ -1,9 +1,9 @@
 import Net from "@rbxts/net";
 
-import { startTimeTrialDefinition } from "./startTimeTrial";
+import { createTimeTrialDefinition } from "./createTimeTrial";
 import { upgradeTimeTrialsDefinition } from "./upgradeTimeTrial";
 
 export const timeTrials = Net.Definitions.Namespace({
 	upgradeTimeTrials: upgradeTimeTrialsDefinition,
-	startTimeTrial: startTimeTrialDefinition,
+	createTimeTrial: createTimeTrialDefinition,
 });

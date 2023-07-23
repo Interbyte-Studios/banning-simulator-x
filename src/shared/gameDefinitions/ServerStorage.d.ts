@@ -1,6 +1,8 @@
 interface ServerStorage extends Instance {
 	timeTrials: Folder & {
-		map: Model;
+		map: Model & {
+			SpawnLocation: SpawnLocation;
+		};
 		startCreationLocation: Part;
 	};
 }
