@@ -25,6 +25,7 @@ remotes.Server.GetNamespace("timeTrials")
 				return;
 			}
 
+			warn(`Working on it`);
 			// remove currency from store
 			store.dispatch(awardCurrency(currencyToUse, -upgradeCost));
 

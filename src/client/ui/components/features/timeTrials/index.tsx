@@ -1,6 +1,7 @@
 import Roact from "@rbxts/roact";
 
 import { TimeTrialsInteractionPrompts } from "./interactPrompt";
+import { Trials } from "./trials";
 
 interface TimeTrialsProps {
 	isVisible: boolean;
@@ -15,7 +16,7 @@ interface TimeTrialsProps {
  */
 export const TimeTrials = (props: TimeTrialsProps): Roact.Element => {
 	if (props.isVisible) {
-		return <></>;
+		return <Trials hideMenu={(): void => props.setVisibility(false)} />;
 	} else {
 		return <TimeTrialsInteractionPrompts displayInterface={(): void => props.setVisibility(true)} />;
 	}

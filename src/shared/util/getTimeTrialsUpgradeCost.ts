@@ -14,6 +14,11 @@ import {
 export function getTimeTrialsUpgradeCost(upgradeName: TimeTrialUpgradeType, upgradeAmount: number): number {
 	const baseCost = TIME_TRIAL_UPGRADES[upgradeName].baseCost;
 
-	const upgradeCost = baseCost * (TIME_TRIALS_UPGRADE_COST_MULTIPLIER ^ upgradeAmount);
+	if (upgradeName === "damage" || upgradeName === "damageReduction") {
+		const upgradeCost = baseCost * 1.25 ** upgradeAmount;
+		return upgradeCost;
+	}
+
+	const upgradeCost = baseCost * TIME_TRIALS_UPGRADE_COST_MULTIPLIER ** upgradeAmount;
 	return upgradeCost;
 }

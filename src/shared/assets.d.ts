@@ -626,6 +626,11 @@ declare namespace assetIds {
 			"rank upgrade": {
 				background: string;
 			};
+			timeTrials: {
+				green: string;
+				red: string;
+				yellow: string;
+			};
 			trading: {
 				TradeBackground: string;
 				playerSelection: string;

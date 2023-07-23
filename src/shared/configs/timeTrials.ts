@@ -16,7 +16,7 @@ export const TIME_TRIAL_UPGRADES = {
 	health: {
 		maxUpgrades: 100,
 		benefitPerUpgrade: 50,
-		baseCost: 10,
+		baseCost: 5,
 	},
 	damage: {
 		maxUpgrades: 50,
@@ -29,7 +29,7 @@ export const TIME_TRIAL_UPGRADES = {
 		baseCost: 25,
 	},
 	criticalChance: {
-		maxUpgrades: 50,
+		maxUpgrades: 100,
 		benefitPerUpgrade: 1,
 		baseCost: 20,
 	},

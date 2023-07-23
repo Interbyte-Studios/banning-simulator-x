@@ -3483,6 +3483,21 @@ hash = "480144a08fa8c88e7fd21d3993ea3d1352b57a748a244e3d208fa7fb13f3bb8f"
 id = 11702142633
 packable = false
 
+[inputs."images/ui/timeTrials/green.png"]
+hash = "80e6c05ff061a6e67c596fd1c5cfa17b258294776e0d001005ac6f0da13de059"
+id = 14159844284
+packable = false
+
+[inputs."images/ui/timeTrials/red.png"]
+hash = "d20e522b2013c20cc71d550988bc62d009f4eb46d66b39cb373986aad0742fb9"
+id = 14159844375
+packable = false
+
+[inputs."images/ui/timeTrials/yellow.png"]
+hash = "00ea2a4ff4cf38924fba2463ade8d59d10d5004a80f44aa73a61319e00af8837"
+id = 14159844449
+packable = false
+
 [inputs."images/ui/trading/TradeBackground.png"]
 hash = "0b746f74550c2d7e5f2ac98043ff67f6d4bb599c05404b96b4878140b24e6d0e"
 id = 12921311196
@@ -3584,8 +3599,7 @@ id = 11591957751
 packable = false
 
 [inputs."images/vectors/Gear.png"]
-hash = "5219850105124814b35bd99a6aa46f3f0a3d573db19cb8119373b08172f529ea"
-id = 14115103174
+hash = "12bd0d55d814f812c3d575eb79817dd2034b0216fbf03ecb7c26cc61b5735af7"
 packable = false
 
 [inputs."images/vectors/Gem.png"]

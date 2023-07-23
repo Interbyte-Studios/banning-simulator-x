@@ -773,6 +773,11 @@ return {
 				exclusive = "rbxassetid://13771638504",
 				go = "rbxassetid://11702142633",
 			},
+			timeTrials = {
+				green = "rbxassetid://14159844284",
+				red = "rbxassetid://14159844375",
+				yellow = "rbxassetid://14159844449",
+			},
 			trading = {
 				TradeBackground = "rbxassetid://12921311196",
 				playerSelection = "rbxassetid://12921311319",
@@ -803,7 +808,7 @@ return {
 			Error = "rbxassetid://11887192861",
 			Experience = "rbxassetid://11866056920",
 			FewGems = "rbxassetid://11591957751",
-			Gear = "rbxassetid://14115103174",
+			Gear = "rbxassetid://14163596409",
 			Gem = "rbxassetid://11591957802",
 			GemBag = "rbxassetid://11591957880",
 			GemChest = "rbxassetid://11591958036",
