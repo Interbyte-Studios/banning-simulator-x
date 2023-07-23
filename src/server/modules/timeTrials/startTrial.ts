@@ -43,6 +43,8 @@ export function startTrial(player: Player): {
 				timeRemaining: currentTrial.timeRemaining - step,
 			});
 
+			player.SetAttribute("timeTrialTimer", currentTrial.timeRemaining);
+
 			// return if we have finished the time trial.
 			return currentTrial.timeRemaining - step <= 0;
 		},
