@@ -58,7 +58,7 @@ export const FinishedTrial = (props: { gearRewards: number | undefined; finish: 
 						/>
 						<CurrencyIcon
 							position={UDim2.fromScale(0.376, 0.645)}
-							size={{ minimizedSize: 0.65, maximizedSize: 0.8 }}
+							size={{ minimizedSize: 0.065, maximizedSize: 0.08 }}
 							currency={"gears"}
 						/>
 						<StrokeTextLabel

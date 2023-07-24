@@ -8,6 +8,7 @@ import {
 	TIME_TRIAL_WAVE_ATTRIBUTE,
 } from "shared/configs/timeTrials";
 import { remotes } from "shared/remotes";
+import { equipWeapon } from "shared/rodux/currentWeapon";
 
 assert(
 	ServerStorage.timeTrials.map.IsA("Model"),
@@ -36,7 +37,9 @@ remotes.Server.GetNamespace("timeTrials")
 
 			const { cleanupHandler, spawnLocation } = createTrial(player, difficulty);
 			player.RequestStreamAroundAsync(spawnLocation.Position);
-			rootPart.CFrame = spawnLocation;
+			rootPart.CFrame = spawnLocation.add(new Vector3(0, 5, 0));
+
+			store.dispatch(equipWeapon());
 
 			// if player dies, then we cleanup immediately
 			// player receives nothing in this case

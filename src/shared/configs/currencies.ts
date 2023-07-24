@@ -20,7 +20,7 @@ export const CURRENCY_GRADIENTS = {
 		EndingColor: Color3.fromRGB(240, 64, 110),
 	},
 	gears: {
-		BeginningColor: Color3.fromRGB(166, 163, 5),
-		EndingColor: Color3.fromRGB(237, 235, 74),
-	}
+		BeginningColor: Color3.fromRGB(94, 64, 28),
+		EndingColor: Color3.fromRGB(207, 140, 43),
+	},
 } satisfies Record<string, CurrencyGradient>;

@@ -308,6 +308,7 @@ function updatePlayerTag(player: Player, store: Store): void {
 	}
 	if (tag === undefined) {
 		createPlayerTag(player, store);
+		return;
 	}
 	assert(isPlayerTag(tag), `Player tag for ${player.Name} was not a valid player tag.`);
 

@@ -22,7 +22,7 @@ export const TalismanTower = hooks((props: TalismanTowerProps, { useState, useEf
 
 	const [viewedTalisman, setViewedTalisman] = useState(1);
 	const minimumTalismanId = 1;
-	const maximumTalismanId = 8;
+	const maximumTalismanId = 9;
 
 	useEffect(() => {
 		const camera = Workspace.CurrentCamera;

@@ -238,7 +238,6 @@ function equipWeapon(weaponName: WeaponIndex): void {
 
 		playSFX(NPCImpact.NPCImpact1);
 		remotes.Client.Get("damageNPC").SendToServer(npcCharacter, !npcCharacter.IsDescendantOf(npcsFolder));
-		warn(`Hit ${npcCharacter.Name}`);
 	});
 	connections.push(hitBox);
 

@@ -12,7 +12,7 @@ import {
 	TIME_TRIAL_WAVE_ATTRIBUTE,
 	TimeTrialDifficulty,
 } from "shared/configs/timeTrials";
-import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
+import { statsAbbreviator, twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import {
 	uiClaimButtonStrokeColor,
@@ -24,6 +24,7 @@ import { BaseFrame } from "../elements/baseElements/baseFrame";
 import { BaseUIStroke } from "../elements/baseElements/baseUIStroke";
 import { SpringImageButton } from "../elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "../elements/baseElements/textlabels/strokeTextLabel";
+import { CurrencyIcon } from "../elements/icons/currencyIcon";
 import { hooks } from "../hooks";
 import { remoteContext } from "../mocks/remoteContext";
 
@@ -118,8 +119,37 @@ export const ActiveTrial = hooks(
 		}, [started]);
 
 		if (started) {
+			const difficultyMultiplier = difficulty === "easy" ? 1.15 : difficulty === "medium" ? 1.25 : 1.28;
+			const waveMultiplier = 2 * wave;
 			return (
 				<>
+					<SpringImageButton
+						native={{
+							Position: UDim2.fromScale(0.5, 0.21),
+							Image: assetIds.images.ui.index.Off,
+						}}
+						size={{ minSize: 0.04, maxSize: 0.05 }}
+						events={{
+							/**
+							 *
+							 */
+							Activated: (): void => {
+								playSFX(UIEngagement.MajorEngagement);
+								stopTimeTrial.SendToServer();
+								props.stopTrial();
+							},
+						}}
+					>
+						<uiaspectratioconstraint AspectRatio={2} />
+						<StrokeTextLabel
+							native={{
+								Position: UDim2.fromScale(0.5, 0.5),
+								Size: UDim2.fromScale(0.9, 0.9),
+								Text: "Stop",
+							}}
+							stroke={{ native: { Thickness: 2, Color: uiOffButtonStrokeColor } }}
+						/>
+					</SpringImageButton>
 					<StrokeTextLabel
 						native={{
 							Position: UDim2.fromScale(0.5, 0.02),
@@ -154,33 +184,21 @@ export const ActiveTrial = hooks(
 						}}
 						stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(163, 58, 7) } }}
 					/>
-					<SpringImageButton
+					<StrokeTextLabel
 						native={{
-							Position: UDim2.fromScale(0.5, 0.17),
-							Image: assetIds.images.ui.index.Off,
+							Position: UDim2.fromScale(0.5, 0.165),
+							Size: UDim2.fromScale(0.2, 0.035),
+							Text: `Currency Earned: ${statsAbbreviator.numberToString(
+								waveMultiplier * difficultyMultiplier ** wave,
+							)}`,
 						}}
-						size={{ minSize: 0.04, maxSize: 0.05 }}
-						events={{
-							/**
-							 *
-							 */
-							Activated: (): void => {
-								playSFX(UIEngagement.MajorEngagement);
-								stopTimeTrial.SendToServer();
-								props.stopTrial();
-							},
-						}}
-					>
-						<uiaspectratioconstraint AspectRatio={2} />
-						<StrokeTextLabel
-							native={{
-								Position: UDim2.fromScale(0.5, 0.5),
-								Size: UDim2.fromScale(0.9, 0.9),
-								Text: "Stop",
-							}}
-							stroke={{ native: { Thickness: 2, Color: uiOffButtonStrokeColor } }}
-						/>
-					</SpringImageButton>
+						stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(163, 58, 7) } }}
+					/>
+					<CurrencyIcon
+						position={UDim2.fromScale(0.377, 0.164)}
+						size={{ minimizedSize: 0.04, maximizedSize: 0.06 }}
+						currency={"gears"}
+					/>
 					<BaseFrame
 						Position={UDim2.fromScale(0.5, 0.95)}
 						Size={UDim2.fromScale(0.5, 0.05)}

@@ -98,6 +98,11 @@ hash = "390f0fd9c5dfc38ea6eaff94b22e223ce7f5a618a7cb6d16049a94843c51d6f3"
 id = 11627644517
 packable = false
 
+[inputs."images/decals/eggs/GearWorx.png"]
+hash = "fac2e02db20bba392db5590c663251f355933396cbc9bd306b002b0314d2f940"
+id = 14183429574
+packable = false
+
 [inputs."images/decals/eggs/Honeycomb.png"]
 hash = "93833e9201628f7080401dc7cb743f82ff3b252ad5cfa0eab2334d714e44e42a"
 id = 11627644589
@@ -2323,6 +2328,11 @@ hash = "8d7c57328094885446d8cb2674ea474dba99cb790ac554487e1eb356ce95e71c"
 id = 11827145184
 packable = false
 
+[inputs."images/decals/talismans/Artifact GearWorx Talisman.png"]
+hash = "6c36dd3f3b540e7f042f00228eacb30d6e7754d4b00ec2441557dd61673e8dc6"
+id = 14183056326
+packable = false
+
 [inputs."images/decals/talismans/Artifact Heart Talisman.png"]
 hash = "a198d7e2e21b3d6d66c95282eb50a1e5e523fe263dff9f919b59916b13b97308"
 id = 11827145275
@@ -2363,6 +2373,11 @@ hash = "ee88f56667d1ab3f42e79f178d58fa31d3a5765c902d83920e0595ab6800aced"
 id = 11829175058
 packable = false
 
+[inputs."images/decals/talismans/Awakend GearWorx Talisman.png"]
+hash = "e781e315fba1834872ed737832827481ee8a5ce585e25d9e198bae793bd5d0db"
+id = 14183431144
+packable = false
+
 [inputs."images/decals/talismans/Awakend Heart Talisman.png"]
 hash = "81508271f44a7229073a55ca740bded1688ae0bbf78ed617b7b0555c7b1d852d"
 id = 11829175126
@@ -2396,6 +2411,11 @@ packable = false
 [inputs."images/decals/talismans/Blade Talisman.png"]
 hash = "9ba90faff40beebb0a4f751f29b2f91b645578fd02c086c496208a5daaa7e5ca"
 id = 11827146379
+packable = false
+
+[inputs."images/decals/talismans/GearWorx Talisman.png"]
+hash = "03f4bb66a18380b7e4628028e571cdc6c4334d301c1b5425e1ee9f417bd80d45"
+id = 14183046987
 packable = false
 
 [inputs."images/decals/talismans/Heart Talisman.png"]
@@ -3600,6 +3620,7 @@ packable = false
 
 [inputs."images/vectors/Gear.png"]
 hash = "12bd0d55d814f812c3d575eb79817dd2034b0216fbf03ecb7c26cc61b5735af7"
+id = 14183010620
 packable = false
 
 [inputs."images/vectors/Gem.png"]

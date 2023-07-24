@@ -6,6 +6,7 @@ import { UniversalWorldData } from "shared/configs/zones";
 import { remotes } from "shared/remotes";
 import { isNpcCharacter, NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
+import { addBans } from "shared/rodux/bans";
 import { getPetStrength } from "shared/util/getPetStrength";
 import { getTalismanStatEffect } from "shared/util/getTalismanDamage";
 import { getWeaponDamage } from "shared/util/getWeaponDamage";
@@ -84,9 +85,11 @@ remotes.Server.Get("damageNPC").Connect(
 
 			const equippedPets = store.getState().pets.filter((pet) => pet.equipped);
 			let petDamageBonus = 0;
+			let petBansBonus = 0;
 			for (const pet of equippedPets) {
 				const petStrength = getPetStrength(pet);
 				petDamageBonus += petStrength.petDamage;
+				petBansBonus += petStrength.petBans;
 			}
 
 			const damageAmount = weaponDamage + talismanStatEffects.damage + petDamageBonus;
@@ -97,6 +100,8 @@ remotes.Server.Get("damageNPC").Connect(
 					...currentTimeTrial,
 					npcs: currentTimeTrial.npcs.filter((npc) => npc.instance !== character),
 				});
+
+				store.dispatch(addBans(petBansBonus));
 
 				task.delay(0.5, (): void => {
 					character.Destroy();

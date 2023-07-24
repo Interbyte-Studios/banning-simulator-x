@@ -56,7 +56,7 @@ export const TIME_TRIAL_BASE_NPCS = 5;
 /**
  * The number of additional NPCs spawned per wave.
  */
-export const TIME_TRIAL_NPCS_PER_WAVE = 2;
+export const TIME_TRIAL_NPCS_PER_WAVE = 1;
 
 /**
  * The attribute name that is set on the player to indicate the time they have

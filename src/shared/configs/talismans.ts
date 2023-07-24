@@ -128,6 +128,19 @@ export const TALISMANS = {
 			walkspeed: 45,
 		},
 	},
+	"GearWorx Talisman": {
+		id: 9,
+		cost: {
+			currency: "gears",
+			amount: 5_000_000,
+			rank: 10,
+		},
+		stats: {
+			experience: 1,
+			damage: 25_000,
+			walkspeed: 50,
+		},
+	},
 } satisfies Record<string, Talisman>;
 
 export const TALISMAN_PHASES: Array<{
