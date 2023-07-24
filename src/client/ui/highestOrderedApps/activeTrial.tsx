@@ -1,8 +1,16 @@
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
+import { t } from "@rbxts/t";
+import { formatTime } from "client/util/formatTime";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { isTimeTrialDifficulty, TIME_TRIAL_DIFFICULTY_ATTRIBUTE, TimeTrialDifficulty } from "shared/configs/timeTrials";
+import {
+	isTimeTrialDifficulty,
+	TIME_TRIAL_DIFFICULTY_ATTRIBUTE,
+	TIME_TRIAL_TIMER_ATTRIBUTE,
+	TIME_TRIAL_WAVE_ATTRIBUTE,
+	TimeTrialDifficulty,
+} from "shared/configs/timeTrials";
 
 import {
 	uiClaimButtonStrokeColor,
@@ -23,6 +31,8 @@ export const ActiveTrial = hooks((props: { stopTrial: () => void }, { useState, 
 	const { startTimeTrial, stopTimeTrial } = useContext(remoteContext);
 	const [difficulty, setDifficulty] = useState<TimeTrialDifficulty>("easy");
 	const [started, setStarted] = useState(false);
+	const [wave, setWave] = useState(1);
+	const [timer, setTimer] = useState(0);
 
 	useEffect(() => {
 		const connection = Players.LocalPlayer.AttributeChanged.Connect((attribute) => {
@@ -32,13 +42,54 @@ export const ActiveTrial = hooks((props: { stopTrial: () => void }, { useState, 
 					setDifficulty(attributeValue);
 				}
 			}
+
+			if (attribute === TIME_TRIAL_WAVE_ATTRIBUTE) {
+				const attributeValue = Players.LocalPlayer.GetAttribute(TIME_TRIAL_WAVE_ATTRIBUTE);
+				if (t.number(attributeValue)) {
+					setWave(attributeValue);
+				}
+			}
+
+			if (attribute === TIME_TRIAL_TIMER_ATTRIBUTE) {
+				const attributeValue = Players.LocalPlayer.GetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE);
+				if (t.number(attributeValue)) {
+					setTimer(attributeValue);
+				}
+			}
 		});
 
 		return (): void => connection.Disconnect();
 	}, []);
 
 	if (started) {
-		return <></>;
+		return (
+			<>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.02),
+						Size: UDim2.fromScale(0.2, 0.05),
+						Text: "GearWorx Time Trials",
+					}}
+					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(163, 58, 7) } }}
+				/>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.07),
+						Size: UDim2.fromScale(0.2, 0.05),
+						Text: `Wave: ${wave}`,
+					}}
+					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(163, 58, 7) } }}
+				/>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.09),
+						Size: UDim2.fromScale(0.2, 0.05),
+						Text: `Time Left: ${formatTime(timer)}`,
+					}}
+					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(163, 58, 7) } }}
+				/>
+			</>
+		);
 	} else {
 		return (
 			<>

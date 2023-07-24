@@ -5,6 +5,7 @@ import {
 	TIME_TRIAL_DIFFICULTY_ATTRIBUTE,
 	TIME_TRIAL_TIMER_ATTRIBUTE,
 	TIME_TRIAL_WAITING_ATTRIBUTE,
+	TIME_TRIAL_WAVE_ATTRIBUTE,
 } from "shared/configs/timeTrials";
 import { remotes } from "shared/remotes";
 
@@ -34,6 +35,7 @@ remotes.Server.GetNamespace("timeTrials")
 			}
 
 			const { cleanupHandler, spawnLocation } = createTrial(player, difficulty);
+			player.RequestStreamAroundAsync(spawnLocation.Position);
 			rootPart.CFrame = spawnLocation;
 
 			// if player dies, then we cleanup immediately
@@ -47,6 +49,7 @@ remotes.Server.GetNamespace("timeTrials")
 			// set timer to initial value
 			player.SetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE, TIME_TRIAL_WAITING_ATTRIBUTE);
 			player.SetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE, difficulty);
+			player.SetAttribute(TIME_TRIAL_WAVE_ATTRIBUTE, difficulty);
 		}),
 	);
 
@@ -60,7 +63,9 @@ remotes.Server.GetNamespace("timeTrials")
 				const humanoid = player.Character.FindFirstChildOfClass("Humanoid");
 				const rootPart = humanoid?.RootPart;
 				if (rootPart) {
-					rootPart.CFrame = new CFrame(new Vector3(22774.359, 43.466, -117.576));
+					const pos = new Vector3(22774.359, 43.466, -117.576);
+					player.RequestStreamAroundAsync(pos);
+					rootPart.CFrame = new CFrame(pos);
 				}
 			}
 

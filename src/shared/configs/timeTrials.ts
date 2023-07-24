@@ -61,6 +61,12 @@ export const TIME_TRIAL_TIMER_ATTRIBUTE = "timeTrialTimer";
 export const TIME_TRIAL_DIFFICULTY_ATTRIBUTE = "timeTrialDifficulty";
 
 /**
+ * The attribute name that is set on the player to indicate the difficulty of their
+ * time trial.
+ */
+export const TIME_TRIAL_WAVE_ATTRIBUTE = "timeTrialWave";
+
+/**
  * The attribute set on `TIME_TRIAL_TIMER_ATTRIBUTE` when waiting for the
  * player to start the time trial.
  */

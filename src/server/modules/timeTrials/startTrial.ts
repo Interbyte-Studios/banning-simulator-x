@@ -1,4 +1,5 @@
 import { Janitor } from "@rbxts/janitor";
+import { TIME_TRIAL_TIMER_ATTRIBUTE } from "shared/configs/timeTrials";
 
 import { currentTimeTrials, TimeTrialStatus } from ".";
 
@@ -43,7 +44,7 @@ export function startTrial(player: Player): {
 				timeRemaining: currentTrial.timeRemaining - step,
 			});
 
-			player.SetAttribute("timeTrialTimer", currentTrial.timeRemaining);
+			player.SetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE, currentTrial.timeRemaining);
 
 			// return if we have finished the time trial.
 			return currentTrial.timeRemaining - step <= 0;
