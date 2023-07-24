@@ -82,7 +82,7 @@ export const ActiveTrial = hooks((props: { stopTrial: () => void }, { useState, 
 				/>
 				<StrokeTextLabel
 					native={{
-						Position: UDim2.fromScale(0.5, 0.09),
+						Position: UDim2.fromScale(0.5, 0.12),
 						Size: UDim2.fromScale(0.2, 0.05),
 						Text: `Time Left: ${formatTime(timer)}`,
 					}}
