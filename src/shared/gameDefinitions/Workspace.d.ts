@@ -4,6 +4,7 @@ import { Zones } from "shared/configs/zones";
 
 declare global {
 	interface Workspace extends WorldRoot {
+		trials: Folder;
 		"client objects": Folder & {
 			pets: Folder;
 			talismans: Folder;

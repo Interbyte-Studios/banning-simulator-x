@@ -116,123 +116,161 @@ function createPlayerTag(player: Player, store: Store): void {
 	const playerTag = ReplicatedStorage.assetObjects.tags.playerTag;
 	assert(playerTag, `Failed to get player tag from rep storage`);
 
-	const character = player.Character;
-	assert(character, `Failed to create player tag. The Character for ${player.Name} was not found.`);
-
-	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
-	assert(humanoid, `Failed to create player tag. The Humanoid for ${player.Name} was not found.`);
-
-	const head = character.WaitForChild("Head") as BasePart;
-	assert(head, `Failed to create player tag. The Head for ${player.Name} was not found.`);
-
-	const storeState = store.getState();
-	const isInGroup = player.IsInGroup(GROUP_ID);
-
-	const tag = playerTag.Clone();
-	tag.hold.name.Text = player.Name;
-	tag.hold.name.rank.Image = getRankIcon(storeState.rank);
-	tag.hold.title.Visible = storeState.title !== undefined;
-	tag.hold.staff.Visible = false;
-
-	if (storeState.worldPrestige["Ban Land"].currentPrestige > 0) {
-		tag.hold.badges.prestige.amount.Text = `P. ${storeState.worldPrestige["Ban Land"].currentPrestige}`;
-		tag.hold.badges.prestige.Visible = true;
-	}
-
-	const bansLeaderboard = ReplicatedStorage.leaderboards.bans.FindFirstChild(tostring(player.UserId));
-	if (bansLeaderboard !== undefined) {
-		const position = bansLeaderboard.GetAttribute("position") as number;
-		let title = "Top 100";
-		if (position !== undefined) {
-			if (position === 1) {
-				title = "Top 1";
-			} else if (position <= 3) {
-				title = "Top 3";
-			} else if (position <= 10) {
-				title = "Top 10";
-			} else if (position <= 25) {
-				title = "Top 25";
-			} else if (position <= 50) {
-				title = "Top 50";
+	task.spawn(() => {
+		let character = player.Character;
+		if (character === undefined) {
+			// eslint-disable-next-line no-constant-condition
+			while (true) {
+				task.wait(1);
+				if (player.Character) {
+					character = player.Character;
+					break;
+				}
 			}
 		}
-		tag.hold.badges.bans.amount.Text = title;
-		tag.hold.badges.bans.Visible = true;
-	}
-
-	const eggsLeaderboard = ReplicatedStorage.leaderboards.eggs.FindFirstChild(tostring(player.UserId));
-	if (eggsLeaderboard !== undefined) {
-		const position = eggsLeaderboard.GetAttribute("position") as number;
-		let title = "Top 100";
-		if (position !== undefined) {
-			if (position === 1) {
-				title = "Top 1";
-			} else if (position <= 3) {
-				title = "Top 3";
-			} else if (position <= 10) {
-				title = "Top 10";
-			} else if (position <= 25) {
-				title = "Top 25";
-			} else if (position <= 50) {
-				title = "Top 50";
-			}
-		}
-		tag.hold.badges.eggs.amount.Text = title;
-		tag.hold.badges.eggs.Visible = true;
-	}
-
-	if (storeState.title !== undefined) {
-		const titleData = TITLES.find((title) => title.name === storeState.title);
-		assert(titleData, `Failed to get data for title "${storeState.title}" while creating player tag`);
-
-		tag.hold.title.Text = storeState.title;
-
-		if (typeIs(titleData.effect, "Color3")) {
-			tag.hold.title.TextColor3 = titleData.effect;
-		} else {
-			const titleGradient = new Instance("UIGradient");
-			titleGradient.Color = titleData.effect;
-			titleGradient.Offset = new Vector2(-0.75, 0);
-			titleGradient.Parent = tag.hold.title;
-			gradients.push(titleGradient);
-
-			const connection = titleGradient.Destroying.Connect(() => {
-				gradients.forEach((gradient, index) => {
-					if (gradient === titleGradient) {
-						gradients.unorderedRemove(index);
-						return;
-					}
-				});
-
-				connection.Disconnect();
-			});
-
-			tag.hold.title.Visible = true;
-		}
-	}
-
-	if (isInGroup) {
-		const groupRank = player.GetRankInGroup(GROUP_ID);
-		const groupRankData = GROUP_ROLES[groupRank];
-		if (groupRankData === undefined) {
+		if (character === undefined) {
 			return;
 		}
 
-		tag.hold.staff.Text = groupRankData.tag;
-		tag.hold.staff.TextColor3 = groupRankData.color;
-		tag.hold.staff.Visible = true;
-	}
+		let humanoid = character.FindFirstChildOfClass("Humanoid");
+		if (humanoid === undefined) {
+			// eslint-disable-next-line no-constant-condition
+			while (true) {
+				task.wait(1);
+				if (character.FindFirstChildOfClass("Humanoid")) {
+					humanoid = character.FindFirstChildOfClass("Humanoid");
+					break;
+				}
+			}
+		}
+		if (humanoid === undefined) {
+			return;
+		}
 
-	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
-	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
+		let head = character.FindFirstChild("Head") as BasePart;
+		if (head === undefined) {
+			// eslint-disable-next-line no-constant-condition
+			while (true) {
+				task.wait(1);
+				if (character.FindFirstChild("Head")) {
+					head = character.FindFirstChild("Head") as BasePart;
+					break;
+				}
+			}
+		}
+		if (head === undefined) {
+			return;
+		}
 
-	tag.Adornee = head;
-	tag.Parent = friendlyTags;
+		const storeState = store.getState();
+		const isInGroup = player.IsInGroup(GROUP_ID);
 
-	const connection = humanoid.AncestryChanged.Connect(() => {
-		tag.Destroy();
-		connection.Disconnect();
-		return;
+		const tag = playerTag.Clone();
+		tag.hold.name.Text = player.Name;
+		tag.hold.name.rank.Image = getRankIcon(storeState.rank);
+		tag.hold.title.Visible = storeState.title !== undefined;
+		tag.hold.staff.Visible = false;
+
+		if (storeState.worldPrestige["Ban Land"].currentPrestige > 0) {
+			tag.hold.badges.prestige.amount.Text = `P. ${storeState.worldPrestige["Ban Land"].currentPrestige}`;
+			tag.hold.badges.prestige.Visible = true;
+		}
+
+		const bansLeaderboard = ReplicatedStorage.leaderboards.bans.FindFirstChild(tostring(player.UserId));
+		if (bansLeaderboard !== undefined) {
+			const position = bansLeaderboard.GetAttribute("position") as number;
+			let title = "Top 100";
+			if (position !== undefined) {
+				if (position === 1) {
+					title = "Top 1";
+				} else if (position <= 3) {
+					title = "Top 3";
+				} else if (position <= 10) {
+					title = "Top 10";
+				} else if (position <= 25) {
+					title = "Top 25";
+				} else if (position <= 50) {
+					title = "Top 50";
+				}
+			}
+			tag.hold.badges.bans.amount.Text = title;
+			tag.hold.badges.bans.Visible = true;
+		}
+
+		const eggsLeaderboard = ReplicatedStorage.leaderboards.eggs.FindFirstChild(tostring(player.UserId));
+		if (eggsLeaderboard !== undefined) {
+			const position = eggsLeaderboard.GetAttribute("position") as number;
+			let title = "Top 100";
+			if (position !== undefined) {
+				if (position === 1) {
+					title = "Top 1";
+				} else if (position <= 3) {
+					title = "Top 3";
+				} else if (position <= 10) {
+					title = "Top 10";
+				} else if (position <= 25) {
+					title = "Top 25";
+				} else if (position <= 50) {
+					title = "Top 50";
+				}
+			}
+			tag.hold.badges.eggs.amount.Text = title;
+			tag.hold.badges.eggs.Visible = true;
+		}
+
+		if (storeState.title !== undefined) {
+			const titleData = TITLES.find((title) => title.name === storeState.title);
+			assert(titleData, `Failed to get data for title "${storeState.title}" while creating player tag`);
+
+			tag.hold.title.Text = storeState.title;
+
+			if (typeIs(titleData.effect, "Color3")) {
+				tag.hold.title.TextColor3 = titleData.effect;
+			} else {
+				const titleGradient = new Instance("UIGradient");
+				titleGradient.Color = titleData.effect;
+				titleGradient.Offset = new Vector2(-0.75, 0);
+				titleGradient.Parent = tag.hold.title;
+				gradients.push(titleGradient);
+
+				const connection = titleGradient.Destroying.Connect(() => {
+					gradients.forEach((gradient, index) => {
+						if (gradient === titleGradient) {
+							gradients.unorderedRemove(index);
+							return;
+						}
+					});
+
+					connection.Disconnect();
+				});
+
+				tag.hold.title.Visible = true;
+			}
+		}
+
+		if (isInGroup) {
+			const groupRank = player.GetRankInGroup(GROUP_ID);
+			const groupRankData = GROUP_ROLES[groupRank];
+			if (groupRankData === undefined) {
+				return;
+			}
+
+			tag.hold.staff.Text = groupRankData.tag;
+			tag.hold.staff.TextColor3 = groupRankData.color;
+			tag.hold.staff.Visible = true;
+		}
+
+		humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
+		humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
+
+		tag.Adornee = head;
+		tag.Parent = friendlyTags;
+
+		const connection = humanoid.AncestryChanged.Connect(() => {
+			tag.Destroy();
+			connection.Disconnect();
+			return;
+		});
 	});
 }
 
@@ -245,13 +283,11 @@ function createPlayerTag(player: Player, store: Store): void {
 function updatePlayerTag(player: Player, store: Store): void {
 	const character = player.Character;
 	if (character === undefined) {
-		warn(`Failed to update player tag for "${player.Name}". The Character was not found.`);
 		return;
 	}
 
 	const head = character.FindFirstChild("Head") as BasePart;
 	if (head === undefined) {
-		warn(`Failed to update player tag for "${player.Name}". The Head was not found.`);
 		return;
 	}
 
@@ -408,7 +444,6 @@ function createEnemyTag(enemy: Model): void {
 
 		const npcData = getNPCByName(enemy.Name);
 		if (npcData === undefined) {
-			warn(`Failed to create enemy tag. Did not find data for npc "${enemy.Name}"`);
 			return;
 		}
 
@@ -547,6 +582,37 @@ npcsFolder.GetChildren().forEach((enemy) => {
 	}
 
 	task.delay(2, () => createEnemyTag(enemy));
+});
+
+Workspace.trials.ChildAdded.Connect((timeTrialMap) => {
+	task.delay(2, () => {
+		const npcs = timeTrialMap.FindFirstChild("npcs");
+		if (npcs === undefined) {
+			return;
+		}
+
+		npcs.GetChildren().forEach((enemy) => {
+			if (!enemy.IsA("Model")) {
+				return;
+			}
+
+			task.delay(2, () => createEnemyTag(enemy));
+		});
+
+		const npcAddedConnection = npcs.ChildAdded.Connect((enemy) => {
+			if (!enemy.IsA("Model")) {
+				return;
+			}
+
+			task.delay(2, () => createEnemyTag(enemy));
+		});
+
+		const ancestryChangedConnection = timeTrialMap.AncestryChanged.Connect(() => {
+			npcAddedConnection.Disconnect();
+			ancestryChangedConnection.Disconnect();
+			return;
+		});
+	});
 });
 
 RunService.RenderStepped.Connect((deltaTime) => {

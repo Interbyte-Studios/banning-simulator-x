@@ -10,6 +10,7 @@ import { AnnouncementContext, AnnouncementType } from "../context/AnnouncementsA
 import { hooks } from "../hooks";
 import { remoteContext } from "../mocks/remoteContext";
 import { ActiveTrial } from "./activeTrial";
+import { FinishedTrial } from "./finishedTrial";
 import { Main } from "./main";
 
 interface ControlProps {
@@ -24,6 +25,7 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 	const { player, store } = props;
 
 	const [trialsEnabled, setTrialsEnabled] = useState(false);
+	const [trialsFinished, setTrialsFinished] = useState<number | undefined>(undefined);
 
 	const [canTrade, setCanTrade] = useState(true);
 	const [tradingEnabled, setTradingEnabled] = useState(false);
@@ -168,12 +170,33 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 		tradeActive,
 	]);
 
-	if (trialsEnabled) {
+	if (trialsFinished !== undefined) {
+		return (
+			<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
+				{
+					<FinishedTrial
+						gearRewards={trialsFinished > 0 ? trialsFinished : undefined}
+						finish={(): void => setTrialsFinished(undefined)}
+					/>
+				}
+			</screengui>
+		);
+	} else if (trialsEnabled) {
 		return (
 			<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
 				{
 					<ActiveTrial
+						finish={(gearRewards: number): void => {
+							setTrialsFinished(gearRewards);
+							setTrialsEnabled(false);
+							Lighting.Ambient = Color3.fromRGB(177, 177, 177);
+							Lighting.ColorShift_Bottom = Color3.fromRGB(170, 255, 255);
+							Lighting.ColorShift_Top = Color3.fromRGB(85, 0, 127);
+							Lighting.ClockTime = store.getState().settings.visual.timeOfDay;
+							Lighting.FogColor = Color3.fromRGB(0, 85, 255);
+						}}
 						stopTrial={(): void => {
+							setTrialsFinished(0);
 							setTrialsEnabled(false);
 							Lighting.Ambient = Color3.fromRGB(177, 177, 177);
 							Lighting.ColorShift_Bottom = Color3.fromRGB(170, 255, 255);

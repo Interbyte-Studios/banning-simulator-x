@@ -62,7 +62,7 @@ function handlePlayerTalisman(player: Player): void {
 
 			task.delay(5, (): void => {
 				handleTalisman();
-				player.CharacterAdded.Connect(() => handleTalisman());
+				player.CharacterAdded.Connect(() => task.delay(2, () => handleTalisman()));
 
 				store.changed.connect((newState, oldState) => {
 					if (newState.currentTalisman === oldState.currentTalisman) {

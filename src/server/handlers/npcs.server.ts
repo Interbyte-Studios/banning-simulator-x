@@ -1,10 +1,14 @@
 import { Workspace } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
+import { currentTimeTrials } from "server/modules/timeTrials";
 import { WORLDS } from "shared/configs/worlds";
 import { UniversalWorldData } from "shared/configs/zones";
 import { remotes } from "shared/remotes";
 import { isNpcCharacter, NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
+import { getPetStrength } from "shared/util/getPetStrength";
+import { getTalismanStatEffect } from "shared/util/getTalismanDamage";
+import { getWeaponDamage } from "shared/util/getWeaponDamage";
 
 import { runStep } from "../modules/npcs/runStep";
 import { NpcWorldState } from "../modules/npcs/worldState";
@@ -15,7 +19,7 @@ const attackDownTime = 0.1;
 
 let npcAttacks: Array<{ player: Player; store: Store; character: NpcCharacter }> = [];
 remotes.Server.Get("damageNPC").Connect(
-	withPlayerStore((player, store, character) => {
+	withPlayerStore((player, store, character, wasTrials) => {
 		const now = time();
 		const lastAttack = _lastAttack.get(player.UserId);
 		if (lastAttack === undefined) {
@@ -33,26 +37,6 @@ remotes.Server.Get("damageNPC").Connect(
 
 		if (!isNpcCharacter(character)) {
 			return;
-		}
-
-		const currentState = store.getState();
-		for (const [worldName, worldData] of pairs(UniversalWorldData)) {
-			for (const [zoneName, zoneData] of pairs(worldData)) {
-				const npcData = zoneData.npcs.find((npcData) => npcData.name === character.Name);
-				if (npcData === undefined) {
-					continue;
-				}
-
-				const ownsWorld = currentState.worlds.find((storedWorld) => storedWorld.name === worldName);
-				if (ownsWorld === undefined) {
-					return;
-				}
-
-				const ownsZone = ownsWorld.zones.find((storedZone) => storedZone === zoneName);
-				if (ownsZone === undefined) {
-					return;
-				}
-			}
 		}
 
 		const playercharacter = player.Character;
@@ -75,16 +59,78 @@ remotes.Server.Get("damageNPC").Connect(
 			return;
 		}
 
-		if (playerRoot.Position.sub(npcRoot.Position).Magnitude > 10) {
-			return;
-		}
+		if (wasTrials) {
+			const currentTimeTrial = currentTimeTrials.get(player);
+			if (currentTimeTrial === undefined) {
+				return;
+			}
 
-		const npcAttack = {
-			player,
-			store,
-			character,
-		};
-		npcAttacks.push(npcAttack);
+			if (currentTimeTrial.npcs.find((npc) => npc.instance === character) === undefined) {
+				return;
+			}
+
+			const storeState = store.getState();
+			const currentWeaponData = storeState.weapons.find((weapon) => weapon.id === storeState.currentWeapon.id);
+			if (currentWeaponData === undefined) {
+				return;
+			}
+
+			const timeTrialDamageMultiplier = storeState.timeTrials["Ban Land"].damage * 0.005;
+			const weaponDamage = getWeaponDamage(currentWeaponData);
+			const talismanStatEffects = getTalismanStatEffect(
+				storeState.currentTalisman,
+				storeState.talismans.find((talisman) => talisman.id === storeState.currentTalisman)?.phase,
+			);
+
+			const equippedPets = store.getState().pets.filter((pet) => pet.equipped);
+			let petDamageBonus = 0;
+			for (const pet of equippedPets) {
+				const petStrength = getPetStrength(pet);
+				petDamageBonus += petStrength.petDamage;
+			}
+
+			const damageAmount = weaponDamage + talismanStatEffects.damage + petDamageBonus;
+			character.Humanoid.TakeDamage(damageAmount + damageAmount * timeTrialDamageMultiplier);
+
+			const connection = character.Humanoid.Died.Connect(() => {
+				currentTimeTrials.set(player, {
+					...currentTimeTrial,
+					npcs: currentTimeTrial.npcs.filter((npc) => npc.instance !== character),
+				});
+
+				task.delay(0.5, (): void => {
+					character.Destroy();
+					connection.Disconnect();
+				});
+			});
+		} else {
+			const currentState = store.getState();
+			for (const [worldName, worldData] of pairs(UniversalWorldData)) {
+				for (const [zoneName, zoneData] of pairs(worldData)) {
+					const npcData = zoneData.npcs.find((npcData) => npcData.name === character.Name);
+					if (npcData === undefined) {
+						continue;
+					}
+
+					const ownsWorld = currentState.worlds.find((storedWorld) => storedWorld.name === worldName);
+					if (ownsWorld === undefined) {
+						return;
+					}
+
+					const ownsZone = ownsWorld.zones.find((storedZone) => storedZone === zoneName);
+					if (ownsZone === undefined) {
+						return;
+					}
+				}
+			}
+
+			const npcAttack = {
+				player,
+				store,
+				character,
+			};
+			npcAttacks.push(npcAttack);
+		}
 	}),
 );
 

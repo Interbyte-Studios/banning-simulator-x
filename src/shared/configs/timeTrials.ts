@@ -46,7 +46,17 @@ export type TimeTrialDifficulty = t.static<typeof isTimeTrialDifficulty>;
 /**
  * The length of a time trial, in seconds.
  */
-export const TIME_TRIAL_LENGTH = 60;
+export const TIME_TRIAL_LENGTH = 10 * 60;
+
+/**
+ * The number of NPCs spawned first.
+ */
+export const TIME_TRIAL_BASE_NPCS = 5;
+
+/**
+ * The number of additional NPCs spawned per wave.
+ */
+export const TIME_TRIAL_NPCS_PER_WAVE = 2;
 
 /**
  * The attribute name that is set on the player to indicate the time they have
@@ -65,6 +75,11 @@ export const TIME_TRIAL_DIFFICULTY_ATTRIBUTE = "timeTrialDifficulty";
  * time trial.
  */
 export const TIME_TRIAL_WAVE_ATTRIBUTE = "timeTrialWave";
+
+/**
+ * The attribute name that is set on the player to indicate the number of NPCs.
+ */
+export const TIME_TRIAL_NPCS_REMAINING = "timeTrialNPCsRemaining";
 
 /**
  * The attribute set on `TIME_TRIAL_TIMER_ATTRIBUTE` when waiting for the

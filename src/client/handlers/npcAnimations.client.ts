@@ -54,3 +54,33 @@ npcs.GetChildren().forEach((npc) => {
 
 	task.delay(2, (): void => handleRunningAnimation(npc));
 });
+
+Workspace.trials.ChildAdded.Connect((child) => {
+	task.delay(2, () => {
+		const npcs = child.FindFirstChild("npcs");
+		if (npcs === undefined) {
+			return;
+		}
+
+		npcs.GetChildren().forEach((npc) => {
+			if (!npc.IsA("Model")) {
+				return;
+			}
+
+			task.delay(2, (): void => handleRunningAnimation(npc));
+		});
+
+		const childAddedConn = npcs.ChildAdded.Connect((npc) => {
+			if (!npc.IsA("Model")) {
+				return;
+			}
+
+			task.delay(2, (): void => handleRunningAnimation(npc));
+		});
+
+		const ancestryChangedConnection = child.AncestryChanged.Connect(() => {
+			childAddedConn.Disconnect();
+			ancestryChangedConnection.Disconnect();
+		});
+	});
+});

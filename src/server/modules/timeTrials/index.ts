@@ -10,6 +10,7 @@ export const currentTimeTrials: Map<
 	Player,
 	{
 		cleanupHandler: Janitor;
+		wave: number;
 		difficulty: TimeTrialDifficulty;
 		status: TimeTrialStatus;
 		/**
@@ -17,5 +18,9 @@ export const currentTimeTrials: Map<
 		 * in seconds.
 		 */
 		timeRemaining: number;
+		selectedNPC: string;
+		npcs: Array<{ instance: Model; lastAttack: number; attackAnim: AnimationTrack }>;
+		npcFolder: Folder;
+		npcSpawns: Folder;
 	}
 > = new Map();

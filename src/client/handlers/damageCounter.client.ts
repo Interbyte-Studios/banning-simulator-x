@@ -103,3 +103,18 @@ npcFolder.ChildAdded.Connect((child) => {
 
 	task.delay(2, (): void => createDamageCounter(child));
 });
+
+Workspace.trials.ChildAdded.Connect((child) => {
+	task.delay(2, () => {
+		const npcs = child.FindFirstChild("npcs") as Folder;
+		if (npcs !== undefined) {
+			for (const npc of npcs.GetChildren()) {
+				if (!npc.IsA("Model")) {
+					continue;
+				}
+
+				task.delay(2, (): void => createDamageCounter(npc));
+			}
+		}
+	});
+});

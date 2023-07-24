@@ -46,6 +46,9 @@ remotes.Server.GetNamespace("timeTrials")
 				}),
 			);
 
+			humanoid.MaxHealth = 100 + 50 * store.getState().timeTrials["Ban Land"].health;
+			humanoid.Health = humanoid.MaxHealth;
+
 			// set timer to initial value
 			player.SetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE, TIME_TRIAL_WAITING_ATTRIBUTE);
 			player.SetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE, difficulty);
@@ -65,7 +68,7 @@ remotes.Server.GetNamespace("timeTrials")
 				if (rootPart) {
 					const pos = new Vector3(22774.359, 43.466, -117.576);
 					player.RequestStreamAroundAsync(pos);
-					rootPart.CFrame = new CFrame(pos);
+					rootPart.CFrame = new CFrame(pos).mul(new CFrame(new Vector3(0, 5, 0)));
 				}
 			}
 

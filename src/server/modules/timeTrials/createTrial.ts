@@ -1,5 +1,5 @@
 import { Janitor } from "@rbxts/janitor";
-import { ServerStorage, Workspace } from "@rbxts/services";
+import { ReplicatedStorage, ServerStorage, Workspace } from "@rbxts/services";
 import { TIME_TRIAL_LENGTH, TimeTrialDifficulty } from "shared/configs/timeTrials";
 
 import { currentTimeTrials, TimeTrialStatus } from ".";
@@ -36,12 +36,6 @@ export function createTrial(
 	assert(getTrialStatus(player) === undefined, `Attempted to create a trial for ${player}, but they already have one!`);
 
 	const cleanup = new Janitor();
-	currentTimeTrials.set(player, {
-		cleanupHandler: cleanup,
-		difficulty,
-		status: TimeTrialStatus.WaitingForStart,
-		timeRemaining: TIME_TRIAL_LENGTH,
-	});
 	cleanup.Add(() => currentTimeTrials.delete(player));
 
 	const playerTimeTrial = ServerStorage.timeTrials.map.Clone();
@@ -51,7 +45,24 @@ export function createTrial(
 		new CFrame(0, 0, (playerTimeTrial.GetBoundingBox()[1].Z + GAP_BETWEEN_TRIALS) * currentTimeTrials.size()),
 	);
 	playerTimeTrial.PivotTo(newLocation);
-	playerTimeTrial.Parent = Workspace;
+	playerTimeTrial.Parent = Workspace.trials;
+
+	const randomNPC =
+		ReplicatedStorage.assetObjects.npcs.GetChildren()[
+			math.random(1, ReplicatedStorage.assetObjects.npcs.GetChildren().size() - 1)
+		];
+
+	currentTimeTrials.set(player, {
+		cleanupHandler: cleanup,
+		difficulty,
+		wave: 1,
+		status: TimeTrialStatus.WaitingForStart,
+		timeRemaining: TIME_TRIAL_LENGTH,
+		selectedNPC: randomNPC.Name,
+		npcs: [],
+		npcFolder: playerTimeTrial.npcs,
+		npcSpawns: playerTimeTrial.npcSpawn,
+	});
 
 	cleanup.Add(() => currentTimeTrials.delete(player));
 

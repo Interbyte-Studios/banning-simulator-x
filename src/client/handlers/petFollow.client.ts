@@ -162,9 +162,9 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 			throw `[ Pet Follow Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 		});
 
-Players.GetPlayers().forEach((player) => cachePlayerPetanimation(player));
-Players.PlayerAdded.Connect((player) => cachePlayerPetanimation(player));
-Players.PlayerRemoving.Connect((player) => removePetAnimationCache(player));
+Players.GetPlayers().forEach((player) => task.delay(2, () => cachePlayerPetanimation(player)));
+Players.PlayerAdded.Connect((player) => task.delay(2, () => cachePlayerPetanimation(player)));
+Players.PlayerRemoving.Connect((player) => task.delay(2, () => removePetAnimationCache(player)));
 
 const rayCastParams = new RaycastParams();
 rayCastParams.IgnoreWater = true;
