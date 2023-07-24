@@ -25,6 +25,7 @@ enum MenuType {
 
 interface TrialsProps extends TrialsMappedProps {
 	hideMenu: () => void;
+	setTrialsEnabled: (value: boolean) => void;
 }
 
 interface TrialsMappedProps {
@@ -50,7 +51,9 @@ export const Trials = RoactRodux.connect(mapStateToProps)(
 
 		let menuToDisplay: Roact.Element | undefined;
 		if (menu === MenuType.Trials) {
-			menuToDisplay = <TimeTrialsDifficultySelection />;
+			menuToDisplay = (
+				<TimeTrialsDifficultySelection setTrialsEnabled={(value): void => props.setTrialsEnabled(value)} />
+			);
 		} else if (menu === MenuType.Upgrades) {
 			menuToDisplay = <TimeTrialsUpgrades />;
 		}

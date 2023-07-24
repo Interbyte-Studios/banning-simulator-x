@@ -6,6 +6,7 @@ import { Trials } from "./trials";
 interface TimeTrialsProps {
 	isVisible: boolean;
 	setVisibility: (value: boolean) => void;
+	setTrialsEnabled: (value: boolean) => void;
 }
 
 /**
@@ -16,7 +17,12 @@ interface TimeTrialsProps {
  */
 export const TimeTrials = (props: TimeTrialsProps): Roact.Element => {
 	if (props.isVisible) {
-		return <Trials hideMenu={(): void => props.setVisibility(false)} />;
+		return (
+			<Trials
+				hideMenu={(): void => props.setVisibility(false)}
+				setTrialsEnabled={(value): void => props.setTrialsEnabled(value)}
+			/>
+		);
 	} else {
 		return <TimeTrialsInteractionPrompts displayInterface={(): void => props.setVisibility(true)} />;
 	}

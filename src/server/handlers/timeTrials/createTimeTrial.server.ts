@@ -1,7 +1,11 @@
 import { Players, ServerStorage } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { cleanupTrial, createTrial, getTrialStatus } from "server/modules/timeTrials/createTrial";
-import { TIME_TRIAL_TIMER_ATTRIBUTE, TIME_TRIAL_WAITING_ATTRIBUTE } from "shared/configs/timeTrials";
+import {
+	TIME_TRIAL_DIFFICULTY_ATTRIBUTE,
+	TIME_TRIAL_TIMER_ATTRIBUTE,
+	TIME_TRIAL_WAITING_ATTRIBUTE,
+} from "shared/configs/timeTrials";
 import { remotes } from "shared/remotes";
 
 assert(
@@ -23,7 +27,7 @@ remotes.Server.GetNamespace("timeTrials")
 			}
 
 			// ensure player had a root part
-			const humanoid = player.Character?.FindFirstAncestorWhichIsA("Humanoid");
+			const humanoid = player.Character?.FindFirstChildOfClass("Humanoid");
 			const rootPart = humanoid?.RootPart;
 			if (!(humanoid && humanoid.Health > 0 && rootPart)) {
 				return;
@@ -42,6 +46,26 @@ remotes.Server.GetNamespace("timeTrials")
 
 			// set timer to initial value
 			player.SetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE, TIME_TRIAL_WAITING_ATTRIBUTE);
+			player.SetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE, difficulty);
+		}),
+	);
+
+remotes.Server.GetNamespace("timeTrials")
+	.Get("stopTimeTrial")
+	.Connect(
+		withPlayerStore((player) => {
+			cleanupTrial(player);
+
+			if (player.Character) {
+				const humanoid = player.Character.FindFirstChildOfClass("Humanoid");
+				const rootPart = humanoid?.RootPart;
+				if (rootPart) {
+					rootPart.CFrame = new CFrame(new Vector3(22774.359, 43.466, -117.576));
+				}
+			}
+
+			player.SetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE, undefined);
+			player.SetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE, undefined);
 		}),
 	);
 

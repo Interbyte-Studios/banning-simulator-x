@@ -55,6 +55,7 @@ interface AppProps {
 	store: Store;
 	tradingEnabled: boolean;
 	setTradingEnabled: () => void;
+	setTrialsEnabled: (value: boolean) => void;
 }
 
 const visibilityStates = {
@@ -310,6 +311,17 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 				<TimeTrials
 					isVisible={false}
 					setVisibility={(value): void => setVisibility({ ...visibilityStates, timeTrials: value })}
+					setTrialsEnabled={(value: boolean): void => {
+						if (value) {
+							TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 0 }).Play();
+							Lighting.Ambient = Color3.fromRGB(255, 198, 149);
+							Lighting.ColorShift_Bottom = Color3.fromRGB(255, 170, 0);
+							Lighting.ColorShift_Top = Color3.fromRGB(85, 0, 127);
+							Lighting.ClockTime = 0;
+							Lighting.FogColor = Color3.fromRGB(255, 170, 0);
+						}
+						props.setTrialsEnabled(value);
+					}}
 				/>,
 				<WeaponShopHandle
 					isVisible={false}
@@ -351,6 +363,17 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 				<TimeTrials
 					isVisible={true}
 					setVisibility={(value): void => setVisibility({ ...visibilityStates, timeTrials: value })}
+					setTrialsEnabled={(value: boolean): void => {
+						if (value) {
+							TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 0 }).Play();
+							Lighting.Ambient = Color3.fromRGB(255, 198, 149);
+							Lighting.ColorShift_Bottom = Color3.fromRGB(255, 170, 0);
+							Lighting.ColorShift_Top = Color3.fromRGB(85, 0, 127);
+							Lighting.ClockTime = 0;
+							Lighting.FogColor = Color3.fromRGB(255, 170, 0);
+						}
+						props.setTrialsEnabled(value);
+					}}
 				/>,
 			);
 		} else if (isVisible("updateLog")) {
