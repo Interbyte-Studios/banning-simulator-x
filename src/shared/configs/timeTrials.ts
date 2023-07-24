@@ -46,7 +46,7 @@ export type TimeTrialDifficulty = t.static<typeof isTimeTrialDifficulty>;
 /**
  * The length of a time trial, in seconds.
  */
-export const TIME_TRIAL_LENGTH = 10 * 60;
+export const TIME_TRIAL_LENGTH = 60;
 
 /**
  * The attribute name that is set on the player to indicate the time they have

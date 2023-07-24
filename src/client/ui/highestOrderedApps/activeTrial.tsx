@@ -53,7 +53,12 @@ export const ActiveTrial = hooks((props: { stopTrial: () => void }, { useState, 
 			if (attribute === TIME_TRIAL_TIMER_ATTRIBUTE) {
 				const attributeValue = Players.LocalPlayer.GetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE);
 				if (t.number(attributeValue)) {
-					setTimer(attributeValue);
+					setTimer((prev) => {
+						if (prev > 0 && attributeValue < 1) {
+							props.stopTrial();
+						}
+						return attributeValue;
+					});
 				}
 			}
 		});
@@ -88,6 +93,33 @@ export const ActiveTrial = hooks((props: { stopTrial: () => void }, { useState, 
 					}}
 					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(163, 58, 7) } }}
 				/>
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.5, 0.17),
+						Image: assetIds.images.ui.index.Off,
+					}}
+					size={{ minSize: 0.04, maxSize: 0.05 }}
+					events={{
+						/**
+						 *
+						 */
+						Activated: (): void => {
+							playSFX(UIEngagement.MajorEngagement);
+							stopTimeTrial.SendToServer();
+							props.stopTrial();
+						},
+					}}
+				>
+					<uiaspectratioconstraint AspectRatio={2} />
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.5, 0.5),
+							Size: UDim2.fromScale(0.9, 0.9),
+							Text: "Stop",
+						}}
+						stroke={{ native: { Thickness: 2, Color: uiOffButtonStrokeColor } }}
+					/>
+				</SpringImageButton>
 			</>
 		);
 	} else {
