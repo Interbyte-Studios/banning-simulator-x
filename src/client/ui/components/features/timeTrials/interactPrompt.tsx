@@ -96,13 +96,32 @@ const Prompt = (props: { adornee: BasePart; displayInterface: () => void }): Roa
 /**
  * Displays a custom proximity prompt interface allowing the player to intract with the talisman tower.
  */
-export const TimeTrialsInteractionPrompts = hooks((props: { displayInterface: () => void }) => {
-	const prompts: Array<Roact.Element> = [];
-	for (const adornee of Workspace.interactions.timeTrials.GetChildren()) {
-		if (!adornee.IsA("BasePart")) continue;
+export const TimeTrialsInteractionPrompts = hooks(
+	(props: { displayInterface: () => void }, { useState, useEffect }) => {
+		const [interactions, setInteractions] = useState<Array<BasePart>>([]);
+		useEffect(() => {
+			const prompts: Array<BasePart> = [];
+			for (const adornee of Workspace.interactions.timeTrials.GetChildren()) {
+				if (!adornee.IsA("BasePart")) continue;
 
-		prompts.push(<Prompt adornee={adornee} displayInterface={props.displayInterface} />);
-	}
+				prompts.push(adornee);
+			}
+			setInteractions(prompts);
 
-	return <>{prompts}</>;
-});
+			const connection = Workspace.interactions.timeTrials.ChildAdded.Connect((child) => {
+				if (!child.IsA("BasePart")) return;
+
+				setInteractions((old) => [...old, child]);
+			});
+			return (): void => connection.Disconnect();
+		}, []);
+
+		return (
+			<>
+				{interactions.map((adornee) => (
+					<Prompt adornee={adornee} displayInterface={props.displayInterface} />
+				))}
+			</>
+		);
+	},
+);

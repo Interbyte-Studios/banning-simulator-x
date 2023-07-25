@@ -23,6 +23,7 @@ export const WorldPrestige = hooks(
 		{ useState, useEffect },
 	) => {
 		const [viewingWorld, setViewingWorld] = useState<WorldName>("Ban Land");
+		const [interactions, setInteractions] = useState<Array<BasePart>>([]);
 
 		useEffect(() => {
 			if (!props.isVisible) {
@@ -41,6 +42,32 @@ export const WorldPrestige = hooks(
 			setViewingWorld(currentWorld);
 		}, [props.isVisible]);
 
+		useEffect(() => {
+			const interactions: Array<BasePart> = [];
+			for (const interaction of Workspace.interactions.worldPrestige.GetChildren()) {
+				const prestige = interaction.FindFirstChild("prestige") as Folder;
+
+				const prestigeVendor = prestige.FindFirstChild("vendor") as Model;
+				const prestigePrimaryPart = prestigeVendor.FindFirstChild("primary") as BasePart;
+				interactions.push(prestigePrimaryPart);
+			}
+			setInteractions(interactions);
+
+			const connection = Workspace.interactions.ChildAdded.Connect((child) => {
+				const prestige = child.FindFirstChild("prestige") as Folder;
+
+				const prestigeVendor = prestige.FindFirstChild("vendor") as Model;
+				const prestigePrimaryPart = prestigeVendor.FindFirstChild("primary") as BasePart;
+				if (interactions.includes(prestigePrimaryPart)) {
+					return;
+				}
+
+				setInteractions([...interactions, prestigePrimaryPart]);
+			});
+
+			return (): void => connection.Disconnect();
+		}, []);
+
 		if (props.isVisible) {
 			if (props.viewType === WorldPrestigeViewType.Prestige) {
 				return <WorldPrestigePath worldName={viewingWorld} setVisibility={props.setVisibility} />;
@@ -50,39 +77,34 @@ export const WorldPrestige = hooks(
 		} else {
 			return (
 				<>
-					{Workspace.interactions.worldPrestige.GetChildren().map((worldPrestigeFolder) => {
-						const prestige = worldPrestigeFolder.FindFirstChild("prestige") as Folder;
-
-						const prestigeVendor = prestige.FindFirstChild("vendor") as Model;
-						const prestigePrimaryPart = prestigeVendor.FindFirstChild("primary") as BasePart;
-
+					{interactions.map((interaction) => {
 						return (
 							<>
 								<WorldPrestigeInteractPrompt
-									adornee={prestigePrimaryPart}
+									adornee={interaction}
 									display={(): void => {
 										props.setViewType(WorldPrestigeViewType.Prestige);
 										props.setVisibility(true);
 									}}
 									interactType={WorldPrestigeViewType.Prestige}
 								/>
-								{CollectionService.GetTagged("prestigeUpgrade").map((interaction) => {
-									if (!interaction.IsA("BasePart")) {
-										return <></>;
-									}
-
-									return (
-										<WorldPrestigeInteractPrompt
-											adornee={interaction}
-											display={(): void => {
-												props.setViewType(WorldPrestigeViewType.Upgrades);
-												props.setVisibility(true);
-											}}
-											interactType={WorldPrestigeViewType.Upgrades}
-										/>
-									);
-								})}
 							</>
+						);
+					})}
+					{CollectionService.GetTagged("prestigeUpgrade").map((interaction) => {
+						if (!interaction.IsA("BasePart")) {
+							return <></>;
+						}
+
+						return (
+							<WorldPrestigeInteractPrompt
+								adornee={interaction}
+								display={(): void => {
+									props.setViewType(WorldPrestigeViewType.Upgrades);
+									props.setVisibility(true);
+								}}
+								interactType={WorldPrestigeViewType.Upgrades}
+							/>
 						);
 					})}
 				</>
