@@ -67,7 +67,7 @@ export = (): void => {
 		});
 
 		it("should add currency when redeeming quest", () => {
-			const state = { coins: 100, gems: 10 };
+			const state = { coins: 100, gems: 10, gears: 10 };
 
 			const action = redeemWorldQuest("Ban Land", "Kill 30 mobs", 50, {
 				kind: "currency",
@@ -78,6 +78,7 @@ export = (): void => {
 			const newState = {
 				coins: 200,
 				gems: 10,
+				gears: 10,
 			};
 
 			testAction(state, newState, currenciesReducer, action);

@@ -32,8 +32,17 @@ function mapStateToProps(state: StoreState): ZonesUIMappedProps {
  */
 /* eslint-disable jsdoc/require-jsdoc */
 export const ZonesUI = RoactRodux.connect(mapStateToProps)(
-	hooks((props: ZonesUIMappedProps, { useState }) => {
+	hooks((props: ZonesUIMappedProps, { useState, useEffect }) => {
 		const [viewingZone, setViewedZone] = useState<{ world: WorldName; zone: number } | undefined>(undefined);
+
+		const [updated, setUpdate] = useState(0);
+		useEffect(() => {
+			const connection = Workspace.decoration.DescendantAdded.Connect(() => {
+				setUpdate((prev) => prev + 1);
+			});
+
+			return (): void => connection.Disconnect();
+		}, []);
 
 		const elements: Array<Roact.Element> = [];
 		for (const [worldName, worldData] of pairs(WORLDS)) {
@@ -60,7 +69,14 @@ export const ZonesUI = RoactRodux.connect(mapStateToProps)(
 
 				const zoneFolder = worldFolder[zoneName];
 				const sign = zoneFolder.sign;
-				const adorneePart = sign.description.infoPart;
+				const adorneePart = sign.description.FindFirstChild("infoPart") as BasePart;
+				if (adorneePart === undefined) {
+					continue;
+				}
+
+				if (updated < 0) {
+					continue;
+				}
 
 				props.worlds.forEach((world) => {
 					const ownsZone = world.zones.find((zoneName) => zoneName === zoneName);

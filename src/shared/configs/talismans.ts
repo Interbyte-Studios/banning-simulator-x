@@ -1,3 +1,5 @@
+import { t } from "@rbxts/t";
+
 import { Currency } from "./currencies";
 
 export interface TalismanStatEffects {
@@ -124,6 +126,19 @@ export const TALISMANS = {
 			experience: 0.8,
 			damage: 600,
 			walkspeed: 45,
+		},
+	},
+	"GearWorx Talisman": {
+		id: 9,
+		cost: {
+			currency: "gears",
+			amount: 5_000_000,
+			rank: 10,
+		},
+		stats: {
+			experience: 1,
+			damage: 25_000,
+			walkspeed: 50,
 		},
 	},
 } satisfies Record<string, Talisman>;

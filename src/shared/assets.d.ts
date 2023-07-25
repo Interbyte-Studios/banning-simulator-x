@@ -417,6 +417,10 @@ declare namespace assetIds {
 				"Radioactive Greatsword": string;
 				"Stinger Scythe": string;
 				"Tropical Thrasher": string;
+				"GearWorx Lance": string;
+				"GearWorx Striker": string;
+				"GearWorx Scythe": string;
+				"GearWorx Blade": string;
 			};
 			gamepasses: {
 				"Fast Hatch": string;
@@ -467,6 +471,7 @@ declare namespace assetIds {
 				"Artifact Heart Talisman": string;
 			};
 			eggs: {
+				"Dweller Egg": string;
 				Starter: string;
 				Jester: string;
 				Honeycomb: string;
@@ -479,6 +484,7 @@ declare namespace assetIds {
 			};
 		};
 		vectors: {
+			Gear: string;
 			Egg: string;
 			trading: {
 				Wantit: string;
@@ -620,6 +626,11 @@ declare namespace assetIds {
 			};
 			"rank upgrade": {
 				background: string;
+			};
+			timeTrials: {
+				green: string;
+				red: string;
+				yellow: string;
 			};
 			trading: {
 				TradeBackground: string;

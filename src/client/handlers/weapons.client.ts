@@ -101,37 +101,28 @@ function equipWeapon(weaponName: WeaponIndex): void {
 
 	// hitbox
 	const raycastParams = new RaycastParams();
-	raycastParams.FilterDescendantsInstances = [npcsFolder];
-	raycastParams.FilterType = Enum.RaycastFilterType.Whitelist;
+	raycastParams.FilterDescendantsInstances = [npcsFolder, Workspace.trials];
+	raycastParams.FilterType = Enum.RaycastFilterType.Include;
 
 	const hitbox = new Hitbox(weapon);
 	hitbox.RaycastParams = raycastParams;
 	hitbox.Visualizer = false; // RunService.IsStudio();
 	hitbox.Debuglog = false; // RunService.IsStudio();
 
-	let loadedAllPoints = true;
 	for (const hitboxAttachment of weapon.GetDescendants()) {
 		if (!hitboxAttachment.IsA("Attachment")) {
 			continue;
 		}
 
 		if (hitboxAttachment.Parent === undefined) {
-			loadedAllPoints = false;
-			warn("hitbox point parent undefiend");
 			continue;
 		}
 
 		if (!hitboxAttachment.Parent.IsA("BasePart")) {
-			warn("hitbox point not a basepart or bone");
-			loadedAllPoints = false;
 			continue;
 		}
 
 		hitbox.SetPoints(hitboxAttachment.Parent, [hitboxAttachment.Position]);
-	}
-
-	if (!loadedAllPoints) {
-		warn(`Failed to load all points for weapon ${weapon.Name} for player ${player.Name}`);
 	}
 
 	// sounds
@@ -246,7 +237,7 @@ function equipWeapon(weaponName: WeaponIndex): void {
 		}
 
 		playSFX(NPCImpact.NPCImpact1);
-		remotes.Client.Get("damageNPC").SendToServer(npcCharacter);
+		remotes.Client.Get("damageNPC").SendToServer(npcCharacter, !npcCharacter.IsDescendantOf(npcsFolder));
 	});
 	connections.push(hitBox);
 

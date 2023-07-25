@@ -22,13 +22,13 @@ export const TalismanTower = hooks((props: TalismanTowerProps, { useState, useEf
 
 	const [viewedTalisman, setViewedTalisman] = useState(1);
 	const minimumTalismanId = 1;
-	const maximumTalismanId = 8;
+	const maximumTalismanId = 9;
 
 	useEffect(() => {
 		const camera = Workspace.CurrentCamera;
 		assert(camera, `Workspace current camera was undefined. Cannot open shop.`);
 
-		const talismanViewpoint = Workspace.interactions.talismanTowers["Ban Land"].cameraline.FindFirstChild(
+		const talismanViewpoint = Workspace.interactions.talismanTowers["Ban Land"].cameraline.cameraline.FindFirstChild(
 			viewedTalisman,
 		) as BasePart;
 		assert(

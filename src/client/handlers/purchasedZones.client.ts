@@ -1,4 +1,3 @@
-import { GameAnalytics } from "@rbxts/gameanalytics";
 import Make from "@rbxts/make";
 import { Lighting, Players, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
@@ -18,28 +17,31 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 	const zoneDecoration = Workspace.decoration[world][zone];
 	const door = zoneDecoration.door;
 
-	let zoneFolder = Lighting.FindFirstChild(zone);
-	if (zoneFolder === undefined) {
-		zoneFolder = Make("Folder", {
-			Parent: Lighting,
-			Name: zone,
-		});
-	}
+	task.spawn(() => {
+		task.wait(1);
+		let zoneFolder = Lighting.FindFirstChild(zone);
+		if (zoneFolder === undefined) {
+			zoneFolder = Make("Folder", {
+				Parent: Lighting,
+				Name: zone,
+			});
+		}
 
-	const lock = door.FindFirstChild("lock");
-	if (lock !== undefined) {
-		lock.Parent = zoneFolder;
-	}
+		const lock = door.FindFirstChild("lock");
+		if (lock !== undefined) {
+			lock.Parent = zoneFolder;
+		}
 
-	const passage = door.FindFirstChild("passage");
-	if (passage !== undefined) {
-		passage.Parent = zoneFolder;
-	}
+		const passage = door.FindFirstChild("passage");
+		if (passage !== undefined) {
+			passage.Parent = zoneFolder;
+		} else warn(`no passage for ${world} ${zone}`);
 
-	const sign = zoneDecoration.FindFirstChild("sign");
-	if (sign !== undefined) {
-		sign.Parent = zoneFolder;
-	}
+		const sign = zoneDecoration.FindFirstChild("sign");
+		if (sign !== undefined) {
+			sign.Parent = zoneFolder;
+		}
+	});
 }
 
 /**
@@ -87,6 +89,19 @@ onStoreCreated(player)
 	.andThen((store) => {
 		unlockZones(store.getState().worlds);
 
+		for (const [worldName, worldData] of pairs(WORLDS)) {
+			const worldDeco = Workspace.decoration[worldName];
+			for (const [zoneName] of pairs(worldData.zones)) {
+				if (isStarterZone(zoneName)) {
+					continue;
+				}
+
+				const zoneDeco = worldDeco[zoneName];
+				zoneDeco.door.ChildAdded.Connect(() => unlockZones(store.getState().worlds));
+				zoneDeco.door.ChildRemoved.Connect(() => unlockZones(store.getState().worlds));
+			}
+		}
+
 		store.changed.connect((newState, oldState) => {
 			if (newState.worlds === oldState.worlds) {
 				return;
@@ -96,10 +111,5 @@ onStoreCreated(player)
 		});
 	})
 	.catch((e) => {
-		// do not include player names. against the rules apparently.
-		GameAnalytics.addErrorEvent(Players.LocalPlayer.UserId, {
-			severity: "error",
-			message: `[ Purchased Zones Handler ] - Failed to run promise callback on "onStoreCreated" | ${e}`,
-		});
 		throw `[ Purchased Zones Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 	});

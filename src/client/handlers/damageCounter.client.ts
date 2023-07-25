@@ -9,12 +9,32 @@ const damageCounter = ReplicatedStorage.assetObjects.tags.damagecounter;
  * @param npc The npc to create the damage counter for.
  */
 export function createDamageCounter(npc: Model): void {
-	const humanoid = npc.FindFirstChildOfClass("Humanoid");
+	let humanoid = npc.FindFirstChildOfClass("Humanoid");
+	if (humanoid === undefined) {
+		// eslint-disable-next-line no-constant-condition
+		while (true) {
+			task.wait(1);
+			if (npc.FindFirstChildOfClass("Humanoid")) {
+				humanoid = npc.FindFirstChildOfClass("Humanoid");
+				break;
+			}
+		}
+	}
 	if (humanoid === undefined) {
 		return;
 	}
 
-	const head = npc.FindFirstChild("Head") as BasePart;
+	let head = npc.FindFirstChild("Head") as BasePart;
+	if (head === undefined) {
+		// eslint-disable-next-line no-constant-condition
+		while (true) {
+			task.wait(1);
+			if (npc.FindFirstChild("Head")) {
+				head = npc.FindFirstChild("Head") as BasePart;
+				break;
+			}
+		}
+	}
 	if (head === undefined) {
 		return;
 	}
@@ -24,6 +44,10 @@ export function createDamageCounter(npc: Model): void {
 
 	let lastHealth = humanoid.Health;
 	const healthConnection = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
+		if (humanoid === undefined) {
+			return;
+		}
+
 		const newHealth = humanoid.Health;
 		const damage = lastHealth - newHealth;
 		lastHealth = newHealth;
@@ -78,4 +102,32 @@ npcFolder.ChildAdded.Connect((child) => {
 	}
 
 	task.delay(2, (): void => createDamageCounter(child));
+});
+
+Workspace.trials.ChildAdded.Connect((child) => {
+	task.delay(2, () => {
+		const npcs = child.FindFirstChild("npcs") as Folder;
+		if (npcs !== undefined) {
+			for (const npc of npcs.GetChildren()) {
+				if (!npc.IsA("Model")) {
+					continue;
+				}
+
+				task.delay(2, (): void => createDamageCounter(npc));
+			}
+
+			const childAddedConn = npcs.ChildAdded.Connect((child) => {
+				if (!child.IsA("Model")) {
+					return;
+				}
+
+				task.delay(2, (): void => createDamageCounter(child));
+			});
+
+			const ancestryConn = child.AncestryChanged.Connect(() => {
+				childAddedConn.Disconnect();
+				ancestryConn.Disconnect();
+			});
+		}
+	});
 });

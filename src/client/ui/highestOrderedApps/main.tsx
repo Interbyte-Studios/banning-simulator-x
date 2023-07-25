@@ -28,6 +28,7 @@ import { PetMastery } from "../components/features/petMastery";
 import { Settings } from "../components/features/settings";
 import { SpinWheel } from "../components/features/spinWheel";
 import { Teleportation } from "../components/features/teleportation";
+import { TimeTrials } from "../components/features/timeTrials";
 import { WorldPrestige } from "../components/features/worldPrestige";
 import { WorldPrestigeViewType } from "../components/features/worldPrestige/prestigeEnum";
 import { RankUpgrade } from "../components/ranks/menu";
@@ -54,6 +55,7 @@ interface AppProps {
 	store: Store;
 	tradingEnabled: boolean;
 	setTradingEnabled: () => void;
+	setTrialsEnabled: (value: boolean) => void;
 }
 
 const visibilityStates = {
@@ -71,6 +73,7 @@ const visibilityStates = {
 	worldPrestige: false,
 	updateLog: false,
 	spinWheel: false,
+	timeTrials: false,
 };
 
 const updateLogIcon = new Icon().setImage(assetIds.images.decals.UpdateLog).setLabel("Update Log");
@@ -128,6 +131,18 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					return;
 				}
 
+				for (const interaction of Workspace.interactions.timeTrials.GetChildren()) {
+					if (!interaction.IsA("BasePart")) {
+						continue;
+					}
+
+					const magnitude = rootPart.Position.sub(interaction.Position).Magnitude;
+					if (magnitude <= 30) {
+						setVisibility({ ...visibilityStates, timeTrials: true });
+						return;
+					}
+				}
+
 				for (const interaction of Workspace.interactions.weaponShops.GetChildren()) {
 					if (!interaction.IsA("BasePart")) {
 						continue;
@@ -182,7 +197,9 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					assert(petVendor.IsA("Model"), `Expected pet mastery vendor "${petVendor.Name}" to be a model.`);
 
 					const primaryPart = petVendor.PrimaryPart;
-					assert(primaryPart, `Expected pet mastery vendor "${petVendor.Name}" to have a set PrimaryPart.`);
+					if (primaryPart === undefined) {
+						return;
+					}
 
 					const petMasteryFolder = petVendor.Parent as Folder;
 					assert(petMasteryFolder, `Expected the parent of the pet mastery vendor "${petVendor.Name} to exist."`);
@@ -214,7 +231,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 			ContextActionService.UnbindAction("equipWeapon");
 			ContextActionService.UnbindAction("openShop");
 		};
-	});
+	}, [visibility]);
 
 	useEffect(() => {
 		const connection = updateLogIcon.selected.Connect(() => {
@@ -257,7 +274,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 	const isVisible = useCallback((currentMenu: keyof typeof visibilityStates) => visibility[currentMenu], [visibility]);
 
 	useEffect(() => {
-		if (isMenuVisible()) {
+		if (isMenuVisible() && !isVisible("autoFight") && !isVisible("weaponShop") && !isVisible("talismanTower")) {
 			blurEffect.Size = 0;
 			TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 20 }).Play();
 		} else {
@@ -290,6 +307,21 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 						props.setTradingEnabled();
 					}}
 					onlyShowCurrency={false}
+				/>,
+				<TimeTrials
+					isVisible={false}
+					setVisibility={(value): void => setVisibility({ ...visibilityStates, timeTrials: value })}
+					setTrialsEnabled={(value: boolean): void => {
+						if (value) {
+							TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 0 }).Play();
+							Lighting.Ambient = Color3.fromRGB(255, 198, 149);
+							Lighting.ColorShift_Bottom = Color3.fromRGB(255, 170, 0);
+							Lighting.ColorShift_Top = Color3.fromRGB(85, 0, 127);
+							Lighting.ClockTime = 0;
+							Lighting.FogColor = Color3.fromRGB(255, 170, 0);
+						}
+						props.setTrialsEnabled(value);
+					}}
 				/>,
 				<WeaponShopHandle
 					isVisible={false}
@@ -325,6 +357,24 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 				<WeaponEquip />,
 				<RankUpgrade />,
 				<DatastoreEvents />,
+			);
+		} else if (isVisible("timeTrials")) {
+			components.push(
+				<TimeTrials
+					isVisible={true}
+					setVisibility={(value): void => setVisibility({ ...visibilityStates, timeTrials: value })}
+					setTrialsEnabled={(value: boolean): void => {
+						if (value) {
+							TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 0 }).Play();
+							Lighting.Ambient = Color3.fromRGB(255, 198, 149);
+							Lighting.ColorShift_Bottom = Color3.fromRGB(255, 170, 0);
+							Lighting.ColorShift_Top = Color3.fromRGB(85, 0, 127);
+							Lighting.ClockTime = 0;
+							Lighting.FogColor = Color3.fromRGB(255, 170, 0);
+						}
+						props.setTrialsEnabled(value);
+					}}
+				/>,
 			);
 		} else if (isVisible("updateLog")) {
 			components.push(<UpdateLog />);

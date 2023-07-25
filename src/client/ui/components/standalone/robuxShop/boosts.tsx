@@ -50,7 +50,7 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 				<StrokeTextLabel
 					native={{
 						Text: "Boosts",
-						Position: UDim2.fromScale(0.5, 0.525),
+						Position: UDim2.fromScale(0.5, 0.45),
 						Size: UDim2.fromScale(0.5, 0.015),
 					}}
 					stroke={{ native: { Thickness: 2.5, Color: uiDarkStrokeColor } }}
@@ -58,7 +58,7 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 				<BaseFrame
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(12, 134, 211)}
-					Position={UDim2.fromScale(0.25, 0.58)}
+					Position={UDim2.fromScale(0.25, 0.505)}
 					Size={UDim2.fromScale(0.98, 0.085)}
 				>
 					<uicorner CornerRadius={new UDim(0.1, 0)} />
@@ -193,7 +193,7 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 				<BaseFrame
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(12, 134, 211)}
-					Position={UDim2.fromScale(0.75, 0.58)}
+					Position={UDim2.fromScale(0.75, 0.505)}
 					Size={UDim2.fromScale(0.98, 0.085)}
 				>
 					<uicorner CornerRadius={new UDim(0.1, 0)} />
@@ -312,21 +312,21 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 							boostName = "💰x2 Currency💰";
 							boostColor = Color3.fromRGB(27, 68, 255);
 							colorStroke = Color3.fromRGB(15, 38, 139);
-							position = UDim2.fromScale(0.5, 0.67);
+							position = UDim2.fromScale(0.5, 0.595);
 							break;
 						}
 						case "x2 Hatching Luck": {
 							boostName = "🍀x2 Luck🍀";
 							boostColor = Color3.fromRGB(85, 255, 127);
 							colorStroke = Color3.fromRGB(32, 95, 46);
-							position = UDim2.fromScale(0.5, 0.75);
+							position = UDim2.fromScale(0.5, 0.675);
 							break;
 						}
 						case "x2 Pet Experience": {
 							boostName = "⭐x2 Pet Experience⭐";
 							boostColor = Color3.fromRGB(255, 130, 28);
 							colorStroke = Color3.fromRGB(103, 74, 32);
-							position = UDim2.fromScale(0.5, 0.83);
+							position = UDim2.fromScale(0.5, 0.835);
 							break;
 						}
 						case "x2 Rank Experience": {

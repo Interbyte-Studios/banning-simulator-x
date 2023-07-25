@@ -23,6 +23,7 @@ import { RankActions, rankReducer, RankState } from "./rank";
 import { SettingsActions, settingsReducer, SettingsState } from "./settings";
 import { SpinWheelActions, spinWheelReducer, SpinWheelState } from "./spinWheel";
 import { TalismanActions, talismanReducer, TalismansState } from "./talismans";
+import { TimeTrialsActions, timeTrialsReducer, TimeTrialsState } from "./timeTrials";
 import { TitleActions, titleReducer, TitleState } from "./title";
 import { TradeLogActions, tradeLogsReducer, TradeLogsState } from "./tradeLogs";
 import { WeaponsActions, weaponsReducer, WeaponsState } from "./weapons";
@@ -52,6 +53,7 @@ export type StoreState = {
 	settings: SettingsState;
 	spinWheel: SpinWheelState;
 	talismans: TalismansState;
+	timeTrials: TimeTrialsState;
 	title: TitleState;
 	tradeLogs: TradeLogsState;
 	weapons: WeaponsState;
@@ -76,6 +78,7 @@ export type StoreActions = (
 	| RankActions
 	| SettingsActions
 	| TitleActions
+	| TimeTrialsActions
 	| WeaponsActions
 	| WorldActions
 	| WorldPrestigeActions
@@ -107,6 +110,7 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	settings: settingsReducer,
 	rank: rankReducer,
 	title: titleReducer,
+	timeTrials: timeTrialsReducer,
 	weapons: weaponsReducer,
 	worlds: worldsReducer,
 	worldPrestige: worldPrestigeReducer,

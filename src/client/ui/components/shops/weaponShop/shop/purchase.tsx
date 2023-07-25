@@ -127,7 +127,7 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 			>
 				<StrokeTextLabel
 					native={{
-						Size: UDim2.fromScale(1, 1),
+						Size: UDim2.fromScale(0.9, 0.9),
 						Text:
 							weaponIsSheathed || (weaponOwned && props.currentWeapon.id !== props.weaponId)
 								? "Equip"
@@ -137,7 +137,7 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 					}}
 					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
 				/>
-				<uiaspectratioconstraint AspectRatio={4} />
+				<uiaspectratioconstraint AspectRatio={3.4} />
 			</SpringImageButton>
 		);
 	}),

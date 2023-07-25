@@ -112,10 +112,6 @@ const onInputBegan = (input: InputObject, gameProcessedEvent: boolean): void => 
 		const raycastResult = Workspace.Raycast(camera.CFrame.Position, rayDirection, raycastParams);
 
 		if (raycastResult !== undefined) {
-			if (!raycastResult.Instance.IsDescendantOf(npcs)) {
-				return;
-			}
-
 			const npcParent = raycastResult.Instance.Parent;
 			if (npcParent === undefined) {
 				return;
@@ -203,11 +199,16 @@ task.spawn(() => {
 	RunService.RenderStepped.Connect(() => {
 		debug.profilebegin("mouseIcon");
 		const target = mouse.Target;
-		if (target && target.IsDescendantOf(npcs)) {
-			mouse.Icon = assetIds.images.vectors.SmallSword;
-		} else {
+		if (!target) {
 			mouse.Icon = "rbxasset://textures/ArrowFarCursor.png";
+			return;
 		}
+
+		if (target.IsDescendantOf(npcs)) {
+			mouse.Icon = assetIds.images.vectors.SmallSword;
+			return;
+		}
+		mouse.Icon = "rbxasset://textures/ArrowFarCursor.png";
 		debug.profileend();
 	});
 });

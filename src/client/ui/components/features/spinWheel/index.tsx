@@ -1,7 +1,7 @@
 import Flipper from "@rbxts/flipper";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { MarketplaceService, Players } from "@rbxts/services";
+import { MarketplaceService, Players, RunService } from "@rbxts/services";
 import { font, vec2Middle } from "client/ui/commonValues";
 import { useBindingMotor } from "client/ui/customHooks/useBindingMotor";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
@@ -12,6 +12,7 @@ import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/stro
 import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { formatTime } from "client/util/formatTime";
 import { getCurrencyIcon } from "client/util/getCurrencyIcon";
 import { getPetImage } from "client/util/getPetImage";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -86,11 +87,15 @@ for (const [index, rewardInfo] of pairs(spinRewards)) {
 	}
 }
 
+/**
+ * The spin wheel component.
+ */
 export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 	hooks((props: SpinWheelProps, hooks) => {
 		const { useContext, useEffect, useState, useValue } = hooks;
 		const { spinWheel } = useContext(remoteContext);
 		const [rewardFrameVisibility, updateRewardFrameVisibility] = useState<boolean>(false);
+		const [timeLeft, setTimeLeft] = useState(0);
 		const [displayedInfo, updateDisplayedInfo] = useState<{
 			rewardType: "boost" | "currency" | "pet";
 			image: string;
@@ -161,6 +166,21 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 
 			return (): void => connection.disconnect();
 		}, []);
+
+		useEffect(() => {
+			const connection = RunService.RenderStepped.Connect(() => {
+				const now = DateTime.now().UnixTimestamp;
+				if (now >= props.spinWheel.lastSpinTime + 86400) {
+					setTimeLeft(0);
+					return;
+				}
+
+				setTimeLeft(math.ceil(props.spinWheel.lastSpinTime + 86400 - now));
+				task.wait(1);
+			});
+
+			return (): void => connection.Disconnect();
+		}, [timeLeft, props.spinWheel.lastSpinTime]);
 
 		return (
 			<>
@@ -406,6 +426,16 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 						<uiaspectratioconstraint AspectRatio={1} />
 					</ImageLabel>
 				</SpringImageButton>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.76),
+						Size: UDim2.fromScale(0.15, 0.04),
+						Text: `${formatTime(timeLeft)}`,
+						Visible: timeLeft > 0,
+						ZIndex: 2,
+					}}
+					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(99, 52, 16) } }}
+				/>
 			</>
 		);
 	}),

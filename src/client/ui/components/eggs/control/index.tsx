@@ -79,9 +79,18 @@ export function disableHatch(): void {
  * @returns A roact element.
  */
 export const EggHud = RoactRodux.connect(mapStateToProps)(
-	hooks((props: EggHudMappedProps, { useEffect, useCallback, useContext, useValue }) => {
+	hooks((props: EggHudMappedProps, { useEffect, useCallback, useContext, useValue, useState }) => {
 		const { hatchEgg } = useContext(remoteContext);
 		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
+
+		const [updated, setUpdate] = useState(0);
+		useEffect(() => {
+			const connection = Workspace.interactions.eggs.DescendantAdded.Connect(() => {
+				setUpdate((prev) => prev + 1);
+			});
+
+			return (): void => connection.Disconnect();
+		}, []);
 
 		const currencies = useValue(props.currencies);
 		const inventorySize = useValue(props.pets.size());
@@ -182,20 +191,20 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							const now = time();
 							const canHatch = now - lastHatchTime > hatchDebounce;
 							if (!canHatch) {
-								return;
+								continue;
 							}
 							lastHatchTime = now;
 
 							// make sure they aren't still hatching
 							if (getIsHatching()) {
-								return;
+								continue;
 							}
 
 							// make sure they're not trading
 							if (getIsTrading()) {
 								addAnnouncement(`You cannot hatch while your trading!`, AnnouncementType.Error);
 								autoEnabled = false;
-								return;
+								break;
 							}
 
 							// check that character still exists (if it doesn't, neither does the camera)
@@ -203,7 +212,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							if (character === undefined) {
 								addAnnouncement(`There was an issue hatching the egg. Try again later. [3]`, AnnouncementType.Error);
 								autoEnabled = false;
-								return;
+								break;
 							}
 
 							// check cost
@@ -215,21 +224,20 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 									AnnouncementType.Error,
 								);
 								autoEnabled = false;
-								return;
+								break;
 							}
 
 							// check inventory space
 							if (inventorySize.value + amount > getPetInventorySize(props.gamepasses)) {
 								addAnnouncement(`You do not have enough inventory space to hatch the egg!`, AnnouncementType.Error);
 								autoEnabled = false;
-								return;
+								break;
 							}
 
 							const requestHatch = await hatchEgg.CallServerAsync(amount, eggName, variant === "void");
 							if (requestHatch.success) {
 								if (requestHatch.pets.size() === 3) {
 									animateTripleEggHatch(eggName, variant === "void", requestHatch.pets, props.gamepasses["Fast Hatch"]);
-									task.wait(0.5);
 								} else {
 									animateSingleEggHatch(
 										eggName,
@@ -238,52 +246,52 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 										requestHatch.pets[0].autoDeleted,
 										props.gamepasses["Fast Hatch"],
 									);
-									task.wait(0.5);
 								}
 							} else {
-								switch (requestHatch.reason) {
-									case HatchEggFailKind.NoCharacter: {
-										addAnnouncement(
-											`You could not hatch because your character could not be found.`,
-											AnnouncementType.Error,
-										);
-										break;
-									}
-									case HatchEggFailKind.NoCurrency: {
-										addAnnouncement(`You do not have enough currency to hatch the egg!`, AnnouncementType.Error);
-										break;
-									}
-									case HatchEggFailKind.NoGamepass: {
-										addAnnouncement(
-											`You do not own the triple egg gamepass. You cannot hatch 3 eggs.`,
-											AnnouncementType.Error,
-										);
-										break;
-									}
-									case HatchEggFailKind.NoInventory: {
-										addAnnouncement(`You do not have enough inventory space to hatch eggs!`, AnnouncementType.Error);
-										break;
-									}
-									case HatchEggFailKind.NoWorld: {
-										addAnnouncement(`You don't own the world required to hatch that egg!`, AnnouncementType.Error);
-										break;
-									}
-									case HatchEggFailKind.NoZone: {
-										addAnnouncement(`You don't own the zone required to hatch that egg!`, AnnouncementType.Error);
-										break;
-									}
-									case HatchEggFailKind.NotWithinDistance: {
-										addAnnouncement(`You aren't close enough to hatch an egg.`, AnnouncementType.Error);
-										break;
-									}
-									case HatchEggFailKind.TooFast: {
-										addAnnouncement(`You are hatching too fast!`, AnnouncementType.Error);
-										break;
-									}
-									case HatchEggFailKind.Trading: {
-										addAnnouncement(`You cannot hatch while you are trading!`, AnnouncementType.Error);
-										break;
-									}
+								if (requestHatch.reason === HatchEggFailKind.NoCharacter) {
+									addAnnouncement(
+										`You could not hatch because your character could not be found.`,
+										AnnouncementType.Error,
+									);
+								} else if (requestHatch.reason === HatchEggFailKind.NoCurrency) {
+									addAnnouncement(
+										`You could not hatch because you do not have enough currency.`,
+										AnnouncementType.Error,
+									);
+								} else if (requestHatch.reason === HatchEggFailKind.NoGamepass) {
+									addAnnouncement(
+										`You could not hatch because you do not own the triple egg gamepass.`,
+										AnnouncementType.Error,
+									);
+								} else if (requestHatch.reason === HatchEggFailKind.NoInventory) {
+									addAnnouncement(
+										`You could not hatch because you do not have enough inventory space.`,
+										AnnouncementType.Error,
+									);
+								} else if (requestHatch.reason === HatchEggFailKind.NoWorld) {
+									addAnnouncement(
+										`You could not hatch because you do not own the world required to hatch that egg.`,
+										AnnouncementType.Error,
+									);
+								} else if (requestHatch.reason === HatchEggFailKind.NoZone) {
+									addAnnouncement(
+										`You could not hatch because you do not own the zone required to hatch that egg.`,
+										AnnouncementType.Error,
+									);
+								} else if (requestHatch.reason === HatchEggFailKind.NotWithinDistance) {
+									addAnnouncement(
+										`You could not hatch because you are not close enough to hatch an egg.`,
+										AnnouncementType.Error,
+									);
+								} else if (requestHatch.reason === HatchEggFailKind.TooFast) {
+									addAnnouncement(`You could not hatch because you are hatching too fast.`, AnnouncementType.Error);
+								} else if (requestHatch.reason === HatchEggFailKind.Trading) {
+									addAnnouncement(
+										`You could not hatch because you cannot hatch while you are trading.`,
+										AnnouncementType.Error,
+									);
+								} else {
+									addAnnouncement(`There was an issue hatching the egg. Try again later. [4]`, AnnouncementType.Error);
 								}
 							}
 						}
@@ -442,7 +450,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					}
 				},
 				false,
-				Enum.KeyCode.E,
+				Enum.KeyCode.Q,
 			);
 
 			ContextActionService.BindAction(
@@ -501,26 +509,26 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 				ContextActionService.UnbindAction("hatchEgg");
 				ContextActionService.UnbindAction("hatchEggTriple");
 			};
-		});
+		}, [updated]);
 
 		return (
-			<frame Visible={false}>
+			<frame Visible={false} Key={updated}>
 				{Object.entries(EGGS).map(([eggName, eggData]) => {
 					if (!eggData.hatchable) {
 						return <></>;
 					}
 					const eggFolder = Workspace.interactions.eggs[eggName];
 					const regularEgg = eggFolder.regular.egg.PrimaryPart;
-					assert(regularEgg, `Expected PrimaryPart for regular ${eggName} egg`);
+					const voidEgg = eggFolder.void.egg.PrimaryPart;
 
 					const pets: Array<Pet> = [];
 					for (const [, petData] of pairs(eggData.pets)) {
 						pets.push(petData);
 					}
 
-					if (eggName === "Radioactive" || eggName === "500k Event") {
-						return (
-							<frame Visible={false}>
+					return (
+						<frame Visible={false}>
+							{regularEgg && (
 								<EggHudDisplay
 									adornee={regularEgg}
 									eggName={eggName}
@@ -528,29 +536,16 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 									possiblePets={pets}
 									handleHatch={handleHatch}
 								/>
-							</frame>
-						);
-					}
-
-					const voidEgg = eggFolder.void.egg.PrimaryPart;
-					assert(voidEgg, `Expected PrimaryPart for void ${eggName} egg`);
-
-					return (
-						<frame Visible={false}>
-							<EggHudDisplay
-								adornee={regularEgg}
-								eggName={eggName}
-								isVoid={false}
-								possiblePets={pets}
-								handleHatch={handleHatch}
-							/>
-							<EggHudDisplay
-								adornee={voidEgg}
-								eggName={eggName}
-								isVoid={true}
-								possiblePets={pets}
-								handleHatch={handleHatch}
-							/>
+							)}
+							{voidEgg && (
+								<EggHudDisplay
+									adornee={voidEgg}
+									eggName={eggName}
+									isVoid={true}
+									possiblePets={pets}
+									handleHatch={handleHatch}
+								/>
+							)}
 						</frame>
 					);
 				})}

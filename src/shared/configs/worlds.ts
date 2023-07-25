@@ -1,3 +1,5 @@
+import { t } from "@rbxts/t";
+
 import { Currency } from "./currencies";
 import { Zones } from "./zones";
 import { BAN_LAND_ZONES } from "./zones/banLand";
@@ -22,6 +24,9 @@ interface World {
 	id: number;
 }
 
+export const isWorldName = t.literal("Ban Land");
+export type WorldName = t.static<typeof isWorldName>;
+
 /**
  * All the worlds in the game.
  */
@@ -38,7 +43,6 @@ export const WORLDS = {
 			//SonicSunrise: 1838587765, -- may not use
 		},
 	},
-} satisfies Record<string, World>;
+} satisfies Record<WorldName, World>;
 
-export type WorldName = keyof typeof WORLDS;
 export type Worlds = typeof WORLDS;

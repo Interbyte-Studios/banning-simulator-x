@@ -1,7 +1,8 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { Players, PolicyService, ReplicatedStorage } from "@rbxts/services";
+import { Lighting, Players, PolicyService, ReplicatedStorage } from "@rbxts/services";
 import { setIsTrading } from "client/modules/isTradingCache";
+import { TELEPORTATIONS } from "shared/configs/game";
 import { Store } from "shared/rodux";
 
 import { Trading } from "../components/features/trading";
@@ -9,6 +10,8 @@ import { Leaderboards } from "../components/standalone/leaderboards";
 import { AnnouncementContext, AnnouncementType } from "../context/AnnouncementsAPI";
 import { hooks } from "../hooks";
 import { remoteContext } from "../mocks/remoteContext";
+import { ActiveTrial } from "./activeTrial";
+import { FinishedTrial } from "./finishedTrial";
 import { Main } from "./main";
 
 interface ControlProps {
@@ -21,6 +24,9 @@ interface ControlProps {
  */
 export const Control = hooks((props: ControlProps, { useState, useEffect, useContext }) => {
 	const { player, store } = props;
+
+	const [trialsEnabled, setTrialsEnabled] = useState(false);
+	const [trialsFinished, setTrialsFinished] = useState<number | undefined>(undefined);
 
 	const [canTrade, setCanTrade] = useState(true);
 	const [tradingEnabled, setTradingEnabled] = useState(false);
@@ -165,55 +171,122 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 		tradeActive,
 	]);
 
-	return (
-		<>
+	if (trialsFinished !== undefined) {
+		return (
 			<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
 				{
-					<Main
-						player={player}
-						store={store}
-						tradingEnabled={tradingEnabled}
-						setTradingEnabled={(): void => setTradingEnabled(true)}
+					<FinishedTrial
+						gearRewards={trialsFinished > 0 ? trialsFinished : undefined}
+						finish={(): void => setTrialsFinished(undefined)}
 					/>
 				}
 			</screengui>
+		);
+	} else if (trialsEnabled) {
+		return (
 			<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
 				<RoactRodux.StoreProvider store={store}>
-					<Trading
-						isEnabled={tradingEnabled}
-						hideMenu={(
-							dislpayAnnouncement: boolean,
-							_disableActiveTrade: boolean,
-							_resetForeignPlayer: boolean,
-						): void => {
-							if (_resetForeignPlayer) {
-								setDisplayTradeRequest(false);
-								setTradingPlayer(undefined);
-							}
+					{
+						<ActiveTrial
+							finish={(gearRewards: number): void => {
+								const character = player.Character;
+								if (character) {
+									const humanoid = character.FindFirstChildOfClass("Humanoid");
+									if (humanoid) {
+										const root = humanoid.RootPart;
+										if (root) {
+											player.RequestStreamAroundAsync(TELEPORTATIONS.ZONES.Forest);
+											root.CFrame = new CFrame(TELEPORTATIONS.ZONES.Forest);
+										}
+									}
+								}
 
-							if (_disableActiveTrade) {
-								setActiveTrade(false);
-							}
+								setTrialsFinished(gearRewards);
+								setTrialsEnabled(false);
+								Lighting.Ambient = Color3.fromRGB(177, 177, 177);
+								Lighting.ColorShift_Bottom = Color3.fromRGB(170, 255, 255);
+								Lighting.ColorShift_Top = Color3.fromRGB(85, 0, 127);
+								Lighting.ClockTime = store.getState().settings.visual.timeOfDay;
+								Lighting.FogColor = Color3.fromRGB(0, 85, 255);
+							}}
+							stopTrial={(gearRewards: number | undefined): void => {
+								const character = player.Character;
+								if (character) {
+									const humanoid = character.FindFirstChildOfClass("Humanoid");
+									if (humanoid) {
+										const root = humanoid.RootPart;
+										if (root) {
+											player.RequestStreamAroundAsync(TELEPORTATIONS.ZONES.Forest);
+											root.CFrame = new CFrame(TELEPORTATIONS.ZONES.Forest);
+										}
+									}
+								}
 
-							setTradingEnabled(false);
-							if (dislpayAnnouncement) {
-								addAnnouncement("The trade has either finished or been cancelled.", AnnouncementType.Announcement);
-							}
-						}}
-						tradingPlayer={tradingPlayer}
-						setTradingPlayer={(player: Player | undefined): void => setTradingPlayer(player)}
-						tradeActive={tradeActive}
-						setActiveTrade={(active: boolean): void => setActiveTrade(active)}
-						displayTradeRequest={displayTradeRequest}
-						disableTradeRequest={(): void => setDisplayTradeRequest(false)}
-					/>
+								setTrialsFinished(gearRewards);
+								setTrialsEnabled(false);
+								Lighting.Ambient = Color3.fromRGB(177, 177, 177);
+								Lighting.ColorShift_Bottom = Color3.fromRGB(170, 255, 255);
+								Lighting.ColorShift_Top = Color3.fromRGB(85, 0, 127);
+								Lighting.ClockTime = store.getState().settings.visual.timeOfDay;
+								Lighting.FogColor = Color3.fromRGB(0, 85, 255);
+							}}
+						/>
+					}
 				</RoactRodux.StoreProvider>
 			</screengui>
-			<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
-				<RoactRodux.StoreProvider store={store}>
-					<Leaderboards />
-				</RoactRodux.StoreProvider>
-			</screengui>
-		</>
-	);
+		);
+	} else {
+		return (
+			<>
+				<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
+					{
+						<Main
+							player={player}
+							store={store}
+							tradingEnabled={tradingEnabled}
+							setTradingEnabled={(): void => setTradingEnabled(true)}
+							setTrialsEnabled={(value): void => setTrialsEnabled(value)}
+						/>
+					}
+				</screengui>
+				<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
+					<RoactRodux.StoreProvider store={store}>
+						<Trading
+							isEnabled={tradingEnabled}
+							hideMenu={(
+								dislpayAnnouncement: boolean,
+								_disableActiveTrade: boolean,
+								_resetForeignPlayer: boolean,
+							): void => {
+								if (_resetForeignPlayer) {
+									setDisplayTradeRequest(false);
+									setTradingPlayer(undefined);
+								}
+
+								if (_disableActiveTrade) {
+									setActiveTrade(false);
+								}
+
+								setTradingEnabled(false);
+								if (dislpayAnnouncement) {
+									addAnnouncement("The trade has either finished or been cancelled.", AnnouncementType.Announcement);
+								}
+							}}
+							tradingPlayer={tradingPlayer}
+							setTradingPlayer={(player: Player | undefined): void => setTradingPlayer(player)}
+							tradeActive={tradeActive}
+							setActiveTrade={(active: boolean): void => setActiveTrade(active)}
+							displayTradeRequest={displayTradeRequest}
+							disableTradeRequest={(): void => setDisplayTradeRequest(false)}
+						/>
+					</RoactRodux.StoreProvider>
+				</screengui>
+				<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
+					<RoactRodux.StoreProvider store={store}>
+						<Leaderboards />
+					</RoactRodux.StoreProvider>
+				</screengui>
+			</>
+		);
+	}
 });

@@ -7,8 +7,17 @@ import { AssetAnimation } from "shared/assetTags";
  * @param petMasteryVendor The pet model of the pet mastery "vendor".
  */
 function animateVendor(petMasteryVendor: Model): void {
-	const primary = petMasteryVendor.PrimaryPart;
-	assert(primary, `Expected pet mastery vendor to have a primary part.`);
+	let primary = petMasteryVendor.PrimaryPart;
+	if (primary === undefined) {
+		// eslint-disable-next-line no-constant-condition
+		while (true) {
+			task.wait(1);
+			if (petMasteryVendor.PrimaryPart !== undefined) {
+				primary = petMasteryVendor.PrimaryPart;
+				break;
+			}
+		}
+	}
 
 	const originalCFrame = primary.CFrame;
 
@@ -22,6 +31,10 @@ function animateVendor(petMasteryVendor: Model): void {
 
 	RunService.RenderStepped.Connect(() => {
 		debug.profilebegin("petMasteryVendor");
+		if (petMasteryVendor.Parent === undefined) {
+			return;
+		}
+
 		const hover = math.sin(os.clock() * hoverSpeed) * hoverAmount;
 		const face = math.sin(os.clock() * faceSpeed) * faceAmount;
 

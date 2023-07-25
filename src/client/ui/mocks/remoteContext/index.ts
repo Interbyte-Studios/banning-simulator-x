@@ -15,6 +15,7 @@ import { ranksRemoteContext } from "./remoteDefinitions/ranks";
 import { rewardsRemoteContext } from "./remoteDefinitions/rewards";
 import { settingsRemoteContext } from "./remoteDefinitions/settings";
 import { talismansRemoteContext } from "./remoteDefinitions/talismans";
+import { timeTrialsRemoteContext } from "./remoteDefinitions/timeTrials";
 import { titlesRemoteContext } from "./remoteDefinitions/titles";
 import { tradingRemoteContext } from "./remoteDefinitions/trading";
 import { weaponsRemoteContext } from "./remoteDefinitions/weapons";
@@ -40,6 +41,7 @@ export const fakeRemoteContext = {
 	...ranksRemoteContext,
 	...rewardsRemoteContext,
 	...titlesRemoteContext,
+	...timeTrialsRemoteContext,
 	...wheelSpinRemoteContext,
 	...accoladesRemoteContext,
 	...fusionRemoteContext,

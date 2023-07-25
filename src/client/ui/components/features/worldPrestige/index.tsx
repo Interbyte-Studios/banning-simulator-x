@@ -23,6 +23,8 @@ export const WorldPrestige = hooks(
 		{ useState, useEffect },
 	) => {
 		const [viewingWorld, setViewingWorld] = useState<WorldName>("Ban Land");
+		const [prestigeInteractions, setPrestigeInteractions] = useState<Array<BasePart>>([]);
+		const [upgradesInteractions, setUpgradesInteractions] = useState<Array<BasePart>>([]);
 
 		useEffect(() => {
 			if (!props.isVisible) {
@@ -41,6 +43,47 @@ export const WorldPrestige = hooks(
 			setViewingWorld(currentWorld);
 		}, [props.isVisible]);
 
+		useEffect(() => {
+			const _prestigeInteractions: Array<BasePart> = [];
+			for (const worldPrestigeFolder of Workspace.interactions.worldPrestige.GetChildren()) {
+				const pretigeFolder = worldPrestigeFolder.FindFirstChild("prestige") as Folder;
+				const vendor = pretigeFolder.FindFirstChild("vendor") as Model;
+				const primary = vendor.FindFirstChild("primary") as BasePart;
+				_prestigeInteractions.push(primary);
+			}
+			setPrestigeInteractions(_prestigeInteractions);
+
+			const _upgradesInteractions: Array<BasePart> = [];
+			CollectionService.GetTagged("prestigeUpgrade").forEach((interaction) => {
+				if (!interaction.IsA("BasePart")) {
+					return;
+				}
+
+				_upgradesInteractions.push(interaction);
+			});
+			setUpgradesInteractions(_upgradesInteractions);
+
+			const connections: Array<RBXScriptConnection> = [
+				CollectionService.GetInstanceAddedSignal("prestigeUpgrade").Connect((instance) => {
+					if (instance.IsA("BasePart")) {
+						setUpgradesInteractions([...upgradesInteractions, instance]);
+					}
+				}),
+			];
+			for (const worldPrestigeFolder of Workspace.interactions.worldPrestige.GetChildren()) {
+				const prestigeFolder = worldPrestigeFolder.FindFirstChild("prestige") as Folder;
+				connections.push(
+					prestigeFolder.DescendantAdded.Connect((child) => {
+						if (child.Name === "primary" && child.IsA("BasePart")) {
+							setPrestigeInteractions([...prestigeInteractions, child]);
+						}
+					}),
+				);
+			}
+
+			return (): void => connections.forEach((conn) => conn.Disconnect());
+		}, []);
+
 		if (props.isVisible) {
 			if (props.viewType === WorldPrestigeViewType.Prestige) {
 				return <WorldPrestigePath worldName={viewingWorld} setVisibility={props.setVisibility} />;
@@ -50,43 +93,30 @@ export const WorldPrestige = hooks(
 		} else {
 			return (
 				<>
-					{Workspace.interactions.worldPrestige.GetChildren().map((worldPrestigeFolder) => {
-						const prestige = worldPrestigeFolder.FindFirstChild("prestige") as Folder;
-
-						const prestigeVendor = prestige.FindFirstChild("vendor") as Model;
-						const prestigePrimaryPart = prestigeVendor.FindFirstChild("primary") as BasePart;
-						assert(
-							prestigePrimaryPart,
-							`Expected prestige vendor from ${worldPrestigeFolder.Name} to have a primary part.`,
-						);
-
+					{prestigeInteractions.map((interaction) => {
 						return (
 							<>
 								<WorldPrestigeInteractPrompt
-									adornee={prestigePrimaryPart}
+									adornee={interaction}
 									display={(): void => {
 										props.setViewType(WorldPrestigeViewType.Prestige);
 										props.setVisibility(true);
 									}}
 									interactType={WorldPrestigeViewType.Prestige}
 								/>
-								{CollectionService.GetTagged("prestigeUpgrade").map((interaction) => {
-									if (!interaction.IsA("BasePart")) {
-										return <></>;
-									}
-
-									return (
-										<WorldPrestigeInteractPrompt
-											adornee={interaction}
-											display={(): void => {
-												props.setViewType(WorldPrestigeViewType.Upgrades);
-												props.setVisibility(true);
-											}}
-											interactType={WorldPrestigeViewType.Upgrades}
-										/>
-									);
-								})}
 							</>
+						);
+					})}
+					{upgradesInteractions.map((interaction) => {
+						return (
+							<WorldPrestigeInteractPrompt
+								adornee={interaction}
+								display={(): void => {
+									props.setViewType(WorldPrestigeViewType.Upgrades);
+									props.setVisibility(true);
+								}}
+								interactType={WorldPrestigeViewType.Upgrades}
+							/>
 						);
 					})}
 				</>

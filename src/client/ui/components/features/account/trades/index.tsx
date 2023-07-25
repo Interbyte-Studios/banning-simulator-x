@@ -352,7 +352,6 @@ export const TradeHistory = hooks((props: TradeHistoryProps, { useEffect, useVal
 		task.spawn((): void => {
 			const [success, result] = pcall(() => Players.GetNameFromUserIdAsync(viewedTrade.otherPlayerId));
 			if (success) {
-				warn(`Viewing trades for ${result}`);
 				setOtherPlayerName(result);
 			} else warn(`Failed to get username for ${viewedTrade.otherPlayerId}`);
 		});

@@ -12,7 +12,7 @@ import { formatTime } from "client/util/formatTime";
 import { getPetImage } from "client/util/getPetImage";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { EXCLUSIVE_PETS, LIMITED_EGG_DEVPRODUCT } from "shared/configs/game";
+import { LIMITED_EGG_DEVPRODUCT } from "shared/configs/game";
 import { getPetData } from "shared/util/getPetData";
 
 let lastTimerCheck = 0;
@@ -155,7 +155,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 	useEffect(() => {
-		const newLimiteds = DateTime.fromUniversalTime(2023, 7, 23, 12).UnixTimestamp;
+		const newLimiteds = DateTime.fromUniversalTime(2023, 8, 12, 12).UnixTimestamp;
 		const connection = RunService.Heartbeat.Connect(() => {
 			const timeCheck = time();
 			if (timeCheck - lastTimerCheck < 1) {
@@ -208,7 +208,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 						Position: UDim2.fromScale(0.5, 0.2),
 						Size: UDim2.fromScale(0.415, 0.394),
 						TextColor3: Color3.fromRGB(255, 71, 74),
-						Text: "Divine Egg!",
+						Text: "Dweller!",
 					}}
 					stroke={{ native: { Thickness: 2.5, Color: Color3.fromRGB(116, 32, 34) } }}
 				/>
@@ -217,7 +217,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					native={{
 						Position: UDim2.fromScale(0.11, 0.5),
 						Size: UDim2.fromScale(1, 1),
-						Image: assetIds.images.decals.eggs["Angelic Egg"],
+						Image: assetIds.images.decals.eggs["Dweller Egg"],
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
@@ -247,7 +247,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(97, "regular"),
+							Image: getPetImage(124, "regular"),
 						}}
 					/>
 
@@ -275,7 +275,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(98, "regular"),
+							Image: getPetImage(125, "regular"),
 						}}
 					/>
 
@@ -303,7 +303,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(99, "regular"),
+							Image: getPetImage(126, "regular"),
 						}}
 					/>
 
@@ -331,7 +331,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(100, "regular"),
+							Image: getPetImage(127, "regular"),
 						}}
 					/>
 
@@ -425,24 +425,6 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					/>
 				</SpringImageButton>
 			</BaseFrame>
-
-			<ExclusivePet
-				position={UDim2.fromScale(0.15, 0.115)}
-				petId={EXCLUSIVE_PETS[0].petId}
-				devProductId={EXCLUSIVE_PETS[0].devproductId}
-			/>
-
-			<ExclusivePet
-				position={UDim2.fromScale(0.5, 0.115)}
-				petId={EXCLUSIVE_PETS[1].petId}
-				devProductId={EXCLUSIVE_PETS[1].devproductId}
-			/>
-
-			<ExclusivePet
-				position={UDim2.fromScale(0.85, 0.115)}
-				petId={EXCLUSIVE_PETS[2].petId}
-				devProductId={EXCLUSIVE_PETS[2].devproductId}
-			/>
 		</>
 	);
 });

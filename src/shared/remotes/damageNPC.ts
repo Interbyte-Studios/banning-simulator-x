@@ -11,7 +11,7 @@ export const isNpcCharacter = t.intersection(
 );
 export type NpcCharacter = t.static<typeof isNpcCharacter>;
 
-export const damageNPCDefinition = Net.Definitions.ClientToServerEvent<[npcCharacter: NpcCharacter]>([
-	createTypeChecker(isNpcCharacter),
-]);
+export const damageNPCDefinition = Net.Definitions.ClientToServerEvent<
+	[npcCharacter: NpcCharacter, wasTrials: boolean]
+>([createTypeChecker(isNpcCharacter, t.boolean)]);
 export type DamageNPCDefinition = typeof damageNPCDefinition;

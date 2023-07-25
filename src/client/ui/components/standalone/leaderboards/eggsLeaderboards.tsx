@@ -93,25 +93,16 @@ export const EggLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 		for (const configuration of ReplicatedStorage.leaderboards.eggs.GetChildren()) {
 			const playerId = tonumber(configuration.Name);
 			if (playerId === undefined) {
-				warn(`Error while updating eggs leaderboards on client: Invalid player ID: ${configuration.Name}`);
 				continue;
 			}
 
 			const amount = configuration.GetAttribute("amount") as number;
 			if (amount === undefined) {
-				warn(
-					`Error while updating eggs leaderboards on client: Invalid amount: ${configuration.GetAttribute("amount")}`,
-				);
 				continue;
 			}
 
 			const position = configuration.GetAttribute("position") as number;
 			if (position === undefined) {
-				warn(
-					`Error while updating eggs leaderboards on client: Invalid position: ${configuration.GetAttribute(
-						"position",
-					)}`,
-				);
 				continue;
 			}
 
@@ -127,25 +118,16 @@ export const EggLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 			for (const configuration of ReplicatedStorage.leaderboards.eggs.GetChildren()) {
 				const playerId = tonumber(configuration.Name);
 				if (playerId === undefined) {
-					warn(`Error while updating eggs leaderboards on client: Invalid player ID: ${configuration.Name}`);
 					continue;
 				}
 
 				const amount = configuration.GetAttribute("amount") as number;
 				if (amount === undefined) {
-					warn(
-						`Error while updating eggs leaderboards on client: Invalid amount: ${configuration.GetAttribute("amount")}`,
-					);
 					continue;
 				}
 
 				const position = configuration.GetAttribute("position") as number;
 				if (position === undefined) {
-					warn(
-						`Error while updating eggs leaderboards on client: Invalid position: ${configuration.GetAttribute(
-							"position",
-						)}`,
-					);
 					continue;
 				}
 

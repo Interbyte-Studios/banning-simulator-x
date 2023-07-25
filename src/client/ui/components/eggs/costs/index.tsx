@@ -36,15 +36,26 @@ function mapStateToProps(state: StoreState): EggCostMappedProps {
  * @returns A roact element.
  */
 export const EggCost = RoactRodux.connect(mapStateToProps)(
-	hooks((props: EggCostMappedProps) => {
+	hooks((props: EggCostMappedProps, { useState, useEffect }) => {
+		const [updated, setUpdate] = useState(0);
+		useEffect(() => {
+			const connection = Workspace.interactions.eggs.DescendantAdded.Connect(() => {
+				setUpdate((prev) => prev + 1);
+			});
+
+			return (): void => connection.Disconnect();
+		}, []);
+
 		return (
-			<BaseFrame>
+			<BaseFrame Key={updated}>
 				<>
 					{Object.entries(EGGS).map(([eggName, eggData]) => {
 						if (!eggData.hatchable) {
 							return <></>;
 						}
 						const eggModel = Workspace.interactions.eggs[eggName];
+						const regularCost = eggModel.regular.FindFirstChild("cost") as BasePart;
+						const voidCost = eggModel.void.FindFirstChild("cost") as BasePart;
 
 						// find reduced egg cost provided by player mastery
 						const eggMasteryReducedMultiplier = getEggsMastery(props.eggs).reducedEggCostMultiplier;
@@ -55,33 +66,24 @@ export const EggCost = RoactRodux.connect(mapStateToProps)(
 						const reducedVoidCost =
 							eggCostVoid.amount * worldPrestigeReducer * WORLD_PRESTIGE.reducedVoidEggCost.reducedCostMultiplier;
 
-						if (eggName === "500k Event") {
-							return (
-								<>
+						return (
+							<>
+								{regularCost !== undefined && (
 									<EggCostDisplay
-										adornee={eggModel.regular.cost}
+										adornee={regularCost}
 										cost={eggCostRegular.amount}
 										currency={eggCostRegular.currencyType}
 										isVoid={false}
 									/>
-								</>
-							);
-						}
-
-						return (
-							<>
-								<EggCostDisplay
-									adornee={eggModel.regular.cost}
-									cost={eggCostRegular.amount}
-									currency={eggCostRegular.currencyType}
-									isVoid={false}
-								/>
-								<EggCostDisplay
-									adornee={eggModel.void.cost}
-									cost={eggCostVoid.amount - reducedVoidCost}
-									currency={eggCostVoid.currencyType}
-									isVoid={true}
-								/>
+								)}
+								{voidCost !== undefined && (
+									<EggCostDisplay
+										adornee={voidCost}
+										cost={eggCostVoid.amount - reducedVoidCost}
+										currency={eggCostVoid.currencyType}
+										isVoid={true}
+									/>
+								)}
 							</>
 						);
 					})}

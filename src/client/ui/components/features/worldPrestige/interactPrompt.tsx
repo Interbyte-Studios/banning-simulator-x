@@ -14,6 +14,10 @@ import { WorldPrestigeViewType } from "./prestigeEnum";
  */
 export const WorldPrestigeInteractPrompt = hooks(
 	(props: { adornee: BasePart; display: () => void; interactType: WorldPrestigeViewType }) => {
+		if (props.adornee === undefined) {
+			return <></>;
+		}
+
 		return (
 			<billboardgui
 				Active={true}

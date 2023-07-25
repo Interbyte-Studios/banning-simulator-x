@@ -162,9 +162,9 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 			throw `[ Pet Follow Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 		});
 
-Players.GetPlayers().forEach((player) => cachePlayerPetanimation(player));
-Players.PlayerAdded.Connect((player) => cachePlayerPetanimation(player));
-Players.PlayerRemoving.Connect((player) => removePetAnimationCache(player));
+Players.GetPlayers().forEach((player) => task.delay(2, () => cachePlayerPetanimation(player)));
+Players.PlayerAdded.Connect((player) => task.delay(2, () => cachePlayerPetanimation(player)));
+Players.PlayerRemoving.Connect((player) => task.delay(2, () => removePetAnimationCache(player)));
 
 const rayCastParams = new RaycastParams();
 rayCastParams.IgnoreWater = true;
@@ -258,7 +258,7 @@ RunService.RenderStepped.Connect(() => {
 				const { xPos, zPos } = getXandZ(petAngle, equippedPets, playerCache.distance.Value);
 
 				if (isNan(xPos) || isNan(zPos)) {
-					return;
+					pet.model.PivotTo(humanoidRootPart.CFrame);
 				}
 
 				// some pets walk, some fly
@@ -287,7 +287,7 @@ RunService.RenderStepped.Connect(() => {
 					// here we account for the pet needing to be right above the ground (to simulate walking), and it's jump value for when the player jumps
 					const aboveGroundY = rayCast.Position.Y + petSize.Y / (petSize.Y * boundingBoxMultiplier_Y);
 					if (isNan(aboveGroundY)) {
-						return;
+						pet.model.PivotTo(humanoidRootPart.CFrame);
 					}
 
 					const aboveGroundCFrame = new CFrame(humanoidRootPart.CFrame.X, aboveGroundY, humanoidRootPart.CFrame.Z);
@@ -295,7 +295,7 @@ RunService.RenderStepped.Connect(() => {
 					const petCFrame = aboveGroundCFrame.mul(jumpCFrame);
 
 					if (isNan(petCFrame.X) || isNan(petCFrame.Y) || isNan(petCFrame.Z)) {
-						return;
+						pet.model.PivotTo(humanoidRootPart.CFrame);
 					}
 
 					// when the player is moving, we want the pet to face the direction the player is moving, otherwise we want the pet to face the player
@@ -310,6 +310,7 @@ RunService.RenderStepped.Connect(() => {
 						isNan(lookingAtPlayer.Y) ||
 						isNan(lookingAtPlayer.Z)
 					) {
+						pet.model.PivotTo(humanoidRootPart.CFrame);
 						return;
 					}
 

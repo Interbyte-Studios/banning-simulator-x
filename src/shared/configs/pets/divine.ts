@@ -10,8 +10,8 @@ export const DIVINE_EGG_PETS: Record<string, Pet> = {
 		rarity: "Exclusive",
 		fusionCost: 10000,
 		stats: {
-			additionalDamage: 7000,
-			additionalBans: 250,
+			additionalDamage: 3500,
+			additionalBans: 200,
 		},
 	},
 	"Mother Earth": {
@@ -20,8 +20,8 @@ export const DIVINE_EGG_PETS: Record<string, Pet> = {
 		rarity: "Exclusive",
 		fusionCost: 20000,
 		stats: {
-			additionalDamage: 8500,
-			additionalBans: 290,
+			additionalDamage: 5000,
+			additionalBans: 225,
 		},
 	},
 	"Dark Angel": {
@@ -30,8 +30,8 @@ export const DIVINE_EGG_PETS: Record<string, Pet> = {
 		rarity: "Exclusive",
 		fusionCost: 30000,
 		stats: {
-			additionalDamage: 27500,
-			additionalBans: 1650,
+			additionalDamage: 11500,
+			additionalBans: 400,
 		},
 	},
 	"D I V I N E": {
@@ -40,8 +40,8 @@ export const DIVINE_EGG_PETS: Record<string, Pet> = {
 		rarity: "Exclusive",
 		fusionCost: 30000,
 		stats: {
-			additionalDamage: 45000,
-			additionalBans: 2250,
+			additionalDamage: 20000,
+			additionalBans: 1000,
 		},
 	},
 };

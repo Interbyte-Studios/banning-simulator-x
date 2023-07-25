@@ -178,12 +178,12 @@ export const Gamepasses = RoactRodux.connect(mapStateToProps)((props: GamepassPr
 			<StrokeTextLabel
 				native={{
 					Text: "Gamepasses",
-					Position: UDim2.fromScale(0.5, 0.165),
+					Position: UDim2.fromScale(0.5, 0.09),
 					Size: UDim2.fromScale(0.5, 0.015),
 				}}
 				stroke={{ native: { Thickness: 2.5, Color: uiDarkStrokeColor } }}
 			/>
-			<BaseFrame Position={UDim2.fromScale(0.5, 0.345)} Size={UDim2.fromScale(0.98, 0.4)}>
+			<BaseFrame Position={UDim2.fromScale(0.5, 0.27)} Size={UDim2.fromScale(0.98, 0.4)}>
 				<uigridlayout
 					FillDirectionMaxCells={2}
 					CellPadding={UDim2.fromScale(0.09, 0.02)}

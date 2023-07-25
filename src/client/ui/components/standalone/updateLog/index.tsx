@@ -12,6 +12,7 @@ import assetIds from "shared/assets";
 import { ReleaseLog } from "./logs/release";
 import { Update1Log } from "./logs/update1";
 import { Update2Log } from "./logs/update2";
+import { Update3Log } from "./logs/update3";
 import { UpdateLogType } from "./updateLogEnumerators";
 
 /**
@@ -106,6 +107,10 @@ export const UpdateLog = hooks((_, { useState }) => {
 					updateLogType={UpdateLogType.Update2}
 					onActivated={(): void => setLogToShow(UpdateLogType.Update2)}
 				/>
+				<SetUpdateLogType
+					updateLogType={UpdateLogType.Update3}
+					onActivated={(): void => setLogToShow(UpdateLogType.Update3)}
+				/>
 			</scrollingframe>
 			<BaseFrame
 				BackgroundColor3={uiTextStrokeColor}
@@ -137,6 +142,7 @@ export const UpdateLog = hooks((_, { useState }) => {
 					{logToShow === UpdateLogType.Release && <ReleaseLog />}
 					{logToShow === UpdateLogType.Update1 && <Update1Log />}
 					{logToShow === UpdateLogType.Update2 && <Update2Log />}
+					{logToShow === UpdateLogType.Update3 && <Update3Log />}
 				</scrollingframe>
 			</BaseFrame>
 		</ImageLabel>

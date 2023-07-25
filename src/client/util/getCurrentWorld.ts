@@ -5,8 +5,7 @@ import { isValidWorld } from "shared/util/isValidWorld";
 const landingParts: Array<Instance> = [];
 
 for (const world of Workspace.worlds.GetChildren()) {
-	const landing = world.FindFirstChild("landing");
-	assert(landing, `Expected to find landing parts in world ${world.Name}`);
+	const landing = world.WaitForChild("landing");
 
 	for (const part of landing.GetChildren()) {
 		landingParts.push(part);

@@ -12,10 +12,31 @@ import assetIds from "shared/assets";
  * Displays a custom proximity prompt interface allowing the player to intract with the weapon shop.
  */
 /* eslint-disable jsdoc/require-jsdoc */
-export const WeaponShopInteractPrompt = hooks((props: { displayShop: () => void }) => {
+export const WeaponShopInteractPrompt = hooks((props: { displayShop: () => void }, { useState, useEffect }) => {
+	const [interactions, setInteractions] = useState<Array<BasePart>>([]);
+
+	useEffect(() => {
+		const newInteractions: Array<BasePart> = [];
+		for (const interaction of Workspace.interactions.weaponShops.GetChildren()) {
+			if (interaction.IsA("BasePart")) {
+				newInteractions.push(interaction);
+			}
+		}
+
+		setInteractions(newInteractions);
+
+		const connection = Workspace.interactions.weaponShops.ChildAdded.Connect((child) => {
+			if (child.IsA("BasePart")) {
+				setInteractions((prev) => [...prev, child]);
+			}
+		});
+
+		return (): void => connection.Disconnect();
+	}, []);
+
 	return (
 		<>
-			{Workspace.interactions.weaponShops.GetChildren().map((interaction) => {
+			{interactions.map((interaction) => {
 				if (!interaction.IsA("BasePart")) {
 					return <></>;
 				}

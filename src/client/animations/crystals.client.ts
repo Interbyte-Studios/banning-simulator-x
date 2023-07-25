@@ -16,15 +16,23 @@ const crystalTweenInfo = new TweenInfo(5, Enum.EasingStyle.Sine, Enum.EasingDire
  * @param floatDistance The distance at which the crystal model will fly in the air.
  */
 function animateCrystal(crystal: Model, floatDistance: number): void {
-	if (crystal.PrimaryPart === undefined) {
-		throw `Expected to find primary part named "primary" for ${crystal.Name}`;
+	let primary = crystal.PrimaryPart;
+	if (primary === undefined) {
+		// eslint-disable-next-line no-constant-condition
+		while (true) {
+			task.wait(1);
+			if (crystal.PrimaryPart !== undefined) {
+				primary = crystal.PrimaryPart;
+				break;
+			}
+		}
 	}
 
-	const defaultPosition = crystal.PrimaryPart.Position.Y;
-	const animatedPosition = crystal.PrimaryPart.Position.Y + floatDistance;
+	const defaultPosition = primary.Position.Y;
+	const animatedPosition = primary.Position.Y + floatDistance;
 
 	const cframeValue = new Instance("CFrameValue");
-	cframeValue.Value = crystal.PrimaryPart.CFrame;
+	cframeValue.Value = primary.CFrame;
 
 	const crystalAnimationData = {
 		cframeValue,
@@ -34,25 +42,35 @@ function animateCrystal(crystal: Model, floatDistance: number): void {
 	cframeValues.push(crystalAnimationData);
 
 	task.spawn(() => {
-		if (crystal.PrimaryPart === undefined) {
-			throw `Expected to find primary part named "primary" for ${crystal.Name}`;
+		let primary = crystal.PrimaryPart;
+		if (primary === undefined) {
+			// eslint-disable-next-line no-constant-condition
+			while (true) {
+				task.wait(1);
+				if (crystal.PrimaryPart !== undefined) {
+					primary = crystal.PrimaryPart;
+					break;
+				}
+			}
 		}
 
 		const crystalAnimation_up = TweenService.Create(cframeValue, crystalTweenInfo, {
-			Value: new CFrame(crystal.PrimaryPart.Position.X, animatedPosition, crystal.PrimaryPart.Position.Z),
+			Value: new CFrame(primary.Position.X, animatedPosition, primary.Position.Z),
 		});
 
 		const crystalAnimation_down = TweenService.Create(cframeValue, crystalTweenInfo, {
-			Value: new CFrame(crystal.PrimaryPart.Position.X, defaultPosition, crystal.PrimaryPart.Position.Z),
+			Value: new CFrame(primary.Position.X, defaultPosition, primary.Position.Z),
 		});
 
 		// eslint-disable-next-line no-constant-condition
 		while (true) {
-			crystalAnimation_up.Play();
-			crystalAnimation_up.Completed.Wait();
+			if (crystal.PrimaryPart !== undefined) {
+				crystalAnimation_up.Play();
+				crystalAnimation_up.Completed.Wait();
 
-			crystalAnimation_down.Play();
-			crystalAnimation_down.Completed.Wait();
+				crystalAnimation_down.Play();
+				crystalAnimation_down.Completed.Wait();
+			} else task.wait(1);
 		}
 	});
 }

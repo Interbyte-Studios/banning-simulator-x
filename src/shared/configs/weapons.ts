@@ -21,7 +21,7 @@ export interface Weapon {
 	isBossWeapon: boolean;
 }
 
-export const MAX_WEAPON_ID = 47;
+export const MAX_WEAPON_ID = 51;
 export const WEAPONS = {
 	/* First Zone */
 	"Stone Hammer": {
@@ -606,6 +606,56 @@ export const WEAPONS = {
 			amount: 33_600_000,
 		},
 		damage: 32_768,
+		world: "Ban Land",
+		weaponType: "Hammer",
+		isBossWeapon: false,
+	},
+
+	// GearWorx Time Trials
+	"GearWorx Lance": {
+		id: 48,
+		cost: {
+			requiredRank: 10,
+			currency: "gears",
+			amount: 10_000,
+		},
+		damage: 40_000,
+		world: "Ban Land",
+		weaponType: "Lance",
+		isBossWeapon: false,
+	},
+	"GearWorx Blade": {
+		id: 49,
+		cost: {
+			requiredRank: 10,
+			currency: "gears",
+			amount: 75_000,
+		},
+		damage: 55_000,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"GearWorx Scythe": {
+		id: 50,
+		cost: {
+			requiredRank: 10,
+			currency: "gears",
+			amount: 500_000,
+		},
+		damage: 80_000,
+		world: "Ban Land",
+		weaponType: "Sword",
+		isBossWeapon: false,
+	},
+	"GearWorx Striker": {
+		id: 51,
+		cost: {
+			requiredRank: 10,
+			currency: "gears",
+			amount: 2_000_000,
+		},
+		damage: 100_000,
 		world: "Ban Land",
 		weaponType: "Hammer",
 		isBossWeapon: false,

@@ -107,6 +107,26 @@ export const GAMEPASS_GIFTS = {
 	["Auto Fight"]: 1580203795, // Implemented
 };
 
+export const TELEPORTATIONS = {
+	ZONES: {
+		Forest: new Vector3(22825.732, 46.523, -16.729),
+		Desert: new Vector3(22844.158, 46.523, 218.889),
+		"Sunflower Field": new Vector3(22844.158, 46.523, 461.079),
+		Honeycomb: new Vector3(22844.158, 46.523, 698.185),
+		"Ice Land": new Vector3(22844.158, 46.523, 946.085),
+		Beach: new Vector3(22844.158, 46.523, 1178.183),
+		"Candy Land": new Vector3(22844.158, 46.523, 1423.812),
+		"The Mines": new Vector3(22844.158, 46.523, 1638.864),
+		"Lava Lands": new Vector3(22844.158, 46.523, 1876.721),
+		"Enchanted Forest": new Vector3(22838.814, 46.523, 2110.527),
+		"Toxic Lands": new Vector3(22826.715, 46.523, 2333.504),
+		"Jester Castle": new Vector3(22826.715, 46.523, 2560.72),
+	},
+	"Ban Land": {
+		RANK_UPGRADE: new Vector3(22918.633, 46.567, -194.273),
+	},
+};
+
 export const isBoost = t.literal("x2 Currency", "x2 Hatching Luck", "x2 Pet Experience", "x2 Rank Experience");
 export type BoostProduct = t.static<typeof isBoost>;
 export const BOOST_PRODUCTS = {
@@ -222,11 +242,11 @@ export const VIP_PET_ID = 10002;
 export const GROUP_PET_ID = 10001;
 
 export const LIMITED_EGG_DEVPRODUCT = {
-	OneEgg: 1581589143,
-	ThreeEggs: 1581589299,
+	OneEgg: 1590044586,
+	ThreeEggs: 1590044799,
 };
 
-export const LIMITED_EGG: EggName = "Divine";
+export const LIMITED_EGG: EggName = "Dweller";
 export const EXCLUSIVE_PETS = [
 	// The shop only supports adding 3 pets for exclusive pets. If we want to add more, we'll need to rework the shop a bit.
 	{

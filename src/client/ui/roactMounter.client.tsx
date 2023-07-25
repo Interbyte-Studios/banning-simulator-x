@@ -21,6 +21,7 @@ import { ranksRemotes } from "./remotes/ranks";
 import { rewardRemotes } from "./remotes/rewards";
 import { settingsRemotes } from "./remotes/settings";
 import { talismanRemotes } from "./remotes/talismans";
+import { timeTrialsRemotes } from "./remotes/timeTrials";
 import { titlesRemtoes } from "./remotes/titles";
 import { tradingRemotes } from "./remotes/trading";
 import { weaponsRemotes } from "./remotes/weapons";
@@ -54,6 +55,7 @@ onStoreCreated(player)
 					...rewardRemotes,
 					...settingsRemotes,
 					...talismanRemotes,
+					...timeTrialsRemotes,
 					...titlesRemtoes,
 					...tradingRemotes,
 					...weaponsRemotes,
