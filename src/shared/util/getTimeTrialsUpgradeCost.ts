@@ -15,7 +15,7 @@ export function getTimeTrialsUpgradeCost(upgradeName: TimeTrialUpgradeType, upgr
 	const baseCost = TIME_TRIAL_UPGRADES[upgradeName].baseCost;
 
 	if (upgradeName === "damage" || upgradeName === "damageReduction") {
-		const upgradeCost = baseCost * 1.25 ** upgradeAmount;
+		const upgradeCost = baseCost * 1.2 ** upgradeAmount;
 		return upgradeCost;
 	}
 

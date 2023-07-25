@@ -2,6 +2,7 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Lighting, Players, PolicyService, ReplicatedStorage } from "@rbxts/services";
 import { setIsTrading } from "client/modules/isTradingCache";
+import { TELEPORTATIONS } from "shared/configs/game";
 import { Store } from "shared/rodux";
 
 import { Trading } from "../components/features/trading";
@@ -184,28 +185,54 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 	} else if (trialsEnabled) {
 		return (
 			<screengui ZIndexBehavior={Enum.ZIndexBehavior.Sibling} ResetOnSpawn={false}>
-				{
-					<ActiveTrial
-						finish={(gearRewards: number): void => {
-							setTrialsFinished(gearRewards);
-							setTrialsEnabled(false);
-							Lighting.Ambient = Color3.fromRGB(177, 177, 177);
-							Lighting.ColorShift_Bottom = Color3.fromRGB(170, 255, 255);
-							Lighting.ColorShift_Top = Color3.fromRGB(85, 0, 127);
-							Lighting.ClockTime = store.getState().settings.visual.timeOfDay;
-							Lighting.FogColor = Color3.fromRGB(0, 85, 255);
-						}}
-						stopTrial={(): void => {
-							setTrialsFinished(0);
-							setTrialsEnabled(false);
-							Lighting.Ambient = Color3.fromRGB(177, 177, 177);
-							Lighting.ColorShift_Bottom = Color3.fromRGB(170, 255, 255);
-							Lighting.ColorShift_Top = Color3.fromRGB(85, 0, 127);
-							Lighting.ClockTime = store.getState().settings.visual.timeOfDay;
-							Lighting.FogColor = Color3.fromRGB(0, 85, 255);
-						}}
-					/>
-				}
+				<RoactRodux.StoreProvider store={store}>
+					{
+						<ActiveTrial
+							finish={(gearRewards: number): void => {
+								const character = player.Character;
+								if (character) {
+									const humanoid = character.FindFirstChildOfClass("Humanoid");
+									if (humanoid) {
+										const root = humanoid.RootPart;
+										if (root) {
+											player.RequestStreamAroundAsync(TELEPORTATIONS.ZONES.Forest);
+											root.CFrame = new CFrame(TELEPORTATIONS.ZONES.Forest);
+										}
+									}
+								}
+
+								setTrialsFinished(gearRewards);
+								setTrialsEnabled(false);
+								Lighting.Ambient = Color3.fromRGB(177, 177, 177);
+								Lighting.ColorShift_Bottom = Color3.fromRGB(170, 255, 255);
+								Lighting.ColorShift_Top = Color3.fromRGB(85, 0, 127);
+								Lighting.ClockTime = store.getState().settings.visual.timeOfDay;
+								Lighting.FogColor = Color3.fromRGB(0, 85, 255);
+							}}
+							stopTrial={(gearRewards: number | undefined): void => {
+								const character = player.Character;
+								if (character) {
+									const humanoid = character.FindFirstChildOfClass("Humanoid");
+									if (humanoid) {
+										const root = humanoid.RootPart;
+										if (root) {
+											player.RequestStreamAroundAsync(TELEPORTATIONS.ZONES.Forest);
+											root.CFrame = new CFrame(TELEPORTATIONS.ZONES.Forest);
+										}
+									}
+								}
+
+								setTrialsFinished(gearRewards);
+								setTrialsEnabled(false);
+								Lighting.Ambient = Color3.fromRGB(177, 177, 177);
+								Lighting.ColorShift_Bottom = Color3.fromRGB(170, 255, 255);
+								Lighting.ColorShift_Top = Color3.fromRGB(85, 0, 127);
+								Lighting.ClockTime = store.getState().settings.visual.timeOfDay;
+								Lighting.FogColor = Color3.fromRGB(0, 85, 255);
+							}}
+						/>
+					}
+				</RoactRodux.StoreProvider>
 			</screengui>
 		);
 	} else {

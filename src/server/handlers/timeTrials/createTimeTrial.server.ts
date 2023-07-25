@@ -1,5 +1,6 @@
 import { Players, ServerStorage } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
+import { currentTimeTrials } from "server/modules/timeTrials";
 import { cleanupTrial, createTrial, getTrialStatus } from "server/modules/timeTrials/createTrial";
 import {
 	TIME_TRIAL_DIFFICULTY_ATTRIBUTE,
@@ -8,6 +9,7 @@ import {
 	TIME_TRIAL_WAVE_ATTRIBUTE,
 } from "shared/configs/timeTrials";
 import { remotes } from "shared/remotes";
+import { awardCurrency } from "shared/rodux/currencies";
 import { equipWeapon } from "shared/rodux/currentWeapon";
 
 assert(
@@ -45,6 +47,14 @@ remotes.Server.GetNamespace("timeTrials")
 			// player receives nothing in this case
 			cleanupHandler.Add(
 				humanoid.Died.Once(() => {
+					const playerTrial = currentTimeTrials.get(player);
+					if (playerTrial !== undefined) {
+						const difficultyMultiplier =
+							playerTrial.difficulty === "easy" ? 1.1 : playerTrial.difficulty === "medium" ? 1.2 : 1.3;
+						const waveMultiplier = 5 * playerTrial.wave;
+						store.dispatch(awardCurrency("gears", waveMultiplier * difficultyMultiplier ** playerTrial.wave));
+					}
+
 					cleanupHandler.Cleanup();
 				}),
 			);
@@ -62,19 +72,17 @@ remotes.Server.GetNamespace("timeTrials")
 remotes.Server.GetNamespace("timeTrials")
 	.Get("stopTimeTrial")
 	.Connect(
-		withPlayerStore((player) => {
+		withPlayerStore((player, store) => {
+			const playerTrial = currentTimeTrials.get(player);
+			if (playerTrial !== undefined) {
+				const difficultyMultiplier =
+					playerTrial.difficulty === "easy" ? 1.1 : playerTrial.difficulty === "medium" ? 1.2 : 1.3;
+				const waveMultiplier = 5 * playerTrial.wave;
+				store.dispatch(awardCurrency("gears", waveMultiplier * difficultyMultiplier ** playerTrial.wave));
+			}
 			cleanupTrial(player);
 
-			if (player.Character) {
-				const humanoid = player.Character.FindFirstChildOfClass("Humanoid");
-				const rootPart = humanoid?.RootPart;
-				if (rootPart) {
-					const pos = new Vector3(22774.359, 43.466, -117.576);
-					player.RequestStreamAroundAsync(pos);
-					rootPart.CFrame = new CFrame(pos).add(new Vector3(0, 5, 0));
-				} else warn(`Failed to find root part for ${player} in time trial`);
-			} else warn(`Failed to find character for ${player} in time trial`);
-
+			store.dispatch(equipWeapon());
 			player.SetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE, undefined);
 			player.SetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE, undefined);
 		}),

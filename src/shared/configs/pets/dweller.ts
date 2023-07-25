@@ -3,45 +3,45 @@ import { Pet } from ".";
 /**
  * Divine egg (Limited).
  */
-export const DIVINE_EGG_PETS: Record<string, Pet> = {
-	Angel: {
+export const DWELLER_EGG_PETS: Record<string, Pet> = {
+	Siphon: {
 		chance: 75,
-		id: 97,
+		id: 124,
 		rarity: "Exclusive",
 		fusionCost: 10000,
 		stats: {
-			additionalDamage: 3500,
-			additionalBans: 200,
+			additionalDamage: 5500,
+			additionalBans: 300,
 		},
 	},
-	"Mother Earth": {
+	"Darkness Phoenix": {
 		chance: 20,
-		id: 98,
+		id: 125,
 		rarity: "Exclusive",
 		fusionCost: 20000,
 		stats: {
-			additionalDamage: 5000,
-			additionalBans: 225,
+			additionalDamage: 10000,
+			additionalBans: 450,
 		},
 	},
-	"Dark Angel": {
+	"Deadly Dark Dominus": {
 		chance: 3.5,
-		id: 99,
+		id: 126,
 		rarity: "Exclusive",
 		fusionCost: 30000,
 		stats: {
-			additionalDamage: 11500,
-			additionalBans: 400,
+			additionalDamage: 14500,
+			additionalBans: 950,
 		},
 	},
-	"D I V I N E": {
+	Mida: {
 		chance: 1.5,
-		id: 100,
+		id: 127,
 		rarity: "Exclusive",
 		fusionCost: 30000,
 		stats: {
-			additionalDamage: 20000,
-			additionalBans: 1000,
+			additionalDamage: 25000,
+			additionalBans: 1500,
 		},
 	},
 };

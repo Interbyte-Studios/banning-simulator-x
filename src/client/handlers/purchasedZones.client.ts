@@ -17,28 +17,31 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 	const zoneDecoration = Workspace.decoration[world][zone];
 	const door = zoneDecoration.door;
 
-	let zoneFolder = Lighting.FindFirstChild(zone);
-	if (zoneFolder === undefined) {
-		zoneFolder = Make("Folder", {
-			Parent: Lighting,
-			Name: zone,
-		});
-	}
+	task.spawn(() => {
+		task.wait(1);
+		let zoneFolder = Lighting.FindFirstChild(zone);
+		if (zoneFolder === undefined) {
+			zoneFolder = Make("Folder", {
+				Parent: Lighting,
+				Name: zone,
+			});
+		}
 
-	const lock = door.FindFirstChild("lock");
-	if (lock !== undefined) {
-		lock.Parent = zoneFolder;
-	}
+		const lock = door.FindFirstChild("lock");
+		if (lock !== undefined) {
+			lock.Parent = zoneFolder;
+		}
 
-	const passage = door.FindFirstChild("passage");
-	if (passage !== undefined) {
-		passage.Parent = zoneFolder;
-	}
+		const passage = door.FindFirstChild("passage");
+		if (passage !== undefined) {
+			passage.Parent = zoneFolder;
+		} else warn(`no passage for ${world} ${zone}`);
 
-	const sign = zoneDecoration.FindFirstChild("sign");
-	if (sign !== undefined) {
-		sign.Parent = zoneFolder;
-	}
+		const sign = zoneDecoration.FindFirstChild("sign");
+		if (sign !== undefined) {
+			sign.Parent = zoneFolder;
+		}
+	});
 }
 
 /**

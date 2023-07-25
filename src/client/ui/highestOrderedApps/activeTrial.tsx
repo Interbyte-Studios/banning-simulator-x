@@ -1,4 +1,5 @@
 import Roact from "@rbxts/roact";
+import RoactRodux from "@rbxts/roact-rodux";
 import { Players } from "@rbxts/services";
 import { t } from "@rbxts/t";
 import { formatTime } from "client/util/formatTime";
@@ -12,6 +13,8 @@ import {
 	TIME_TRIAL_WAVE_ATTRIBUTE,
 	TimeTrialDifficulty,
 } from "shared/configs/timeTrials";
+import { StoreState } from "shared/rodux";
+import { TimeTrialsState } from "shared/rodux/timeTrials";
 import { statsAbbreviator, twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 import {
@@ -28,11 +31,32 @@ import { CurrencyIcon } from "../elements/icons/currencyIcon";
 import { hooks } from "../hooks";
 import { remoteContext } from "../mocks/remoteContext";
 
+interface ActiveTrialProps extends ActiveTrialMappedProps {
+	stopTrial: (gearRewards: number | undefined) => void;
+	finish: (gearRewards: number) => void;
+}
+
+interface ActiveTrialMappedProps {
+	timeTrials: TimeTrialsState;
+}
+
+/**
+ * Maps the rodux store state to the component's props.
+ *
+ * @param state The rodux store state.
+ * @returns The mapped props.
+ */
+export const mapStateToProps = (state: StoreState): ActiveTrialMappedProps => {
+	return {
+		timeTrials: state.timeTrials,
+	};
+};
+
 /**
  * Controls the interface for an active time trial.
  */
-export const ActiveTrial = hooks(
-	(props: { stopTrial: () => void; finish: (gearRewards: number) => void }, { useState, useContext, useEffect }) => {
+export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
+	hooks((props: ActiveTrialProps, { useState, useContext, useEffect }) => {
 		const { startTimeTrial, stopTimeTrial } = useContext(remoteContext);
 		const [difficulty, setDifficulty] = useState<TimeTrialDifficulty>("easy");
 		const [started, setStarted] = useState(false);
@@ -63,8 +87,8 @@ export const ActiveTrial = hooks(
 					if (t.number(attributeValue)) {
 						setTimer((prev) => {
 							if (prev > 0 && attributeValue < 1) {
-								const difficultyMultiplier = difficulty === "easy" ? 1.1 : difficulty === "medium" ? 1.2 : 1.25;
-								const waveMultiplier = 2 * wave;
+								const difficultyMultiplier = difficulty === "easy" ? 1.1 : difficulty === "medium" ? 1.2 : 1.3;
+								const waveMultiplier = 5 * wave;
 								props.finish(waveMultiplier * difficultyMultiplier ** wave);
 							}
 							return attributeValue;
@@ -99,6 +123,11 @@ export const ActiveTrial = hooks(
 				return;
 			}
 
+			if (started) {
+				setHealth(100 + 50 * props.timeTrials["Ban Land"].health);
+				setMaxHealth(100 + 50 * props.timeTrials["Ban Land"].health);
+			}
+
 			const healthConnection = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
 				if (started) {
 					setHealth(humanoid.Health);
@@ -108,7 +137,9 @@ export const ActiveTrial = hooks(
 
 			const diedConnection = humanoid.Died.Connect(() => {
 				if (started) {
-					props.stopTrial();
+					const difficultyMultiplier = difficulty === "easy" ? 1.1 : difficulty === "medium" ? 1.2 : 1.3;
+					const waveMultiplier = 5 * wave;
+					props.stopTrial(waveMultiplier * difficultyMultiplier ** wave);
 				}
 			});
 
@@ -119,8 +150,8 @@ export const ActiveTrial = hooks(
 		}, [started]);
 
 		if (started) {
-			const difficultyMultiplier = difficulty === "easy" ? 1.1 : difficulty === "medium" ? 1.2 : 1.25;
-			const waveMultiplier = 2 * wave;
+			const difficultyMultiplier = difficulty === "easy" ? 1.1 : difficulty === "medium" ? 1.2 : 1.3;
+			const waveMultiplier = 5 * wave;
 			return (
 				<>
 					<SpringImageButton
@@ -134,9 +165,11 @@ export const ActiveTrial = hooks(
 							 *
 							 */
 							Activated: (): void => {
+								const difficultyMultiplier = difficulty === "easy" ? 1.1 : difficulty === "medium" ? 1.2 : 1.3;
+								const waveMultiplier = 5 * wave;
 								playSFX(UIEngagement.MajorEngagement);
 								stopTimeTrial.SendToServer();
-								props.stopTrial();
+								props.stopTrial(waveMultiplier * difficultyMultiplier ** wave);
 							},
 						}}
 					>
@@ -299,7 +332,7 @@ export const ActiveTrial = hooks(
 							Activated: (): void => {
 								playSFX(UIEngagement.MajorEngagement);
 								stopTimeTrial.SendToServer();
-								props.stopTrial();
+								props.stopTrial(undefined);
 							},
 						}}
 					>
@@ -324,5 +357,5 @@ export const ActiveTrial = hooks(
 				</>
 			);
 		}
-	},
+	}),
 );

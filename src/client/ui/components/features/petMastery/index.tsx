@@ -18,6 +18,7 @@ interface PetMasteryProps {
  */
 export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }) => {
 	const [worldViewing, setWorldViewing] = useState<WorldName>("Ban Land");
+	const [interaction, setInteractions] = useState<Array<BasePart>>([]);
 
 	useEffect(() => {
 		if (!props.isVisible) {
@@ -32,22 +33,38 @@ export const PetMastery = hooks((props: PetMasteryProps, { useState, useEffect }
 		setWorldViewing(currentWorld);
 	}, [props.isVisible]);
 
+	useEffect(() => {
+		const inters: Array<BasePart> = [];
+		for (const petVendor of CollectionService.GetTagged("petMasteryVendor")) {
+			if (petVendor.IsA("Model")) {
+				const primaryPart = petVendor.PrimaryPart;
+				if (primaryPart !== undefined) {
+					inters.push(primaryPart);
+				}
+			}
+		}
+		setInteractions(inters);
+
+		const connection = CollectionService.GetInstanceAddedSignal("petMasteryVendor").Connect((petVendor) => {
+			if (petVendor.IsA("Model")) {
+				const primaryPart = petVendor.PrimaryPart;
+				if (primaryPart !== undefined) {
+					setInteractions([...inters, primaryPart]);
+				}
+			}
+		});
+		return (): void => connection.Disconnect();
+	}, []);
+
 	if (props.isVisible) {
 		return <PetMasteryMenu world={worldViewing} hideMenu={(): void => props.setVisibility(false)} />;
 	} else {
 		return (
 			<>
-				{CollectionService.GetTagged("petMasteryVendor").map((petVendor) => {
-					assert(petVendor.IsA("Model"), `Expected pet mastery vendor "${petVendor.Name}" to be a model.`);
-
-					const primaryPart = petVendor.PrimaryPart;
-					if (primaryPart === undefined) {
-						return <></>;
-					}
-
+				{interaction.map((interaction) => {
 					return (
 						<PetMasteryInteractPrompt
-							adornee={primaryPart}
+							adornee={interaction}
 							displayPetMastery={(): void => {
 								props.setVisibility(true);
 							}}

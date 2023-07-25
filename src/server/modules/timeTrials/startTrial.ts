@@ -44,8 +44,7 @@ export function startTrial(player: Player): {
 			continue;
 		}
 
-		const healthMultiplier =
-			playerTrial.difficulty === "easy" ? 1.15 : playerTrial.difficulty === "medium" ? 1.2 : 1.25;
+		const healthMultiplier = playerTrial.difficulty === "easy" ? 1.2 : playerTrial.difficulty === "medium" ? 1.3 : 1.4;
 		humanoid.MaxHealth = 200 * healthMultiplier ** playerTrial.wave;
 		humanoid.Health = humanoid.MaxHealth;
 
@@ -170,7 +169,7 @@ export function startTrial(player: Player): {
 				if (npcRoot.Position.sub(playerRoot.Position).Magnitude < 5) {
 					if (now - npc.lastAttack > 1) {
 						const increasedDamageTaken =
-							currentTrial.difficulty === "easy" ? 1.05 : currentTrial.difficulty === "medium" ? 1.06 : 1.08;
+							currentTrial.difficulty === "easy" ? 1.05 : currentTrial.difficulty === "medium" ? 1.08 : 1.15;
 						const damageTaken = increasedDamageTaken ** currentTrial.wave;
 
 						const reducedDamageMultiplier = store.getState().timeTrials["Ban Land"].damageReduction * 0.005;

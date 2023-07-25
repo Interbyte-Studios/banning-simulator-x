@@ -6,6 +6,7 @@ import { startTrial } from "server/modules/timeTrials/startTrial";
 import { TIME_TRIAL_DIFFICULTY_ATTRIBUTE, TIME_TRIAL_TIMER_ATTRIBUTE } from "shared/configs/timeTrials";
 import { remotes } from "shared/remotes";
 import { awardCurrency } from "shared/rodux/currencies";
+import { equipWeapon } from "shared/rodux/currentWeapon";
 
 remotes.Server.GetNamespace("timeTrials")
 	.Get("startTimeTrial")
@@ -14,6 +15,8 @@ remotes.Server.GetNamespace("timeTrials")
 			if (getTrialStatus(player) !== TimeTrialStatus.WaitingForStart) {
 				return;
 			}
+
+			store.dispatch(equipWeapon());
 
 			const { cleanupHandler, stepHandler } = startTrial(player);
 			cleanupHandler.Add(
@@ -29,23 +32,12 @@ remotes.Server.GetNamespace("timeTrials")
 
 						cleanupHandler.Cleanup();
 
-						// move player character back to spawn
-						if (player.Character) {
-							const humanoid = player.Character.FindFirstChildOfClass("Humanoid");
-							const rootPart = humanoid?.RootPart;
-							if (rootPart) {
-								const pos = new Vector3(22774.359, 43.466, -117.576);
-								player.RequestStreamAroundAsync(pos);
-								rootPart.CFrame = new CFrame(pos).add(new Vector3(0, 5, 0));
-							}
-						}
-
 						player.SetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE, undefined);
 						player.SetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE, undefined);
 
 						// todo: compute rewards, give them to player, tell player
-						const difficultyMultiplier = difficulty === "easy" ? 1.1 : difficulty === "medium" ? 1.2 : 1.25;
-						const waveMultiplier = 2 * wave;
+						const difficultyMultiplier = difficulty === "easy" ? 1.1 : difficulty === "medium" ? 1.2 : 1.3;
+						const waveMultiplier = 5 * wave;
 						store.dispatch(awardCurrency("gears", waveMultiplier * difficultyMultiplier ** wave));
 					}
 				}),

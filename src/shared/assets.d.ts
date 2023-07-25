@@ -471,6 +471,7 @@ declare namespace assetIds {
 				"Artifact Heart Talisman": string;
 			};
 			eggs: {
+				"Dweller Egg": string;
 				Starter: string;
 				Jester: string;
 				Honeycomb: string;

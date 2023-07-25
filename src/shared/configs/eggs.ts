@@ -6,6 +6,7 @@ import { CORRUPT_EGG_PETS } from "./pets/corrupt";
 import { CYBER_EGG_PETS } from "./pets/cyber";
 import { DESERT_EGG_PETS } from "./pets/desert";
 import { DIVINE_EGG_PETS } from "./pets/divine";
+import { DWELLER_EGG_PETS } from "./pets/dweller";
 import { EVENT_500k_EGG_PETS } from "./pets/event500k";
 import { EXCLUSIVE_PETS } from "./pets/exclusive";
 import { GEARWORX_EGG_PETS } from "./pets/gearworx";
@@ -222,6 +223,15 @@ export const EGGS = {
 		hatchable: true,
 		hidden: false,
 		luckApplies: true,
+	},
+	Dweller: {
+		id: 16,
+		pets: DWELLER_EGG_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: false,
+		hidden: false,
+		luckApplies: false,
 	},
 } satisfies Record<string, Egg>;
 

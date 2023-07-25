@@ -93,25 +93,16 @@ export const BanLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 		for (const configuration of ReplicatedStorage.leaderboards.bans.GetChildren()) {
 			const playerId = tonumber(configuration.Name);
 			if (playerId === undefined) {
-				warn(`Error while updating bans leaderboards on client: Invalid player ID: ${configuration.Name}`);
 				continue;
 			}
 
 			const amount = configuration.GetAttribute("amount") as number;
 			if (amount === undefined) {
-				warn(
-					`Error while updating bans leaderboards on client: Invalid amount: ${configuration.GetAttribute("amount")}`,
-				);
 				continue;
 			}
 
 			const position = configuration.GetAttribute("position") as number;
 			if (position === undefined) {
-				warn(
-					`Error while updating bans leaderboards on client: Invalid position: ${configuration.GetAttribute(
-						"position",
-					)}`,
-				);
 				continue;
 			}
 
@@ -126,25 +117,16 @@ export const BanLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 			for (const configuration of ReplicatedStorage.leaderboards.bans.GetChildren()) {
 				const playerId = tonumber(configuration.Name);
 				if (playerId === undefined) {
-					warn(`Error while updating bans leaderboards on client: Invalid player ID: ${configuration.Name}`);
 					continue;
 				}
 
 				const amount = configuration.GetAttribute("amount") as number;
 				if (amount === undefined) {
-					warn(
-						`Error while updating bans leaderboards on client: Invalid amount: ${configuration.GetAttribute("amount")}`,
-					);
 					continue;
 				}
 
 				const position = configuration.GetAttribute("position") as number;
 				if (position === undefined) {
-					warn(
-						`Error while updating bans leaderboards on client: Invalid position: ${configuration.GetAttribute(
-							"position",
-						)}`,
-					);
 					continue;
 				}
 				newLeaderboardData.push({ playerId, amount, position });
@@ -181,6 +163,7 @@ export const BanLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 
 		return (): void => connection.Disconnect();
 	});
+
 	const positions: Array<Roact.Element> = [];
 	leaderboardData.forEach((data) => {
 		const position = data.position;

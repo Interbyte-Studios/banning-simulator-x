@@ -11,7 +11,7 @@ export type TimeTrialUpgrade = Record<
 	{ maxUpgrades: number; benefitPerUpgrade: number; baseCost: number }
 >;
 
-export const TIME_TRIALS_UPGRADE_COST_MULTIPLIER = 1.15;
+export const TIME_TRIALS_UPGRADE_COST_MULTIPLIER = 1.12;
 export const TIME_TRIAL_UPGRADES = {
 	health: {
 		maxUpgrades: 100,

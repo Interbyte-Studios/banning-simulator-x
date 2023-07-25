@@ -425,16 +425,17 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 					>
 						<uiaspectratioconstraint AspectRatio={1} />
 					</ImageLabel>
-					<StrokeTextLabel
-						native={{
-							Position: UDim2.fromScale(0.5, 0.76),
-							Size: UDim2.fromScale(0.15, 0.04),
-							Text: `${formatTime(timeLeft)}`,
-							Visible: timeLeft > 0,
-						}}
-						stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(99, 52, 16) } }}
-					/>
 				</SpringImageButton>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.5, 0.76),
+						Size: UDim2.fromScale(0.15, 0.04),
+						Text: `${formatTime(timeLeft)}`,
+						Visible: timeLeft > 0,
+						ZIndex: 2,
+					}}
+					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(99, 52, 16) } }}
+				/>
 			</>
 		);
 	}),

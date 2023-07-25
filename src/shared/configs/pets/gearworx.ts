@@ -91,7 +91,7 @@ export const GEARWORX_EGG_PETS: Record<string, Pet> = {
 		rarity: "Prismatic",
 		stats: {
 			additionalDamage: 85000,
-			additionalBans: 2000,
+			additionalBans: 2750,
 		},
 	},
 	Steambot: {
@@ -100,7 +100,7 @@ export const GEARWORX_EGG_PETS: Record<string, Pet> = {
 		rarity: "Primordial",
 		stats: {
 			additionalDamage: 200000,
-			additionalBans: 2500,
+			additionalBans: 4500,
 		},
 	},
 };
