@@ -34,9 +34,9 @@ remotes.Server.GetNamespace("timeTrials")
 							const humanoid = player.Character.FindFirstChildOfClass("Humanoid");
 							const rootPart = humanoid?.RootPart;
 							if (rootPart) {
-								rootPart.CFrame = new CFrame(new Vector3(22774.359, 43.466, -117.576)).mul(
-									new CFrame(new Vector3(0, 5, 0)),
-								);
+								const pos = new Vector3(22774.359, 43.466, -117.576);
+								player.RequestStreamAroundAsync(pos);
+								rootPart.CFrame = new CFrame(pos).add(new Vector3(0, 5, 0));
 							}
 						}
 

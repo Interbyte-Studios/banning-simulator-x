@@ -42,7 +42,11 @@ export function createTrial(
 	cleanup.Add(playerTimeTrial);
 
 	const newLocation = ServerStorage.timeTrials.startCreationLocation.CFrame.mul(
-		new CFrame(0, 0, (playerTimeTrial.GetBoundingBox()[1].Z + GAP_BETWEEN_TRIALS) * currentTimeTrials.size()),
+		new CFrame(
+			0,
+			0,
+			(playerTimeTrial.GetBoundingBox()[1].Z + GAP_BETWEEN_TRIALS) * Workspace.trials.GetChildren().size(),
+		),
 	);
 	playerTimeTrial.PivotTo(newLocation);
 	playerTimeTrial.Parent = Workspace.trials;

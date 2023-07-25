@@ -115,6 +115,19 @@ Workspace.trials.ChildAdded.Connect((child) => {
 
 				task.delay(2, (): void => createDamageCounter(npc));
 			}
+
+			const childAddedConn = npcs.ChildAdded.Connect((child) => {
+				if (!child.IsA("Model")) {
+					return;
+				}
+
+				task.delay(2, (): void => createDamageCounter(child));
+			});
+
+			const ancestryConn = child.AncestryChanged.Connect(() => {
+				childAddedConn.Disconnect();
+				ancestryConn.Disconnect();
+			});
 		}
 	});
 });

@@ -110,7 +110,6 @@ export function startTrial(player: Player): {
 					const healthMultiplier =
 						currentTrial.difficulty === "easy" ? 1.15 : currentTrial.difficulty === "medium" ? 1.2 : 1.25;
 					humanoid.MaxHealth = 200 * healthMultiplier ** currentTrial.wave;
-					warn(200, healthMultiplier, currentTrial.wave, healthMultiplier ** currentTrial.wave);
 					humanoid.Health = humanoid.MaxHealth;
 
 					const root = humanoid.RootPart;
@@ -194,6 +193,9 @@ export function startTrial(player: Player): {
 			});
 
 			// return if we have finished the time trial.
+			if (currentTrial.timeRemaining - step <= 0) {
+				warn("Time trial ran out of time");
+			}
 			return currentTrial.timeRemaining - step <= 0;
 		},
 	};

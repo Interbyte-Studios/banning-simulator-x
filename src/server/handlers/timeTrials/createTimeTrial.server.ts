@@ -71,9 +71,9 @@ remotes.Server.GetNamespace("timeTrials")
 				if (rootPart) {
 					const pos = new Vector3(22774.359, 43.466, -117.576);
 					player.RequestStreamAroundAsync(pos);
-					rootPart.CFrame = new CFrame(pos).mul(new CFrame(new Vector3(0, 5, 0)));
-				}
-			}
+					rootPart.CFrame = new CFrame(pos).add(new Vector3(0, 5, 0));
+				} else warn(`Failed to find root part for ${player} in time trial`);
+			} else warn(`Failed to find character for ${player} in time trial`);
 
 			player.SetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE, undefined);
 			player.SetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE, undefined);

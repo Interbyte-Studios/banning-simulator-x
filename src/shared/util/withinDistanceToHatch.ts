@@ -13,10 +13,18 @@ const activationDistance = 15;
  */
 export function withinDistanceToHatch(character: Model, eggName: EggName, isVoid: boolean): boolean {
 	const eggFolder = Workspace.interactions.eggs[eggName];
-	const egg = isVoid ? eggFolder.void.egg.PrimaryPart : eggFolder.regular.egg.PrimaryPart;
+	const egg = isVoid ? eggFolder.void.egg : eggFolder.regular.egg;
+	if (egg === undefined) {
+		return false;
+	}
+
+	const primary = egg.PrimaryPart;
+	if (primary === undefined) {
+		return false;
+	}
 	assert(egg, `Expected to find primary part for ${isVoid ? "Void" : "Regular"} ${eggName}`);
 
-	const magnitudeToBasePart = getMagnitudeBetweenPlayerAndObject(character, egg);
+	const magnitudeToBasePart = getMagnitudeBetweenPlayerAndObject(character, primary);
 	if (magnitudeToBasePart === undefined) {
 		// character did not exist
 		return false;

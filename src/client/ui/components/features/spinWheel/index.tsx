@@ -169,10 +169,6 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 
 		useEffect(() => {
 			const connection = RunService.RenderStepped.Connect(() => {
-				if (timeLeft <= 0) {
-					return;
-				}
-
 				const now = DateTime.now().UnixTimestamp;
 				if (now >= props.spinWheel.lastSpinTime + 86400) {
 					setTimeLeft(0);
@@ -346,15 +342,6 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 					}}
 					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(17, 150, 55) } }}
 				/>
-				<StrokeTextLabel
-					native={{
-						Position: UDim2.fromScale(0.5, 0.76),
-						Size: UDim2.fromScale(0.15, 0.04),
-						Text: `${formatTime(timeLeft)}`,
-						Visible: timeLeft > 0,
-					}}
-					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(99, 52, 16) } }}
-				/>
 				<SpringImageButton
 					native={{
 						Position: UDim2.fromScale(0.35, 0.825),
@@ -438,6 +425,15 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 					>
 						<uiaspectratioconstraint AspectRatio={1} />
 					</ImageLabel>
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.5, 0.76),
+							Size: UDim2.fromScale(0.15, 0.04),
+							Text: `${formatTime(timeLeft)}`,
+							Visible: timeLeft > 0,
+						}}
+						stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(99, 52, 16) } }}
+					/>
 				</SpringImageButton>
 			</>
 		);

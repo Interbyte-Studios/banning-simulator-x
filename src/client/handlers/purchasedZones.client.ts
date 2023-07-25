@@ -95,6 +95,7 @@ onStoreCreated(player)
 
 				const zoneDeco = worldDeco[zoneName];
 				zoneDeco.door.ChildAdded.Connect(() => unlockZones(store.getState().worlds));
+				zoneDeco.door.ChildRemoved.Connect(() => unlockZones(store.getState().worlds));
 			}
 		}
 

@@ -121,7 +121,7 @@ export const TimeTrialsUpgrades = RoactRodux.connect(mapStateToProps)(
 						native={{
 							Position: UDim2.fromScale(0.8, 0.8),
 							Size: UDim2.fromScale(0.3, 0.2),
-							Text: statsAbbreviator.numberToString(getTimeTrialsUpgradeCost("health", storedTimeTrial.health)),
+							Text: statsAbbreviator.numberToString(getTimeTrialsUpgradeCost("health", storedTimeTrial.health + 1)),
 						}}
 						stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
 					/>
@@ -209,7 +209,7 @@ export const TimeTrialsUpgrades = RoactRodux.connect(mapStateToProps)(
 							Position: UDim2.fromScale(0.8, 0.8),
 							Size: UDim2.fromScale(0.3, 0.2),
 							Text: statsAbbreviator.numberToString(
-								getTimeTrialsUpgradeCost("damageReduction", storedTimeTrial.damageReduction),
+								getTimeTrialsUpgradeCost("damageReduction", storedTimeTrial.damageReduction + 1),
 							),
 						}}
 						stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
@@ -297,7 +297,7 @@ export const TimeTrialsUpgrades = RoactRodux.connect(mapStateToProps)(
 						native={{
 							Position: UDim2.fromScale(0.8, 0.8),
 							Size: UDim2.fromScale(0.3, 0.2),
-							Text: statsAbbreviator.numberToString(getTimeTrialsUpgradeCost("damage", storedTimeTrial.damage)),
+							Text: statsAbbreviator.numberToString(getTimeTrialsUpgradeCost("damage", storedTimeTrial.damage + 1)),
 						}}
 						stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
 					/>
@@ -386,7 +386,7 @@ export const TimeTrialsUpgrades = RoactRodux.connect(mapStateToProps)(
 							Position: UDim2.fromScale(0.8, 0.8),
 							Size: UDim2.fromScale(0.3, 0.2),
 							Text: statsAbbreviator.numberToString(
-								getTimeTrialsUpgradeCost("criticalChance", storedTimeTrial.criticalChance),
+								getTimeTrialsUpgradeCost("criticalChance", storedTimeTrial.criticalChance + 1),
 							),
 						}}
 						stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}

@@ -41,19 +41,16 @@ function handlePlayerTalisman(player: Player): void {
 			const handleTalisman = (): void => {
 				const character = player.Character ?? player.CharacterAdded.Wait()[0];
 				if (character === undefined) {
-					warn(`[Talisman Handler] - Failed to get character for player ${player.Name} ${player.UserId}`);
 					return;
 				}
 
 				const humanoid = character.WaitForChild("Humanoid") as Humanoid;
 				if (humanoid === undefined) {
-					warn(`[Talisman Handler] - Failed to get humanoid for player ${player.Name} ${player.UserId}`);
 					return;
 				}
 
 				const humanoidRootPart = humanoid.RootPart;
 				if (humanoidRootPart === undefined) {
-					warn(`[Talisman Handler] - Failed to get humanoid root part for player ${player.Name} ${player.UserId}`);
 					return;
 				}
 

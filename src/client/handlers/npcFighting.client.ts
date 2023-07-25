@@ -106,7 +106,7 @@ const onInputBegan = (input: InputObject, gameProcessedEvent: boolean): void => 
 		const rayDirection = mouse.Hit.Position.sub(camera.CFrame.Position).Unit.mul(500);
 		const raycastParams = new RaycastParams();
 		raycastParams.FilterType = Enum.RaycastFilterType.Include;
-		raycastParams.FilterDescendantsInstances = [npcs, Workspace.trials];
+		raycastParams.FilterDescendantsInstances = [npcs];
 		raycastParams.IgnoreWater = true;
 
 		const raycastResult = Workspace.Raycast(camera.CFrame.Position, rayDirection, raycastParams);
@@ -202,14 +202,6 @@ task.spawn(() => {
 		if (!target) {
 			mouse.Icon = "rbxasset://textures/ArrowFarCursor.png";
 			return;
-		}
-
-		for (const trialMap of Workspace.trials.GetChildren()) {
-			const npcs = trialMap.FindFirstChild("npcs");
-			if (npcs !== undefined && target.IsDescendantOf(npcs)) {
-				mouse.Icon = assetIds.images.vectors.SmallSword;
-				return;
-			}
 		}
 
 		if (target.IsDescendantOf(npcs)) {

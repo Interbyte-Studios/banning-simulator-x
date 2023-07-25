@@ -81,7 +81,7 @@ export const ActiveTrial = hooks(
 			});
 
 			return (): void => connection.Disconnect();
-		}, []);
+		}, [difficulty, wave, timer]);
 
 		useEffect(() => {
 			const character = Players.LocalPlayer.Character;
@@ -119,7 +119,7 @@ export const ActiveTrial = hooks(
 		}, [started]);
 
 		if (started) {
-			const difficultyMultiplier = difficulty === "easy" ? 1.15 : difficulty === "medium" ? 1.25 : 1.28;
+			const difficultyMultiplier = difficulty === "easy" ? 1.1 : difficulty === "medium" ? 1.2 : 1.25;
 			const waveMultiplier = 2 * wave;
 			return (
 				<>

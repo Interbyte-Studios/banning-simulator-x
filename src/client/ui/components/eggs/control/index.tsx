@@ -79,9 +79,18 @@ export function disableHatch(): void {
  * @returns A roact element.
  */
 export const EggHud = RoactRodux.connect(mapStateToProps)(
-	hooks((props: EggHudMappedProps, { useEffect, useCallback, useContext, useValue }) => {
+	hooks((props: EggHudMappedProps, { useEffect, useCallback, useContext, useValue, useState }) => {
 		const { hatchEgg } = useContext(remoteContext);
 		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
+
+		const [updated, setUpdate] = useState(0);
+		useEffect(() => {
+			const connection = Workspace.interactions.eggs.DescendantAdded.Connect(() => {
+				setUpdate((prev) => prev + 1);
+			});
+
+			return (): void => connection.Disconnect();
+		}, []);
 
 		const currencies = useValue(props.currencies);
 		const inventorySize = useValue(props.pets.size());
@@ -500,10 +509,10 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 				ContextActionService.UnbindAction("hatchEgg");
 				ContextActionService.UnbindAction("hatchEggTriple");
 			};
-		}, []);
+		}, [updated]);
 
 		return (
-			<frame Visible={false}>
+			<frame Visible={false} Key={updated}>
 				{Object.entries(EGGS).map(([eggName, eggData]) => {
 					if (!eggData.hatchable) {
 						return <></>;

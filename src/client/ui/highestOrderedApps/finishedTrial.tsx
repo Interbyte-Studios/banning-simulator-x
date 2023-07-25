@@ -57,8 +57,8 @@ export const FinishedTrial = (props: { gearRewards: number | undefined; finish: 
 							stroke={{ native: { Thickness: 2, Color: uiTextStrokeColor } }}
 						/>
 						<CurrencyIcon
-							position={UDim2.fromScale(0.376, 0.645)}
-							size={{ minimizedSize: 0.065, maximizedSize: 0.08 }}
+							position={UDim2.fromScale(0.4, 0.65)}
+							size={{ minimizedSize: 0.1, maximizedSize: 0.125 }}
 							currency={"gears"}
 						/>
 						<StrokeTextLabel

@@ -36,9 +36,18 @@ function mapStateToProps(state: StoreState): EggCostMappedProps {
  * @returns A roact element.
  */
 export const EggCost = RoactRodux.connect(mapStateToProps)(
-	hooks((props: EggCostMappedProps) => {
+	hooks((props: EggCostMappedProps, { useState, useEffect }) => {
+		const [updated, setUpdate] = useState(0);
+		useEffect(() => {
+			const connection = Workspace.interactions.eggs.DescendantAdded.Connect(() => {
+				setUpdate((prev) => prev + 1);
+			});
+
+			return (): void => connection.Disconnect();
+		}, []);
+
 		return (
-			<BaseFrame>
+			<BaseFrame Key={updated}>
 				<>
 					{Object.entries(EGGS).map(([eggName, eggData]) => {
 						if (!eggData.hatchable) {
