@@ -7,6 +7,7 @@ import { TIME_TRIAL_DIFFICULTY_ATTRIBUTE, TIME_TRIAL_TIMER_ATTRIBUTE } from "sha
 import { remotes } from "shared/remotes";
 import { awardCurrency } from "shared/rodux/currencies";
 import { equipWeapon } from "shared/rodux/currentWeapon";
+import { setHighestHardWave } from "shared/rodux/timeTrials";
 
 remotes.Server.GetNamespace("timeTrials")
 	.Get("startTimeTrial")
@@ -39,6 +40,17 @@ remotes.Server.GetNamespace("timeTrials")
 						const difficultyMultiplier = difficulty === "easy" ? 1.1 : difficulty === "medium" ? 1.2 : 1.3;
 						const waveMultiplier = 5 * wave;
 						store.dispatch(awardCurrency("gears", waveMultiplier * difficultyMultiplier ** wave));
+
+						if (difficulty === "hard") {
+							if (wave > store.getState().timeTrials["Ban Land"].highestHardWave) {
+								store.dispatch(setHighestHardWave("Ban Land", wave));
+							}
+							warn(
+								`Highest hard wave was: ${
+									store.getState().timeTrials["Ban Land"].highestHardWave
+								} | Current wave was: ${wave}`,
+							);
+						} else warn(`Difficulty was: ${difficulty}`);
 					}
 				}),
 			);

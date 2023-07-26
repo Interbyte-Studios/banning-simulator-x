@@ -1,5 +1,6 @@
 import { Eggs } from "shared/configs/eggs";
 import { Weapons, WeaponType } from "shared/configs/weapons";
+import { WorldName } from "shared/configs/worlds";
 import { NPCs } from "shared/configs/zones";
 
 declare global {
@@ -164,6 +165,12 @@ declare global {
 		leaderboards: Folder & {
 			bans: Folder;
 			eggs: Folder;
+			worldPrestige: {
+				[World in WorldName]: Folder;
+			};
+			timeTrials: {
+				[World in WorldName]: Folder;
+			};
 			timeUpdated: NumberValue;
 		};
 		PetExistStores: ObjectValue;

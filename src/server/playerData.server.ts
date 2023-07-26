@@ -142,7 +142,7 @@ Players.PlayerAdded.Connect(async (player) => {
 let lastSaveTime = 0;
 while (RunService.Heartbeat.Wait()) {
 	const now = time();
-	if (now - lastSaveTime > 4) {
+	if (now - lastSaveTime > 4.5) {
 		lastSaveTime = now;
 
 		// save data for all players

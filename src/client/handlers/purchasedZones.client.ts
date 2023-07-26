@@ -35,7 +35,7 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 		const passage = door.FindFirstChild("passage");
 		if (passage !== undefined) {
 			passage.Parent = zoneFolder;
-		} else warn(`no passage for ${world} ${zone}`);
+		}
 
 		const sign = zoneDecoration.FindFirstChild("sign");
 		if (sign !== undefined) {
