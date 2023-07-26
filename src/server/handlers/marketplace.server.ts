@@ -23,7 +23,7 @@ import { claimGamepass } from "shared/rodux/gamepasses";
 import { claimGamepassGift } from "shared/rodux/gamepassGifts";
 import { addPets } from "shared/rodux/pets";
 import { purchasePetTeam } from "shared/rodux/petTeams";
-import { addAvailableSpins } from "shared/rodux/spinWheel";
+import { addPurchasedSpins } from "shared/rodux/spinWheel";
 import { getEggData } from "shared/util/getEggData";
 
 const marketplaceRemotes = remotes.Server.GetNamespace("eggs");
@@ -62,12 +62,12 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 
 	let purchaseProcessed = false;
 	if (receiptInfo.ProductId === TEN_SPINS) {
-		store.dispatch(addAvailableSpins(1));
+		store.dispatch(addPurchasedSpins(1));
 		purchaseProcessed = true;
 	}
 
 	if (receiptInfo.ProductId === ONE_HUNDRED_SPINS) {
-		store.dispatch(addAvailableSpins(10));
+		store.dispatch(addPurchasedSpins(10));
 		purchaseProcessed = true;
 	}
 

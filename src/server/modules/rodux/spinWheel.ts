@@ -49,13 +49,18 @@ export function spinWheelReward(store: Store, rewardIndex: number): void {
  */
 export function spinWheel(store: Store): { reward: number | undefined } {
 	const spinWheel = store.getState().spinWheel;
-	if (spinWheel.spinsAvailable <= 0) {
+	if (spinWheel.spinsAvailable <= 0 && spinWheel.purchasedSpinsAvailable <= 0) {
 		return { reward: undefined };
+	}
+
+	let usingPurchasedSpin = false;
+	if (spinWheel.purchasedSpinsAvailable > 0) {
+		usingPurchasedSpin = true;
 	}
 
 	const currentTime = DateTime.now().UnixTimestamp;
 	const prizeWon = new Random().NextInteger(1, 8);
 	spinWheelReward(store, prizeWon);
-	store.dispatch(spinTheWheel(currentTime));
+	store.dispatch(spinTheWheel(currentTime, usingPurchasedSpin));
 	return { reward: prizeWon };
 }
