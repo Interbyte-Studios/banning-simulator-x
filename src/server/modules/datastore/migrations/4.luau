@@ -1,6 +1,5 @@
 return function(state)
-	-- get rid of old data that isn't used
-	state.timeTrials["Ban Land"].highestHardWave = nil
+	state.timeTrials["Ban Land"].highestHardWave = 0
 
 	return state
 end

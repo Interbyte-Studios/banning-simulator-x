@@ -11,6 +11,7 @@ import {
 import { remotes } from "shared/remotes";
 import { awardCurrency } from "shared/rodux/currencies";
 import { equipWeapon } from "shared/rodux/currentWeapon";
+import { setHighestHardWave } from "shared/rodux/timeTrials";
 
 assert(
 	ServerStorage.timeTrials.map.IsA("Model"),
@@ -79,6 +80,17 @@ remotes.Server.GetNamespace("timeTrials")
 					playerTrial.difficulty === "easy" ? 1.1 : playerTrial.difficulty === "medium" ? 1.2 : 1.3;
 				const waveMultiplier = 5 * playerTrial.wave;
 				store.dispatch(awardCurrency("gears", waveMultiplier * difficultyMultiplier ** playerTrial.wave));
+
+				if (playerTrial.difficulty === "hard") {
+					if (playerTrial.wave > store.getState().timeTrials["Ban Land"].highestHardWave) {
+						store.dispatch(setHighestHardWave("Ban Land", playerTrial.wave));
+					}
+					warn(
+						`Highest hard wave was: ${store.getState().timeTrials["Ban Land"].highestHardWave} | Current wave was: ${
+							playerTrial.wave
+						}`,
+					);
+				} else warn(`Difficulty was: ${playerTrial.difficulty}`);
 			}
 			cleanupTrial(player);
 

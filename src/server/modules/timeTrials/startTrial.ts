@@ -59,7 +59,7 @@ export function startTrial(player: Player): {
 		}
 
 		const randomSpawn = playerTrial.npcSpawns.GetChildren()[
-			math.random(1, playerTrial.npcSpawns.GetChildren().size() - 1)
+			math.random(1, playerTrial.npcSpawns.GetChildren().size())
 		] as BasePart;
 		root.CFrame = new CFrame(randomSpawn.Position);
 		newNpc.Parent = playerTrial.npcFolder;

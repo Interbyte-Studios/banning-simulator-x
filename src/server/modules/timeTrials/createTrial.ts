@@ -62,7 +62,6 @@ export function createTrial(
 	const playerTimeTrial = trialMap.Clone();
 	cleanup.Add(playerTimeTrial);
 	cleanup.Add(() => {
-		ACTIVE_TRIALS.forEach((trial) => print(trial.index, index, trial.index !== index));
 		const cachedTrialIndex = ACTIVE_TRIALS.findIndex((trial) => trial.index === index);
 		if (cachedTrialIndex !== undefined) {
 			ACTIVE_TRIALS.unorderedRemove(cachedTrialIndex);
