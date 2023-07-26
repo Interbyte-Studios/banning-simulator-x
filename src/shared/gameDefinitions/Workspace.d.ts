@@ -45,6 +45,8 @@ declare global {
 			leaderboards: Folder & {
 				bans: Folder;
 				eggs: Folder;
+				worldPrestige: Folder;
+				timeTrials: Folder;
 			};
 			radiantMachines: Folder & {
 				interactions: Folder;
