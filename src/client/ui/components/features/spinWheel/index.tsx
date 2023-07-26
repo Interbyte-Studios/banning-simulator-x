@@ -338,7 +338,7 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 					native={{
 						Position: UDim2.fromScale(0.5, 0.91),
 						Size: UDim2.fromScale(0.125, 0.05),
-						Text: `${props.spinWheel.spinsAvailable} Spins Left`,
+						Text: `${props.spinWheel.spinsAvailable + props.spinWheel.purchasedSpinsAvailable} Spins Left`,
 					}}
 					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(17, 150, 55) } }}
 				/>
