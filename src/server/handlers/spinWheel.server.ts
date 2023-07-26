@@ -19,12 +19,12 @@ function onPlayerAdded(player: Player): void {
 		while (true) {
 			task.wait(1);
 			if (store.getState().spinWheel.spinsAvailable > 0) {
-				return;
+				continue;
 			}
 
 			const now = DateTime.now().UnixTimestamp;
 			const lastClaimTime = store.getState().spinWheel.lastSpinTime;
-			if (now - lastClaimTime >= 86400) {
+			if (now >= lastClaimTime + 86400) {
 				store.dispatch(addAvailableSpins(1));
 			}
 		}
