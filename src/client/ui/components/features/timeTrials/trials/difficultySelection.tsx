@@ -1,9 +1,11 @@
 import Roact from "@rbxts/roact";
+import { Players } from "@rbxts/services";
 import { uiDarkStrokeColor } from "client/ui/commonValues";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { getHumanoidRootPart } from "client/util/getHumanoidRoot";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
@@ -59,12 +61,19 @@ export const TimeTrialsDifficultySelection = hooks(
 							/**
 							 *
 							 */
-							Activated: (): void => {
+							Activated: async (): Promise<void> => {
 								playSFX(UIEngagement.MajorEngagement);
-								createTimeTrial.SendToServer(
+								const requestTrial = await createTimeTrial.CallServerAsync(
 									difficulty === Difficulty.Easy ? "easy" : difficulty === Difficulty.Medium ? "medium" : "hard",
 								);
-								props.setTrialsEnabled(true);
+								if (requestTrial.success) {
+									const playerRoot = getHumanoidRootPart(Players.LocalPlayer);
+									if (playerRoot !== undefined) {
+										Players.LocalPlayer.RequestStreamAroundAsync(requestTrial.spawnLocation);
+										playerRoot.CFrame = new CFrame(requestTrial.spawnLocation);
+									}
+									props.setTrialsEnabled(true);
+								}
 							},
 						}}
 					>

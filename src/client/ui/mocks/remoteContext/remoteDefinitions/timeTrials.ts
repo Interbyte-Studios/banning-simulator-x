@@ -3,6 +3,7 @@ import { StartTimeTrialDefinition } from "shared/remotes/timeTrials/startTimeTri
 import { StopTimeTrialDefinition } from "shared/remotes/timeTrials/stopTimeTrial";
 import { UpgradeTimeTrialsDefinition } from "shared/remotes/timeTrials/upgradeTimeTrial";
 
+import { fakeFunctionCall } from "../fakeFunctionCall";
 import { fakeRemoteCall } from "../fakeRemoteCall";
 
 /**
@@ -10,7 +11,14 @@ import { fakeRemoteCall } from "../fakeRemoteCall";
  */
 export const timeTrialsRemoteContext = {
 	upgradeTimeTrial: fakeRemoteCall<UpgradeTimeTrialsDefinition>("upgradeTimeTrial"),
-	createTimeTrial: fakeRemoteCall<CreateTimeTrialDefinition>("createTimeTrial"),
+	createTimeTrial: fakeFunctionCall<CreateTimeTrialDefinition>(
+		"createTimeTrial",
+		(): { success: false } | { success: true; spawnLocation: Vector3 } => {
+			return {
+				success: false,
+			};
+		},
+	),
 	startTimeTrial: fakeRemoteCall<StartTimeTrialDefinition>("startTimeTrial"),
 	stopTimeTrial: fakeRemoteCall<StopTimeTrialDefinition>("stopTimeTrial"),
 };

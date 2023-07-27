@@ -24,24 +24,25 @@ assert(
 
 remotes.Server.GetNamespace("timeTrials")
 	.Get("createTimeTrial")
-	.Connect(
+	.SetCallback(
 		withPlayerStore((player, store, difficulty) => {
 			// prevent player from having two time trials
 			if (getTrialStatus(player) !== undefined) {
-				return;
+				return {
+					success: false,
+				};
 			}
 
 			// ensure player had a root part
 			const humanoid = player.Character?.FindFirstChildOfClass("Humanoid");
 			const rootPart = humanoid?.RootPart;
 			if (!(humanoid && humanoid.Health > 0 && rootPart)) {
-				return;
+				return {
+					success: false,
+				};
 			}
 
 			const { cleanupHandler, spawnLocation } = createTrial(player, difficulty);
-			player.RequestStreamAroundAsync(spawnLocation.Position);
-			rootPart.CFrame = spawnLocation.add(new Vector3(0, 5, 0));
-
 			store.dispatch(equipWeapon());
 
 			// if player dies, then we cleanup immediately
@@ -67,6 +68,11 @@ remotes.Server.GetNamespace("timeTrials")
 			player.SetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE, TIME_TRIAL_WAITING_ATTRIBUTE);
 			player.SetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE, difficulty);
 			player.SetAttribute(TIME_TRIAL_WAVE_ATTRIBUTE, difficulty);
+
+			return {
+				success: true,
+				spawnLocation: spawnLocation.Position,
+			}
 		}),
 	);
 
