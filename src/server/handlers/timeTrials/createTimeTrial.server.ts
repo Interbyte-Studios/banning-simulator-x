@@ -66,13 +66,14 @@ remotes.Server.GetNamespace("timeTrials")
 
 			// set timer to initial value
 			player.SetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE, TIME_TRIAL_WAITING_ATTRIBUTE);
+			warn(`difficulty: ${difficulty}`);
 			player.SetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE, difficulty);
 			player.SetAttribute(TIME_TRIAL_WAVE_ATTRIBUTE, difficulty);
 
 			return {
 				success: true,
 				spawnLocation: spawnLocation.Position,
-			}
+			};
 		}),
 	);
 

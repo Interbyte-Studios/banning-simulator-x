@@ -67,6 +67,16 @@ export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
 		const [maxHealth, setMaxHealth] = useState(100);
 
 		useEffect(() => {
+			const difficulty = Players.LocalPlayer.GetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE);
+			if (difficulty !== undefined && isTimeTrialDifficulty(difficulty)) {
+				setDifficulty(difficulty);
+			}
+
+			const npcsRemaning = Players.LocalPlayer.GetAttribute(TIME_TRIAL_NPCS_REMAINING);
+			if (npcsRemaning !== undefined && t.number(npcsRemaning)) {
+				setNPCsLeft(npcsRemaning);
+			}
+
 			const connection = Players.LocalPlayer.AttributeChanged.Connect((attribute) => {
 				if (attribute === TIME_TRIAL_DIFFICULTY_ATTRIBUTE) {
 					const attributeValue = Players.LocalPlayer.GetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE);
@@ -147,7 +157,7 @@ export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
 				healthConnection.Disconnect();
 				diedConnection.Disconnect();
 			};
-		}, [started]);
+		}, [started, difficulty, wave, timer]);
 
 		if (started) {
 			const difficultyMultiplier = difficulty === "easy" ? 1.1 : difficulty === "medium" ? 1.2 : 1.3;
