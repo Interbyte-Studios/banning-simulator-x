@@ -11,6 +11,7 @@ import assetIds from "shared/assets";
 import { GAMEPASSES } from "shared/configs/game";
 
 import { Boosts } from "./boosts";
+import { CurrencyShop } from "./currencies";
 import { Gamepasses } from "./gamepasses";
 import { GiftGamepass } from "./giftGamepass";
 import { Limiteds } from "./limiteds";
@@ -110,6 +111,7 @@ export const RobuxShop = hooks((props: RobuxShopProps, { useState }) => {
 					<Limiteds />
 					<Gamepasses giftGamepass={(gamepassName: keyof typeof GAMEPASSES): void => setGiftGamepass(gamepassName)} />
 					<Boosts />
+					<CurrencyShop />
 				</scrollingframe>
 			</>
 		);

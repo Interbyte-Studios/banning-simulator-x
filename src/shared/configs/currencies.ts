@@ -1,6 +1,8 @@
 import { t } from "@rbxts/t";
 
 export const currencies = ["coins", "gems", "gears"] as const;
+export const isTrialsCurrency = t.literal("gears");
+export type TrialsCurrency = t.static<typeof isTrialsCurrency>;
 
 export const isCurrency = t.literal(...currencies);
 export type Currency = t.static<typeof isCurrency>;

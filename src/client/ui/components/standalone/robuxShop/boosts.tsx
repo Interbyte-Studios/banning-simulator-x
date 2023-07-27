@@ -312,28 +312,28 @@ export const Boosts = RoactRodux.connect(mapStateToProps)(
 							boostName = "💰x2 Currency💰";
 							boostColor = Color3.fromRGB(27, 68, 255);
 							colorStroke = Color3.fromRGB(15, 38, 139);
-							position = UDim2.fromScale(0.5, 0.595);
+							position = UDim2.fromScale(0.5, 0.59);
 							break;
 						}
 						case "x2 Hatching Luck": {
 							boostName = "🍀x2 Luck🍀";
 							boostColor = Color3.fromRGB(85, 255, 127);
 							colorStroke = Color3.fromRGB(32, 95, 46);
-							position = UDim2.fromScale(0.5, 0.675);
+							position = UDim2.fromScale(0.5, 0.665);
 							break;
 						}
 						case "x2 Pet Experience": {
 							boostName = "⭐x2 Pet Experience⭐";
 							boostColor = Color3.fromRGB(255, 130, 28);
 							colorStroke = Color3.fromRGB(103, 74, 32);
-							position = UDim2.fromScale(0.5, 0.835);
+							position = UDim2.fromScale(0.5, 0.74);
 							break;
 						}
 						case "x2 Rank Experience": {
 							boostName = "⭐x2 Rank Experience⭐";
 							boostColor = Color3.fromRGB(170, 0, 255);
 							colorStroke = Color3.fromRGB(85, 0, 127);
-							position = UDim2.fromScale(0.5, 0.91);
+							position = UDim2.fromScale(0.5, 0.815);
 							break;
 						}
 					}

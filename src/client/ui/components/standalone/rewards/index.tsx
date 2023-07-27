@@ -130,7 +130,7 @@ export const Rewards = RoactRodux.connect(mapStateToProps)(
 								<SpringImageButton
 									native={{
 										Position: UDim2.fromScale(0.5, 0.2),
-										Image: assetIds.images.vectors.GemBag,
+										Image: assetIds.images.vectors.currencies.GemBag,
 									}}
 									size={{ minSize: 0.4, maxSize: 0.5 }}
 								>

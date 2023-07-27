@@ -1,6 +1,7 @@
 import { t } from "@rbxts/t";
 import assetIds from "shared/assets";
 
+import { Currency, TrialsCurrency } from "./currencies";
 import { EggName } from "./eggs";
 
 export const STORE_SCOPE = "mainstore"; // Last test store was "TEST_STORE_5"
@@ -22,6 +23,66 @@ export const ONE_HUNDRED_SPINS = 1583561170;
 
 export const BIG_CRATE_BUNDLE = 1584133242;
 export const EXTREME_EXPERIENCE_BUNDLE = 1584133443;
+
+export const isCurrencyPurchaseOption = t.literal("pile", "bag", "chest", "vault");
+export type CurrencyPurchaseOption = t.static<typeof isCurrencyPurchaseOption>;
+
+export type CurrencyPurchaseType = Exclude<Currency, TrialsCurrency>;
+export type CurrencyPurchase = {
+	[P in CurrencyPurchaseType]: {
+		[K in CurrencyPurchaseOption]: {
+			devId: number;
+			highestZoneMultiplier: number;
+			image: string;
+		};
+	};
+};
+export const CURRENCY_PURCHASES: CurrencyPurchase = {
+	coins: {
+		pile: {
+			devId: 1591316288,
+			highestZoneMultiplier: 3,
+			image: assetIds.images.vectors.currencies.CoinPile,
+		},
+		bag: {
+			devId: 1591316820,
+			highestZoneMultiplier: 9,
+			image: assetIds.images.vectors.currencies.CoinBag,
+		},
+		chest: {
+			devId: 1591317010,
+			highestZoneMultiplier: 27,
+			image: assetIds.images.vectors.currencies.CoinChest,
+		},
+		vault: {
+			devId: 1591317249,
+			highestZoneMultiplier: 81,
+			image: assetIds.images.vectors.currencies.CoinSafe,
+		},
+	},
+	gems: {
+		pile: {
+			devId: 1591317454,
+			highestZoneMultiplier: 1,
+			image: assetIds.images.vectors.currencies.GemPile,
+		},
+		bag: {
+			devId: 1591317635,
+			highestZoneMultiplier: 3,
+			image: assetIds.images.vectors.currencies.GemBag,
+		},
+		chest: {
+			devId: 1591317831,
+			highestZoneMultiplier: 9,
+			image: assetIds.images.vectors.currencies.GemChest,
+		},
+		vault: {
+			devId: 1591318353,
+			highestZoneMultiplier: 27,
+			image: assetIds.images.vectors.currencies.GemVault,
+		},
+	},
+};
 
 export const isGamepass = t.literal(
 	"x2 Luck",
