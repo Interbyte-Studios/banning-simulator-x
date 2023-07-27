@@ -21,7 +21,7 @@ export const DIVINE_EGG_PETS: Record<string, Pet> = {
 		fusionCost: 20000,
 		stats: {
 			additionalDamage: 5000,
-			additionalBans: 225,
+			additionalBans: 425,
 		},
 	},
 	"Dark Angel": {
@@ -31,7 +31,7 @@ export const DIVINE_EGG_PETS: Record<string, Pet> = {
 		fusionCost: 30000,
 		stats: {
 			additionalDamage: 11500,
-			additionalBans: 400,
+			additionalBans: 875,
 		},
 	},
 	"D I V I N E": {
@@ -41,7 +41,7 @@ export const DIVINE_EGG_PETS: Record<string, Pet> = {
 		fusionCost: 30000,
 		stats: {
 			additionalDamage: 20000,
-			additionalBans: 1000,
+			additionalBans: 1800,
 		},
 	},
 };
