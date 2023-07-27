@@ -58,9 +58,19 @@ export function startTrial(player: Player): {
 			continue;
 		}
 
-		const randomSpawn = playerTrial.npcSpawns.GetChildren()[
-			math.random(1, playerTrial.npcSpawns.GetChildren().size())
-		] as BasePart;
+		const spawnSize = playerTrial.npcSpawns.GetChildren().size();
+		let randomSpawn: BasePart | undefined;
+		for (let i = 0; i < spawnSize; i++) {
+			const random = math.random(1, spawnSize);
+			const spawn = playerTrial.npcSpawns.GetChildren()[random] as BasePart;
+			if (spawn !== undefined) {
+				randomSpawn = spawn;
+				break;
+			}
+		}
+		if (randomSpawn === undefined) {
+			continue;
+		}
 		root.CFrame = new CFrame(randomSpawn.Position);
 		newNpc.Parent = playerTrial.npcFolder;
 		const attackAnim = animator.LoadAnimation(ReplicatedStorage.animations.weapons.Sword.Attack);
@@ -192,9 +202,6 @@ export function startTrial(player: Player): {
 			});
 
 			// return if we have finished the time trial.
-			if (currentTrial.timeRemaining - step <= 0) {
-				warn("Time trial ran out of time");
-			}
 			return currentTrial.timeRemaining - step <= 0;
 		},
 	};
