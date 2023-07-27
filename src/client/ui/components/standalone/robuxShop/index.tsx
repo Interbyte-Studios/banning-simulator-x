@@ -30,7 +30,6 @@ interface RobuxShopProps {
 export const RobuxShop = hooks((props: RobuxShopProps, { useState }) => {
 	const [purchaseSuccessful, setPurchaseSuccess] = useState(false);
 	const [giftGamepass, setGiftGamepass] = useState<keyof typeof GAMEPASSES | undefined>(undefined);
-	const [canvasPosition, setCanvasPosition] = useState(UDim2.fromScale(0, 0));
 
 	if (giftGamepass !== undefined) {
 		return <GiftGamepass gamepassName={giftGamepass} returnToShop={(): void => setGiftGamepass(undefined)} />;
