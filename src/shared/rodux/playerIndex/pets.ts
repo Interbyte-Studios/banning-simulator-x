@@ -165,15 +165,11 @@ export const petIndexReducer = Rodux.createReducer<
 		const { id, variant } = action.pet;
 		const pet = newState.get(id) ?? defaultPetData;
 
-		print(`Has fused: ${pet.fused[variant]}`);
 		pet.fused = {
 			...pet.fused,
 			[variant]: pet.fused[variant] + 1,
 		};
 		newState.set(id, pet);
-
-		print(newState.get(id));
-
 		return newState;
 	},
 	killNpc: petReducer,
