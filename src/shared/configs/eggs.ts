@@ -1,3 +1,5 @@
+import { t } from "@rbxts/t";
+
 import { Pet } from "./pets";
 import { ARMORED_EGG_PETS } from "./pets/armored";
 import { CANDY_EGG_PETS } from "./pets/candy";
@@ -57,6 +59,22 @@ export interface Egg {
 	 */
 	luckApplies: boolean;
 }
+
+export const isValidMasteryEgg = t.literal(
+	"Starter",
+	"Desert",
+	"Honeycomb",
+	"Candy",
+	"Molten",
+	"Jester",
+	"Radioactive",
+	"Jester",
+	"Divine",
+	"500k Event",
+	"GearWorx",
+	"Dweller",
+);
+export type ValidMasteryEgg = t.static<typeof isValidMasteryEgg>;
 
 /**
  * All the eggs in the game.
@@ -209,8 +227,8 @@ export const EGGS = {
 	"500k Event": {
 		id: 14,
 		pets: EVENT_500k_EGG_PETS,
-		world: "Ban Land",
-		zone: "Forest",
+		world: "Limited",
+		zone: "Limited",
 		hatchable: false,
 		hidden: false,
 		luckApplies: true,

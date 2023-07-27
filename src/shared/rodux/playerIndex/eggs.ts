@@ -24,6 +24,7 @@ export const eggIndexReducer = Rodux.createReducer<EggIndexState, HatchEgg>(defa
 			const egg = newState.get(eggName) ?? { regular: 0, void: 0, radiant: 0 };
 
 			egg[variant]++;
+			newState.set(eggName, egg);
 		}
 
 		return newState;
