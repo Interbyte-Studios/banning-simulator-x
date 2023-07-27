@@ -3413,6 +3413,26 @@ hash = "0ae0841ad69afd3aa1451e2e753ed4cc410cb34abca00eaf7d72ad221586cc22"
 id = 13813998666
 packable = false
 
+[inputs."images/ui/shop/boosts.png"]
+hash = "f33417adb36fec568cf6ff56b1dd85140e8b4ec0dd307cad548da7ef099b59a0"
+id = 14209062323
+packable = false
+
+[inputs."images/ui/shop/currency.png"]
+hash = "af0dba44e5389419799bac98ff5aa0b3e1b2ab335e31a9d1ccb0afe6dee89de1"
+id = 14209062383
+packable = false
+
+[inputs."images/ui/shop/gamepasses.png"]
+hash = "26909c9b9a02df947666c803303430e8a816e8328f29e2708aa927e191b16a82"
+id = 14209062451
+packable = false
+
+[inputs."images/ui/shop/limited pets.png"]
+hash = "bc1b8db392e993e909590481631615a5111c449e0952ae7fb8cc07c42dd6bd22"
+id = 14209062497
+packable = false
+
 [inputs."images/ui/talismanTower/background.png"]
 hash = "ccf23fad28bbf49220ed72aba28a00cdd2cc5d18a9c6d638f32e6c6c1dc5e742"
 id = 11508721514

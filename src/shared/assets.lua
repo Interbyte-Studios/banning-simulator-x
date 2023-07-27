@@ -754,6 +754,10 @@ return {
 			},
 			shop = {
 				background = "rbxassetid://13813998666",
+				boosts = "rbxassetid://14209062323",
+				currency = "rbxassetid://14209062383",
+				gamepasses = "rbxassetid://14209062451",
+				["limited pets"] = "rbxassetid://14209062497",
 			},
 			talismanTower = {
 				background = "rbxassetid://11508721514",

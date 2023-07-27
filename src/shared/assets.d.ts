@@ -729,6 +729,10 @@ declare namespace assetIds {
 			};
 			shop: {
 				background: string;
+				boosts: string;
+				currency: string;
+				gamepasses: string;
+				"limited pets": string;
 			};
 			autoDelete: {
 				background: string;
