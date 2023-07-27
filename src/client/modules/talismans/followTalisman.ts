@@ -1,4 +1,5 @@
 import { ReplicatedStorage, RunService, Workspace } from "@rbxts/services";
+import { getHumanoidRootPart } from "client/util/getHumanoidRoot";
 import { TalismanPhases } from "shared/configs/talismans";
 import { getTalismanData } from "shared/util/getTalismanData";
 import { setAssetProperties } from "shared/util/setAssetProperties";
@@ -83,12 +84,24 @@ export function equipTalisman(player: Player, talismanId: number, phase: Talisma
 
 	const talismanRender = RunService.RenderStepped.Connect(() => {
 		debug.profilebegin("talismanRender");
-		if (humanoidRootPart !== undefined) {
-			const hover = math.cos(os.clock() * 3) * 1;
-
-			alignPosition.Position = humanoidRootPart.CFrame.mul(new CFrame(2, hover, 3)).Position;
-			alignOrientation.CFrame = humanoidRootPart.CFrame;
+		const humanoidRootPart = getHumanoidRootPart(player);
+		if (humanoidRootPart === undefined) {
+			return;
 		}
+
+		const talismanPrimary = talisman.PrimaryPart as BasePart;
+		if (talismanPrimary === undefined) {
+			return;
+		}
+
+		if (humanoidRootPart.Position.sub(talismanPrimary.Position).Magnitude > 100) {
+			talismanPrimary.CFrame = new CFrame(humanoidRootPart.Position);
+		}
+
+		const hover = math.cos(os.clock() * 3) * 1;
+
+		alignPosition.Position = humanoidRootPart.CFrame.mul(new CFrame(2, hover, 3)).Position;
+		alignOrientation.CFrame = humanoidRootPart.CFrame;
 		debug.profileend();
 	});
 
