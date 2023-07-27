@@ -1,5 +1,6 @@
 import { Workspace } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
+import { checkCanAttack, clearAttackLog } from "server/modules/npcs/npcAttackCache";
 import { currentTimeTrials } from "server/modules/timeTrials";
 import { WORLDS } from "shared/configs/worlds";
 import { UniversalWorldData } from "shared/configs/zones";
@@ -14,22 +15,12 @@ import { getWeaponDamage } from "shared/util/getWeaponDamage";
 import { runStep } from "../modules/npcs/runStep";
 import { NpcWorldState } from "../modules/npcs/worldState";
 
-// log npc attacks
-const _lastAttack: Map<number, number> = new Map();
-const attackDownTime = 0.1;
-
 let npcAttacks: Array<{ player: Player; store: Store; character: NpcCharacter }> = [];
 remotes.Server.Get("damageNPC").Connect(
 	withPlayerStore((player, store, character, wasTrials) => {
-		const now = time();
-		const lastAttack = _lastAttack.get(player.UserId);
-		if (lastAttack === undefined) {
-			_lastAttack.set(player.UserId, now);
-		} else {
-			if (now - lastAttack < attackDownTime) {
-				return;
-			}
-			_lastAttack.set(player.UserId, now);
+		const canAttack = checkCanAttack(player, character, time());
+		if (!canAttack) {
+			return;
 		}
 
 		if (character === undefined) {
@@ -95,7 +86,7 @@ remotes.Server.Get("damageNPC").Connect(
 			const damageAmount = weaponDamage + talismanStatEffects.damage + petDamageBonus;
 			character.Humanoid.TakeDamage(damageAmount + damageAmount * timeTrialDamageMultiplier);
 
-			const connection = character.Humanoid.Died.Connect(() => {
+			if (character.Humanoid.Health <= 0) {
 				currentTimeTrials.set(player, {
 					...currentTimeTrial,
 					npcs: currentTimeTrial.npcs.filter((npc) => npc.instance !== character),
@@ -104,10 +95,10 @@ remotes.Server.Get("damageNPC").Connect(
 				store.dispatch(addBans(petBansBonus));
 
 				task.delay(0.5, (): void => {
+					clearAttackLog(character);
 					character.Destroy();
-					connection.Disconnect();
 				});
-			});
+			}
 		} else {
 			const currentState = store.getState();
 			for (const [worldName, worldData] of pairs(UniversalWorldData)) {

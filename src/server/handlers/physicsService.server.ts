@@ -10,18 +10,19 @@ if (!PhysicsService.IsCollisionGroupRegistered(playerCollisionGroup)) {
 	PhysicsService.RegisterCollisionGroup(playerCollisionGroup);
 }
 
-const npcBarrierCollisionGroup = "NPCBarrier";
-if (!PhysicsService.IsCollisionGroupRegistered(npcBarrierCollisionGroup)) {
-	PhysicsService.RegisterCollisionGroup(npcBarrierCollisionGroup);
+const npcNonCollidables = "NpcNonCollidables";
+if (!PhysicsService.IsCollisionGroupRegistered(npcNonCollidables)) {
+	PhysicsService.RegisterCollisionGroup(npcNonCollidables);
 }
 
 PhysicsService.CollisionGroupSetCollidable(npcCollisionGroup, npcCollisionGroup, false);
 PhysicsService.CollisionGroupSetCollidable(playerCollisionGroup, playerCollisionGroup, false);
-PhysicsService.CollisionGroupSetCollidable(npcCollisionGroup, npcBarrierCollisionGroup, true);
-PhysicsService.CollisionGroupSetCollidable(playerCollisionGroup, npcBarrierCollisionGroup, false);
 
 PhysicsService.CollisionGroupSetCollidable(npcCollisionGroup, playerCollisionGroup, false);
 PhysicsService.CollisionGroupSetCollidable(playerCollisionGroup, npcCollisionGroup, false);
+
+PhysicsService.CollisionGroupSetCollidable(npcCollisionGroup, npcNonCollidables, false);
+PhysicsService.CollisionGroupSetCollidable(npcNonCollidables, npcCollisionGroup, false);
 
 /**
  * A function to register player characters with the physics service.

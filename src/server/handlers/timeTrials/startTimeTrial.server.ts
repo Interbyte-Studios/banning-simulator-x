@@ -45,12 +45,7 @@ remotes.Server.GetNamespace("timeTrials")
 							if (wave > store.getState().timeTrials["Ban Land"].highestHardWave) {
 								store.dispatch(setHighestHardWave("Ban Land", wave));
 							}
-							warn(
-								`Highest hard wave was: ${
-									store.getState().timeTrials["Ban Land"].highestHardWave
-								} | Current wave was: ${wave}`,
-							);
-						} else warn(`Difficulty was: ${difficulty}`);
+						}
 					}
 				}),
 			);
