@@ -30,6 +30,40 @@ export const Fusing = hooks(
 
 		const [petSelected, setPetSelected] = useState<number | undefined>(undefined);
 		const [fusingVariant, setFusingVariant] = useState<FusableVariant>(props.variant ?? "void");
+		const [voidInteractions, setVoidInteractions] = useState<Array<BasePart>>([]);
+		const [radiantInteractions, setRadiantInteractions] = useState<Array<BasePart>>([]);
+		useEffect(() => {
+			const voidPrompts: Array<BasePart> = [];
+			Workspace.interactions.voidMachines.interactions.GetChildren().forEach((child) => {
+				if (child.IsA("BasePart")) {
+					voidPrompts.push(child);
+				}
+			});
+			setVoidInteractions(voidPrompts);
+
+			const radiantPrompts: Array<BasePart> = [];
+			Workspace.interactions.radiantMachines.interactions.GetChildren().forEach((child) => {
+				if (child.IsA("BasePart")) {
+					radiantPrompts.push(child);
+				}
+			});
+			setRadiantInteractions(radiantPrompts);
+
+			const connections = [
+				Workspace.interactions.voidMachines.interactions.ChildAdded.Connect((child) => {
+					if (child.IsA("BasePart")) {
+						setVoidInteractions([...voidInteractions, child]);
+					}
+				}),
+				Workspace.interactions.radiantMachines.interactions.ChildAdded.Connect((child) => {
+					if (child.IsA("BasePart")) {
+						setRadiantInteractions([...radiantInteractions, child]);
+					}
+				}),
+			];
+
+			return (): void => connections.forEach((connection) => connection.Disconnect());
+		}, []);
 
 		const screenToDisplay: Array<Roact.Element> = [];
 		if (petSelected !== undefined) {
@@ -46,20 +80,6 @@ export const Fusing = hooks(
 			);
 		}
 
-		const radiantPrompts: Array<BasePart> = [];
-		Workspace.interactions.radiantMachines.interactions.GetChildren().forEach((child) => {
-			if (child.IsA("BasePart")) {
-				radiantPrompts.push(child);
-			}
-		});
-
-		const voidPrompts: Array<BasePart> = [];
-		Workspace.interactions.voidMachines.interactions.GetChildren().forEach((child) => {
-			if (child.IsA("BasePart")) {
-				voidPrompts.push(child);
-			}
-		});
-
 		useEffect(() => {
 			if (props.isVisible) {
 				const character = Players.LocalPlayer.Character;
@@ -67,7 +87,7 @@ export const Fusing = hooks(
 					return;
 				}
 
-				for (const prompt of voidPrompts) {
+				for (const prompt of voidInteractions) {
 					const canDisplay = shouldDisplay(character, prompt);
 					if (canDisplay) {
 						setFusingVariant("void");
@@ -75,7 +95,7 @@ export const Fusing = hooks(
 					}
 				}
 
-				for (const prompt of radiantPrompts) {
+				for (const prompt of radiantInteractions) {
 					const canDisplay = shouldDisplay(character, prompt);
 					if (canDisplay) {
 						setFusingVariant("radiant");
@@ -204,8 +224,8 @@ export const Fusing = hooks(
 		} else {
 			return (
 				<>
-					{radiantPrompts.map((promptPart) => billboardElement(promptPart, "radiant"))}
-					{voidPrompts.map((promptPart) => billboardElement(promptPart, "void"))}
+					{radiantInteractions.map((promptPart) => billboardElement(promptPart, "radiant"))}
+					{voidInteractions.map((promptPart) => billboardElement(promptPart, "void"))}
 				</>
 			);
 		}

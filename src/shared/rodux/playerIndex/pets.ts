@@ -165,13 +165,11 @@ export const petIndexReducer = Rodux.createReducer<
 		const { id, variant } = action.pet;
 		const pet = newState.get(id) ?? defaultPetData;
 
-		pet.hatched = {
-			...pet.hatched,
+		pet.fused = {
+			...pet.fused,
 			[variant]: pet.fused[variant] + 1,
 		};
-
 		newState.set(id, pet);
-
 		return newState;
 	},
 	killNpc: petReducer,

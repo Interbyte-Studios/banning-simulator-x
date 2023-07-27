@@ -36,20 +36,36 @@ export const IndexPetScroll = hooks(
 		const uiListLayoutRef = useValue(Roact.createRef<UIListLayout>());
 		useEffect(() => {
 			const uiListLayout = uiListLayoutRef.value.getValue();
-			assert(uiListLayout, `Failed to get pet mastery UIGridLayout.`);
+			assert(uiListLayout, `Failed to get Pet Mastery's UIListLayout.`);
 
 			const scrollingFrame = uiListLayout.Parent;
-			assert(scrollingFrame, `Failed to get pet mastery ScrollingFrame.`);
-			assert(scrollingFrame.IsA("ScrollingFrame"), `Expected pet mastery to have a ScrollingFrame.`);
+			assert(scrollingFrame, `Failed to get Pet Mastery ScrollingFrame.`);
+			assert(scrollingFrame.IsA("ScrollingFrame"), `Expected Pet Mastery to have a ScrollingFrame.`);
 
-			uiListLayout.Padding = new UDim(0, scrollingFrame.AbsoluteSize.X / 14.3);
-
-			scrollingFrame.GetChildren().forEach((petCard) => {
-				if (petCard.IsA("Frame")) {
-					petCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+			scrollingFrame.GetChildren().forEach((card) => {
+				if (card.IsA("Frame")) {
+					card.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
 				}
 			});
-		});
+
+			const connection = scrollingFrame.GetPropertyChangedSignal("AbsoluteSize").Connect(() => {
+				scrollingFrame.GetChildren().forEach((card) => {
+					if (card.IsA("Frame")) {
+						card.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+					}
+				});
+			});
+
+			const conn = scrollingFrame.ChildAdded.Connect((child) => {
+				if (child.IsA("Frame")) {
+					child.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+				}
+			});
+			return (): void => {
+				connection.Disconnect();
+				conn.Disconnect();
+			};
+		}, [uiListLayoutRef]);
 
 		return (
 			<RescalingScrollingFrame
@@ -57,15 +73,16 @@ export const IndexPetScroll = hooks(
 				BackgroundTransparency={1}
 				Position={UDim2.fromScale(0.225, 0.55)}
 				Size={UDim2.fromScale(0.4, 0.775)}
-				ScrollBarThickness={12}
+				ScrollBarThickness={10}
 				BorderSizePixel={0}
+				ScrollBarImageColor3={Color3.fromRGB(22, 0, 190)}
 				ScrollingDirection={Enum.ScrollingDirection.Y}
 			>
 				<uilistlayout
 					SortOrder={Enum.SortOrder.LayoutOrder}
+					HorizontalAlignment={Enum.HorizontalAlignment.Right}
+					Padding={new UDim(0.01, 0)}
 					Ref={uiListLayoutRef.value}
-					HorizontalAlignment={Enum.HorizontalAlignment.Center}
-					Padding={new UDim(0, 15)}
 				/>
 				{pets.map((petData) => {
 					return (

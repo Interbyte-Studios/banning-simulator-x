@@ -15,6 +15,7 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import { EggName } from "shared/configs/eggs";
 import { StoreState } from "shared/rodux";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
+import { getEggData } from "shared/util/getEggData";
 
 interface IndexEggCardProps extends IndexEggCardMappedProps {
 	egg: EggName;
@@ -45,7 +46,17 @@ function mapStateToProps(state: StoreState): IndexEggCardMappedProps {
 /* eslint-disable jsdoc/require-jsdoc */
 export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
 	hooks((props: IndexEggCardProps, hooks) => {
-		const isDiscovered = props.index.eggs.get(props.egg) !== undefined;
+		let isDiscovered = false;
+		const eggData = getEggData(props.egg);
+		for (const [, petData] of pairs(eggData.pets)) {
+			if (props.index.pets.get(petData.id) !== undefined) {
+				isDiscovered = true;
+				break;
+			}
+		}
+		if (eggData.world === "Limited" && !isDiscovered) {
+			return <></>;
+		}
 
 		const raisedPosition = 0.4;
 		const raisedSpring = new Flipper.Spring(raisedPosition, { frequency: 5 });
@@ -56,63 +67,68 @@ export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
 		const { motor, binding } = useBindingMotor(hooks, normalPosition);
 
 		return (
-			<ImageButton
-				native={{
-					Size: UDim2.fromScale(0.9, 0.125),
-					BackgroundTransparency: 0,
-					BackgroundColor3: Color3.fromRGB(0, 131, 213),
-					LayoutOrder: props.layoutOrder,
-					Image: "",
-				}}
-				events={{
-					/* eslint-disable jsdoc/require-jsdoc */ Activated: (): void => {
-						playSFX(UIEngagement.MajorEngagement);
-
-						if (props.currentEgg !== undefined && props.currentEgg === props.egg) {
-							props.displayEgg(undefined);
-							return;
-						}
-
-						props.displayEgg(props.egg);
-					},
-					MouseEnter: (): void => motor.setGoal(raisedSpring),
-					MouseLeave: (): void => motor.setGoal(normalSpring),
-					/* eslint-enable jsdoc/require-jsdoc */
-				}}
-			>
-				<uicorner CornerRadius={new UDim(1, 0)} />
-				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
-
-				<StrokeTextLabel
+			<BaseFrame BackgroundTransparency={1} LayoutOrder={props.layoutOrder}>
+				<uiaspectratioconstraint AspectRatio={4.5} />
+				<ImageButton
 					native={{
-						Position: UDim2.fromScale(0.55, 0.5),
-						Size: UDim2.fromScale(0.8, 0.9),
-						Text: isDiscovered ? props.egg : "???",
+						Position: UDim2.fromScale(0.53, 0.525),
+						Size: UDim2.fromScale(0.825, 0.95),
+						BackgroundTransparency: 0,
+						BackgroundColor3: Color3.fromRGB(0, 131, 213),
+						LayoutOrder: props.layoutOrder,
+						Image: "",
 					}}
-					stroke={{ native: { Thickness: 3 } }}
-				/>
+					events={{
+						/* eslint-disable jsdoc/require-jsdoc */ Activated: (): void => {
+							playSFX(UIEngagement.MajorEngagement);
 
-				<BaseFrame
-					AnchorPoint={vec2Middle}
-					BackgroundTransparency={0}
-					Position={UDim2.fromScale(0, 0.5)}
-					Size={UDim2.fromScale(0.4, 1.2)}
-					BackgroundColor3={Color3.fromRGB(0, 131, 213)}
+							if (props.currentEgg !== undefined && props.currentEgg === props.egg) {
+								props.displayEgg(undefined);
+								return;
+							}
+
+							props.displayEgg(props.egg);
+						},
+						MouseEnter: (): void => motor.setGoal(raisedSpring),
+						MouseLeave: (): void => motor.setGoal(normalSpring),
+						/* eslint-enable jsdoc/require-jsdoc */
+					}}
 				>
-					<uiaspectratioconstraint AspectRatio={1} />
+					<uiaspectratioconstraint AspectRatio={4.5} />
 					<uicorner CornerRadius={new UDim(1, 0)} />
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
-					<ImageLabel
+					<StrokeTextLabel
 						native={{
-							Size: UDim2.fromScale(0.9, 0.9),
-							Position: binding.map((value) => UDim2.fromScale(0.5, value)),
-							Image: getEggImage(props.egg),
-							ImageColor3: isDiscovered ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0),
+							Position: UDim2.fromScale(0.55, 0.5),
+							Size: UDim2.fromScale(0.8, 0.9),
+							Text: isDiscovered ? props.egg : "???",
 						}}
+						stroke={{ native: { Thickness: 3 } }}
 					/>
-				</BaseFrame>
-			</ImageButton>
+
+					<BaseFrame
+						AnchorPoint={vec2Middle}
+						BackgroundTransparency={0}
+						Position={UDim2.fromScale(0, 0.5)}
+						Size={UDim2.fromScale(0.4, 1.2)}
+						BackgroundColor3={Color3.fromRGB(0, 131, 213)}
+					>
+						<uiaspectratioconstraint AspectRatio={1} />
+						<uicorner CornerRadius={new UDim(1, 0)} />
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
+
+						<ImageLabel
+							native={{
+								Size: UDim2.fromScale(0.9, 0.9),
+								Position: binding.map((value) => UDim2.fromScale(0.5, value)),
+								Image: getEggImage(props.egg),
+								ImageColor3: isDiscovered ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0),
+							}}
+						/>
+					</BaseFrame>
+				</ImageButton>
+			</BaseFrame>
 		);
 	}),
 );

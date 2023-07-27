@@ -58,13 +58,15 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 		const { motor, binding } = useBindingMotor(hooks, normalPosition);
 
 		return (
-			<BaseFrame Size={UDim2.fromScale(0.4, 0.15)} Position={UDim2.fromScale(0.5, 0.5)} LayoutOrder={props.pet}>
-				<uiaspectratioconstraint AspectRatio={3.3} />
+			<BaseFrame BackgroundTransparency={1} LayoutOrder={petData.id}>
+				<uiaspectratioconstraint AspectRatio={4.5} />
 				<ImageButton
 					native={{
+						Position: UDim2.fromScale(0.53, 0.525),
+						Size: UDim2.fromScale(0.825, 0.95),
 						BackgroundTransparency: 0,
-						Size: UDim2.fromScale(1, 1),
 						BackgroundColor3: Color3.fromRGB(0, 131, 213),
+						LayoutOrder: petData.id,
 						Image: "",
 					}}
 					events={{
@@ -86,7 +88,7 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 				>
 					<uicorner CornerRadius={new UDim(1, 0)} />
 					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
-					<uiaspectratioconstraint AspectRatio={4} />
+					<uiaspectratioconstraint AspectRatio={4.5} />
 
 					<StrokeTextLabel
 						native={{
@@ -98,26 +100,27 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 					>
 						<RarityGradient Rarity={petData.rarity} />
 					</StrokeTextLabel>
-				</ImageButton>
-				<BaseFrame
-					BackgroundTransparency={0}
-					Position={UDim2.fromScale(0.05, 0.5)}
-					Size={UDim2.fromScale(0.3, 1.2)}
-					BackgroundColor3={Color3.fromRGB(0, 131, 213)}
-				>
-					<uiaspectratioconstraint AspectRatio={1} />
-					<uicorner CornerRadius={new UDim(1, 0)} />
-					<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
 
-					<ImageLabel
-						native={{
-							Size: UDim2.fromScale(0.9, 0.9),
-							Position: binding.map((value) => UDim2.fromScale(0.5, value)),
-							Image: getPetImage(props.pet, props.currentVariant ?? "regular"),
-							ImageColor3: isDiscovered ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0),
-						}}
-					/>
-				</BaseFrame>
+					<BaseFrame
+						BackgroundTransparency={0}
+						Position={UDim2.fromScale(0, 0.5)}
+						Size={UDim2.fromScale(0.4, 1.2)}
+						BackgroundColor3={Color3.fromRGB(0, 131, 213)}
+					>
+						<uiaspectratioconstraint AspectRatio={1} />
+						<uicorner CornerRadius={new UDim(1, 0)} />
+						<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 100, 163) }} />
+
+						<ImageLabel
+							native={{
+								Size: UDim2.fromScale(0.9, 0.9),
+								Position: binding.map((value) => UDim2.fromScale(0.5, value)),
+								Image: getPetImage(props.pet, props.currentVariant ?? "regular"),
+								ImageColor3: isDiscovered ? Color3.fromRGB(255, 255, 255) : Color3.fromRGB(0, 0, 0),
+							}}
+						/>
+					</BaseFrame>
+				</ImageButton>
 			</BaseFrame>
 		);
 	}),

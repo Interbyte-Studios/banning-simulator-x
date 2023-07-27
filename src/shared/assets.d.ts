@@ -481,6 +481,7 @@ declare namespace assetIds {
 				Molten: string;
 				Royal: string;
 				"Angelic Egg": string;
+				"500K Egg": string;
 			};
 		};
 		vectors: {
