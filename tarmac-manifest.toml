@@ -3413,6 +3413,26 @@ hash = "0ae0841ad69afd3aa1451e2e753ed4cc410cb34abca00eaf7d72ad221586cc22"
 id = 13813998666
 packable = false
 
+[inputs."images/ui/shop/boosts.png"]
+hash = "f33417adb36fec568cf6ff56b1dd85140e8b4ec0dd307cad548da7ef099b59a0"
+id = 14209062323
+packable = false
+
+[inputs."images/ui/shop/currency.png"]
+hash = "af0dba44e5389419799bac98ff5aa0b3e1b2ab335e31a9d1ccb0afe6dee89de1"
+id = 14209062383
+packable = false
+
+[inputs."images/ui/shop/gamepasses.png"]
+hash = "26909c9b9a02df947666c803303430e8a816e8328f29e2708aa927e191b16a82"
+id = 14209062451
+packable = false
+
+[inputs."images/ui/shop/limited pets.png"]
+hash = "bc1b8db392e993e909590481631615a5111c449e0952ae7fb8cc07c42dd6bd22"
+id = 14209062497
+packable = false
+
 [inputs."images/ui/talismanTower/background.png"]
 hash = "ccf23fad28bbf49220ed72aba28a00cdd2cc5d18a9c6d638f32e6c6c1dc5e742"
 id = 11508721514
@@ -3678,11 +3698,6 @@ hash = "2f285faf84e073ab3147595ba8fc954c94ba2b46e294ff571018d2f1d48a9f91"
 id = 11866056920
 packable = false
 
-[inputs."images/vectors/FewGems.png"]
-hash = "15093d77c171183ef9994a24660863f159ea8688bfda6984e2a78acabfe6ebfa"
-id = 11591957751
-packable = false
-
 [inputs."images/vectors/Gear.png"]
 hash = "12bd0d55d814f812c3d575eb79817dd2034b0216fbf03ecb7c26cc61b5735af7"
 id = 14183010620
@@ -3691,21 +3706,6 @@ packable = false
 [inputs."images/vectors/Gem.png"]
 hash = "db6ea11523413280d91b1d5ee292e33cda8e7b55cdc01f6f4447562db489e810"
 id = 11591957802
-packable = false
-
-[inputs."images/vectors/GemBag.png"]
-hash = "3acac8476af3950f6e59b084067ce6db52909b344a05720aff5792efd113c082"
-id = 11591957880
-packable = false
-
-[inputs."images/vectors/GemChest.png"]
-hash = "31480ad80624e05050a6384b73f2a21ffaf4fe158a2e13b8a8a8feb6b9b8aff2"
-id = 11591958036
-packable = false
-
-[inputs."images/vectors/GemVault.png"]
-hash = "a8f91c2988c7017f8c3ab06752e259be0f316371f95a02e95ba994dc491e2840"
-id = 11591958127
 packable = false
 
 [inputs."images/vectors/Hammer.png"]
@@ -3891,6 +3891,66 @@ packable = false
 [inputs."images/vectors/boosts/redTriple.png"]
 hash = "7f4466e540e8aa456d4d149c00fe3d00e216e53e7be423a907d18f5351785ae5"
 id = 12592293985
+packable = false
+
+[inputs."images/vectors/currencies/CoinBag.png"]
+hash = "7632d6d1df79520da0cf49ebf71563e7cc329d01b702125e8d8739f3fa408fb8"
+id = 14207006576
+packable = false
+
+[inputs."images/vectors/currencies/CoinChest.png"]
+hash = "62cc2bf6565bdd2d86c77a985b3639a2f75147206016fbbe019d3d17242e8e2b"
+id = 14207001648
+packable = false
+
+[inputs."images/vectors/currencies/CoinPile.png"]
+hash = "893c6a290995e84f30c714330d67ba20c14c01535f31612c7a57e3209032a531"
+id = 14207001764
+packable = false
+
+[inputs."images/vectors/currencies/CoinSafe.png"]
+hash = "07a327cbaa62c1c5aa20b3b185c05c074bf772611f98545b7e942fd689020cb4"
+id = 14207001946
+packable = false
+
+[inputs."images/vectors/currencies/CyberChest.png"]
+hash = "c1532af4cb10e79336a3f6fbfe8e066bb7f8f33b9c68f230a81791e836bd5a2c"
+id = 14207002104
+packable = false
+
+[inputs."images/vectors/currencies/CyberTokenBag.png"]
+hash = "717437b83f94e7e834ebd6cfb62593958e67ffeedd87af0c589b350fbfb16bcc"
+id = 14207002261
+packable = false
+
+[inputs."images/vectors/currencies/CyberTokenPile.png"]
+hash = "6cedd8cd3f836b82f09fd820d12dec6921aa60ec033f5b9fb7658bd688406fc7"
+id = 14207002426
+packable = false
+
+[inputs."images/vectors/currencies/CyberTokenSafe.png"]
+hash = "0ffe19641b46e333968bb69eef1ebd93d60e4b124516337032ee7729fd2d3f9a"
+id = 14207002630
+packable = false
+
+[inputs."images/vectors/currencies/GemBag.png"]
+hash = "3acac8476af3950f6e59b084067ce6db52909b344a05720aff5792efd113c082"
+id = 14207002868
+packable = false
+
+[inputs."images/vectors/currencies/GemChest.png"]
+hash = "31480ad80624e05050a6384b73f2a21ffaf4fe158a2e13b8a8a8feb6b9b8aff2"
+id = 14207003108
+packable = false
+
+[inputs."images/vectors/currencies/GemPile.png"]
+hash = "15093d77c171183ef9994a24660863f159ea8688bfda6984e2a78acabfe6ebfa"
+id = 14207003346
+packable = false
+
+[inputs."images/vectors/currencies/GemVault.png"]
+hash = "a8f91c2988c7017f8c3ab06752e259be0f316371f95a02e95ba994dc491e2840"
+id = 14207003530
 packable = false
 
 [inputs."images/vectors/trading/DontWant.png"]

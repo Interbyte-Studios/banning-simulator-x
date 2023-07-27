@@ -1,4 +1,5 @@
 import { GameAnalytics } from "@rbxts/gameanalytics";
+import Object from "@rbxts/object-utils";
 import { HttpService, MarketplaceService, Players } from "@rbxts/services";
 import { modifyPetCount } from "server/modules/datastore/pets";
 import { savePlayerData } from "server/modules/datastore/savePlayerData";
@@ -6,6 +7,7 @@ import { retrieveStore } from "server/playerStore";
 import {
 	BIG_CRATE_BUNDLE,
 	BOOST_PRODUCTS,
+	CURRENCY_PURCHASES,
 	EXCLUSIVE_PETS,
 	EXTREME_EXPERIENCE_BUNDLE,
 	GAMEPASS_GIFTS,
@@ -16,8 +18,10 @@ import {
 	PURCHASE_PET_TEAM_PRODUCT,
 	TEN_SPINS,
 } from "shared/configs/game";
+import { WORLDS } from "shared/configs/worlds";
 import { remotes } from "shared/remotes";
 import { storeBoost } from "shared/rodux/boosts";
+import { awardCurrency } from "shared/rodux/currencies";
 import { claimDevProduct } from "shared/rodux/devProducts";
 import { claimGamepass } from "shared/rodux/gamepasses";
 import { claimGamepassGift } from "shared/rodux/gamepassGifts";
@@ -61,6 +65,44 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 	}
 
 	let purchaseProcessed = false;
+	Object.entries(CURRENCY_PURCHASES).forEach(([purchasableCurrency, purchaseData]) =>
+		Object.entries(purchaseData).forEach(([, optionData]) => {
+			if (optionData.devId === receiptInfo.ProductId) {
+				let highestIndex = 0;
+				let highestReward = 0;
+				for (const [worldName, worldData] of pairs(WORLDS)) {
+					const storedWorld = store.getState().worlds.find((world) => world.name === worldName);
+					if (storedWorld === undefined) {
+						continue;
+					}
+
+					if (purchasableCurrency === "gems" && worldData.id > highestIndex) {
+						highestIndex = worldData.id;
+						highestReward = highestIndex * 3000;
+					}
+
+					if (worldData.reward !== purchasableCurrency) {
+						continue;
+					}
+
+					for (const [zoneName, zoneData] of pairs(worldData.zones)) {
+						const storedZone = storedWorld.zones.find((zone) => zone === zoneName);
+						if (storedZone === undefined) {
+							continue;
+						}
+
+						if (zoneData.id > highestIndex) {
+							highestIndex = zoneData.id;
+							highestReward = zoneData.npcs.filter((npc) => npc.isBoss)[0].reward.currency;
+						}
+					}
+				}
+				store.dispatch(awardCurrency(purchasableCurrency, highestReward * optionData.highestZoneMultiplier));
+				purchaseProcessed = true;
+			}
+		}),
+	);
+
 	if (receiptInfo.ProductId === TEN_SPINS) {
 		store.dispatch(addPurchasedSpins(1));
 		purchaseProcessed = true;
