@@ -326,13 +326,11 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 
 			const character = Players.LocalPlayer.Character ?? Players.LocalPlayer.CharacterAdded.Wait()[0];
 			if (character === undefined) {
-				warn(`Could not find character. Will not be able to unbind AutoHatch from RenderStepped.`);
 				return;
 			}
 
 			const humanoid = character.WaitForChild("Humanoid") as Humanoid;
 			if (humanoid === undefined) {
-				warn(`Could not find Humanoid. Will not be able to unbind AutoHatch from RenderStepped.`);
 				return;
 			}
 
@@ -509,7 +507,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 				ContextActionService.UnbindAction("hatchEgg");
 				ContextActionService.UnbindAction("hatchEggTriple");
 			};
-		}, [updated]);
+		}, [updated, props.settings.gameplay.autoHatch]);
 
 		return (
 			<frame Visible={false} Key={updated}>
