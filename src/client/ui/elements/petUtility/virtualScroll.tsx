@@ -167,7 +167,16 @@ export const VirtualScroll = hooks((props: VirtualScrollProps, hooks) => {
 			newPets = props.pets
 				.filter((pet) => {
 					const petData = getPetData(pet.id);
-					return petData.name.lower().match(searchText).size() !== 0;
+
+					if (petData.name.lower().match(searchText).size() !== 0) {
+						return true;
+					}
+
+					if (petData.rarity.lower().match(searchText).size() !== 0) {
+						return true;
+					}
+
+					return false;
 				})
 				.map((pet) => ({ ...pet, isRendered: false }));
 		} else {
