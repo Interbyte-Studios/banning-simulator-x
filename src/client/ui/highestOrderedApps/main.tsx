@@ -306,7 +306,6 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 
 						props.setTradingEnabled();
 					}}
-					onlyShowCurrency={false}
 				/>,
 				<TimeTrials
 					isVisible={false}
@@ -414,7 +413,6 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 							return;
 						}
 					}}
-					onlyShowCurrency={true}
 				/>,
 			);
 		} else if (isVisible("weaponShop")) {
@@ -438,7 +436,6 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 							return;
 						}
 					}}
-					onlyShowCurrency={true}
 				/>,
 			);
 		} else if (isVisible("talismanTower")) {
@@ -462,7 +459,6 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 							return;
 						}
 					}}
-					onlyShowCurrency={true}
 				/>,
 			);
 		} else if (isVisible("petMastery")) {
@@ -496,7 +492,6 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 							return;
 						}
 					}}
-					onlyShowCurrency={true}
 				/>,
 			);
 		} else if (isVisible("accountHub")) {

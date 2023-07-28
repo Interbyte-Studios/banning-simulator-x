@@ -253,6 +253,8 @@ export const BOOST_IMAGES = {
 export const PURCHASE_PET_TEAM_PRODUCT = 1383498501;
 export const PURCHASE_PET_TEAM_PRODUCT_COST = 149;
 
+export const PET_QUEST_PET_ID = 10012;
+
 export const GROUP_ID = 5126818;
 export const GROUP_ROLES: Record<number, { tag: string; color: Color3 }> = {
 	255: {

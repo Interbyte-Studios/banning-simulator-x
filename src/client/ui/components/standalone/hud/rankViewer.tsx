@@ -54,10 +54,11 @@ export const RanksViewer = RoactRodux.connect(mapStateToProps)(
 				native={{
 					AnchorPoint: new Vector2(0, 0.5),
 					Image: assetIds.images.ui.hud["viewer background"],
-					Size: UDim2.fromScale(0.95, 0.155),
-					Position: UDim2.fromScale(0.03, 0.325),
+					Size: UDim2.fromScale(0.2, 0.08),
+					Position: UDim2.fromScale(0.79, 0.5),
 				}}
 			>
+				<uiaspectratioconstraint AspectRatio={4.8} />
 				<StrokeTextLabel
 					native={{
 						Size: UDim2.fromScale(0.65, 0.45),
