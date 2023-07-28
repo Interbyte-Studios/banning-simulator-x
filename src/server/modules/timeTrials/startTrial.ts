@@ -44,8 +44,8 @@ export function startTrial(player: Player): {
 			continue;
 		}
 
-		const healthMultiplier = playerTrial.difficulty === "easy" ? 1.2 : playerTrial.difficulty === "medium" ? 1.3 : 1.4;
-		humanoid.MaxHealth = 200 * healthMultiplier ** playerTrial.wave;
+		const healthMultiplier = playerTrial.difficulty === "easy" ? 1.25 : playerTrial.difficulty === "medium" ? 1.3 : 1.4;
+		humanoid.MaxHealth = 200 * healthMultiplier ** playerTrial.wave + 1;
 		humanoid.Health = humanoid.MaxHealth;
 
 		const root = humanoid.RootPart;
@@ -117,8 +117,8 @@ export function startTrial(player: Player): {
 					}
 
 					const healthMultiplier =
-						currentTrial.difficulty === "easy" ? 1.15 : currentTrial.difficulty === "medium" ? 1.2 : 1.25;
-					humanoid.MaxHealth = 200 * healthMultiplier ** currentTrial.wave;
+						playerTrial.difficulty === "easy" ? 1.25 : playerTrial.difficulty === "medium" ? 1.3 : 1.4;
+					humanoid.MaxHealth = 200 * healthMultiplier ** currentTrial.wave + 1;
 					humanoid.Health = humanoid.MaxHealth;
 
 					const root = humanoid.RootPart;

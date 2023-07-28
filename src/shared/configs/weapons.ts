@@ -617,7 +617,7 @@ export const WEAPONS = {
 		cost: {
 			requiredRank: 10,
 			currency: "gears",
-			amount: 10_000,
+			amount: 2_000_000,
 		},
 		damage: 40_000,
 		world: "Ban Land",
@@ -629,7 +629,7 @@ export const WEAPONS = {
 		cost: {
 			requiredRank: 10,
 			currency: "gears",
-			amount: 75_000,
+			amount: 10_000_000,
 		},
 		damage: 55_000,
 		world: "Ban Land",
@@ -641,7 +641,7 @@ export const WEAPONS = {
 		cost: {
 			requiredRank: 10,
 			currency: "gears",
-			amount: 500_000,
+			amount: 39_000_000,
 		},
 		damage: 80_000,
 		world: "Ban Land",
@@ -653,7 +653,7 @@ export const WEAPONS = {
 		cost: {
 			requiredRank: 10,
 			currency: "gears",
-			amount: 2_000_000,
+			amount: 50_000_000,
 		},
 		damage: 100_000,
 		world: "Ban Land",
