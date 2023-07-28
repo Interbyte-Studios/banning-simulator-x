@@ -17,15 +17,7 @@ import {
 import { testAction } from "./testAction";
 
 const defaultSettings: SettingsState = {
-	autoDelete: {
-		rarities: {
-			Basic: false,
-			Ordinary: false,
-			Rare: false,
-			Epic: false,
-		},
-		easyLegendaries: false,
-	},
+	autoDelete: [],
 	sound: {
 		buttonClick: true,
 		music: 10,
