@@ -49,7 +49,6 @@ export const Settings = RoactRodux.connect(mapStateToProps)(
 			toggleTimeOfDay,
 			togglePetsStudsOfDistance,
 			togglePetsDisplayed,
-			toggleAutoDelete,
 		} = useContext(remoteContext);
 
 		return (
@@ -81,7 +80,8 @@ export const Settings = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.5, 0.575)}
 					Size={UDim2.fromScale(0.925, 0.785)}
 					ScrollBarThickness={12}
-				BorderSizePixel={0}
+					ScrollBarImageColor3={Color3.fromRGB(0, 51, 80)}
+					BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 					CanvasSize={UDim2.fromScale(0, 4)}
 				>
@@ -223,32 +223,6 @@ export const Settings = RoactRodux.connect(mapStateToProps)(
 						enabled={props.settings.visual.petsDisplayed}
 						yPos={0.509}
 						onPressed={(): void => togglePetsDisplayed.SendToServer(!props.settings.visual.petsDisplayed)}
-					/>
-
-					<OptionSectionHeader text={"Auto Delete"} yPos={0.543} />
-					<OptionChoice
-						header={"Basic Rarity"}
-						enabled={props.settings.autoDelete.rarities.Basic}
-						yPos={0.568}
-						onPressed={(): void => toggleAutoDelete.SendToServer("Basic")}
-					/>
-					<OptionChoice
-						header={"Ordinary Rarity"}
-						enabled={props.settings.autoDelete.rarities.Ordinary}
-						yPos={0.601}
-						onPressed={(): void => toggleAutoDelete.SendToServer("Ordinary")}
-					/>
-					<OptionChoice
-						header={"Rare Rarity"}
-						enabled={props.settings.autoDelete.rarities.Rare}
-						yPos={0.634}
-						onPressed={(): void => toggleAutoDelete.SendToServer("Rare")}
-					/>
-					<OptionChoice
-						header={"Epic Rarity"}
-						enabled={props.settings.autoDelete.rarities.Epic}
-						yPos={0.667}
-						onPressed={(): void => toggleAutoDelete.SendToServer("Epic")}
 					/>
 				</scrollingframe>
 			</ImageLabel>

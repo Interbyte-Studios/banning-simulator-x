@@ -1,11 +1,12 @@
 import Roact from "@rbxts/roact";
 import { playSFX, UIEngagement } from "client/util/playSound";
+import assetIds from "shared/assets";
 import { Variants } from "shared/configs/pets";
 import { getPetData } from "shared/util/getPetData";
 
 import { BaseFrame } from "../baseElements/baseFrame";
 import { BaseUIStroke } from "../baseElements/baseUIStroke";
-import { ImageButton } from "../baseElements/imagebuttons/image";
+import { SpringImageButton } from "../baseElements/imagebuttons/springImage";
 import { ImageLabel } from "../baseElements/imagelabels/image";
 import { StrokeTextLabel } from "../baseElements/textlabels/strokeTextLabel";
 import { RarityGradient } from "../gradients/rarityGradient";
@@ -19,6 +20,7 @@ interface PetFrameProps {
 	isBillboard: boolean;
 	shouldBlackout: boolean;
 	shouldEquipBackgrund?: boolean;
+	selectedForAutoDelete?: boolean;
 	onActivated?: () => void;
 }
 
@@ -93,11 +95,10 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 	if (props.onActivated !== undefined) {
 		return (
 			<BaseFrame Size={UDim2.fromScale(0.85, 0.85)} LayoutOrder={props.petId}>
-				<ImageButton
+				<SpringImageButton
 					native={{
 						BackgroundTransparency: 0,
 						BackgroundColor3: props.shouldEquipBackgrund ? Color3.fromRGB(85, 255, 127) : Color3.fromRGB(46, 115, 179),
-						Size: UDim2.fromScale(0.925, 0.925),
 						Image: "",
 					}}
 					events={{
@@ -109,15 +110,26 @@ export function PetFrame(props: PetFrameProps): Roact.Element {
 							}
 						},
 					}}
+					size={{ minSize: 0.825, maxSize: 0.925 }}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
 					<uicorner CornerRadius={new UDim(1, 0)} />
 
 					<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} isBillboard={props.isBillboard} />
 					<PetViewport petId={props.petId} variant={props.variant} shouldBlackout={props.shouldBlackout} />
+					{props.selectedForAutoDelete && (
+						<ImageLabel
+							native={{
+								Size: UDim2.fromScale(0.95, 0.95),
+								Image: assetIds.images.ui.inventory.pets.deleteIndicator,
+							}}
+						>
+							<uiaspectratioconstraint AspectRatio={1} />
+						</ImageLabel>
+					)}
 
 					{elementsToDisplay}
-				</ImageButton>
+				</SpringImageButton>
 			</BaseFrame>
 		);
 	} else {

@@ -36,9 +36,11 @@ export const AccoladeCard = hooks(
 				<uiaspectratioconstraint AspectRatio={7} />
 
 				<BaseFrame
+					AnchorPoint={new Vector2(0, 0.5)}
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(33, 113, 159)}
-					Size={UDim2.fromScale(0.99, 0.95)}
+					Position={UDim2.fromScale(0.01, 0.5)}
+					Size={UDim2.fromScale(0.97, 0.95)}
 				>
 					<uicorner CornerRadius={new UDim(0.2, 0)} />
 					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(15, 51, 70) }} />

@@ -1,5 +1,4 @@
-import { ToggleAutoDeleteDefinition } from "shared/remotes/settings/autoDelete/toggleAutoDelete";
-import { ToggleEasyLegendariesAutoDeleteDefinition } from "shared/remotes/settings/autoDelete/toggleEasyLegendariesAutoDelete";
+import { AddOrRemoveToAutoDeleteDefinition } from "shared/remotes/settings/autoDelete/toggleAutoDelete";
 import { ToggleAutoHatchDefinition } from "shared/remotes/settings/gameplay/toggleAuto";
 import { ToggleWalkSpeedDefinition } from "shared/remotes/settings/gameplay/toggleWalkSpeed";
 import { TogglePublicInventoryDefinition } from "shared/remotes/settings/privacy/publicInventory";
@@ -33,8 +32,5 @@ export const settingsRemoteContext = {
 	togglePublicTradeHistory: fakeRemoteCall<TogglePublicTradeHistoryDefinition>("togglePublicTradeHistory"),
 	tradesEnabled: fakeRemoteCall<ToggleTradesEnabledDefinition>("tradesEnabled"),
 	toggleAuto: fakeRemoteCall<ToggleAutoHatchDefinition>("toggleAuto"),
-	toggleAutoDelete: fakeRemoteCall<ToggleAutoDeleteDefinition>("toggleAutoDelete"),
-	toggleEasyLegendariesAutoDelete: fakeRemoteCall<ToggleEasyLegendariesAutoDeleteDefinition>(
-		"toggleEasyLegendariesAutoDelete",
-	),
+	addOrRemoveToAutoDelete: fakeRemoteCall<AddOrRemoveToAutoDeleteDefinition>("addOrRemoveToAutoDelete"),
 };

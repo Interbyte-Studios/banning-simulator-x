@@ -23,12 +23,13 @@ export const DisplayAdminOptions = hooks(
 				Size={UDim2.fromScale(0.95, 0.675)}
 				ScrollBarThickness={12}
 				BorderSizePixel={0}
+				ScrollBarImageColor3={Color3.fromRGB(0, 51, 80)}
 				ScrollingDirection={Enum.ScrollingDirection.Y}
 				CanvasSize={UDim2.fromScale(0, 1)}
 			>
 				<uigridlayout
 					CellPadding={UDim2.fromScale(0, 0)}
-					CellSize={UDim2.fromScale(0.5, 0.15)}
+					CellSize={UDim2.fromScale(0.49, 0.15)}
 					SortOrder={Enum.SortOrder.LayoutOrder}
 					FillDirectionMaxCells={2}
 				/>

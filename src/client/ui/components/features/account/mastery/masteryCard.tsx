@@ -4,7 +4,7 @@ import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
-import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
+import { statsAbbreviator, twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const MasteryCard = hooks(
@@ -20,9 +20,11 @@ export const MasteryCard = hooks(
 			<BaseFrame Position={UDim2.fromScale(0.5, 0.5)} Size={UDim2.fromScale(1, 0.3)} LayoutOrder={props.level}>
 				<uiaspectratioconstraint AspectRatio={7} />
 				<BaseFrame
+					AnchorPoint={new Vector2(0, 0.5)}
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(33, 113, 159)}
-					Size={UDim2.fromScale(0.99, 0.95)}
+					Position={UDim2.fromScale(0, 0.5)}
+					Size={UDim2.fromScale(0.975, 0.95)}
 				>
 					<uicorner CornerRadius={new UDim(0.2, 0)} />
 					<BaseUIStroke native={{ Thickness: 1.5, Color: Color3.fromRGB(15, 51, 70) }} />
@@ -54,9 +56,9 @@ export const MasteryCard = hooks(
 								Text:
 									props.progress >= props.requiredProgress
 										? "Completed"
-										: `${props.progress} / ${props.requiredProgress} (${twoDpAbbreviator.numberToString(
-												(props.progress / props.requiredProgress) * 100,
-										  )}%)`,
+										: `${statsAbbreviator.numberToString(props.progress)} / ${statsAbbreviator.numberToString(
+												props.requiredProgress,
+										  )} (${twoDpAbbreviator.numberToString((props.progress / props.requiredProgress) * 100)}%)`,
 							}}
 							stroke={{
 								native: { Thickness: 1.5, Color: Color3.fromRGB(15, 51, 70) },

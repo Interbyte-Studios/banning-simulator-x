@@ -8,6 +8,8 @@ import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/stro
 import { PetFrame } from "client/ui/elements/common/petFrame";
 import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { hooks } from "client/ui/hooks";
+import { remoteContext } from "client/ui/mocks/remoteContext";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
 import { Pet, Variants } from "shared/configs/pets";
@@ -15,6 +17,7 @@ import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { StoreState } from "shared/rodux";
 import { EggsState } from "shared/rodux/eggs";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
+import { SettingsState } from "shared/rodux/settings";
 import { WorldPrestigeState } from "shared/rodux/worldPrestige";
 import { getMagnitudeBetweenPlayerAndObject } from "shared/util/getDistanceFromObject";
 import { getEggCost } from "shared/util/getEggCost";
@@ -40,6 +43,7 @@ interface EggHudProps extends EggHudMappedProps {
 }
 
 interface EggHudMappedProps {
+	settings: SettingsState;
 	index: PlayerIndexState;
 	eggs: EggsState;
 	worldPrestige: WorldPrestigeState;
@@ -53,6 +57,7 @@ interface EggHudMappedProps {
  */
 function mapStateToProps(state: StoreState): EggHudMappedProps {
 	return {
+		settings: state.settings,
 		index: state.index,
 		eggs: state.eggs,
 		worldPrestige: state.worldPrestige,
@@ -87,8 +92,11 @@ function shouldDisplayHud(character: Model | undefined, adornee: BasePart): bool
  */
 export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 	hooks((props: EggHudProps, hooks) => {
-		const { useEffect, useState } = hooks;
+		const { useEffect, useState, useContext } = hooks;
 		const [isVisible, setVisibility] = useState(shouldDisplayHud(Players.LocalPlayer.Character, props.adornee));
+
+		// autodelete remote
+		const { addOrRemoveToAutoDelete } = useContext(remoteContext);
 
 		// find reduced egg cost provided by player mastery
 		const eggMasteryReducedMultiplier = getEggsMastery(props.eggs).reducedEggCostMultiplier;
@@ -195,6 +203,11 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 										displayBackground={true}
 										isBillboard={true}
 										shouldBlackout={!hasHatchedVariant}
+										selectedForAutoDelete={props.settings.autoDelete.includes(petInfo.id)}
+										onActivated={(): void => {
+											playSFX(UIEngagement.MajorEngagement);
+											addOrRemoveToAutoDelete.SendToServer(petInfo.id);
+										}}
 									/>
 								);
 							})}

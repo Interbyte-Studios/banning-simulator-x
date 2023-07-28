@@ -1,9 +1,7 @@
 import Net from "@rbxts/net";
 
-import { toggleAutoDeleteDefinition } from "./toggleAutoDelete";
-import { toggleEasyLegendariesAutoDeleteDefinition } from "./toggleEasyLegendariesAutoDelete";
+import { addOrRemoveToAutoDeleteDefinition } from "./toggleAutoDelete";
 
 export const autoDelete = Net.Definitions.Namespace({
-	toggleAutoDelete: toggleAutoDeleteDefinition,
-	toggleEasyLegendariesAutoDelete: toggleEasyLegendariesAutoDeleteDefinition,
+	addOrRemoveToAutoDelete: addOrRemoveToAutoDeleteDefinition,
 });

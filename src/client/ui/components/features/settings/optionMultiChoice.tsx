@@ -14,7 +14,7 @@ export const OptionMultiChoice = hooks(
 		const maximizedSize = 0.9;
 
 		return (
-			<BaseFrame Position={UDim2.fromScale(0.5, props.yPos)} Size={UDim2.fromScale(1, 0.175)}>
+			<BaseFrame Position={UDim2.fromScale(0.48, props.yPos)} Size={UDim2.fromScale(1, 0.175)}>
 				<uiaspectratioconstraint AspectRatio={6.5} />
 				<BaseFrame
 					BackgroundTransparency={0}

@@ -1,6 +1,5 @@
 import Rodux from "@rbxts/rodux";
 import { t } from "@rbxts/t";
-import { Rarities } from "shared/configs/rarities";
 
 export const isValidGraphicsQuality = t.literal("High", "Low");
 export type ValidGraphicsQuality = t.static<typeof isValidGraphicsQuality>;
@@ -17,15 +16,7 @@ export const isImmuneRarity = t.literal("Exclusive", "Legendary", "Prismatic", "
 export type ImmuneRarities = t.static<typeof isImmuneRarity>;
 
 export interface Settings {
-	autoDelete: {
-		rarities: {
-			Basic: boolean;
-			Ordinary: boolean;
-			Rare: boolean;
-			Epic: boolean;
-		};
-		easyLegendaries: boolean;
-	};
+	autoDelete: Array<number>;
 	sound: {
 		buttonClick: boolean;
 		music: number;
@@ -51,8 +42,7 @@ export interface Settings {
 
 export type SettingsState = Settings;
 export type SettingsActions =
-	| ToggleRarityDelete
-	| ToggleEasyLegendariesDelete
+	| AddOrRemoveToAutoDelete
 	| ToggleButtonClickSounds
 	| ToggleMusicVolume
 	| ToggleSoundEffectsVolume
@@ -67,11 +57,9 @@ export type SettingsActions =
 	| TogglePublicTradeHistory
 	| ToggleTradesEnabled;
 
-export interface ToggleRarityDelete extends Rodux.Action<"toggleRarityDelete"> {
-	rarity: Exclude<Rarities, ImmuneRarities>;
+export interface AddOrRemoveToAutoDelete extends Rodux.Action<"addOrRemoveToAutoDelete"> {
+	petId: number;
 }
-
-export interface ToggleEasyLegendariesDelete extends Rodux.Action<"toggleEasyLegendariesDelete"> {}
 
 interface ToggleButtonClickSounds extends Rodux.Action<"toggleButtonClickSounds"> {
 	enabled: boolean;
@@ -116,26 +104,15 @@ interface TogglePublicTradeHistory extends Rodux.Action<"togglePublicTradeHistor
 interface ToggleTradesEnabled extends Rodux.Action<"toggleTradesEnabled"> {}
 
 /**
- * Toggles the auto delete status of a specified rarity.
+ * Sets the auto delete status of a specified pet.
  *
- * @param rarity The rarity to toggle the delete status of.
+ * @param petId The pet id to add or remove from auto delete.
  * @returns The Rodux action to dispatch.
  */
-export function toggleRarityDelete(rarity: Exclude<Rarities, ImmuneRarities>): ToggleRarityDelete & Rodux.AnyAction {
+export function addOrRemoveToAutoDelete(petId: number): AddOrRemoveToAutoDelete & Rodux.AnyAction {
 	return {
-		type: "toggleRarityDelete",
-		rarity,
-	};
-}
-
-/**
- * Toggles the auto delete status of easy legendaries.
- *
- * @returns The Rodux action to dispatch.
- */
-export function toggleEasyLegendariesDelete(): ToggleEasyLegendariesDelete & Rodux.AnyAction {
-	return {
-		type: "toggleEasyLegendariesDelete",
+		type: "addOrRemoveToAutoDelete",
+		petId,
 	};
 }
 
@@ -275,15 +252,7 @@ export function toggleTradesEnabled(): ToggleTradesEnabled & Rodux.AnyAction {
 }
 
 export const defaultSettings: Settings = {
-	autoDelete: {
-		rarities: {
-			Basic: false,
-			Ordinary: false,
-			Rare: false,
-			Epic: false,
-		},
-		easyLegendaries: false,
-	},
+	autoDelete: [],
 	sound: {
 		buttonClick: true,
 		music: 7,
@@ -309,23 +278,18 @@ export const defaultSettings: Settings = {
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const settingsReducer = Rodux.createReducer<SettingsState, SettingsActions>(defaultSettings, {
-	toggleEasyLegendariesDelete: (state) => {
-		return {
-			...state,
-			easyLegendaries: !state.autoDelete.easyLegendaries,
-		};
-	},
-	toggleRarityDelete: (state, action) => {
-		return {
-			...state,
-			autoDelete: {
-				...state.autoDelete,
-				rarities: {
-					...state.autoDelete.rarities,
-					[action.rarity]: !state.autoDelete.rarities[action.rarity],
-				},
-			},
-		};
+	addOrRemoveToAutoDelete: (state, action) => {
+		if (state.autoDelete.includes(action.petId)) {
+			return {
+				...state,
+				autoDelete: state.autoDelete.filter((petId) => petId !== action.petId),
+			};
+		} else {
+			return {
+				...state,
+				autoDelete: [...state.autoDelete, action.petId],
+			};
+		}
 	},
 	toggleButtonClickSounds: (state, action) => {
 		return {

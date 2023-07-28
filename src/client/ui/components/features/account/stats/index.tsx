@@ -7,6 +7,7 @@ import { hooks } from "client/ui/hooks";
 import { formatTime } from "client/util/formatTime";
 import { GROUP_ROLES } from "shared/configs/game";
 import { TITLES } from "shared/configs/titles";
+import { getPetStrength } from "shared/util/getPetStrength";
 import { getTalismanData } from "shared/util/getTalismanData";
 import { getWeaponInfo } from "shared/util/getWeaponInfo";
 import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
@@ -43,6 +44,8 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 	const [legendariesHatched, setLegendariesHatched] = useState(storeState.eggs.rarities.Legendary);
 	const [prismaticsHatched, setPrismaticsHatched] = useState(storeState.eggs.rarities.Prismatic);
 	const [primordialsHatched, setPrimordialsHatched] = useState(storeState.eggs.rarities.Primordial);
+	const [combinedDamage, setCombinedDamage] = useState(0);
+	const [combinedBans, setCombinedBans] = useState(0);
 
 	let totalRegularEggHatches = 0;
 	let totalVoidEggHatches = 0;
@@ -100,6 +103,15 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 				card.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
 			}
 		});
+
+		const connection = scrollingFrame.GetPropertyChangedSignal("AbsoluteSize").Connect(() => {
+			scrollingFrame.GetChildren().forEach((card) => {
+				if (card.IsA("Frame")) {
+					card.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+				}
+			});
+		});
+		return (): void => connection.Disconnect();
 	});
 
 	useEffect(() => {
@@ -160,6 +172,19 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 			if (newState.eggs.rarities.Primordial !== oldState.eggs.rarities.Primordial) {
 				setTalisman(newState.eggs.rarities.Primordial);
 			}
+
+			if (newState.pets !== oldState.pets) {
+				const equippedPets = newState.pets.filter((pet) => pet.equipped);
+				let newCombinedDamage = 0;
+				let newCombinedBans = 0;
+				for (const pet of equippedPets) {
+					const petStrength = getPetStrength(pet);
+					newCombinedDamage += petStrength.petDamage;
+					newCombinedBans += petStrength.petBans;
+				}
+				setCombinedDamage(newCombinedDamage);
+				setCombinedBans(newCombinedBans);
+			}
 		});
 
 		return (): void => connection.disconnect();
@@ -190,6 +215,17 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 		setPrismaticsHatched(currentState.eggs.rarities.Prismatic);
 		setPrimordialsHatched(currentState.eggs.rarities.Primordial);
 		setLegendariesHatched(currentState.eggs.rarities.Legendary);
+
+		const equippedPets = currentState.pets.filter((pet) => pet.equipped);
+		let newCombinedDamage = 0;
+		let newCombinedBans = 0;
+		equippedPets.forEach((pet) => {
+			const strength = getPetStrength(pet);
+			newCombinedDamage += strength.petDamage;
+			newCombinedBans += strength.petBans;
+		});
+		setCombinedDamage(newCombinedDamage);
+		setCombinedBans(newCombinedBans);
 	}, [props.viewedPlayer]);
 
 	return (
@@ -207,11 +243,12 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 				Size={UDim2.fromScale(0.5, 0.685)}
 				ScrollBarThickness={12}
 				BorderSizePixel={0}
+				ScrollBarImageColor3={Color3.fromRGB(0, 51, 80)}
 				ScrollingDirection={Enum.ScrollingDirection.Y}
 			>
 				<uilistlayout
-					HorizontalAlignment={Enum.HorizontalAlignment.Center}
-					Padding={new UDim(0.025, 0)}
+					HorizontalAlignment={Enum.HorizontalAlignment.Left}
+					Padding={new UDim(0.005, 0)}
 					Ref={uiListLayoutRef.value}
 					SortOrder={Enum.SortOrder.LayoutOrder}
 				/>
@@ -233,6 +270,8 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 				<StatCard header={"Weapon:"} stat={weaponName} layoutId={10} />
 				<StatCard header={"Talisman:"} stat={talismanName} layoutId={11} />
 				<StatCard header={"Group Rank:"} stat={groupRankName} textColor={groupRankColor} layoutId={12} />
+				<StatCard header={"Pet Damage:"} stat={statsAbbreviator.numberToString(combinedDamage)} layoutId={13} />
+				<StatCard header={"Pet Bans:"} stat={statsAbbreviator.numberToString(combinedBans)} layoutId={14} />
 			</RescalingScrollingFrame>
 		</>
 	);
