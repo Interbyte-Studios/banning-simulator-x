@@ -50,14 +50,14 @@ export const TitlesItems = RoactRodux.connect(mapStateToProps)(
 
 			scrollingFrame.GetChildren().forEach((petCard) => {
 				if (petCard.IsA("Frame")) {
-					petCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 9);
+					petCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 9.5);
 				}
 			});
 
 			const connection = scrollingFrame.GetPropertyChangedSignal("AbsoluteSize").Connect(() => {
 				scrollingFrame.GetChildren().forEach((petCard) => {
 					if (petCard.IsA("Frame")) {
-						petCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 9);
+						petCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 9.5);
 					}
 				});
 			});
@@ -171,13 +171,14 @@ export const TitlesItems = RoactRodux.connect(mapStateToProps)(
 					Position={UDim2.fromScale(0.5, 0.615)}
 					Size={UDim2.fromScale(0.95, 0.7)}
 					ScrollBarThickness={12}
-				BorderSizePixel={0}
+					BorderSizePixel={0}
+					ScrollBarImageColor3={Color3.fromRGB(0, 51, 80)}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uilistlayout
 						SortOrder={Enum.SortOrder.LayoutOrder}
 						Ref={uiListLayoutRef.value}
-						HorizontalAlignment={Enum.HorizontalAlignment.Center}
+						HorizontalAlignment={Enum.HorizontalAlignment.Left}
 						Padding={new UDim(0, 15)}
 					/>
 					{titlesToDisplay.map((title) => {
@@ -194,8 +195,10 @@ export const TitlesItems = RoactRodux.connect(mapStateToProps)(
 						return (
 							<BaseFrame Size={UDim2.fromScale(1, 0.2)} LayoutOrder={title.id}>
 								<BaseFrame
+									AnchorPoint={new Vector2(0, 0.5)}
 									BackgroundTransparency={0}
 									BackgroundColor3={Color3.fromRGB(49, 123, 188)}
+									Position={UDim2.fromScale(0.01, 0.5)}
 									Size={UDim2.fromScale(0.99, 0.95)}
 								>
 									<uiaspectratioconstraint AspectRatio={9.6} />

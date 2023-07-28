@@ -131,7 +131,7 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 
 			scrollingFrame.GetChildren().forEach((adminCard) => {
 				if (adminCard.IsA("ImageLabel")) {
-					adminCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+					adminCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 5.75);
 				}
 			});
 		});
@@ -176,7 +176,8 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 					Position={UDim2.fromScale(0.5, 0.62)}
 					Size={UDim2.fromScale(0.95, 0.675)}
 					ScrollBarThickness={12}
-				BorderSizePixel={0}
+					ScrollBarImageColor3={Color3.fromRGB(0, 51, 80)}
+					BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uilistlayout
@@ -244,7 +245,8 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 					Position={UDim2.fromScale(0.5, 0.62)}
 					Size={UDim2.fromScale(0.95, 0.675)}
 					ScrollBarThickness={12}
-				BorderSizePixel={0}
+					BorderSizePixel={0}
+					ScrollBarImageColor3={Color3.fromRGB(0, 51, 80)}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uigridlayout

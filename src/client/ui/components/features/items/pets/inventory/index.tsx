@@ -37,6 +37,7 @@ export const PetItems = RoactRodux.connect(petItemsMapStateToProps)((props: PetI
 			searchText={props.searchText}
 			size={UDim2.fromScale(0.965, 0.74)}
 			position={UDim2.fromScale(0.5, 0.495)}
+			scrollBarImageColor={Color3.fromRGB(0, 51, 80)}
 			scrollBarThickness={12}
 			inventoryFrame={{
 				multiDeleteEnabled: props.multiDeleteEnabled,

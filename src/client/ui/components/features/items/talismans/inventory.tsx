@@ -89,7 +89,9 @@ export const TalismanItems = RoactRodux.connect(mapStateToProps)(
 						Size={UDim2.fromScale(1, 1)}
 						Position={UDim2.fromScale(0.5, 0.5)}
 						ScrollBarThickness={12}
-				BorderSizePixel={0}
+						BorderSizePixel={0}
+						ScrollBarImageColor3={Color3.fromRGB(0, 51, 80)}
+						ScrollingDirection={Enum.ScrollingDirection.Y}
 					>
 						<uigridlayout
 							CellPadding={UDim2.fromOffset(6, 6)}

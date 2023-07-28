@@ -48,8 +48,10 @@ export const StatCard = hooks(
 			<BaseFrame Size={UDim2.fromScale(1, 0.175)} LayoutOrder={props.layoutId}>
 				<uiaspectratioconstraint AspectRatio={6.5} />
 				<BaseFrame
+					AnchorPoint={new Vector2(0, 0.5)}
 					BackgroundTransparency={0}
 					BackgroundColor3={Color3.fromRGB(0, 94, 153)}
+					Position={UDim2.fromScale(0, 0.5)}
 					Size={UDim2.fromScale(0.95, 0.95)}
 				>
 					<uicorner CornerRadius={new UDim(0.2, 0)} />

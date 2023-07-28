@@ -211,7 +211,8 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 					Position={UDim2.fromScale(0.5, 0.62)}
 					Size={UDim2.fromScale(0.95, 0.675)}
 					ScrollBarThickness={12}
-				BorderSizePixel={0}
+					ScrollBarImageColor3={Color3.fromRGB(0, 51, 80)}
+					BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uilistlayout

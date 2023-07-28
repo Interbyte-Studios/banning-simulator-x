@@ -52,7 +52,7 @@ export const Accolades = hooks((props: AccoladesProps, hooks) => {
 
 		scrollingFrame.GetChildren().forEach((card) => {
 			if (card.IsA("Frame")) {
-				card.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+				card.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4.5);
 			}
 		});
 	});
@@ -72,10 +72,11 @@ export const Accolades = hooks((props: AccoladesProps, hooks) => {
 				Size={UDim2.fromScale(0.95, 0.675)}
 				ScrollBarThickness={10}
 				BorderSizePixel={0}
+				ScrollBarImageColor3={Color3.fromRGB(0, 51, 80)}
 				ScrollingDirection={Enum.ScrollingDirection.Y}
 			>
 				<uilistlayout
-					HorizontalAlignment={Enum.HorizontalAlignment.Center}
+					HorizontalAlignment={Enum.HorizontalAlignment.Left}
 					Ref={uiListLayoutRef.value}
 					Padding={new UDim(0.01, 0)}
 					SortOrder={Enum.SortOrder.LayoutOrder}
