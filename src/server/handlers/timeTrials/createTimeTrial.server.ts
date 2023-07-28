@@ -52,7 +52,7 @@ remotes.Server.GetNamespace("timeTrials")
 					const playerTrial = currentTimeTrials.get(player);
 					if (playerTrial !== undefined) {
 						const difficultyMultiplier =
-							playerTrial.difficulty === "easy" ? 1.1 : playerTrial.difficulty === "medium" ? 1.2 : 1.3;
+							playerTrial.difficulty === "easy" ? 1.25 : playerTrial.difficulty === "medium" ? 1.35 : 1.45;
 						const waveMultiplier = 5 * playerTrial.wave;
 						store.dispatch(awardCurrency("gears", waveMultiplier * difficultyMultiplier ** playerTrial.wave));
 					}
@@ -83,7 +83,7 @@ remotes.Server.GetNamespace("timeTrials")
 			const playerTrial = currentTimeTrials.get(player);
 			if (playerTrial !== undefined) {
 				const difficultyMultiplier =
-					playerTrial.difficulty === "easy" ? 1.1 : playerTrial.difficulty === "medium" ? 1.2 : 1.28;
+					playerTrial.difficulty === "easy" ? 1.25 : playerTrial.difficulty === "medium" ? 1.35 : 1.45;
 				const waveMultiplier = 5 * playerTrial.wave;
 				store.dispatch(awardCurrency("gears", waveMultiplier * difficultyMultiplier ** playerTrial.wave));
 
