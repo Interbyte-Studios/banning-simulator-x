@@ -66,7 +66,6 @@ remotes.Server.GetNamespace("timeTrials")
 
 			// set timer to initial value
 			player.SetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE, TIME_TRIAL_WAITING_ATTRIBUTE);
-			warn(`difficulty: ${difficulty}`);
 			player.SetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE, difficulty);
 			player.SetAttribute(TIME_TRIAL_WAVE_ATTRIBUTE, difficulty);
 
@@ -84,7 +83,7 @@ remotes.Server.GetNamespace("timeTrials")
 			const playerTrial = currentTimeTrials.get(player);
 			if (playerTrial !== undefined) {
 				const difficultyMultiplier =
-					playerTrial.difficulty === "easy" ? 1.1 : playerTrial.difficulty === "medium" ? 1.2 : 1.3;
+					playerTrial.difficulty === "easy" ? 1.1 : playerTrial.difficulty === "medium" ? 1.2 : 1.28;
 				const waveMultiplier = 5 * playerTrial.wave;
 				store.dispatch(awardCurrency("gears", waveMultiplier * difficultyMultiplier ** playerTrial.wave));
 
@@ -92,11 +91,6 @@ remotes.Server.GetNamespace("timeTrials")
 					if (playerTrial.wave > store.getState().timeTrials["Ban Land"].highestHardWave) {
 						store.dispatch(setHighestHardWave("Ban Land", playerTrial.wave));
 					}
-					warn(
-						`Highest hard wave was: ${store.getState().timeTrials["Ban Land"].highestHardWave} | Current wave was: ${
-							playerTrial.wave
-						}`,
-					);
 				} else warn(`Difficulty was: ${playerTrial.difficulty}`);
 			}
 			cleanupTrial(player);
