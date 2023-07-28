@@ -100,6 +100,15 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 				card.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
 			}
 		});
+
+		const connection = scrollingFrame.GetPropertyChangedSignal("AbsoluteSize").Connect(() => {
+			scrollingFrame.GetChildren().forEach((card) => {
+				if (card.IsA("Frame")) {
+					card.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+				}
+			});
+		});
+		return (): void => connection.Disconnect();
 	});
 
 	useEffect(() => {
@@ -207,11 +216,12 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 				Size={UDim2.fromScale(0.5, 0.685)}
 				ScrollBarThickness={12}
 				BorderSizePixel={0}
+				ScrollBarImageColor3={Color3.fromRGB(0, 51, 80)}
 				ScrollingDirection={Enum.ScrollingDirection.Y}
 			>
 				<uilistlayout
-					HorizontalAlignment={Enum.HorizontalAlignment.Center}
-					Padding={new UDim(0.025, 0)}
+					HorizontalAlignment={Enum.HorizontalAlignment.Left}
+					Padding={new UDim(0.005, 0)}
 					Ref={uiListLayoutRef.value}
 					SortOrder={Enum.SortOrder.LayoutOrder}
 				/>

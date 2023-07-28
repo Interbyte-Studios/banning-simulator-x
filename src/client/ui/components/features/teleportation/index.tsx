@@ -34,9 +34,24 @@ export const Teleportation = hooks((props: TeleportationProps, { useState, useVa
 
 		scrollingFrame.GetChildren().forEach((teleportationCard) => {
 			if (teleportationCard.IsA("ImageLabel")) {
-				teleportationCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+				teleportationCard.Size = UDim2.fromOffset(
+					scrollingFrame.AbsoluteSize.X,
+					scrollingFrame.AbsoluteSize.X / (worldTeleportToView === undefined ? 5 : 4),
+				);
 			}
 		});
+
+		const connection = scrollingFrame.GetPropertyChangedSignal("AbsoluteSize").Connect(() => {
+			scrollingFrame.GetChildren().forEach((teleportationCard) => {
+				if (teleportationCard.IsA("ImageLabel")) {
+					teleportationCard.Size = UDim2.fromOffset(
+						scrollingFrame.AbsoluteSize.X,
+						scrollingFrame.AbsoluteSize.X / (worldTeleportToView === undefined ? 5 : 4),
+					);
+				}
+			});
+		});
+		return (): void => connection.Disconnect();
 	}, [uiListLayoutRef]);
 
 	if (worldTeleportToView !== undefined) {
@@ -80,13 +95,14 @@ export const Teleportation = hooks((props: TeleportationProps, { useState, useVa
 					Position={UDim2.fromScale(0.5, 0.6)}
 					Size={UDim2.fromScale(0.95, 0.7)}
 					ScrollBarThickness={12}
+					ScrollBarImageColor3={Color3.fromRGB(0, 51, 80)}
 					BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uilistlayout
 						SortOrder={Enum.SortOrder.LayoutOrder}
 						Ref={uiListLayoutRef.value}
-						HorizontalAlignment={Enum.HorizontalAlignment.Center}
+						HorizontalAlignment={Enum.HorizontalAlignment.Left}
 						Padding={new UDim(0, 10)}
 					/>
 					{zonesToDisplay}

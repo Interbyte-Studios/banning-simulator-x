@@ -8,7 +8,7 @@ export const OptionSectionHeader = hooks((props: { yPos: number; text: string })
 		<StrokeTextLabel
 			native={{
 				Size: UDim2.fromScale(0.9, 0.018),
-				Position: UDim2.fromScale(0.5, props.yPos),
+				Position: UDim2.fromScale(0.48, props.yPos),
 				Text: props.text,
 			}}
 			stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(0, 56, 125) } }}
