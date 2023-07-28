@@ -732,6 +732,7 @@ declare namespace assetIds {
 				boosts: string;
 				currency: string;
 				gamepasses: string;
+				accolades: string;
 				"limited pets": string;
 			};
 			autoDelete: {

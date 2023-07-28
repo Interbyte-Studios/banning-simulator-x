@@ -113,7 +113,6 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 
 			const character = playerViewing.Character;
 			if (character === undefined) {
-				warn(`Failed to get character of player ${playerViewing.Name} for account viewport.`);
 				return;
 			}
 
@@ -124,7 +123,6 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 			const viewportChar = character.Clone();
 			const humanoid = viewportChar.FindFirstChildOfClass("Humanoid");
 			if (humanoid === undefined) {
-				warn(`Failed to get humanoid of player ${playerViewing.Name} for account viewport.`);
 				return;
 			}
 

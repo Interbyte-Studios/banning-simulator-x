@@ -81,6 +81,7 @@ return {
 				["Armored Spartan"] = "rbxassetid://11440087542",
 				["BIG Royal Bunny"] = "rbxassetid://13813996517",
 				["Balloon Dragon"] = "rbxassetid://13989138041",
+				["Bio Destroyer"] = "rbxassetid://14220697737",
 				["Bumble Bee"] = "rbxassetid://11440087721",
 				Bunny = "rbxassetid://11440335126",
 				["Bunny Bee"] = "rbxassetid://11440087900",
@@ -753,11 +754,14 @@ return {
 				["setting background"] = "rbxassetid://10832810658",
 			},
 			shop = {
+				accolades = "rbxassetid://14220507218",
 				background = "rbxassetid://13813998666",
+				["biweekly pet"] = "rbxassetid://14220662283",
 				boosts = "rbxassetid://14209062323",
 				currency = "rbxassetid://14209062383",
 				gamepasses = "rbxassetid://14209062451",
 				["limited pets"] = "rbxassetid://14209062497",
+				["playtime rewards"] = "rbxassetid://14220662358",
 			},
 			talismanTower = {
 				background = "rbxassetid://11508721514",
