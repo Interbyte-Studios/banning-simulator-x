@@ -202,9 +202,8 @@ hatchEggRemote.SetCallback(
 
 			// check if it should be auto deleted
 			let autoDeleted = false;
-
 			if (!isImmuneRarity(pet.rarity)) {
-				autoDeleted = currentState.settings.autoDelete.rarities[pet.rarity];
+				autoDeleted = currentState.settings.autoDelete.includes(pet.id);
 			}
 
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
