@@ -4,7 +4,7 @@ import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
-import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
+import { statsAbbreviator, twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const MasteryCard = hooks(
@@ -56,9 +56,9 @@ export const MasteryCard = hooks(
 								Text:
 									props.progress >= props.requiredProgress
 										? "Completed"
-										: `${props.progress} / ${props.requiredProgress} (${twoDpAbbreviator.numberToString(
-												(props.progress / props.requiredProgress) * 100,
-										  )}%)`,
+										: `${statsAbbreviator.numberToString(props.progress)} / ${statsAbbreviator.numberToString(
+												props.requiredProgress,
+										  )} (${twoDpAbbreviator.numberToString((props.progress / props.requiredProgress) * 100)}%)`,
 							}}
 							stroke={{
 								native: { Thickness: 1.5, Color: Color3.fromRGB(15, 51, 70) },
