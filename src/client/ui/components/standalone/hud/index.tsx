@@ -21,6 +21,9 @@ interface HudProps {
 	displaySettings: () => void;
 	displayShop: () => void;
 	displaySpinWheel: () => void;
+	displayAccolades: () => void;
+	displayMastery: () => void;
+	displayPetMastery: () => void;
 }
 
 /**
@@ -110,14 +113,14 @@ export const Hud = hooks((props: HudProps) => {
 			<HudIcon
 				icon={assetIds.images.ui.account.accountMastery}
 				title={"Mastery"}
-				onClick={(): void => {}}
+				onClick={(): void => props.displayMastery()}
 				position={UDim2.fromScale(0.032, 0.666)}
 				size={0.075}
 			/>
 			<HudIcon
 				icon={assetIds.images.ui.shop.accolades}
 				title={"Accolades"}
-				onClick={(): void => {}}
+				onClick={(): void => props.displayAccolades()}
 				position={UDim2.fromScale(0.083, 0.666)}
 				size={0.075}
 			/>
@@ -131,7 +134,7 @@ export const Hud = hooks((props: HudProps) => {
 			<HudIcon
 				icon={assetIds.images.ui.shop["biweekly pet"]}
 				title={"Index"}
-				onClick={(): void => {}}
+				onClick={(): void => props.displayPetMastery()}
 				position={UDim2.fromScale(0.185, 0.666)}
 				size={0.075}
 			/>

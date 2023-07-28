@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Roact from "@rbxts/roact";
-import { Players } from "@rbxts/services";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
@@ -20,7 +19,6 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 export const AccoladeCard = hooks(
 	(
 		props: {
-			playerViewing: Player;
 			ownsAccolade: boolean;
 			accoladeProgress: AccoladeCompletion;
 			accoladeData: Accolade;
@@ -120,10 +118,6 @@ export const AccoladeCard = hooks(
 							/* eslint-disable jsdoc/require-jsdoc */
 							Activated: async (): Promise<void> => {
 								playSFX(UIEngagement.MinorEngagement);
-								if (props.playerViewing.UserId !== Players.LocalPlayer.UserId) {
-									return;
-								}
-
 								if (props.accoladeProgress !== true) {
 									addAnnouncement("You don't meet the requirements to claim that accolade.", AnnouncementType.Error);
 									return;
@@ -158,11 +152,7 @@ export const AccoladeCard = hooks(
 						<StrokeTextLabel
 							native={{
 								Size: UDim2.fromScale(0.8, 0.8),
-								Text: props.ownsAccolade
-									? "Claimed"
-									: props.playerViewing.UserId === Players.LocalPlayer.UserId
-									? "Claim"
-									: "Unclaimed",
+								Text: props.ownsAccolade ? "Claimed" : "Claim",
 							}}
 							stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(91, 153, 79) } }}
 						/>

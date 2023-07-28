@@ -20,7 +20,9 @@ import { isValidWorld } from "shared/util/isValidWorld";
 import { LocalMessages } from "../components/announcements";
 import { EggHud } from "../components/eggs/control";
 import { EggCost } from "../components/eggs/costs";
+import { Accolades } from "../components/features/accolades";
 import { AccountHub } from "../components/features/account";
+import { Mastery } from "../components/features/accountMastery";
 import { AutoFight } from "../components/features/auto fight";
 import { Codes } from "../components/features/codes";
 import { ItemInventory } from "../components/features/items";
@@ -59,6 +61,8 @@ interface AppProps {
 }
 
 const visibilityStates = {
+	accolades: false,
+	accountMastery: false,
 	teleportation: false,
 	weaponShop: false,
 	talismanTower: false,
@@ -298,6 +302,9 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displaySpinWheel={(): void => setVisibility({ ...visibilityStates, spinWheel: true })}
+					displayAccolades={(): void => setVisibility({ ...visibilityStates, accolades: true })}
+					displayMastery={(): void => setVisibility({ ...visibilityStates, accountMastery: true })}
+					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -407,6 +414,9 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displaySpinWheel={(): void => setVisibility({ ...visibilityStates, spinWheel: true })}
+					displayAccolades={(): void => setVisibility({ ...visibilityStates, accolades: true })}
+					displayMastery={(): void => setVisibility({ ...visibilityStates, accountMastery: true })}
+					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -430,6 +440,9 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displaySpinWheel={(): void => setVisibility({ ...visibilityStates, spinWheel: true })}
+					displayAccolades={(): void => setVisibility({ ...visibilityStates, accolades: true })}
+					displayMastery={(): void => setVisibility({ ...visibilityStates, accountMastery: true })}
+					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -453,6 +466,9 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displaySpinWheel={(): void => setVisibility({ ...visibilityStates, spinWheel: true })}
+					displayAccolades={(): void => setVisibility({ ...visibilityStates, accolades: true })}
+					displayMastery={(): void => setVisibility({ ...visibilityStates, accountMastery: true })}
+					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -486,6 +502,9 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
 					displaySpinWheel={(): void => setVisibility({ ...visibilityStates, spinWheel: true })}
+					displayAccolades={(): void => setVisibility({ ...visibilityStates, accolades: true })}
+					displayMastery={(): void => setVisibility({ ...visibilityStates, accountMastery: true })}
+					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -494,6 +513,10 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					}}
 				/>,
 			);
+		} else if (isVisible("accolades")) {
+			components.push(<Accolades hideMenu={(): void => setVisibility((prev) => ({ ...prev, accolades: false }))} />);
+		} else if (isVisible("accountMastery")) {
+			components.push(<Mastery hideMenu={(): void => setVisibility((prev) => ({ ...prev, accountMastery: false }))} />);
 		} else if (isVisible("accountHub")) {
 			components.push(<AccountHub hideMenu={(): void => setVisibility((prev) => ({ ...prev, accountHub: false }))} />);
 		} else if (isVisible("codes")) {
