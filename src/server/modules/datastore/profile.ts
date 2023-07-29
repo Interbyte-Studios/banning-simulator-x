@@ -5,6 +5,7 @@ import { defaultBoosts, SerializedBoostsState } from "shared/rodux/boosts";
 import { defaultCurrencies } from "shared/rodux/currencies";
 import { defaultTalismanId } from "shared/rodux/currentTalisman";
 import { defaultCurrentWeaponState } from "shared/rodux/currentWeapon";
+import { defaultDailyRewards } from "shared/rodux/dailyRewards";
 import { defaultDevProductState } from "shared/rodux/devProducts";
 import { defaultEggs } from "shared/rodux/eggs";
 import { defaultExperienceState } from "shared/rodux/experience";
@@ -75,6 +76,7 @@ export const profileTemplate: ProfileState = {
 	currencies: defaultCurrencies,
 	currentWeapon: defaultCurrentWeaponState,
 	currentTalisman: defaultTalismanId,
+	dailyRewards: defaultDailyRewards,
 	devProducts: defaultDevProductState,
 	eggs: defaultEggs,
 	experience: defaultExperienceState,

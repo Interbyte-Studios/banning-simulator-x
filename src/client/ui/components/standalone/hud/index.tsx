@@ -24,6 +24,7 @@ interface HudProps {
 	displayAccolades: () => void;
 	displayMastery: () => void;
 	displayPetMastery: () => void;
+	displayDailyRewards: () => void;
 	hiddenHud: boolean;
 }
 
@@ -161,7 +162,7 @@ export const Hud = hooks((props: HudProps) => {
 						<HudIcon
 							icon={assetIds.images.ui.shop["playtime rewards"]}
 							title={"Rewards"}
-							onClick={(): void => {}}
+							onClick={(): void => props.displayDailyRewards()}
 							position={UDim2.fromScale(0.134, 0.666)}
 							size={{ minSize: 0.9, maxSize: 1 }}
 						/>

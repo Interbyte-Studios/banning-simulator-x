@@ -37,6 +37,7 @@ import { RankUpgrade } from "../components/ranks/menu";
 import { TalismanTowerHandle } from "../components/shops/talismanShop";
 import { WeaponShopHandle } from "../components/shops/weaponShop";
 import { BoostCounter } from "../components/standalone/boostCounter";
+import { DailyRewards } from "../components/standalone/dailyRewards";
 import { Fusing } from "../components/standalone/fusing";
 import { Hud } from "../components/standalone/hud";
 import { CurrencyGainAnimation } from "../components/standalone/notifications/currencyGainAnimation";
@@ -63,6 +64,7 @@ interface AppProps {
 const visibilityStates = {
 	accolades: false,
 	accountMastery: false,
+	dailyRewards: false,
 	teleportation: false,
 	weaponShop: false,
 	talismanTower: false,
@@ -81,7 +83,7 @@ const visibilityStates = {
 };
 
 const updateLogIcon = new Icon().setImage(assetIds.images.decals.UpdateLog).setLabel("Update Log");
-const blurEffect = new Instance("BlurEffect");
+const blurEffect = Lighting.WaitForChild("Blur") as BlurEffect;
 blurEffect.Size = 0;
 blurEffect.Parent = Lighting;
 
@@ -255,6 +257,20 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 	});
 
 	/**
+	 * Toggles the blur effect.
+	 *
+	 * @param display Whether or not to display the blur.
+	 */
+	const toggleBlur = (display: boolean): void => {
+		if (display) {
+			blurEffect.Size = 0;
+			TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 20 }).Play();
+		} else {
+			TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 0 }).Play();
+		}
+	};
+
+	/**
 	 * Determines if any menu is visible.
 	 *
 	 * @param currentMenu The current menu that is being displayed.
@@ -277,14 +293,11 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 	 */
 	const isVisible = useCallback((currentMenu: keyof typeof visibilityStates) => visibility[currentMenu], [visibility]);
 
-	useEffect(() => {
-		if (isMenuVisible() && !isVisible("autoFight") && !isVisible("weaponShop") && !isVisible("talismanTower")) {
-			blurEffect.Size = 0;
-			TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 20 }).Play();
-		} else {
-			TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 0 }).Play();
-		}
-	}, [visibility, isVisible]);
+	useEffect(
+		() =>
+			toggleBlur(isMenuVisible() && !isVisible("autoFight") && !isVisible("weaponShop") && !isVisible("talismanTower")),
+		[visibility, isVisible],
+	);
 
 	/**
 	 * The components that are visible.
@@ -305,6 +318,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayAccolades={(): void => setVisibility({ ...visibilityStates, accolades: true })}
 					displayMastery={(): void => setVisibility({ ...visibilityStates, accountMastery: true })}
 					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
+					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -418,6 +432,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayAccolades={(): void => setVisibility({ ...visibilityStates, accolades: true })}
 					displayMastery={(): void => setVisibility({ ...visibilityStates, accountMastery: true })}
 					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
+					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -445,6 +460,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayAccolades={(): void => setVisibility({ ...visibilityStates, accolades: true })}
 					displayMastery={(): void => setVisibility({ ...visibilityStates, accountMastery: true })}
 					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
+					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -472,6 +488,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayAccolades={(): void => setVisibility({ ...visibilityStates, accolades: true })}
 					displayMastery={(): void => setVisibility({ ...visibilityStates, accountMastery: true })}
 					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
+					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -509,6 +526,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayAccolades={(): void => setVisibility({ ...visibilityStates, accolades: true })}
 					displayMastery={(): void => setVisibility({ ...visibilityStates, accountMastery: true })}
 					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
+					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -532,6 +550,10 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 			components.push(<RobuxShop hideMenu={(): void => setVisibility((prev) => ({ ...prev, robuxShop: false }))} />);
 		} else if (isVisible("spinWheel")) {
 			components.push(<SpinWheel hideMenu={(): void => setVisibility((prev) => ({ ...prev, spinWheel: false }))} />);
+		} else if (isVisible("dailyRewards")) {
+			components.push(
+				<DailyRewards hideMenu={(): void => setVisibility((prev) => ({ ...prev, dailyRewards: false }))} />,
+			);
 		}
 
 		components.push(<ZonesUI />, <Rewards />, <LocalMessages />, <EggCost />, <EggHud />, <BoostCounter />);

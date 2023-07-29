@@ -9,6 +9,7 @@ import { remoteContext } from "./mocks/remoteContext";
 import { accoladeRemotes } from "./remotes/accolades";
 import { adminRemotes } from "./remotes/admin";
 import { boostRemotes } from "./remotes/boosts";
+import { dailyRewardsRemotes } from "./remotes/dailyRewards";
 import { eggsRemotes } from "./remotes/eggs";
 import { fusionRemtoes } from "./remotes/fusion";
 import { gamepassRemotes } from "./remotes/gamepasses";
@@ -43,6 +44,7 @@ onStoreCreated(player)
 					...accoladeRemotes,
 					...adminRemotes,
 					...boostRemotes,
+					...dailyRewardsRemotes,
 					...eggsRemotes,
 					...fusionRemtoes,
 					...gamepassRemotes,
