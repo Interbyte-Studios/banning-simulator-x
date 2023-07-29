@@ -14,12 +14,12 @@ remotes.Server.Get("claimPetQuest").Connect(
 		}
 
 		const petQuestBanProgress = (player.GetAttribute("petQuestBan") as number) ?? 0;
-		if (petQuestBanProgress < 5) {
+		if (petQuestBanProgress < 250) {
 			return;
 		}
 
 		const petQuestTimeProgress = (player.GetAttribute("petQuestTime") as number) ?? 0;
-		if (petQuestTimeProgress < 60) {
+		if (petQuestTimeProgress < 3600) {
 			return;
 		}
 

@@ -155,6 +155,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 				}
 
 				// check that user is within distance
+				warn(eggName);
 				const isWithinDistance = withinDistanceToHatch(character, eggName, variant === "void");
 				if (!isWithinDistance) {
 					addAnnouncement(`You aren't close enough to hatch that egg!`, AnnouncementType.Error);

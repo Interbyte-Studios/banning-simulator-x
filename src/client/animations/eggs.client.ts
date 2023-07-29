@@ -86,6 +86,7 @@ for (const [name, data] of pairs(EGGS)) {
 	}
 
 	task.spawn(() => {
+		task.wait(5);
 		animateEgg(name, "regular");
 		if (name !== "Throwback") {
 			task.wait(1);
@@ -101,7 +102,7 @@ RunService.RenderStepped.Connect(() => {
 			continue;
 		}
 
-		eggData.egg.SetPrimaryPartCFrame(eggData.cframeValue.Value);
+		eggData.egg.PivotTo(eggData.cframeValue.Value);
 	}
 	debug.profileend();
 });

@@ -2,6 +2,7 @@ import Object from "@rbxts/object-utils";
 import { HttpService, Players, ReplicatedStorage } from "@rbxts/services";
 import { modifyPetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
+import assetIds from "shared/assets";
 import { hatchDebounce } from "shared/configs/eggs";
 import { Rarities } from "shared/configs/rarities";
 import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
@@ -13,6 +14,7 @@ import { isImmuneRarity } from "shared/rodux/settings";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
 import { getEggsMastery } from "shared/util/getEggsMastery";
+import { getPetData } from "shared/util/getPetData";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
 import { withinDistanceToHatch } from "shared/util/withinDistanceToHatch";
 
@@ -209,6 +211,45 @@ hatchEggRemote.SetCallback(
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			if (pet.rarity === "Secret" || pet.rarity === "Primordial") {
 				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
+
+				const petData = getPetData(pet.id);
+				const variantUpperCase = isVoid ? "Void" : "Regular";
+				const petVariantName = !isVoid ? petData.name : `${variantUpperCase} ${petData.name}`;
+
+				const image = assetIds.images.decals.pets[petVariantName as keyof typeof assetIds.images.decals.pets];
+				let decalToPass = 0;
+				if (image !== undefined) {
+					decalToPass = image.match("%d+")[0] as number;
+				}
+
+				let existAmount = 0;
+				const petExistCache = ReplicatedStorage.PetExistStores.FindFirstChild(pet.id) as Configuration;
+				if (petExistCache !== undefined) {
+					const variantCache = petExistCache.FindFirstChild(isVoid ? "void" : "regular") as IntValue;
+					if (variantCache !== undefined) {
+						const variantCache = petExistCache.FindFirstChild(isVoid ? "void" : "regular") as IntValue;
+						if (variantCache !== undefined) {
+							existAmount += variantCache.Value;
+						}
+					}
+				}
+
+				HttpService.RequestAsync({
+					Url: "http://137.184.152.180:8765/hatch",
+					Body: HttpService.JSONEncode({
+						roblox_uid: player.UserId,
+						secret_name: petData.name,
+						secret_type: pet.rarity,
+						pet_variant: isVoid ? "void" : "regular",
+						decal_id: decalToPass,
+						exist_amount: existAmount,
+					}),
+					Method: "POST",
+					Headers: {
+						"Content-Type": "application/json",
+						"X-ACCESS-TOKEN": "V1qijQkozBm1LdD5SsO1",
+					},
+				});
 			} else if (pet.rarity === "Legendary") {
 				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
 			}
