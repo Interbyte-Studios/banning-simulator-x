@@ -13,6 +13,7 @@ import { ReleaseLog } from "./logs/release";
 import { Update1Log } from "./logs/update1";
 import { Update2Log } from "./logs/update2";
 import { Update3Log } from "./logs/update3";
+import { Update4Log } from "./logs/update4";
 import { UpdateLogType } from "./updateLogEnumerators";
 
 /**
@@ -111,6 +112,10 @@ export const UpdateLog = hooks((_, { useState }) => {
 					updateLogType={UpdateLogType.Update3}
 					onActivated={(): void => setLogToShow(UpdateLogType.Update3)}
 				/>
+				<SetUpdateLogType
+					updateLogType={UpdateLogType.Update4}
+					onActivated={(): void => setLogToShow(UpdateLogType.Update4)}
+				/>
 			</scrollingframe>
 			<BaseFrame
 				BackgroundColor3={uiTextStrokeColor}
@@ -137,12 +142,19 @@ export const UpdateLog = hooks((_, { useState }) => {
 					ScrollBarThickness={12}
 					BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
-					CanvasSize={logToShow === UpdateLogType.Release ? UDim2.fromScale(0, 0) : UDim2.fromScale(0, 2)}
+					CanvasSize={
+						logToShow === UpdateLogType.Release
+							? UDim2.fromScale(0, 0)
+							: logToShow === UpdateLogType.Update4
+							? UDim2.fromScale(0, 3)
+							: UDim2.fromScale(0, 2)
+					}
 				>
 					{logToShow === UpdateLogType.Release && <ReleaseLog />}
 					{logToShow === UpdateLogType.Update1 && <Update1Log />}
 					{logToShow === UpdateLogType.Update2 && <Update2Log />}
 					{logToShow === UpdateLogType.Update3 && <Update3Log />}
+					{logToShow === UpdateLogType.Update4 && <Update4Log />}
 				</scrollingframe>
 			</BaseFrame>
 		</ImageLabel>
