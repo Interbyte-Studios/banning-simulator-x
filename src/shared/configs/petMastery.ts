@@ -106,7 +106,7 @@ export const PET_MASTERY_REQUIREMENTS = {
 			fuse: 1,
 		},
 	},
-	Prismatic: {
+	Secret: {
 		regular: {
 			hatch: 1,
 			maxLevel: 1,
@@ -410,7 +410,7 @@ export const PET_MASTERY_REWARDS: { [rarity in Rarity]: Pet_Mastery_Rewards_Def 
 			},
 		},
 	},
-	Prismatic: {
+	Secret: {
 		regular: {
 			hatch: {
 				boost: "x2 Hatching Luck",

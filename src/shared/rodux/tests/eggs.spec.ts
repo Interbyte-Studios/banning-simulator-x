@@ -18,7 +18,7 @@ export = (): void => {
 					Epic: 0,
 					Legendary: 0,
 					Primordial: 0,
-					Prismatic: 0,
+					Secret: 0,
 					Exclusive: 0,
 				},
 			};

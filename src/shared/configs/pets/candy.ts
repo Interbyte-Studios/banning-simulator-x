@@ -88,7 +88,7 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 	"Ice Cream Pop": {
 		chance: 0.0001,
 		id: 33,
-		rarity: "Prismatic",
+		rarity: "Secret",
 		stats: {
 			additionalDamage: 3200,
 			additionalBans: 550,

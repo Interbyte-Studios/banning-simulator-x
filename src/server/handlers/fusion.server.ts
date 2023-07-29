@@ -77,7 +77,7 @@ remotes.Server.Get("requestFusion").SetCallback(
 			? RARITIES[petData.rarity].betterMaxFusions
 			: RARITIES[petData.rarity].maxFusions;
 
-		if (petData.rarity === "Prismatic" || petData.rarity === "Primordial") {
+		if (petData.rarity === "Secret" || petData.rarity === "Primordial") {
 			if (cachedGuids.size() !== maxFusions) {
 				return {
 					success: false,

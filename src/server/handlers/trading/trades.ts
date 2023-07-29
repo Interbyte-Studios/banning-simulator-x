@@ -1,7 +1,7 @@
 import {
 	addFlaggedTrade,
 	FlaggedPetCollection,
-	isFlaggedPrismaticVariant,
+	isFlaggedSecretVariant,
 	isFlaggedRarity,
 } from "server/modules/webhooks/flaggedTrades";
 import { retrieveStore } from "server/playerStore";
@@ -729,8 +729,8 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 			const petData = getPetData(pet.id);
 			if (isFlaggedRarity(petData.rarity)) {
 				if (
-					(petData.rarity === "Exclusive" || petData.rarity === "Prismatic") &&
-					isFlaggedPrismaticVariant(pet.variant)
+					(petData.rarity === "Exclusive" || petData.rarity === "Secret") &&
+					isFlaggedSecretVariant(pet.variant)
 				) {
 					flaggedPlayerPets.push({
 						id: pet.id,
@@ -758,8 +758,8 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 		for (const pet of otherPlayerOfferPets) {
 			const petData = getPetData(pet.id);
 			if (
-				(petData.rarity === "Exclusive" || petData.rarity === "Prismatic") &&
-				isFlaggedPrismaticVariant(pet.variant)
+				(petData.rarity === "Exclusive" || petData.rarity === "Secret") &&
+				isFlaggedSecretVariant(pet.variant)
 			) {
 				flaggedOtherPlayerPets.push({
 					id: pet.id,

@@ -27,7 +27,7 @@ remotes.Server.GetNamespace("pets")
 				}
 
 				const petData = getPetData(storedPet.id);
-				if (petData.rarity === "Prismatic" || petData.rarity === "Primordial") {
+				if (petData.rarity === "Secret" || petData.rarity === "Primordial") {
 					continue;
 				}
 

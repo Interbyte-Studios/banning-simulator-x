@@ -42,7 +42,7 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 	const [weapon, setWeapon] = useState(storeState.currentWeapon.id);
 	const [talisman, setTalisman] = useState(storeState.currentTalisman);
 	const [legendariesHatched, setLegendariesHatched] = useState(storeState.eggs.rarities.Legendary);
-	const [prismaticsHatched, setPrismaticsHatched] = useState(storeState.eggs.rarities.Prismatic);
+	const [SecretsHatched, setSecretsHatched] = useState(storeState.eggs.rarities.Secret);
 	const [primordialsHatched, setPrimordialsHatched] = useState(storeState.eggs.rarities.Primordial);
 	const [combinedDamage, setCombinedDamage] = useState(0);
 	const [combinedBans, setCombinedBans] = useState(0);
@@ -165,8 +165,8 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 				setTalisman(newState.eggs.rarities.Legendary);
 			}
 
-			if (newState.eggs.rarities.Prismatic !== oldState.eggs.rarities.Prismatic) {
-				setTalisman(newState.eggs.rarities.Prismatic);
+			if (newState.eggs.rarities.Secret !== oldState.eggs.rarities.Secret) {
+				setTalisman(newState.eggs.rarities.Secret);
 			}
 
 			if (newState.eggs.rarities.Primordial !== oldState.eggs.rarities.Primordial) {
@@ -212,7 +212,7 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 		setTitle(currentState.title);
 		setWeapon(currentState.currentWeapon.id);
 		setTalisman(currentState.currentTalisman);
-		setPrismaticsHatched(currentState.eggs.rarities.Prismatic);
+		setSecretsHatched(currentState.eggs.rarities.Secret);
 		setPrimordialsHatched(currentState.eggs.rarities.Primordial);
 		setLegendariesHatched(currentState.eggs.rarities.Legendary);
 
@@ -265,7 +265,7 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 				<StatCard header={"Reg. Eggs:"} stat={statsAbbreviator.numberToString(totalRegularEggHatches)} layoutId={5} />
 				<StatCard header={"Void Eggs:"} stat={statsAbbreviator.numberToString(totalVoidEggHatches)} layoutId={6} />
 				<StatCard header={"Legends Hatched:"} stat={statsAbbreviator.numberToString(legendariesHatched)} layoutId={7} />
-				<StatCard header={"Prismatics Hatched:"} stat={tostring(prismaticsHatched)} layoutId={8} />
+				<StatCard header={"Secrets Hatched:"} stat={tostring(SecretsHatched)} layoutId={8} />
 				<StatCard header={"Primordials Hatched:"} stat={tostring(primordialsHatched)} layoutId={9} />
 				<StatCard header={"Weapon:"} stat={weaponName} layoutId={10} />
 				<StatCard header={"Talisman:"} stat={talismanName} layoutId={11} />

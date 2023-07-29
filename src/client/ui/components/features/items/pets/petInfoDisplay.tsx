@@ -385,7 +385,7 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 							return;
 						}
 
-						if (petData.rarity === "Prismatic" || petData.rarity === "Primordial") {
+						if (petData.rarity === "Secret" || petData.rarity === "Primordial") {
 							addAnnouncement(`You cannot delete a ${petData.rarity} pet.`, AnnouncementType.Error);
 							return;
 						}
@@ -430,7 +430,7 @@ export const PetInfoDisplay = RoactRodux.connect(mapStateToProps)(
 							petData.rarity === "Epic" ||
 							petData.rarity === "Legendary" ||
 							petData.rarity === "Primordial" ||
-							petData.rarity === "Prismatic"
+							petData.rarity === "Secret"
 								? rarityData.BeginningColor
 								: Color3.fromRGB(255, 255, 255),
 					}}

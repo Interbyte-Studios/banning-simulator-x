@@ -88,7 +88,7 @@ export const JESTER_EGG_PETS: Record<string, Pet> = {
 	"All Seeing Jester": {
 		chance: 0.0001,
 		id: 95,
-		rarity: "Prismatic",
+		rarity: "Secret",
 		stats: {
 			additionalDamage: 48000,
 			additionalBans: 1500,

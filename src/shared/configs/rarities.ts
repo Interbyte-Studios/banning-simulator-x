@@ -63,7 +63,7 @@ export const RARITIES = {
 			new ColorSequenceKeypoint(1, Color3.fromRGB(255, 198, 82)),
 		]),
 	},
-	Prismatic: {
+	Secret: {
 		id: 6,
 		reverseId: 3,
 		maxFusions: 6,

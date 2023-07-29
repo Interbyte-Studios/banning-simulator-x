@@ -320,8 +320,8 @@ export const TITLES = [
 			new ColorSequenceKeypoint(1, Color3.fromRGB(85, 255, 255)),
 		]),
 		category: TitleType.Pets,
-		description: "Hatch a Prismatic+ rarity pet.",
-		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial >= 1,
+		description: "Hatch a Secret+ rarity pet.",
+		condition: (state): boolean => state.eggs.rarities.Secret + state.eggs.rarities.Primordial >= 1,
 	},
 	{
 		name: "Secret Champion",
@@ -334,8 +334,8 @@ export const TITLES = [
 			new ColorSequenceKeypoint(1, Color3.fromRGB(255, 170, 127)),
 		]),
 		category: TitleType.Pets,
-		description: "Hatch a Prismatic+ rarity pet 5 times.",
-		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial >= 5,
+		description: "Hatch a Secret+ rarity pet 5 times.",
+		condition: (state): boolean => state.eggs.rarities.Secret + state.eggs.rarities.Primordial >= 5,
 	},
 	{
 		name: "Secret Saint",
@@ -348,8 +348,8 @@ export const TITLES = [
 			new ColorSequenceKeypoint(1, Color3.fromRGB(255, 138, 250)),
 		]),
 		category: TitleType.Pets,
-		description: "Hatch a Prismatic+ rarity pet 10 times.",
-		condition: (state): boolean => state.eggs.rarities.Prismatic + state.eggs.rarities.Primordial >= 10,
+		description: "Hatch a Secret+ rarity pet 10 times.",
+		condition: (state): boolean => state.eggs.rarities.Secret + state.eggs.rarities.Primordial >= 10,
 	},
 
 	// Weapons (Weapon Level)

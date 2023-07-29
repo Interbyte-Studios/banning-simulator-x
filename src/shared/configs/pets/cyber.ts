@@ -88,7 +88,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 	"Cybernetic Destroyer": {
 		chance: 0.00005,
 		id: 62,
-		rarity: "Prismatic",
+		rarity: "Secret",
 		stats: {
 			additionalDamage: 1,
 			additionalBans: 1,
