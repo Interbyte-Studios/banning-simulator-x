@@ -151,7 +151,7 @@ hatchEggRemote.SetCallback(
 		const petChances = Object.entries(eggData.pets).map(([, petData]) => {
 			const newPetData = { ...petData };
 
-			if (petData.rarity === "Legendary" || petData.rarity === "Prismatic" || petData.rarity === "Primordial") {
+			if (petData.rarity === "Legendary" || petData.rarity === "Secret" || petData.rarity === "Primordial") {
 				if (ownsLuckGamepass) {
 					newPetData.chance *= 2;
 				}
@@ -207,7 +207,7 @@ hatchEggRemote.SetCallback(
 			}
 
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
-			if (pet.rarity === "Prismatic" || pet.rarity === "Primordial") {
+			if (pet.rarity === "Secret" || pet.rarity === "Primordial") {
 				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
 			} else if (pet.rarity === "Legendary") {
 				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");

@@ -181,7 +181,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 							/>
 
 							{Object.values(props.possiblePets).map((petInfo) => {
-								if (petInfo.rarity === "Prismatic" || petInfo.rarity === "Primordial") {
+								if (petInfo.rarity === "Secret" || petInfo.rarity === "Primordial") {
 									return <></>;
 								}
 

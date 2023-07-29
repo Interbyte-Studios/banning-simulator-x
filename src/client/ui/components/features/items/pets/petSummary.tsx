@@ -186,7 +186,7 @@ export const PetSummary = hooks(
 							petData.rarity === "Epic" ||
 							petData.rarity === "Legendary" ||
 							petData.rarity === "Primordial" ||
-							petData.rarity === "Prismatic"
+							petData.rarity === "Secret"
 								? rarityData.BeginningColor
 								: Color3.fromRGB(255, 255, 255),
 					}}

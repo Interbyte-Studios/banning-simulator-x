@@ -153,8 +153,8 @@ export const PetFrame = hooks(
 										return;
 									}
 
-									if (petData.rarity === "Primordial" || petData.rarity === "Prismatic") {
-										addAnnouncement("You cannot delete a Primordial or Prismatic pet.", AnnouncementType.Error);
+									if (petData.rarity === "Primordial" || petData.rarity === "Secret") {
+										addAnnouncement("You cannot delete a Primordial or Secret pet.", AnnouncementType.Error);
 										return;
 									}
 									setSelectedForDelete(!isSelectedForDelete);
@@ -181,7 +181,7 @@ export const PetFrame = hooks(
 								petData.rarity === "Epic" ||
 								petData.rarity === "Legendary" ||
 								petData.rarity === "Primordial" ||
-								petData.rarity === "Prismatic"
+								petData.rarity === "Secret"
 									? Color3.fromRGB(255, 255, 255)
 									: rarityData.BeginningColor,
 						}}
