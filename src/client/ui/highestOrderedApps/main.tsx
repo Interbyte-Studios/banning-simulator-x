@@ -313,6 +313,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 
 						props.setTradingEnabled();
 					}}
+					hiddenHud={false}
 				/>,
 				<TimeTrials
 					isVisible={false}
@@ -423,6 +424,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 							return;
 						}
 					}}
+					hiddenHud={true}
 				/>,
 			);
 		} else if (isVisible("weaponShop")) {
@@ -449,6 +451,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 							return;
 						}
 					}}
+					hiddenHud={true}
 				/>,
 			);
 		} else if (isVisible("talismanTower")) {
@@ -475,6 +478,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 							return;
 						}
 					}}
+					hiddenHud={true}
 				/>,
 			);
 		} else if (isVisible("petMastery")) {
@@ -511,6 +515,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 							return;
 						}
 					}}
+					hiddenHud={true}
 				/>,
 			);
 		} else if (isVisible("accolades")) {

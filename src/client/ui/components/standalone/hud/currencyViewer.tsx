@@ -12,6 +12,7 @@ import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 interface CoinsCurrencyProps extends CurrencyViewerMappedProps {
 	position: UDim2;
+	size: UDim2;
 	currencyType: Currency;
 }
 
@@ -36,7 +37,7 @@ export const CurrencyViewer = RoactRodux.connect(mapStateToProps)(
 				native={{
 					AnchorPoint: new Vector2(0, 0.5),
 					Image: assetIds.images.ui.hud["viewer background"],
-					Size: UDim2.fromScale(0.2, 0.08),
+					Size: props.size,
 					Position: props.position,
 				}}
 			>

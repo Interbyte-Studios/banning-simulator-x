@@ -17,12 +17,12 @@ export const PetQuestIcon = (): Roact.Element => {
 	return (
 		<SpringImageButton
 			native={{
-				Position: UDim2.fromScale(0.927, 0.661),
+				Position: UDim2.fromScale(0.731, 0.65),
 				Image: "",
 				BackgroundColor3: Color3.fromRGB(40, 168, 248),
 				BackgroundTransparency: 0,
 			}}
-			size={{ minSize: 0.115, maxSize: 0.125 }}
+			size={{ minSize: 0.4, maxSize: 0.5 }}
 		>
 			<uiaspectratioconstraint AspectRatio={4} />
 			<uicorner CornerRadius={new UDim(0.2, 0)} />
