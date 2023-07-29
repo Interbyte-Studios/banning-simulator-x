@@ -125,14 +125,14 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 
 			scrollingFrame.GetChildren().forEach((petCard) => {
 				if (petCard.IsA("Frame")) {
-					petCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+					petCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 5);
 				}
 			});
 
 			const connection = scrollingFrame.GetPropertyChangedSignal("AbsoluteSize").Connect(() => {
 				scrollingFrame.GetChildren().forEach((petCard) => {
 					if (petCard.IsA("Frame")) {
-						petCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+						petCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 5);
 					}
 				});
 			});
@@ -170,9 +170,10 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 					<uiaspectratioconstraint AspectRatio={4.7} />
 
 					<BaseFrame
+						AnchorPoint={new Vector2(0, 0.5)}
 						BackgroundTransparency={0}
 						BackgroundColor3={Color3.fromRGB(1, 109, 177)}
-						Position={UDim2.fromScale(0.5, 0.5)}
+						Position={UDim2.fromScale(0, 0.5)}
 						Size={UDim2.fromScale(0.99, 0.95)}
 					>
 						<uiaspectratioconstraint AspectRatio={5} />
@@ -338,6 +339,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 					Size={UDim2.fromScale(0.95, 0.835)}
 					ScrollBarThickness={12}
 					BorderSizePixel={0}
+					ScrollBarImageColor3={Color3.fromRGB(0, 51, 80)}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uilistlayout
