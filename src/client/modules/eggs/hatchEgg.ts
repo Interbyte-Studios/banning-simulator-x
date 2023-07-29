@@ -124,8 +124,8 @@ export const animateSingleEggHatch = (
 		ReplicatedStorage.assetObjects.emitters["hatching emitters"][
 			petData.rarity === "Legendary"
 				? "legendary"
-				: petData.rarity === "Prismatic"
-				? "prismatic"
+				: petData.rarity === "Secret"
+				? "Secret"
 				: petData.rarity === "Primordial"
 				? "primordial"
 				: "flare"
@@ -142,7 +142,7 @@ export const animateSingleEggHatch = (
 		new ColorSequenceKeypoint(1, rarityData.EndingColor),
 	]);
 
-	if (petData.rarity !== "Legendary" && petData.rarity !== "Prismatic" && petData.rarity !== "Primordial") {
+	if (petData.rarity !== "Legendary" && petData.rarity !== "Secret" && petData.rarity !== "Primordial") {
 		rarityParticleEmitter.Color = rarityColor;
 	}
 
@@ -401,8 +401,8 @@ export const animateTripleEggHatch = (
 		ReplicatedStorage.assetObjects.emitters["hatching emitters"][
 			highestRarityData[0] === "Legendary"
 				? "legendary"
-				: highestRarityData[0] === "Prismatic"
-				? "prismatic"
+				: highestRarityData[0] === "Secret"
+				? "Secret"
 				: highestRarityData[0] === "Primordial"
 				? "primordial"
 				: "flare"
@@ -436,7 +436,7 @@ export const animateTripleEggHatch = (
 
 	if (
 		highestRarityData[0] !== "Legendary" &&
-		highestRarityData[0] !== "Prismatic" &&
+		highestRarityData[0] !== "Secret" &&
 		highestRarityData[0] !== "Primordial"
 	) {
 		rarityParticleEmitter.Color = highestRarityColor;

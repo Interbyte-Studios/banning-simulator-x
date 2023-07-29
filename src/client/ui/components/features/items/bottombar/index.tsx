@@ -20,12 +20,12 @@ export const BottomBar = hooks((props: BottomBarProps) => {
 		<frame
 			AnchorPoint={vec2Middle}
 			BackgroundTransparency={1}
-			Size={UDim2.fromScale(1, 0.15)}
-			Position={UDim2.fromScale(0.5, 1.075)}
+			Position={UDim2.fromScale(-0.08, 0.55)}
+			Size={UDim2.fromScale(0.15, 0.45)}
 		>
 			<uilistlayout
-				Padding={new UDim(0.05, 0)}
-				FillDirection={Enum.FillDirection.Horizontal}
+				Padding={new UDim(0.1, 0)}
+				FillDirection={Enum.FillDirection.Vertical}
 				HorizontalAlignment={Enum.HorizontalAlignment.Center}
 				VerticalAlignment={Enum.VerticalAlignment.Center}
 			/>

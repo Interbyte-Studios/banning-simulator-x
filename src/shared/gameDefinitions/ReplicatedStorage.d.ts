@@ -92,9 +92,9 @@ declare global {
 							legendary: ParticleEmitter;
 						};
 					};
-					prismatic: Part & {
+					Secret: Part & {
 						attachment: Attachment & {
-							prismatic: ParticleEmitter;
+							Secret: ParticleEmitter;
 						};
 					};
 					primordial: Part & {

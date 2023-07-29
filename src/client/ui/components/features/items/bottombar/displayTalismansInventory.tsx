@@ -21,7 +21,7 @@ export const DisplayTalismansInventory = (props: DisplayTalismansInventoryProps)
 			native={{
 				Image: assetIds.images.ui.inventory.icons.talismans,
 			}}
-			size={{ minSize: 0.825, maxSize: 0.9 }}
+			size={{ minSize: 0.65, maxSize: 0.75 }}
 			events={{
 				// eslint-disable-next-line jsdoc/require-jsdoc
 				Activated: (): void => {

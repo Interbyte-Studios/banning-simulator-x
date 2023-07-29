@@ -21,7 +21,7 @@ export const DisplayWeaponsInventory = (props: DisplayWeaponsInventoryProps): Ro
 			native={{
 				Image: assetIds.images.ui.inventory.icons.weapons,
 			}}
-			size={{ minSize: 0.825, maxSize: 0.9 }}
+			size={{ minSize: 0.65, maxSize: 0.75 }}
 			events={{
 				// eslint-disable-next-line jsdoc/require-jsdoc
 				Activated: (): void => {

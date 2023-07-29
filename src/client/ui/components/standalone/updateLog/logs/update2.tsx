@@ -84,7 +84,7 @@ export const Update2Log = (): Roact.Element => {
 				native={{
 					Position: UDim2.fromScale(0.485, 0.43),
 					Size: UDim2.fromScale(0.96, 0.07),
-					Text: "- The number of prismatics and Primordials required to fuse to the next variant have been increase to 6 and 4 respectively.",
+					Text: "- The number of Secrets and Primordials required to fuse to the next variant have been increase to 6 and 4 respectively.",
 					TextXAlignment: Enum.TextXAlignment.Left,
 				}}
 				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(0, 108, 176) } }}
@@ -102,7 +102,7 @@ export const Update2Log = (): Roact.Element => {
 				native={{
 					Position: UDim2.fromScale(0.485, 0.54),
 					Size: UDim2.fromScale(0.96, 0.05),
-					Text: "- Pet Mastery no longer counts Prismatics or Primordials towards progress",
+					Text: "- Pet Mastery no longer counts Secrets or Primordials towards progress",
 					TextXAlignment: Enum.TextXAlignment.Left,
 				}}
 				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(0, 108, 176) } }}
@@ -111,7 +111,7 @@ export const Update2Log = (): Roact.Element => {
 				native={{
 					Position: UDim2.fromScale(0.485, 0.69),
 					Size: UDim2.fromScale(0.96, 0.025),
-					Text: "- New 500k visits Event Egg (2 Prismatics, 1 Primordial)",
+					Text: "- New 500k visits Event Egg (2 Secrets, 1 Primordial)",
 					TextXAlignment: Enum.TextXAlignment.Left,
 				}}
 				stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(0, 108, 176) } }}

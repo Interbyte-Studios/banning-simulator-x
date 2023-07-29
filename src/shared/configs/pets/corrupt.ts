@@ -88,7 +88,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 	"Corrupted Overseer": {
 		chance: 0.00005,
 		id: 72,
-		rarity: "Prismatic",
+		rarity: "Secret",
 		stats: {
 			additionalDamage: 1,
 			additionalBans: 1,

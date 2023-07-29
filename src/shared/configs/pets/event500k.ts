@@ -88,7 +88,7 @@ export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
 	"500K Dominus": {
 		chance: 0.0001,
 		id: 110,
-		rarity: "Prismatic",
+		rarity: "Secret",
 		stats: {
 			additionalDamage: 50000,
 			additionalBans: 1550,
@@ -97,7 +97,7 @@ export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
 	"Supreme Dove": {
 		chance: 0.00005,
 		id: 111,
-		rarity: "Prismatic",
+		rarity: "Secret",
 		stats: {
 			additionalDamage: 75000,
 			additionalBans: 1600,

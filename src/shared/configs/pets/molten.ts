@@ -88,7 +88,7 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 	Coreye: {
 		chance: 0.0001,
 		id: 43,
-		rarity: "Prismatic",
+		rarity: "Secret",
 		stats: {
 			additionalDamage: 8500,
 			additionalBans: 1000,

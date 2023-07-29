@@ -8,14 +8,7 @@ import { statsAbbreviator, twoDpAbbreviator } from "shared/util/twoDpAbbreviator
 
 /* eslint-disable jsdoc/require-jsdoc */
 export const MasteryCard = hooks(
-	(props: {
-		playerViewing: Player;
-		progress: number;
-		requiredProgress: number;
-		header: string;
-		description: string;
-		level: number;
-	}) => {
+	(props: { progress: number; requiredProgress: number; header: string; description: string; level: number }) => {
 		return (
 			<BaseFrame Position={UDim2.fromScale(0.5, 0.5)} Size={UDim2.fromScale(1, 0.3)} LayoutOrder={props.level}>
 				<uiaspectratioconstraint AspectRatio={7} />

@@ -17,11 +17,11 @@ export const isFlaggedTrade = t.strictInterface({
 });
 export type FlaggedTrade = t.static<typeof isFlaggedTrade>;
 
-export const isFlaggedRarity = t.literal("Exclusive", "Prismatic", "Primordial");
+export const isFlaggedRarity = t.literal("Exclusive", "Secret", "Primordial");
 export type FlaggedRarity = t.static<typeof isFlaggedRarity>;
 
-export const isFlaggedPrismaticVariant = t.literal("radiant");
-export type FlaggedPrismaticVariant = t.static<typeof isFlaggedPrismaticVariant>;
+export const isFlaggedSecretVariant = t.literal("radiant");
+export type FlaggedSecretVariant = t.static<typeof isFlaggedSecretVariant>;
 
 export type FlaggedTradeCollection = Array<FlaggedTrade>;
 

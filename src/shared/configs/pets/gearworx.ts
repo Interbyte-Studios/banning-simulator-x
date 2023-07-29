@@ -88,7 +88,7 @@ export const GEARWORX_EGG_PETS: Record<string, Pet> = {
 	"Eternal Gear": {
 		chance: 0.00005,
 		id: 122,
-		rarity: "Prismatic",
+		rarity: "Secret",
 		stats: {
 			additionalDamage: 85000,
 			additionalBans: 2750,

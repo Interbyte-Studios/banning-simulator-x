@@ -5,48 +5,52 @@ import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/stro
 import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
+import { Currency } from "shared/configs/currencies";
 import { StoreState } from "shared/rodux";
+import { CurrenciesState } from "shared/rodux/currencies";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
-interface CoinsCurrencyProps extends CoinsCurrencyMappedProps {
-	onlyShowCurrencyEnabled: boolean;
+interface CoinsCurrencyProps extends CurrencyViewerMappedProps {
+	position: UDim2;
+	size: UDim2;
+	currencyType: Currency;
 }
 
-interface CoinsCurrencyMappedProps {
-	coins: number;
+interface CurrencyViewerMappedProps {
+	currencies: CurrenciesState;
 }
 
 /**
  * @param state The current state of the store.
  * @returns The mapped props.
  */
-function mapStateToProps(state: StoreState): CoinsCurrencyMappedProps {
+function mapStateToProps(state: StoreState): CurrencyViewerMappedProps {
 	return {
-		coins: state.currencies.coins,
+		currencies: state.currencies,
 	};
 }
 
-export const CoinsCurrency = RoactRodux.connect(mapStateToProps)(
+export const CurrencyViewer = RoactRodux.connect(mapStateToProps)(
 	hooks((props: CoinsCurrencyProps) => {
 		return (
 			<ImageLabel
 				native={{
 					AnchorPoint: new Vector2(0, 0.5),
 					Image: assetIds.images.ui.hud["viewer background"],
-					Size: UDim2.fromScale(0.95, 0.155),
-					Position: UDim2.fromScale(0.03, 0.5),
+					Size: props.size,
+					Position: props.position,
 				}}
 			>
 				<uiaspectratioconstraint AspectRatio={4.8} />
 				<CurrencyIcon
 					position={UDim2.fromScale(0.075, 0.5)}
 					size={{ minimizedSize: 0.9, maximizedSize: 1.05 }}
-					currency={"coins"}
+					currency={props.currencyType}
 				/>
 				<StrokeTextLabel
 					native={{
 						Size: UDim2.fromScale(0.65, 0.9),
-						Text: twoDpAbbreviator.numberToString(props.coins),
+						Text: twoDpAbbreviator.numberToString(props.currencies[props.currencyType]),
 					}}
 					stroke={{
 						currencyGradient: "coins",
