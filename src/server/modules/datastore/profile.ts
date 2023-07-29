@@ -14,6 +14,7 @@ import { defaultGamepassGifts } from "shared/rodux/gamepassGifts";
 import { defaultInvitedFriendState } from "shared/rodux/invitedFriend";
 import { defaultMediaState } from "shared/rodux/media";
 import { SerializedPetMasteryState } from "shared/rodux/petMastery";
+import { defaultPetQuestState } from "shared/rodux/petQuest";
 import { defaultPets } from "shared/rodux/pets";
 import { defaultPetTeamsState } from "shared/rodux/petTeams";
 import { defaultPlayerIndexState } from "shared/rodux/playerIndex";
@@ -101,6 +102,7 @@ export const profileTemplate: ProfileState = {
 	},
 	media: defaultMediaState,
 	pets: defaultPets,
+	petQuests: defaultPetQuestState,
 	petMastery: [],
 	petTeams: defaultPetTeamsState,
 	quests: defaultQuestsState,

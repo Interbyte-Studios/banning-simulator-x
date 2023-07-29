@@ -56,7 +56,7 @@ export const mapStateToProps = (state: StoreState): ActiveTrialMappedProps => {
  * Controls the interface for an active time trial.
  */
 export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
-	hooks((props: ActiveTrialProps, { useState, useContext, useEffect }) => {
+	hooks((props: ActiveTrialProps, { useState, useContext, useEffect, useValue }) => {
 		const { startTimeTrial, stopTimeTrial } = useContext(remoteContext);
 		const [difficulty, setDifficulty] = useState<TimeTrialDifficulty>("easy");
 		const [started, setStarted] = useState(false);
@@ -65,6 +65,8 @@ export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
 		const [npcsLeft, setNPCsLeft] = useState(0);
 		const [health, setHealth] = useState(100);
 		const [maxHealth, setMaxHealth] = useState(100);
+
+		const setOriginalHealth = useValue(false);
 
 		useEffect(() => {
 			const difficulty = Players.LocalPlayer.GetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE);
@@ -133,16 +135,16 @@ export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
 				return;
 			}
 
-			if (started) {
+			if (started && !setOriginalHealth.value) {
+				setOriginalHealth.value = true;
 				setHealth(100 + 50 * props.timeTrials["Ban Land"].health);
 				setMaxHealth(100 + 50 * props.timeTrials["Ban Land"].health);
 			}
 
 			const healthConnection = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
-				if (started) {
-					setHealth(humanoid.Health);
-					setMaxHealth(humanoid.MaxHealth);
-				}
+				warn(`Attacked! Health changed to: ${humanoid.Health}`);
+				setHealth(humanoid.Health);
+				setMaxHealth(humanoid.MaxHealth);
 			});
 
 			const diedConnection = humanoid.Died.Connect(() => {

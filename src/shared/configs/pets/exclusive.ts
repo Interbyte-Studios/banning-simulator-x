@@ -97,7 +97,7 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 	"Bio Destroyer": {
 		chance: 0,
 		id: 10012,
-		rarity: "Exclusive",
+		rarity: "Secret",
 		fusionCost: 20000,
 		stats: {
 			additionalDamage: 20000,

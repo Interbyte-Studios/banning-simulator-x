@@ -9,6 +9,7 @@ import { fusionRemoteContext } from "./remoteDefinitions/fusion";
 import { gamepassEremoteContext } from "./remoteDefinitions/gamepasses";
 import { mediaRemoteContext } from "./remoteDefinitions/media";
 import { petMasteryRemoteContext } from "./remoteDefinitions/petMastery";
+import { petQuestRemoteContext } from "./remoteDefinitions/petQuest";
 import { petsRemoteContext } from "./remoteDefinitions/pets";
 import { playerLoadedContext } from "./remoteDefinitions/playerLoaded";
 import { questsRemoteContext } from "./remoteDefinitions/quests";
@@ -31,6 +32,7 @@ export const fakeRemoteContext = {
 	...dailyRewardsRemoteContext,
 	...playerLoadedContext,
 	...petMasteryRemoteContext,
+	...petQuestRemoteContext,
 	...weaponsRemoteContext,
 	...petsRemoteContext,
 	...zonesRemoteContext,
