@@ -19,6 +19,7 @@ import { MOLTEN_EGG_PETS } from "./pets/molten";
 import { RADIOACTIVE_EGG_PETS } from "./pets/radioactive";
 import { ROYALTY_EGG_PETS } from "./pets/royalty";
 import { STARTER_EGG_PETS } from "./pets/starter";
+import { THROWBACK_EGG_PETS } from "./pets/throwback";
 import { WORLD_PRESTIGE_PETS } from "./pets/worldPrestige";
 import { WorldName } from "./worlds";
 import { ZoneNames } from "./zones";
@@ -73,6 +74,7 @@ export const isValidMasteryEgg = t.literal(
 	"500k Event",
 	"GearWorx",
 	"Dweller",
+	"Throwback",
 );
 export type ValidMasteryEgg = t.static<typeof isValidMasteryEgg>;
 
@@ -250,6 +252,15 @@ export const EGGS = {
 		hatchable: false,
 		hidden: false,
 		luckApplies: false,
+	},
+	Throwback: {
+		id: 17,
+		pets: THROWBACK_EGG_PETS,
+		world: "Ban Land",
+		zone: "Forest",
+		hatchable: true,
+		hidden: false,
+		luckApplies: true,
 	},
 } satisfies Record<string, Egg>;
 
