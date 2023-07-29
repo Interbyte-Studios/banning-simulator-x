@@ -338,6 +338,11 @@ hash = "463c6eb40a9280dbd0fa76611f3adbdcc7b9e43402c3c918d6a29e825c5ae89b"
 id = 13989138041
 packable = false
 
+[inputs."images/decals/pets/Bio Destroyer.png"]
+hash = "29a0033e668326f13066144fcf60420ace8e44073e1e85cba695a37af2894274"
+id = 14220697737
+packable = false
+
 [inputs."images/decals/pets/Bumble Bee.png"]
 hash = "9ec49c83b44546661c0a3a9c506f0d55af94af89b7a0bc11120c6f7ad96feb04"
 id = 11440087721
@@ -3408,9 +3413,19 @@ hash = "df18ddecccb0bed5855584f33d755bbf0fbf7661d543195d253f4c57a8a23d8b"
 id = 10832810658
 packable = false
 
+[inputs."images/ui/shop/accolades.png"]
+hash = "26a1b30fa1573941567e894ef560e1c83e7261f66a95f574ddbf3fc26e5b5c2a"
+id = 14220507218
+packable = false
+
 [inputs."images/ui/shop/background.png"]
 hash = "0ae0841ad69afd3aa1451e2e753ed4cc410cb34abca00eaf7d72ad221586cc22"
 id = 13813998666
+packable = false
+
+[inputs."images/ui/shop/biweekly pet.png"]
+hash = "75a5119c8719e826ea2ed9ec0d77fb06370e10be28c744c3955d9b24714eb710"
+id = 14220662283
 packable = false
 
 [inputs."images/ui/shop/boosts.png"]
@@ -3431,6 +3446,11 @@ packable = false
 [inputs."images/ui/shop/limited pets.png"]
 hash = "bc1b8db392e993e909590481631615a5111c449e0952ae7fb8cc07c42dd6bd22"
 id = 14209062497
+packable = false
+
+[inputs."images/ui/shop/playtime rewards.png"]
+hash = "61ee08b0195593c575399be4a116241a3163eb47333aa25093b895e4a520be4e"
+id = 14220662358
 packable = false
 
 [inputs."images/ui/talismanTower/background.png"]

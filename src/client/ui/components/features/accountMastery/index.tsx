@@ -1,19 +1,22 @@
 import Roact from "@rbxts/roact";
+import { Players } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
 import { vec2Middle } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
+import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { ExitButton } from "client/ui/elements/common/exitButton";
 import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { AccountMastery } from "shared/configs/accountMastery";
 
-import { AccountIconTemplate } from "../util/accountIconTemplate";
-import { FullComponentHeader } from "../util/fullComponentHeader";
+import { AccountIconTemplate } from "../account/util/accountIconTemplate";
+import { FullComponentHeader } from "../account/util/fullComponentHeader";
 import { MasteryCard } from "./masteryCard";
 
 interface MasteryProps {
-	playerViewing: Player;
-	returnToSelection: () => void;
+	hideMenu: () => void;
 }
 
 /**
@@ -24,15 +27,42 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 		"Eggs" | "Pet Experience" | "Fusing" | "Boosts" | "Banning" | undefined
 	>(undefined);
 
-	const playerStore = retrieveStore(props.playerViewing);
+	const playerStore = retrieveStore(Players.LocalPlayer);
 	if (playerStore === undefined) {
 		return (
-			<FullComponentHeader
-				storeFound={true}
-				headerText={`${props.playerViewing.Name}'s Accolades`}
-				returnToSelection={props.returnToSelection}
-				displayReturn={true}
-			/>
+			<ImageLabel
+				native={{
+					Size: UDim2.fromScale(0.65, 0.65),
+					Image: assetIds.images.ui.account.background,
+				}}
+			>
+				<uiaspectratioconstraint AspectRatio={1.5} />
+				<StrokeTextLabel
+					native={{
+						Size: UDim2.fromScale(0.4, 0.135),
+						Position: UDim2.fromScale(0.5, 0.08),
+						Text: "Account",
+					}}
+					stroke={{
+						native: { Thickness: 1.5, Color: Color3.fromRGB(184, 80, 0) },
+					}}
+				/>
+
+				<FullComponentHeader
+					storeFound={true}
+					headerText={`${Players.LocalPlayer}'s Mastery`}
+					returnToSelection={
+						masteryDisplayed !== undefined ? (): void => setMasteryDisplayed(undefined) : props.hideMenu
+					}
+					displayReturn={true}
+				/>
+				<ExitButton
+					Position={UDim2.fromScale(0.985, 0.115)}
+					minimizedSize={0.09}
+					maximizedSize={0.1}
+					onClosed={(): void => props.hideMenu()}
+				/>
+			</ImageLabel>
 		);
 	}
 
@@ -61,7 +91,6 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 		for (const masteryData of AccountMastery.eggs) {
 			masteryElements.push(
 				<MasteryCard
-					playerViewing={props.playerViewing}
 					progress={playerStore.getState().eggs.eggs}
 					requiredProgress={masteryData.requiredHatches}
 					header={`Egg Hatching (Level ${masteryData.level})`}
@@ -81,7 +110,6 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 
 			masteryElements.push(
 				<MasteryCard
-					playerViewing={props.playerViewing}
 					progress={totalMaxLevels}
 					requiredProgress={masteryData.maxLevelPets}
 					header={`Pet Experience (Level ${masteryData.level})`}
@@ -100,7 +128,6 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 		for (const masteryData of AccountMastery.fusing) {
 			masteryElements.push(
 				<MasteryCard
-					playerViewing={props.playerViewing}
 					progress={totalFusions}
 					requiredProgress={masteryData.requiredFusions}
 					header={`Fusion (Level ${masteryData.level})`}
@@ -113,7 +140,6 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 		for (const masteryData of AccountMastery.boosts) {
 			masteryElements.push(
 				<MasteryCard
-					playerViewing={props.playerViewing}
 					progress={playerStore.getState().boosts.uses}
 					requiredProgress={masteryData.requiredUses}
 					header={`Boosts (Level ${masteryData.level})`}
@@ -126,7 +152,6 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 		for (const masteryData of AccountMastery.banning) {
 			masteryElements.push(
 				<MasteryCard
-					playerViewing={props.playerViewing}
 					progress={playerStore.getState().bans}
 					requiredProgress={masteryData.requiredBans}
 					header={`Banning (Level ${masteryData.level})`}
@@ -228,16 +253,37 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 	}
 
 	return (
-		<>
+		<ImageLabel
+			native={{
+				Size: UDim2.fromScale(0.65, 0.65),
+				Image: assetIds.images.ui.account.background,
+			}}
+		>
+			<uiaspectratioconstraint AspectRatio={1.5} />
+			<StrokeTextLabel
+				native={{
+					Size: UDim2.fromScale(0.4, 0.135),
+					Position: UDim2.fromScale(0.5, 0.08),
+					Text: "Account",
+				}}
+				stroke={{
+					native: { Thickness: 1.5, Color: Color3.fromRGB(184, 80, 0) },
+				}}
+			/>
+
 			<FullComponentHeader
 				storeFound={true}
-				headerText={`${props.playerViewing.Name}'s Mastery`}
-				returnToSelection={
-					masteryDisplayed !== undefined ? (): void => setMasteryDisplayed(undefined) : props.returnToSelection
-				}
+				headerText={`${Players.LocalPlayer}'s Mastery`}
+				returnToSelection={masteryDisplayed !== undefined ? (): void => setMasteryDisplayed(undefined) : props.hideMenu}
 				displayReturn={true}
 			/>
 			{masteryDisplayed !== undefined ? scrollingFrame : masteryElements}
-		</>
+			<ExitButton
+				Position={UDim2.fromScale(0.985, 0.115)}
+				minimizedSize={0.09}
+				maximizedSize={0.1}
+				onClosed={(): void => props.hideMenu()}
+			/>
+		</ImageLabel>
 	);
 });

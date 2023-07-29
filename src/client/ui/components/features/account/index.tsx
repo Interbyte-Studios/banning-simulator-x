@@ -14,10 +14,8 @@ import { ADMIN_RANK } from "shared/configs/admin";
 import { StoreState } from "shared/rodux";
 import { CurrentWeaponState } from "shared/rodux/currentWeapon";
 
-import { Accolades } from "./accolades";
 import { Admin } from "./admin";
 import { EditAccount } from "./admin/editAccount";
-import { Mastery } from "./mastery";
 import { AccountPlayerSelection } from "./playerSelection/accountPlayerSelection";
 import { ReturnToAccountView } from "./playerSelection/returnToAccountView";
 import { SelectPlayer } from "./playerSelection/selectPlayer";
@@ -49,9 +47,7 @@ function mapStateToProps(state: StoreState): AccountHubMappedProps {
 }
 
 enum RightComponent {
-	Accolades = "Accolades",
 	Admin = "Admin",
-	Mastery = "Mastery",
 	Stats = "Stats",
 	TradeHistory = "TradeHistory",
 }
@@ -85,12 +81,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 			}
 
 			// there are certain components that take up the whole screen. we don't want to display the viewport when those are being displayed
-			const priorityComponents = [
-				RightComponent.Accolades,
-				RightComponent.Mastery,
-				RightComponent.Admin,
-				RightComponent.TradeHistory,
-			];
+			const priorityComponents = [RightComponent.Admin, RightComponent.TradeHistory];
 			const hasHigherPriorityComponent = Object.entries(priorityComponents).some(
 				([, enumerator]) => enumerator === rightComponentDisplayed,
 			);
@@ -113,7 +104,6 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 
 			const character = playerViewing.Character;
 			if (character === undefined) {
-				warn(`Failed to get character of player ${playerViewing.Name} for account viewport.`);
 				return;
 			}
 
@@ -124,7 +114,6 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 			const viewportChar = character.Clone();
 			const humanoid = viewportChar.FindFirstChildOfClass("Humanoid");
 			if (humanoid === undefined) {
-				warn(`Failed to get humanoid of player ${playerViewing.Name} for account viewport.`);
 				return;
 			}
 
@@ -216,12 +205,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 		});
 
 		// be sure that the component the player is viewing isn't taking up the whole screen (known as an override component)
-		const overrideComponents = [
-			RightComponent.Accolades,
-			RightComponent.Mastery,
-			RightComponent.Admin,
-			RightComponent.TradeHistory,
-		];
+		const overrideComponents = [RightComponent.Admin, RightComponent.TradeHistory];
 		const overideComponentVisible = Object.entries(overrideComponents).some(
 			([, enumerator]) => enumerator === rightComponentDisplayed,
 		);
@@ -269,15 +253,6 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 			Admin: (
 				<Admin returnToSelection={(): void => setRightComponentDisplayed(undefined)} playerViewing={playerViewing} />
 			),
-			Accolades: (
-				<Accolades
-					returnToSelection={(): void => setRightComponentDisplayed(undefined)}
-					playerViewing={playerViewing}
-				/>
-			),
-			Mastery: (
-				<Mastery returnToSelection={(): void => setRightComponentDisplayed(undefined)} playerViewing={playerViewing} />
-			),
 			Stats: (
 				<PlayerStats
 					viewedPlayer={playerViewing}
@@ -321,22 +296,6 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 						text={"Stats"}
 						layoutOrder={1}
 						onPressed={(): void => setRightComponentDisplayed(RightComponent.Stats)}
-					/>,
-					<AccountIconTemplate
-						accessibleFeature={true}
-						image={assetIds.images.ui.account.Accolades}
-						displayBackground={true}
-						text={"Accolades"}
-						layoutOrder={2}
-						onPressed={(): void => setRightComponentDisplayed(RightComponent.Accolades)}
-					/>,
-					<AccountIconTemplate
-						accessibleFeature={true}
-						image={assetIds.images.ui.account.accountMastery}
-						displayBackground={true}
-						text={"Mastery"}
-						layoutOrder={3}
-						onPressed={(): void => setRightComponentDisplayed(RightComponent.Mastery)}
 					/>,
 					<AccountIconTemplate
 						accessibleFeature={adminAccessToTradeLogs || publicAccessToTradeLogs}

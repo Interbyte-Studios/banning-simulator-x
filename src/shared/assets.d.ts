@@ -728,11 +728,14 @@ declare namespace assetIds {
 				LevelUp: string;
 			};
 			shop: {
+				accolades: string;
 				background: string;
+				["biweekly pet"]: string;
 				boosts: string;
 				currency: string;
 				gamepasses: string;
-				"limited pets": string;
+				["limited pets"]: string;
+				["playtime rewards"]: string;
 			};
 			autoDelete: {
 				background: string;
