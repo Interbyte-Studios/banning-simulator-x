@@ -87,7 +87,7 @@ for (const [name, data] of pairs(EGGS)) {
 
 	task.spawn(() => {
 		animateEgg(name, "regular");
-		if (name !== "500k Event") {
+		if (name !== "Throwback") {
 			task.wait(1);
 			animateEgg(name, "void");
 		}

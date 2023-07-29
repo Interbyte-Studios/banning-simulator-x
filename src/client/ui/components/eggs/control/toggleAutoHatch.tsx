@@ -71,25 +71,29 @@ export const ToggleAutoHatchButton = RoactRodux.connect(mapStateToProps)(
 						const eggFolder = Workspace.interactions.eggs[name];
 
 						const regularEgg = eggFolder.regular.egg.PrimaryPart;
-						assert(regularEgg, `Expected PrimaryPart on egg ${name}`);
-
-						const voidEgg = eggFolder.void.egg.PrimaryPart;
-						assert(voidEgg, `Expected PrimaryPart on void egg ${name}`);
-
-						if (humanoidRootPart.Position.sub(regularEgg.Position).Magnitude < 15) {
-							toggleAuto.SendToServer();
-							break;
+						if (regularEgg !== undefined) {
+							if (humanoidRootPart.Position.sub(regularEgg.Position).Magnitude < 30) {
+								toggleAuto.SendToServer();
+								break;
+							}
 						}
 
-						if (humanoidRootPart.Position.sub(voidEgg.Position).Magnitude < 15) {
-							toggleAuto.SendToServer();
-							break;
+						const voidEgg = eggFolder.void.egg.PrimaryPart;
+						if (voidEgg !== undefined) {
+							if (humanoidRootPart.Position.sub(voidEgg.Position).Magnitude < 30) {
+								toggleAuto.SendToServer();
+								break;
+							}
 						}
 					}
 				},
 				false,
 				Enum.KeyCode.R,
 			);
+
+			return (): void => {
+				ContextActionService.UnbindAction("toggleAuto");
+			};
 		});
 
 		return (
