@@ -4,6 +4,7 @@ import { accolades } from "./accolades";
 import { admin } from "./admin";
 import { useBoostDefinition } from "./boosts";
 import { claimInvitedFriendDefinition } from "./claimInvitedFriend";
+import { claimDailyRewardsDefinition } from "./dailyRewards";
 import { damageNPCDefinition } from "./damageNPC";
 import { eggs } from "./eggs";
 import { equipTitleDefinition } from "./equipTitle";
@@ -44,6 +45,7 @@ export const remotes = Net.Definitions.Create({
 	timeTrials: timeTrials,
 	trades: trading,
 
+	claimDailyRewards: claimDailyRewardsDefinition,
 	useGamepassGift: useGamepassGiftDefinition,
 	gamepassGiftReceived: gamepassGiftReceivedDefinition,
 	claimInvitedFriend: claimInvitedFriendDefinition,

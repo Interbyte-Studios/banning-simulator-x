@@ -3,6 +3,7 @@ import { createContext } from "@rbxts/roact";
 import { accoladesRemoteContext } from "./remoteDefinitions/accolades";
 import { adminRemoteContext } from "./remoteDefinitions/admin";
 import { boostsRemoteContext } from "./remoteDefinitions/boosts";
+import { dailyRewardsRemoteContext } from "./remoteDefinitions/dailyRewards";
 import { eggsRemoteContext } from "./remoteDefinitions/eggs";
 import { fusionRemoteContext } from "./remoteDefinitions/fusion";
 import { gamepassEremoteContext } from "./remoteDefinitions/gamepasses";
@@ -27,6 +28,7 @@ import { zonesRemoteContext } from "./remoteDefinitions/zones";
  * This is the remote context for the remote functions.
  */
 export const fakeRemoteContext = {
+	...dailyRewardsRemoteContext,
 	...playerLoadedContext,
 	...petMasteryRemoteContext,
 	...weaponsRemoteContext,

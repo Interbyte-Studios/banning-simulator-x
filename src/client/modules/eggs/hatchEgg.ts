@@ -41,6 +41,7 @@ const rightDecal = rightName.FindFirstChild("ImageLabel") as ImageLabel;
 const stopButton = hatchGui.FindFirstChild("Stop") as ImageButton;
 
 const hatchLight = Lighting.WaitForChild("HatchLight") as ColorCorrectionEffect;
+const blurEffect = Lighting.WaitForChild("Blur") as BlurEffect;
 
 /**
  * A number value representative of the pet's current rotation in the animation.
@@ -103,6 +104,13 @@ export const animateSingleEggHatch = (
 	const cameraTweenAnimation = TweenService.Create(camera, cameraTweenInfo, {
 		CFrame: camera.CFrame.mul(new CFrame(0, 0, 30)),
 	});
+
+	const animateBlur = blurEffect.Size > 0;
+	if (animateBlur) {
+		TweenService.Create(blurEffect, cameraTweenInfo, {
+			Size: 0,
+		}).Play();
+	}
 
 	camera.CameraType = Enum.CameraType.Scriptable;
 	cameraTweenAnimation.Play();
@@ -308,6 +316,12 @@ export const animateSingleEggHatch = (
 	resetCameraAnimation.Completed.Wait();
 	camera.CameraType = Enum.CameraType.Custom;
 
+	if (animateBlur) {
+		TweenService.Create(blurEffect, cameraTweenInfo, {
+			Size: 20,
+		}).Play();
+	}
+
 	// enable UI
 	playerGui.GetChildren().forEach((instance) => {
 		if (instance.IsA("ScreenGui")) {
@@ -359,6 +373,13 @@ export const animateTripleEggHatch = (
 	const cameraTweenAnimation = TweenService.Create(camera, cameraTweenInfo, {
 		CFrame: camera.CFrame.mul(new CFrame(0, 0, 30)),
 	});
+
+	const animateBlur = blurEffect.Size > 0;
+	if (animateBlur) {
+		TweenService.Create(blurEffect, cameraTweenInfo, {
+			Size: 0,
+		}).Play();
+	}
 
 	camera.CameraType = Enum.CameraType.Scriptable;
 	cameraTweenAnimation.Play();
@@ -659,6 +680,12 @@ export const animateTripleEggHatch = (
 	resetCameraAnimation.Play();
 	resetCameraAnimation.Completed.Wait();
 	camera.CameraType = Enum.CameraType.Custom;
+
+	if (animateBlur) {
+		TweenService.Create(blurEffect, cameraTweenInfo, {
+			Size: 20,
+		}).Play();
+	}
 
 	// enable UI
 	playerGui.GetChildren().forEach((instance) => {
