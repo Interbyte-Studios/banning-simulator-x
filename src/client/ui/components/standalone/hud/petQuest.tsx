@@ -6,14 +6,17 @@ import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { getPetDecal } from "client/util/getPetDecal";
+import { playSFX, UIEngagement } from "client/util/playSound";
 import { PET_QUEST_PET_ID } from "shared/configs/game";
 
 /**
  * The icon for the pet quest.
  *
+ * @param props The properties of the components.
+ * @param props.displayPetQuest The function to call when the icon is clicked.
  * @returns The element to render.
  */
-export const PetQuestIcon = (): Roact.Element => {
+export const PetQuestIcon = (props: { displayPetQuest: () => void }): Roact.Element => {
 	return (
 		<SpringImageButton
 			native={{
@@ -23,6 +26,15 @@ export const PetQuestIcon = (): Roact.Element => {
 				BackgroundTransparency: 0,
 			}}
 			size={{ minSize: 0.4, maxSize: 0.5 }}
+			events={{
+				/**
+				 *
+				 */
+				Activated: (): void => {
+					playSFX(UIEngagement.MajorEngagement);
+					props.displayPetQuest();
+				},
+			}}
 		>
 			<uiaspectratioconstraint AspectRatio={4} />
 			<uicorner CornerRadius={new UDim(0.2, 0)} />

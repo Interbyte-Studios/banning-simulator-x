@@ -23,6 +23,9 @@ export function checkCanAttack(player: Player, npc: Model, now: number): boolean
 		if (playerLog !== undefined) {
 			if (now - playerLog.lastAttack < 0.25) {
 				return false;
+			} else {
+				npcAttackCache.set(npc, [...lastAttack.filter((log) => log.player !== player)]);
+				return true;
 			}
 		} else {
 			npcAttackCache.set(npc, [...lastAttack, { player, lastAttack: now }]);

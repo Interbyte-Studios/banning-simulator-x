@@ -25,6 +25,7 @@ interface HudProps {
 	displayMastery: () => void;
 	displayPetMastery: () => void;
 	displayDailyRewards: () => void;
+	displayPetQuest: () => void;
 	hiddenHud: boolean;
 }
 
@@ -178,7 +179,7 @@ export const Hud = hooks((props: HudProps) => {
 			</BaseFrame>
 
 			{/* Right Side */}
-			<BaseFrame Position={UDim2.fromScale(0.88, 0.5)} Size={UDim2.fromScale(0.239, 0.998)}>
+			<BaseFrame Position={UDim2.fromScale(0.86, 0.5)} Size={UDim2.fromScale(0.239, 0.998)}>
 				<uiaspectratioconstraint AspectRatio={0.4} />
 				{!props.hiddenHud && (
 					<BaseFrame Position={UDim2.fromScale(0.588, 0.346)} Size={UDim2.fromScale(0.828, 0.214)}>
@@ -226,7 +227,7 @@ export const Hud = hooks((props: HudProps) => {
 					size={UDim2.fromScale(0.85, 0.076)}
 					currencyType={"gears"}
 				/>
-				{!props.hiddenHud && <PetQuestIcon />}
+				{!props.hiddenHud && <PetQuestIcon displayPetQuest={props.displayPetQuest} />}
 			</BaseFrame>
 		</BaseFrame>
 	);

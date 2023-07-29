@@ -97,6 +97,9 @@ remotes.Server.Get("damageNPC").Connect(
 				task.delay(0.5, (): void => {
 					clearAttackLog(character);
 					character.Destroy();
+
+					const questBans = (player.GetAttribute("petQuestBan") as number) + 1 ?? 0;
+					player.SetAttribute("petQuestBan", questBans ?? 0);
 				});
 			}
 		} else {

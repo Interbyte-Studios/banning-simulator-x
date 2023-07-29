@@ -16,6 +16,7 @@ import { GamepassGiftsActions, gamepassGiftsReducer, GamepassGiftsState } from "
 import { InvitedFriendActions, invitedFriendReducer, InvitedFriendState } from "./invitedFriend";
 import { MediaActions, mediaReducer, MediaState } from "./media";
 import { PetMasteryActions, petMasteryReducer, PetMasteryState } from "./petMastery";
+import { PetQuestActions, petQuestReducer, PetQuestState } from "./petQuest";
 import { PetsActions, petsReducer, PetsState } from "./pets";
 import { PetTeamsActions, petTeamsReducer, PetTeamsState } from "./petTeams";
 import { PlayerIndexActions, playerIndexReducer, PlayerIndexState } from "./playerIndex";
@@ -48,6 +49,7 @@ export type StoreState = {
 	invitedFriend: InvitedFriendState;
 	media: MediaState;
 	pets: PetsState;
+	petQuests: PetQuestState;
 	petMastery: PetMasteryState;
 	petTeams: PetTeamsState;
 	quests: QuestsState;
@@ -77,6 +79,7 @@ export type StoreActions = (
 	| GamepassGiftsActions
 	| MediaActions
 	| PetsActions
+	| PetQuestActions
 	| QuestsAction
 	| RankActions
 	| SettingsActions
@@ -110,6 +113,7 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	gamepassGifts: gamepassGiftsReducer,
 	media: mediaReducer,
 	pets: petsReducer,
+	petQuests: petQuestReducer,
 	quests: questsReducer,
 	settings: settingsReducer,
 	rank: rankReducer,

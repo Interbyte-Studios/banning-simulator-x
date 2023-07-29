@@ -15,6 +15,7 @@ import { fusionRemtoes } from "./remotes/fusion";
 import { gamepassRemotes } from "./remotes/gamepasses";
 import { mediaRemotes } from "./remotes/media";
 import { petMasteryRemotes } from "./remotes/petMastery";
+import { petQuestRemotes } from "./remotes/petQuest";
 import { petRemtoes } from "./remotes/pets";
 import { playerLoadedRemtoes } from "./remotes/playerLoaded";
 import { questsRemotes } from "./remotes/quests";
@@ -50,6 +51,7 @@ onStoreCreated(player)
 					...gamepassRemotes,
 					...mediaRemotes,
 					...petRemtoes,
+					...petQuestRemotes,
 					...petMasteryRemotes,
 					...playerLoadedRemtoes,
 					...questsRemotes,

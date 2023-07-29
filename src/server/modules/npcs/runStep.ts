@@ -255,6 +255,9 @@ export function runStep(
 			// get rid of npc instance
 			npc.instance.Parent = undefined;
 			npcCharacterToNpc.delete(character);
+
+			const questBans = (player.GetAttribute("petQuestBan") as number) + 1 ?? 0;
+			player.SetAttribute("petQuestBan", questBans ?? 0);
 		}
 	}
 

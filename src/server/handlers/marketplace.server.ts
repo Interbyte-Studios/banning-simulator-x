@@ -15,6 +15,8 @@ import {
 	LIMITED_EGG,
 	LIMITED_EGG_DEVPRODUCT,
 	ONE_HUNDRED_SPINS,
+	PET_QUEST_DEVPRODUCT,
+	PET_QUEST_PET_ID,
 	PURCHASE_PET_TEAM_PRODUCT,
 	TEN_SPINS,
 } from "shared/configs/game";
@@ -264,6 +266,26 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 			});
 			purchaseProcessed = true;
 		}
+	}
+
+	if (receiptInfo.ProductId === PET_QUEST_DEVPRODUCT) {
+		store.dispatch(
+			addPets([
+				{
+					id: PET_QUEST_PET_ID,
+					variant: "regular",
+					tradeLocked: false,
+					guid: HttpService.GenerateGUID(false),
+				},
+			]),
+		);
+
+		modifyPetCount({
+			type: "addPet",
+			petId: PET_QUEST_PET_ID,
+			variant: "regular",
+		});
+		purchaseProcessed = true;
 	}
 
 	if (!purchaseProcessed) throw `Product of id ${receiptInfo.ProductId} was not processed.`;

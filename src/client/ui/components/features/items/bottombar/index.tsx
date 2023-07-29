@@ -20,7 +20,7 @@ export const BottomBar = hooks((props: BottomBarProps) => {
 		<frame
 			AnchorPoint={vec2Middle}
 			BackgroundTransparency={1}
-			Position={UDim2.fromScale(-0.08, 0.55)}
+			Position={UDim2.fromScale(1.08, 0.55)}
 			Size={UDim2.fromScale(0.15, 0.45)}
 		>
 			<uilistlayout
