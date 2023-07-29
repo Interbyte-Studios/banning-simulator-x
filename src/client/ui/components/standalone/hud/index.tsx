@@ -185,22 +185,22 @@ export const Hud = hooks((props: HudProps) => {
 							icon={assetIds.images.ui.hud.icons.items}
 							title={"Items"}
 							onClick={(): void => props.displayItems()}
-							position={UDim2.fromScale(0.515, 0.847)}
-							size={{ minSize: 0.25, maxSize: 0.3 }}
+							position={UDim2.fromScale(0.475, 0.8)}
+							size={{ minSize: 0.35, maxSize: 0.4 }}
 						/>
 						<HudIcon
 							icon={assetIds.images.ui.hud.icons.trading}
 							title={"Trading"}
 							onClick={(): void => props.displayTradingMenu()}
-							position={UDim2.fromScale(0.512, 0.459)}
-							size={{ minSize: 0.25, maxSize: 0.3 }}
+							position={UDim2.fromScale(0.475, 0.35)}
+							size={{ minSize: 0.35, maxSize: 0.4 }}
 						/>
 						<HudIcon
 							icon={assetIds.images.ui.hud.icons.options}
 							title={"Settings"}
 							onClick={(): void => props.displaySettings()}
-							position={UDim2.fromScale(0.515, 0.072)}
-							size={{ minSize: 0.25, maxSize: 0.3 }}
+							position={UDim2.fromScale(0.175, 0.8)}
+							size={{ minSize: 0.35, maxSize: 0.4 }}
 						/>
 						<HudIcon
 							icon={assetIds.images.ui.hud.icons["auto fight"]}
