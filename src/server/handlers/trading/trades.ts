@@ -1,8 +1,8 @@
 import {
 	addFlaggedTrade,
 	FlaggedPetCollection,
-	isFlaggedSecretVariant,
 	isFlaggedRarity,
+	isFlaggedSecretVariant,
 } from "server/modules/webhooks/flaggedTrades";
 import { retrieveStore } from "server/playerStore";
 import { MAX_TRADE_LOGS } from "shared/configs/game";
@@ -728,10 +728,7 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 		for (const pet of playerOfferPets) {
 			const petData = getPetData(pet.id);
 			if (isFlaggedRarity(petData.rarity)) {
-				if (
-					(petData.rarity === "Exclusive" || petData.rarity === "Secret") &&
-					isFlaggedSecretVariant(pet.variant)
-				) {
+				if ((petData.rarity === "Exclusive" || petData.rarity === "Secret") && isFlaggedSecretVariant(pet.variant)) {
 					flaggedPlayerPets.push({
 						id: pet.id,
 						variant: pet.variant,
@@ -757,10 +754,7 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 		const flaggedOtherPlayerPets: FlaggedPetCollection = [];
 		for (const pet of otherPlayerOfferPets) {
 			const petData = getPetData(pet.id);
-			if (
-				(petData.rarity === "Exclusive" || petData.rarity === "Secret") &&
-				isFlaggedSecretVariant(pet.variant)
-			) {
+			if ((petData.rarity === "Exclusive" || petData.rarity === "Secret") && isFlaggedSecretVariant(pet.variant)) {
 				flaggedOtherPlayerPets.push({
 					id: pet.id,
 					variant: pet.variant,
