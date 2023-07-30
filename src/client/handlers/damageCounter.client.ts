@@ -9,32 +9,12 @@ const damageCounter = ReplicatedStorage.assetObjects.tags.damagecounter;
  * @param npc The npc to create the damage counter for.
  */
 export function createDamageCounter(npc: Model): void {
-	let humanoid = npc.FindFirstChildOfClass("Humanoid");
-	if (humanoid === undefined) {
-		// eslint-disable-next-line no-constant-condition
-		while (true) {
-			task.wait(1);
-			if (npc.FindFirstChildOfClass("Humanoid")) {
-				humanoid = npc.FindFirstChildOfClass("Humanoid");
-				break;
-			}
-		}
-	}
+	const humanoid = npc.FindFirstChildOfClass("Humanoid");
 	if (humanoid === undefined) {
 		return;
 	}
 
-	let head = npc.FindFirstChild("Head") as BasePart;
-	if (head === undefined) {
-		// eslint-disable-next-line no-constant-condition
-		while (true) {
-			task.wait(1);
-			if (npc.FindFirstChild("Head")) {
-				head = npc.FindFirstChild("Head") as BasePart;
-				break;
-			}
-		}
-	}
+	const head = npc.FindFirstChild("Head") as BasePart;
 	if (head === undefined) {
 		return;
 	}

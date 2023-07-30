@@ -5,6 +5,7 @@ import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
@@ -62,7 +63,7 @@ export const SetUpdateLogType = (props: { updateLogType: UpdateLogType; onActiva
 /**
  * In-game update log.
  */
-export const UpdateLog = hooks((_, { useState }) => {
+export const UpdateLog = hooks((props: { hideMenu: () => void }, { useState }) => {
 	const [logToShow, setLogToShow] = useState<UpdateLogType>(UpdateLogType.Release);
 
 	return (
@@ -157,6 +158,12 @@ export const UpdateLog = hooks((_, { useState }) => {
 					{logToShow === UpdateLogType.Update4 && <Update4Log />}
 				</scrollingframe>
 			</BaseFrame>
+			<ExitButton
+				Position={UDim2.fromScale(0.985, 0.085)}
+				minimizedSize={0.08}
+				maximizedSize={0.09}
+				onClosed={(): void => props.hideMenu()}
+			/>
 		</ImageLabel>
 	);
 });

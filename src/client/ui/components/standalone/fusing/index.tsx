@@ -30,40 +30,46 @@ export const Fusing = hooks(
 
 		const [petSelected, setPetSelected] = useState<number | undefined>(undefined);
 		const [fusingVariant, setFusingVariant] = useState<FusableVariant>(props.variant ?? "void");
-		const [voidInteractions, setVoidInteractions] = useState<Array<BasePart>>([]);
-		const [radiantInteractions, setRadiantInteractions] = useState<Array<BasePart>>([]);
 		useEffect(() => {
-			const voidPrompts: Array<BasePart> = [];
-			Workspace.interactions.voidMachines.interactions.GetChildren().forEach((child) => {
-				if (child.IsA("BasePart")) {
-					voidPrompts.push(child);
+			if (props.isVisible) {
+				const character = Players.LocalPlayer.Character;
+				if (character === undefined) {
+					return;
 				}
-			});
-			setVoidInteractions(voidPrompts);
 
-			const radiantPrompts: Array<BasePart> = [];
-			Workspace.interactions.radiantMachines.interactions.GetChildren().forEach((child) => {
-				if (child.IsA("BasePart")) {
-					radiantPrompts.push(child);
-				}
-			});
-			setRadiantInteractions(radiantPrompts);
-
-			const connections = [
-				Workspace.interactions.voidMachines.interactions.ChildAdded.Connect((child) => {
+				Workspace.interactions.voidMachines.interactions.GetChildren().forEach((child) => {
 					if (child.IsA("BasePart")) {
-						setVoidInteractions([...voidInteractions, child]);
+						const canDisplay = shouldDisplay(character, child);
+						if (canDisplay) {
+							setFusingVariant("void");
+							return;
+						}
 					}
-				}),
-				Workspace.interactions.radiantMachines.interactions.ChildAdded.Connect((child) => {
+				});
+				Workspace.interactions.radiantMachines.interactions.GetChildren().forEach((child) => {
 					if (child.IsA("BasePart")) {
-						setRadiantInteractions([...radiantInteractions, child]);
+						const canDisplay = shouldDisplay(character, child);
+						if (canDisplay) {
+							setFusingVariant("radiant");
+							return;
+						}
 					}
-				}),
-			];
+				});
+			}
+		}, [props.isVisible]);
 
-			return (): void => connections.forEach((connection) => connection.Disconnect());
-		}, []);
+		const voidPrompts: Array<BasePart> = [];
+		Workspace.interactions.voidMachines.interactions.GetChildren().forEach((child) => {
+			if (child.IsA("BasePart")) {
+				voidPrompts.push(child);
+			}
+		});
+		const radiantPrompts: Array<BasePart> = [];
+		Workspace.interactions.radiantMachines.interactions.GetChildren().forEach((child) => {
+			if (child.IsA("BasePart")) {
+				radiantPrompts.push(child);
+			}
+		});
 
 		const screenToDisplay: Array<Roact.Element> = [];
 		if (petSelected !== undefined) {
@@ -79,31 +85,6 @@ export const Fusing = hooks(
 				<PetSelection variant={fusingVariant} setPetSelected={(petId: number): void => setPetSelected(petId)} />,
 			);
 		}
-
-		useEffect(() => {
-			if (props.isVisible) {
-				const character = Players.LocalPlayer.Character;
-				if (character === undefined) {
-					return;
-				}
-
-				for (const prompt of voidInteractions) {
-					const canDisplay = shouldDisplay(character, prompt);
-					if (canDisplay) {
-						setFusingVariant("void");
-						return;
-					}
-				}
-
-				for (const prompt of radiantInteractions) {
-					const canDisplay = shouldDisplay(character, prompt);
-					if (canDisplay) {
-						setFusingVariant("radiant");
-						return;
-					}
-				}
-			}
-		}, [props.isVisible]);
 
 		const billboardElement = (adornee: BasePart, variant: Exclude<Variants, "regular">): Roact.Element => {
 			return (
@@ -224,8 +205,8 @@ export const Fusing = hooks(
 		} else {
 			return (
 				<>
-					{radiantInteractions.map((promptPart) => billboardElement(promptPart, "radiant"))}
-					{voidInteractions.map((promptPart) => billboardElement(promptPart, "void"))}
+					{radiantPrompts.map((promptPart) => billboardElement(promptPart, "radiant"))}
+					{voidPrompts.map((promptPart) => billboardElement(promptPart, "void"))}
 				</>
 			);
 		}

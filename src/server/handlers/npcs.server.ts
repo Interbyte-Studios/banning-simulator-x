@@ -123,6 +123,8 @@ remotes.Server.Get("damageNPC").Connect(
 				}
 			}
 
+			warn(`Registered attack from ${player.Name}`);
+
 			const npcAttack = {
 				player,
 				store,

@@ -718,10 +718,13 @@ return {
 			},
 			hud = {
 				icons = {
+					accolades = "rbxassetid://14250231172",
 					["auto fight"] = "rbxassetid://12131905288",
 					codes = "rbxassetid://11591957031",
+					daily = "rbxassetid://14250231290",
 					items = "rbxassetid://11591957067",
 					options = "rbxassetid://11591957114",
+					petMastery = "rbxassetid://14250591237",
 					rewards = "rbxassetid://11591957156",
 					shop = "rbxassetid://13816230335",
 					teleport = "rbxassetid://11591957239",

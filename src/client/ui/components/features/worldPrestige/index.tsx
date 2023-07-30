@@ -23,8 +23,6 @@ export const WorldPrestige = hooks(
 		{ useState, useEffect },
 	) => {
 		const [viewingWorld, setViewingWorld] = useState<WorldName>("Ban Land");
-		const [prestigeInteractions, setPrestigeInteractions] = useState<Array<BasePart>>([]);
-		const [upgradesInteractions, setUpgradesInteractions] = useState<Array<BasePart>>([]);
 
 		useEffect(() => {
 			if (!props.isVisible) {
@@ -43,46 +41,22 @@ export const WorldPrestige = hooks(
 			setViewingWorld(currentWorld);
 		}, [props.isVisible]);
 
-		useEffect(() => {
-			const _prestigeInteractions: Array<BasePart> = [];
-			for (const worldPrestigeFolder of Workspace.interactions.worldPrestige.GetChildren()) {
-				const pretigeFolder = worldPrestigeFolder.FindFirstChild("prestige") as Folder;
-				const vendor = pretigeFolder.FindFirstChild("vendor") as Model;
-				const primary = vendor.FindFirstChild("primary") as BasePart;
-				_prestigeInteractions.push(primary);
-			}
-			setPrestigeInteractions(_prestigeInteractions);
+		const prestigeInteractions: Array<BasePart> = [];
+		for (const worldPrestigeFolder of Workspace.interactions.worldPrestige.GetChildren()) {
+			const pretigeFolder = worldPrestigeFolder.FindFirstChild("prestige") as Folder;
+			const vendor = pretigeFolder.FindFirstChild("vendor") as Model;
+			const primary = vendor.FindFirstChild("primary") as BasePart;
+			prestigeInteractions.push(primary);
+		}
 
-			const _upgradesInteractions: Array<BasePart> = [];
-			CollectionService.GetTagged("prestigeUpgrade").forEach((interaction) => {
-				if (!interaction.IsA("BasePart")) {
-					return;
-				}
-
-				_upgradesInteractions.push(interaction);
-			});
-			setUpgradesInteractions(_upgradesInteractions);
-
-			const connections: Array<RBXScriptConnection> = [
-				CollectionService.GetInstanceAddedSignal("prestigeUpgrade").Connect((instance) => {
-					if (instance.IsA("BasePart")) {
-						setUpgradesInteractions([...upgradesInteractions, instance]);
-					}
-				}),
-			];
-			for (const worldPrestigeFolder of Workspace.interactions.worldPrestige.GetChildren()) {
-				const prestigeFolder = worldPrestigeFolder.FindFirstChild("prestige") as Folder;
-				connections.push(
-					prestigeFolder.DescendantAdded.Connect((child) => {
-						if (child.Name === "primary" && child.IsA("BasePart")) {
-							setPrestigeInteractions([...prestigeInteractions, child]);
-						}
-					}),
-				);
+		const upgradesInteractions: Array<BasePart> = [];
+		CollectionService.GetTagged("prestigeUpgrade").forEach((interaction) => {
+			if (!interaction.IsA("BasePart")) {
+				return;
 			}
 
-			return (): void => connections.forEach((conn) => conn.Disconnect());
-		}, []);
+			upgradesInteractions.push(interaction);
+		});
 
 		if (props.isVisible) {
 			if (props.viewType === WorldPrestigeViewType.Prestige) {

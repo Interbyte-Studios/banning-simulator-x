@@ -84,6 +84,8 @@ const visibilityStates = {
 	petQuest: false,
 };
 
+let popupsShown = false;
+
 const updateLogIcon = new Icon().setImage(assetIds.images.decals.UpdateLog).setLabel("Update Log");
 const blurEffect = Lighting.WaitForChild("Blur") as BlurEffect;
 blurEffect.Size = 0;
@@ -258,6 +260,13 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 		};
 	});
 
+	useEffect(() => {
+		if (!popupsShown) {
+			popupsShown = true;
+			setVisibility({ ...visibilityStates, updateLog: true, dailyRewards: true, petQuest: true });
+		}
+	}, []);
+
 	/**
 	 * Toggles the blur effect.
 	 *
@@ -401,7 +410,33 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 				/>,
 			);
 		} else if (isVisible("updateLog")) {
-			components.push(<UpdateLog />);
+			components.push(
+				<UpdateLog hideMenu={(): void => setVisibility((prev) => ({ ...prev, updateLog: false }))} />,
+				<Hud
+					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
+					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
+					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
+					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
+					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
+					displaySpinWheel={(): void => setVisibility({ ...visibilityStates, spinWheel: true })}
+					displayAccolades={(): void => setVisibility({ ...visibilityStates, accolades: true })}
+					displayMastery={(): void => setVisibility({ ...visibilityStates, accountMastery: true })}
+					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
+					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
+					displayPetQuest={(): void => setVisibility({ ...visibilityStates, petQuest: true })}
+					displayTradingMenu={(): void => {
+						if (!ReplicatedStorage.events.trading.enabled.Value) {
+							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
+							return;
+						}
+
+						props.setTradingEnabled();
+					}}
+					hiddenHud={true}
+				/>,
+			);
 		} else if (isVisible("worldPrestige")) {
 			components.push(
 				<WorldPrestige
@@ -560,9 +595,59 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 		} else if (isVisible("dailyRewards")) {
 			components.push(
 				<DailyRewards hideMenu={(): void => setVisibility((prev) => ({ ...prev, dailyRewards: false }))} />,
+				<Hud
+					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
+					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
+					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
+					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
+					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
+					displaySpinWheel={(): void => setVisibility({ ...visibilityStates, spinWheel: true })}
+					displayAccolades={(): void => setVisibility({ ...visibilityStates, accolades: true })}
+					displayMastery={(): void => setVisibility({ ...visibilityStates, accountMastery: true })}
+					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
+					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
+					displayPetQuest={(): void => setVisibility({ ...visibilityStates, petQuest: true })}
+					displayTradingMenu={(): void => {
+						if (!ReplicatedStorage.events.trading.enabled.Value) {
+							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
+							return;
+						}
+
+						props.setTradingEnabled();
+					}}
+					hiddenHud={true}
+				/>,
 			);
 		} else if (isVisible("petQuest")) {
-			components.push(<PetQuest hideMenu={(): void => setVisibility((prev) => ({ ...prev, petQuest: false }))} />);
+			components.push(
+				<PetQuest hideMenu={(): void => setVisibility((prev) => ({ ...prev, petQuest: false }))} />,
+				<Hud
+					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
+					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
+					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
+					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
+					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
+					displaySpinWheel={(): void => setVisibility({ ...visibilityStates, spinWheel: true })}
+					displayAccolades={(): void => setVisibility({ ...visibilityStates, accolades: true })}
+					displayMastery={(): void => setVisibility({ ...visibilityStates, accountMastery: true })}
+					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
+					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
+					displayPetQuest={(): void => setVisibility({ ...visibilityStates, petQuest: true })}
+					displayTradingMenu={(): void => {
+						if (!ReplicatedStorage.events.trading.enabled.Value) {
+							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
+							return;
+						}
+
+						props.setTradingEnabled();
+					}}
+					hiddenHud={true}
+				/>,
+			);
 		}
 
 		components.push(<ZonesUI />, <Rewards />, <LocalMessages />, <EggCost />, <EggHud />, <BoostCounter />);

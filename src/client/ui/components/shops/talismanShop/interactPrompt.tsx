@@ -11,27 +11,13 @@ import assetIds from "shared/assets";
 /**
  * Displays a custom proximity prompt interface allowing the player to intract with the talisman tower.
  */
-export const TalismanTowerInteractPrompt = hooks((props: { displayShop: () => void }, { useState, useEffect }) => {
-	const [interactions, setInteractions] = useState<Array<BasePart>>([]);
-
-	useEffect(() => {
-		const newInteractions: Array<BasePart> = [];
-		for (const interaction of Workspace.interactions.talismanShops.GetChildren()) {
-			if (interaction.IsA("BasePart")) {
-				newInteractions.push(interaction);
-			}
+export const TalismanTowerInteractPrompt = hooks((props: { displayShop: () => void }) => {
+	const interactions: Array<BasePart> = [];
+	for (const interaction of Workspace.interactions.talismanShops.GetChildren()) {
+		if (interaction.IsA("BasePart")) {
+			interactions.push(interaction);
 		}
-
-		setInteractions(newInteractions);
-
-		const connection = Workspace.interactions.talismanShops.ChildAdded.Connect((child) => {
-			if (child.IsA("BasePart")) {
-				setInteractions((prev) => [...prev, child]);
-			}
-		});
-
-		return (): void => connection.Disconnect();
-	}, []);
+	}
 
 	return (
 		<>

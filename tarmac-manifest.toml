@@ -3328,6 +3328,11 @@ hash = "49e4e31dc73a66de85fbeb9ed19f9901cdf49204ab0460d082cf32a1055641ae"
 id = 11016579897
 packable = false
 
+[inputs."images/ui/hud/icons/accolades.png"]
+hash = "9757f3e53bed3ebec34b74132e08548942bc8e70a3d34b60941f84e96a928236"
+id = 14250231172
+packable = false
+
 [inputs."images/ui/hud/icons/auto fight.png"]
 hash = "4a02090cdb39fa9fde33b1c0887d40f006c8d4bf78dce864108fc3de9c7a439a"
 id = 12131905288
@@ -3338,6 +3343,11 @@ hash = "4d894e85da7b21a65ef1e8f3a405a044b05bce8408fa266a47b1e66bea790951"
 id = 11591957031
 packable = false
 
+[inputs."images/ui/hud/icons/daily.png"]
+hash = "e84422ad23d771b192a3dfacf1054871c95abb675884a72f455544cac103c2fc"
+id = 14250231290
+packable = false
+
 [inputs."images/ui/hud/icons/items.png"]
 hash = "973a211da306149f5105dcb3b6f2b53402852ed85cc9cbfa9b2f895b11dbf6b0"
 id = 11591957067
@@ -3346,6 +3356,11 @@ packable = false
 [inputs."images/ui/hud/icons/options.png"]
 hash = "2c48a93c4dcd6d0df38781245675ebb613f1c6c7c8c54429d17f62d22187261c"
 id = 11591957114
+packable = false
+
+[inputs."images/ui/hud/icons/petMastery.png"]
+hash = "b92c65f1696e2473b1181a7d68db7059699c390f0123484a23ae1cfe1a694f28"
+id = 14250591237
 packable = false
 
 [inputs."images/ui/hud/icons/rewards.png"]

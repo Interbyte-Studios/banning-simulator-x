@@ -3,7 +3,7 @@ import { Players, ReplicatedStorage, RunService, TweenService, Workspace } from 
 import { t } from "@rbxts/t";
 import { onStoreCreated } from "client/clientStores";
 import { getRankIcon } from "client/util/getRankIcon";
-import { GROUP_ID, GROUP_ROLES } from "shared/configs/game";
+import { GROUP_ROLES } from "shared/configs/game";
 import { TITLES } from "shared/configs/titles";
 import { Store } from "shared/rodux";
 import { getNPCByName } from "shared/util/getNpcByName";
@@ -117,53 +117,22 @@ function createPlayerTag(player: Player, store: Store): void {
 	assert(playerTag, `Failed to get player tag from rep storage`);
 
 	task.spawn(() => {
-		let character = player.Character;
-		if (character === undefined) {
-			// eslint-disable-next-line no-constant-condition
-			while (true) {
-				task.wait(1);
-				if (player.Character) {
-					character = player.Character;
-					break;
-				}
-			}
-		}
+		const character = player.Character;
 		if (character === undefined) {
 			return;
 		}
 
-		let humanoid = character.FindFirstChildOfClass("Humanoid");
-		if (humanoid === undefined) {
-			// eslint-disable-next-line no-constant-condition
-			while (true) {
-				task.wait(1);
-				if (character.FindFirstChildOfClass("Humanoid")) {
-					humanoid = character.FindFirstChildOfClass("Humanoid");
-					break;
-				}
-			}
-		}
+		const humanoid = character.FindFirstChildOfClass("Humanoid");
 		if (humanoid === undefined) {
 			return;
 		}
 
-		let head = character.FindFirstChild("Head") as BasePart;
-		if (head === undefined) {
-			// eslint-disable-next-line no-constant-condition
-			while (true) {
-				task.wait(1);
-				if (character.FindFirstChild("Head")) {
-					head = character.FindFirstChild("Head") as BasePart;
-					break;
-				}
-			}
-		}
+		const head = character.FindFirstChild("Head") as BasePart;
 		if (head === undefined) {
 			return;
 		}
 
 		const storeState = store.getState();
-		const isInGroup = player.IsInGroup(GROUP_ID);
 
 		const tag = playerTag.Clone();
 		tag.hold.name.Text = player.Name;
@@ -248,8 +217,8 @@ function createPlayerTag(player: Player, store: Store): void {
 			}
 		}
 
-		if (isInGroup) {
-			const groupRank = player.GetRankInGroup(GROUP_ID);
+		if (storeState.index.groupRank !== undefined) {
+			const groupRank = storeState.index.groupRank;
 			const groupRankData = GROUP_ROLES[groupRank];
 			if (groupRankData === undefined) {
 				return;
@@ -413,32 +382,12 @@ function createEnemyTag(enemy: Model): void {
 	assert(enemyTag, `Failed to get enemy tag from rep storage`);
 
 	task.spawn(() => {
-		let humanoid = enemy.FindFirstChildOfClass("Humanoid");
-		if (humanoid === undefined) {
-			// eslint-disable-next-line no-constant-condition
-			while (true) {
-				task.wait(1);
-				if (enemy.FindFirstChildOfClass("Humanoid")) {
-					humanoid = enemy.FindFirstChildOfClass("Humanoid");
-					break;
-				}
-			}
-		}
+		const humanoid = enemy.FindFirstChildOfClass("Humanoid");
 		if (humanoid === undefined) {
 			return;
 		}
 
-		let head = enemy.FindFirstChild("Head") as BasePart;
-		if (head === undefined) {
-			// eslint-disable-next-line no-constant-condition
-			while (true) {
-				task.wait(1);
-				if (enemy.FindFirstChild("Head")) {
-					head = enemy.FindFirstChild("Head") as BasePart;
-					break;
-				}
-			}
-		}
+		const head = enemy.FindFirstChild("Head") as BasePart;
 		if (head === undefined) {
 			return;
 		}

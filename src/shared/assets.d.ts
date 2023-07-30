@@ -777,6 +777,9 @@ declare namespace assetIds {
 				upgrade: string;
 				"viewer background": string;
 				icons: {
+					petMastery: string;
+					accolades: string;
+					daily: string;
 					options: string;
 					teleport: string;
 					rewards: string;

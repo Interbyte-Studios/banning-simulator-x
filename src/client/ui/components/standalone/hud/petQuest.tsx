@@ -20,7 +20,7 @@ export const PetQuestIcon = (props: { displayPetQuest: () => void }): Roact.Elem
 	return (
 		<SpringImageButton
 			native={{
-				Position: UDim2.fromScale(0.731, 0.65),
+				Position: UDim2.fromScale(0.706, 0.431),
 				Image: "",
 				BackgroundColor3: Color3.fromRGB(40, 168, 248),
 				BackgroundTransparency: 0,

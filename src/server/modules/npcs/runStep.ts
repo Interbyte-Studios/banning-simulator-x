@@ -141,16 +141,12 @@ export function runStep(
 
 		const currentWeaponData = storeState.weapons.find((weapon) => weapon.id === storeState.currentWeapon.id);
 		if (currentWeaponData === undefined) {
-			warn(`[NPC RunStep] - Player ${player.Name} does not own the weapon they're attacking with.`);
 			continue;
 		}
 
 		if (storeState.currentTalisman !== undefined) {
 			const currentTalismanData = storeState.talismans.find((talisman) => talisman.id === storeState.currentTalisman);
 			if (currentTalismanData === undefined) {
-				warn(
-					`[NPC RunStep] - Player ${player.Name} does not own the talisman they're attacking with. | Current Talisman ID: ${storeState.currentTalisman}}`,
-				);
 				continue;
 			}
 		}
@@ -178,7 +174,6 @@ export function runStep(
 			// reward player
 			const store = playerStores.get(player);
 			if (store === undefined) {
-				warn(`[NPC RunStep] - Could not get store for "${player.GetFullName()}" when rewarding them for killing NPC`);
 				continue;
 			}
 

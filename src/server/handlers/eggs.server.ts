@@ -219,7 +219,9 @@ hatchEggRemote.SetCallback(
 				const image = assetIds.images.decals.pets[petVariantName as keyof typeof assetIds.images.decals.pets];
 				let decalToPass = 0;
 				if (image !== undefined) {
+					// bugged
 					decalToPass = image.match("%d+")[0] as number;
+					print(decalToPass);
 				}
 
 				let existAmount = 0;
@@ -234,21 +236,25 @@ hatchEggRemote.SetCallback(
 					}
 				}
 
-				HttpService.RequestAsync({
-					Url: "http://137.184.152.180:8765/hatch",
-					Body: HttpService.JSONEncode({
-						roblox_uid: player.UserId,
-						secret_name: petData.name,
-						secret_type: pet.rarity,
-						pet_variant: isVoid ? "void" : "regular",
-						decal_id: decalToPass,
-						exist_amount: existAmount,
-					}),
-					Method: "POST",
-					Headers: {
-						"Content-Type": "application/json",
-						"X-ACCESS-TOKEN": "V1qijQkozBm1LdD5SsO1",
-					},
+				task.spawn(() => {
+					pcall(() => {
+						HttpService.RequestAsync({
+							Url: "http://137.184.152.180:8765/hatch",
+							Body: HttpService.JSONEncode({
+								roblox_uid: player.UserId,
+								secret_name: petData.name,
+								secret_type: pet.rarity,
+								pet_variant: isVoid ? "void" : "regular",
+								decal: decalToPass,
+								exist: existAmount + 1,
+							}),
+							Method: "POST",
+							Headers: {
+								"Content-Type": "application/json",
+								"X-ACCESS-TOKEN": "V1qijQkozBm1LdD5SsO1",
+							},
+						});
+					});
 				});
 			} else if (pet.rarity === "Legendary") {
 				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");

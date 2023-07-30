@@ -122,5 +122,6 @@ task.spawn(() => {
 		currentWorld = world;
 
 		setPlaylist(currentWorld);
+		task.wait();
 	}
 });

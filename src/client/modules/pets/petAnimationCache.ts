@@ -57,9 +57,6 @@ export const removePetAnimationCache = (player: Player): void => {
 	// remove pets
 	const cache = settingsCache.find((cacheData) => cacheData.player === player);
 	if (cache === undefined) {
-		warn(
-			`[ Pet Animation Cache ] - Failed to remove pet animation cache for player ${player.Name} | Couldn't find object.`,
-		);
 		return;
 	}
 
@@ -70,9 +67,6 @@ export const removePetAnimationCache = (player: Player): void => {
 	// remove cache
 	const cacheIndex = settingsCache.findIndex((cacheData) => cacheData.player === player);
 	if (cacheIndex === undefined) {
-		warn(
-			`[ Pet Animation Cache ] - Failed to remove pet animation cache for player ${player.Name} | Couldn't find index.`,
-		);
 		return;
 	}
 
