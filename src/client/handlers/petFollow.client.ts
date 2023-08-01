@@ -145,8 +145,8 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 
 					playerCache.petsDisplayed.GetPropertyChangedSignal("Value").Connect(() => {
 						const currentCacheState = getPetAnimationCache();
-						currentCacheState.forEach((playerCache) =>
-							playerCache.pets.forEach((cachedPet) => {
+						currentCacheState.forEach((_playerCache) =>
+							_playerCache.pets.forEach((cachedPet) => {
 								cachedPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
 							}),
 						);
