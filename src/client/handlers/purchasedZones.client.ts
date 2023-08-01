@@ -1,3 +1,4 @@
+debug.setmemorycategory("purchasedZones");
 import Make from "@rbxts/make";
 import { Lighting, Players, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
@@ -17,8 +18,7 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 	const zoneDecoration = Workspace.decoration[world][zone];
 	const door = zoneDecoration.door;
 
-	task.spawn(() => {
-		task.wait(1);
+	task.delay(1, (): void => {
 		let zoneFolder = Lighting.FindFirstChild(zone);
 		if (zoneFolder === undefined) {
 			zoneFolder = Make("Folder", {

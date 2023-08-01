@@ -1,3 +1,4 @@
+debug.setmemorycategory("roactMounter");
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";

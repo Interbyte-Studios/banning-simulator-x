@@ -1,3 +1,4 @@
+debug.setmemorycategory("clientStore");
 import { remotes } from "shared/remotes";
 
 import { stores } from "../clientStores";

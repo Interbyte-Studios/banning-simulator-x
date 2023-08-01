@@ -63,6 +63,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 			let lastInteraction = 0;
 			const interactionDebounce = 1;
 			const connection = RunService.Heartbeat.Connect(() => {
+				debug.profilebegin("rankUpgrade");
 				if (isVisible) {
 					return;
 				}
@@ -103,6 +104,7 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 
 				setVisibility(true);
 				setWithinRange(true);
+				debug.profileend();
 			});
 
 			return (): void => {

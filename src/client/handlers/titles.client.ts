@@ -1,3 +1,4 @@
+debug.setmemorycategory("titles");
 import { Players, RunService } from "@rbxts/services";
 import { TITLES } from "shared/configs/titles";
 

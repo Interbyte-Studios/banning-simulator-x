@@ -1,3 +1,4 @@
+debug.setmemorycategory("uiStrokeAdjuster");
 import { CollectionService, Workspace } from "@rbxts/services";
 
 const normalTag = "Normal_UIStroke";

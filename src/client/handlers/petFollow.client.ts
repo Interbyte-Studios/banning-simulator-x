@@ -1,3 +1,4 @@
+debug.setmemorycategory("petFollow");
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players, RunService, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";

@@ -1,3 +1,4 @@
+debug.setmemorycategory("music");
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import Make from "@rbxts/make";
 import { Players, SoundService } from "@rbxts/services";

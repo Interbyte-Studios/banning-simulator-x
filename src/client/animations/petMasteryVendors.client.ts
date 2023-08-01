@@ -1,3 +1,4 @@
+debug.setmemorycategory("petMasteryVendors");
 import { CollectionService, RunService } from "@rbxts/services";
 import { AssetAnimation } from "shared/assetTags";
 

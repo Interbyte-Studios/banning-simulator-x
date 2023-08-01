@@ -37,6 +37,7 @@ export const DatastoreEvents = hooks((_, { useState, useEffect }) => {
 
 	useEffect(() => {
 		const connection = ReplicatedStorage.events.timeUpdated.GetPropertyChangedSignal("Value").Connect(() => {
+			task.wait(1);
 			const eventsToEnable: Array<DatastoreEventCache> = [];
 
 			if (ReplicatedStorage.events.luck.enabled.Value) {

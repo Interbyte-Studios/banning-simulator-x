@@ -1,3 +1,4 @@
+debug.setmemorycategory("devicePerformanceScaling");
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players, UserInputService, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";

@@ -1,3 +1,4 @@
+debug.setmemorycategory("crystalAnimations");
 import { CollectionService, RunService, TweenService } from "@rbxts/services";
 import { AssetAnimation } from "shared/assetTags";
 

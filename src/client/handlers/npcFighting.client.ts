@@ -1,5 +1,6 @@
 import { Players, RunService, UserInputService, Workspace } from "@rbxts/services";
 import { getManualAutoFightState, getPurchasedAutoFightState, setManualAutoFight } from "client/modules/autoFightCache";
+import { getIsHatching } from "client/modules/eggs/isHatching";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
@@ -100,6 +101,10 @@ const onInputBegan = (input: InputObject, gameProcessedEvent: boolean): void => 
 
 		const camera = Workspace.CurrentCamera;
 		if (camera === undefined) {
+			return;
+		}
+
+		if (getIsHatching()) {
 			return;
 		}
 

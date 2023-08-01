@@ -26,6 +26,7 @@ export const SentTradeRequest = hooks((props: { player: Player; hideMenu: () => 
 	useEffect(() => {
 		let lastCheck = time();
 		const connection = RunService.Heartbeat.Connect(() => {
+			debug.profilebegin("sentTradeRequest");
 			const now = time();
 			if (now - lastCheck < 1) {
 				return;
@@ -38,6 +39,7 @@ export const SentTradeRequest = hooks((props: { player: Player; hideMenu: () => 
 			}
 
 			setTimer(timer - 1);
+			debug.profileend();
 		});
 
 		return (): void => connection.Disconnect();

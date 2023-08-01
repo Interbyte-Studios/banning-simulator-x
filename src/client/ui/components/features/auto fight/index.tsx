@@ -139,6 +139,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 
 		useEffect(() => {
 			const connection = RunService.Heartbeat.Connect(() => {
+				debug.profilebegin("Auto Fight Timer");
 				if (!mounted) {
 					return;
 				}
@@ -154,6 +155,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				lastTimerCheck = now;
 
 				setTimeElapsed(timeElapsed + 1);
+				debug.profileend();
 			});
 
 			return (): void => connection.Disconnect();
@@ -194,9 +196,6 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 			}
 
 			if (storedZoneData === undefined) {
-				warn(
-					`The zone selected for auto fight: "${zoneSelected}" is not owned by the local player. Disabling for component safety (E-2).`,
-				);
 				addAnnouncement(`You don't own the zone you're enabling auto fight in!`, AnnouncementType.Error);
 				setIsEnabled(false);
 				return;
@@ -204,6 +203,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 
 			const randomObject = new Random();
 			const connection = RunService.Heartbeat.Connect(() => {
+				debug.profilebegin("Auto Fight Movement");
 				if (!mounted) {
 					return;
 				}
@@ -246,9 +246,6 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				lastNPCAttackCheck = now;
 
 				if (storedZoneData === undefined) {
-					warn(
-						`Selected zone state for auto fight has been marked as undefined while operation is running. This is a problem!`,
-					);
 					addAnnouncement(`There's been an issue while auto fighting. Try again later.`, AnnouncementType.Error);
 					setIsEnabled(false);
 					return;
@@ -326,6 +323,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				humanoid.MoveTo(targetPosition);
 
 				focusedNpc = npcHumanoid;
+				debug.profileend();
 			});
 
 			return (): void => connection.Disconnect();

@@ -100,7 +100,7 @@ export const animateSingleEggHatch = (
 	});
 
 	// zoom camera out for animation
-	const cameraTweenInfo = new TweenInfo(0.25, Enum.EasingStyle.Quart, Enum.EasingDirection.Out);
+	const cameraTweenInfo = new TweenInfo(0.15, Enum.EasingStyle.Quart, Enum.EasingDirection.Out);
 	const cameraTweenAnimation = TweenService.Create(camera, cameraTweenInfo, {
 		CFrame: camera.CFrame.mul(new CFrame(0, 0, 30)),
 	});
@@ -177,47 +177,49 @@ export const animateSingleEggHatch = (
 
 	// Handle egg animation on every step
 	const eggAnimation = RunService.RenderStepped.Connect(() => {
+		debug.profilebegin("eggAnimation");
 		const cameraCFrame = camera.CFrame;
 		const cframePosition = new CFrame(3, positionValue.Value, distanceValue.Value);
 		const cframeAngles = CFrame.Angles(0, math.rad(180), math.rad(rotationValue.Value));
 		eggModel.PivotTo(cameraCFrame.mul(cframePosition).mul(cframeValue.Value).mul(cframeAngles));
+		debug.profileend();
 	});
 
 	// animate
 	// move egg to center
-	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.75 / 2 : 0.75, Enum.EasingStyle.Quint), {
+	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.375 / 2 : 0.375, Enum.EasingStyle.Quint), {
 		Value: -5,
 	}).Play();
 
 	positionValue.Value = -6;
 	rotationValue.Value = 0;
 
-	TweenService.Create(positionValue, new TweenInfo(fastHatch ? 0.25 : 5, Enum.EasingStyle.Quint), {
+	TweenService.Create(positionValue, new TweenInfo(fastHatch ? 0.25 : 0.5, Enum.EasingStyle.Quint), {
 		Value: 0,
 	}).Play();
 
-	task.wait(fastHatch ? 0.5 / 2 : 0.5);
+	task.wait(fastHatch ? 0.25 / 2 : 0.25);
 
 	// rock egg to left and right
 	for (let i = 0; i < 2; i++) {
 		playSFX(HatchEffect.HatchImpact_1);
 		TweenService.Create(
 			rotationValue,
-			new TweenInfo(fastHatch ? 0.275 / 2 : 0.275, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+			new TweenInfo(fastHatch ? 0.18 / 2 : 0.18, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
 			{
 				Value: -30,
 			},
 		).Play();
-		task.wait(fastHatch ? 0.35 / 2 : 0.35);
+		task.wait(fastHatch ? 0.25 / 2 : 0.25);
 		playSFX(HatchEffect.HatchImpact_2);
 		TweenService.Create(
 			rotationValue,
-			new TweenInfo(fastHatch ? 0.275 / 2 : 0.275, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+			new TweenInfo(fastHatch ? 0.18 / 2 : 0.18, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
 			{
 				Value: 30,
 			},
 		).Play();
-		task.wait(fastHatch ? 0.35 / 2 : 0.35);
+		task.wait(fastHatch ? 0.25 / 2 : 0.25);
 	}
 	task.wait(fastHatch ? 0.1 / 2 : 0.1);
 
@@ -228,11 +230,11 @@ export const animateSingleEggHatch = (
 	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.75 / 2 : 0.75, Enum.EasingStyle.Quint), {
 		Value: -15.5,
 	}).Play();
-	task.wait(fastHatch ? 0.375 / 2 : 0.375);
+	task.wait(fastHatch ? 0.175 / 2 : 0.175);
 	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.15 / 2 : 0.15, Enum.EasingStyle.Quint), {
 		Value: -1,
 	});
-	task.wait(fastHatch ? 0.155 / 2 : 0.155);
+	task.wait(fastHatch ? 0.075 / 2 : 0.075);
 
 	// display a flash effect
 	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.3 / 2 : 0.3, Enum.EasingStyle.Quint), {
@@ -244,7 +246,7 @@ export const animateSingleEggHatch = (
 	eggModel.Destroy();
 	positionValue.Value = 0;
 	rotationValue.Value = 300;
-	task.wait(fastHatch ? 0.235 / 2 : 0.235);
+	task.wait(fastHatch ? 0.125 / 2 : 0.125);
 
 	// todo: show the pet information GUI
 	stopButton.Visible = true;
@@ -260,30 +262,32 @@ export const animateSingleEggHatch = (
 	middleAutoDeleted.Visible = wasAutoDeleted;
 
 	// animate pet and hide flash effect
-	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.75 / 2 : 0.75, Enum.EasingStyle.Quint), {
+	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.5 / 2 : 0.5, Enum.EasingStyle.Quint), {
 		Brightness: 0,
 	}).Play();
 	distanceValue.Value = -8.5;
 	const petAnimation = RunService.RenderStepped.Connect(() => {
+		debug.profilebegin("petEggAnimation");
 		const cameraCFrame = camera.CFrame;
 		const cframePosition = new CFrame(3, positionValue.Value, distanceValue.Value);
 		const cframeAngles = CFrame.Angles(0, math.rad(petRotation.Value), 0);
 		petModel.PivotTo(cameraCFrame.mul(cframePosition).mul(cframeValue.Value).mul(cframeAngles));
 		rarityParticle.PivotTo(cameraCFrame.mul(cframePosition).mul(cframeValue.Value).mul(cframeAngles));
+		debug.profileend();
 	});
 
 	spin = true;
 	playSFX(HatchEffect.HatchReveal);
-	task.wait(fastHatch ? 0.25 / 2 : 0.25);
+	task.wait(fastHatch ? 0.125 / 2 : 0.125);
 	rarityParticleEmitter.Emit(1);
-	task.wait(fastHatch ? 0.75 / 2 : 0.75);
+	task.wait(fastHatch ? 0.375 / 2 : 0.375);
 	// todo: hide pet information gui
 	spin = false;
 
 	task.wait(fastHatch ? 0.05 / 2 : 0.05);
 	TweenService.Create(
 		positionValue,
-		new TweenInfo(fastHatch ? 0.3 / 2 : 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In),
+		new TweenInfo(fastHatch ? 0.35 / 2 : 0.35, Enum.EasingStyle.Back, Enum.EasingDirection.In),
 		{
 			Value: -7,
 		},
@@ -369,7 +373,7 @@ export const animateTripleEggHatch = (
 	});
 
 	// zoom camera out for animation
-	const cameraTweenInfo = new TweenInfo(0.25, Enum.EasingStyle.Quart, Enum.EasingDirection.Out);
+	const cameraTweenInfo = new TweenInfo(0.15, Enum.EasingStyle.Quart, Enum.EasingDirection.Out);
 	const cameraTweenAnimation = TweenService.Create(camera, cameraTweenInfo, {
 		CFrame: camera.CFrame.mul(new CFrame(0, 0, 30)),
 	});
@@ -504,49 +508,51 @@ export const animateTripleEggHatch = (
 
 	// Handle egg animation on every step
 	const eggAnimation = RunService.RenderStepped.Connect(() => {
+		debug.profilebegin("eggAnimation_triple");
 		const cameraCFrame = camera.CFrame;
 		const cframePosition = new CFrame(3, positionValue.Value, distanceValue.Value);
 		const cframeAngles = CFrame.Angles(0, math.rad(180), math.rad(rotationValue.Value));
 		eggModel1.PivotTo(cameraCFrame.mul(cframePosition).mul(cframeValue1.Value).mul(cframeAngles));
 		eggModel2.PivotTo(cameraCFrame.mul(cframePosition).mul(cframeValue2.Value).mul(cframeAngles));
 		eggModel3.PivotTo(cameraCFrame.mul(cframePosition).mul(cframeValue3.Value).mul(cframeAngles));
+		debug.profileend();
 	});
 
 	// animate
 	// move egg to center
-	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.75 / 2 : 0.75, Enum.EasingStyle.Quint), {
+	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.375 / 2 : 0.375, Enum.EasingStyle.Quint), {
 		Value: -5,
 	}).Play();
 
 	positionValue.Value = -6;
 	rotationValue.Value = 0;
 
-	TweenService.Create(positionValue, new TweenInfo(fastHatch ? 0.3 : 0.6, Enum.EasingStyle.Quint), {
+	TweenService.Create(positionValue, new TweenInfo(fastHatch ? 0.25 : 0.5, Enum.EasingStyle.Quint), {
 		Value: 0,
 	}).Play();
 
-	task.wait(fastHatch ? 0.5 / 2 : 0.5);
+	task.wait(fastHatch ? 0.25 / 2 : 0.25);
 
 	// rock egg to left and right
 	for (let i = 0; i < 2; i++) {
 		playSFX(HatchEffect.HatchImpact_1);
 		TweenService.Create(
 			rotationValue,
-			new TweenInfo(fastHatch ? 0.275 / 2 : 0.275, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+			new TweenInfo(fastHatch ? 0.18 / 2 : 0.18, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
 			{
 				Value: -30,
 			},
 		).Play();
-		task.wait(fastHatch ? 0.35 / 2 : 0.35);
+		task.wait(fastHatch ? 0.25 / 2 : 0.25);
 		playSFX(HatchEffect.HatchImpact_2);
 		TweenService.Create(
 			rotationValue,
-			new TweenInfo(fastHatch ? 0.275 / 2 : 0.275, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+			new TweenInfo(fastHatch ? 0.18 / 2 : 0.18, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
 			{
 				Value: 30,
 			},
 		).Play();
-		task.wait(fastHatch ? 0.35 / 2 : 0.35);
+		task.wait(fastHatch ? 0.25 / 2 : 0.25);
 	}
 	task.wait(fastHatch ? 0.1 / 2 : 0.1);
 
@@ -557,11 +563,11 @@ export const animateTripleEggHatch = (
 	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.75 / 2 : 0.75, Enum.EasingStyle.Quint), {
 		Value: -15.5,
 	}).Play();
-	task.wait(fastHatch ? 0.375 / 2 : 0.375);
+	task.wait(fastHatch ? 0.175 / 2 : 0.175);
 	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.15 / 2 : 0.15, Enum.EasingStyle.Quint), {
 		Value: -1,
 	});
-	task.wait(fastHatch ? 0.155 / 2 : 0.155);
+	task.wait(fastHatch ? 0.075 / 2 : 0.075);
 
 	// display a flash effect
 	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.3 / 15 : 0.3, Enum.EasingStyle.Quint), {
@@ -575,7 +581,7 @@ export const animateTripleEggHatch = (
 	eggModel3.Destroy();
 	positionValue.Value = 0;
 	rotationValue.Value = 300;
-	task.wait(fastHatch ? 0.235 / 2 : 0.235);
+	task.wait(fastHatch ? 0.125 / 2 : 0.125);
 
 	// todo: show the pet information GUI
 	stopButton.Visible = true;
@@ -611,11 +617,12 @@ export const animateTripleEggHatch = (
 	rightAutoDeleted.Visible = pets[2].autoDeleted;
 
 	// animate pet and hide flash effect
-	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 1.5 / 2 : 1.5, Enum.EasingStyle.Quint), {
+	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.5 / 2 : 0.5, Enum.EasingStyle.Quint), {
 		Brightness: 0,
 	}).Play();
 	distanceValue.Value = -8.5;
 	const petAnimation = RunService.RenderStepped.Connect(() => {
+		debug.profilebegin("petEggAnimation_triple");
 		const cameraCFrame = camera.CFrame;
 		const cframePosition = new CFrame(3, positionValue.Value, distanceValue.Value);
 		const cframeAngles = CFrame.Angles(0, math.rad(petRotation.Value), 0);
@@ -623,20 +630,21 @@ export const animateTripleEggHatch = (
 		pet2Model.PivotTo(cameraCFrame.mul(cframePosition).mul(cframeValue2.Value).mul(cframeAngles));
 		pet3Model.PivotTo(cameraCFrame.mul(cframePosition).mul(cframeValue3.Value).mul(cframeAngles));
 		rarityParticle.PivotTo(cameraCFrame.mul(cframePosition).mul(cframeValue1.Value).mul(cframeAngles));
+		debug.profileend();
 	});
 
 	spin = true;
 	playSFX(HatchEffect.HatchReveal);
-	task.wait(fastHatch ? 0.25 / 2 : 0.25);
+	task.wait(fastHatch ? 0.125 / 2 : 0.125);
 	rarityParticleEmitter.Emit(1);
-	task.wait(fastHatch ? 0.75 / 2 : 0.75);
+	task.wait(fastHatch ? 0.375 / 2 : 0.375);
 	// todo: hide pet information gui
 	spin = false;
 
 	task.wait(fastHatch ? 0.05 / 2 : 0.05);
 	TweenService.Create(
 		positionValue,
-		new TweenInfo(fastHatch ? 0.6 / 2 : 0.6, Enum.EasingStyle.Back, Enum.EasingDirection.In),
+		new TweenInfo(fastHatch ? 0.35 / 2 : 0.35, Enum.EasingStyle.Back, Enum.EasingDirection.In),
 		{
 			Value: -7,
 		},

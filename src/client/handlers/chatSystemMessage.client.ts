@@ -1,3 +1,4 @@
+debug.setmemorycategory("chatSystemMessage");
 import { StarterGui } from "@rbxts/services";
 import { remotes } from "shared/remotes";
 import { getPetData } from "shared/util/getPetData";

@@ -1,3 +1,4 @@
+debug.setmemorycategory("disableHatching");
 import { Players, TweenService } from "@rbxts/services";
 import { disableHatch } from "client/ui/components/eggs/control";
 

@@ -1,3 +1,4 @@
+debug.setmemorycategory("clientStores");
 import Rodux from "@rbxts/rodux";
 import { Players, RunService } from "@rbxts/services";
 import { deserialize } from "shared/datastore/serde";

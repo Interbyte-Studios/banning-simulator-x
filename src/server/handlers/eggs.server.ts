@@ -45,7 +45,6 @@ hatchEggRemote.SetCallback(
 			getTradeStatus(player) === TradeStatus.ViewingFinalizedTrade ||
 			getTradeStatus(player) === TradeStatus.Finalized;
 		if (isTrading) {
-			warn(`Player ${player.Name} tried to hatch while trading!`);
 			return {
 				success: false,
 				reason: HatchEggFailKind.Trading,
@@ -55,7 +54,6 @@ hatchEggRemote.SetCallback(
 		// verify that the user can hatch the eggs
 		const currentState = store.getState();
 		if (amount > 1 && !currentState.gamepasses["Triple Hatch"]) {
-			warn(`Player is trying to hatch triple eggs without the gamepass!`);
 			return {
 				success: false,
 				reason: HatchEggFailKind.NoGamepass,
@@ -70,7 +68,6 @@ hatchEggRemote.SetCallback(
 		// check that user owns world
 		const ownsWorld = currentState.worlds.find((x) => x.name === eggData.world);
 		if (ownsWorld === undefined) {
-			warn(`Player does not own the world the egg is from!`);
 			return {
 				success: false,
 				reason: HatchEggFailKind.NoWorld,
@@ -80,7 +77,6 @@ hatchEggRemote.SetCallback(
 		// check that user owns zone
 		const ownsZone = ownsWorld.zones.find((x) => x === eggData.zone);
 		if (ownsZone === undefined) {
-			warn(`Player does not own the zone the egg is from!`);
 			return {
 				success: false,
 				reason: HatchEggFailKind.NoZone,
@@ -256,7 +252,7 @@ hatchEggRemote.SetCallback(
 						});
 					});
 				});
-			} else if (pet.rarity === "Legendary") {
+			} else if (pet.rarity === "Legendary" && !autoDeleted) {
 				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
 			}
 

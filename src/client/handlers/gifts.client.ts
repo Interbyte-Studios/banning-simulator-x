@@ -1,3 +1,4 @@
+debug.setmemorycategory("gifts");
 import { Players, TweenService } from "@rbxts/services";
 import assetIds from "shared/assets";
 import { remotes } from "shared/remotes";

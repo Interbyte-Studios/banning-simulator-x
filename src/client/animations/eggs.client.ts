@@ -1,3 +1,4 @@
+debug.setmemorycategory("eggAnimations");
 import { RunService, TweenService, Workspace } from "@rbxts/services";
 import { EggName, EGGS } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";

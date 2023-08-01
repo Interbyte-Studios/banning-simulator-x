@@ -23,7 +23,7 @@ export function createDamageCounter(npc: Model): void {
 	damageCounterClone.Parent = head;
 
 	let lastHealth = humanoid.Health;
-	const healthConnection = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
+	let healthConnection: RBXScriptConnection | undefined = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
 		if (humanoid === undefined) {
 			return;
 		}
@@ -56,14 +56,21 @@ export function createDamageCounter(npc: Model): void {
 		});
 	});
 
-	const ancestryConnection = npc.AncestryChanged.Connect(() => {
-		healthConnection.Disconnect();
+	let ancestryConnection: RBXScriptConnection | undefined = npc.AncestryChanged.Connect(() => {
+		if (healthConnection !== undefined) {
+			healthConnection.Disconnect();
+			healthConnection = undefined;
+		}
 
 		if (damageCounterClone !== undefined) {
+			damageCounterClone.Parent = undefined;
 			damageCounterClone.Destroy();
 		}
 
-		ancestryConnection.Disconnect();
+		if (ancestryConnection !== undefined) {
+			ancestryConnection.Disconnect();
+			ancestryConnection = undefined;
+		}
 	});
 }
 

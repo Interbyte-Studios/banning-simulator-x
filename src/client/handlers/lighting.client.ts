@@ -1,3 +1,4 @@
+debug.setmemorycategory("lighting");
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Lighting, Players } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";

@@ -1,3 +1,4 @@
+debug.setmemorycategory("animatedGradients");
 import { CollectionService, RunService } from "@rbxts/services";
 
 RunService.RenderStepped.Connect((deltaTime) => {

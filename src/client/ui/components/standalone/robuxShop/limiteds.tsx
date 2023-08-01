@@ -157,6 +157,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 	useEffect(() => {
 		const newLimiteds = DateTime.fromUniversalTime(2023, 8, 12, 12).UnixTimestamp;
 		const connection = RunService.Heartbeat.Connect(() => {
+			debug.profilebegin("limitedsShop");
 			const timeCheck = time();
 			if (timeCheck - lastTimerCheck < 1) {
 				return;
@@ -165,6 +166,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 
 			const now = DateTime.now().UnixTimestamp;
 			setTimer(newLimiteds - now);
+			debug.profileend();
 		});
 
 		return (): void => connection.Disconnect();

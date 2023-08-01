@@ -1,3 +1,4 @@
+debug.setmemorycategory("weapons");
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players, ReplicatedStorage, RunService, StarterGui, TweenService, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
@@ -178,8 +179,6 @@ function equipWeapon(weaponName: WeaponIndex): void {
 		if (slashSound[0] !== undefined) {
 			slashSound[0].played = true;
 			playSFX(slashSound[0].soundType);
-		} else {
-			warn(`Failed to load and play weapon activation sound.`);
 		}
 
 		animationToPlay.Play();
@@ -281,7 +280,6 @@ onStoreCreated(player)
 			assert(backpack, `Failed to get backpack for ${player.Name}`);
 
 			if (backpack.GetChildren().isEmpty()) {
-				warn("Player has no weapons in backpack to equip.");
 				return;
 			}
 
@@ -335,6 +333,7 @@ onStoreCreated(player)
 
 let lastCheck = 0;
 RunService.RenderStepped.Connect(() => {
+	debug.profilebegin("npcHighlights");
 	const now = time();
 	if (now - lastCheck < 0.5) {
 		return;
@@ -348,4 +347,5 @@ RunService.RenderStepped.Connect(() => {
 			highlightObject.Destroy();
 		}
 	});
+	debug.profileend();
 });

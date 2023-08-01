@@ -41,53 +41,7 @@ const mapStateToProps = (state: StoreState): AccoladesMappedProps => {
  */
 export const Accolades = RoactRodux.connect(mapStateToProps)(
 	hooks((props: AccoladesProps, hooks) => {
-		const { useValue, useEffect, useState } = hooks;
-
-		const playerStore = retrieveStore(Players.LocalPlayer);
-		if (playerStore === undefined) {
-			return (
-				<ImageLabel
-					native={{
-						Size: UDim2.fromScale(0.65, 0.65),
-						Image: assetIds.images.ui.account.background,
-					}}
-				>
-					<uiaspectratioconstraint AspectRatio={1.5} />
-					<StrokeTextLabel
-						native={{
-							Size: UDim2.fromScale(0.4, 0.135),
-							Position: UDim2.fromScale(0.5, 0.08),
-							Text: "Accolades",
-						}}
-						stroke={{
-							native: { Thickness: 1.5, Color: Color3.fromRGB(184, 80, 0) },
-						}}
-					/>
-
-					<FullComponentHeader
-						storeFound={true}
-						headerText={`${Players.LocalPlayer.Name}'s Accolades`}
-						returnToSelection={props.hideMenu}
-						displayReturn={false}
-					/>
-
-					<ExitButton
-						Position={UDim2.fromScale(0.985, 0.115)}
-						minimizedSize={0.09}
-						maximizedSize={0.1}
-						onClosed={props.hideMenu}
-					/>
-				</ImageLabel>
-			);
-		}
-		const [storeState, setStoreState] = useState<StoreState>(playerStore.getState());
-		useEffect(() => {
-			const subscription = playerStore.changed.connect((newState) => {
-				setStoreState(newState);
-			});
-
-			return (): void => subscription.disconnect();
-		}, []);
+		const { useValue, useEffect } = hooks;
 
 		const uiListLayoutRef = useValue(Roact.createRef<UIListLayout>());
 		useEffect(() => {
@@ -104,6 +58,8 @@ export const Accolades = RoactRodux.connect(mapStateToProps)(
 				}
 			});
 		});
+
+		const playerStore = retrieveStore(Players.LocalPlayer);
 
 		return (
 			<ImageLabel
@@ -152,7 +108,10 @@ export const Accolades = RoactRodux.connect(mapStateToProps)(
 						}
 
 						const ownsAccolade = props.accolades.find((accoladeId) => accoladeId === accoladeData.id);
-						const accoladeProgress = accoladeData.progress(storeState);
+						const accoladeProgress =
+							playerStore !== undefined
+								? accoladeData.progress(playerStore.getState())
+								: { progressPercentage: 0, progress: 0, maxProgress: 500 };
 
 						return (
 							<AccoladeCard
