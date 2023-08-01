@@ -24,12 +24,14 @@ export const TradeCard = hooks(
 			const thumbnailType = Enum.ThumbnailType.HeadShot;
 			const thumbnailSize = Enum.ThumbnailSize.Size420x420;
 
-			const [success, result] = pcall(() =>
-				Players.GetUserThumbnailAsync(props.player.UserId, thumbnailType, thumbnailSize),
-			);
-			if (success) {
-				setContent(result);
-			}
+			task.spawn(() => {
+				const [success, result] = pcall(() =>
+					Players.GetUserThumbnailAsync(props.player.UserId, thumbnailType, thumbnailSize),
+				);
+				if (success) {
+					setContent(result);
+				}
+			});
 		}, [props.player]);
 
 		return (

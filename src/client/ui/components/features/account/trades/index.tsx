@@ -35,15 +35,17 @@ interface TradeHistoryProps {
  * @returns The player's image.
  */
 const PlayerImage = hooks((props: { playerId: number; position: UDim2; size: UDim2 }, { useState, useEffect }) => {
-	const thumbnailType = Enum.ThumbnailType.HeadShot;
-	const thumbnailSize = Enum.ThumbnailSize.Size420x420;
-
 	const [content, setContent] = useState("");
 	useEffect(() => {
+		const thumbnailType = Enum.ThumbnailType.HeadShot;
+		const thumbnailSize = Enum.ThumbnailSize.Size420x420;
+
 		task.spawn(() => {
-			const [content, isReady] = Players.GetUserThumbnailAsync(props.playerId, thumbnailType, thumbnailSize);
-			if (isReady && content) {
-				setContent(content);
+			const [success, result] = pcall(() =>
+				Players.GetUserThumbnailAsync(props.playerId, thumbnailType, thumbnailSize),
+			);
+			if (success) {
+				setContent(result);
 			}
 		});
 	}, [props.playerId]);

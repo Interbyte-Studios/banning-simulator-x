@@ -17,13 +17,15 @@ export const PlayerLeaderboardImage = hooks(
 		const [thumbnail, setThumbnail] = useState("");
 
 		useEffect(() => {
-			task.spawn(() => {
-				const thumbnailType = Enum.ThumbnailType.HeadShot;
-				const thumbnailSize = Enum.ThumbnailSize.Size420x420;
-				const [content, isReady] = Players.GetUserThumbnailAsync(props.playerId, thumbnailType, thumbnailSize);
+			const thumbnailType = Enum.ThumbnailType.HeadShot;
+			const thumbnailSize = Enum.ThumbnailSize.Size420x420;
 
-				if (isReady && content) {
-					setThumbnail(content);
+			task.spawn(() => {
+				const [success, result] = pcall(() =>
+					Players.GetUserThumbnailAsync(props.playerId, thumbnailType, thumbnailSize),
+				);
+				if (success) {
+					setThumbnail(result);
 				}
 			});
 		}, [props.playerId, props.position]);
