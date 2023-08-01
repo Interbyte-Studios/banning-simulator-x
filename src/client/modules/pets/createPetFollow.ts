@@ -11,6 +11,7 @@ import { PetCreated } from "./petAnimationCache";
  * @returns The model for the pet.
  */
 function getPetModel(petName: string): Model {
+	debug.setmemorycategory("createPetFollowModule");
 	const eggModels = ReplicatedStorage.assetObjects.pets.GetChildren();
 	for (const eggModel of eggModels) {
 		for (const petModel of eggModel.GetChildren()) {
@@ -42,6 +43,7 @@ export function cachePetForAnimation(
 	guid: string,
 	variant: Variants,
 ): PetCreated | undefined {
+	debug.setmemorycategory("createPetFollowModule");
 	const petData = getPetData(petId);
 
 	const petModel = getPetModel(petData.name);

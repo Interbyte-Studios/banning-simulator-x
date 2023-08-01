@@ -18,6 +18,7 @@ for (const world of Workspace.worlds.GetChildren()) {
  * @returns The world the player is currently in.
  */
 export function getCurrentWorld(): WorldName | undefined {
+	debug.setmemorycategory("getCurrentWorld");
 	const character = Players.LocalPlayer.Character;
 	if (character === undefined) {
 		return;

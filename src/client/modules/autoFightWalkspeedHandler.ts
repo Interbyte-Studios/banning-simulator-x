@@ -1,3 +1,4 @@
+debug.setmemorycategory("autoFightWalkspeedModule");
 import { Players } from "@rbxts/services";
 
 let autoFightEnabled = false;

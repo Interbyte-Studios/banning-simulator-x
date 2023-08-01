@@ -87,10 +87,10 @@ export const Hud = hooks((props: HudProps) => {
 	return (
 		<BaseFrame Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1}>
 			{/* Left Side */}
-			<BaseFrame Position={UDim2.fromScale(0.113, 0.542)} Size={UDim2.fromScale(0.216, 0.37)}>
+			<BaseFrame Position={UDim2.fromScale(0.113, 0.574)} Size={UDim2.fromScale(0.216, 0.37)}>
 				<uiaspectratioconstraint AspectRatio={1.1} />
 				{!props.hiddenHud && (
-					<BaseFrame Position={UDim2.fromScale(0.451, 0.141)} Size={UDim2.fromScale(0.851, 0.218)}>
+					<BaseFrame Position={UDim2.fromScale(0.445, -0.077)} Size={UDim2.fromScale(0.851, 0.218)}>
 						<uilistlayout
 							Padding={new UDim(0.03, 0)}
 							FillDirection={Enum.FillDirection.Horizontal}
@@ -129,17 +129,22 @@ export const Hud = hooks((props: HudProps) => {
 				)}
 
 				<CurrencyViewer
-					position={UDim2.fromScale(0.012, 0.386)}
+					position={UDim2.fromScale(0.02, 0.162)}
 					size={UDim2.fromScale(0.891, 0.35)}
 					currencyType={"coins"}
 				/>
 				<CurrencyViewer
-					position={UDim2.fromScale(0.009, 0.61)}
+					position={UDim2.fromScale(0.02, 0.383)}
 					size={UDim2.fromScale(0.891, 0.35)}
 					currencyType={"gems"}
 				/>
+				<CurrencyViewer
+					position={UDim2.fromScale(0.02, 0.601)}
+					size={UDim2.fromScale(0.891, 0.35)}
+					currencyType={"gears"}
+				/>
 				{!props.hiddenHud && (
-					<BaseFrame Position={UDim2.fromScale(0.454, 0.844)} Size={UDim2.fromScale(0.851, 0.218)}>
+					<BaseFrame Position={UDim2.fromScale(0.454, 0.841)} Size={UDim2.fromScale(0.851, 0.218)}>
 						<uilistlayout
 							Padding={new UDim(0.03, 0)}
 							FillDirection={Enum.FillDirection.Horizontal}
@@ -154,21 +159,21 @@ export const Hud = hooks((props: HudProps) => {
 							size={{ minSize: 0.9, maxSize: 1 }}
 						/>
 						<HudIcon
-							icon={assetIds.images.ui.shop.accolades}
+							icon={assetIds.images.ui.hud.icons.accolades}
 							title={"Accolades"}
 							onClick={(): void => props.displayAccolades()}
 							position={UDim2.fromScale(0.083, 0.666)}
 							size={{ minSize: 0.9, maxSize: 1 }}
 						/>
 						<HudIcon
-							icon={assetIds.images.ui.shop["playtime rewards"]}
+							icon={assetIds.images.ui.hud.icons.daily}
 							title={"Rewards"}
 							onClick={(): void => props.displayDailyRewards()}
 							position={UDim2.fromScale(0.134, 0.666)}
 							size={{ minSize: 0.9, maxSize: 1 }}
 						/>
 						<HudIcon
-							icon={assetIds.images.ui.shop["biweekly pet"]}
+							icon={assetIds.images.ui.hud.icons.petMastery}
 							title={"Index"}
 							onClick={(): void => props.displayPetMastery()}
 							position={UDim2.fromScale(0.185, 0.666)}
@@ -179,54 +184,49 @@ export const Hud = hooks((props: HudProps) => {
 			</BaseFrame>
 
 			{/* Right Side */}
-			<BaseFrame Position={UDim2.fromScale(0.86, 0.5)} Size={UDim2.fromScale(0.239, 0.998)}>
+			<BaseFrame Position={UDim2.fromScale(0.886, 0.5)} Size={UDim2.fromScale(0.239, 0.998)}>
 				<uiaspectratioconstraint AspectRatio={0.4} />
 				{!props.hiddenHud && (
-					<BaseFrame Position={UDim2.fromScale(0.588, 0.346)} Size={UDim2.fromScale(0.828, 0.214)}>
+					<BaseFrame Position={UDim2.fromScale(0.585, 0.831)} Size={UDim2.fromScale(0.828, 0.214)}>
 						<HudIcon
-							icon={assetIds.images.ui.hud.icons.items}
-							title={"Items"}
+							icon={assetIds.images.ui.shop["biweekly pet"]}
+							title={"Pets"}
 							onClick={(): void => props.displayItems()}
-							position={UDim2.fromScale(0.475, 0.8)}
-							size={{ minSize: 0.35, maxSize: 0.4 }}
+							position={UDim2.fromScale(0.045, -0.65)}
+							size={{ minSize: 0.3, maxSize: 0.35 }}
 						/>
 						<HudIcon
 							icon={assetIds.images.ui.hud.icons.trading}
 							title={"Trading"}
 							onClick={(): void => props.displayTradingMenu()}
-							position={UDim2.fromScale(0.475, 0.35)}
-							size={{ minSize: 0.35, maxSize: 0.4 }}
-						/>
-						<HudIcon
-							icon={assetIds.images.ui.hud.icons.options}
-							title={"Settings"}
-							onClick={(): void => props.displaySettings()}
-							position={UDim2.fromScale(0.175, 0.8)}
-							size={{ minSize: 0.35, maxSize: 0.4 }}
+							position={UDim2.fromScale(0.31, -0.65)}
+							size={{ minSize: 0.3, maxSize: 0.35 }}
 						/>
 						<HudIcon
 							icon={assetIds.images.ui.hud.icons["auto fight"]}
 							title={"Auto"}
 							onClick={(): void => props.displayAutoFight()}
-							position={UDim2.fromScale(0.8, 0.16)}
-							size={{ minSize: 0.425, maxSize: 0.5 }}
+							position={UDim2.fromScale(0.565, -0.65)}
+							size={{ minSize: 0.3, maxSize: 0.35 }}
+						/>
+						<HudIcon
+							icon={assetIds.images.ui.hud.icons.options}
+							title={"Settings"}
+							onClick={(): void => props.displaySettings()}
+							position={UDim2.fromScale(0.83, 0 - 0.65)}
+							size={{ minSize: 0.3, maxSize: 0.35 }}
 						/>
 						<HudIcon
 							icon={assetIds.images.ui.hud.icons.shop}
 							title={"Shop"}
 							onClick={(): void => props.displayShop()}
-							position={UDim2.fromScale(0.8, 0.75)}
-							size={{ minSize: 0.425, maxSize: 0.5 }}
+							position={UDim2.fromScale(0.83, -0.25)}
+							size={{ minSize: 0.3, maxSize: 0.35 }}
 						/>
 					</BaseFrame>
 				)}
 
 				<RanksViewer />
-				<CurrencyViewer
-					position={UDim2.fromScale(0.209, 0.575)}
-					size={UDim2.fromScale(0.85, 0.076)}
-					currencyType={"gears"}
-				/>
 				{!props.hiddenHud && <PetQuestIcon displayPetQuest={props.displayPetQuest} />}
 			</BaseFrame>
 		</BaseFrame>

@@ -64,51 +64,6 @@ export const Leaderboards = hooks((_, { useState, useEffect }) => {
 		setEggBoards(eggLeaderboards);
 		setTimeTrialsBoards(trialsBoards);
 		setWorldPrestigeBoards(prestigeBoards);
-
-		const connection = Workspace.interactions.leaderboards.DescendantAdded.Connect(() => {
-			const banLeaderboards: Array<BasePart> = [];
-			const eggLeaderboards: Array<BasePart> = [];
-			const trialsBoards: Array<BasePart> = [];
-			const prestigeBoards: Array<BasePart> = [];
-			Workspace.interactions.leaderboards.bans.GetChildren().forEach((leaderboard) => {
-				const basePart = findFirstChildByNameWhichIsA(leaderboard, "board", "BasePart");
-				if (basePart === undefined) {
-					return;
-				}
-
-				banLeaderboards.push(basePart);
-			});
-			Workspace.interactions.leaderboards.eggs.GetChildren().forEach((leaderboard) => {
-				const basePart = findFirstChildByNameWhichIsA(leaderboard, "board", "BasePart");
-				if (basePart === undefined) {
-					return;
-				}
-
-				eggLeaderboards.push(basePart);
-			});
-			Workspace.interactions.leaderboards.timeTrials.GetChildren().forEach((leaderboard) => {
-				const basePart = findFirstChildByNameWhichIsA(leaderboard, "board", "BasePart");
-				if (basePart === undefined) {
-					return;
-				}
-
-				eggLeaderboards.push(basePart);
-			});
-			Workspace.interactions.leaderboards.worldPrestige.GetChildren().forEach((leaderboard) => {
-				const basePart = findFirstChildByNameWhichIsA(leaderboard, "board", "BasePart");
-				if (basePart === undefined) {
-					return;
-				}
-
-				eggLeaderboards.push(basePart);
-			});
-
-			setBanBoards(banLeaderboards);
-			setEggBoards(eggLeaderboards);
-			setTimeTrialsBoards(trialsBoards);
-			setWorldPrestigeBoards(prestigeBoards);
-		});
-		return (): void => connection.Disconnect();
 	}, []);
 
 	const banBoardComponents = banBoards.map((basePart) => <BanLeaderboard adornee={basePart} />);

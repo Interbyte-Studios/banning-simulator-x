@@ -40,6 +40,8 @@ export const TradeList = hooks(
 
 		// populates the initial state
 		useEffect(() => {
+			const connections: Array<RBXScriptConnection> = [];
+
 			for (const player of Players.GetPlayers()) {
 				if (player.UserId === Players.LocalPlayer.UserId) {
 					continue;
@@ -53,74 +55,79 @@ export const TradeList = hooks(
 					}
 
 					setPlayersInGame([...playersInGame, player]);
+				} else {
+					connections.push(
+						player.ChildAdded.Connect((child) => {
+							if (playersInGame.includes(player)) {
+								return;
+							}
+
+							if (!hasClickedPlay) {
+								hasClickedPlay = child.Name === "HasClickedPlay";
+							}
+
+							if (!roactMounted) {
+								roactMounted = child.Name === "RoactMounted";
+							}
+
+							if (hasClickedPlay && roactMounted) {
+								setPlayersInGame([...playersInGame, player]);
+							}
+						}),
+					);
 				}
-
-				player.ChildAdded.Connect((child) => {
-					if (playersInGame.includes(player)) {
-						return;
-					}
-
-					if (!hasClickedPlay) {
-						hasClickedPlay = child.Name === "HasClickedPlay";
-					}
-
-					if (!roactMounted) {
-						roactMounted = child.Name === "RoactMounted";
-					}
-
-					if (hasClickedPlay && roactMounted) {
-						setPlayersInGame([...playersInGame, player]);
-					}
-				});
 			}
 
-			const addedConnection = Players.PlayerAdded.Connect((player) => {
-				let hasClickedPlay = player.FindFirstChild("HasClickedPlay") !== undefined;
-				let roactMounted = player.FindFirstChild("RoactMounted") !== undefined;
-				if (hasClickedPlay && roactMounted) {
-					if (playersInGame.includes(player)) {
-						return;
-					}
-					setPlayersInGame([...playersInGame, player]);
-				}
-
-				player.ChildAdded.Connect((child) => {
-					if (playersInGame.includes(player)) {
-						return;
-					}
-
-					if (!hasClickedPlay) {
-						hasClickedPlay = child.Name === "HasClickedPlay";
-					}
-
-					if (!roactMounted) {
-						roactMounted = child.Name === "RoactMounted";
-					}
-
+			connections.push(
+				Players.PlayerAdded.Connect((player) => {
+					let hasClickedPlay = player.FindFirstChild("HasClickedPlay") !== undefined;
+					let roactMounted = player.FindFirstChild("RoactMounted") !== undefined;
 					if (hasClickedPlay && roactMounted) {
+						if (playersInGame.includes(player)) {
+							return;
+						}
 						setPlayersInGame([...playersInGame, player]);
-					}
-				});
-			});
+					} else {
+						connections.push(
+							player.ChildAdded.Connect((child) => {
+								if (playersInGame.includes(player)) {
+									return;
+								}
 
-			const removedConnection = Players.PlayerRemoving.Connect(() => {
-				const players: Array<Player> = [];
-				for (const player of Players.GetPlayers()) {
-					if (player !== Players.LocalPlayer) {
-						const hasClickedPlay = player.FindFirstChild("HasClickedPlay") !== undefined;
-						const roactMounted = player.FindFirstChild("RoactMounted") !== undefined;
-						if (hasClickedPlay && roactMounted) {
-							players.push(player);
+								if (!hasClickedPlay) {
+									hasClickedPlay = child.Name === "HasClickedPlay";
+								}
+
+								if (!roactMounted) {
+									roactMounted = child.Name === "RoactMounted";
+								}
+
+								if (hasClickedPlay && roactMounted) {
+									setPlayersInGame([...playersInGame, player]);
+								}
+							}),
+						);
+					}
+				}),
+			);
+
+			connections.push(
+				Players.PlayerRemoving.Connect(() => {
+					const players: Array<Player> = [];
+					for (const player of Players.GetPlayers()) {
+						if (player !== Players.LocalPlayer) {
+							const hasClickedPlay = player.FindFirstChild("HasClickedPlay") !== undefined;
+							const roactMounted = player.FindFirstChild("RoactMounted") !== undefined;
+							if (hasClickedPlay && roactMounted) {
+								players.push(player);
+							}
 						}
 					}
-				}
-				setPlayersInGame(players);
-			});
+					setPlayersInGame(players);
+				}),
+			);
 
-			return (): void => {
-				addedConnection.Disconnect();
-				removedConnection.Disconnect();
-			};
+			return (): void => connections.forEach((connection) => connection.Disconnect());
 		}, [playersInGame]);
 
 		// scaling of the list
@@ -173,7 +180,7 @@ export const TradeList = hooks(
 					Size={UDim2.fromScale(0.975, 0.795)}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 					ScrollBarThickness={12}
-				BorderSizePixel={0}
+					BorderSizePixel={0}
 				>
 					<uilistlayout
 						HorizontalAlignment={Enum.HorizontalAlignment.Center}

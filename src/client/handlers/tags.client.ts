@@ -3,7 +3,7 @@ import { Players, ReplicatedStorage, RunService, TweenService, Workspace } from 
 import { t } from "@rbxts/t";
 import { onStoreCreated } from "client/clientStores";
 import { getRankIcon } from "client/util/getRankIcon";
-import { GROUP_ID, GROUP_ROLES } from "shared/configs/game";
+import { GROUP_ROLES } from "shared/configs/game";
 import { TITLES } from "shared/configs/titles";
 import { Store } from "shared/rodux";
 import { getNPCByName } from "shared/util/getNpcByName";
@@ -117,53 +117,22 @@ function createPlayerTag(player: Player, store: Store): void {
 	assert(playerTag, `Failed to get player tag from rep storage`);
 
 	task.spawn(() => {
-		let character = player.Character;
-		if (character === undefined) {
-			// eslint-disable-next-line no-constant-condition
-			while (true) {
-				task.wait(1);
-				if (player.Character) {
-					character = player.Character;
-					break;
-				}
-			}
-		}
+		const character = player.Character;
 		if (character === undefined) {
 			return;
 		}
 
-		let humanoid = character.FindFirstChildOfClass("Humanoid");
-		if (humanoid === undefined) {
-			// eslint-disable-next-line no-constant-condition
-			while (true) {
-				task.wait(1);
-				if (character.FindFirstChildOfClass("Humanoid")) {
-					humanoid = character.FindFirstChildOfClass("Humanoid");
-					break;
-				}
-			}
-		}
+		const humanoid = character.FindFirstChildOfClass("Humanoid");
 		if (humanoid === undefined) {
 			return;
 		}
 
-		let head = character.FindFirstChild("Head") as BasePart;
-		if (head === undefined) {
-			// eslint-disable-next-line no-constant-condition
-			while (true) {
-				task.wait(1);
-				if (character.FindFirstChild("Head")) {
-					head = character.FindFirstChild("Head") as BasePart;
-					break;
-				}
-			}
-		}
+		const head = character.FindFirstChild("Head") as BasePart;
 		if (head === undefined) {
 			return;
 		}
 
 		const storeState = store.getState();
-		const isInGroup = player.IsInGroup(GROUP_ID);
 
 		const tag = playerTag.Clone();
 		tag.hold.name.Text = player.Name;
@@ -248,8 +217,8 @@ function createPlayerTag(player: Player, store: Store): void {
 			}
 		}
 
-		if (isInGroup) {
-			const groupRank = player.GetRankInGroup(GROUP_ID);
+		if (storeState.index.groupRank !== undefined) {
+			const groupRank = storeState.index.groupRank;
 			const groupRankData = GROUP_ROLES[groupRank];
 			if (groupRankData === undefined) {
 				return;
@@ -411,116 +380,101 @@ function updatePlayerTag(player: Player, store: Store): void {
 function createEnemyTag(enemy: Model): void {
 	const enemyTag = ReplicatedStorage.assetObjects.tags.enemyTag;
 	assert(enemyTag, `Failed to get enemy tag from rep storage`);
+	const humanoid = enemy.FindFirstChildOfClass("Humanoid");
+	if (humanoid === undefined) {
+		return;
+	}
 
-	task.spawn(() => {
-		let humanoid = enemy.FindFirstChildOfClass("Humanoid");
+	const head = enemy.FindFirstChild("Head") as BasePart;
+	if (head === undefined) {
+		return;
+	}
+
+	const npcData = getNPCByName(enemy.Name);
+	if (npcData === undefined) {
+		return;
+	}
+
+	const tag = enemyTag.Clone();
+	tag.hold.name.Text = enemy.Name;
+	tag.hold.name.rank.Image = getRankIcon(npcData.rank);
+	tag.hold.title.Visible = npcData.isBoss;
+	tag.hold.title.Text = npcData.isBoss ? `Boss` : `NPC`;
+	tag.hold.title.TextColor3 = npcData.isBoss ? Color3.fromRGB(250, 112, 112) : Color3.fromRGB(255, 255, 255);
+
+	tag.hold.fillBackground.fill.Size = UDim2.fromScale(1, 1);
+	tag.hold.fillBackground.health.Text = `[${twoDpAbbreviator.numberToString(
+		humanoid.Health,
+	)} / ${twoDpAbbreviator.numberToString(humanoid.MaxHealth)}]`;
+
+	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
+	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
+
+	tag.Adornee = head;
+	tag.Parent = enemyTags;
+
+	let healthConnection: RBXScriptConnection | undefined = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
 		if (humanoid === undefined) {
-			// eslint-disable-next-line no-constant-condition
-			while (true) {
-				task.wait(1);
-				if (enemy.FindFirstChildOfClass("Humanoid")) {
-					humanoid = enemy.FindFirstChildOfClass("Humanoid");
-					break;
-				}
-			}
-		}
-		if (humanoid === undefined) {
 			return;
 		}
 
-		let head = enemy.FindFirstChild("Head") as BasePart;
-		if (head === undefined) {
-			// eslint-disable-next-line no-constant-condition
-			while (true) {
-				task.wait(1);
-				if (enemy.FindFirstChild("Head")) {
-					head = enemy.FindFirstChild("Head") as BasePart;
-					break;
-				}
-			}
-		}
-		if (head === undefined) {
-			return;
+		const health = humanoid.Health;
+		const maxHealth = humanoid.MaxHealth;
+
+		const healthPercentage = health / maxHealth;
+
+		if (healthPercentage > 0.7) {
+			tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(85, 255, 127);
+		} else if (healthPercentage > 0.3) {
+			tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(255, 237, 84);
+		} else {
+			tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(255, 92, 84);
 		}
 
-		const npcData = getNPCByName(enemy.Name);
-		if (npcData === undefined) {
-			return;
-		}
-
-		const tag = enemyTag.Clone();
-		tag.hold.name.Text = enemy.Name;
-		tag.hold.name.rank.Image = getRankIcon(npcData.rank);
-		tag.hold.title.Visible = npcData.isBoss;
-		tag.hold.title.Text = npcData.isBoss ? `Boss` : `NPC`;
-		tag.hold.title.TextColor3 = npcData.isBoss ? Color3.fromRGB(250, 112, 112) : Color3.fromRGB(255, 255, 255);
-
-		tag.hold.fillBackground.fill.Size = UDim2.fromScale(1, 1);
-		tag.hold.fillBackground.health.Text = `[${twoDpAbbreviator.numberToString(
-			humanoid.Health,
-		)} / ${twoDpAbbreviator.numberToString(humanoid.MaxHealth)}]`;
-
-		humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
-		humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
-
-		tag.Adornee = head;
-		tag.Parent = enemyTags;
-
-		const healthConnection = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
-			if (humanoid === undefined) {
-				return;
-			}
-
-			const health = humanoid.Health;
-			const maxHealth = humanoid.MaxHealth;
-
-			const healthPercentage = health / maxHealth;
-
-			if (healthPercentage > 0.7) {
-				tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(85, 255, 127);
-			} else if (healthPercentage > 0.3) {
-				tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(255, 237, 84);
-			} else {
-				tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(255, 92, 84);
-			}
-
-			const healthTween = TweenService.Create(tag.hold.fillBackground.fill, healthbarTween, {
-				Size: UDim2.fromScale(healthPercentage, 1),
-			});
-			healthTween.Play();
-			healthTween.Completed.Wait();
-
-			const hold = tag.FindFirstChild("hold");
-			if (hold === undefined) {
-				return;
-			}
-
-			const fillBackground = hold.FindFirstChild("fillBackground");
-			if (fillBackground === undefined) {
-				return;
-			}
-
-			const healthText = fillBackground.FindFirstChild("health") as TextLabel;
-			if (healthText === undefined) {
-				return;
-			}
-
-			healthText.Text = `[${twoDpAbbreviator.numberToString(humanoid.Health)} / ${twoDpAbbreviator.numberToString(
-				humanoid.MaxHealth,
-			)}]`;
+		const healthTween = TweenService.Create(tag.hold.fillBackground.fill, healthbarTween, {
+			Size: UDim2.fromScale(healthPercentage, 1),
 		});
+		healthTween.Play();
+		healthTween.Completed.Wait();
 
-		const ancestryChangedConnection = humanoid.AncestryChanged.Connect(() => {
+		const hold = tag.FindFirstChild("hold");
+		if (hold === undefined) {
+			return;
+		}
+
+		const fillBackground = hold.FindFirstChild("fillBackground");
+		if (fillBackground === undefined) {
+			return;
+		}
+
+		const healthText = fillBackground.FindFirstChild("health") as TextLabel;
+		if (healthText === undefined) {
+			return;
+		}
+
+		healthText.Text = `[${twoDpAbbreviator.numberToString(humanoid.Health)} / ${twoDpAbbreviator.numberToString(
+			humanoid.MaxHealth,
+		)}]`;
+	});
+
+	let ancestryChangedConnection: RBXScriptConnection | undefined = humanoid.AncestryChanged.Connect(() => {
+		if (healthConnection !== undefined) {
 			healthConnection.Disconnect();
-			tag.Parent = undefined;
-			tag.Destroy();
-			if (humanoid !== undefined) {
-				humanoid.Parent = undefined;
-				humanoid.Destroy();
-			}
+			healthConnection = undefined;
+		}
+
+		tag.Parent = undefined;
+		tag.Destroy();
+
+		if (humanoid !== undefined) {
+			humanoid.Parent = undefined;
+			humanoid.Destroy();
+		}
+
+		if (ancestryChangedConnection !== undefined) {
 			ancestryChangedConnection.Disconnect();
-			return;
-		});
+			ancestryChangedConnection = undefined;
+		}
 	});
 }
 
@@ -570,6 +524,7 @@ Players.PlayerAdded.Connect(onPlayerAdded);
 Players.GetPlayers().forEach(onPlayerAdded);
 
 npcsFolder.ChildAdded.Connect((enemy) => {
+	debug.setmemorycategory("tags");
 	if (!enemy.IsA("Model")) {
 		return;
 	}
@@ -578,6 +533,7 @@ npcsFolder.ChildAdded.Connect((enemy) => {
 });
 
 npcsFolder.GetChildren().forEach((enemy) => {
+	debug.setmemorycategory("tags");
 	if (!enemy.IsA("Model")) {
 		return;
 	}
@@ -586,6 +542,7 @@ npcsFolder.GetChildren().forEach((enemy) => {
 });
 
 Workspace.trials.ChildAdded.Connect((timeTrialMap) => {
+	debug.setmemorycategory("tags");
 	task.delay(2, () => {
 		const npcs = timeTrialMap.FindFirstChild("npcs");
 		if (npcs === undefined) {
@@ -617,6 +574,7 @@ Workspace.trials.ChildAdded.Connect((timeTrialMap) => {
 });
 
 RunService.RenderStepped.Connect((deltaTime) => {
+	debug.setmemorycategory("tags");
 	debug.profilebegin("Gradient Tags");
 	gradients.forEach((gradient) => {
 		if (gradient.Offset.X < 0.75) {

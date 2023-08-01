@@ -1,6 +1,7 @@
 import { CollectionService, RunService } from "@rbxts/services";
 
 RunService.RenderStepped.Connect((deltaTime) => {
+	debug.setmemorycategory("animatedGradients");
 	debug.profilebegin("animatedGradients");
 	const offsetGradients = CollectionService.GetTagged("AnimatedGradient_Offset");
 	const rotateGradients = CollectionService.GetTagged("AnimatedGradient_Rotate");

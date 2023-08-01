@@ -2,6 +2,7 @@ import Object from "@rbxts/object-utils";
 import { HttpService, Players, ReplicatedStorage } from "@rbxts/services";
 import { modifyPetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
+import assetIds from "shared/assets";
 import { hatchDebounce } from "shared/configs/eggs";
 import { Rarities } from "shared/configs/rarities";
 import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
@@ -13,6 +14,7 @@ import { isImmuneRarity } from "shared/rodux/settings";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggData } from "shared/util/getEggData";
 import { getEggsMastery } from "shared/util/getEggsMastery";
+import { getPetData } from "shared/util/getPetData";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
 import { withinDistanceToHatch } from "shared/util/withinDistanceToHatch";
 
@@ -25,13 +27,13 @@ const randomGenerator = new Random();
 
 hatchEggRemote.SetCallback(
 	withPlayerStore((player, store, amount, eggName, isVoid) => {
+		debug.setmemorycategory("egg");
 		// verify that player has waited long enough to hatch
 		const lastHatchTime = hatchTimeCache.get(player) ?? 0;
 
 		const now = time();
 		const canHatch = now - lastHatchTime > hatchDebounce;
 		if (!canHatch) {
-			warn(`Player ${player.Name} tried to hatch too fast!`);
 			return {
 				success: false,
 				reason: HatchEggFailKind.TooFast,
@@ -43,7 +45,6 @@ hatchEggRemote.SetCallback(
 			getTradeStatus(player) === TradeStatus.ViewingFinalizedTrade ||
 			getTradeStatus(player) === TradeStatus.Finalized;
 		if (isTrading) {
-			warn(`Player ${player.Name} tried to hatch while trading!`);
 			return {
 				success: false,
 				reason: HatchEggFailKind.Trading,
@@ -53,7 +54,6 @@ hatchEggRemote.SetCallback(
 		// verify that the user can hatch the eggs
 		const currentState = store.getState();
 		if (amount > 1 && !currentState.gamepasses["Triple Hatch"]) {
-			warn(`Player is trying to hatch triple eggs without the gamepass!`);
 			return {
 				success: false,
 				reason: HatchEggFailKind.NoGamepass,
@@ -68,7 +68,6 @@ hatchEggRemote.SetCallback(
 		// check that user owns world
 		const ownsWorld = currentState.worlds.find((x) => x.name === eggData.world);
 		if (ownsWorld === undefined) {
-			warn(`Player does not own the world the egg is from!`);
 			return {
 				success: false,
 				reason: HatchEggFailKind.NoWorld,
@@ -78,7 +77,6 @@ hatchEggRemote.SetCallback(
 		// check that user owns zone
 		const ownsZone = ownsWorld.zones.find((x) => x === eggData.zone);
 		if (ownsZone === undefined) {
-			warn(`Player does not own the zone the egg is from!`);
 			return {
 				success: false,
 				reason: HatchEggFailKind.NoZone,
@@ -209,7 +207,52 @@ hatchEggRemote.SetCallback(
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			if (pet.rarity === "Secret" || pet.rarity === "Primordial") {
 				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
-			} else if (pet.rarity === "Legendary") {
+
+				const petData = getPetData(pet.id);
+				const variantUpperCase = isVoid ? "Void" : "Regular";
+				const petVariantName = !isVoid ? petData.name : `${variantUpperCase} ${petData.name}`;
+
+				const image = assetIds.images.decals.pets[petVariantName as keyof typeof assetIds.images.decals.pets];
+				let decalToPass = 0;
+				if (image !== undefined) {
+					// bugged
+					decalToPass = image.match("%d+")[0] as number;
+					print(decalToPass);
+				}
+
+				let existAmount = 0;
+				const petExistCache = ReplicatedStorage.PetExistStores.FindFirstChild(pet.id) as Configuration;
+				if (petExistCache !== undefined) {
+					const variantCache = petExistCache.FindFirstChild(isVoid ? "void" : "regular") as IntValue;
+					if (variantCache !== undefined) {
+						const variantCache = petExistCache.FindFirstChild(isVoid ? "void" : "regular") as IntValue;
+						if (variantCache !== undefined) {
+							existAmount += variantCache.Value;
+						}
+					}
+				}
+
+				task.spawn(() => {
+					pcall(() => {
+						HttpService.RequestAsync({
+							Url: "http://137.184.152.180:8765/hatch",
+							Body: HttpService.JSONEncode({
+								roblox_uid: player.UserId,
+								secret_name: petData.name,
+								secret_type: pet.rarity,
+								pet_variant: isVoid ? "void" : "regular",
+								decal: decalToPass,
+								exist: existAmount + 1,
+							}),
+							Method: "POST",
+							Headers: {
+								"Content-Type": "application/json",
+								"X-ACCESS-TOKEN": "V1qijQkozBm1LdD5SsO1",
+							},
+						});
+					});
+				});
+			} else if (pet.rarity === "Legendary" && !autoDeleted) {
 				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
 			}
 

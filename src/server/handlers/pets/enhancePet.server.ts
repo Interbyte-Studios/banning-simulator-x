@@ -1,3 +1,4 @@
+debug.setmemorycategory("enhancePet");
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { rollEnhancement } from "server/modules/pets/rollEnhancement";
 import { ENHANCEMENT_BASE_COSTS, EnhancePetMetadata } from "shared/configs/enchantments";

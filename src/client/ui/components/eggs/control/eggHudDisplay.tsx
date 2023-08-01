@@ -126,9 +126,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 				debug.profileend();
 			});
 
-			return (): void => {
-				connection.Disconnect();
-			};
+			return (): void => connection.Disconnect();
 		});
 
 		if (!isVisible) {

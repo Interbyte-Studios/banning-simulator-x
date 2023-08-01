@@ -10,6 +10,7 @@ const chatScroll = chatChannelParentFrame?.FindFirstChild("Frame_MessageLogDispl
 
 const gradients: Array<UIGradient> = [];
 chatScroll?.ChildAdded.Connect((chatObject) => {
+	debug.setmemorycategory("titles");
 	if (!chatObject.IsA("Frame")) {
 		return;
 	}

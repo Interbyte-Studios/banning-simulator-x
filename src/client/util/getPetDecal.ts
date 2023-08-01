@@ -10,6 +10,7 @@ import { getPetData } from "shared/util/getPetData";
  * @returns The decal of the pet.
  */
 export function getPetDecal(petId: number, variant: Variants): string {
+	debug.setmemorycategory("getPetDecal");
 	const petData = getPetData(petId);
 
 	const variantUpperCase = variant === "radiant" ? "Radiant" : variant === "void" ? "Void" : "";

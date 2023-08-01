@@ -63,6 +63,7 @@ export const DailyReward = RoactRodux.connect(mapStateToProps)(
 
 		useEffect(() => {
 			const connection = RunService.RenderStepped.Connect(() => {
+				debug.profilebegin("dailyRewards");
 				if (
 					props.dailyRewards.daysClaimed.includes(props.day as DailyRewardCacheType) ||
 					props.day >= props.dailyRewards.daysClaimed.size() + 2
@@ -76,6 +77,7 @@ export const DailyReward = RoactRodux.connect(mapStateToProps)(
 				}
 				lastCheck = now;
 				setTime(os.time());
+				debug.profileend();
 			});
 			return (): void => connection.Disconnect();
 		}, [props.dailyRewards, props.day]);

@@ -1,3 +1,4 @@
+debug.setmemorycategory("lockPet");
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
 import { lockPets } from "shared/rodux/pets";

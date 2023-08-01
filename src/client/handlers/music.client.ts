@@ -14,6 +14,7 @@ let volume = 0;
 const player = Players.LocalPlayer;
 onStoreCreated(player)
 	.andThen((store) => {
+		debug.setmemorycategory("music");
 		volume = 0.5 * (store.getState().settings.sound.music * 0.05);
 
 		for (const sound of SoundService.GetChildren()) {
@@ -122,5 +123,6 @@ task.spawn(() => {
 		currentWorld = world;
 
 		setPlaylist(currentWorld);
+		task.wait();
 	}
 });

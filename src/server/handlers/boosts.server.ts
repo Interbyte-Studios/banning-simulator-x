@@ -8,6 +8,7 @@ import { getBoostMastery } from "shared/util/getBoostMastery";
 Players.GetPlayers().forEach((player) =>
 	onStoreCreated(player).andThen((store) => {
 		task.defer(() => {
+			debug.setmemorycategory("boosts");
 			// eslint-disable-next-line no-constant-condition
 			while (true) {
 				const activeBoosts: ValidBoostUseRecord = [];
@@ -29,6 +30,7 @@ Players.GetPlayers().forEach((player) =>
 Players.PlayerAdded.Connect((player) =>
 	onStoreCreated(player).andThen((store) => {
 		task.defer(() => {
+			debug.setmemorycategory("boosts");
 			// eslint-disable-next-line no-constant-condition
 			while (true) {
 				const activeBoosts: ValidBoostUseRecord = [];
@@ -50,6 +52,7 @@ Players.PlayerAdded.Connect((player) =>
 const useBoostRemote = remotes.Server.Get("useBoost");
 useBoostRemote.Connect(
 	withPlayerStore((_, store, boostName, boostTime) => {
+		debug.setmemorycategory("boosts");
 		const currentState = store.getState();
 
 		const storedBoost = currentState.boosts.storage[boostName][boostTime];

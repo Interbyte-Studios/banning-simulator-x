@@ -142,7 +142,6 @@ export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
 			}
 
 			const healthConnection = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
-				warn(`Attacked! Health changed to: ${humanoid.Health}`);
 				setHealth(humanoid.Health);
 				setMaxHealth(humanoid.MaxHealth);
 			});

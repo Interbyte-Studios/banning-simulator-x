@@ -10,6 +10,7 @@ import { getTalismanData } from "shared/util/getTalismanData";
  * @returns The decal of the weapon.
  */
 export function getTalismanDecal(talismanId: number, phase: TalismanPhases): string {
+	debug.setmemorycategory("getTalismanDecal");
 	const talismanData = getTalismanData(talismanId);
 
 	const capitalizedPhaseName = phase === "artifact" ? "Artifact" : phase === "awakend" ? "Awakend" : "Normal";

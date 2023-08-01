@@ -78,11 +78,13 @@ export const ToggleAutoHatchButton = RoactRodux.connect(mapStateToProps)(
 							}
 						}
 
-						const voidEgg = eggFolder.void.egg.PrimaryPart;
-						if (voidEgg !== undefined) {
-							if (humanoidRootPart.Position.sub(voidEgg.Position).Magnitude < 30) {
-								toggleAuto.SendToServer();
-								break;
+						if (name !== "Throwback") {
+							const voidEgg = eggFolder.void.egg.PrimaryPart;
+							if (voidEgg !== undefined) {
+								if (humanoidRootPart.Position.sub(voidEgg.Position).Magnitude < 30) {
+									toggleAuto.SendToServer();
+									break;
+								}
 							}
 						}
 					}

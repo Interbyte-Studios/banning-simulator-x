@@ -6,6 +6,7 @@ import { remotes } from "shared/remotes";
 const player = Players.LocalPlayer;
 onStoreCreated(player)
 	.andThen((store) => {
+		debug.setmemorycategory("inviteAFriend");
 		for (const prompt of Workspace.interactions.invites.interactions.GetChildren()) {
 			if (!prompt.IsA("BasePart")) {
 				continue;

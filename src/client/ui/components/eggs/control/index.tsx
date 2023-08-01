@@ -79,18 +79,9 @@ export function disableHatch(): void {
  * @returns A roact element.
  */
 export const EggHud = RoactRodux.connect(mapStateToProps)(
-	hooks((props: EggHudMappedProps, { useEffect, useCallback, useContext, useValue, useState }) => {
+	hooks((props: EggHudMappedProps, { useEffect, useCallback, useContext, useValue }) => {
 		const { hatchEgg } = useContext(remoteContext);
 		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
-
-		const [updated, setUpdate] = useState(0);
-		useEffect(() => {
-			const connection = Workspace.interactions.eggs.DescendantAdded.Connect(() => {
-				setUpdate((prev) => prev + 1);
-			});
-
-			return (): void => connection.Disconnect();
-		}, []);
 
 		const currencies = useValue(props.currencies);
 		const inventorySize = useValue(props.pets.size());
@@ -186,7 +177,13 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					autoEnabled = true;
 
 					task.spawn(async () => {
-						while (autoEnabled) {
+						// eslint-disable-next-line no-constant-condition
+						while (true) {
+							task.wait(0.05);
+							if (!autoEnabled) {
+								break;
+							}
+
 							// check to be sure they've waited long enough
 							const now = time();
 							const canHatch = now - lastHatchTime > hatchDebounce;
@@ -369,9 +366,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 
 			const characterAdded = Players.LocalPlayer.CharacterAdded.Connect(() => {
 				movementConnection = humanoid.GetPropertyChangedSignal("MoveDirection").Connect(() => {
-					if (autoEnabled) {
-						autoEnabled = false;
-					}
+					autoEnabled = false;
 
 					return;
 				});
@@ -507,10 +502,10 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 				ContextActionService.UnbindAction("hatchEgg");
 				ContextActionService.UnbindAction("hatchEggTriple");
 			};
-		}, [updated, props.settings.gameplay.autoHatch]);
+		}, [props.settings.gameplay.autoHatch]);
 
 		return (
-			<frame Visible={false} Key={updated}>
+			<frame Visible={false}>
 				{Object.entries(EGGS).map(([eggName, eggData]) => {
 					if (!eggData.hatchable) {
 						return <></>;

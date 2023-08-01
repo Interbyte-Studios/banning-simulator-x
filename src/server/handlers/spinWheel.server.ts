@@ -14,6 +14,7 @@ remotes.Server.Get("spinWheel").SetCallback(withPlayerStore((_, store) => spinWh
  */
 function onPlayerAdded(player: Player): void {
 	task.spawn(async () => {
+		debug.setmemorycategory("spinWheel");
 		const store = await onStoreCreated(player);
 		// eslint-disable-next-line no-constant-condition
 		while (true) {

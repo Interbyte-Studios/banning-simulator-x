@@ -8,6 +8,7 @@ import { UnreachableCaseError } from "shared/util/unreachableCaseError";
  * @returns The human readable time.
  */
 export function getBoostHumanTime(boostTime: ValidBoostTime): string {
+	debug.setmemorycategory("getBoostHumanTime");
 	switch (boostTime) {
 		case 15: {
 			return "15m";

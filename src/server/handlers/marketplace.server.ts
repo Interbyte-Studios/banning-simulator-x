@@ -37,6 +37,7 @@ const hatchSingleExclusive = marketplaceRemotes.Get("hatchSingleExclusiveEgg");
 const tripleSingleExclusive = marketplaceRemotes.Get("hatchTripleExclusiveEgg");
 
 MarketplaceService.PromptGamePassPurchaseFinished.Connect((player, id, purchased) => {
+	debug.setmemorycategory("MarketplacePromptGamePassPurchaseFinished");
 	if (!purchased) return;
 
 	const store = retrieveStore(player);
@@ -50,6 +51,7 @@ MarketplaceService.PromptGamePassPurchaseFinished.Connect((player, id, purchased
 
 // eslint-disable-next-line jsdoc/require-jsdoc
 MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision => {
+	debug.setmemorycategory("ProcessReceipt");
 	const player = Players.GetPlayers().find((player) => player.UserId === receiptInfo.PlayerId);
 	if (player === undefined) {
 		warn(

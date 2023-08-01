@@ -39,6 +39,7 @@ const secondLength = 1000;
 
 onStoreCreated(player)
 	.andThen((store) => {
+		debug.setmemorycategory("roactMounter");
 		Roact.mount(
 			<remoteContext.Provider
 				value={{

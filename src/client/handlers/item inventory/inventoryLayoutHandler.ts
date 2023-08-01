@@ -1,3 +1,4 @@
+debug.setmemorycategory("inventoryLayoutHandler");
 import { CollectionService } from "@rbxts/services";
 
 const collectionTag = "InventoryGridLayout";

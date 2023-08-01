@@ -17,8 +17,7 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 	const zoneDecoration = Workspace.decoration[world][zone];
 	const door = zoneDecoration.door;
 
-	task.spawn(() => {
-		task.wait(1);
+	task.delay(1, (): void => {
 		let zoneFolder = Lighting.FindFirstChild(zone);
 		if (zoneFolder === undefined) {
 			zoneFolder = Make("Folder", {
@@ -50,6 +49,7 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
  * @param worldState The world state to read.
  */
 function unlockZones(worldState: WorldsState): void {
+	debug.setmemorycategory("purchasedZones");
 	for (const unlockedWorld of worldState) {
 		for (const [worldName, worldData] of pairs(WORLDS)) {
 			if (worldName !== unlockedWorld.name) {

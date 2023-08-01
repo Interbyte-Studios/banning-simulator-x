@@ -1,3 +1,4 @@
+debug.setmemorycategory("eggAnimations");
 import { RunService, TweenService, Workspace } from "@rbxts/services";
 import { EggName, EGGS } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
@@ -21,17 +22,9 @@ const eggAnimationTweenInfo = new TweenInfo(2, Enum.EasingStyle.Sine, Enum.Easin
 function animateEgg(eggName: EggName, variant: Exclude<Variants, "radiant">): void {
 	const eggFolder = Workspace.interactions.eggs[eggName][variant];
 	const egg = eggFolder.egg;
-
-	let primary = egg.PrimaryPart;
+	const primary = egg.PrimaryPart;
 	if (primary === undefined) {
-		// eslint-disable-next-line no-constant-condition
-		while (true) {
-			task.wait(1);
-			if (egg.PrimaryPart !== undefined) {
-				primary = egg.PrimaryPart;
-				break;
-			}
-		}
+		return;
 	}
 
 	const defaultPosition = primary.Position.Y;
@@ -48,15 +41,9 @@ function animateEgg(eggName: EggName, variant: Exclude<Variants, "radiant">): vo
 	cframeValues.push(eggAnimationData);
 
 	task.spawn(() => {
-		let primary = egg.PrimaryPart;
+		const primary = egg.PrimaryPart;
 		if (primary === undefined) {
-			// eslint-disable-next-line no-constant-condition
-			while (true) {
-				task.wait(1);
-				if (egg.PrimaryPart !== undefined) {
-					primary = egg.PrimaryPart;
-				}
-			}
+			return;
 		}
 
 		const eggAnimation_up = TweenService.Create(cframeValue, eggAnimationTweenInfo, {
@@ -86,6 +73,7 @@ for (const [name, data] of pairs(EGGS)) {
 	}
 
 	task.spawn(() => {
+		task.wait(5);
 		animateEgg(name, "regular");
 		if (name !== "Throwback") {
 			task.wait(1);
@@ -101,7 +89,7 @@ RunService.RenderStepped.Connect(() => {
 			continue;
 		}
 
-		eggData.egg.SetPrimaryPartCFrame(eggData.cframeValue.Value);
+		eggData.egg.PivotTo(eggData.cframeValue.Value);
 	}
 	debug.profileend();
 });

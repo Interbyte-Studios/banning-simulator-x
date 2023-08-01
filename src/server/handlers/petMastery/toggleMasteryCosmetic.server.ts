@@ -1,3 +1,4 @@
+debug.setmemorycategory("toggleMasteryCosmetic");
 import { remotes } from "shared/remotes";
 import { PetMasteryStateVariant, toggleMasteryCosmetic } from "shared/rodux/petMastery";
 import { UnreachableCaseError } from "shared/util/unreachableCaseError";

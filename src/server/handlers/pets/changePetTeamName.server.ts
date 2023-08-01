@@ -1,3 +1,4 @@
+debug.setmemorycategory("changePetTeamName");
 import { TextService } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";

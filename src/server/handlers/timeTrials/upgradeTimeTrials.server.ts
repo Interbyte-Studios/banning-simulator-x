@@ -1,3 +1,4 @@
+debug.setmemorycategory("upgradeTimeTrials");
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { TIME_TRIAL_UPGRADES, TIME_TRIALS_CURRENCIES } from "shared/configs/timeTrials";
 import { remotes } from "shared/remotes";

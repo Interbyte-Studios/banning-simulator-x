@@ -1,3 +1,4 @@
+debug.setmemorycategory("crystalAnimations");
 import { CollectionService, RunService, TweenService } from "@rbxts/services";
 import { AssetAnimation } from "shared/assetTags";
 
@@ -16,16 +17,9 @@ const crystalTweenInfo = new TweenInfo(5, Enum.EasingStyle.Sine, Enum.EasingDire
  * @param floatDistance The distance at which the crystal model will fly in the air.
  */
 function animateCrystal(crystal: Model, floatDistance: number): void {
-	let primary = crystal.PrimaryPart;
+	const primary = crystal.PrimaryPart;
 	if (primary === undefined) {
-		// eslint-disable-next-line no-constant-condition
-		while (true) {
-			task.wait(1);
-			if (crystal.PrimaryPart !== undefined) {
-				primary = crystal.PrimaryPart;
-				break;
-			}
-		}
+		return;
 	}
 
 	const defaultPosition = primary.Position.Y;
@@ -42,16 +36,9 @@ function animateCrystal(crystal: Model, floatDistance: number): void {
 	cframeValues.push(crystalAnimationData);
 
 	task.spawn(() => {
-		let primary = crystal.PrimaryPart;
+		const primary = crystal.PrimaryPart;
 		if (primary === undefined) {
-			// eslint-disable-next-line no-constant-condition
-			while (true) {
-				task.wait(1);
-				if (crystal.PrimaryPart !== undefined) {
-					primary = crystal.PrimaryPart;
-					break;
-				}
-			}
+			return;
 		}
 
 		const crystalAnimation_up = TweenService.Create(cframeValue, crystalTweenInfo, {

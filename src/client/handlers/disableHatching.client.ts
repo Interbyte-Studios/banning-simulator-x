@@ -10,6 +10,7 @@ stopButton.Activated.Connect((): void => disableHatch());
 
 const buttonSize = stopButton.Size;
 stopButton.MouseEnter.Connect(() => {
+	debug.setmemorycategory("disableHatching");
 	const tweenInfo = new TweenInfo(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out);
 	const tween = TweenService.Create(stopButton, tweenInfo, {
 		Size: UDim2.fromScale(buttonSize.Y.Scale * 0.8, buttonSize.Y.Scale * 0.8),
@@ -17,6 +18,7 @@ stopButton.MouseEnter.Connect(() => {
 	tween.Play();
 });
 stopButton.MouseLeave.Connect(() => {
+	debug.setmemorycategory("disableHatching");
 	const tweenInfo = new TweenInfo(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out);
 	const tween = TweenService.Create(stopButton, tweenInfo, {
 		Size: buttonSize,

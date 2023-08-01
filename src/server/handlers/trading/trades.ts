@@ -1,3 +1,4 @@
+debug.setmemorycategory("trades");
 import {
 	addFlaggedTrade,
 	FlaggedPetCollection,

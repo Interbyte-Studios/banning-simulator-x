@@ -1,3 +1,4 @@
+debug.setmemorycategory("tradingNetworkBinder");
 import { Players, ReplicatedStorage } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";

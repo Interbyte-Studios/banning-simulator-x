@@ -4,6 +4,7 @@ import { getPetData } from "shared/util/getPetData";
 
 const hatchSystemMessage = remotes.Client.GetNamespace("eggs").Get("hatchEggSystemMessage");
 hatchSystemMessage.Connect((playerWhoHatched, petId, petVariant, hatchedOrFused) => {
+	debug.setmemorycategory("chatSystemMessage");
 	const petData = getPetData(petId);
 
 	let Color: Color3;

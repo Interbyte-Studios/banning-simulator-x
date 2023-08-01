@@ -7,5 +7,6 @@
  * @returns The lerped value.
  */
 export const lerp = (start: number, finish: number, alpha: number): number => {
+	debug.setmemorycategory("customLerp");
 	return start + (finish - start) * alpha;
 };

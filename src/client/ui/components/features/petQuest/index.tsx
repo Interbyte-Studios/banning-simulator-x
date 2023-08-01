@@ -174,11 +174,11 @@ export const PetQuest = RoactRodux.connect(mapStateToProps)(
 								addAnnouncement(`You have already claimed the pet..`, AnnouncementType.Error);
 								return;
 							}
-							if (timePlayed < 60) {
+							if (timePlayed < 3600) {
 								addAnnouncement(`You haven't played long enough.`, AnnouncementType.Error);
 								return;
 							}
-							if (bans < 5) {
+							if (bans < 250) {
 								addAnnouncement(`You haven't banned enough NPCs.`, AnnouncementType.Error);
 								return;
 							}
@@ -307,7 +307,7 @@ export const PetQuest = RoactRodux.connect(mapStateToProps)(
 						native={{
 							Position: UDim2.fromScale(0.5, -0.484),
 							Size: UDim2.fromScale(1, 0.617),
-							Text: `Ban 5 Npcs!`,
+							Text: `Ban 250 Npcs!`,
 						}}
 						stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(67, 67, 67) } }}
 					/>

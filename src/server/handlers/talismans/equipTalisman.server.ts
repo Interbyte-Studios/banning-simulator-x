@@ -1,3 +1,4 @@
+debug.setmemorycategory("equipTalisman");
 import Object from "@rbxts/object-utils";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { equipTalisman } from "server/modules/rodux/equipTalisman";

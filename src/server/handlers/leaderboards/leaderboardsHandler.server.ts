@@ -1,3 +1,4 @@
+debug.setmemorycategory("leaderboardsHandler");
 import { Players, ReplicatedStorage, RunService } from "@rbxts/services";
 import { onStoreCreated } from "server/playerStore";
 import {

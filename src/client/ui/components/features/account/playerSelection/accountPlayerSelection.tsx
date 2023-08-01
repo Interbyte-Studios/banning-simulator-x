@@ -12,6 +12,99 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
 /* eslint-disable jsdoc/require-jsdoc */
+const PlayerCard = hooks(
+	(props: { player: Player; setPlayerViewed: () => void; returnToSelection: () => void }, { useState, useEffect }) => {
+		const [content, setContent] = useState("");
+		useEffect(() => {
+			const thumbnailType = Enum.ThumbnailType.HeadShot;
+			const thumbnailSize = Enum.ThumbnailSize.Size420x420;
+
+			task.spawn(() => {
+				const [success, result] = pcall(() =>
+					Players.GetUserThumbnailAsync(props.player.UserId, thumbnailType, thumbnailSize),
+				);
+				if (success) {
+					setContent(result);
+				}
+			});
+		}, [props.player]);
+
+		const minimizedSize = 0.8;
+		const maximizedSize = 0.9;
+
+		return (
+			<BaseFrame
+				BackgroundTransparency={0}
+				AnchorPoint={vec2Middle}
+				BackgroundColor3={Color3.fromRGB(45, 167, 230)}
+				Position={UDim2.fromScale(0.5, 0.5)}
+				Size={UDim2.fromScale(1, 0.125)}
+			>
+				<uiaspectratioconstraint AspectRatio={7} />
+				<uicorner CornerRadius={new UDim(0.2, 0)} />
+				<BaseUIStroke native={{ Color: Color3.fromRGB(12, 52, 79), Thickness: 1.5 }} />
+
+				<BaseFrame
+					BackgroundTransparency={0}
+					AnchorPoint={vec2Middle}
+					BackgroundColor3={Color3.fromRGB(12, 52, 79)}
+					Position={UDim2.fromScale(0.075, 0.5)}
+					Size={UDim2.fromScale(0.9, 0.9)}
+				>
+					<uiaspectratioconstraint AspectRatio={1} />
+					<uicorner CornerRadius={new UDim(1, 0)} />
+
+					<ImageLabel
+						native={{
+							Size: UDim2.fromScale(1, 1),
+							ScaleType: Enum.ScaleType.Fit,
+							Image: content,
+						}}
+					>
+						<uicorner CornerRadius={new UDim(1, 0)} />
+					</ImageLabel>
+				</BaseFrame>
+
+				<SpringImageButton
+					native={{
+						Position: UDim2.fromScale(0.825, 0.5),
+						Image: assetIds.images.ui.index.Claim,
+					}}
+					size={{ minSize: minimizedSize, maxSize: maximizedSize }}
+					events={{
+						/**
+						 *
+						 */
+						Activated: (): void => {
+							playSFX(UIEngagement.MinorEngagement);
+							props.setPlayerViewed();
+							props.returnToSelection();
+						},
+					}}
+				>
+					<uiaspectratioconstraint AspectRatio={2} />
+					<StrokeTextLabel
+						native={{
+							Size: UDim2.fromScale(0.8, 0.8),
+							Text: "View",
+						}}
+						stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(28, 162, 62) } }}
+					/>
+				</SpringImageButton>
+				<StrokeTextLabel
+					native={{
+						Position: UDim2.fromScale(0.4, 0.5),
+						Size: UDim2.fromScale(0.45, 0.9),
+						Text: props.player.Name,
+						TextXAlignment: Enum.TextXAlignment.Left,
+					}}
+					stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(12, 52, 79) } }}
+				/>
+			</BaseFrame>
+		);
+	},
+);
+
 export const AccountPlayerSelection = hooks(
 	(props: { setPlayerViewed: (player: Player) => void; returnToSelection: () => void }, hooks) => {
 		const { useState, useEffect } = hooks;
@@ -46,87 +139,18 @@ export const AccountPlayerSelection = hooks(
 					Position={UDim2.fromScale(0.5, 0.5)}
 					Size={UDim2.fromScale(0.95, 0.95)}
 					ScrollBarThickness={12}
-				BorderSizePixel={0}
+					BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
 					<uilistlayout Padding={new UDim(0.02, 0)} HorizontalAlignment={Enum.HorizontalAlignment.Center} />
 
-					{playersInGame.map((oPlayer) => {
-						const minimizedSize = 0.8;
-						const maximizedSize = 0.9;
-
-						const thumbnailType = Enum.ThumbnailType.HeadShot;
-						const thumbnailSize = Enum.ThumbnailSize.Size420x420;
-						const [content, isReady] = Players.GetUserThumbnailAsync(oPlayer.UserId, thumbnailType, thumbnailSize);
-
-						return (
-							<BaseFrame
-								BackgroundTransparency={0}
-								AnchorPoint={vec2Middle}
-								BackgroundColor3={Color3.fromRGB(45, 167, 230)}
-								Position={UDim2.fromScale(0.5, 0.5)}
-								Size={UDim2.fromScale(1, 0.125)}
-							>
-								<uiaspectratioconstraint AspectRatio={7} />
-								<uicorner CornerRadius={new UDim(0.2, 0)} />
-								<BaseUIStroke native={{ Color: Color3.fromRGB(12, 52, 79), Thickness: 1.5 }} />
-
-								<BaseFrame
-									BackgroundTransparency={0}
-									AnchorPoint={vec2Middle}
-									BackgroundColor3={Color3.fromRGB(12, 52, 79)}
-									Position={UDim2.fromScale(0.075, 0.5)}
-									Size={UDim2.fromScale(0.9, 0.9)}
-								>
-									<uiaspectratioconstraint AspectRatio={1} />
-									<uicorner CornerRadius={new UDim(1, 0)} />
-
-									<ImageLabel
-										native={{
-											Size: UDim2.fromScale(1, 1),
-											ScaleType: Enum.ScaleType.Fit,
-											Image: isReady && content ? content : "",
-										}}
-									>
-										<uicorner CornerRadius={new UDim(1, 0)} />
-									</ImageLabel>
-								</BaseFrame>
-
-								<SpringImageButton
-									native={{
-										Position: UDim2.fromScale(0.825, 0.5),
-										Image: assetIds.images.ui.index.Claim,
-									}}
-									size={{ minSize: minimizedSize, maxSize: maximizedSize }}
-									events={{
-										Activated: (): void => {
-											playSFX(UIEngagement.MinorEngagement);
-											props.setPlayerViewed(oPlayer);
-											props.returnToSelection();
-										},
-									}}
-								>
-									<uiaspectratioconstraint AspectRatio={2} />
-									<StrokeTextLabel
-										native={{
-											Size: UDim2.fromScale(0.8, 0.8),
-											Text: "View",
-										}}
-										stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(28, 162, 62) } }}
-									/>
-								</SpringImageButton>
-								<StrokeTextLabel
-									native={{
-										Position: UDim2.fromScale(0.4, 0.5),
-										Size: UDim2.fromScale(0.45, 0.9),
-										Text: oPlayer.Name,
-										TextXAlignment: Enum.TextXAlignment.Left,
-									}}
-									stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(12, 52, 79) } }}
-								/>
-							</BaseFrame>
-						);
-					})}
+					{playersInGame.map((oPlayer) => (
+						<PlayerCard
+							player={oPlayer}
+							setPlayerViewed={(): void => props.setPlayerViewed(oPlayer)}
+							returnToSelection={props.returnToSelection}
+						/>
+					))}
 				</RescalingScrollingFrame>
 				<uicorner CornerRadius={new UDim(0.075, 0)} />
 			</BaseFrame>

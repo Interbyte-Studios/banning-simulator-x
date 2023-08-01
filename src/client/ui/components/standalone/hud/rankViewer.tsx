@@ -54,7 +54,7 @@ export const RanksViewer = RoactRodux.connect(mapStateToProps)(
 				native={{
 					AnchorPoint: new Vector2(0, 0.5),
 					Image: assetIds.images.ui.hud["viewer background"],
-					Position: UDim2.fromScale(0.196, 0.495),
+					Position: UDim2.fromScale(0.118, 0.5),
 					Size: UDim2.fromScale(0.85, 0.076),
 				}}
 			>

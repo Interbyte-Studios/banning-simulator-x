@@ -76,7 +76,6 @@ export const UpgradeRankTeleport = hooks((props: UpgradeRankTeleportProps) => {
 					const humanoidRootPart = humanoid.RootPart;
 					assert(humanoidRootPart, `Failed to get HumanoidRootPart while teleporting to rank upgrade zone.`);
 
-					player.RequestStreamAroundAsync(TELEPORTATIONS["Ban Land"].RANK_UPGRADE);
 					humanoidRootPart.CFrame = new CFrame(TELEPORTATIONS["Ban Land"].RANK_UPGRADE);
 				},
 			}}

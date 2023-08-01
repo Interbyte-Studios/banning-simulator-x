@@ -1,3 +1,4 @@
+debug.setmemorycategory("petAnimationCacheModule");
 import { removePet } from "./unequipPet";
 
 export interface PetCreated {
@@ -24,6 +25,7 @@ const settingsCache: Array<PlayerAnimationCache> = [];
  * @returns The newly created cache.
  */
 export const createPetAnimationCache = (player: Player): PlayerAnimationCache => {
+	debug.setmemorycategory("petAnimationModule");
 	const playerCache: PlayerAnimationCache = {
 		player,
 		petsDisplayed: new Instance("BoolValue"),
@@ -39,6 +41,7 @@ export const createPetAnimationCache = (player: Player): PlayerAnimationCache =>
  * @param guid The guid of the pet to remove from cache.
  */
 export const removePetFromCache = (guid: string): void => {
+	debug.setmemorycategory("petAnimationModule");
 	for (const cache of settingsCache) {
 		const petIndex = cache.pets.findIndex((pet) => pet.guid === guid);
 		if (petIndex === undefined) {
@@ -54,12 +57,10 @@ export const removePetFromCache = (guid: string): void => {
  * @param player The player to remove cache data for.
  */
 export const removePetAnimationCache = (player: Player): void => {
+	debug.setmemorycategory("petAnimationModule");
 	// remove pets
 	const cache = settingsCache.find((cacheData) => cacheData.player === player);
 	if (cache === undefined) {
-		warn(
-			`[ Pet Animation Cache ] - Failed to remove pet animation cache for player ${player.Name} | Couldn't find object.`,
-		);
 		return;
 	}
 
@@ -70,9 +71,6 @@ export const removePetAnimationCache = (player: Player): void => {
 	// remove cache
 	const cacheIndex = settingsCache.findIndex((cacheData) => cacheData.player === player);
 	if (cacheIndex === undefined) {
-		warn(
-			`[ Pet Animation Cache ] - Failed to remove pet animation cache for player ${player.Name} | Couldn't find index.`,
-		);
 		return;
 	}
 
@@ -83,5 +81,6 @@ export const removePetAnimationCache = (player: Player): void => {
  * @returns The current state of the pet animation settings cache.
  */
 export const getPetAnimationCache = (): Array<PlayerAnimationCache> => {
+	debug.setmemorycategory("petAnimationModule");
 	return settingsCache;
 };

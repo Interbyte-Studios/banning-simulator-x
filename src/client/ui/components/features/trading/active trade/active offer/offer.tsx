@@ -27,27 +27,28 @@ interface ActiveTradeOfferProps {
 }
 
 /**
- * Retrieves the headshot image of a specified player.
- *
- * @param player The player to retrieve the headshot of.
- * @returns The headshot image of the player.
- */
-function getPlayerImage(player: Player): string {
-	const thumbnailType = Enum.ThumbnailType.HeadShot;
-	const thumbnailSize = Enum.ThumbnailSize.Size420x420;
-	const [content, isReady] = Players.GetUserThumbnailAsync(player.UserId, thumbnailType, thumbnailSize);
-
-	return isReady && content ? content : "";
-}
-
-/**
  * Displays the headshot of the player.
  *
  * @param props The props of the component.
  * @param props.player The player to display the headshot of.
  * @returns The component.
  */
-export const PlayerHeadshot = (props: { player: Player }): Roact.Element => {
+export const PlayerHeadshot = hooks((props: { player: Player }, { useState, useEffect }) => {
+	const [content, setContent] = useState("");
+	useEffect(() => {
+		const thumbnailType = Enum.ThumbnailType.HeadShot;
+		const thumbnailSize = Enum.ThumbnailSize.Size420x420;
+
+		task.spawn(() => {
+			const [success, result] = pcall(() =>
+				Players.GetUserThumbnailAsync(props.player.UserId, thumbnailType, thumbnailSize),
+			);
+			if (success) {
+				setContent(result);
+			}
+		});
+	}, [props.player]);
+
 	const isLocalPlayer = props.player.UserId === Players.LocalPlayer.UserId;
 
 	return (
@@ -66,7 +67,7 @@ export const PlayerHeadshot = (props: { player: Player }): Roact.Element => {
 					native={{
 						Size: UDim2.fromScale(1, 1),
 						Position: UDim2.fromScale(0.5, 0.5),
-						Image: getPlayerImage(isLocalPlayer ? Players.LocalPlayer : props.player),
+						Image: content,
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
@@ -84,7 +85,7 @@ export const PlayerHeadshot = (props: { player: Player }): Roact.Element => {
 			/>
 		</>
 	);
-};
+});
 
 /**
  * The active trade offer component is the component that displays the offer of the player.

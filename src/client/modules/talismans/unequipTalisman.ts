@@ -1,3 +1,4 @@
+debug.setmemorycategory("unequipTalisman");
 import { Workspace } from "@rbxts/services";
 
 /**

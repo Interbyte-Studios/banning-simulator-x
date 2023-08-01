@@ -29,6 +29,7 @@ export enum UIEngagement {
  * @param soundType The type of sound effect to play.
  */
 export function playSFX(soundType: UIEngagement | WeaponSlash | NPCImpact | HatchEffect): void {
+	debug.setmemorycategory("playSFX");
 	const store = retrieveStore(Players.LocalPlayer);
 	if (store === undefined) {
 		return;
@@ -46,17 +47,13 @@ export function playSFX(soundType: UIEngagement | WeaponSlash | NPCImpact | Hatc
 		}
 	}
 
-	const sound = Make("Sound", {
-		SoundId: `rbxassetid://${soundType}`,
-		Parent: SoundService,
-	});
-
-	sound.Play();
-	sound.Volume = store.getState().settings.sound.soundEffects * 0.05;
-
-	const connection = sound.Ended.Connect(() => {
-		sound.Parent = undefined;
-		sound.Destroy();
-		connection.Disconnect();
+	pcall(() => {
+		const sound = Make("Sound", { SoundId: `rbxassetid://${soundType}`, Parent: SoundService });
+		sound.Volume = store.getState().settings.sound.soundEffects * 0.05;
+		sound.Play();
+		sound.Ended.Connect(() => {
+			sound.Parent = undefined;
+			sound.Destroy();
+		});
 	});
 }

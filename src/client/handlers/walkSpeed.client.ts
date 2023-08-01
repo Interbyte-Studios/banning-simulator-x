@@ -1,3 +1,4 @@
+debug.setmemorycategory("walkSpeed");
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";

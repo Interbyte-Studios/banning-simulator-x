@@ -1,3 +1,4 @@
+debug.setmemorycategory("claimMastery");
 import { PET_MASTERY_REQUIREMENTS, PET_MASTERY_REWARDS } from "shared/configs/petMastery";
 import { remotes } from "shared/remotes";
 import { ClaimPetMasteryFailKind } from "shared/remotes/petMastery/claimMastery";

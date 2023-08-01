@@ -9,32 +9,12 @@ const damageCounter = ReplicatedStorage.assetObjects.tags.damagecounter;
  * @param npc The npc to create the damage counter for.
  */
 export function createDamageCounter(npc: Model): void {
-	let humanoid = npc.FindFirstChildOfClass("Humanoid");
-	if (humanoid === undefined) {
-		// eslint-disable-next-line no-constant-condition
-		while (true) {
-			task.wait(1);
-			if (npc.FindFirstChildOfClass("Humanoid")) {
-				humanoid = npc.FindFirstChildOfClass("Humanoid");
-				break;
-			}
-		}
-	}
+	const humanoid = npc.FindFirstChildOfClass("Humanoid");
 	if (humanoid === undefined) {
 		return;
 	}
 
-	let head = npc.FindFirstChild("Head") as BasePart;
-	if (head === undefined) {
-		// eslint-disable-next-line no-constant-condition
-		while (true) {
-			task.wait(1);
-			if (npc.FindFirstChild("Head")) {
-				head = npc.FindFirstChild("Head") as BasePart;
-				break;
-			}
-		}
-	}
+	const head = npc.FindFirstChild("Head") as BasePart;
 	if (head === undefined) {
 		return;
 	}
@@ -43,7 +23,7 @@ export function createDamageCounter(npc: Model): void {
 	damageCounterClone.Parent = head;
 
 	let lastHealth = humanoid.Health;
-	const healthConnection = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
+	let healthConnection: RBXScriptConnection | undefined = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
 		if (humanoid === undefined) {
 			return;
 		}
@@ -76,14 +56,21 @@ export function createDamageCounter(npc: Model): void {
 		});
 	});
 
-	const ancestryConnection = npc.AncestryChanged.Connect(() => {
-		healthConnection.Disconnect();
+	let ancestryConnection: RBXScriptConnection | undefined = npc.AncestryChanged.Connect(() => {
+		if (healthConnection !== undefined) {
+			healthConnection.Disconnect();
+			healthConnection = undefined;
+		}
 
 		if (damageCounterClone !== undefined) {
+			damageCounterClone.Parent = undefined;
 			damageCounterClone.Destroy();
 		}
 
-		ancestryConnection.Disconnect();
+		if (ancestryConnection !== undefined) {
+			ancestryConnection.Disconnect();
+			ancestryConnection = undefined;
+		}
 	});
 }
 
@@ -97,6 +84,7 @@ for (const npc of npcFolder.GetChildren()) {
 }
 
 npcFolder.ChildAdded.Connect((child) => {
+	debug.setmemorycategory("damageCounter");
 	if (!child.IsA("Model")) {
 		return;
 	}
@@ -105,6 +93,7 @@ npcFolder.ChildAdded.Connect((child) => {
 });
 
 Workspace.trials.ChildAdded.Connect((child) => {
+	debug.setmemorycategory("damageCounter");
 	task.delay(2, () => {
 		const npcs = child.FindFirstChild("npcs") as Folder;
 		if (npcs !== undefined) {

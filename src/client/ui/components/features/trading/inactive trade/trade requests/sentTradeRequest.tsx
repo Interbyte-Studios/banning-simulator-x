@@ -18,14 +18,25 @@ import { hooks } from "client/ui/hooks";
  */
 export const SentTradeRequest = hooks((props: { player: Player; hideMenu: () => void }, { useState, useEffect }) => {
 	const [timer, setTimer] = useState(10);
+	const [content, setContent] = useState("");
+	useEffect(() => {
+		const thumbnailType = Enum.ThumbnailType.HeadShot;
+		const thumbnailSize = Enum.ThumbnailSize.Size420x420;
 
-	const thumbnailType = Enum.ThumbnailType.HeadShot;
-	const thumbnailSize = Enum.ThumbnailSize.Size420x420;
-	const [content, isReady] = Players.GetUserThumbnailAsync(props.player.UserId, thumbnailType, thumbnailSize);
+		task.spawn(() => {
+			const [success, result] = pcall(() =>
+				Players.GetUserThumbnailAsync(props.player.UserId, thumbnailType, thumbnailSize),
+			);
+			if (success) {
+				setContent(result);
+			}
+		});
+	}, [props.player]);
 
 	useEffect(() => {
 		let lastCheck = time();
 		const connection = RunService.Heartbeat.Connect(() => {
+			debug.profilebegin("sentTradeRequest");
 			const now = time();
 			if (now - lastCheck < 1) {
 				return;
@@ -38,6 +49,7 @@ export const SentTradeRequest = hooks((props: { player: Player; hideMenu: () => 
 			}
 
 			setTimer(timer - 1);
+			debug.profileend();
 		});
 
 		return (): void => connection.Disconnect();
@@ -59,7 +71,7 @@ export const SentTradeRequest = hooks((props: { player: Player; hideMenu: () => 
 				<ImageLabel
 					native={{
 						Size: UDim2.fromScale(0.5, 0.5),
-						Image: isReady && content ? content : "",
+						Image: content,
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />

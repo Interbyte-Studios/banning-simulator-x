@@ -57,6 +57,7 @@ function updateNormalStrokes(): void {
 }
 
 CollectionService.GetInstanceAddedSignal(normalTag).Connect((uiStroke) => {
+	debug.setmemorycategory("uiStrokeAdjuster");
 	if (!uiStroke.IsA("UIStroke")) {
 		return;
 	}

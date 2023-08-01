@@ -53,7 +53,8 @@ export const Rewards = RoactRodux.connect(mapStateToProps)(
 		const { claimVIPReward, claimClubReward, claimGroupReward } = useContext(remoteContext);
 
 		useEffect(() => {
-			const connection = RunService.Heartbeat.Connect(() => {
+			const connection = RunService.RenderStepped.Connect(() => {
+				debug.profilebegin("chestRewards");
 				const now = DateTime.now();
 
 				if (props.gamepasses.VIP) {
@@ -90,6 +91,7 @@ export const Rewards = RoactRodux.connect(mapStateToProps)(
 					}
 				}
 
+				debug.profileend();
 				task.wait(1);
 			});
 

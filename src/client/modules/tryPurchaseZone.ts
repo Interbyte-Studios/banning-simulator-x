@@ -24,6 +24,7 @@ export function tryPurchaseZone(
 	worldName: WorldName,
 	zoneName: ZoneNames,
 ): PurchaseZoneReturnType {
+	debug.setmemorycategory("tryPurchaseZoneModule");
 	const checkPurchaseRequirements = canPurchaseZone(worldState, currenciesState, rankState, worldName, zoneName);
 
 	if (checkPurchaseRequirements.success === true) {

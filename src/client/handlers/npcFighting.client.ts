@@ -1,5 +1,6 @@
 import { Players, RunService, UserInputService, Workspace } from "@rbxts/services";
 import { getManualAutoFightState, getPurchasedAutoFightState, setManualAutoFight } from "client/modules/autoFightCache";
+import { getIsHatching } from "client/modules/eggs/isHatching";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
@@ -103,6 +104,10 @@ const onInputBegan = (input: InputObject, gameProcessedEvent: boolean): void => 
 			return;
 		}
 
+		if (getIsHatching()) {
+			return;
+		}
+
 		const rayDirection = mouse.Hit.Position.sub(camera.CFrame.Position).Unit.mul(500);
 		const raycastParams = new RaycastParams();
 		raycastParams.FilterType = Enum.RaycastFilterType.Include;
@@ -163,6 +168,7 @@ function handleWeapon(): void {
 }
 
 UserInputService.InputBegan.Connect((input, gameProcessedEvent) => {
+	debug.setmemorycategory("npcFighting");
 	onInputBegan(input, gameProcessedEvent);
 
 	if (
@@ -181,6 +187,7 @@ UserInputService.InputBegan.Connect((input, gameProcessedEvent) => {
 });
 
 UserInputService.TouchMoved.Connect((_, gameProcessedEvent) => {
+	debug.setmemorycategory("npcFighting");
 	if (gameProcessedEvent) {
 		return;
 	}
@@ -193,6 +200,7 @@ UserInputService.TouchMoved.Connect((_, gameProcessedEvent) => {
 });
 
 task.spawn(() => {
+	debug.setmemorycategory("npcFighting");
 	const player = Players.LocalPlayer;
 	const mouse = player.GetMouse();
 
@@ -214,6 +222,7 @@ task.spawn(() => {
 });
 
 RunService.RenderStepped.Connect(() => {
+	debug.setmemorycategory("npcFighting");
 	debug.profilebegin("npcFighting");
 	if (currentConnection !== undefined) {
 		handleWeapon();

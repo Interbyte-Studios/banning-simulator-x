@@ -195,7 +195,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 									if (humanoid) {
 										const root = humanoid.RootPart;
 										if (root) {
-											player.RequestStreamAroundAsync(TELEPORTATIONS.ZONES.Forest);
 											root.CFrame = new CFrame(TELEPORTATIONS.ZONES.Forest);
 										}
 									}
@@ -216,7 +215,6 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 									if (humanoid) {
 										const root = humanoid.RootPart;
 										if (root) {
-											player.RequestStreamAroundAsync(TELEPORTATIONS.ZONES.Forest);
 											root.CFrame = new CFrame(TELEPORTATIONS.ZONES.Forest);
 										}
 									}

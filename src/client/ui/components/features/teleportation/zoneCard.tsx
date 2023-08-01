@@ -110,7 +110,6 @@ export const ZoneTeleportCard = RoactRodux.connect(mapStateToProps)(
 							const humanoidRootPart = humanoid.RootPart;
 							assert(humanoidRootPart, `Failed to get HumanoidRootPart for ${player.Name} | Teleporation`);
 
-							player.RequestStreamAroundAsync(TELEPORTATIONS.ZONES[props.zone]);
 							humanoidRootPart.PivotTo(new CFrame(TELEPORTATIONS.ZONES[props.zone]));
 						},
 						/* eslint-enable jsdoc/require-jsdoc */

@@ -5,6 +5,7 @@ import { unlockRank } from "shared/rodux/rank";
 
 remotes.Server.Get("unlockRank").Connect(
 	withPlayerStore((_, store) => {
+		debug.setmemorycategory("unlockRank-");
 		const currentRank = store.getState().rank;
 		const nextRank = currentRank + 1;
 

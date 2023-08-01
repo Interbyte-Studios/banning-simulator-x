@@ -1,3 +1,4 @@
+debug.setmemorycategory("leaderboardClass");
 import { DataStoreService } from "@rbxts/services";
 
 /**

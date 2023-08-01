@@ -1,3 +1,4 @@
+debug.setmemorycategory("claimAccoladeHandler");
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
 import { ClaimAccoladeFailKind } from "shared/remotes/accolades/claimAccolade";

@@ -8,6 +8,7 @@ import { withPlayerStore } from "../modules/net/withPlayerStore";
 
 remotes.Server.Get("purchaseZone").SetCallback(
 	withPlayerStore((_, store, worldName, zoneName) => {
+		debug.setmemorycategory("purchaseZone");
 		const currentState = store.getState();
 
 		const worldData = currentState.worlds.find((world) => world.name === worldName);

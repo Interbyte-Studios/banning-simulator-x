@@ -9,6 +9,7 @@ import { setGroupRank } from "shared/rodux/playerIndex/groupRank";
 
 remotes.Server.Get("useGamepassGift").Connect(
 	withPlayerStore((player, store, gamepass, targetPlayer) => {
+		debug.setmemorycategory("gamepassGifts");
 		if (store.getState().gamepassGifts[gamepass] < 1) {
 			return;
 		}
@@ -25,6 +26,7 @@ remotes.Server.Get("useGamepassGift").Connect(
 );
 
 Players.PlayerAdded.Connect(async (player) => {
+	debug.setmemorycategory("gamepasses");
 	const store = await onStoreCreated(player);
 
 	const currentState = store.getState();

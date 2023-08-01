@@ -169,6 +169,7 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 
 		useEffect(() => {
 			const connection = RunService.RenderStepped.Connect(() => {
+				debug.profilebegin("spinWheel");
 				const now = DateTime.now().UnixTimestamp;
 				if (now >= props.spinWheel.lastSpinTime + 86400) {
 					setTimeLeft(0);
@@ -177,6 +178,7 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 
 				setTimeLeft(math.ceil(props.spinWheel.lastSpinTime + 86400 - now));
 				task.wait(1);
+				debug.profileend();
 			});
 
 			return (): void => connection.Disconnect();

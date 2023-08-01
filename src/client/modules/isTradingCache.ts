@@ -1,3 +1,4 @@
+debug.setmemorycategory("isTradingModule");
 let isTrading = false;
 
 /**

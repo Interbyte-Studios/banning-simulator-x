@@ -69,8 +69,7 @@ export const TimeTrialsDifficultySelection = hooks(
 								if (requestTrial.success) {
 									const playerRoot = getHumanoidRootPart(Players.LocalPlayer);
 									if (playerRoot !== undefined) {
-										Players.LocalPlayer.RequestStreamAroundAsync(requestTrial.spawnLocation);
-										playerRoot.CFrame = new CFrame(requestTrial.spawnLocation);
+										playerRoot.CFrame = new CFrame(requestTrial.spawnLocation.add(new Vector3(0, 10, 0)));
 									}
 									props.setTrialsEnabled(true);
 								}

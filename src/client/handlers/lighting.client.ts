@@ -6,6 +6,7 @@ const player = Players.LocalPlayer;
 
 onStoreCreated(player)
 	.andThen((store) => {
+		debug.setmemorycategory("lighting");
 		Lighting.ClockTime = store.getState().settings.visual.timeOfDay;
 
 		store.changed.connect((newState, oldState) => {

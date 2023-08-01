@@ -1,3 +1,4 @@
+debug.setmemorycategory("petMasteryVendors");
 import { CollectionService, RunService } from "@rbxts/services";
 import { AssetAnimation } from "shared/assetTags";
 
@@ -7,16 +8,9 @@ import { AssetAnimation } from "shared/assetTags";
  * @param petMasteryVendor The pet model of the pet mastery "vendor".
  */
 function animateVendor(petMasteryVendor: Model): void {
-	let primary = petMasteryVendor.PrimaryPart;
+	const primary = petMasteryVendor.PrimaryPart;
 	if (primary === undefined) {
-		// eslint-disable-next-line no-constant-condition
-		while (true) {
-			task.wait(1);
-			if (petMasteryVendor.PrimaryPart !== undefined) {
-				primary = petMasteryVendor.PrimaryPart;
-				break;
-			}
-		}
+		return;
 	}
 
 	const originalCFrame = primary.CFrame;
