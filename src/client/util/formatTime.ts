@@ -13,6 +13,7 @@ function format(int: number): string {
  * @returns The seconds converted to a formatted time.
  */
 export function formatTime(seconds: number): string {
+	debug.setmemorycategory("formatTime");
 	let minutes = (seconds - (seconds % 60)) / 60;
 	seconds -= minutes * 60;
 

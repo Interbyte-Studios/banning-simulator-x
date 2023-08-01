@@ -1,4 +1,3 @@
-debug.setmemorycategory("unequipPetModule");
 import { Workspace } from "@rbxts/services";
 
 /**
@@ -6,6 +5,7 @@ import { Workspace } from "@rbxts/services";
  * @param petGuid The unique id of the pet.
  */
 export function removePet(petGuid: string): void {
+	debug.setmemorycategory("unequipPetModule");
 	const petModel = Workspace["client objects"].pets.FindFirstChild(petGuid);
 	if (petModel === undefined) {
 		return;

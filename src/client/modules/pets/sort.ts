@@ -1,4 +1,3 @@
-debug.setmemorycategory("sortModule");
 import { PetInventoryData } from "client/ui/components/features/items/pets/inventory";
 import { RARITIES } from "shared/configs/rarities";
 import { Pet, PetsState } from "shared/rodux/pets";
@@ -21,6 +20,7 @@ export function sortPets(
 	checkForLocked: boolean,
 	selectedPets?: Array<string>,
 ): void {
+	debug.setmemorycategory("sortModule");
 	table.sort(pets, (pet1: Pet, pet2: Pet) => {
 		if (selectedPets !== undefined) {
 			const pet1IsSelected = selectedPets.includes(pet1.guid);

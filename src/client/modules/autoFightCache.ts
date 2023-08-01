@@ -1,3 +1,4 @@
+debug.setmemorycategory("autoFightModule");
 let manualAutoFightEnabled = false;
 let purchasedAutoFightEnabled = false;
 

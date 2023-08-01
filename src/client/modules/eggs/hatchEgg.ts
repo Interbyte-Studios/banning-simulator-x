@@ -1,5 +1,3 @@
-debug.setmemorycategory("hatchEggModule");
-
 import Object from "@rbxts/object-utils";
 import {
 	ContentProvider,
@@ -58,6 +56,7 @@ let spin = false;
 
 // Runservice connection to handle spinning
 RunService.RenderStepped.Connect(() => {
+	debug.setmemorycategory("hatchEggModule");
 	debug.profilebegin("Egg Spin");
 	if (spin) {
 		petRotation.Value += 3;
@@ -83,6 +82,7 @@ export const animateSingleEggHatch = (
 	wasAutoDeleted: boolean,
 	fastHatch: boolean,
 ): void => {
+	debug.setmemorycategory("hatchEggModule");
 	const camera = Workspace.CurrentCamera;
 	assert(camera, `Failed to animate single egg hatch | Couldn't find camera.`);
 
@@ -357,6 +357,7 @@ export const animateTripleEggHatch = (
 	pets: Array<HatchedPet>,
 	fastHatch: boolean,
 ): void => {
+	debug.setmemorycategory("hatchEggModule");
 	const camera = Workspace.CurrentCamera;
 	assert(camera, `Failed to animate single egg hatch | Couldn't find camera.`);
 	setIsHatching(true);

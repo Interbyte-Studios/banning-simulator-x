@@ -6,6 +6,7 @@ import { EggName, isEggName } from "shared/configs/eggs";
  * @returns The decal id of a specified egg image.
  */
 export function getEggImage(eggName: EggName): string {
+	debug.setmemorycategory("getEggImage");
 	assert(isEggName(eggName), `Expected to find egg decal named "${eggName}".`);
 
 	if (eggName === "Divine") {

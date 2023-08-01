@@ -13,6 +13,7 @@ const DISPLAY_DISTANCE = 120;
  * @returns If the prompt should display.
  */
 export function shouldDisplay(character: Model | undefined, adornee: BasePart): boolean {
+	debug.setmemorycategory("shouldDisplay");
 	if (!character) {
 		return false;
 	}

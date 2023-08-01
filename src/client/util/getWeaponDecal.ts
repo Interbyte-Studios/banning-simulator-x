@@ -8,6 +8,7 @@ import { getWeaponInfo } from "shared/util/getWeaponInfo";
  * @returns The decal of the weapon.
  */
 export function getWeaponDecal(weaponId: number): string {
+	debug.setmemorycategory("getWeaponDecal");
 	const weaponData = getWeaponInfo(weaponId);
 
 	const image = assetIds.images.decals.weapons[weaponData.name];

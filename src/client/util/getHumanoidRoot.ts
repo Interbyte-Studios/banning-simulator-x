@@ -5,6 +5,7 @@
  * @returns The humanoid root part of the player.
  */
 export const getHumanoidRootPart = (player: Player): BasePart | undefined => {
+	debug.setmemorycategory("getHumanoidRoot");
 	const character = player.Character ?? player.CharacterAdded.Wait()[0];
 	if (character === undefined) {
 		return;

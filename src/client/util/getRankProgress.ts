@@ -6,6 +6,7 @@ import { RANKS } from "shared/configs/ranks";
  * @returns The progress of the player towards the next rank in increments of 1-5.
  */
 export function getRankProgress(currentRank: number, experience: number): 1 | 2 | 3 | 4 | 5 {
+	debug.setmemorycategory("getRankProgress");
 	const nextRankData = RANKS[currentRank];
 	if (nextRankData === undefined) {
 		if (currentRank === RANKS.size()) {

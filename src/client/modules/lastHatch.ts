@@ -1,3 +1,4 @@
+debug.setmemorycategory("lastHatchModule");
 let lastHatch = 0;
 
 /**

@@ -8,6 +8,8 @@ import { getItemById } from "shared/util/getItemById";
  * @param isEquipped If the weapon is now equipped.
  */
 export function toggleWeaponEquipped(player: Player, weaponId: number, isEquipped: boolean): void {
+	debug.setmemorycategory("toggleWeaponEquippedModule");
+
 	// equip/unequip tool
 	const character = player.Character ?? player.CharacterAdded.Wait()[0];
 	if (!character) {
