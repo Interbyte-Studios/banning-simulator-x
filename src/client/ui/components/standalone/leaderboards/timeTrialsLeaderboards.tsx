@@ -112,7 +112,7 @@ export const TimeTrialsLeaderboard = hooks((props: { adornee: BasePart }, { useS
 		setLeaderboardData(newLeaderboardData);
 
 		const connection = ReplicatedStorage.leaderboards.timeUpdated.GetPropertyChangedSignal("Value").Connect(() => {
-			task.wait(1);
+			task.wait(5);
 			const newLeaderboardData: Array<LeaderboardEntry> = [];
 
 			for (const configuration of ReplicatedStorage.leaderboards.timeTrials["Ban Land"].GetChildren()) {

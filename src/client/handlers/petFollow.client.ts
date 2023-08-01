@@ -143,13 +143,34 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 						}
 					});
 
+					if (player.UserId !== Players.LocalPlayer.UserId) {
+						for (const pet of playerCache.pets) {
+							pet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
+						}
+						return;
+					}
+
+					const currentCacheState = getPetAnimationCache();
+					for (const _playerCache of currentCacheState) {
+						for (const pet of _playerCache.pets) {
+							pet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
+						}
+					}
+
 					playerCache.petsDisplayed.GetPropertyChangedSignal("Value").Connect(() => {
+						if (player.UserId !== Players.LocalPlayer.UserId) {
+							for (const pet of playerCache.pets) {
+								pet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
+							}
+							return;
+						}
+
 						const currentCacheState = getPetAnimationCache();
-						currentCacheState.forEach((_playerCache) =>
-							_playerCache.pets.forEach((cachedPet) => {
-								cachedPet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
-							}),
-						);
+						for (const _playerCache of currentCacheState) {
+							for (const pet of _playerCache.pets) {
+								pet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
+							}
+						}
 					});
 				}),
 			);

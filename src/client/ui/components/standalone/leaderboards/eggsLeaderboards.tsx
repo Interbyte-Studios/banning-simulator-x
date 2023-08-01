@@ -112,7 +112,7 @@ export const EggLeaderboard = hooks((props: { adornee: BasePart }, { useState, u
 		setLeaderboardData(newLeaderboardData);
 
 		const connection = ReplicatedStorage.leaderboards.timeUpdated.GetPropertyChangedSignal("Value").Connect(() => {
-			task.wait(1);
+			task.wait(5);
 			const newLeaderboardData: Array<LeaderboardEntry> = [];
 
 			for (const configuration of ReplicatedStorage.leaderboards.eggs.GetChildren()) {
