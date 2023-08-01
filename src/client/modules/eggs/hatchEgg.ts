@@ -267,7 +267,7 @@ export const animateSingleEggHatch = (
 	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.5 / 2 : 0.5, Enum.EasingStyle.Quint), {
 		Brightness: 0,
 	}).Play();
-	distanceValue.Value = -8.5;
+	distanceValue.Value = -5;
 	const petAnimation = RunService.RenderStepped.Connect(() => {
 		debug.profilebegin("petEggAnimation");
 		const cameraCFrame = camera.CFrame;
