@@ -1,3 +1,5 @@
+debug.setmemorycategory("createPetFollowModule");
+
 import { ReplicatedStorage } from "@rbxts/services";
 import { Variants } from "shared/configs/pets";
 import { getPetData } from "shared/util/getPetData";

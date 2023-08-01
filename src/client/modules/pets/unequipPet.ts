@@ -1,3 +1,4 @@
+debug.setmemorycategory("unequipPetModule");
 import { Workspace } from "@rbxts/services";
 
 /**

@@ -1,3 +1,4 @@
+debug.setmemorycategory("petAnimationCacheModule");
 import { removePet } from "./unequipPet";
 
 export interface PetCreated {

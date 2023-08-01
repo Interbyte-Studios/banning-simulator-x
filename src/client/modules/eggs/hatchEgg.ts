@@ -1,3 +1,5 @@
+debug.setmemorycategory("hatchEggModule");
+
 import Object from "@rbxts/object-utils";
 import {
 	ContentProvider,

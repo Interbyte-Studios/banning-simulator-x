@@ -1,3 +1,4 @@
+debug.setmemorycategory("followTalisman");
 import { ReplicatedStorage, RunService, Workspace } from "@rbxts/services";
 import { getHumanoidRootPart } from "client/util/getHumanoidRoot";
 import { TalismanPhases } from "shared/configs/talismans";
