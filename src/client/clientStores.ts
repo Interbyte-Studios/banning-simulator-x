@@ -1,4 +1,3 @@
-debug.setmemorycategory("clientStores");
 import Rodux from "@rbxts/rodux";
 import { Players, RunService } from "@rbxts/services";
 import { deserialize } from "shared/datastore/serde";
@@ -68,6 +67,7 @@ function onPlayerRemoving(player: Player): void {
 remotes.Client.GetNamespace("rodux")
 	.Get("storeStateCreated")
 	.Connect((player, state) => {
+		debug.setmemorycategory("clientStores");
 		const store = new Rodux.Store(storeReducer, deserialize(state));
 		stores.set(player, store);
 
@@ -81,6 +81,7 @@ remotes.Client.GetNamespace("rodux")
 	});
 
 Players.GetPlayers().forEach(async (player) => {
+	debug.setmemorycategory("clientStores");
 	if (player.UserId === Players.LocalPlayer.UserId) {
 		return;
 	}

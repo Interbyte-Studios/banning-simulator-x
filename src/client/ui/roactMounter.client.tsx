@@ -1,4 +1,3 @@
-debug.setmemorycategory("roactMounter");
 import Roact from "@rbxts/roact";
 import { Players } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
@@ -40,6 +39,7 @@ const secondLength = 1000;
 
 onStoreCreated(player)
 	.andThen((store) => {
+		debug.setmemorycategory("roactMounter");
 		Roact.mount(
 			<remoteContext.Provider
 				value={{

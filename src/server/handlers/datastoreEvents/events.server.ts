@@ -1,3 +1,4 @@
+debug.setmemorycategory("eventsHandler");
 import { DataStoreService, ReplicatedStorage, Workspace } from "@rbxts/services";
 import { t } from "@rbxts/t";
 

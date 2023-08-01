@@ -1,4 +1,3 @@
-debug.setmemorycategory("limitedPets");
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
@@ -12,11 +11,14 @@ const hatchTripleExclusivePet = marketplaceRemotes.Get("hatchTripleExclusiveEgg"
 const player = Players.LocalPlayer;
 onStoreCreated(player)
 	.andThen((store) => {
+		debug.setmemorycategory("limitedPets");
 		hatchSingleExclusivePet.Connect((eggName, petId) => {
+			debug.setmemorycategory("limitedPets");
 			animateSingleEggHatch(eggName, petId, false, false, store.getState().gamepasses["Fast Hatch"]);
 		});
 
 		hatchTripleExclusivePet.Connect((eggName, petIds) => {
+			debug.setmemorycategory("limitedPets");
 			animateTripleEggHatch(
 				eggName,
 				false,

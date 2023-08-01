@@ -1,4 +1,3 @@
-debug.setmemorycategory("gifts");
 import { Players, TweenService } from "@rbxts/services";
 import assetIds from "shared/assets";
 import { remotes } from "shared/remotes";
@@ -9,6 +8,7 @@ const gifts = playerGui.WaitForChild("Gifts");
 const giftTemplate = gifts.WaitForChild("template");
 
 remotes.Client.Get("gamepassGiftReceived").Connect((gamepassName, playerWhoGifted) => {
+	debug.setmemorycategory("gifts");
 	const giftMessage = giftTemplate.Clone() as ImageLabel;
 	const closeGift = giftMessage.WaitForChild("close") as ImageButton;
 	const gamepassImage = giftMessage.WaitForChild("gamepassImage") as ImageLabel;

@@ -1,3 +1,4 @@
+debug.setmemorycategory("tradeRequest");
 import { retrieveStore } from "server/playerStore";
 import { Store } from "shared/rodux";
 import { TRADING_ATTRIBUTE } from "shared/trading/tradingAttributes";

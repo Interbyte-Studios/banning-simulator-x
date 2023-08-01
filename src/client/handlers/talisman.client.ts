@@ -1,4 +1,3 @@
-debug.setmemorycategory("talisman");
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
@@ -36,6 +35,7 @@ function checkTalismanEquip(player: Player, store: Store): void {
 function handlePlayerTalisman(player: Player): void {
 	onStoreCreated(player)
 		.andThen((store) => {
+			debug.setmemorycategory("talisman");
 			/**
 			 * Handles the talisman for the player.
 			 */

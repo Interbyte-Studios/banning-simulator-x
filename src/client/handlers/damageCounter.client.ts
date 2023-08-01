@@ -84,6 +84,7 @@ for (const npc of npcFolder.GetChildren()) {
 }
 
 npcFolder.ChildAdded.Connect((child) => {
+	debug.setmemorycategory("damageCounter");
 	if (!child.IsA("Model")) {
 		return;
 	}
@@ -92,6 +93,7 @@ npcFolder.ChildAdded.Connect((child) => {
 });
 
 Workspace.trials.ChildAdded.Connect((child) => {
+	debug.setmemorycategory("damageCounter");
 	task.delay(2, () => {
 		const npcs = child.FindFirstChild("npcs") as Folder;
 		if (npcs !== undefined) {

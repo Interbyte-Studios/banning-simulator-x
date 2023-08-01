@@ -1,3 +1,4 @@
+debug.setmemorycategory("weaponsHandler");
 import Object from "@rbxts/object-utils";
 import { Players, ReplicatedStorage } from "@rbxts/services";
 import { onStoreCreated } from "server/playerStore";

@@ -1,3 +1,4 @@
+debug.setmemorycategory("deletePetTeam");
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
 import { deletePetTeam } from "shared/rodux/petTeams";

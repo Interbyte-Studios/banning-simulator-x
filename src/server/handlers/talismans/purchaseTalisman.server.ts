@@ -1,3 +1,4 @@
+debug.setmemorycategory("purchaseTalisman");
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { purchaseTalisman } from "server/modules/rodux/purchaseTalisman";
 import { remotes } from "shared/remotes";

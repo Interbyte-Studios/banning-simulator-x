@@ -1,3 +1,4 @@
+debug.setmemorycategory("startTimeTrial");
 import { RunService } from "@rbxts/services";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { currentTimeTrials, TimeTrialStatus } from "server/modules/timeTrials";

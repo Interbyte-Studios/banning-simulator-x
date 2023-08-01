@@ -31,6 +31,7 @@ PhysicsService.CollisionGroupSetCollidable(npcNonCollidables, npcCollisionGroup,
  */
 const onCharacterAdded = (character: Model): void => {
 	task.delay(5, () => {
+		debug.setmemorycategory("physicsService");
 		for (const part of character.GetDescendants()) {
 			if (!part.IsA("BasePart")) {
 				continue;
@@ -57,6 +58,7 @@ const registerNPC = (npc: Model): void => {
 };
 
 Players.PlayerAdded.Connect((player) => {
+	debug.setmemorycategory("physicsService");
 	player.CharacterAdded.Connect(onCharacterAdded);
 
 	if (player.Character) {
@@ -74,6 +76,7 @@ for (const npc of npcs.GetChildren()) {
 }
 
 npcs.ChildAdded.Connect((npc) => {
+	debug.setmemorycategory("physicsService");
 	if (!npc.IsA("Model")) {
 		return;
 	}

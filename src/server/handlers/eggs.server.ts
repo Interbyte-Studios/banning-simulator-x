@@ -27,13 +27,13 @@ const randomGenerator = new Random();
 
 hatchEggRemote.SetCallback(
 	withPlayerStore((player, store, amount, eggName, isVoid) => {
+		debug.setmemorycategory("egg");
 		// verify that player has waited long enough to hatch
 		const lastHatchTime = hatchTimeCache.get(player) ?? 0;
 
 		const now = time();
 		const canHatch = now - lastHatchTime > hatchDebounce;
 		if (!canHatch) {
-			warn(`Player ${player.Name} tried to hatch too fast!`);
 			return {
 				success: false,
 				reason: HatchEggFailKind.TooFast,

@@ -1,3 +1,4 @@
+debug.setmemorycategory("codesHandlers");
 import { DataStoreService } from "@rbxts/services";
 import { isValidStoredCodeCache, setCodesCache } from "server/modules/datastore/codes";
 

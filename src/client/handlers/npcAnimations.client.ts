@@ -1,5 +1,3 @@
-debug.setmemorycategory("npcAnimations");
-
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
 
 const npcs = Workspace.WaitForChild("npcs");
@@ -53,6 +51,7 @@ function handleRunningAnimation(npc: Model): void {
 }
 
 npcs.ChildAdded.Connect((npc) => {
+	debug.setmemorycategory("npcAnimations");
 	if (!npc.IsA("Model")) {
 		return;
 	}
@@ -61,6 +60,7 @@ npcs.ChildAdded.Connect((npc) => {
 });
 
 npcs.GetChildren().forEach((npc) => {
+	debug.setmemorycategory("npcAnimations");
 	if (!npc.IsA("Model")) {
 		return;
 	}
@@ -69,6 +69,7 @@ npcs.GetChildren().forEach((npc) => {
 });
 
 Workspace.trials.ChildAdded.Connect((child) => {
+	debug.setmemorycategory("npcAnimations");
 	task.delay(2, () => {
 		const npcs = child.FindFirstChild("npcs");
 		if (npcs === undefined) {

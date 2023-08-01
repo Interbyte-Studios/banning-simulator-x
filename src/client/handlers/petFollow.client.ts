@@ -1,4 +1,3 @@
-debug.setmemorycategory("petFollow");
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players, RunService, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
@@ -103,6 +102,7 @@ const createAndCachePet = (player: Player, playerCache: PlayerAnimationCache, pe
 const cachePlayerPetanimation = (player: Player): Promise<void> =>
 	onStoreCreated(player)
 		.andThen((store) => {
+			debug.setmemorycategory("petFollow");
 			task.spawn(() =>
 				task.delay(5, () => {
 					const humanoidRootPart = getHumanoidRootPart(player);
@@ -190,6 +190,7 @@ const calculateSharedData = (
 };
 
 RunService.RenderStepped.Connect(() => {
+	debug.setmemorycategory("petFollow");
 	debug.profilebegin("petFollow");
 	const now = time();
 	const { petJump, petRotate, petHover, petFace } = calculateSharedData(now);

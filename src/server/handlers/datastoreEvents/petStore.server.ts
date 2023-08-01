@@ -1,3 +1,4 @@
+debug.setmemorycategory("petStoreHandler");
 import { DataStoreService } from "@rbxts/services";
 import { getPetExistCache, isValidPetHatchCount, setNewHatchedPets, setPetCount } from "server/modules/datastore/pets";
 import { STORE_SCOPE } from "shared/configs/game";

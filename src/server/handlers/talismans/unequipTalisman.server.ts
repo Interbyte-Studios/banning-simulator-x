@@ -1,3 +1,4 @@
+debug.setmemorycategory("unequipTalisman");
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
 import { unequipTalisman } from "shared/rodux/currentTalisman";

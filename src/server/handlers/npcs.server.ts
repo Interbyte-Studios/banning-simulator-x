@@ -18,6 +18,7 @@ import { NpcWorldState } from "../modules/npcs/worldState";
 let npcAttacks: Array<{ player: Player; store: Store; character: NpcCharacter }> = [];
 remotes.Server.Get("damageNPC").Connect(
 	withPlayerStore((player, store, character, wasTrials) => {
+		debug.setmemorycategory("damageNPCs");
 		const canAttack = checkCanAttack(player, character, time());
 		if (!canAttack) {
 			return;

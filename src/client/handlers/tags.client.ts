@@ -1,4 +1,3 @@
-debug.setmemorycategory("tags");
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
 import { t } from "@rbxts/t";
@@ -525,6 +524,7 @@ Players.PlayerAdded.Connect(onPlayerAdded);
 Players.GetPlayers().forEach(onPlayerAdded);
 
 npcsFolder.ChildAdded.Connect((enemy) => {
+	debug.setmemorycategory("tags");
 	if (!enemy.IsA("Model")) {
 		return;
 	}
@@ -533,6 +533,7 @@ npcsFolder.ChildAdded.Connect((enemy) => {
 });
 
 npcsFolder.GetChildren().forEach((enemy) => {
+	debug.setmemorycategory("tags");
 	if (!enemy.IsA("Model")) {
 		return;
 	}
@@ -541,6 +542,7 @@ npcsFolder.GetChildren().forEach((enemy) => {
 });
 
 Workspace.trials.ChildAdded.Connect((timeTrialMap) => {
+	debug.setmemorycategory("tags");
 	task.delay(2, () => {
 		const npcs = timeTrialMap.FindFirstChild("npcs");
 		if (npcs === undefined) {
@@ -572,6 +574,7 @@ Workspace.trials.ChildAdded.Connect((timeTrialMap) => {
 });
 
 RunService.RenderStepped.Connect((deltaTime) => {
+	debug.setmemorycategory("tags");
 	debug.profilebegin("Gradient Tags");
 	gradients.forEach((gradient) => {
 		if (gradient.Offset.X < 0.75) {

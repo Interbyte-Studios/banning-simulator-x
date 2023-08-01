@@ -1,3 +1,4 @@
+debug.setmemorycategory("createPetTeam");
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";
 import { createPetTeam } from "shared/rodux/petTeams";

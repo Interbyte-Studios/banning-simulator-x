@@ -1,4 +1,3 @@
-debug.setmemorycategory("uiStrokeAdjuster");
 import { CollectionService, Workspace } from "@rbxts/services";
 
 const normalTag = "Normal_UIStroke";
@@ -58,6 +57,7 @@ function updateNormalStrokes(): void {
 }
 
 CollectionService.GetInstanceAddedSignal(normalTag).Connect((uiStroke) => {
+	debug.setmemorycategory("uiStrokeAdjuster");
 	if (!uiStroke.IsA("UIStroke")) {
 		return;
 	}

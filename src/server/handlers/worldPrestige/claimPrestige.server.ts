@@ -1,3 +1,4 @@
+debug.setmemorycategory("claimPrestige");
 import Object from "@rbxts/object-utils";
 import { HttpService } from "@rbxts/services";
 import { modifyPetCount } from "server/modules/datastore/pets";

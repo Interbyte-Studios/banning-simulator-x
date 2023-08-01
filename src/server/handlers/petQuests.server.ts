@@ -8,6 +8,7 @@ import { addPets } from "shared/rodux/pets";
 
 remotes.Server.Get("claimPetQuest").Connect(
 	withPlayerStore((player, store) => {
+		debug.setmemorycategory("claimPetQuest");
 		const currentState = store.getState();
 		if (currentState.petQuests.includes(PET_QUEST_PET_ID)) {
 			return;
@@ -48,6 +49,7 @@ Players.PlayerAdded.Connect((player) => {
 	player.SetAttribute("petQuestTime", 0);
 
 	task.spawn(() => {
+		debug.setmemorycategory("petQuest");
 		// eslint-disable-next-line no-constant-condition
 		while (true) {
 			task.wait(1);
@@ -62,6 +64,7 @@ for (const player of Players.GetPlayers()) {
 	player.SetAttribute("petQuestTime", 0);
 
 	task.spawn(() => {
+		debug.setmemorycategory("petQuest");
 		// eslint-disable-next-line no-constant-condition
 		while (true) {
 			task.wait(1);

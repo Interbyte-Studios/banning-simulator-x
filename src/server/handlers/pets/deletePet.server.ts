@@ -1,3 +1,4 @@
+debug.setmemorycategory("deletePet");
 import { modifyPetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { remotes } from "shared/remotes";

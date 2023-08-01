@@ -1,9 +1,9 @@
-debug.setmemorycategory("devicePerformanceScaling");
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players, UserInputService, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 
 UserInputService.LastInputTypeChanged.Connect((lastInputType) => {
+	debug.setmemorycategory("devicePerformanceScaling");
 	if (lastInputType === Enum.UserInputType.Touch) {
 		for (const instance of Workspace.GetDescendants()) {
 			if (instance.IsA("BasePart")) {
@@ -16,6 +16,7 @@ UserInputService.LastInputTypeChanged.Connect((lastInputType) => {
 const player = Players.LocalPlayer;
 onStoreCreated(player)
 	.andThen((store) => {
+		debug.setmemorycategory("devicePerformanceScaling");
 		if (store.getState().settings.visual.graphicsQuality === "Low") {
 			for (const instance of Workspace.GetDescendants()) {
 				if (instance.IsA("ParticleEmitter")) {

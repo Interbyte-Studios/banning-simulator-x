@@ -14,6 +14,7 @@ const hatchSingleExclusive = remotes.Server.GetNamespace("eggs").Get("hatchSingl
 
 remotes.Server.Get("claimDailyRewards").Connect(
 	withPlayerStore((player, store) => {
+		debug.setmemorycategory("dailyRewards");
 		const currentState = store.getState();
 
 		const now = os.time();

@@ -1,4 +1,3 @@
-debug.setmemorycategory("lighting");
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Lighting, Players } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
@@ -7,6 +6,7 @@ const player = Players.LocalPlayer;
 
 onStoreCreated(player)
 	.andThen((store) => {
+		debug.setmemorycategory("lighting");
 		Lighting.ClockTime = store.getState().settings.visual.timeOfDay;
 
 		store.changed.connect((newState, oldState) => {

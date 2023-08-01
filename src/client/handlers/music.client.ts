@@ -1,4 +1,3 @@
-debug.setmemorycategory("music");
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import Make from "@rbxts/make";
 import { Players, SoundService } from "@rbxts/services";
@@ -15,6 +14,7 @@ let volume = 0;
 const player = Players.LocalPlayer;
 onStoreCreated(player)
 	.andThen((store) => {
+		debug.setmemorycategory("music");
 		volume = 0.5 * (store.getState().settings.sound.music * 0.05);
 
 		for (const sound of SoundService.GetChildren()) {

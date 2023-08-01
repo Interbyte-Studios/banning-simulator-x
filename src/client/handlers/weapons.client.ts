@@ -1,4 +1,3 @@
-debug.setmemorycategory("weapons");
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players, ReplicatedStorage, RunService, StarterGui, TweenService, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
@@ -254,6 +253,7 @@ onStoreCreated(player)
 		 * Checks to see if the player's current weapon should be equipped or not.
 		 */
 		function checkToEquipWeapon(): void {
+			debug.setmemorycategory("weapons");
 			const currentState = store.getState();
 
 			const character = player.Character;

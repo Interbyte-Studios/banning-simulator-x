@@ -8,6 +8,7 @@ import { addPets } from "shared/rodux/pets";
 
 remotes.Server.Get("claimInvitedFriend").Connect(
 	withPlayerStore((_, store) => {
+		debug.setmemorycategory("claimInvitedFriend");
 		const currentState = store.getState();
 		if (currentState.invitedFriend) {
 			return;

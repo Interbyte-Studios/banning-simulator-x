@@ -1,3 +1,4 @@
+debug.setmemorycategory("rewards");
 import { HttpService } from "@rbxts/services";
 import { modifyPetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";

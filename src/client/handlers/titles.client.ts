@@ -1,4 +1,3 @@
-debug.setmemorycategory("titles");
 import { Players, RunService } from "@rbxts/services";
 import { TITLES } from "shared/configs/titles";
 
@@ -11,6 +10,7 @@ const chatScroll = chatChannelParentFrame?.FindFirstChild("Frame_MessageLogDispl
 
 const gradients: Array<UIGradient> = [];
 chatScroll?.ChildAdded.Connect((chatObject) => {
+	debug.setmemorycategory("titles");
 	if (!chatObject.IsA("Frame")) {
 		return;
 	}

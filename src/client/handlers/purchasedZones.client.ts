@@ -1,4 +1,3 @@
-debug.setmemorycategory("purchasedZones");
 import Make from "@rbxts/make";
 import { Lighting, Players, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
@@ -50,6 +49,7 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
  * @param worldState The world state to read.
  */
 function unlockZones(worldState: WorldsState): void {
+	debug.setmemorycategory("purchasedZones");
 	for (const unlockedWorld of worldState) {
 		for (const [worldName, worldData] of pairs(WORLDS)) {
 			if (worldName !== unlockedWorld.name) {

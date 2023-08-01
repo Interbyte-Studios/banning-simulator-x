@@ -14,6 +14,7 @@ import { getPetData } from "shared/util/getPetData";
 
 remotes.Server.Get("requestFusion").SetCallback(
 	withPlayerStore((_, store, petsToFuse, variant) => {
+		debug.setmemorycategory("fusion");
 		const currentState = store.getState();
 
 		const previousVariant = variant === "radiant" ? "void" : "regular";
