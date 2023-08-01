@@ -8,7 +8,7 @@ export const DWELLER_EGG_PETS: Record<string, Pet> = {
 		chance: 75,
 		id: 124,
 		rarity: "Exclusive",
-		fusionCost: 10000,
+		fusionCost: 125_000,
 		stats: {
 			additionalDamage: 5500,
 			additionalBans: 275,
@@ -18,30 +18,30 @@ export const DWELLER_EGG_PETS: Record<string, Pet> = {
 		chance: 20,
 		id: 125,
 		rarity: "Exclusive",
-		fusionCost: 20000,
+		fusionCost: 500_000,
 		stats: {
 			additionalDamage: 10000,
-			additionalBans: 575,
+			additionalBans: 350,
 		},
 	},
 	"Deadly Dark Dominus": {
 		chance: 3.5,
 		id: 126,
 		rarity: "Exclusive",
-		fusionCost: 30000,
+		fusionCost: 2_000_000,
 		stats: {
 			additionalDamage: 14500,
-			additionalBans: 1175,
+			additionalBans: 700,
 		},
 	},
 	Mida: {
 		chance: 1.5,
 		id: 127,
 		rarity: "Exclusive",
-		fusionCost: 30000,
+		fusionCost: 7_500_000,
 		stats: {
 			additionalDamage: 25000,
-			additionalBans: 2400,
+			additionalBans: 1400,
 		},
 	},
 };
