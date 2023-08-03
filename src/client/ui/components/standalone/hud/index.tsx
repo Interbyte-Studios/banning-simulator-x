@@ -1,7 +1,9 @@
 import Roact from "@rbxts/roact";
 import { uiTextStrokeColor } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { SpringImageLabel } from "client/ui/elements/baseElements/imagelabels/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
 import { playSFX, UIEngagement } from "client/util/playSound";
@@ -27,6 +29,8 @@ interface HudProps {
 	displayDailyRewards: () => void;
 	displayPetQuest: () => void;
 	hiddenHud: boolean;
+	autoFightActive: boolean;
+	disableAutoFight: () => void;
 }
 
 /**
@@ -203,9 +207,9 @@ export const Hud = hooks((props: HudProps) => {
 							size={{ minSize: 0.3, maxSize: 0.35 }}
 						/>
 						<HudIcon
-							icon={assetIds.images.ui.hud.icons["auto fight"]}
-							title={"Auto"}
-							onClick={(): void => props.displayAutoFight()}
+							icon={assetIds.images.ui.hud.icons.shop}
+							title={"Shop"}
+							onClick={(): void => props.displayShop()}
 							position={UDim2.fromScale(0.565, -0.65)}
 							size={{ minSize: 0.3, maxSize: 0.35 }}
 						/>
@@ -216,16 +220,127 @@ export const Hud = hooks((props: HudProps) => {
 							position={UDim2.fromScale(0.83, 0 - 0.65)}
 							size={{ minSize: 0.3, maxSize: 0.35 }}
 						/>
-						<HudIcon
-							icon={assetIds.images.ui.hud.icons.shop}
-							title={"Shop"}
-							onClick={(): void => props.displayShop()}
-							position={UDim2.fromScale(0.83, -0.25)}
-							size={{ minSize: 0.3, maxSize: 0.35 }}
-						/>
+						<SpringImageButton
+							native={{
+								Position: UDim2.fromScale(0.6, -0.275),
+								Image: "",
+								BackgroundColor3: Color3.fromRGB(255, 11, 56),
+								BackgroundTransparency: 0,
+							}}
+							size={{ minSize: 0.7, maxSize: 0.75 }}
+							events={{
+								/**
+								 *
+								 */
+								Activated: (): void => {
+									playSFX(UIEngagement.MajorEngagement);
+									props.displayAutoFight();
+								},
+							}}
+						>
+							<uiaspectratioconstraint AspectRatio={4} />
+							<uicorner CornerRadius={new UDim(0.3, 0)} />
+							<BaseUIStroke
+								native={{
+									Thickness: 3,
+									Color: Color3.fromRGB(139, 6, 33),
+								}}
+							/>
+							<BaseFrame
+								BackgroundColor3={Color3.fromRGB(208, 9, 49)}
+								BackgroundTransparency={0}
+								Size={UDim2.fromScale(0.925, 0.775)}
+							>
+								<uicorner CornerRadius={new UDim(0.3, 0)} />
+								<SpringImageLabel
+									native={{
+										Image: assetIds.images.vectors.SwordWithStroke,
+										Position: UDim2.fromScale(0.1, 0.5),
+									}}
+									size={{ minSize: 1, maxSize: 1.1 }}
+								/>
+								<StrokeTextLabel
+									native={{
+										Text: "Auto Fight",
+										Position: UDim2.fromScale(0.55, 0.5),
+										Size: UDim2.fromScale(0.7, 0.7),
+										TextXAlignment: Enum.TextXAlignment.Left,
+									}}
+									stroke={{ native: { Thickness: 2.5, Color: Color3.fromRGB(77, 74, 75) } }}
+								/>
+								<StrokeTextLabel
+									native={{
+										Text: "FREE!",
+										Position: UDim2.fromScale(0.9, -0.1),
+										Size: UDim2.fromScale(0.3, 0.5),
+									}}
+									stroke={{ native: { Thickness: 2.5, Color: Color3.fromRGB(77, 74, 75) } }}
+								/>
+							</BaseFrame>
+						</SpringImageButton>
 					</BaseFrame>
 				)}
 
+				{props.autoFightActive && props.hiddenHud && (
+					<SpringImageButton
+						native={{
+							Position: UDim2.fromScale(0.65, 0.575),
+							Image: "",
+							BackgroundColor3: Color3.fromRGB(92, 255, 74),
+							BackgroundTransparency: 0,
+						}}
+						size={{ minSize: 0.6, maxSize: 0.65 }}
+						events={{
+							/**
+							 *
+							 */
+							Activated: (): void => {
+								playSFX(UIEngagement.MajorEngagement);
+								props.disableAutoFight();
+							},
+						}}
+					>
+						<uiaspectratioconstraint AspectRatio={4} />
+						<uicorner CornerRadius={new UDim(0.3, 0)} />
+						<BaseUIStroke
+							native={{
+								Thickness: 3,
+								Color: Color3.fromRGB(56, 154, 45),
+							}}
+						/>
+						<BaseFrame
+							BackgroundColor3={Color3.fromRGB(70, 186, 55)}
+							BackgroundTransparency={0}
+							Size={UDim2.fromScale(0.925, 0.775)}
+						>
+							<uicorner CornerRadius={new UDim(0.3, 0)} />
+							<SpringImageLabel
+								native={{
+									Image: assetIds.images.vectors.SwordWithStroke,
+									Position: UDim2.fromScale(0.1, 0.5),
+								}}
+								size={{ minSize: 1, maxSize: 1.1 }}
+							/>
+							<StrokeTextLabel
+								native={{
+									Text: "Auto Fight",
+									Position: UDim2.fromScale(0.55, 0.5),
+									Size: UDim2.fromScale(0.7, 0.7),
+									TextXAlignment: Enum.TextXAlignment.Left,
+								}}
+								stroke={{ native: { Thickness: 2.5, Color: Color3.fromRGB(77, 74, 75) } }}
+							/>
+							<StrokeTextLabel
+								native={{
+									Text: "FREE!",
+									Position: UDim2.fromScale(0.9, -0.1),
+									Size: UDim2.fromScale(0.3, 0.5),
+								}}
+								stroke={{ native: { Thickness: 2.5, Color: Color3.fromRGB(77, 74, 75) } }}
+							/>
+						</BaseFrame>
+					</SpringImageButton>
+				)}
 				<RanksViewer />
 				{!props.hiddenHud && <PetQuestIcon displayPetQuest={props.displayPetQuest} />}
 			</BaseFrame>

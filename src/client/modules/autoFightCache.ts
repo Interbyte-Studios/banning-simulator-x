@@ -1,3 +1,5 @@
+import { currencies, Currency } from "shared/configs/currencies";
+
 debug.setmemorycategory("autoFightModule");
 let manualAutoFightEnabled = false;
 let purchasedAutoFightEnabled = false;
@@ -36,4 +38,52 @@ export const getManualAutoFightState = (): boolean => {
  */
 export const getPurchasedAutoFightState = (): boolean => {
 	return purchasedAutoFightEnabled;
+};
+
+export interface AutoFightCache {
+	obtainedCurrency: Array<{ name: Currency; amount: number }>;
+	bans: number;
+}
+let focusedNpc: Humanoid | undefined;
+let autoFightCache: AutoFightCache = {
+	obtainedCurrency: currencies.map((value) => {
+		return { name: value, amount: 0 };
+	}),
+	bans: 0,
+};
+
+/**
+ * Sets the NPC to focus.
+ *
+ * @param npc The NPC to focus.
+ */
+export const setFocusedNPC = (npc: Humanoid | undefined): void => {
+	focusedNpc = npc;
+};
+
+/**
+ * Gets the NPC that is focused.
+ *
+ * @returns The NPC that is focused.
+ */
+export const getFocusedNPC = (): Humanoid | undefined => {
+	return focusedNpc;
+};
+
+/**
+ * Sets the auto fight cache.
+ *
+ * @param cache The cache to set.
+ */
+export const setAutoFightCache = (cache: AutoFightCache): void => {
+	autoFightCache = cache;
+};
+
+/**
+ * Gets the auto fight cache.
+ *
+ * @returns The auto fight cache.
+ */
+export const getAutoFightCache = (): AutoFightCache => {
+	return autoFightCache;
 };

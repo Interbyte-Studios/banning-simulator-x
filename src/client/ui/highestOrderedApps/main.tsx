@@ -11,6 +11,7 @@ import {
 	Workspace,
 } from "@rbxts/services";
 import Icon from "@rbxts/topbar-plus";
+import { getAutoFightCache, setAutoFightCache, setFocusedNPC } from "client/modules/autoFightCache";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { Variants } from "shared/configs/pets";
@@ -340,6 +341,8 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 						props.setTradingEnabled();
 					}}
 					hiddenHud={false}
+					autoFightActive={false}
+					disableAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: false })}
 				/>,
 				<TimeTrials
 					isVisible={false}
@@ -435,6 +438,8 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 						props.setTradingEnabled();
 					}}
 					hiddenHud={true}
+					autoFightActive={false}
+					disableAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: false })}
 				/>,
 			);
 		} else if (isVisible("worldPrestige")) {
@@ -479,6 +484,8 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 						}
 					}}
 					hiddenHud={true}
+					autoFightActive={false}
+					disableAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: false })}
 				/>,
 			);
 		} else if (isVisible("weaponShop")) {
@@ -508,6 +515,8 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 						}
 					}}
 					hiddenHud={true}
+					autoFightActive={false}
+					disableAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: false })}
 				/>,
 			);
 		} else if (isVisible("talismanTower")) {
@@ -537,6 +546,8 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 						}
 					}}
 					hiddenHud={true}
+					autoFightActive={false}
+					disableAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: false })}
 				/>,
 			);
 		} else if (isVisible("petMastery")) {
@@ -576,6 +587,8 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 						}
 					}}
 					hiddenHud={true}
+					autoFightActive={true}
+					disableAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: false })}
 				/>,
 			);
 		} else if (isVisible("accolades")) {
@@ -618,6 +631,8 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 						props.setTradingEnabled();
 					}}
 					hiddenHud={true}
+					autoFightActive={true}
+					disableAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: false })}
 				/>,
 			);
 		} else if (isVisible("petQuest")) {
@@ -646,6 +661,17 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 						props.setTradingEnabled();
 					}}
 					hiddenHud={true}
+					autoFightActive={true}
+					disableAutoFight={(): void => {
+						setVisibility({ ...visibilityStates, autoFight: false });
+						setFocusedNPC(undefined);
+						setAutoFightCache({
+							obtainedCurrency: getAutoFightCache().obtainedCurrency.map((currency) => {
+								return { name: currency.name, amount: 0 };
+							}),
+							bans: 0,
+						});
+					}}
 				/>,
 			);
 		}
