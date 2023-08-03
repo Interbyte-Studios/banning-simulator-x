@@ -116,7 +116,7 @@ const onInputBegan = (input: InputObject, gameProcessedEvent: boolean): void => 
 		const character = player.Character;
 		if (character !== undefined) {
 			const weapon = character.FindFirstChildOfClass("Tool");
-			if (weapon !== undefined) {
+			if (weapon === undefined) {
 				return;
 			}
 		}
