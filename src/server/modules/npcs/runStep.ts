@@ -232,7 +232,7 @@ export function runStep(
 					reward.currency * currencyMultiplier,
 					WORLDS[npc.world.name].reward,
 					petBansBonus,
-					reward.experience * experienceMultiplier,
+					reward.experience * experienceMultiplier * 2,
 					storeState.currentWeapon.id,
 					storeState.currentTalisman,
 					petExperienceMultiplier,
