@@ -25,6 +25,7 @@ export interface Settings {
 	gameplay: {
 		autoHatch: boolean;
 		walkSpeed: number;
+		manualFighting: boolean;
 	};
 	visual: {
 		graphicsQuality: ValidGraphicsQuality;
@@ -55,7 +56,8 @@ export type SettingsActions =
 	| TogglePetsStudsOfDistance
 	| TogglePublicInventory
 	| TogglePublicTradeHistory
-	| ToggleTradesEnabled;
+	| ToggleTradesEnabled
+	| ToggleManualFighting;
 
 export interface AddOrRemoveToAutoDelete extends Rodux.Action<"addOrRemoveToAutoDelete"> {
 	petId: number;
@@ -102,6 +104,7 @@ interface TogglePetsStudsOfDistance extends Rodux.Action<"togglePetsStudsOfDista
 interface TogglePublicInventory extends Rodux.Action<"togglePublicInventory"> {}
 interface TogglePublicTradeHistory extends Rodux.Action<"togglePublicTradeHistory"> {}
 interface ToggleTradesEnabled extends Rodux.Action<"toggleTradesEnabled"> {}
+interface ToggleManualFighting extends Rodux.Action<"toggleManualFighting"> {}
 
 /**
  * Sets the auto delete status of a specified pet.
@@ -113,6 +116,17 @@ export function addOrRemoveToAutoDelete(petId: number): AddOrRemoveToAutoDelete 
 	return {
 		type: "addOrRemoveToAutoDelete",
 		petId,
+	};
+}
+
+/**
+ * Toggles click-to-fight.
+ *
+ * @returns The Rodux action to dispatch.
+ */
+export function toggleManualFighting(): ToggleManualFighting & Rodux.AnyAction {
+	return {
+		type: "toggleManualFighting",
 	};
 }
 
@@ -261,6 +275,7 @@ export const defaultSettings: Settings = {
 	gameplay: {
 		autoHatch: false,
 		walkSpeed: 24,
+		manualFighting: true,
 	},
 	visual: {
 		graphicsQuality: "High",
@@ -290,6 +305,15 @@ export const settingsReducer = Rodux.createReducer<SettingsState, SettingsAction
 				autoDelete: [...state.autoDelete, action.petId],
 			};
 		}
+	},
+	toggleManualFighting: (state) => {
+		return {
+			...state,
+			gameplay: {
+				...state.gameplay,
+				manualFighting: !state.gameplay.manualFighting,
+			},
+		};
 	},
 	toggleButtonClickSounds: (state, action) => {
 		return {

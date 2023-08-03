@@ -25,7 +25,8 @@ const defaultSettings: SettingsState = {
 	},
 	gameplay: {
 		autoHatch: false,
-		walkSpeed: 16,
+		walkSpeed: 24,
+		manualFighting: false,
 	},
 	visual: {
 		graphicsQuality: "High",
