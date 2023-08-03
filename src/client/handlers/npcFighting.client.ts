@@ -108,6 +108,14 @@ const onInputBegan = (input: InputObject, gameProcessedEvent: boolean): void => 
 			return;
 		}
 
+		const character = player.Character;
+		if (character !== undefined) {
+			const weapon = character.FindFirstChildOfClass("Tool");
+			if (weapon !== undefined) {
+				return;
+			}
+		}
+
 		const rayDirection = mouse.Hit.Position.sub(camera.CFrame.Position).Unit.mul(500);
 		const raycastParams = new RaycastParams();
 		raycastParams.FilterType = Enum.RaycastFilterType.Include;
