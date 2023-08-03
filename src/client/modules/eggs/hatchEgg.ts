@@ -59,9 +59,9 @@ RunService.RenderStepped.Connect(() => {
 	debug.setmemorycategory("hatchEggModule");
 	debug.profilebegin("Egg Spin");
 	if (spin) {
-		petRotation.Value += 3;
+		petRotation.Value += 5;
 	} else {
-		petRotation.Value += 0.7;
+		petRotation.Value += 1;
 	}
 	debug.profileend();
 });
@@ -229,17 +229,17 @@ export const animateSingleEggHatch = (
 	TweenService.Create(rotationValue, new TweenInfo(fastHatch ? 0.2 / 2 : 0.15, Enum.EasingStyle.Quint), {
 		Value: 0,
 	}).Play();
-	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.75 / 2 : 0.5, Enum.EasingStyle.Quint), {
+	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.5 / 2 : 0.5, Enum.EasingStyle.Quint), {
 		Value: -15.5,
 	}).Play();
-	task.wait(fastHatch ? 0.175 / 2 : 0.175);
-	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.15 / 2 : 0.1, Enum.EasingStyle.Quint), {
+	task.wait(fastHatch ? 0.4 / 2 : 0.4);
+	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.5 / 2 : 0.5, Enum.EasingStyle.Quint), {
 		Value: -1,
 	});
-	task.wait(fastHatch ? 0.075 / 2 : 0.075);
+	task.wait(fastHatch ? 0.1 / 2 : 0.2);
 
 	// display a flash effect
-	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.3 / 2 : 0.225, Enum.EasingStyle.Quint), {
+	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.2 / 2 : 0.15, Enum.EasingStyle.Quint), {
 		Brightness: 1,
 	}).Play();
 
@@ -264,13 +264,14 @@ export const animateSingleEggHatch = (
 	middleAutoDeleted.Visible = wasAutoDeleted;
 
 	// animate pet and hide flash effect
-	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.5 / 2 : 0.4, Enum.EasingStyle.Quint), {
+	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.2 / 2 : 0.15, Enum.EasingStyle.Quint), {
 		Brightness: 0,
 	}).Play();
 	distanceValue.Value = -5;
 	const petAnimation = RunService.RenderStepped.Connect(() => {
 		debug.profilebegin("petEggAnimation");
 		const cameraCFrame = camera.CFrame;
+		print(distanceValue.Value);
 		const cframePosition = new CFrame(3, positionValue.Value, distanceValue.Value);
 		const cframeAngles = CFrame.Angles(0, math.rad(petRotation.Value), 0);
 		petModel.PivotTo(cameraCFrame.mul(cframePosition).mul(cframeValue.Value).mul(cframeAngles));
@@ -291,7 +292,7 @@ export const animateSingleEggHatch = (
 		positionValue,
 		new TweenInfo(fastHatch ? 0.35 / 2 : 0.275, Enum.EasingStyle.Back, Enum.EasingDirection.In),
 		{
-			Value: -7,
+			Value: -15,
 		},
 	).Play();
 	task.wait(fastHatch ? 0.35 / 2 : 0.275);
@@ -499,9 +500,9 @@ export const animateTripleEggHatch = (
 	const cframeValue1 = new Instance("CFrameValue");
 	cframeValue1.Value = new CFrame(-3, 0, 0);
 	const cframeValue2 = new Instance("CFrameValue");
-	cframeValue2.Value = new CFrame(-6.5, 0, 0);
+	cframeValue2.Value = new CFrame(-7, 0, 0);
 	const cframeValue3 = new Instance("CFrameValue");
-	cframeValue3.Value = new CFrame(0.5, 0, 0);
+	cframeValue3.Value = new CFrame(1, 0, 0);
 
 	const distanceValue = new Instance("NumberValue");
 	distanceValue.Value = -9.5;
@@ -563,17 +564,17 @@ export const animateTripleEggHatch = (
 	TweenService.Create(rotationValue, new TweenInfo(fastHatch ? 0.2 / 2 : 0.15, Enum.EasingStyle.Quint), {
 		Value: 0,
 	}).Play();
-	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.75 / 2 : 0.5, Enum.EasingStyle.Quint), {
+	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.5 / 2 : 0.5, Enum.EasingStyle.Quint), {
 		Value: -15.5,
 	}).Play();
-	task.wait(fastHatch ? 0.175 / 2 : 0.175);
-	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.15 / 2 : 0.1, Enum.EasingStyle.Quint), {
+	task.wait(fastHatch ? 0.4 / 2 : 0.4);
+	TweenService.Create(distanceValue, new TweenInfo(fastHatch ? 0.5 / 2 : 0.5, Enum.EasingStyle.Quint), {
 		Value: -1,
 	});
-	task.wait(fastHatch ? 0.075 / 2 : 0.075);
+	task.wait(fastHatch ? 0.1 / 2 : 0.2);
 
 	// display a flash effect
-	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.3 / 15 : 0.225, Enum.EasingStyle.Quint), {
+	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.2 / 2 : 0.15, Enum.EasingStyle.Quint), {
 		Brightness: 1,
 	}).Play();
 
@@ -620,10 +621,10 @@ export const animateTripleEggHatch = (
 	rightAutoDeleted.Visible = pets[2].autoDeleted;
 
 	// animate pet and hide flash effect
-	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.5 / 2 : 0.4, Enum.EasingStyle.Quint), {
+	TweenService.Create(hatchLight, new TweenInfo(fastHatch ? 0.2 / 2 : 0.15, Enum.EasingStyle.Quint), {
 		Brightness: 0,
 	}).Play();
-	distanceValue.Value = -8.5;
+	distanceValue.Value = -5;
 	const petAnimation = RunService.RenderStepped.Connect(() => {
 		debug.profilebegin("petEggAnimation_triple");
 		const cameraCFrame = camera.CFrame;
