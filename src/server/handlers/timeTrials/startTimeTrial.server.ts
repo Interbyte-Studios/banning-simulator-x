@@ -38,7 +38,7 @@ remotes.Server.GetNamespace("timeTrials")
 						player.SetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE, undefined);
 
 						// todo: compute rewards, give them to player, tell player
-						const difficultyMultiplier = difficulty === "easy" ? 1.25 : difficulty === "medium" ? 1.35 : 1.45;
+						const difficultyMultiplier = difficulty === "easy" ? 1.25 : difficulty === "medium" ? 1.3 : 1.35;
 						const waveMultiplier = 5 * wave;
 						store.dispatch(awardCurrency("gears", waveMultiplier * difficultyMultiplier ** wave));
 

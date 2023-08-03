@@ -8,30 +8,33 @@ export type TimeTrialUpgradeType = t.static<typeof isTimeTrialUpgrade>;
 
 export type TimeTrialUpgrade = Record<
 	TimeTrialUpgradeType,
-	{ maxUpgrades: number; benefitPerUpgrade: number; baseCost: number }
+	{ maxUpgrades: number; benefitPerUpgrade: number; baseCost: number; costMultiplier: number }
 >;
 
-export const TIME_TRIALS_UPGRADE_COST_MULTIPLIER = 1.15;
 export const TIME_TRIAL_UPGRADES = {
 	health: {
-		maxUpgrades: 100,
+		maxUpgrades: 500,
 		benefitPerUpgrade: 50,
 		baseCost: 5,
+		costMultiplier: 1.07,
 	},
 	damage: {
-		maxUpgrades: 50,
+		maxUpgrades: 200,
 		benefitPerUpgrade: 0.5,
 		baseCost: 25,
+		costMultiplier: 1.17,
 	},
 	damageReduction: {
-		maxUpgrades: 50,
+		maxUpgrades: 75,
 		benefitPerUpgrade: 0.5,
 		baseCost: 25,
+		costMultiplier: 1.2,
 	},
 	criticalChance: {
 		maxUpgrades: 100,
 		benefitPerUpgrade: 1,
 		baseCost: 20,
+		costMultiplier: 1.15,
 	},
 } satisfies TimeTrialUpgrade;
 
