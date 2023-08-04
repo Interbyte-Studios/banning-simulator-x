@@ -26,6 +26,46 @@ export interface Accolade {
 export const ACCOLADES: Array<Accolade> = [
 	{
 		id: 1,
+		name: "Join Interbyte Studios group",
+		progress: (state): AccoladeCompletion => {
+			const isInGroup = state.index.groupRank !== undefined;
+			if (isInGroup) {
+				return true;
+			} else {
+				return {
+					progressPercentage: 0,
+					progress: 0,
+					maxProgress: 1,
+				};
+			}
+		},
+		reward: {
+			rewardType: "x2 Hatching Luck",
+			amount: 60,
+		},
+	},
+	{
+		id: 2,
+		name: "Join the Interbyte Studios server",
+		progress: (state): AccoladeCompletion => {
+			const verified = state.media.discordVerified;
+			if (verified) {
+				return true;
+			} else {
+				return {
+					progressPercentage: 0,
+					progress: 0,
+					maxProgress: 1,
+				};
+			}
+		},
+		reward: {
+			rewardType: "x2 Rank Experience",
+			amount: 60,
+		},
+	},
+	{
+		id: 3,
 		name: "Complete the account mastery",
 		progress: (state): AccoladeCompletion => {
 			const totalObjectives = 5; // There are 5 sections of mastery in the game
@@ -68,7 +108,7 @@ export const ACCOLADES: Array<Accolade> = [
 		},
 	},
 	{
-		id: 2,
+		id: 4,
 		name: "Complete the Ban Land Pet Mastery",
 		progress: (state): AccoladeCompletion => {
 			let totalObjectives = 0;
@@ -137,7 +177,99 @@ export const ACCOLADES: Array<Accolade> = [
 		},
 	},
 	{
-		id: 3,
+		id: 5,
+		name: "Play for 2 hours",
+		progress: (state): AccoladeCompletion => {
+			const minute = 60; // in seconds
+			const hour = minute * 60; // in seconds;
+			const twoHours = 2 * hour;
+
+			if (state.index.timePlayed >= twoHours) {
+				return true;
+			} else {
+				return {
+					progressPercentage: state.index.timePlayed / twoHours,
+					progress: state.index.timePlayed,
+					maxProgress: twoHours,
+				};
+			}
+		},
+		reward: {
+			rewardType: "x2 Currency",
+			amount: 15,
+		},
+	},
+	{
+		id: 6,
+		name: "Play for 10 hours",
+		progress: (state): AccoladeCompletion => {
+			const minute = 60; // in seconds
+			const hour = minute * 60; // in seconds;
+			const tenHours = 10 * hour;
+
+			if (state.index.timePlayed >= tenHours) {
+				return true;
+			} else {
+				return {
+					progressPercentage: state.index.timePlayed / tenHours,
+					progress: state.index.timePlayed,
+					maxProgress: tenHours,
+				};
+			}
+		},
+		reward: {
+			rewardType: "x2 Currency",
+			amount: 30,
+		},
+	},
+	{
+		id: 7,
+		name: "Play for 25 hours",
+		progress: (state): AccoladeCompletion => {
+			const minute = 60; // in seconds
+			const hour = minute * 60; // in seconds;
+			const twentyFiveHours = 25 * hour;
+
+			if (state.index.timePlayed >= twentyFiveHours) {
+				return true;
+			} else {
+				return {
+					progressPercentage: state.index.timePlayed / twentyFiveHours,
+					progress: state.index.timePlayed,
+					maxProgress: twentyFiveHours,
+				};
+			}
+		},
+		reward: {
+			rewardType: "x2 Currency",
+			amount: 60,
+		},
+	},
+	{
+		id: 8,
+		name: "Play for 50 hours",
+		progress: (state): AccoladeCompletion => {
+			const minute = 60; // in seconds
+			const hour = minute * 60; // in seconds;
+			const fiftyHours = 50 * hour;
+
+			if (state.index.timePlayed >= fiftyHours) {
+				return true;
+			} else {
+				return {
+					progressPercentage: state.index.timePlayed / fiftyHours,
+					progress: state.index.timePlayed,
+					maxProgress: fiftyHours,
+				};
+			}
+		},
+		reward: {
+			rewardType: "x2 Currency",
+			amount: 120,
+		},
+	},
+	{
+		id: 9,
 		name: "Play for 100 hours",
 		progress: (state): AccoladeCompletion => {
 			const minute = 60; // in seconds
@@ -155,12 +287,81 @@ export const ACCOLADES: Array<Accolade> = [
 			}
 		},
 		reward: {
-			rewardType: "x2 Currency",
+			rewardType: "x2 Hatching Luck",
+			amount: 30,
+		},
+	},
+	{
+		id: 10,
+		name: "Play for 250 hours",
+		progress: (state): AccoladeCompletion => {
+			const minute = 60; // in seconds
+			const hour = minute * 60; // in seconds;
+			const twoHundredFiftyHours = hour * 250;
+
+			if (state.index.timePlayed >= twoHundredFiftyHours) {
+				return true;
+			} else {
+				return {
+					progressPercentage: state.index.timePlayed / twoHundredFiftyHours,
+					progress: state.index.timePlayed,
+					maxProgress: twoHundredFiftyHours,
+				};
+			}
+		},
+		reward: {
+			rewardType: "x2 Hatching Luck",
+			amount: 30,
+		},
+	},
+	{
+		id: 11,
+		name: "Play for 500 hours",
+		progress: (state): AccoladeCompletion => {
+			const minute = 60; // in seconds
+			const hour = minute * 60; // in seconds;
+			const fiveHundredFiftyHours = hour * 500;
+
+			if (state.index.timePlayed >= fiveHundredFiftyHours) {
+				return true;
+			} else {
+				return {
+					progressPercentage: state.index.timePlayed / fiveHundredFiftyHours,
+					progress: state.index.timePlayed,
+					maxProgress: fiveHundredFiftyHours,
+				};
+			}
+		},
+		reward: {
+			rewardType: "x2 Hatching Luck",
 			amount: 60,
 		},
 	},
 	{
-		id: 4,
+		id: 12,
+		name: "Play for 1,000 hours",
+		progress: (state): AccoladeCompletion => {
+			const minute = 60; // in seconds
+			const hour = minute * 60; // in seconds;
+			const oneThousandHours = hour * 1000;
+
+			if (state.index.timePlayed >= oneThousandHours) {
+				return true;
+			} else {
+				return {
+					progressPercentage: state.index.timePlayed / oneThousandHours,
+					progress: state.index.timePlayed,
+					maxProgress: oneThousandHours,
+				};
+			}
+		},
+		reward: {
+			rewardType: "x2 Hatching Luck",
+			amount: 120,
+		},
+	},
+	{
+		id: 13,
 		name: "Own all zones from Ban Land",
 		progress: (state): AccoladeCompletion => {
 			const banLandData = state.worlds.find((world) => world.name === "Ban Land");
@@ -199,7 +400,7 @@ export const ACCOLADES: Array<Accolade> = [
 		},
 	},
 	{
-		id: 5,
+		id: 14,
 		name: "Own every weapon from Ban Land",
 		progress: (state): AccoladeCompletion => {
 			let totalWeapons = 0;
@@ -231,47 +432,7 @@ export const ACCOLADES: Array<Accolade> = [
 		},
 	},
 	{
-		id: 6,
-		name: "Join Interbyte Studios group",
-		progress: (state): AccoladeCompletion => {
-			const isInGroup = state.index.groupRank !== undefined;
-			if (isInGroup) {
-				return true;
-			} else {
-				return {
-					progressPercentage: 0,
-					progress: 0,
-					maxProgress: 1,
-				};
-			}
-		},
-		reward: {
-			rewardType: "x2 Hatching Luck",
-			amount: 60,
-		},
-	},
-	{
-		id: 7,
-		name: "Join the Interbyte Studios server",
-		progress: (state): AccoladeCompletion => {
-			const verified = state.media.discordVerified;
-			if (verified) {
-				return true;
-			} else {
-				return {
-					progressPercentage: 0,
-					progress: 0,
-					maxProgress: 1,
-				};
-			}
-		},
-		reward: {
-			rewardType: "x2 Rank Experience",
-			amount: 60,
-		},
-	},
-	{
-		id: 8,
+		id: 15,
 		name: "Redeem 5 codes",
 		progress: (state): AccoladeCompletion => {
 			const codesRedeemed = state.media.codes.size();
@@ -291,7 +452,7 @@ export const ACCOLADES: Array<Accolade> = [
 		},
 	},
 	{
-		id: 9,
+		id: 16,
 		name: "Redeem 10 codes",
 		progress: (state): AccoladeCompletion => {
 			const codesRedeemed = state.media.codes.size();
@@ -311,7 +472,7 @@ export const ACCOLADES: Array<Accolade> = [
 		},
 	},
 	{
-		id: 10,
+		id: 17,
 		name: "Redeem 15 codes",
 		progress: (state): AccoladeCompletion => {
 			const codesRedeemed = state.media.codes.size();
@@ -331,7 +492,7 @@ export const ACCOLADES: Array<Accolade> = [
 		},
 	},
 	{
-		id: 11,
+		id: 18,
 		name: "Redeem 30 codes",
 		progress: (state): AccoladeCompletion => {
 			const codesRedeemed = state.media.codes.size();
@@ -348,6 +509,106 @@ export const ACCOLADES: Array<Accolade> = [
 		reward: {
 			rewardType: "x2 Pet Experience",
 			amount: 60,
+		},
+	},
+	{
+		id: 19,
+		name: "Reach wave 10 in GearWorx Time Trials (Hard Mode)",
+		progress: (state): AccoladeCompletion => {
+			const highestHardWave = state.timeTrials["Ban Land"].highestHardWave;
+			if (highestHardWave >= 10) {
+				return true;
+			} else {
+				return {
+					progressPercentage: highestHardWave / 10,
+					progress: highestHardWave,
+					maxProgress: 10,
+				};
+			}
+		},
+		reward: {
+			rewardType: "x2 Hatching Luck",
+			amount: 30,
+		},
+	},
+	{
+		id: 20,
+		name: "Reach wave 20 in GearWorx Time Trials (Hard Mode)",
+		progress: (state): AccoladeCompletion => {
+			const highestHardWave = state.timeTrials["Ban Land"].highestHardWave;
+			if (highestHardWave >= 20) {
+				return true;
+			} else {
+				return {
+					progressPercentage: highestHardWave / 20,
+					progress: highestHardWave,
+					maxProgress: 20,
+				};
+			}
+		},
+		reward: {
+			rewardType: "x2 Hatching Luck",
+			amount: 60,
+		},
+	},
+	{
+		id: 21,
+		name: "Reach wave 35 in GearWorx Time Trials (Hard Mode)",
+		progress: (state): AccoladeCompletion => {
+			const highestHardWave = state.timeTrials["Ban Land"].highestHardWave;
+			if (highestHardWave >= 35) {
+				return true;
+			} else {
+				return {
+					progressPercentage: highestHardWave / 35,
+					progress: highestHardWave,
+					maxProgress: 35,
+				};
+			}
+		},
+		reward: {
+			rewardType: "x2 Hatching Luck",
+			amount: 120,
+		},
+	},
+	{
+		id: 22,
+		name: "Reach wave 45 in GearWorx Time Trials (Hard Mode)",
+		progress: (state): AccoladeCompletion => {
+			const highestHardWave = state.timeTrials["Ban Land"].highestHardWave;
+			if (highestHardWave >= 45) {
+				return true;
+			} else {
+				return {
+					progressPercentage: highestHardWave / 45,
+					progress: highestHardWave,
+					maxProgress: 45,
+				};
+			}
+		},
+		reward: {
+			rewardType: "x2 Hatching Luck",
+			amount: 120,
+		},
+	},
+	{
+		id: 23,
+		name: "Reach wave 60 in GearWorx Time Trials (Hard Mode)",
+		progress: (state): AccoladeCompletion => {
+			const highestHardWave = state.timeTrials["Ban Land"].highestHardWave;
+			if (highestHardWave >= 60) {
+				return true;
+			} else {
+				return {
+					progressPercentage: highestHardWave / 60,
+					progress: highestHardWave,
+					maxProgress: 60,
+				};
+			}
+		},
+		reward: {
+			rewardType: "x2 Hatching Luck",
+			amount: 120,
 		},
 	},
 ];
