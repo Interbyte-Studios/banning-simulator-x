@@ -1,5 +1,6 @@
 import { Players, RunService, UserInputService, Workspace } from "@rbxts/services";
 import { getManualAutoFightState, getPurchasedAutoFightState, setManualAutoFight } from "client/modules/autoFightCache";
+import { getClickToFightEnabled } from "client/modules/clickToFightCache";
 import { getIsHatching } from "client/modules/eggs/isHatching";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
@@ -96,9 +97,6 @@ const onInputBegan = (input: InputObject, gameProcessedEvent: boolean): void => 
 		input.UserInputType === Enum.UserInputType.Touch ||
 		input.UserInputType === Enum.UserInputType.Gamepad1
 	) {
-		const player = Players.LocalPlayer;
-		const mouse = player.GetMouse();
-
 		const camera = Workspace.CurrentCamera;
 		if (camera === undefined) {
 			return;
@@ -106,6 +104,21 @@ const onInputBegan = (input: InputObject, gameProcessedEvent: boolean): void => 
 
 		if (getIsHatching()) {
 			return;
+		}
+
+		if (!getClickToFightEnabled()) {
+			return;
+		}
+
+		const player = Players.LocalPlayer;
+		const mouse = player.GetMouse();
+
+		const character = player.Character;
+		if (character !== undefined) {
+			const weapon = character.FindFirstChildOfClass("Tool");
+			if (weapon === undefined) {
+				return;
+			}
 		}
 
 		const rayDirection = mouse.Hit.Position.sub(camera.CFrame.Position).Unit.mul(500);

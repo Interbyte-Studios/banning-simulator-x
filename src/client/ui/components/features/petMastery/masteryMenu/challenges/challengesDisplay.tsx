@@ -11,6 +11,7 @@ import { remoteContext } from "client/ui/mocks/remoteContext";
 import { getBoostHumanTime } from "client/util/getBoostHumanTime";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
+import { isEventEgg, isExclusiveEgg } from "shared/configs/eggs";
 import { BOOST_IMAGES } from "shared/configs/game";
 import { PET_MASTERY_REQUIREMENTS, PET_MASTERY_REWARDS } from "shared/configs/petMastery";
 import { Variants } from "shared/configs/pets";
@@ -19,6 +20,7 @@ import { ClaimPetMasteryFailKind } from "shared/remotes/petMastery/claimMastery"
 import { StoreState } from "shared/rodux";
 import { PetMasteryChallengeType, PetMasteryState } from "shared/rodux/petMastery";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
+import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetData } from "shared/util/getPetData";
 import { UnreachableCaseError } from "shared/util/unreachableCaseError";
 
@@ -343,10 +345,10 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 
 		const petsMasteryIndex = props.petMastery.get(props.pet);
 
+		const eggName = getEggNameFromPetId(props.pet);
 		const petData = getPetData(props.pet);
 
 		const requirements = PET_MASTERY_REQUIREMENTS[petData.rarity][props.variant];
-
 		const challengesToDisplay: Array<Roact.Element> = [];
 
 		switch (props.variant) {
@@ -391,50 +393,82 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 				const maxLevelCompleted = petsMasteryIndex?.void.maxLevelClaimed ?? false;
 				const fuseCompleted = petsMasteryIndex?.void.fuseClaimed ?? false;
 
-				const hatchProgress = math.min(petsIndex.hatched.void / requirements.hatch, 1);
-				challengesToDisplay.push(
-					<MasteryChallengeFrame
-						pet={props.pet}
-						rarity={petData.rarity}
-						variant={props.variant}
-						number={1}
-						challengeType={"hatch"}
-						requirement={requirements.hatch}
-						amount={petsIndex.hatched.void}
-						progress={hatchCompleted ? 1 : hatchProgress}
-						hasBeenClaimed={hatchCompleted}
-					/>,
-				);
+				if (isEventEgg(eggName) || isExclusiveEgg(eggName)) {
+					const maxLevelProgress = math.min(petsIndex.maxLevel.void.cachedMaxLevel.size() / requirements.maxLevel, 1);
+					challengesToDisplay.push(
+						<MasteryChallengeFrame
+							pet={props.pet}
+							rarity={petData.rarity}
+							variant={props.variant}
+							number={1}
+							challengeType={"maxLevel"}
+							requirement={requirements.maxLevel}
+							amount={petsIndex.maxLevel.void.cachedMaxLevel.size()}
+							progress={maxLevelCompleted ? 1 : maxLevelProgress}
+							hasBeenClaimed={maxLevelCompleted}
+						/>,
+					);
 
-				const maxLevelProgress = math.min(petsIndex.maxLevel.void.cachedMaxLevel.size() / requirements.maxLevel, 1);
-				challengesToDisplay.push(
-					<MasteryChallengeFrame
-						pet={props.pet}
-						rarity={petData.rarity}
-						variant={props.variant}
-						number={2}
-						challengeType={"maxLevel"}
-						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.void.cachedMaxLevel.size()}
-						progress={maxLevelCompleted ? 1 : maxLevelProgress}
-						hasBeenClaimed={maxLevelCompleted}
-					/>,
-				);
+					const fusedProgress = math.min(petsIndex.fused.void / requirements.fuse, 1);
+					challengesToDisplay.push(
+						<MasteryChallengeFrame
+							pet={props.pet}
+							rarity={petData.rarity}
+							variant={props.variant}
+							number={2}
+							challengeType={"fuse"}
+							requirement={requirements.fuse}
+							amount={petsIndex.fused.void}
+							progress={fuseCompleted ? 1 : fusedProgress}
+							hasBeenClaimed={fuseCompleted}
+						/>,
+					);
+				} else {
+					const hatchProgress = math.min(petsIndex.hatched.void / requirements.hatch, 1);
+					challengesToDisplay.push(
+						<MasteryChallengeFrame
+							pet={props.pet}
+							rarity={petData.rarity}
+							variant={props.variant}
+							number={1}
+							challengeType={"hatch"}
+							requirement={requirements.hatch}
+							amount={petsIndex.hatched.void}
+							progress={hatchCompleted ? 1 : hatchProgress}
+							hasBeenClaimed={hatchCompleted}
+						/>,
+					);
 
-				const fusedProgress = math.min(petsIndex.fused.void / requirements.fuse, 1);
-				challengesToDisplay.push(
-					<MasteryChallengeFrame
-						pet={props.pet}
-						rarity={petData.rarity}
-						variant={props.variant}
-						number={3}
-						challengeType={"fuse"}
-						requirement={requirements.fuse}
-						amount={petsIndex.fused.void}
-						progress={fuseCompleted ? 1 : fusedProgress}
-						hasBeenClaimed={fuseCompleted}
-					/>,
-				);
+					const maxLevelProgress = math.min(petsIndex.maxLevel.void.cachedMaxLevel.size() / requirements.maxLevel, 1);
+					challengesToDisplay.push(
+						<MasteryChallengeFrame
+							pet={props.pet}
+							rarity={petData.rarity}
+							variant={props.variant}
+							number={1}
+							challengeType={"maxLevel"}
+							requirement={requirements.maxLevel}
+							amount={petsIndex.maxLevel.void.cachedMaxLevel.size()}
+							progress={maxLevelCompleted ? 1 : maxLevelProgress}
+							hasBeenClaimed={maxLevelCompleted}
+						/>,
+					);
+
+					const fusedProgress = math.min(petsIndex.fused.void / requirements.fuse, 1);
+					challengesToDisplay.push(
+						<MasteryChallengeFrame
+							pet={props.pet}
+							rarity={petData.rarity}
+							variant={props.variant}
+							number={2}
+							challengeType={"fuse"}
+							requirement={requirements.fuse}
+							amount={petsIndex.fused.void}
+							progress={fuseCompleted ? 1 : fusedProgress}
+							hasBeenClaimed={fuseCompleted}
+						/>,
+					);
+				}
 
 				break;
 			}

@@ -125,12 +125,12 @@ export const PET_MASTERY_REQUIREMENTS = {
 	},
 	Exclusive: {
 		regular: {
-			hatch: 10,
+			hatch: 0,
 			maxLevel: 10,
 			fuse: 0,
 		},
 		void: {
-			hatch: 10,
+			hatch: 0,
 			maxLevel: 15,
 			fuse: 5,
 		},

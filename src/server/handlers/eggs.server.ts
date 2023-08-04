@@ -217,7 +217,6 @@ hatchEggRemote.SetCallback(
 				if (image !== undefined) {
 					// bugged
 					decalToPass = image.match("%d+")[0] as number;
-					print(decalToPass);
 				}
 
 				let existAmount = 0;

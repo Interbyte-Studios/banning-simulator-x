@@ -114,16 +114,16 @@ export const ACCOLADES: Array<Accolade> = [
 			let totalObjectives = 0;
 			let completedObjectives = 0;
 
-			for (const [eggName, eggData] of pairs(EGGS)) {
-				if (eggData.world !== "Ban Land") {
-					continue;
-				}
-
-				if (eggName === "500k Event") {
+			for (const [, eggData] of pairs(EGGS)) {
+				if (eggData.world !== "Ban Land" || eggData.hidden || !eggData.hatchable) {
 					continue;
 				}
 
 				for (const [, petData] of pairs(eggData.pets)) {
+					if (petData.rarity === "Secret" || petData.rarity === "Primordial") {
+						continue;
+					}
+
 					totalObjectives += 7; // total objectives per pet
 
 					const storedMasteryData = state.petMastery.get(petData.id);
