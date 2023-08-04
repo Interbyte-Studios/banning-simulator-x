@@ -20,4 +20,5 @@ export const settingsRemotes = {
 	togglePublicInventory: remoteNamespace.GetNamespace("privacy").Get("publicInventory"),
 	togglePublicTradeHistory: remoteNamespace.GetNamespace("privacy").Get("publicTradeHistory"),
 	tradesEnabled: remoteNamespace.GetNamespace("privacy").Get("tradesEnabled"),
+	toggleManualFighting: remoteNamespace.GetNamespace("gameplay").Get("toggleManualFighting"),
 };

@@ -49,6 +49,7 @@ export const Settings = RoactRodux.connect(mapStateToProps)(
 			toggleTimeOfDay,
 			togglePetsStudsOfDistance,
 			togglePetsDisplayed,
+			toggleManualFighting,
 		} = useContext(remoteContext);
 
 		return (
@@ -149,39 +150,45 @@ export const Settings = RoactRodux.connect(mapStateToProps)(
 						onDecrease={(): void => toggleWalkSpeed.SendToServer(props.settings.gameplay.walkSpeed - 1)}
 						onIncrease={(): void => toggleWalkSpeed.SendToServer(props.settings.gameplay.walkSpeed + 1)}
 					/>
+					<OptionChoice
+						header={"Click-To-Fight"}
+						enabled={props.settings.gameplay.manualFighting}
+						yPos={0.226}
+						onPressed={(): void => toggleManualFighting.SendToServer()}
+					/>
 
-					<OptionSectionHeader text={"Privacy"} yPos={0.227} />
+					<OptionSectionHeader text={"Privacy"} yPos={0.26} />
 					<OptionChoice
 						header={"Public Inventory"}
 						enabled={props.settings.privacy.publicInventory}
-						yPos={0.252}
+						yPos={0.284}
 						onPressed={(): void => togglePublicInventory.SendToServer()}
 					/>
 					<OptionChoice
 						header={"Public Trades"}
 						enabled={props.settings.privacy.publicTradeHistory}
-						yPos={0.285}
+						yPos={0.317}
 						onPressed={(): void => togglePublicTradeHistory.SendToServer()}
 					/>
 					<OptionChoice
 						header={"Trades Enabled"}
 						enabled={props.settings.privacy.tradesEnabled}
-						yPos={0.318}
+						yPos={0.35}
 						onPressed={(): void => tradesEnabled.SendToServer()}
 					/>
 
-					<OptionSectionHeader text={"Visual"} yPos={0.352} />
+					<OptionSectionHeader text={"Visual"} yPos={0.384} />
 					<OptionMultiChoice
 						header={"Graphics"}
 						context={props.settings.visual.graphicsQuality}
-						yPos={0.377}
+						yPos={0.408}
 						onDecrease={(): void => toggleGraphics.SendToServer("Low")}
 						onIncrease={(): void => toggleGraphics.SendToServer("High")}
 					/>
 					<OptionMultiChoice
 						header={"Time of Day"}
 						context={tostring(props.settings.visual.timeOfDay)}
-						yPos={0.41}
+						yPos={0.441}
 						onDecrease={(): void => {
 							const decreasedTimeOfday = props.settings.visual.timeOfDay - 1;
 							if (decreasedTimeOfday <= 0) {
@@ -202,7 +209,7 @@ export const Settings = RoactRodux.connect(mapStateToProps)(
 					<OptionMultiChoice
 						header={"Pet Distance"}
 						context={tostring(props.settings.visual.petsStudsOfDistance)}
-						yPos={0.476}
+						yPos={0.474}
 						onDecrease={(): void => {
 							if (props.settings.visual.petsStudsOfDistance <= 10) {
 								return;
@@ -221,7 +228,7 @@ export const Settings = RoactRodux.connect(mapStateToProps)(
 					<OptionChoice
 						header={"Pets Displayed"}
 						enabled={props.settings.visual.petsDisplayed}
-						yPos={0.509}
+						yPos={0.507}
 						onPressed={(): void => togglePetsDisplayed.SendToServer(!props.settings.visual.petsDisplayed)}
 					/>
 				</scrollingframe>
