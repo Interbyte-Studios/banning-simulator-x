@@ -99,7 +99,7 @@ export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
 					if (t.number(attributeValue)) {
 						setTimer((prev) => {
 							if (prev > 0 && attributeValue < 1) {
-								const difficultyMultiplier = difficulty === "easy" ? 1.25 : difficulty === "medium" ? 1.35 : 1.45;
+								const difficultyMultiplier = difficulty === "easy" ? 1.25 : difficulty === "medium" ? 1.3 : 1.35;
 								const waveMultiplier = 5 * wave;
 								props.finish(waveMultiplier * difficultyMultiplier ** wave);
 							}
@@ -161,7 +161,7 @@ export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
 		}, [started, difficulty, wave, timer]);
 
 		if (started) {
-			const difficultyMultiplier = difficulty === "easy" ? 1.25 : difficulty === "medium" ? 1.35 : 1.45;
+			const difficultyMultiplier = difficulty === "easy" ? 1.25 : difficulty === "medium" ? 1.3 : 1.35;
 			const waveMultiplier = 5 * wave;
 			return (
 				<>
@@ -176,7 +176,7 @@ export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
 							 *
 							 */
 							Activated: (): void => {
-								const difficultyMultiplier = difficulty === "easy" ? 1.1 : difficulty === "medium" ? 1.2 : 1.3;
+								const difficultyMultiplier = difficulty === "easy" ? 1.25 : difficulty === "medium" ? 1.3 : 1.35;
 								const waveMultiplier = 5 * wave;
 								playSFX(UIEngagement.MajorEngagement);
 								stopTimeTrial.SendToServer();

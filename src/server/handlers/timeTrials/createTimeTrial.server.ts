@@ -53,9 +53,15 @@ remotes.Server.GetNamespace("timeTrials")
 					const playerTrial = currentTimeTrials.get(player);
 					if (playerTrial !== undefined) {
 						const difficultyMultiplier =
-							playerTrial.difficulty === "easy" ? 1.25 : playerTrial.difficulty === "medium" ? 1.35 : 1.45;
+							playerTrial.difficulty === "easy" ? 1.25 : playerTrial.difficulty === "medium" ? 1.3 : 1.35;
 						const waveMultiplier = 5 * playerTrial.wave;
 						store.dispatch(awardCurrency("gears", waveMultiplier * difficultyMultiplier ** playerTrial.wave));
+
+						if (playerTrial.difficulty === "hard") {
+							if (playerTrial.wave > store.getState().timeTrials["Ban Land"].highestHardWave) {
+								store.dispatch(setHighestHardWave("Ban Land", playerTrial.wave));
+							}
+						}
 					}
 
 					cleanupHandler.Cleanup();
@@ -84,7 +90,7 @@ remotes.Server.GetNamespace("timeTrials")
 			const playerTrial = currentTimeTrials.get(player);
 			if (playerTrial !== undefined) {
 				const difficultyMultiplier =
-					playerTrial.difficulty === "easy" ? 1.25 : playerTrial.difficulty === "medium" ? 1.35 : 1.45;
+					playerTrial.difficulty === "easy" ? 1.25 : playerTrial.difficulty === "medium" ? 1.3 : 1.35;
 				const waveMultiplier = 5 * playerTrial.wave;
 				store.dispatch(awardCurrency("gears", waveMultiplier * difficultyMultiplier ** playerTrial.wave));
 
@@ -92,7 +98,7 @@ remotes.Server.GetNamespace("timeTrials")
 					if (playerTrial.wave > store.getState().timeTrials["Ban Land"].highestHardWave) {
 						store.dispatch(setHighestHardWave("Ban Land", playerTrial.wave));
 					}
-				} else warn(`Difficulty was: ${playerTrial.difficulty}`);
+				}
 			}
 			cleanupTrial(player);
 

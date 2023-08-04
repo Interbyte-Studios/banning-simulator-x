@@ -1,8 +1,4 @@
-import {
-	TIME_TRIAL_UPGRADES,
-	TIME_TRIALS_UPGRADE_COST_MULTIPLIER,
-	TimeTrialUpgradeType,
-} from "shared/configs/timeTrials";
+import { TIME_TRIAL_UPGRADES, TimeTrialUpgradeType } from "shared/configs/timeTrials";
 
 /**
  * Returns the cost of the next upgrade for the time trials.
@@ -13,12 +9,8 @@ import {
  */
 export function getTimeTrialsUpgradeCost(upgradeName: TimeTrialUpgradeType, upgradeAmount: number): number {
 	const baseCost = TIME_TRIAL_UPGRADES[upgradeName].baseCost;
+	const costMultiplier = TIME_TRIAL_UPGRADES[upgradeName].costMultiplier;
 
-	if (upgradeName === "damage" || upgradeName === "damageReduction") {
-		const upgradeCost = baseCost * 1.25 ** upgradeAmount;
-		return upgradeCost;
-	}
-
-	const upgradeCost = baseCost * TIME_TRIALS_UPGRADE_COST_MULTIPLIER ** upgradeAmount;
+	const upgradeCost = baseCost * costMultiplier ** upgradeAmount;
 	return upgradeCost;
 }
