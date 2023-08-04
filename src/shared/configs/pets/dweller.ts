@@ -31,7 +31,7 @@ export const DWELLER_EGG_PETS: Record<string, Pet> = {
 		fusionCost: 2_000_000,
 		stats: {
 			additionalDamage: 14500,
-			additionalBans: 700,
+			additionalBans: 750,
 		},
 	},
 	Mida: {
@@ -41,7 +41,7 @@ export const DWELLER_EGG_PETS: Record<string, Pet> = {
 		fusionCost: 7_500_000,
 		stats: {
 			additionalDamage: 25000,
-			additionalBans: 1400,
+			additionalBans: 1500,
 		},
 	},
 };
