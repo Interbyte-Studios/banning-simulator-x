@@ -1,6 +1,5 @@
 return function(state)
-	-- change Secret to Prismatic
+	state.accolades = {}
 	state.settings.gameplay.manualFighting = true
-
 	return state
 end
