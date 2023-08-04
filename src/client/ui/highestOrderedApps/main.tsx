@@ -631,7 +631,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 						props.setTradingEnabled();
 					}}
 					hiddenHud={true}
-					autoFightActive={true}
+					autoFightActive={false}
 					disableAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: false })}
 				/>,
 			);
@@ -661,7 +661,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 						props.setTradingEnabled();
 					}}
 					hiddenHud={true}
-					autoFightActive={true}
+					autoFightActive={false}
 					disableAutoFight={(): void => {
 						setVisibility({ ...visibilityStates, autoFight: false });
 						setFocusedNPC(undefined);

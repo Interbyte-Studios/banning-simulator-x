@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
+import { setAmountOfPets } from "client/modules/uiNotifications/petsModule";
 import { VirtualScroll } from "client/ui/elements/petUtility/virtualScroll";
 import { StoreState } from "shared/rodux";
 import { Pet, PetsState } from "shared/rodux/pets";
@@ -31,6 +32,7 @@ function petItemsMapStateToProps(state: StoreState): PetItemsMappedProps {
 }
 
 export const PetItems = RoactRodux.connect(petItemsMapStateToProps)((props: PetItemsProps) => {
+	setAmountOfPets(props.pets.size());
 	return (
 		<VirtualScroll
 			pets={props.pets}

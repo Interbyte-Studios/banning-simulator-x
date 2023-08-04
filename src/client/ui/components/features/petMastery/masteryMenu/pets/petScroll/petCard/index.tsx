@@ -8,12 +8,15 @@ import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { Notification } from "client/ui/elements/common/notification";
 import { RarityGradient } from "client/ui/elements/gradients/rarityGradient";
 import { hooks } from "client/ui/hooks";
 import { getPetImage } from "client/util/getPetImage";
 import { playSFX, UIEngagement } from "client/util/playSound";
+import { PET_MASTERY_REQUIREMENTS } from "shared/configs/petMastery";
 import { Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
+import { PetMasteryState } from "shared/rodux/petMastery";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
 import { getPetData } from "shared/util/getPetData";
 
@@ -26,6 +29,7 @@ interface IndexPetCardProps extends IndexPetCardMappedProps {
 
 interface IndexPetCardMappedProps {
 	index: PlayerIndexState;
+	petMastery: PetMasteryState;
 }
 
 /**
@@ -37,6 +41,7 @@ interface IndexPetCardMappedProps {
 function mapStateToProps(state: StoreState): IndexPetCardMappedProps {
 	return {
 		index: state.index,
+		petMastery: state.petMastery,
 	};
 }
 
@@ -47,7 +52,8 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 	hooks((props: IndexPetCardProps, hooks) => {
 		const petData = getPetData(props.pet);
 
-		const isDiscovered = props.index.pets.get(props.pet) !== undefined;
+		const petIndex = props.index.pets.get(props.pet);
+		const isDiscovered = petIndex !== undefined;
 
 		const raisedPosition = 0.4;
 		const raisedSpring = new Flipper.Spring(raisedPosition, { frequency: 5 });
@@ -56,6 +62,69 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 		const normalSpring = new Flipper.Spring(normalPosition, { frequency: 5 });
 
 		const { motor, binding } = useBindingMotor(hooks, normalPosition);
+
+		let unseenChallenges = 0;
+		if (isDiscovered && props.currentVariant !== undefined) {
+			const petMasteryPet = props.petMastery.get(petData.id);
+
+			if (props.currentVariant === "radiant") {
+				if (petIndex.fused.radiant >= PET_MASTERY_REQUIREMENTS[petData.rarity].radiant.fuse) {
+					if (petMasteryPet === undefined) {
+						unseenChallenges++;
+					} else if (!petMasteryPet.radiant.fuseClaimed) {
+						unseenChallenges++;
+					}
+				}
+
+				if (petIndex.maxLevel.radiant.amount >= PET_MASTERY_REQUIREMENTS[petData.rarity].radiant.maxLevel) {
+					if (petMasteryPet === undefined) {
+						unseenChallenges++;
+					} else if (!petMasteryPet.radiant.maxLevelClaimed) {
+						unseenChallenges++;
+					}
+				}
+			} else if (props.currentVariant === "void") {
+				if (petIndex.fused.void >= PET_MASTERY_REQUIREMENTS[petData.rarity].void.fuse) {
+					if (petMasteryPet === undefined) {
+						unseenChallenges++;
+					} else if (!petMasteryPet.void.fuseClaimed) {
+						unseenChallenges++;
+					}
+				}
+
+				if (petIndex.maxLevel.void.amount >= PET_MASTERY_REQUIREMENTS[petData.rarity].void.maxLevel) {
+					if (petMasteryPet === undefined) {
+						unseenChallenges++;
+					} else if (!petMasteryPet.void.maxLevelClaimed) {
+						unseenChallenges++;
+					}
+				}
+
+				if (petIndex.hatched.void >= PET_MASTERY_REQUIREMENTS[petData.rarity].void.hatch) {
+					if (petMasteryPet === undefined) {
+						unseenChallenges++;
+					} else if (!petMasteryPet.void.hatchClaimed) {
+						unseenChallenges++;
+					}
+				}
+			} else if (props.currentVariant === "regular") {
+				if (petIndex.hatched.regular >= PET_MASTERY_REQUIREMENTS[petData.rarity].regular.hatch) {
+					if (petMasteryPet === undefined) {
+						unseenChallenges++;
+					} else if (!petMasteryPet.regular.hatchClaimed) {
+						unseenChallenges++;
+					}
+				}
+
+				if (petIndex.maxLevel.regular.amount >= PET_MASTERY_REQUIREMENTS[petData.rarity].regular.maxLevel) {
+					if (petMasteryPet === undefined) {
+						unseenChallenges++;
+					} else if (!petMasteryPet.regular.maxLevelClaimed) {
+						unseenChallenges++;
+					}
+				}
+			}
+		}
 
 		return (
 			<BaseFrame BackgroundTransparency={1} LayoutOrder={petData.id}>
@@ -120,6 +189,14 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 							}}
 						/>
 					</BaseFrame>
+
+					{unseenChallenges > 0 && (
+						<Notification
+							amount={unseenChallenges}
+							position={UDim2.fromScale(0.95, 0)}
+							size={UDim2.fromScale(0.55, 0.55)}
+						/>
+					)}
 				</ImageButton>
 			</BaseFrame>
 		);
