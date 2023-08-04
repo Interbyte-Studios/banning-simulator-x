@@ -9,11 +9,14 @@ import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { ImageButton } from "client/ui/elements/baseElements/imagebuttons/image";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { Notification } from "client/ui/elements/common/notification";
 import { hooks } from "client/ui/hooks";
 import { getEggImage } from "client/util/getEggImage";
+import { getPetMasteryUnclaimedChallenges } from "client/util/getPetMasteryUnclaimedChallenges";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import { EggName } from "shared/configs/eggs";
 import { StoreState } from "shared/rodux";
+import { PetMasteryState } from "shared/rodux/petMastery";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
 import { getEggData } from "shared/util/getEggData";
 
@@ -26,6 +29,7 @@ interface IndexEggCardProps extends IndexEggCardMappedProps {
 
 interface IndexEggCardMappedProps {
 	index: PlayerIndexState;
+	petMastery: PetMasteryState;
 }
 
 /**
@@ -37,6 +41,7 @@ interface IndexEggCardMappedProps {
 function mapStateToProps(state: StoreState): IndexEggCardMappedProps {
 	return {
 		index: state.index,
+		petMastery: state.petMastery,
 	};
 }
 
@@ -65,6 +70,9 @@ export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
 		const normalSpring = new Flipper.Spring(normalPosition, { frequency: 5 });
 
 		const { motor, binding } = useBindingMotor(hooks, normalPosition);
+
+		const unseenChallenges = getPetMasteryUnclaimedChallenges(props.egg);
+		warn(unseenChallenges);
 
 		return (
 			<BaseFrame BackgroundTransparency={1} LayoutOrder={props.layoutOrder}>
@@ -127,6 +135,14 @@ export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
 							}}
 						/>
 					</BaseFrame>
+
+					{unseenChallenges > 0 && (
+						<Notification
+							amount={unseenChallenges}
+							position={UDim2.fromScale(0.95, 0)}
+							size={UDim2.fromScale(0.55, 0.55)}
+						/>
+					)}
 				</ImageButton>
 			</BaseFrame>
 		);

@@ -3,7 +3,9 @@ import Roact from "@rbxts/roact";
 import { uiClaimButtonStrokeColor } from "client/ui/commonValues";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
+import { Notification } from "client/ui/elements/common/notification";
 import { hooks } from "client/ui/hooks";
+import { getPetMasteryUnclaimedChallenges } from "client/util/getPetMasteryUnclaimedChallenges";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
@@ -19,6 +21,8 @@ export const ViewPets = hooks(
 		position: UDim2;
 		displayPets: (variant: Variants) => void;
 	}): Roact.Element => {
+		const unseenChallenges = getPetMasteryUnclaimedChallenges(props.egg, props.variant);
+
 		return (
 			<SpringImageButton
 				native={{
@@ -43,6 +47,13 @@ export const ViewPets = hooks(
 					}}
 					stroke={{ native: { Thickness: 2, Color: uiClaimButtonStrokeColor } }}
 				/>
+				{unseenChallenges > 0 && (
+					<Notification
+						amount={unseenChallenges}
+						position={UDim2.fromScale(0.95, 0)}
+						size={UDim2.fromScale(0.55, 0.55)}
+					/>
+				)}
 			</SpringImageButton>
 		);
 	},

@@ -4033,6 +4033,11 @@ hash = "15767b36a9ddcf41a49d0de3b608a17fcf9c58e766b6a7b3428232b5b8d41f22"
 id = 11591958646
 packable = false
 
+[inputs."images/vectors/SwordWithStroke.png"]
+hash = "896c9ac60a87c9946a1d9d0a808950b6ba445911a2709570f9a3ce754fb4ebcc"
+id = 14301909563
+packable = false
+
 [inputs."images/vectors/Teleport.png"]
 hash = "64ac8670bb6e5649e5ea18f15121c21d0e4d2f0e22507392acd5a47baa3d3bf4"
 id = 11591958708

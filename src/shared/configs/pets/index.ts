@@ -87,6 +87,7 @@ export const DEFAULT_EQUIP_AMOUNT = 4;
  */
 export const isVariant = t.literal("regular", "void", "radiant");
 export type Variants = t.static<typeof isVariant>;
+export const PetVariants = ["regular", "void", "radiant"];
 
 export const VARIANT_GRADIENTS = {
 	regular: {

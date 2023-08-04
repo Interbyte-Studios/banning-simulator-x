@@ -1,7 +1,14 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { MarketplaceService, Players, RunService, Workspace } from "@rbxts/services";
-import { getManualAutoFightState, setPurchasedAutoFight } from "client/modules/autoFightCache";
+import {
+	getAutoFightCache,
+	getFocusedNPC,
+	getManualAutoFightState,
+	setAutoFightCache,
+	setFocusedNPC,
+	setPurchasedAutoFight,
+} from "client/modules/autoFightCache";
 import { toggleAutoFight } from "client/modules/autoFightWalkspeedHandler";
 import { getIsTrading } from "client/modules/isTradingCache";
 import {
@@ -22,7 +29,7 @@ import { hooks } from "client/ui/hooks";
 import { formatTime } from "client/util/formatTime";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { currencies, Currency } from "shared/configs/currencies";
+import { Currency } from "shared/configs/currencies";
 import { GAMEPASSES } from "shared/configs/game";
 import { isValidZone, UniversalWorldData, Zone, ZoneNames } from "shared/configs/zones";
 import { StoreState } from "shared/rodux";
@@ -36,25 +43,12 @@ import { RankState } from "shared/rodux/rank";
 import { WorldsState } from "shared/rodux/worlds";
 import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
-interface AutoFightCache {
-	obtainedCurrency: Array<{ name: Currency; amount: number }>;
-	bans: number;
-}
-
 let lastTimerCheck = 0;
 
 const NPC_ATTACK_DEBOUNCE = 1.5;
 let lastNPCAttackCheck = 0;
-let focusedNpc: Humanoid | undefined;
 
 const npcsFolder = Workspace.WaitForChild("npcs") as Folder;
-
-const autoFightCache: AutoFightCache = {
-	obtainedCurrency: currencies.map((value) => {
-		return { name: value, amount: 0 };
-	}),
-	bans: 0,
-};
 
 interface AutoFightProps extends AutoFightMappedProps {
 	hideMenu: () => void;
@@ -120,7 +114,9 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				return;
 			}
 
-			autoFightCache.bans += 1;
+			const currentCache = getAutoFightCache();
+
+			setAutoFightCache({ ...currentCache, bans: currentCache.bans + 1 });
 		}, [isEnabled, props.bans]);
 
 		useEffect(() => {
@@ -128,12 +124,19 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				return;
 			}
 
-			if (autoFightCache.bans >= 2) {
+			const currentCache = getAutoFightCache();
+			if (currentCache.bans >= 2) {
 				return;
 			}
 
-			autoFightCache.obtainedCurrency.forEach((currency) => {
-				currency.amount = props.currencies[currency.name];
+			setAutoFightCache({
+				...currentCache,
+				obtainedCurrency: currentCache.obtainedCurrency.map((currency) => {
+					return {
+						...currency,
+						amount: props.currencies[currency.name],
+					};
+				}),
 			});
 		}, [isEnabled, props.currencies]);
 
@@ -223,6 +226,8 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 					return;
 				}
 
+				const focusedNpc = getFocusedNPC();
+
 				if (focusedNpc !== undefined && focusedNpc.Health > 0) {
 					const root = focusedNpc.RootPart;
 					if (root === undefined) {
@@ -236,7 +241,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 					}
 					return;
 				} else {
-					focusedNpc = undefined;
+					setFocusedNPC(undefined);
 				}
 
 				const now = time();
@@ -322,7 +327,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				const targetPosition = npcRootPart.Position.sub(direction.mul(2));
 				humanoid.MoveTo(targetPosition);
 
-				focusedNpc = npcHumanoid;
+				setFocusedNPC(npcHumanoid);
 				debug.profileend();
 			});
 
@@ -367,12 +372,14 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				return;
 			}
 
-			autoFightCache.obtainedCurrency.forEach((currencyData) => {
-				currencyData.amount = 0;
+			const currentCache = getAutoFightCache();
+			setAutoFightCache({
+				obtainedCurrency: currentCache.obtainedCurrency.map((currency) => {
+					return { name: currency.name, amount: 0 };
+				}),
+				bans: 0,
 			});
-			autoFightCache.bans = 0;
-
-			focusedNpc = undefined;
+			setFocusedNPC(undefined);
 		}, [isEnabled, props.currencies, props.rank, props.currentWeapon]);
 
 		useEffect(() => {
@@ -381,6 +388,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 			}
 
 			const connection = npcsFolder.ChildRemoved.Connect((npcCharacter) => {
+				const focusedNpc = getFocusedNPC();
 				if (focusedNpc === undefined) {
 					return;
 				}
@@ -401,12 +409,12 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				if (!props.gamepasses["Auto Fight"]) {
 					task.delay(1, (): void => {
 						if (focusedNpc === humanoid) {
-							focusedNpc = undefined;
+							setFocusedNPC(undefined);
 						}
 					});
 				} else {
 					if (focusedNpc === humanoid) {
-						focusedNpc = undefined;
+						setFocusedNPC(undefined);
 					}
 				}
 			});
@@ -530,7 +538,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 				</ImageLabel>
 			);
 		} else {
-			const currencyAmount = autoFightCache.obtainedCurrency.find((currency) => currency.name === farmingCurrency);
+			const currencyAmount = getAutoFightCache().obtainedCurrency.find((currency) => currency.name === farmingCurrency);
 
 			const advertisement: Array<Roact.Element> = [];
 			if (!props.gamepasses["Auto Fight"]) {
@@ -655,7 +663,7 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 						native={{
 							Position: UDim2.fromScale(0.8, 0.65),
 							Size: UDim2.fromScale(0.215, 0.3),
-							Text: tostring(autoFightCache.bans),
+							Text: tostring(getAutoFightCache().bans),
 							TextXAlignment: Enum.TextXAlignment.Left,
 						}}
 						stroke={{

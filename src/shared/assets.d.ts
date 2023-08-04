@@ -603,6 +603,7 @@ declare namespace assetIds {
 			StarCoin: string;
 			Shield: string;
 			Sword: string;
+			SwordWithStroke: string;
 			trading: {
 				Wantit: string;
 				DontWant: string;

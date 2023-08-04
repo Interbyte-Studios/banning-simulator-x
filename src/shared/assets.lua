@@ -895,6 +895,7 @@ return {
 			SpinWheel = "rbxassetid://11591958579",
 			StarCoin = "rbxassetid://11866057225",
 			Sword = "rbxassetid://11591958646",
+			SwordWithStroke = "rbxassetid://14301909563",
 			Teleport = "rbxassetid://11591958708",
 			Timer = "rbxassetid://14239637916",
 			Trading = "rbxassetid://11591958836",
