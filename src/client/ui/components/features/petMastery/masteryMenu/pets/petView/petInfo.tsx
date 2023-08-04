@@ -226,6 +226,7 @@ const IndexStats = RoactRodux.connect(mapIndexStateToIndexStatProps)(
 				}
 			}
 		}
+		warn(`Pet: ${props.pet} Variant: ${props.variant} Hatches: ${hatches}`);
 
 		return (
 			<ImageLabel

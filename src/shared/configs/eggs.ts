@@ -78,6 +78,12 @@ export const isValidMasteryEgg = t.literal(
 );
 export type ValidMasteryEgg = t.static<typeof isValidMasteryEgg>;
 
+export const isEventEgg = t.literal("500k Event", "Throwback");
+export type EventEgg = t.static<typeof isEventEgg>;
+
+export const isExclusiveEgg = t.literal("Royalty", "Radioactive", "Divine", "Dweller");
+export type ExclusiveEgg = t.static<typeof isExclusiveEgg>;
+
 /**
  * All the eggs in the game.
  */

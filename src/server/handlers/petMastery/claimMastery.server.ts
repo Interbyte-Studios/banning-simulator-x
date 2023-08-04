@@ -4,6 +4,7 @@ import { remotes } from "shared/remotes";
 import { ClaimPetMasteryFailKind } from "shared/remotes/petMastery/claimMastery";
 import { storeBoost } from "shared/rodux/boosts";
 import { claimFuseMastery, claimHatchMastery, claimMaxLevelMastery } from "shared/rodux/petMastery";
+import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetData } from "shared/util/getPetData";
 import { UnreachableCaseError } from "shared/util/unreachableCaseError";
 
@@ -27,6 +28,7 @@ remotes.Server.GetNamespace("petMastery")
 				};
 			}
 
+			const eggName = getEggNameFromPetId(id);
 			const petData = getPetData(id);
 			const variantMasteryRequirements = PET_MASTERY_REQUIREMENTS[petData.rarity][variant];
 
@@ -78,27 +80,34 @@ remotes.Server.GetNamespace("petMastery")
 				}
 				case "void": {
 					if (method === "maxLevel") {
-						if (petMastery !== undefined && petMastery[variant].maxLevelClaimed) {
+						if (petMastery !== undefined && petMastery.void.maxLevelClaimed) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.InternalError,
 							};
 						}
 
-						if (petsIndex.maxLevel[variant].cachedMaxLevel.size() < variantMasteryRequirements.maxLevel) {
+						if (petsIndex.maxLevel.void.cachedMaxLevel.size() < variantMasteryRequirements.maxLevel) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
 							};
 						}
 
-						const boostReward = PET_MASTERY_REWARDS[petData.rarity][variant][method];
+						const boostReward = PET_MASTERY_REWARDS[petData.rarity].void[method];
 						store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
 					} else if (method === "hatch") {
-						if (petMastery !== undefined && petMastery[variant].hatchClaimed) {
+						if (petMastery !== undefined && petMastery.void.hatchClaimed) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.InternalError,
+							};
+						}
+
+						if (eggName === "500k Event" || eggName === "Throwback") {
+							return {
+								success: false,
+								reason: ClaimPetMasteryFailKind.InvalidMastery,
 							};
 						}
 
@@ -109,24 +118,24 @@ remotes.Server.GetNamespace("petMastery")
 							};
 						}
 
-						const boostReward = PET_MASTERY_REWARDS[petData.rarity][variant][method];
+						const boostReward = PET_MASTERY_REWARDS[petData.rarity].void[method];
 						store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
 					} else if (method === "fuse") {
-						if (petMastery !== undefined && petMastery[variant].fuseClaimed) {
+						if (petMastery !== undefined && petMastery.void.fuseClaimed) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.InternalError,
 							};
 						}
 
-						if (petsIndex.fused[variant] < variantMasteryRequirements.fuse) {
+						if (petsIndex.fused.void < variantMasteryRequirements.fuse) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.NotEnoughFusions,
 							};
 						}
 
-						const boostReward = PET_MASTERY_REWARDS[petData.rarity][variant][method];
+						const boostReward = PET_MASTERY_REWARDS[petData.rarity].void[method];
 						store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
 					}
 
@@ -134,21 +143,21 @@ remotes.Server.GetNamespace("petMastery")
 				}
 				case "radiant": {
 					if (method === "maxLevel") {
-						if (petMastery !== undefined && petMastery[variant].maxLevelClaimed) {
+						if (petMastery !== undefined && petMastery.radiant.maxLevelClaimed) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.InternalError,
 							};
 						}
 
-						if (petsIndex.maxLevel[variant].cachedMaxLevel.size() < variantMasteryRequirements.maxLevel) {
+						if (petsIndex.maxLevel.radiant.cachedMaxLevel.size() < variantMasteryRequirements.maxLevel) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
 							};
 						}
 
-						const boostReward = PET_MASTERY_REWARDS[petData.rarity][variant][method];
+						const boostReward = PET_MASTERY_REWARDS[petData.rarity].radiant[method];
 						store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
 					} else if (method === "hatch") {
 						return {
@@ -156,21 +165,21 @@ remotes.Server.GetNamespace("petMastery")
 							reason: ClaimPetMasteryFailKind.InvalidMastery,
 						};
 					} else if (method === "fuse") {
-						if (petMastery !== undefined && petMastery[variant].fuseClaimed) {
+						if (petMastery !== undefined && petMastery.radiant.fuseClaimed) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.InternalError,
 							};
 						}
 
-						if (petsIndex.fused[variant] < variantMasteryRequirements.fuse) {
+						if (petsIndex.fused.radiant < variantMasteryRequirements.fuse) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.NotEnoughFusions,
 							};
 						}
 
-						const boostReward = PET_MASTERY_REWARDS[petData.rarity][variant][method];
+						const boostReward = PET_MASTERY_REWARDS[petData.rarity].radiant[method];
 						store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
 					}
 
