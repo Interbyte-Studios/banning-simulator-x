@@ -51,21 +51,6 @@ export const EggCost = RoactRodux.connect(mapStateToProps)(
 						const eggMasteryReducedMultiplier = getEggsMastery(props.eggs).reducedEggCostMultiplier;
 						const eggCostRegular = getEggCost(eggName, false, eggMasteryReducedMultiplier);
 
-						if (eggName === "Throwback") {
-							return (
-								<>
-									{regularCost !== undefined && (
-										<EggCostDisplay
-											adornee={regularCost}
-											cost={eggCostRegular.amount}
-											currency={eggCostRegular.currencyType}
-											isVoid={false}
-										/>
-									)}
-								</>
-							);
-						}
-
 						const voidCost = eggModel.void.FindFirstChild("cost") as BasePart;
 						const eggCostVoid = getEggCost(eggName, true, eggMasteryReducedMultiplier);
 

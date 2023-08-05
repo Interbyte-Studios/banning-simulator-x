@@ -28,6 +28,8 @@ interface MappedActiveCurrencyOfferProps {
 enum TradedCurrency {
 	Coins = "coins",
 	Gems = "gems",
+	Gears = "gears",
+	CyberToken = "cyber tokens",
 }
 
 /**
@@ -214,7 +216,15 @@ export const ActiveCurrencyOffer = RoactRodux.connect(mapStateToProps)(
 					position={UDim2.fromScale(0.065, 0.5)}
 					size={{ minimizedSize: 0.9, maximizedSize: 1 }}
 					currency={
-						props.currentOffer.currency === undefined || props.currentOffer.currency.type === "coins" ? "coins" : "gems"
+						props.currentOffer.currency === undefined || props.currentOffer.currency.type === "coins"
+							? "coins"
+							: props.currentOffer.currency.type === "gears"
+							? "gears"
+							: props.currentOffer.currency.type === "cyber tokens"
+							? "cyber tokens"
+							: props.currentOffer.currency.type === "gems"
+							? "gems"
+							: "coins"
 					}
 					events={{
 						/**
@@ -231,6 +241,14 @@ export const ActiveCurrencyOffer = RoactRodux.connect(mapStateToProps)(
 
 							switch (offeredCurrencyType) {
 								case TradedCurrency.Coins: {
+									setOfferedCurrencyType(TradedCurrency.Gears);
+									return;
+								}
+								case TradedCurrency.Gears: {
+									setOfferedCurrencyType(TradedCurrency.CyberToken);
+									return;
+								}
+								case TradedCurrency.CyberToken: {
 									setOfferedCurrencyType(TradedCurrency.Gems);
 									return;
 								}

@@ -27,7 +27,7 @@ export const EXTREME_EXPERIENCE_BUNDLE = 1584133443;
 export const isCurrencyPurchaseOption = t.literal("pile", "bag", "chest", "vault");
 export type CurrencyPurchaseOption = t.static<typeof isCurrencyPurchaseOption>;
 
-export type CurrencyPurchaseType = Exclude<Currency, TrialsCurrency>;
+export type CurrencyPurchaseType = Exclude<Currency, TrialsCurrency | "cyber tokens">;
 export type CurrencyPurchase = {
 	[P in CurrencyPurchaseType]: {
 		[K in CurrencyPurchaseOption]: {

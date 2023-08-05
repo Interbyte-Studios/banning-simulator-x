@@ -1,6 +1,6 @@
 import { t } from "@rbxts/t";
 
-export const currencies = ["coins", "gems", "gears"] as const;
+export const currencies = ["coins", "gems", "gears", "cyber tokens"] as const;
 export const isTrialsCurrency = t.literal("gears");
 export type TrialsCurrency = t.static<typeof isTrialsCurrency>;
 
@@ -19,6 +19,10 @@ export const CURRENCY_GRADIENTS = {
 	},
 	gems: {
 		BeginningColor: Color3.fromRGB(173, 82, 102),
+		EndingColor: Color3.fromRGB(240, 64, 110),
+	},
+	"cyber tokens": {
+		BeginningColor: Color3.fromRGB(99, 5, 92),
 		EndingColor: Color3.fromRGB(240, 64, 110),
 	},
 	gears: {

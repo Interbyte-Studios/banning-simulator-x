@@ -72,8 +72,6 @@ export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
 		const { motor, binding } = useBindingMotor(hooks, normalPosition);
 
 		const unseenChallenges = getPetMasteryUnclaimedChallenges(props.egg);
-		warn(unseenChallenges);
-
 		return (
 			<BaseFrame BackgroundTransparency={1} LayoutOrder={props.layoutOrder}>
 				<uiaspectratioconstraint AspectRatio={4.5} />

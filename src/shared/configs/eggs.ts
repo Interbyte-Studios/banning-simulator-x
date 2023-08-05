@@ -75,6 +75,9 @@ export const isValidMasteryEgg = t.literal(
 	"GearWorx",
 	"Dweller",
 	"Throwback",
+	"City",
+	"Cybernetic",
+	"Corrupt",
 );
 export type ValidMasteryEgg = t.static<typeof isValidMasteryEgg>;
 
@@ -148,16 +151,16 @@ export const EGGS = {
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,
-		hidden: true,
+		hidden: false,
 		luckApplies: true,
 	},
-	Cyber: {
+	Cybernetic: {
 		id: 8,
 		pets: CYBER_EGG_PETS,
 		world: "Limited",
 		zone: "Limited",
 		hatchable: false,
-		hidden: true,
+		hidden: false,
 		luckApplies: true,
 	},
 	Corrupt: {
@@ -264,7 +267,7 @@ export const EGGS = {
 		pets: THROWBACK_EGG_PETS,
 		world: "Ban Land",
 		zone: "Forest",
-		hatchable: true,
+		hatchable: false,
 		hidden: false,
 		luckApplies: true,
 	},

@@ -429,7 +429,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 								await handleHatch(eggName, "regular", 1);
 							}
 							break;
-						} else if (eggName !== "Radioactive") {
+						} else {
 							const withinDistanceForVoid = withinDistanceToHatch(character, eggName, true);
 							if (withinDistanceForVoid) {
 								if (autoEnabled) {
@@ -481,7 +481,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 								await handleHatch(eggName, "regular", 3);
 							}
 							break;
-						} else if (eggName !== "Radioactive") {
+						} else {
 							const withinDistanceForVoid = withinDistanceToHatch(character, eggName, true);
 							if (withinDistanceForVoid) {
 								if (autoEnabled) {
@@ -516,22 +516,6 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					const pets: Array<Pet> = [];
 					for (const [, petData] of pairs(eggData.pets)) {
 						pets.push(petData);
-					}
-
-					if (eggName === "Throwback") {
-						return (
-							<frame Visible={false}>
-								{regularEgg && (
-									<EggHudDisplay
-										adornee={regularEgg}
-										eggName={eggName}
-										isVoid={false}
-										possiblePets={pets}
-										handleHatch={handleHatch}
-									/>
-								)}
-							</frame>
-						);
 					}
 
 					const voidEgg = eggFolder.void.egg.PrimaryPart;

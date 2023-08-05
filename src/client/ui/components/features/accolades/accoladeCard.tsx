@@ -169,6 +169,8 @@ export const AccoladeCard = hooks(
 									? assetIds.images.vectors.currencies.GemBag
 									: props.accoladeData.reward.rewardType === "gears"
 									? assetIds.images.vectors.Gear
+									: props.accoladeData.reward.rewardType === "cyber tokens"
+									? assetIds.images.vectors.CyberToken
 									: BOOST_IMAGES[props.accoladeData.reward.rewardType][
 											props.accoladeData.reward.amount as ValidBoostTime
 									  ],

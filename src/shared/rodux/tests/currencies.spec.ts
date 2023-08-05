@@ -9,8 +9,8 @@ export = (): void => {
 		it("should increase currency for npc kill", () => {
 			const currencyAmount = 100;
 
-			const state = { coins: 10, gems: 10, gears: 10 };
-			const newState = { coins: state.coins + currencyAmount, gems: 10, gears: 10 };
+			const state = { coins: 10, gems: 10, gears: 10, "cyber tokens": 10 };
+			const newState = { coins: state.coins + currencyAmount, gems: 10, gears: 10, "cyber tokens": 10 };
 
 			const action = killNpc(currencyAmount, "coins", 1, 0, 1, 1, 1, []);
 			testAction(state, newState, currenciesReducer, action);
