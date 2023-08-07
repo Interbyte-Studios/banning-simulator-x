@@ -271,7 +271,7 @@ export const DeleteAll = RoactRodux.connect(mapStateToProps)(
 								const petsToDelete: Array<string> = [];
 								for (const pet of props.pets) {
 									const petData = getPetData(pet.id);
-									if (isImmuneRarity(petData.rarity)) {
+									if (isImmuneRarity(petData.rarity) || petData.rarity === "Legendary") {
 										continue;
 									}
 
@@ -388,13 +388,6 @@ export const PetInventory = hooks((_, { useState, useCallback, useEffect }) => {
 					}}
 				/>
 				<ToggleShrink />
-				<ToggleMultiDelete
-					isEnabled={deleteEnabled}
-					setDeletion={(enabled: boolean): void => {
-						setDeleteEnabled(enabled);
-					}}
-					petsToDelete={petsToDelete}
-				/>
 				<PetItems
 					multiDeleteEnabled={deleteEnabled}
 					searchText={searchText}
@@ -404,6 +397,13 @@ export const PetInventory = hooks((_, { useState, useCallback, useEffect }) => {
 				/>
 				<PetInventoryBottomControl enableTeams={(): void => setTeamsEnabled(true)} />
 				<DeleteAll />
+				<ToggleMultiDelete
+					isEnabled={deleteEnabled}
+					setDeletion={(enabled: boolean): void => {
+						setDeleteEnabled(enabled);
+					}}
+					petsToDelete={petsToDelete}
+				/>
 				{petInfoDisplay}
 			</BaseFrame>
 		);

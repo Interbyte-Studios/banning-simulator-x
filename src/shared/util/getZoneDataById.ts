@@ -1,5 +1,5 @@
-import { WorldName, WORLDS } from "shared/configs/worlds";
-import { Zone, ZoneNames } from "shared/configs/zones";
+import { WorldName } from "shared/configs/worlds";
+import { Zone, ZoneNames, zones } from "shared/configs/zones";
 
 interface ZoneInfo extends Zone {
 	name: ZoneNames;
@@ -13,9 +13,7 @@ interface ZoneInfo extends Zone {
  * @returns Zone config data.
  */
 export function getZoneDataById(worldName: WorldName, id: number): ZoneInfo {
-	const worldData = WORLDS[worldName];
-
-	for (const [zoneName, zone] of pairs(worldData.zones)) {
+	for (const [zoneName, zone] of pairs(zones)) {
 		if (zone.id === id) {
 			return { ...zone, name: zoneName };
 		}

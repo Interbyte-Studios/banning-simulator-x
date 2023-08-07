@@ -48,7 +48,7 @@ export interface Quest {
  */
 /* eslint-disable jsdoc/require-jsdoc */
 export const QUESTS: {
-	[P in keyof Worlds]: { zone: { [P in ZoneNames]: Array<Quest> }; world: Array<Quest> };
+	[P in keyof Worlds]: { zone: { [P in ZoneNames]?: Array<Quest> }; world: Array<Quest> };
 } = {
 	"Ban Land": {
 		zone: {
@@ -64,17 +64,6 @@ export const QUESTS: {
 					},
 				},
 			],
-			"Candy Land": [],
-			"Ice Land": [],
-			"Lava Lands": [],
-			"Sunflower Field": [],
-			"The Mines": [],
-			Beach: [],
-			Forest: [],
-			Honeycomb: [],
-			"Enchanted Forest": [],
-			"Toxic Lands": [],
-			"Jester Castle": [],
 		},
 		world: [
 			{
@@ -86,6 +75,10 @@ export const QUESTS: {
 				},
 			},
 		],
+	},
+	"Cyber Cities": {
+		zone: {},
+		world: [],
 	},
 };
 /* eslint-enable jsdoc/require-jsdoc */

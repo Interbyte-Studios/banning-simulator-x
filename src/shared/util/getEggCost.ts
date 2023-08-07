@@ -95,6 +95,38 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 			eggCost.currencyType = zoneData.cost.currency;
 			break;
 		}
+		case 7: {
+			const cost = 5;
+			const voidCost = cost * 25;
+			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
+			eggCost.amount = math.ceil(eggCost.amount);
+			eggCost.currencyType = "cyber tokens";
+			break;
+		}
+		case 8: {
+			if (zoneData.cost === undefined) {
+				throw `Unexpected issue while finding cost for "${egg}"`;
+			}
+
+			const cost = 405;
+			const voidCost = cost * 25;
+			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
+			eggCost.amount = math.ceil(eggCost.amount);
+			eggCost.currencyType = zoneData.cost.currency;
+			break;
+		}
+		case 9: {
+			if (zoneData.cost === undefined) {
+				throw `Unexpected issue while finding cost for "${egg}"`;
+			}
+
+			const cost = 5_300;
+			const voidCost = cost * 25;
+			eggCost.amount = isVoid ? voidCost - voidCost * reducedCost : cost - cost * reducedCost;
+			eggCost.amount = math.ceil(eggCost.amount);
+			eggCost.currencyType = zoneData.cost.currency;
+			break;
+		}
 		case 12: {
 			if (zoneData.cost === undefined) {
 				throw `Unexpected issue while finding cost for "${egg}"`;

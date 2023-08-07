@@ -5,4 +5,5 @@ import { remotes } from "shared/remotes";
  */
 export const zonesRemotes = {
 	purchaseZone: remotes.Client.Get("purchaseZone"),
+	purchaseWorld: remotes.Client.Get("purchaseWorld"),
 };

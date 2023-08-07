@@ -133,12 +133,11 @@ export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
 							}}
 						/>
 					</BaseFrame>
-
 					{unseenChallenges > 0 && (
 						<Notification
 							amount={unseenChallenges}
-							position={UDim2.fromScale(0.95, 0)}
-							size={UDim2.fromScale(0.55, 0.55)}
+							position={UDim2.fromScale(0.9, 0.9)}
+							size={UDim2.fromScale(0.5, 0.5)}
 						/>
 					)}
 				</ImageButton>

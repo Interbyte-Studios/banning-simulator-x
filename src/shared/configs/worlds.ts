@@ -1,14 +1,8 @@
 import { t } from "@rbxts/t";
 
 import { Currency } from "./currencies";
-import { Zones } from "./zones";
-import { BAN_LAND_ZONES } from "./zones/banLand";
 
 interface World {
-	/**
-	 * The zones available in the world.
-	 */
-	zones: Zones;
 	/**
 	 * The currency to reward players with.
 	 */
@@ -16,15 +10,24 @@ interface World {
 	/**
 	 * The songs that exist to play in this world.
 	 */
-	music: { [index: string]: number };
+	music: Array<number>;
 
 	/**
 	 * The id of the world.
 	 */
 	id: number;
+
+	// Cost options (optional).
+	cost:
+		| {
+				requiredRank: number;
+				currencyType: Currency;
+				amount: number;
+		  }
+		| undefined;
 }
 
-export const isWorldName = t.literal("Ban Land");
+export const isWorldName = t.literal("Ban Land", "Cyber Cities");
 export type WorldName = t.static<typeof isWorldName>;
 
 /**
@@ -32,15 +35,19 @@ export type WorldName = t.static<typeof isWorldName>;
  */
 export const WORLDS = {
 	"Ban Land": {
-		zones: BAN_LAND_ZONES,
 		reward: "coins",
 		id: 1,
-		music: {
-			Smooth: 1837111764,
-			Paradise: 1837879082,
-			Leisure: 1836057733,
-			//Arcade: 1842976958, -- for cyber world
-			//SonicSunrise: 1838587765, -- may not use
+		music: [1837111764, 1837879082, 1836057733],
+		cost: undefined,
+	},
+	"Cyber Cities": {
+		reward: "cyber tokens",
+		id: 2,
+		music: [1842976958, 1838587765],
+		cost: {
+			requiredRank: 10,
+			currencyType: "coins",
+			amount: 60_000_000,
 		},
 	},
 } satisfies Record<WorldName, World>;

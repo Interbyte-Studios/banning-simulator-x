@@ -2,6 +2,7 @@ import { ReplicatedStorage } from "@rbxts/services";
 import { playerStores } from "server/playerStore";
 import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { WORLDS } from "shared/configs/worlds";
+import { zones } from "shared/configs/zones";
 import { NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 import { killNpc } from "shared/rodux/currencies";
@@ -55,7 +56,7 @@ export function runStep(
 		for (const zone of world.zones) {
 			// spawn any npcs that need spawning
 			if (zone.npcs.size() < ZONE_NPC_AMOUNT) {
-				const zoneInfo = WORLDS[world.name].zones[zone.name];
+				const zoneInfo = zones[zone.name];
 				assert(zoneInfo, `Failed to find zone "${zone.name}" in world "${world.name}"`);
 
 				const amountOfBosses = zone.npcs.filter((npc) => npc.npc.isBoss === true).size();
@@ -232,7 +233,7 @@ export function runStep(
 					reward.currency * currencyMultiplier,
 					WORLDS[npc.world.name].reward,
 					petBansBonus,
-					reward.experience * experienceMultiplier * 2,
+					reward.experience * experienceMultiplier,
 					storeState.currentWeapon.id,
 					storeState.currentTalisman,
 					petExperienceMultiplier,

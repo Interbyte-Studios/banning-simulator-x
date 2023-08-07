@@ -21,6 +21,7 @@ import {
 	TEN_SPINS,
 } from "shared/configs/game";
 import { WORLDS } from "shared/configs/worlds";
+import { zones } from "shared/configs/zones";
 import { remotes } from "shared/remotes";
 import { storeBoost } from "shared/rodux/boosts";
 import { awardCurrency } from "shared/rodux/currencies";
@@ -89,7 +90,11 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 						continue;
 					}
 
-					for (const [zoneName, zoneData] of pairs(worldData.zones)) {
+					for (const [zoneName, zoneData] of pairs(zones)) {
+						if (zoneData.worldParent !== worldName) {
+							continue;
+						}
+
 						const storedZone = storedWorld.zones.find((zone) => zone === zoneName);
 						if (storedZone === undefined) {
 							continue;

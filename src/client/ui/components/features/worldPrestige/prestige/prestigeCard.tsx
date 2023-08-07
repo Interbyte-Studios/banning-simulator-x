@@ -15,6 +15,7 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { WorldName, WORLDS } from "shared/configs/worlds";
+import { zones } from "shared/configs/zones";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
 import { WorldPrestigeState } from "shared/rodux/worldPrestige";
@@ -55,15 +56,14 @@ export const PrestigeCard = RoactRodux.connect(mapStateToProps)(
 		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 		useEffect(() => {
-			const worldConfig = WORLDS[props.worldName];
 			let lastZoneId = 0;
-			for (const [, zoneData] of pairs(worldConfig.zones)) {
+			for (const [, zoneData] of pairs(zones)) {
 				if (zoneData.id > lastZoneId) {
 					lastZoneId = zoneData.id;
 				}
 			}
 
-			const lastZone = Object.values(worldConfig.zones).find((zoneData) => zoneData.id === lastZoneId);
+			const lastZone = Object.values(zones).find((zoneData) => zoneData.id === lastZoneId);
 			if (lastZone === undefined) {
 				throw `Could not find last zone of world ${props.worldName} | Zone ID: ${lastZoneId}`;
 			}

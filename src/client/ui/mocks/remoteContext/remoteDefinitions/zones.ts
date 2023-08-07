@@ -1,3 +1,4 @@
+import { PurchaseWorldDefinition } from "shared/remotes/purchaseWorld";
 import { PurchaseZoneDefinition } from "shared/remotes/purchaseZone";
 
 import { fakeFunctionCall } from "../fakeFunctionCall";
@@ -7,6 +8,11 @@ import { fakeFunctionCall } from "../fakeFunctionCall";
  */
 export const zonesRemoteContext = {
 	purchaseZone: fakeFunctionCall<PurchaseZoneDefinition>("purchaseZone", () => {
+		return {
+			success: true,
+		};
+	}),
+	purchaseWorld: fakeFunctionCall<PurchaseWorldDefinition>("purchaseWorld", () => {
 		return {
 			success: true,
 		};

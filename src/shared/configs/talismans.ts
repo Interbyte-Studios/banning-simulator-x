@@ -141,6 +141,58 @@ export const TALISMANS = {
 			walkspeed: 50,
 		},
 	},
+	"Sun Talisman": {
+		id: 10,
+		cost: {
+			currency: "cyber tokens",
+			amount: 22_500,
+			rank: 12,
+		},
+		stats: {
+			experience: 1,
+			damage: 40_960,
+			walkspeed: 52,
+		},
+	},
+	"Phoenix Talisman": {
+		id: 11,
+		cost: {
+			currency: "cyber tokens",
+			amount: 202_500,
+			rank: 14,
+		},
+		stats: {
+			experience: 1,
+			damage: 163_840,
+			walkspeed: 55,
+		},
+	},
+	"Guere Talisman": {
+		id: 12,
+		cost: {
+			currency: "cyber tokens",
+			amount: 1_822_500,
+			rank: 16,
+		},
+		stats: {
+			experience: 1,
+			damage: 655_360,
+			walkspeed: 55,
+		},
+	},
+	"Dual Talisman": {
+		id: 13,
+		cost: {
+			currency: "cyber tokens",
+			amount: 16_402_500,
+			rank: 18,
+		},
+		stats: {
+			experience: 1,
+			damage: 2_621_440,
+			walkspeed: 55,
+		},
+	},
 } satisfies Record<string, Talisman>;
 
 export const TALISMAN_PHASES: Array<{

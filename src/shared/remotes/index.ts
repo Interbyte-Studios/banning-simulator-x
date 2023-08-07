@@ -15,6 +15,7 @@ import { media } from "./media";
 import { petMastery } from "./petMastery";
 import { pets } from "./pets";
 import { playerLoaded } from "./playerLoaded";
+import { purchaseWorldDefinition } from "./purchaseWorld";
 import { purchaseZoneDefinition } from "./purchaseZone";
 import { redeemQuestDefinition } from "./redeemQuest";
 import { rewardsDefinition } from "./rewards";
@@ -46,6 +47,7 @@ export const remotes = Net.Definitions.Create({
 	timeTrials: timeTrials,
 	trades: trading,
 
+	purchaseWorld: purchaseWorldDefinition,
 	claimPetQuest: claimPetQuestDefinition,
 	claimDailyRewards: claimDailyRewardsDefinition,
 	useGamepassGift: useGamepassGiftDefinition,

@@ -9,8 +9,8 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 		id: 47,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 19_800,
+			additionalBans: 105,
 		},
 	},
 	"City Bunny": {
@@ -18,8 +18,8 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 		id: 48,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 22_500,
+			additionalBans: 125,
 		},
 	},
 	"City Kitty": {
@@ -27,8 +27,8 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 		id: 49,
 		rarity: "Ordinary",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 27_900,
+			additionalBans: 145,
 		},
 	},
 	"City Deer": {
@@ -36,8 +36,8 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 		id: 50,
 		rarity: "Rare",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 36_000,
+			additionalBans: 165,
 		},
 	},
 	"City Angel": {
@@ -45,8 +45,8 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 		id: 51,
 		rarity: "Rare",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 39_500,
+			additionalBans: 175,
 		},
 	},
 	"City Defender": {
@@ -54,8 +54,8 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 		id: 52,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 53_500,
+			additionalBans: 200,
 		},
 	},
 };

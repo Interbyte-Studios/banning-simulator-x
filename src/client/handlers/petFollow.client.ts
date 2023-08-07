@@ -41,24 +41,6 @@ function isNan(value: number): boolean {
 }
 
 /**
- * Finds and returns the humanoid root part of the player.
- *
- * @param player The player to get the humanoid root part from.
- * @returns The humanoid root part of the player.
- */
-const getHumanoidRootPart = (player: Player): BasePart | undefined => {
-	const character = player.Character ?? player.CharacterAdded.Wait()[0];
-	if (character === undefined) {
-		return;
-	}
-	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
-	if (humanoid === undefined) {
-		return;
-	}
-	return humanoid.RootPart;
-};
-
-/**
  * Updates the player's animation cache with new visual settings.
  *
  * @param playerCache The cache of the player.
@@ -102,14 +84,9 @@ const createAndCachePet = (player: Player, playerCache: PlayerAnimationCache, pe
 const cachePlayerPetanimation = (player: Player): Promise<void> =>
 	onStoreCreated(player)
 		.andThen((store) => {
-			debug.setmemorycategory("petFollow");
+			debug.setmemorycategory("cachePlayerPetAnimation");
 			task.spawn(() =>
 				task.delay(5, () => {
-					const humanoidRootPart = getHumanoidRootPart(player);
-					if (humanoidRootPart === undefined) {
-						return;
-					}
-
 					const currentState = store.getState();
 					const playerCache = createPetAnimationCache(player);
 					updatePlayerCacheVisuals(playerCache, currentState.settings.visual);

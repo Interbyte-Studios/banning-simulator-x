@@ -17,11 +17,9 @@ export interface Weapon {
 	world: WorldName;
 
 	weaponType: WeaponType;
-
-	isBossWeapon: boolean;
 }
 
-export const MAX_WEAPON_ID = 51;
+export const MAX_WEAPON_ID = 67;
 export const WEAPONS = {
 	/* First Zone */
 	"Stone Hammer": {
@@ -34,7 +32,6 @@ export const WEAPONS = {
 		damage: 10,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 	"Basic Blade": {
 		id: 2,
@@ -46,7 +43,6 @@ export const WEAPONS = {
 		damage: 12,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"Flower Blade": {
 		id: 3,
@@ -58,7 +54,6 @@ export const WEAPONS = {
 		damage: 14,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"Stone Smacker": {
 		id: 4,
@@ -70,7 +65,6 @@ export const WEAPONS = {
 		damage: 16,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 
 	/* Desert */
@@ -84,7 +78,6 @@ export const WEAPONS = {
 		damage: 20,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"Machine Masher": {
 		id: 6,
@@ -96,7 +89,6 @@ export const WEAPONS = {
 		damage: 24,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 	"Starry Lance": {
 		id: 7,
@@ -108,7 +100,6 @@ export const WEAPONS = {
 		damage: 28,
 		world: "Ban Land",
 		weaponType: "Lance",
-		isBossWeapon: false,
 	},
 	Taliscythe: {
 		id: 8,
@@ -120,7 +111,6 @@ export const WEAPONS = {
 		damage: 32,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 
 	/* Sunflower Zone */
@@ -134,7 +124,6 @@ export const WEAPONS = {
 		damage: 40,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"Sunflower Basher": {
 		id: 10,
@@ -146,7 +135,6 @@ export const WEAPONS = {
 		damage: 48,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 	"Sunflower Spear": {
 		id: 11,
@@ -158,7 +146,6 @@ export const WEAPONS = {
 		damage: 56,
 		world: "Ban Land",
 		weaponType: "Lance",
-		isBossWeapon: false,
 	},
 	"Sunflower Slicer": {
 		id: 12,
@@ -170,7 +157,6 @@ export const WEAPONS = {
 		damage: 64,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 
 	/* Honeycomb Zone */
@@ -184,7 +170,6 @@ export const WEAPONS = {
 		damage: 80,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"Bumble Basher": {
 		id: 14,
@@ -196,7 +181,6 @@ export const WEAPONS = {
 		damage: 96,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 	"Buzz Lance": {
 		id: 15,
@@ -208,7 +192,6 @@ export const WEAPONS = {
 		damage: 112,
 		world: "Ban Land",
 		weaponType: "Lance",
-		isBossWeapon: false,
 	},
 	"Stinger Scythe": {
 		id: 16,
@@ -220,7 +203,6 @@ export const WEAPONS = {
 		damage: 128,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 
 	/* Iceland Zone */
@@ -234,7 +216,6 @@ export const WEAPONS = {
 		damage: 160,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"Lime Lance": {
 		id: 18,
@@ -246,7 +227,6 @@ export const WEAPONS = {
 		damage: 192,
 		world: "Ban Land",
 		weaponType: "Lance",
-		isBossWeapon: false,
 	},
 	"Atlantis Basher": {
 		id: 19,
@@ -258,7 +238,6 @@ export const WEAPONS = {
 		damage: 256,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 
 	/* Beach Zone */
@@ -272,7 +251,6 @@ export const WEAPONS = {
 		damage: 320,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"Tropical Thrasher": {
 		id: 21,
@@ -284,7 +262,6 @@ export const WEAPONS = {
 		damage: 384,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 	"Tropical Lance": {
 		id: 22,
@@ -296,7 +273,6 @@ export const WEAPONS = {
 		damage: 448,
 		world: "Ban Land",
 		weaponType: "Lance",
-		isBossWeapon: false,
 	},
 	"Beach Scythe": {
 		id: 23,
@@ -308,7 +284,6 @@ export const WEAPONS = {
 		damage: 512,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 
 	/* Candy Zone */
@@ -322,7 +297,6 @@ export const WEAPONS = {
 		damage: 640,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"Gumdrop Dropper": {
 		id: 25,
@@ -334,7 +308,6 @@ export const WEAPONS = {
 		damage: 768,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 	"Candy Lance": {
 		id: 26,
@@ -346,7 +319,6 @@ export const WEAPONS = {
 		damage: 896,
 		world: "Ban Land",
 		weaponType: "Lance",
-		isBossWeapon: false,
 	},
 	"Peppermint Scythe": {
 		id: 27,
@@ -358,7 +330,6 @@ export const WEAPONS = {
 		damage: 1_024,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 
 	/* The Mines Zone */
@@ -372,7 +343,6 @@ export const WEAPONS = {
 		damage: 1_280,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"Crystalized Hammer": {
 		id: 29,
@@ -384,7 +354,6 @@ export const WEAPONS = {
 		damage: 1_536,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 	"Amethyst Lance": {
 		id: 30,
@@ -396,7 +365,6 @@ export const WEAPONS = {
 		damage: 1_792,
 		world: "Ban Land",
 		weaponType: "Lance",
-		isBossWeapon: false,
 	},
 	"Crystalized Scythe": {
 		id: 31,
@@ -408,7 +376,6 @@ export const WEAPONS = {
 		damage: 2_048,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 
 	/* Lavaland Zone */
@@ -422,7 +389,6 @@ export const WEAPONS = {
 		damage: 2_560,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"Molten Thrasher": {
 		id: 33,
@@ -434,7 +400,6 @@ export const WEAPONS = {
 		damage: 3_072,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 	"Lava Lance": {
 		id: 34,
@@ -446,7 +411,6 @@ export const WEAPONS = {
 		damage: 3_584,
 		world: "Ban Land",
 		weaponType: "Lance",
-		isBossWeapon: false,
 	},
 	"Molten Scythe": {
 		id: 35,
@@ -458,7 +422,6 @@ export const WEAPONS = {
 		damage: 4_096,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 
 	// Enchanted Forest Zone
@@ -472,7 +435,6 @@ export const WEAPONS = {
 		damage: 5_500,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"Enchanted Lance": {
 		id: 37,
@@ -484,7 +446,6 @@ export const WEAPONS = {
 		damage: 6_200,
 		world: "Ban Land",
 		weaponType: "Lance",
-		isBossWeapon: false,
 	},
 	"Enchanted Scythe": {
 		id: 38,
@@ -496,7 +457,6 @@ export const WEAPONS = {
 		damage: 6_950,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"Enchanted Hammer": {
 		id: 39,
@@ -508,7 +468,6 @@ export const WEAPONS = {
 		damage: 8_192,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 
 	// Radioactive Zone
@@ -522,7 +481,6 @@ export const WEAPONS = {
 		damage: 12_900,
 		world: "Ban Land",
 		weaponType: "Lance",
-		isBossWeapon: false,
 	},
 	"Radioactive Greatsword": {
 		id: 41,
@@ -534,7 +492,6 @@ export const WEAPONS = {
 		damage: 13_875,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 	"Radioactive Scythe": {
 		id: 42,
@@ -546,7 +503,6 @@ export const WEAPONS = {
 		damage: 15_000,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"Radioactive Smasher": {
 		id: 43,
@@ -558,7 +514,6 @@ export const WEAPONS = {
 		damage: 16_384,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 
 	// Castle Zone
@@ -572,7 +527,6 @@ export const WEAPONS = {
 		damage: 22_000,
 		world: "Ban Land",
 		weaponType: "Lance",
-		isBossWeapon: false,
 	},
 	"Radiant Greatsword": {
 		id: 45,
@@ -584,7 +538,6 @@ export const WEAPONS = {
 		damage: 25_000,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 	"Radiant Scythe": {
 		id: 46,
@@ -596,7 +549,6 @@ export const WEAPONS = {
 		damage: 29_500,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"Radiant Smasher": {
 		id: 47,
@@ -608,7 +560,6 @@ export const WEAPONS = {
 		damage: 32_768,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
 	},
 
 	// GearWorx Time Trials
@@ -622,7 +573,6 @@ export const WEAPONS = {
 		damage: 40_000,
 		world: "Ban Land",
 		weaponType: "Lance",
-		isBossWeapon: false,
 	},
 	"GearWorx Blade": {
 		id: 49,
@@ -634,7 +584,6 @@ export const WEAPONS = {
 		damage: 55_000,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"GearWorx Scythe": {
 		id: 50,
@@ -646,7 +595,6 @@ export const WEAPONS = {
 		damage: 80_000,
 		world: "Ban Land",
 		weaponType: "Sword",
-		isBossWeapon: false,
 	},
 	"GearWorx Striker": {
 		id: 51,
@@ -658,7 +606,198 @@ export const WEAPONS = {
 		damage: 100_000,
 		world: "Ban Land",
 		weaponType: "Hammer",
-		isBossWeapon: false,
+	},
+
+	// Neon City
+	"City Lights Smasher": {
+		id: 52,
+		cost: {
+			requiredRank: 11,
+			currency: "cyber tokens",
+			amount: 600,
+		},
+		damage: 57_500,
+		world: "Ban Land",
+		weaponType: "Hammer",
+	},
+	"City Lights Slasher": {
+		id: 53,
+		cost: {
+			requiredRank: 11,
+			currency: "cyber tokens",
+			amount: 1_200,
+		},
+		damage: 65_536,
+		world: "Ban Land",
+		weaponType: "Sword",
+	},
+
+	// Electric Center
+	"Electro Basher": {
+		id: 54,
+		cost: {
+			requiredRank: 12,
+			currency: "cyber tokens",
+			amount: 1_800,
+		},
+		damage: 98_000,
+		world: "Ban Land",
+		weaponType: "Hammer",
+	},
+	"Electro Slicer": {
+		id: 55,
+		cost: {
+			requiredRank: 12,
+			currency: "cyber tokens",
+			amount: 3_600,
+		},
+		damage: 131_040,
+		world: "Ban Land",
+		weaponType: "Sword",
+	},
+
+	// Neon District
+	"Neon Thrasher": {
+		id: 56,
+		cost: {
+			requiredRank: 13,
+			currency: "cyber tokens",
+			amount: 5_400,
+		},
+		damage: 201_000,
+		world: "Ban Land",
+		weaponType: "Hammer",
+	},
+	"Naonic GreatBlade": {
+		id: 57,
+		cost: {
+			requiredRank: 13,
+			currency: "cyber tokens",
+			amount: 10_800,
+		},
+		damage: 262_144,
+		world: "Ban Land",
+		weaponType: "Sword",
+	},
+
+	// Cybershroom Forest
+	"Matrix Conductor": {
+		id: 58,
+		cost: {
+			requiredRank: 14,
+			currency: "cyber tokens",
+			amount: 16_200,
+		},
+		damage: 478_000,
+		world: "Ban Land",
+		weaponType: "Hammer",
+	},
+	"Matrix Enforcer": {
+		id: 59,
+		cost: {
+			requiredRank: 14,
+			currency: "cyber tokens",
+			amount: 32_400,
+		},
+		damage: 524_288,
+		world: "Ban Land",
+		weaponType: "Sword",
+	},
+
+	// Malware Mayhem
+	"Digital Thrasher": {
+		id: 60,
+		cost: {
+			requiredRank: 15,
+			currency: "cyber tokens",
+			amount: 48_600,
+		},
+		damage: 776_000,
+		world: "Ban Land",
+		weaponType: "Hammer",
+	},
+	"Digital Slasher": {
+		id: 61,
+		cost: {
+			requiredRank: 15,
+			currency: "cyber tokens",
+			amount: 97_200,
+		},
+		damage: 1_048_576,
+		world: "Ban Land",
+		weaponType: "Sword",
+	},
+
+	// UFO Valley
+	"UFO Slammer": {
+		id: 62,
+		cost: {
+			requiredRank: 16,
+			currency: "cyber tokens",
+			amount: 291_600,
+		},
+		damage: 1_650_000,
+		world: "Ban Land",
+		weaponType: "Hammer",
+	},
+	"UFO Slasher": {
+		id: 63,
+		cost: {
+			requiredRank: 16,
+			currency: "cyber tokens",
+			amount: 583_200,
+		},
+		damage: 2_097_152,
+		world: "Ban Land",
+		weaponType: "Sword",
+	},
+
+	// Holographic Museum
+	"Cyber Smasher": {
+		id: 64,
+		cost: {
+			requiredRank: 17,
+			currency: "cyber tokens",
+			amount: 874_800,
+		},
+		damage: 3_240_000,
+		world: "Ban Land",
+		weaponType: "Hammer",
+	},
+	"Cyber Slasher": {
+		id: 65,
+		cost: {
+			requiredRank: 17,
+			currency: "cyber tokens",
+			amount: 1_749_600,
+		},
+		damage: 4_194_304,
+		world: "Ban Land",
+		weaponType: "Sword",
+	},
+
+	// Binary Zone
+	"Glitched Banner": {
+		id: 66,
+		cost: {
+			requiredRank: 18,
+			currency: "cyber tokens",
+			amount: 2_624_400,
+		},
+		damage: 6_824_000,
+		world: "Ban Land",
+		weaponType: "Hammer",
+	},
+	"Glitched Slasher": {
+		id: 67,
+		cost: {
+			requiredRank: 18,
+			currency: "cyber tokens",
+			amount: 5_248_800,
+		},
+		damage: 8_388_608,
+		world: "Ban Land",
+		weaponType: "Sword",
 	},
 } satisfies Record<string, Weapon>;
 

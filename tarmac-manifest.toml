@@ -3274,7 +3274,7 @@ packable = false
 hash = "257ef13cdafc57511eb1d99b992246ee845d58a6fcf1628823ad19f7ae9f5169"
 packable = false
 
-[inputs."images/ranks/friendly/Cyber Legendary.png"]
+[inputs."images/ranks/friendly/Cyber Legend.png"]
 hash = "6af6f28db93277759e3815cfa974a198d9a33cdbb18c26550dadffcffbdef945"
 packable = false
 

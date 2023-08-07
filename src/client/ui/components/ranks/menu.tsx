@@ -14,6 +14,7 @@ import { CurrencyIcon } from "client/ui/elements/icons/currencyIcon";
 import { RankIcon } from "client/ui/elements/icons/rankIcon";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { getCurrentWorld } from "client/util/getCurrentWorld";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { RANKS } from "shared/configs/ranks";
@@ -74,7 +75,12 @@ export const RankUpgrade = RoactRodux.connect(mapStateToProps)(
 				}
 				lastInteraction = now;
 
-				const rankInteraction = Workspace.interactions.rankUpgrade.FindFirstChild("teleport") as BasePart;
+				const currentWorld = getCurrentWorld();
+				if (currentWorld === undefined) {
+					return;
+				}
+
+				const rankInteraction = Workspace.interactions.rankUpgrade[`${currentWorld} Teleport`] as BasePart;
 				if (rankInteraction === undefined) {
 					return;
 				}

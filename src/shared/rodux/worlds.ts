@@ -37,6 +37,21 @@ export interface ResetZones extends Rodux.Action<"resetZones"> {
  * @param data The data associated with the zone purchase.
  * @returns The Rodux action to dispatch.
  */
+export function unlockWorld(data: Omit<UnlockWorld, "type">): UnlockWorld & Rodux.AnyAction {
+	return {
+		type: "unlockWorld",
+		zoneName: data.zoneName,
+		worldName: data.worldName,
+		currency: data.currency,
+	};
+}
+
+/**
+ * Purchases a zone, saving it to players owned zones.
+ *
+ * @param data The data associated with the zone purchase.
+ * @returns The Rodux action to dispatch.
+ */
 export function unlockZone(data: Omit<UnlockZone, "type">): UnlockZone & Rodux.AnyAction {
 	return {
 		type: "unlockZone",

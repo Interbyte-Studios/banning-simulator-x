@@ -9,8 +9,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		id: 63,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 150_000,
+			additionalBans: 150,
 		},
 	},
 	"Corrupt Bunny": {
@@ -18,8 +18,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		id: 64,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 150_000,
+			additionalBans: 150,
 		},
 	},
 	"Corrupt Bear": {
@@ -27,8 +27,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		id: 65,
 		rarity: "Ordinary",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 350_000,
+			additionalBans: 350,
 		},
 	},
 	"Corrupt Deer": {
@@ -36,8 +36,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		id: 66,
 		rarity: "Rare",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 500_000,
+			additionalBans: 500,
 		},
 	},
 	"Corrupt Pegasus": {
@@ -45,8 +45,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		id: 67,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 1_000_000,
+			additionalBans: 575,
 		},
 	},
 	"Corrupt Demon": {
@@ -54,8 +54,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		id: 68,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 1_150_00,
+			additionalBans: 600,
 		},
 	},
 	"Corrupt Hyperhalo": {
@@ -63,8 +63,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		id: 69,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 1_250_000,
+			additionalBans: 620,
 		},
 	},
 	"Corrupt Duke": {
@@ -72,8 +72,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		id: 70,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 1_750_000,
+			additionalBans: 700,
 		},
 	},
 	"Corrupted Titan": {
@@ -81,17 +81,17 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		id: 71,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 2_000_000,
+			additionalBans: 750,
 		},
 	},
 	"Corrupted Overseer": {
-		chance: 0.00005,
+		chance: 0.00001,
 		id: 72,
-		rarity: "Secret",
+		rarity: "Primordial",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 10_000_000,
+			additionalBans: 6_500,
 		},
 	},
 };

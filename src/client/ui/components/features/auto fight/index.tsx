@@ -31,7 +31,7 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { Currency } from "shared/configs/currencies";
 import { GAMEPASSES } from "shared/configs/game";
-import { isValidZone, UniversalWorldData, Zone, ZoneNames } from "shared/configs/zones";
+import { isValidZone, Zone, ZoneNames, zones } from "shared/configs/zones";
 import { StoreState } from "shared/rodux";
 import { BansState } from "shared/rodux/bans";
 import { BoostsState } from "shared/rodux/boosts";
@@ -182,19 +182,21 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 					continue;
 				}
 
-				for (const [, worldData] of pairs(UniversalWorldData)) {
-					for (const [zoneName, zoneData] of pairs(worldData)) {
-						if (zoneName !== zoneSelected) {
-							continue;
-						}
-
-						if (zoneData.cost !== undefined && farmingCurrency !== zoneData.cost.currency) {
-							setFarmingCurrency(zoneData.cost.currency);
-						}
-
-						storedZoneData = zoneData;
-						break;
+				for (const [zoneName, zoneData] of pairs(zones)) {
+					if (zoneName !== zoneSelected) {
+						continue;
 					}
+
+					if (zoneData.cost !== undefined && farmingCurrency !== zoneData.cost.currency) {
+						setFarmingCurrency(zoneData.cost.currency);
+					} else {
+						if (zoneSelected === "Neon City") {
+							setFarmingCurrency("cyber tokens");
+						}
+					}
+
+					storedZoneData = zoneData;
+					break;
 				}
 			}
 
@@ -479,8 +481,11 @@ export const AutoFight = RoactRodux.connect(mapStateToProps)(
 								}
 
 								const raycastParams = new RaycastParams();
-								raycastParams.FilterDescendantsInstances = [Workspace.worlds["Ban Land"].zones];
-								raycastParams.FilterType = Enum.RaycastFilterType.Whitelist;
+								raycastParams.FilterDescendantsInstances = [
+									Workspace.worlds["Ban Land"].zones,
+									Workspace.worlds["Cyber Cities"].zones,
+								];
+								raycastParams.FilterType = Enum.RaycastFilterType.Include;
 								raycastParams.IgnoreWater = false;
 
 								const raycastResult = Workspace.Raycast(

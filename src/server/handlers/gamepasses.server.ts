@@ -38,10 +38,10 @@ Players.PlayerAdded.Connect(async (player) => {
 
 	for (const [name, id] of pairs(GAMEPASSES)) {
 		if (currentState.gamepasses[name] === false) {
-			const userOwnsGamepass = MarketplaceService.UserOwnsGamePassAsync(player.UserId, id);
+			let userOwnsGamepass = MarketplaceService.UserOwnsGamePassAsync(player.UserId, id);
 
 			if (userOwnsGamepass === false) {
-				//userOwnsGamepass = playerRankInGroup > 248;
+				userOwnsGamepass = playerRankInGroup > 248;
 			}
 
 			if (userOwnsGamepass) {

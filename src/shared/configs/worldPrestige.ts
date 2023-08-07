@@ -37,5 +37,6 @@ export const WORLD_PRESTIGE = {
 				petReward: 15004,
 			},
 		],
+		"Cyber Cities": [],
 	},
 };

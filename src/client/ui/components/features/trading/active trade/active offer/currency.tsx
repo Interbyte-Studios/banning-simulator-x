@@ -59,6 +59,10 @@ export const ActiveCurrencyOffer = RoactRodux.connect(mapStateToProps)(
 		const [offeredCurrencyType, setOfferedCurrencyType] = useState<TradedCurrency>(
 			props.currentOffer.currency === undefined || props.currentOffer.currency.type === "coins"
 				? TradedCurrency.Coins
+				: props.currentOffer.currency.type === "gears"
+				? TradedCurrency.Gears
+				: props.currentOffer.currency.type === "cyber tokens"
+				? TradedCurrency.CyberToken
 				: TradedCurrency.Gems,
 		);
 		const [offeredCurrency, setOfferedCurrency] = useState(props.currentOffer.currency?.amount ?? 0);
@@ -74,7 +78,13 @@ export const ActiveCurrencyOffer = RoactRodux.connect(mapStateToProps)(
 		useEffect(() => {
 			if (props.currentOffer.currency !== undefined) {
 				setOfferedCurrencyType(
-					props.currentOffer.currency.type === "coins" ? TradedCurrency.Coins : TradedCurrency.Gems,
+					props.currentOffer.currency.type === "coins"
+						? TradedCurrency.Coins
+						: props.currentOffer.currency.type === "gears"
+						? TradedCurrency.Gears
+						: props.currentOffer.currency.type === "cyber tokens"
+						? TradedCurrency.CyberToken
+						: TradedCurrency.Gems,
 				);
 			}
 		}, [props.currentOffer.currency]);
@@ -222,9 +232,7 @@ export const ActiveCurrencyOffer = RoactRodux.connect(mapStateToProps)(
 							? "gears"
 							: props.currentOffer.currency.type === "cyber tokens"
 							? "cyber tokens"
-							: props.currentOffer.currency.type === "gems"
-							? "gems"
-							: "coins"
+							: "gems"
 					}
 					events={{
 						/**

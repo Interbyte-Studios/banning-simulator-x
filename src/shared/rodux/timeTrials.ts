@@ -56,6 +56,13 @@ export const defaultTimeTrialsState: TimeTrialsState = {
 		criticalChance: 0,
 		highestHardWave: 0,
 	},
+	"Cyber Cities": {
+		health: 0,
+		damage: 0,
+		damageReduction: 0,
+		criticalChance: 0,
+		highestHardWave: 0,
+	},
 };
 
 /* eslint-disable jsdoc/require-jsdoc */

@@ -1,6 +1,6 @@
 import { Players } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
-import { EggName } from "shared/configs/eggs";
+import { EggName, isEventEgg, isExclusiveEgg } from "shared/configs/eggs";
 import { PET_MASTERY_REQUIREMENTS } from "shared/configs/petMastery";
 import { Variants } from "shared/configs/pets";
 import { getEggData } from "shared/util/getEggData";
@@ -15,6 +15,10 @@ import { getEggData } from "shared/util/getEggData";
 export function getPetMasteryUnclaimedChallenges(eggName: EggName, specificVariant?: Variants): number {
 	const store = retrieveStore(Players.LocalPlayer);
 	if (store === undefined) {
+		return 0;
+	}
+
+	if (eggName === "Exclusive") {
 		return 0;
 	}
 
@@ -54,8 +58,12 @@ export function getPetMasteryUnclaimedChallenges(eggName: EggName, specificVaria
 			}
 
 			if (discoveredPet.hatched.void >= petMasteryRequirements.void.hatch) {
-				if (petMasteryPet === undefined || !petMasteryPet.void.hatchClaimed) {
-					voidUnseen++;
+				if (!isEventEgg(eggName) && !isExclusiveEgg(eggName)) {
+					if (eggData.id < 100) {
+						if (petMasteryPet === undefined || !petMasteryPet.void.hatchClaimed) {
+							voidUnseen++;
+						}
+					}
 				}
 			}
 
@@ -66,8 +74,10 @@ export function getPetMasteryUnclaimedChallenges(eggName: EggName, specificVaria
 			}
 
 			if (discoveredPet.hatched.regular >= petMasteryRequirements.regular.hatch) {
-				if (petMasteryPet === undefined || !petMasteryPet.regular.hatchClaimed) {
-					regularUnseen++;
+				if (eggData.id < 100) {
+					if (petMasteryPet === undefined || !petMasteryPet.regular.hatchClaimed) {
+						regularUnseen++;
+					}
 				}
 			}
 

@@ -14,6 +14,10 @@ export = (): void => {
 					world: new Set<string>(),
 					zone: {},
 				},
+				"Cyber Cities": {
+					world: new Set<string>(),
+					zone: {},
+				},
 			};
 
 			const action = redeemZoneQuest("Ban Land", "Desert", "Kill 15 mobs", 50, {
@@ -27,6 +31,10 @@ export = (): void => {
 						Desert: new Set(["Kill 15 mobs"]),
 					},
 				},
+				"Cyber Cities": {
+					world: new Set<string>(),
+					zone: {},
+				},
 			};
 
 			testAction(state, newState, questsReducer, action);
@@ -35,6 +43,10 @@ export = (): void => {
 		it("should redeem a world quest", () => {
 			const state = {
 				"Ban Land": {
+					world: new Set<string>(),
+					zone: {},
+				},
+				"Cyber Cities": {
 					world: new Set<string>(),
 					zone: {},
 				},
@@ -47,6 +59,10 @@ export = (): void => {
 			const newState = {
 				"Ban Land": {
 					world: new Set(["Kill 30 mobs"]),
+					zone: {},
+				},
+				"Cyber Cities": {
+					world: new Set([]),
 					zone: {},
 				},
 			};

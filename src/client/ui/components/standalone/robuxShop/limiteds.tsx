@@ -155,7 +155,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 	useEffect(() => {
-		const newLimiteds = DateTime.fromUniversalTime(2023, 8, 12, 12).UnixTimestamp;
+		const newLimiteds = DateTime.fromUniversalTime(2023, 8, 13, 12).UnixTimestamp;
 		const connection = RunService.Heartbeat.Connect(() => {
 			debug.profilebegin("limitedsShop");
 			const timeCheck = time();

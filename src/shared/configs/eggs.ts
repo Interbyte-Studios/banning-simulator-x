@@ -78,13 +78,14 @@ export const isValidMasteryEgg = t.literal(
 	"City",
 	"Cybernetic",
 	"Corrupt",
+	"Royalty",
 );
 export type ValidMasteryEgg = t.static<typeof isValidMasteryEgg>;
 
 export const isEventEgg = t.literal("500k Event", "Throwback");
 export type EventEgg = t.static<typeof isEventEgg>;
 
-export const isExclusiveEgg = t.literal("Royalty", "Radioactive", "Divine", "Dweller");
+export const isExclusiveEgg = t.literal("Royalty", "Radioactive", "Divine", "Dweller", "Exclusive");
 export type ExclusiveEgg = t.static<typeof isExclusiveEgg>;
 
 /**
@@ -148,27 +149,27 @@ export const EGGS = {
 	City: {
 		id: 7,
 		pets: CITY_EGG_PETS,
-		world: "Limited",
-		zone: "Limited",
-		hatchable: false,
+		world: "Cyber Cities",
+		zone: "Neon City",
+		hatchable: true,
 		hidden: false,
 		luckApplies: true,
 	},
 	Cybernetic: {
 		id: 8,
 		pets: CYBER_EGG_PETS,
-		world: "Limited",
-		zone: "Limited",
-		hatchable: false,
+		world: "Cyber Cities",
+		zone: "Malware Mayhem",
+		hatchable: true,
 		hidden: false,
 		luckApplies: true,
 	},
 	Corrupt: {
 		id: 9,
 		pets: CORRUPT_EGG_PETS,
-		world: "Limited",
-		zone: "Limited",
-		hatchable: false,
+		world: "Cyber Cities",
+		zone: "B1n4ry Z0n3",
+		hatchable: true,
 		hidden: true,
 		luckApplies: true,
 	},

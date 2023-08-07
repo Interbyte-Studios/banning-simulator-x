@@ -13,6 +13,17 @@ export const isRankName = t.literal(
 	"Infinitium",
 	"Phoenix",
 	"Celestial",
+	"Cyber Initiate",
+	"Cyber Neophyte",
+	"Cyber Elite",
+	"Cyber Champion",
+	"Cyber Paragon",
+	"Cyber Exarch",
+	"Cyber Warrior",
+	"Cyber Ascendant",
+	"Cyber Immortal",
+	"Cyber Mythic",
+	"Cyber Legend",
 );
 export type RankName = t.static<typeof isRankName>;
 
@@ -33,7 +44,7 @@ interface Rank {
 	requiredExperience: number;
 }
 
-export const MAX_RANK = 10;
+export const MAX_RANK = 18;
 export const RANKS: Array<Rank> = [
 	{
 		name: "Bronze",
@@ -164,5 +175,109 @@ export const RANKS: Array<Rank> = [
 			endingColor: Color3.fromRGB(64, 181, 255),
 		},
 		requiredExperience: 40_000_000, // 1000 toxic land npcs
+	},
+	{
+		name: "Cyber Initiate",
+		id: 11,
+		cost: {
+			amount: 65_536_000,
+			currency: "coins",
+		},
+		gradient: {
+			beginningColor: Color3.fromRGB(196, 247, 166),
+			endingColor: Color3.fromRGB(64, 181, 255),
+		},
+		requiredExperience: 80_000_000, // 1000 jester npcs
+	},
+	{
+		name: "Cyber Neophyte",
+		id: 12,
+		cost: {
+			amount: 30_000,
+			currency: "cyber tokens",
+		},
+		gradient: {
+			beginningColor: Color3.fromRGB(28, 28, 28),
+			endingColor: Color3.fromRGB(247, 120, 115),
+		},
+		requiredExperience: 160_000_000, // 1000 neon city npcs
+	},
+	{
+		name: "Cyber Elite",
+		id: 13,
+		cost: {
+			amount: 90_000,
+			currency: "cyber tokens",
+		},
+		gradient: {
+			beginningColor: Color3.fromRGB(166, 31, 217),
+			endingColor: Color3.fromRGB(252, 250, 107),
+		},
+		requiredExperience: 320_000_000, // 1000 electric center npcs
+	},
+	{
+		name: "Cyber Champion",
+		id: 14,
+		cost: {
+			amount: 270_000,
+			currency: "cyber tokens",
+		},
+		gradient: {
+			beginningColor: Color3.fromRGB(166, 31, 217),
+			endingColor: Color3.fromRGB(252, 250, 107),
+		},
+		requiredExperience: 640_000_000, // 1000 neon district npcs
+	},
+	{
+		name: "Cyber Paragon",
+		id: 15,
+		cost: {
+			amount: 810_000,
+			currency: "cyber tokens",
+		},
+		gradient: {
+			beginningColor: Color3.fromRGB(66, 117, 255),
+			endingColor: Color3.fromRGB(247, 247, 247),
+		},
+		requiredExperience: 1_280_000_000, // 1000 malware mayhem npcs
+	},
+	{
+		name: "Cyber Exarch",
+		id: 16,
+		cost: {
+			amount: 2_430_000,
+			currency: "cyber tokens",
+		},
+		gradient: {
+			beginningColor: Color3.fromRGB(255, 71, 66),
+			endingColor: Color3.fromRGB(138, 240, 143),
+		},
+		requiredExperience: 2_560_000_000, // 1000 ufo valley npcs
+	},
+	{
+		name: "Cyber Warrior",
+		id: 17,
+		cost: {
+			amount: 7_290_000,
+			currency: "cyber tokens",
+		},
+		gradient: {
+			beginningColor: Color3.fromRGB(179, 66, 255),
+			endingColor: Color3.fromRGB(245, 245, 245),
+		},
+		requiredExperience: 5_120_000_000, // 1000 holographic museum npcs
+	},
+	{
+		name: "Cyber Ascendant",
+		id: 18,
+		cost: {
+			amount: 21_870_000,
+			currency: "cyber tokens",
+		},
+		gradient: {
+			beginningColor: Color3.fromRGB(163, 66, 255),
+			endingColor: Color3.fromRGB(232, 240, 138),
+		},
+		requiredExperience: 10_240_000_000, // 1000 B1n4ry Z0n3 npcs
 	},
 ];

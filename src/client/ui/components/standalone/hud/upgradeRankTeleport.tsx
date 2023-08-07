@@ -1,12 +1,12 @@
 import Roact from "@rbxts/roact";
-import { Players } from "@rbxts/services";
+import { Players, Workspace } from "@rbxts/services";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { hooks } from "client/ui/hooks";
+import { getCurrentWorld } from "client/util/getCurrentWorld";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { TELEPORTATIONS } from "shared/configs/game";
 import { MAX_RANK, RANKS } from "shared/configs/ranks";
 
 const player = Players.LocalPlayer;
@@ -76,7 +76,12 @@ export const UpgradeRankTeleport = hooks((props: UpgradeRankTeleportProps) => {
 					const humanoidRootPart = humanoid.RootPart;
 					assert(humanoidRootPart, `Failed to get HumanoidRootPart while teleporting to rank upgrade zone.`);
 
-					humanoidRootPart.CFrame = new CFrame(TELEPORTATIONS["Ban Land"].RANK_UPGRADE);
+					const currentWorld = getCurrentWorld();
+					if (currentWorld === undefined) {
+						return;
+					}
+
+					humanoidRootPart.CFrame = new CFrame(Workspace.interactions.rankUpgrade[`${currentWorld} Teleport`].Position);
 				},
 			}}
 		>
