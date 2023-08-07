@@ -1,11 +1,11 @@
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import Make from "@rbxts/make";
-import { Players, SoundService } from "@rbxts/services";
+import { Players, RunService, SoundService } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { getCurrentWorld } from "client/util/getCurrentWorld";
 import { WorldName, WORLDS } from "shared/configs/worlds";
 
-const musicQueue: Array<number> = [];
+let musicQueue: Array<number> = [];
 
 let currentWorld: WorldName | undefined;
 let musicEnabled = true;
@@ -65,6 +65,7 @@ function loopPlaylist(): void {
 			Volume: volume,
 		});
 
+		warn(`Playing`);
 		sound.Play();
 		sound.Ended.Wait();
 
@@ -72,6 +73,7 @@ function loopPlaylist(): void {
 		sound.Destroy();
 	}
 
+	// Call loopPlaylist again after playing all sounds in the queue
 	loopPlaylist();
 }
 
@@ -85,7 +87,7 @@ function setPlaylist(world: WorldName): void {
 
 	musicQueue.clear();
 
-	for (const [, id] of pairs(worldData.music)) {
+	for (const id of worldData.music) {
 		musicQueue.push(id);
 	}
 
@@ -102,27 +104,28 @@ export function stopPlaylist(): void {
 		}
 
 		sound.Stop();
+		sound.Destroy();
 	}
 
 	musicEnabled = false;
 }
 
-task.spawn(() => {
-	task.wait(5);
+let lastCheck = 0;
+RunService.RenderStepped.Connect(() => {
+	const now = time();
+	if (now - lastCheck < 1) return;
+	lastCheck = now;
 
-	// eslint-disable-next-line no-constant-condition
-	while (true) {
-		const world = getCurrentWorld();
-		if (world === undefined) {
-			return;
-		}
-
-		if (world === currentWorld) {
-			return;
-		}
+	const world = getCurrentWorld();
+	if (world !== currentWorld) {
+		stopPlaylist();
+		musicEnabled = true;
+		musicQueue = [];
 		currentWorld = world;
 
-		setPlaylist(currentWorld);
-		task.wait();
+		// Set the playlist and start playing it for the new world
+		if (currentWorld !== undefined) {
+			setPlaylist(currentWorld);
+		}
 	}
 });

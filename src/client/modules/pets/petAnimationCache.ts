@@ -25,7 +25,7 @@ const settingsCache: Array<PlayerAnimationCache> = [];
  * @returns The newly created cache.
  */
 export const createPetAnimationCache = (player: Player): PlayerAnimationCache => {
-	debug.setmemorycategory("petAnimationModule");
+	debug.setmemorycategory("createPetAnimationCache");
 	const playerCache: PlayerAnimationCache = {
 		player,
 		petsDisplayed: new Instance("BoolValue"),
@@ -41,7 +41,7 @@ export const createPetAnimationCache = (player: Player): PlayerAnimationCache =>
  * @param guid The guid of the pet to remove from cache.
  */
 export const removePetFromCache = (guid: string): void => {
-	debug.setmemorycategory("petAnimationModule");
+	debug.setmemorycategory("removePetFromCache");
 	for (const cache of settingsCache) {
 		const petIndex = cache.pets.findIndex((pet) => pet.guid === guid);
 		if (petIndex === undefined) {
@@ -57,7 +57,7 @@ export const removePetFromCache = (guid: string): void => {
  * @param player The player to remove cache data for.
  */
 export const removePetAnimationCache = (player: Player): void => {
-	debug.setmemorycategory("petAnimationModule");
+	debug.setmemorycategory("removePetAnimationCache");
 	// remove pets
 	const cache = settingsCache.find((cacheData) => cacheData.player === player);
 	if (cache === undefined) {
@@ -81,6 +81,6 @@ export const removePetAnimationCache = (player: Player): void => {
  * @returns The current state of the pet animation settings cache.
  */
 export const getPetAnimationCache = (): Array<PlayerAnimationCache> => {
-	debug.setmemorycategory("petAnimationModule");
+	debug.setmemorycategory("getPetAnimationCache");
 	return settingsCache;
 };

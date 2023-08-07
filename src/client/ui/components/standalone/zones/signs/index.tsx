@@ -16,7 +16,6 @@ interface ZoneSignProps {
 	adornee: BasePart;
 	zoneName: ZoneNames;
 	zoneData: Zone;
-	worldName: WorldName;
 	setViewedZone: (world: WorldName, zone: number) => void;
 }
 
@@ -52,7 +51,7 @@ export const ZoneSign = hooks((props: ZoneSignProps) => {
 					native={{
 						Position: UDim2.fromScale(0.5, 0.325),
 						Size: UDim2.fromScale(1, 0.15),
-						Text: `(${props.worldName})`,
+						Text: `(${props.zoneData.worldParent})`,
 					}}
 					stroke={{
 						native: { Thickness: 5 },
@@ -79,7 +78,7 @@ export const ZoneSign = hooks((props: ZoneSignProps) => {
 				</StrokeTextLabel>
 
 				<DisplayZonePurchasePrompt
-					worldName={props.worldName}
+					worldName={props.zoneData.worldParent}
 					zoneName={props.zoneName}
 					zoneData={props.zoneData}
 					setViewedZone={props.setViewedZone}

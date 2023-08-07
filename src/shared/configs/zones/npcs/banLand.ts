@@ -135,7 +135,7 @@ export const BAN_LAND_NPCS = {
 	},
 	neonJester: {
 		name: "Neon Jester",
-		health: 204800,
+		health: 204_800,
 		reward: {
 			bans: 2048,
 			currency: 67_200,

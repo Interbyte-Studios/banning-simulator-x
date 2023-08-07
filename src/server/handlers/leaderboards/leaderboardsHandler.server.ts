@@ -64,6 +64,10 @@ while (true) {
 	ReplicatedStorage.leaderboards.eggs.GetChildren().forEach((child) => child.Destroy());
 
 	for (const [worldName] of pairs(WORLDS)) {
+		if (worldName !== "Ban Land") {
+			continue;
+		}
+
 		const timeTrialsFolder = ReplicatedStorage.leaderboards.timeTrials[worldName];
 		timeTrialsFolder.GetChildren().forEach((child) => child.Destroy());
 

@@ -24,7 +24,7 @@ export function getCurrentWorld(): WorldName | undefined {
 		return;
 	}
 
-	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
+	const humanoid = character.FindFirstChild("Humanoid") as Humanoid;
 	if (humanoid === undefined) {
 		return;
 	}

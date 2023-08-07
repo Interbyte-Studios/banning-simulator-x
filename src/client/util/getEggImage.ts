@@ -21,6 +21,10 @@ export function getEggImage(eggName: EggName): string {
 		return assetIds.images.decals.eggs["500K Egg"];
 	}
 
+	if (eggName === "Royalty") {
+		return assetIds.images.decals.eggs.Royal;
+	}
+
 	const decal = assetIds.images.decals.eggs[eggName as keyof typeof assetIds.images.decals.eggs];
 	assert(decal, `Failed to get decal for egg "${eggName}".`);
 

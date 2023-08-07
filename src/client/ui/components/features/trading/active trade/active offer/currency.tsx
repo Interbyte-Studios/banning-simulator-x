@@ -28,6 +28,8 @@ interface MappedActiveCurrencyOfferProps {
 enum TradedCurrency {
 	Coins = "coins",
 	Gems = "gems",
+	Gears = "gears",
+	CyberToken = "cyber tokens",
 }
 
 /**
@@ -57,6 +59,10 @@ export const ActiveCurrencyOffer = RoactRodux.connect(mapStateToProps)(
 		const [offeredCurrencyType, setOfferedCurrencyType] = useState<TradedCurrency>(
 			props.currentOffer.currency === undefined || props.currentOffer.currency.type === "coins"
 				? TradedCurrency.Coins
+				: props.currentOffer.currency.type === "gears"
+				? TradedCurrency.Gears
+				: props.currentOffer.currency.type === "cyber tokens"
+				? TradedCurrency.CyberToken
 				: TradedCurrency.Gems,
 		);
 		const [offeredCurrency, setOfferedCurrency] = useState(props.currentOffer.currency?.amount ?? 0);
@@ -72,7 +78,13 @@ export const ActiveCurrencyOffer = RoactRodux.connect(mapStateToProps)(
 		useEffect(() => {
 			if (props.currentOffer.currency !== undefined) {
 				setOfferedCurrencyType(
-					props.currentOffer.currency.type === "coins" ? TradedCurrency.Coins : TradedCurrency.Gems,
+					props.currentOffer.currency.type === "coins"
+						? TradedCurrency.Coins
+						: props.currentOffer.currency.type === "gears"
+						? TradedCurrency.Gears
+						: props.currentOffer.currency.type === "cyber tokens"
+						? TradedCurrency.CyberToken
+						: TradedCurrency.Gems,
 				);
 			}
 		}, [props.currentOffer.currency]);
@@ -214,7 +226,13 @@ export const ActiveCurrencyOffer = RoactRodux.connect(mapStateToProps)(
 					position={UDim2.fromScale(0.065, 0.5)}
 					size={{ minimizedSize: 0.9, maximizedSize: 1 }}
 					currency={
-						props.currentOffer.currency === undefined || props.currentOffer.currency.type === "coins" ? "coins" : "gems"
+						props.currentOffer.currency === undefined || props.currentOffer.currency.type === "coins"
+							? "coins"
+							: props.currentOffer.currency.type === "gears"
+							? "gears"
+							: props.currentOffer.currency.type === "cyber tokens"
+							? "cyber tokens"
+							: "gems"
 					}
 					events={{
 						/**
@@ -231,6 +249,14 @@ export const ActiveCurrencyOffer = RoactRodux.connect(mapStateToProps)(
 
 							switch (offeredCurrencyType) {
 								case TradedCurrency.Coins: {
+									setOfferedCurrencyType(TradedCurrency.Gears);
+									return;
+								}
+								case TradedCurrency.Gears: {
+									setOfferedCurrencyType(TradedCurrency.CyberToken);
+									return;
+								}
+								case TradedCurrency.CyberToken: {
 									setOfferedCurrencyType(TradedCurrency.Gems);
 									return;
 								}

@@ -1,4 +1,3 @@
-debug.setmemorycategory("followTalisman");
 import { ReplicatedStorage, RunService, Workspace } from "@rbxts/services";
 import { getHumanoidRootPart } from "client/util/getHumanoidRoot";
 import { TalismanPhases } from "shared/configs/talismans";
@@ -16,6 +15,16 @@ const connections: Map<Player, Array<RBXScriptConnection>> = new Map();
  * @param phase The phase of the talisman.
  */
 export function equipTalisman(player: Player, talismanId: number, phase: TalismanPhases): void {
+	debug.setmemorycategory("equipTalisman");
+
+	const talismanConnections = connections.get(player);
+	if (talismanConnections !== undefined) {
+		for (const connection of talismanConnections) {
+			connection.Disconnect();
+		}
+		connections.delete(player);
+	}
+
 	const talismanData = getTalismanData(talismanId);
 	const talismanFolder = talismansFolder.FindFirstChild(`Tier ${talismanData.id}`);
 	if (talismanFolder === undefined) {
@@ -72,15 +81,9 @@ export function equipTalisman(player: Player, talismanId: number, phase: Talisma
 	newTalisman.PivotTo(humanoidRootPart.CFrame);
 	newTalisman.Parent = Workspace["client objects"].talismans;
 
-	const talismanConnections = connections.get(player);
-	if (talismanConnections !== undefined) {
-		for (const connection of talismanConnections) {
-			connection.Disconnect();
-		}
-	}
-	connections.delete(player);
 	connections.set(player, [
 		RunService.RenderStepped.Connect(() => {
+			debug.setmemorycategory(`talismanRender`);
 			debug.profilebegin("talismanRender");
 			const humanoidRootPart = getHumanoidRootPart(player);
 			if (humanoidRootPart === undefined) {
@@ -103,6 +106,15 @@ export function equipTalisman(player: Player, talismanId: number, phase: Talisma
 			debug.profileend();
 		}),
 		humanoid.Died.Connect(() => {
+			debug.setmemorycategory(`talismanDied`);
+			const talismanConnections = connections.get(player);
+			if (talismanConnections !== undefined) {
+				for (const connection of talismanConnections) {
+					connection.Disconnect();
+				}
+				connections.delete(player);
+			}
+
 			const potentiallyActiveTalisman = Workspace["client objects"].talismans.FindFirstChild(player.Name);
 			if (potentiallyActiveTalisman !== undefined) {
 				potentiallyActiveTalisman.Destroy();

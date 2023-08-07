@@ -2,7 +2,7 @@ import Make from "@rbxts/make";
 import { Lighting, Players, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { WorldName, WORLDS } from "shared/configs/worlds";
-import { isStarterZone, ZoneNames } from "shared/configs/zones";
+import { isStarterZone, ZoneNames, zones } from "shared/configs/zones";
 import { WorldsState } from "shared/rodux/worlds";
 
 const player = Players.LocalPlayer;
@@ -14,18 +14,21 @@ const player = Players.LocalPlayer;
  * @param zone The zone to grant entry to.
  */
 function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
-	const zoneDecoration = Workspace.decoration[world][zone];
-	const door = zoneDecoration.door;
+	let zoneFolder = Lighting.FindFirstChild(zone);
+	if (zoneFolder === undefined) {
+		zoneFolder = Make("Folder", {
+			Parent: Lighting,
+			Name: zone,
+		});
+	}
 
-	task.delay(1, (): void => {
-		let zoneFolder = Lighting.FindFirstChild(zone);
-		if (zoneFolder === undefined) {
-			zoneFolder = Make("Folder", {
-				Parent: Lighting,
-				Name: zone,
-			});
-		}
+	const zoneDecoration = Workspace.decoration[world].FindFirstChild(zone);
+	if (zoneDecoration === undefined) {
+		return;
+	}
 
+	const door = zoneDecoration.FindFirstChild("door") as Folder;
+	if (door !== undefined) {
 		const lock = door.FindFirstChild("lock");
 		if (lock !== undefined) {
 			lock.Parent = zoneFolder;
@@ -35,12 +38,12 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 		if (passage !== undefined) {
 			passage.Parent = zoneFolder;
 		}
+	}
 
-		const sign = zoneDecoration.FindFirstChild("sign");
-		if (sign !== undefined) {
-			sign.Parent = zoneFolder;
-		}
-	});
+	const sign = zoneDecoration.FindFirstChild("sign");
+	if (sign !== undefined) {
+		sign.Parent = zoneFolder;
+	}
 }
 
 /**
@@ -51,12 +54,16 @@ function grantZoneEntry(world: WorldName, zone: ZoneNames): void {
 function unlockZones(worldState: WorldsState): void {
 	debug.setmemorycategory("purchasedZones");
 	for (const unlockedWorld of worldState) {
-		for (const [worldName, worldData] of pairs(WORLDS)) {
+		for (const [worldName] of pairs(WORLDS)) {
 			if (worldName !== unlockedWorld.name) {
 				continue;
 			}
 
-			for (const [zoneName] of pairs(worldData.zones)) {
+			for (const [zoneName, zoneData] of pairs(zones)) {
+				if (zoneData.worldParent !== worldName) {
+					continue;
+				}
+
 				if (isStarterZone(zoneName)) {
 					continue;
 				}
@@ -73,9 +80,18 @@ function unlockZones(worldState: WorldsState): void {
 							}
 
 							if (deco.Name === "sign") {
-								deco.Parent = Workspace.decoration[unlockedWorld.name][zoneName];
+								const zoneDeco = Workspace.decoration[unlockedWorld.name].FindFirstChild(zoneName);
+								if (zoneDeco !== undefined) {
+									deco.Parent = zoneDeco;
+								}
 							} else {
-								deco.Parent = Workspace.decoration[unlockedWorld.name][zoneName].door;
+								const zoneDeco = Workspace.decoration[unlockedWorld.name].FindFirstChild(zoneName);
+								if (zoneDeco !== undefined) {
+									const door = zoneDeco.FindFirstChild("door");
+									if (door !== undefined) {
+										deco.Parent = door;
+									}
+								}
 							}
 						}
 					}
@@ -89,17 +105,19 @@ onStoreCreated(player)
 	.andThen((store) => {
 		unlockZones(store.getState().worlds);
 
-		for (const [worldName, worldData] of pairs(WORLDS)) {
-			const worldDeco = Workspace.decoration[worldName];
-			for (const [zoneName] of pairs(worldData.zones)) {
-				if (isStarterZone(zoneName)) {
-					continue;
-				}
-
-				const zoneDeco = worldDeco[zoneName];
-				zoneDeco.door.ChildAdded.Connect(() => unlockZones(store.getState().worlds));
-				zoneDeco.door.ChildRemoved.Connect(() => unlockZones(store.getState().worlds));
+		for (const [zoneName, zoneData] of pairs(zones)) {
+			if (isStarterZone(zoneName)) {
+				continue;
 			}
+
+			const zoneDeco = Workspace.decoration[zoneData.worldParent].FindFirstChild(zoneName);
+			if (zoneDeco !== undefined) {
+				const door = zoneDeco.FindFirstChild("door");
+				if (door !== undefined) {
+					door.ChildAdded.Connect(() => unlockZones(store.getState().worlds));
+					door.ChildRemoved.Connect(() => unlockZones(store.getState().worlds));
+				}
+			} else warn(`No zone deco for ${zoneName}`);
 		}
 
 		store.changed.connect((newState, oldState) => {

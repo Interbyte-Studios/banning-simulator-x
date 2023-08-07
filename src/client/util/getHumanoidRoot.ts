@@ -6,11 +6,11 @@
  */
 export const getHumanoidRootPart = (player: Player): BasePart | undefined => {
 	debug.setmemorycategory("getHumanoidRoot");
-	const character = player.Character ?? player.CharacterAdded.Wait()[0];
+	const character = player.Character;
 	if (character === undefined) {
 		return;
 	}
-	const humanoid = character.WaitForChild("Humanoid") as Humanoid;
+	const humanoid = character.FindFirstChild("Humanoid") as Humanoid;
 	if (humanoid === undefined) {
 		return;
 	}

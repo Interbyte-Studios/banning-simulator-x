@@ -1,0 +1,198 @@
+import { Npc } from "..";
+
+export const CYBER_CITY_NPCS = {
+	RussoTalks: {
+		name: "RussoTalks",
+		health: 409_600,
+		reward: {
+			bans: 2_048,
+			currency: 30,
+			currencyType: "cyber tokens",
+			experience: 160_000,
+		},
+		rank: 11,
+		isBoss: false,
+	},
+	CarbonMeister: {
+		name: "CarbonMeister",
+		health: 819_200,
+		reward: {
+			bans: 2_048,
+			currency: 90,
+			currencyType: "cyber tokens",
+			experience: 320_000,
+		},
+		rank: 12,
+		isBoss: false,
+	},
+	RealYouTube_AlphaGG: {
+		name: "RealYouTube_AlphaGG",
+		health: 1_638_400,
+		reward: {
+			bans: 2_048,
+			currency: 270,
+			currencyType: "cyber tokens",
+			experience: 640_000,
+		},
+		rank: 13,
+		isBoss: false,
+	},
+	SonsofFun_YT: {
+		name: "SonsofFun_YT",
+		health: 3_276_800,
+		reward: {
+			bans: 2_048,
+			currency: 810,
+			currencyType: "cyber tokens",
+			experience: 1_280_000,
+		},
+		rank: 14,
+		isBoss: false,
+	},
+	Cigatronix: {
+		name: "Cigatronix",
+		health: 6_553_600,
+		reward: {
+			bans: 2_048,
+			currency: 2_430,
+			currencyType: "coins",
+			experience: 2_560_000,
+		},
+		rank: 15,
+		isBoss: false,
+	},
+	Emulsifies: {
+		name: "Emulsifies",
+		health: 13_107_200,
+		reward: {
+			bans: 2_048,
+			currency: 7_290,
+			currencyType: "coins",
+			experience: 5_120_000,
+		},
+		rank: 16,
+		isBoss: false,
+	},
+	OverHash: {
+		name: "OverHash",
+		health: 26_214_400,
+		reward: {
+			bans: 4_096,
+			currency: 21_870,
+			currencyType: "coins",
+			experience: 10_240_000,
+		},
+		rank: 17,
+		isBoss: false,
+	},
+	YT_FrogRoblox: {
+		name: "YT_FrogRoblox",
+		health: 52_428_800,
+		reward: {
+			bans: 8_192,
+			currency: 65_610,
+			currencyType: "coins",
+			experience: 20_480_000,
+		},
+		rank: 18,
+		isBoss: false,
+	},
+
+	// Bosses
+	New_Item: {
+		name: "New_Item",
+		health: 1_228_800,
+		reward: {
+			bans: 6_144,
+			currency: 90,
+			currencyType: "cyber tokens",
+			experience: 480_000,
+		},
+		rank: 11,
+		isBoss: true,
+	},
+	LordAlpha84: {
+		name: "LordAlpha84",
+		health: 2_457_600,
+		reward: {
+			bans: 6_144,
+			currency: 270,
+			currencyType: "cyber tokens",
+			experience: 960_000,
+		},
+		rank: 12,
+		isBoss: true,
+	},
+	lighthamer: {
+		name: "lighthamer",
+		health: 4_915_200,
+		reward: {
+			bans: 6_144,
+			currency: 810,
+			currencyType: "cyber tokens",
+			experience: 1_920_000,
+		},
+		rank: 13,
+		isBoss: true,
+	},
+	Not_Nert: {
+		name: "Not_Nert",
+		health: 9_830_400,
+		reward: {
+			bans: 6_144,
+			currency: 2_430,
+			currencyType: "cyber tokens",
+			experience: 3_840_000,
+		},
+		rank: 14,
+		isBoss: true,
+	},
+	PandaBoss3_0: {
+		name: "PandaBoss3_0",
+		health: 19_660_800,
+		reward: {
+			bans: 6_144,
+			currency: 7_290,
+			currencyType: "coins",
+			experience: 7_680_000,
+		},
+		rank: 15,
+		isBoss: true,
+	},
+	Blizzyrd: {
+		name: "Blizzyrd",
+		health: 39_321_600,
+		reward: {
+			bans: 6_144,
+			currency: 21_870,
+			currencyType: "coins",
+			experience: 15_360_000,
+		},
+		rank: 16,
+		isBoss: true,
+	},
+	ObscureEntity: {
+		name: "ObscureEntity",
+		health: 78_643_200,
+		reward: {
+			bans: 6_144,
+			currency: 65_610,
+			currencyType: "coins",
+			experience: 30_720_000,
+		},
+		rank: 17,
+		isBoss: true,
+	},
+	ReGenZ_YT: {
+		name: "ReGenZ_YT",
+		health: 157_286_400,
+		reward: {
+			bans: 8_192,
+			currency: 131_220,
+			currencyType: "coins",
+			experience: 61_440_000,
+		},
+		rank: 18,
+		isBoss: true,
+	},
+} satisfies Record<string, Npc>;

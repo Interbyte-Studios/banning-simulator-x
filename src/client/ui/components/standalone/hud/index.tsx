@@ -11,11 +11,13 @@ import { SpringImageLabel } from "client/ui/elements/baseElements/imagelabels/sp
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { Notification } from "client/ui/elements/common/notification";
 import { hooks } from "client/ui/hooks";
+import { getCurrentWorld } from "client/util/getCurrentWorld";
 import { getPetMasteryUnclaimedChallenges } from "client/util/getPetMasteryUnclaimedChallenges";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { ACCOLADES } from "shared/configs/accolades";
 import { EGGS } from "shared/configs/eggs";
+import { WorldName, WORLDS } from "shared/configs/worlds";
 import { StoreState } from "shared/rodux";
 import { AccoladeState } from "shared/rodux/accolade";
 import { DailyRewardsState } from "shared/rodux/dailyRewards";
@@ -147,14 +149,25 @@ const HudIcon = (props: {
 	);
 };
 
+const lastWorldCheck = 0;
+
+/**
+ * @returns Time.
+ */
+function getTime(): number {
+	return time();
+}
+
 /**
  * The main hud that is displayed on the screen.
  */
 export const Hud = RoactRodux.connect(mapStateToProps)(
 	hooks((props: HudProps, { useState, useEffect }) => {
+		const [world, setWorld] = useState<WorldName>("Ban Land");
 		const [time, setTime] = useState(0);
 		useEffect(() => {
 			const connection = RunService.RenderStepped.Connect(() => {
+				debug.setmemorycategory("hudDailyRewardsCounter");
 				debug.profilebegin("hudDailyRewardsCounter");
 				const now = os.time();
 				if (now - lastDailyTimerCheck < 1) {
@@ -166,6 +179,26 @@ export const Hud = RoactRodux.connect(mapStateToProps)(
 			});
 			return (): void => connection.Disconnect();
 		}, [props.dailyRewards]);
+
+		useEffect(() => {
+			const connection = RunService.RenderStepped.Connect(() => {
+				debug.setmemorycategory("hudWorldCheck");
+				debug.profilebegin("hudWorldCheck");
+
+				const now = getTime();
+				if (now - lastWorldCheck < 1) {
+					return;
+				}
+
+				const currentWorld = getCurrentWorld();
+				if (currentWorld !== undefined && currentWorld !== world) {
+					setWorld(currentWorld);
+				}
+				debug.profileend();
+			});
+
+			return (): void => connection.Disconnect();
+		}, []);
 
 		// for pet notifications
 		const unseenPets = props.pets.size() - getAmountOfPets();
@@ -197,13 +230,19 @@ export const Hud = RoactRodux.connect(mapStateToProps)(
 			}
 		}
 
+		// for currency display
+		const worldData = WORLDS[world];
+
 		return (
 			<BaseFrame Size={UDim2.fromScale(1, 1)} BackgroundTransparency={1}>
 				{/* Left Side */}
 				<BaseFrame Position={UDim2.fromScale(0.113, 0.574)} Size={UDim2.fromScale(0.216, 0.37)}>
 					<uiaspectratioconstraint AspectRatio={1.1} />
 					{!props.hiddenHud && (
-						<BaseFrame Position={UDim2.fromScale(0.445, -0.077)} Size={UDim2.fromScale(0.851, 0.218)}>
+						<BaseFrame
+							Position={world === "Ban Land" ? UDim2.fromScale(0.445, -0.077) : UDim2.fromScale(0.445, 0.04)}
+							Size={UDim2.fromScale(0.851, 0.218)}
+						>
 							<uilistlayout
 								Padding={new UDim(0.03, 0)}
 								FillDirection={Enum.FillDirection.Horizontal}
@@ -251,22 +290,27 @@ export const Hud = RoactRodux.connect(mapStateToProps)(
 					)}
 
 					<CurrencyViewer
-						position={UDim2.fromScale(0.02, 0.162)}
+						position={world === "Ban Land" ? UDim2.fromScale(0.02, 0.162) : UDim2.fromScale(0.02, 0.275)}
 						size={UDim2.fromScale(0.891, 0.35)}
-						currencyType={"coins"}
+						currencyType={worldData.reward}
 					/>
 					<CurrencyViewer
-						position={UDim2.fromScale(0.02, 0.383)}
+						position={world === "Ban Land" ? UDim2.fromScale(0.02, 0.383) : UDim2.fromScale(0.02, 0.5)}
 						size={UDim2.fromScale(0.891, 0.35)}
 						currencyType={"gems"}
 					/>
-					<CurrencyViewer
-						position={UDim2.fromScale(0.02, 0.601)}
-						size={UDim2.fromScale(0.891, 0.35)}
-						currencyType={"gears"}
-					/>
+					{world === "Ban Land" && (
+						<CurrencyViewer
+							position={UDim2.fromScale(0.02, 0.601)}
+							size={UDim2.fromScale(0.891, 0.35)}
+							currencyType={"gears"}
+						/>
+					)}
 					{!props.hiddenHud && (
-						<BaseFrame Position={UDim2.fromScale(0.454, 0.841)} Size={UDim2.fromScale(0.851, 0.218)}>
+						<BaseFrame
+							Position={world === "Ban Land" ? UDim2.fromScale(0.454, 0.835) : UDim2.fromScale(0.454, 0.75)}
+							Size={UDim2.fromScale(0.851, 0.218)}
+						>
 							<uilistlayout
 								Padding={new UDim(0.03, 0)}
 								FillDirection={Enum.FillDirection.Horizontal}

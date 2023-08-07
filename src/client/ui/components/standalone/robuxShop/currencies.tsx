@@ -14,6 +14,7 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { CURRENCY_PURCHASES, CurrencyPurchaseOption, CurrencyPurchaseType } from "shared/configs/game";
 import { WORLDS } from "shared/configs/worlds";
+import { zones } from "shared/configs/zones";
 import { StoreState } from "shared/rodux";
 import { WorldsState } from "shared/rodux/worlds";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
@@ -87,7 +88,11 @@ const CurrencyOption = RoactRodux.connect(mapStateToProps)(
 				continue;
 			}
 
-			for (const [zoneName, zoneData] of pairs(worldData.zones)) {
+			for (const [zoneName, zoneData] of pairs(zones)) {
+				if (zoneData.worldParent !== worldName) {
+					continue;
+				}
+
 				const storedZone = storedWorld.zones.find((zone) => zone === zoneName);
 				if (storedZone === undefined) {
 					continue;

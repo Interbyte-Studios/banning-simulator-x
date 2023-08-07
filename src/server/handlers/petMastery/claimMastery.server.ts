@@ -1,4 +1,5 @@
 debug.setmemorycategory("claimMastery");
+import { isEventEgg, isExclusiveEgg } from "shared/configs/eggs";
 import { PET_MASTERY_REQUIREMENTS, PET_MASTERY_REWARDS } from "shared/configs/petMastery";
 import { remotes } from "shared/remotes";
 import { ClaimPetMasteryFailKind } from "shared/remotes/petMastery/claimMastery";
@@ -104,7 +105,7 @@ remotes.Server.GetNamespace("petMastery")
 							};
 						}
 
-						if (eggName === "500k Event" || eggName === "Throwback") {
+						if (isEventEgg(eggName) || isExclusiveEgg(eggName)) {
 							return {
 								success: false,
 								reason: ClaimPetMasteryFailKind.InvalidMastery,

@@ -1,6 +1,6 @@
 import { Eggs } from "shared/configs/eggs";
 import { Worlds } from "shared/configs/worlds";
-import { Zones } from "shared/configs/zones";
+import { ZoneNames } from "shared/configs/zones";
 
 declare global {
 	interface Workspace extends WorldRoot {
@@ -95,13 +95,20 @@ declare global {
 				};
 			};
 			rankUpgrade: Folder & {
-				interact: BasePart;
-				teleport: BasePart;
+				["Ban Land"]: BasePart;
+				["Ban Land Teleport"]: BasePart;
+				["Cyber Cities"]: BasePart;
+				["Cyber Cities Teleport"]: BasePart;
+			};
+			portals: Folder & {
+				[World in keyof Worlds]: Folder & {
+					interaction: BasePart;
+				};
 			};
 		};
 		decoration: Folder & {
 			[P in keyof Worlds]: Folder & {
-				[P in keyof Zones]: Folder & {
+				[P in keyof ZoneNames]: Folder & {
 					sign: Folder & {
 						zoneInfo: Folder & {
 							display: BasePart;

@@ -9,7 +9,7 @@ import { Currency } from "./currencies";
 import { EGGS } from "./eggs";
 import { BoostProduct } from "./game";
 import { WEAPONS } from "./weapons";
-import { BAN_LAND_ZONES } from "./zones/banLand";
+import { zones } from "./zones";
 
 export type AccoladeCompletion = true | { progressPercentage: number; progress: number; maxProgress: number }; // Able to claim or the percentage of completion
 export interface Accolade {
@@ -375,7 +375,11 @@ export const ACCOLADES: Array<Accolade> = [
 
 			let totalZones = 0;
 			let ownedZones = 0;
-			for (const [zoneName] of pairs(BAN_LAND_ZONES)) {
+			for (const [zoneName, zoneData] of pairs(zones)) {
+				if (zoneData.worldParent !== "Ban Land") {
+					continue;
+				}
+
 				totalZones += 1;
 
 				const storedZoneData = banLandData.zones.find((name) => name === zoneName);

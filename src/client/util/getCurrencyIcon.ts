@@ -17,5 +17,8 @@ export function getCurrencyIcon(currency: Currency): string {
 		case "gears": {
 			return assetIds.images.vectors.Gear;
 		}
+		case "cyber tokens": {
+			return assetIds.images.vectors.CyberToken;
+		}
 	}
 }

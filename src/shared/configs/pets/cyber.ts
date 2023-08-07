@@ -9,8 +9,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		id: 53,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 75_000,
+			additionalBans: 125,
 		},
 	},
 	"Cyber Bunny": {
@@ -18,8 +18,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		id: 54,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 75_000,
+			additionalBans: 125,
 		},
 	},
 	"Cyber Kitty": {
@@ -27,8 +27,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		id: 55,
 		rarity: "Ordinary",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 100_000,
+			additionalBans: 155,
 		},
 	},
 	"Cyber Bear": {
@@ -36,8 +36,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		id: 56,
 		rarity: "Rare",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 130_000,
+			additionalBans: 175,
 		},
 	},
 	"Cyber Angel": {
@@ -45,8 +45,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		id: 57,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 195_000,
+			additionalBans: 260,
 		},
 	},
 	"Cyber Pegasus": {
@@ -54,8 +54,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		id: 58,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 220_000,
+			additionalBans: 275,
 		},
 	},
 	"Cybernetic Phoenix": {
@@ -63,8 +63,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		id: 59,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 275_000,
+			additionalBans: 375,
 		},
 	},
 	"Cybernetic Guard": {
@@ -72,8 +72,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		id: 60,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 300_000,
+			additionalBans: 385,
 		},
 	},
 	"Cybernetic Dementor": {
@@ -81,8 +81,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		id: 61,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 327_680,
+			additionalBans: 400,
 		},
 	},
 	"Cybernetic Destroyer": {
@@ -90,8 +90,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		id: 62,
 		rarity: "Secret",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 2_500_000,
+			additionalBans: 3_150,
 		},
 	},
 };

@@ -50,6 +50,7 @@ import { Rewards } from "../components/standalone/rewards";
 import { RobuxShop } from "../components/standalone/robuxShop";
 import { UpdateLog } from "../components/standalone/updateLog";
 import { WeaponEquip } from "../components/standalone/weapons/weaponEquip";
+import { WorldsControl } from "../components/standalone/worlds";
 import { ZonesUI } from "../components/standalone/zones";
 import { AnnouncementContext, AnnouncementType } from "../context/AnnouncementsAPI";
 import { hooks } from "../hooks";
@@ -676,7 +677,15 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 			);
 		}
 
-		components.push(<ZonesUI />, <Rewards />, <LocalMessages />, <EggCost />, <EggHud />, <BoostCounter />);
+		components.push(
+			<ZonesUI />,
+			<Rewards />,
+			<LocalMessages />,
+			<EggCost />,
+			<EggHud />,
+			<BoostCounter />,
+			<WorldsControl />,
+		);
 
 		return components;
 	}, [visibility, isMenuVisible]);

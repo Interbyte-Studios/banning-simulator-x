@@ -3,7 +3,7 @@ import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { checkCanAttack, clearAttackLog } from "server/modules/npcs/npcAttackCache";
 import { currentTimeTrials } from "server/modules/timeTrials";
 import { WORLDS } from "shared/configs/worlds";
-import { UniversalWorldData } from "shared/configs/zones";
+import { zones } from "shared/configs/zones";
 import { remotes } from "shared/remotes";
 import { isNpcCharacter, NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
@@ -105,22 +105,20 @@ remotes.Server.Get("damageNPC").Connect(
 			}
 		} else {
 			const currentState = store.getState();
-			for (const [worldName, worldData] of pairs(UniversalWorldData)) {
-				for (const [zoneName, zoneData] of pairs(worldData)) {
-					const npcData = zoneData.npcs.find((npcData) => npcData.name === character.Name);
-					if (npcData === undefined) {
-						continue;
-					}
+			for (const [zoneName, zoneData] of pairs(zones)) {
+				const npcData = zoneData.npcs.find((npcData) => npcData.name === character.Name);
+				if (npcData === undefined) {
+					continue;
+				}
 
-					const ownsWorld = currentState.worlds.find((storedWorld) => storedWorld.name === worldName);
-					if (ownsWorld === undefined) {
-						return;
-					}
+				const ownsWorld = currentState.worlds.find((storedWorld) => storedWorld.name === zoneData.worldParent);
+				if (ownsWorld === undefined) {
+					return;
+				}
 
-					const ownsZone = ownsWorld.zones.find((storedZone) => storedZone === zoneName);
-					if (ownsZone === undefined) {
-						return;
-					}
+				const ownsZone = ownsWorld.zones.find((storedZone) => storedZone === zoneName);
+				if (ownsZone === undefined) {
+					return;
 				}
 			}
 
@@ -137,19 +135,23 @@ remotes.Server.Get("damageNPC").Connect(
 // generate world state
 const npcState = [];
 
-for (const [worldName, worldInfo] of pairs(WORLDS)) {
+for (const [worldName] of pairs(WORLDS)) {
 	// create npcs
 	const world = Workspace.worlds[worldName];
 
-	const zones: NpcWorldState["zones"] = [];
+	const npcZones: NpcWorldState["zones"] = [];
 
 	const worldState: NpcWorldState = {
 		name: worldName,
-		zones: zones,
+		zones: npcZones,
 	};
 	npcState.push(worldState);
 
-	for (const [zoneName] of pairs(worldInfo.zones)) {
+	for (const [zoneName, zoneData] of pairs(zones)) {
+		if (zoneData.worldParent !== worldName) {
+			continue;
+		}
+
 		const zoneFolder = world.zones.FindFirstChild(zoneName);
 		assert(zoneFolder, `World ${worldName} did not contain zone ${zoneName}`);
 
@@ -164,7 +166,7 @@ for (const [worldName, worldInfo] of pairs(WORLDS)) {
 		const halfHeight = new Vector3(0, size.Y / 2, 0);
 		const fiveStuds = new Vector3(0, 10, 0);
 
-		zones.push({
+		npcZones.push({
 			name: zoneName,
 			npcs: [],
 			spawn: {

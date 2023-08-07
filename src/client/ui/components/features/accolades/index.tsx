@@ -103,10 +103,6 @@ export const Accolades = RoactRodux.connect(mapStateToProps)(
 						SortOrder={Enum.SortOrder.LayoutOrder}
 					/>
 					{ACCOLADES.map((accoladeData): Roact.Element => {
-						if (accoladeData.id === 7) {
-							return <></>;
-						}
-
 						const ownsAccolade = props.accolades.find((accoladeId) => accoladeId === accoladeData.id);
 						const accoladeProgress =
 							playerStore !== undefined

@@ -41,6 +41,7 @@ export const TIME_TRIAL_UPGRADES = {
 export type TimeTrialCurrency = Record<WorldName, Currency>;
 export const TIME_TRIALS_CURRENCIES = {
 	"Ban Land": "gears",
+	"Cyber Cities": "cyber tokens",
 } satisfies TimeTrialCurrency;
 
 export const isTimeTrialDifficulty = t.literal("easy", "medium", "hard");

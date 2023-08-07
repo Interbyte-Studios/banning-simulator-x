@@ -8,6 +8,7 @@ import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScro
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
 import { WorldName, WORLDS } from "shared/configs/worlds";
+import { zones } from "shared/configs/zones";
 
 import { ReturnToWorldSelection } from "./returnToWorldSelection";
 import { WorldTeleportCard } from "./worldCard";
@@ -56,10 +57,10 @@ export const Teleportation = hooks((props: TeleportationProps, { useState, useVa
 
 	if (worldTeleportToView !== undefined) {
 		const zonesToDisplay: Array<Roact.Element> = [];
-		for (const [worldName, worldData] of pairs(WORLDS)) {
-			for (const [zoneName, zoneData] of pairs(worldData.zones)) {
-				zonesToDisplay.push(<ZoneTeleportCard world={worldName} zone={zoneName} id={zoneData.id} />);
-			}
+		for (const [zoneName, zoneData] of pairs(zones)) {
+			if (zoneData.worldParent !== worldTeleportToView) continue;
+
+			zonesToDisplay.push(<ZoneTeleportCard world={zoneData.worldParent} zone={zoneName} id={zoneData.id} />);
 		}
 
 		return (

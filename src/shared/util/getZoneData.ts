@@ -1,6 +1,5 @@
 import { WorldName } from "shared/configs/worlds";
-import { Zone, ZoneNames } from "shared/configs/zones";
-import { BAN_LAND_ZONES } from "shared/configs/zones/banLand";
+import { Zone, ZoneNames, zones } from "shared/configs/zones";
 
 import { UnreachableCaseError } from "./unreachableCaseError";
 
@@ -13,8 +12,9 @@ export function getZoneData(world: WorldName, zone: ZoneNames): Zone {
 	let zoneData: Zone;
 
 	switch (world) {
-		case "Ban Land": {
-			zoneData = BAN_LAND_ZONES[zone];
+		case "Ban Land":
+		case "Cyber Cities": {
+			zoneData = zones[zone];
 			break;
 		}
 		default: {

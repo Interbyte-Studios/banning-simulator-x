@@ -2,8 +2,8 @@ import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { Workspace } from "@rbxts/services";
 import { hooks } from "client/ui/hooks";
-import { WorldName, WORLDS } from "shared/configs/worlds";
-import { isStarterZone } from "shared/configs/zones";
+import { WorldName } from "shared/configs/worlds";
+import { isStarterZone, zones } from "shared/configs/zones";
 import { StoreState } from "shared/rodux";
 import { WorldsState } from "shared/rodux/worlds";
 
@@ -36,59 +36,78 @@ export const ZonesUI = RoactRodux.connect(mapStateToProps)(
 		const [viewingZone, setViewedZone] = useState<{ world: WorldName; zone: number } | undefined>(undefined);
 
 		const elements: Array<Roact.Element> = [];
-		for (const [worldName, worldData] of pairs(WORLDS)) {
-			const storedWorld = props.worlds.find((storedWorldData) => storedWorldData.name === worldName);
+		for (const [zoneName, zoneData] of pairs(zones)) {
+			const worldFolder = Workspace.decoration[zoneData.worldParent];
+			const storedWorld = props.worlds.find((storedWorldData) => storedWorldData.name === zoneData.worldParent);
 			if (storedWorld === undefined) {
 				continue;
 			}
 
-			const worldFolder = Workspace.decoration[worldName];
-
-			for (const [zoneName, zoneData] of pairs(worldData.zones)) {
-				const storedZone = storedWorld.zones.find((storedZoneName) => storedZoneName === zoneName);
-				if (storedZone !== undefined) {
-					continue;
-				}
-
-				if (isStarterZone(zoneName)) {
-					continue;
-				}
-
-				if (zoneData.cost === undefined) {
-					continue;
-				}
-
-				const zoneFolder = worldFolder[zoneName];
-				const sign = zoneFolder.sign;
-				const adorneePart = sign.description.FindFirstChild("infoPart") as BasePart;
-				if (adorneePart === undefined) {
-					continue;
-				}
-
-				props.worlds.forEach((world) => {
-					const ownsZone = world.zones.find((zoneName) => zoneName === zoneName);
-					if (ownsZone === undefined) {
-						const baseInfoAdornee = sign.zoneInfo.display;
-
-						elements.push(<BaseZoneInfo adornee={baseInfoAdornee} zoneData={zoneData} />);
-					}
-				});
-
-				elements.push(
-					<ZoneSign
-						adornee={adorneePart}
-						zoneName={zoneName}
-						zoneData={zoneData}
-						worldName={worldName}
-						setViewedZone={(world: WorldName, zone: number): void =>
-							setViewedZone({
-								world,
-								zone,
-							})
-						}
-					/>,
-				);
+			const storedZone = storedWorld.zones.find((storedZoneName) => storedZoneName === zoneName);
+			if (storedZone !== undefined) {
+				continue;
 			}
+
+			if (isStarterZone(zoneName)) {
+				continue;
+			}
+
+			if (zoneData.cost === undefined) {
+				continue;
+			}
+
+			const zoneFolder = worldFolder.FindFirstChild(zoneName) as Folder;
+			if (zoneFolder === undefined) {
+				continue;
+			}
+
+			const sign = zoneFolder.FindFirstChild("sign") as Folder;
+			if (sign === undefined) {
+				continue;
+			}
+
+			const description = sign.FindFirstChild("description") as Folder;
+			if (description === undefined) {
+				continue;
+			}
+
+			const descriptionDisplay = description.FindFirstChild("infoPart") as BasePart;
+			if (descriptionDisplay === undefined) {
+				continue;
+			}
+
+			const zoneInfo = sign.FindFirstChild("zoneInfo") as Folder;
+			if (zoneInfo === undefined) {
+				continue;
+			}
+
+			const zoneDisplay = zoneInfo.FindFirstChild("display") as BasePart;
+			if (zoneDisplay === undefined) {
+				continue;
+			}
+
+			props.worlds.forEach((world) => {
+				const ownsZone = world.zones.find((zoneName) => zoneName === zoneName);
+				if (ownsZone === undefined) {
+					const baseInfoAdornee = zoneDisplay;
+
+					elements.push(<BaseZoneInfo adornee={baseInfoAdornee} zoneData={zoneData} />);
+				}
+			});
+
+			elements.push(
+				<ZoneSign
+					adornee={descriptionDisplay}
+					zoneName={zoneName}
+					zoneData={zoneData}
+					setViewedZone={(world: WorldName, zone: number): void =>
+						setViewedZone({
+							world,
+							zone,
+						})
+					}
+				/>,
+			);
 		}
 
 		if (viewingZone !== undefined) {

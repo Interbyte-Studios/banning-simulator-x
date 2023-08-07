@@ -13,11 +13,13 @@ import { RarityGradient } from "client/ui/elements/gradients/rarityGradient";
 import { hooks } from "client/ui/hooks";
 import { getPetImage } from "client/util/getPetImage";
 import { playSFX, UIEngagement } from "client/util/playSound";
+import { isEventEgg, isExclusiveEgg } from "shared/configs/eggs";
 import { PET_MASTERY_REQUIREMENTS } from "shared/configs/petMastery";
 import { Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
 import { PetMasteryState } from "shared/rodux/petMastery";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
+import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetData } from "shared/util/getPetData";
 
 interface IndexPetCardProps extends IndexPetCardMappedProps {
@@ -51,6 +53,7 @@ function mapStateToProps(state: StoreState): IndexPetCardMappedProps {
 export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 	hooks((props: IndexPetCardProps, hooks) => {
 		const petData = getPetData(props.pet);
+		const egg = getEggNameFromPetId(petData.id);
 
 		const petIndex = props.index.pets.get(props.pet);
 		const isDiscovered = petIndex !== undefined;
@@ -101,10 +104,12 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 				}
 
 				if (petIndex.hatched.void >= PET_MASTERY_REQUIREMENTS[petData.rarity].void.hatch) {
-					if (petMasteryPet === undefined) {
-						unseenChallenges++;
-					} else if (!petMasteryPet.void.hatchClaimed) {
-						unseenChallenges++;
+					if (!isEventEgg(egg) && !isExclusiveEgg(egg)) {
+						if (petMasteryPet === undefined) {
+							unseenChallenges++;
+						} else if (!petMasteryPet.void.hatchClaimed) {
+							unseenChallenges++;
+						}
 					}
 				}
 			} else if (props.currentVariant === "regular") {
@@ -189,12 +194,11 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 							}}
 						/>
 					</BaseFrame>
-
 					{unseenChallenges > 0 && (
 						<Notification
 							amount={unseenChallenges}
-							position={UDim2.fromScale(0.95, 0)}
-							size={UDim2.fromScale(0.55, 0.55)}
+							position={UDim2.fromScale(0.9, 0.9)}
+							size={UDim2.fromScale(0.5, 0.5)}
 						/>
 					)}
 				</ImageButton>

@@ -1,5 +1,6 @@
 import Roact from "@rbxts/roact";
 import { CollectionService, Workspace } from "@rbxts/services";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { hooks } from "client/ui/hooks";
 import { getCurrentWorld } from "client/util/getCurrentWorld";
 import { WorldName } from "shared/configs/worlds";
@@ -20,9 +21,10 @@ export const WorldPrestige = hooks(
 			viewType: WorldPrestigeViewType;
 			setViewType: (viewType: WorldPrestigeViewType) => void;
 		},
-		{ useState, useEffect },
+		{ useState, useEffect, useContext },
 	) => {
 		const [viewingWorld, setViewingWorld] = useState<WorldName>("Ban Land");
+		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 		useEffect(() => {
 			if (!props.isVisible) {
@@ -72,10 +74,7 @@ export const WorldPrestige = hooks(
 							<>
 								<WorldPrestigeInteractPrompt
 									adornee={interaction}
-									display={(): void => {
-										props.setViewType(WorldPrestigeViewType.Prestige);
-										props.setVisibility(true);
-									}}
+									display={(): void => addAnnouncement(`World Prestige is disabled.`, AnnouncementType.Error)}
 									interactType={WorldPrestigeViewType.Prestige}
 								/>
 							</>
