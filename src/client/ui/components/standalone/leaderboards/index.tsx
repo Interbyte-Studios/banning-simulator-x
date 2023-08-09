@@ -6,7 +6,6 @@ import { findFirstChildByNameWhichIsA } from "shared/util/findFirstChildByNameWh
 import { BanLeaderboard } from "./bansLeaderboards";
 import { EggLeaderboard } from "./eggsLeaderboards";
 import { TimeTrialsLeaderboard } from "./timeTrialsLeaderboards";
-import { WorldPrestigeLeaderboard } from "./worldPrestige";
 
 /**
  * A component that displays global leaderboard data.
@@ -17,7 +16,6 @@ export const Leaderboards = hooks((_, { useState, useEffect }) => {
 	const [banBoards, setBanBoards] = useState<Array<BasePart>>([]);
 	const [eggBoards, setEggBoards] = useState<Array<BasePart>>([]);
 	const [timeTrialsBoards, setTimeTrialsBoards] = useState<Array<BasePart>>([]);
-	const [worldPrestigeBoards, setWorldPrestigeBoards] = useState<Array<BasePart>>([]);
 
 	useEffect(() => {
 		const banLeaderboards: Array<BasePart> = [];
@@ -50,35 +48,20 @@ export const Leaderboards = hooks((_, { useState, useEffect }) => {
 			trialsBoards.push(basePart);
 		});
 
-		const prestigeBoards: Array<BasePart> = [];
-		Workspace.interactions.leaderboards.worldPrestige.GetChildren().forEach((leaderboard) => {
-			const basePart = findFirstChildByNameWhichIsA(leaderboard, "board", "BasePart");
-			if (basePart === undefined) {
-				return;
-			}
-
-			prestigeBoards.push(basePart);
-		});
-
 		setBanBoards(banLeaderboards);
 		setEggBoards(eggLeaderboards);
 		setTimeTrialsBoards(trialsBoards);
-		setWorldPrestigeBoards(prestigeBoards);
 	}, []);
 
 	const banBoardComponents = banBoards.map((basePart) => <BanLeaderboard adornee={basePart} />);
 	const eggBoardComponents = eggBoards.map((basePart) => <EggLeaderboard adornee={basePart} />);
 	const timeTrialsBoardComponents = timeTrialsBoards.map((basePart) => <TimeTrialsLeaderboard adornee={basePart} />);
-	const worldPrestigeBoardComponents = worldPrestigeBoards.map((basePart) => (
-		<WorldPrestigeLeaderboard adornee={basePart} />
-	));
 
 	return (
 		<>
 			{banBoardComponents}
 			{eggBoardComponents}
 			{timeTrialsBoardComponents}
-			{worldPrestigeBoardComponents}
 		</>
 	);
 });

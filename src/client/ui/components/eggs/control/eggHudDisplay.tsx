@@ -13,15 +13,12 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
 import { Pet, Variants } from "shared/configs/pets";
-import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { StoreState } from "shared/rodux";
 import { EggsState } from "shared/rodux/eggs";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
 import { SettingsState } from "shared/rodux/settings";
-import { WorldPrestigeState } from "shared/rodux/worldPrestige";
 import { getMagnitudeBetweenPlayerAndObject } from "shared/util/getDistanceFromObject";
 import { getEggCost } from "shared/util/getEggCost";
-import { getEggData } from "shared/util/getEggData";
 import { getEggsMastery } from "shared/util/getEggsMastery";
 import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
@@ -46,7 +43,6 @@ interface EggHudMappedProps {
 	settings: SettingsState;
 	index: PlayerIndexState;
 	eggs: EggsState;
-	worldPrestige: WorldPrestigeState;
 }
 
 /**
@@ -60,7 +56,6 @@ function mapStateToProps(state: StoreState): EggHudMappedProps {
 		settings: state.settings,
 		index: state.index,
 		eggs: state.eggs,
-		worldPrestige: state.worldPrestige,
 	};
 }
 
@@ -101,13 +96,6 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 		// find reduced egg cost provided by player mastery
 		const eggMasteryReducedMultiplier = getEggsMastery(props.eggs).reducedEggCostMultiplier;
 		const eggCost = getEggCost(props.eggName, props.isVoid, eggMasteryReducedMultiplier);
-
-		const eggData = getEggData(props.eggName);
-		let reducedVoidCost = 0;
-		if (eggData.world !== "Limited" && props.isVoid) {
-			const worldPrestigeReducer = props.worldPrestige[eggData.world].reducedVoidEggCostUpgrades;
-			reducedVoidCost = eggCost.amount * worldPrestigeReducer * WORLD_PRESTIGE.reducedVoidEggCost.reducedCostMultiplier;
-		}
 
 		useEffect(() => {
 			const player = Players.LocalPlayer;
@@ -215,7 +203,7 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 							native={{
 								Position: props.possiblePets.size() <= 6 ? UDim2.fromScale(0.65, 0.9) : UDim2.fromScale(0.65, 0.91),
 								Size: props.possiblePets.size() <= 6 ? UDim2.fromScale(0.3, 0.15) : UDim2.fromScale(0.3, 0.125),
-								Text: twoDpAbbreviator.numberToString(props.isVoid ? eggCost.amount - reducedVoidCost : eggCost.amount),
+								Text: twoDpAbbreviator.numberToString(eggCost.amount),
 								TextXAlignment: Enum.TextXAlignment.Left,
 							}}
 							stroke={{

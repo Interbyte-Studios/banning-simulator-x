@@ -5,10 +5,8 @@ import { Workspace } from "@rbxts/services";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { hooks } from "client/ui/hooks";
 import { EGGS } from "shared/configs/eggs";
-import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { StoreState } from "shared/rodux";
 import { EggsState } from "shared/rodux/eggs";
-import { WorldPrestigeState } from "shared/rodux/worldPrestige";
 import { getEggCost } from "shared/util/getEggCost";
 import { getEggsMastery } from "shared/util/getEggsMastery";
 
@@ -16,7 +14,6 @@ import { EggCostDisplay } from "./eggCostDisplay";
 
 interface EggCostMappedProps {
 	eggs: EggsState;
-	worldPrestige: WorldPrestigeState;
 }
 
 /**
@@ -26,7 +23,6 @@ interface EggCostMappedProps {
 function mapStateToProps(state: StoreState): EggCostMappedProps {
 	return {
 		eggs: state.eggs,
-		worldPrestige: state.worldPrestige,
 	};
 }
 
@@ -54,10 +50,6 @@ export const EggCost = RoactRodux.connect(mapStateToProps)(
 						const voidCost = eggModel.void.FindFirstChild("cost") as BasePart;
 						const eggCostVoid = getEggCost(eggName, true, eggMasteryReducedMultiplier);
 
-						const worldPrestigeReducer = props.worldPrestige[eggData.world].reducedVoidEggCostUpgrades;
-						const reducedVoidCost =
-							eggCostVoid.amount * worldPrestigeReducer * WORLD_PRESTIGE.reducedVoidEggCost.reducedCostMultiplier;
-
 						return (
 							<>
 								{regularCost !== undefined && (
@@ -71,7 +63,7 @@ export const EggCost = RoactRodux.connect(mapStateToProps)(
 								{voidCost !== undefined && (
 									<EggCostDisplay
 										adornee={voidCost}
-										cost={eggCostVoid.amount - reducedVoidCost}
+										cost={eggCostVoid.amount}
 										currency={eggCostVoid.currencyType}
 										isVoid={true}
 									/>

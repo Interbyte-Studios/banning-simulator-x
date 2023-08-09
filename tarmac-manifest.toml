@@ -88,9 +88,29 @@ hash = "1750e5b8355fc10b0cc09a1b2f3d40590844bf27e89ceeb2aa6dbafedcf2a31c"
 id = 14078799195
 packable = false
 
+[inputs."images/decals/eggs/Armored.png"]
+hash = "106ce8135c9007ecb971abab0fe336d744485783474de9962b330b4c2ca84ed1"
+id = 14375576800
+packable = false
+
 [inputs."images/decals/eggs/Candy.png"]
 hash = "f1ea9b24a95160d30a19ada4300f9ee0e71da10d6dfde2a120a8282c4793466f"
 id = 11627644446
+packable = false
+
+[inputs."images/decals/eggs/City.png"]
+hash = "e242ef19f2f57f9a3c01b4e0679abd3ab642a2e38d3ee21a265b513f5deaabc2"
+id = 14375576981
+packable = false
+
+[inputs."images/decals/eggs/Corrupt.png"]
+hash = "a7b2b90a7332831121e5ca87d77a5542a7d3506af9d76eaed8385cbbfdb0fe9d"
+id = 14375577116
+packable = false
+
+[inputs."images/decals/eggs/Cybernetic.png"]
+hash = "66950632ea5a6dc8dad3d541a26cd492b7376040c63c7783523df24a8f252364"
+id = 14375577204
 packable = false
 
 [inputs."images/decals/eggs/Desert.png"]
@@ -1994,8 +2014,8 @@ id = 11435016232
 packable = false
 
 [inputs."images/decals/pets/Void Corrupt Bear.png"]
-hash = "a1097ca708a9345409a78e3bedca882b3219e6b411f7dee7c69b67ce6c946934"
-id = 11440116242
+hash = "180a7b72496b233eba6c62489b084333c61017143f1bc0cd948bc3bbaa77782b"
+id = 14375578844
 packable = false
 
 [inputs."images/decals/pets/Void Corrupt Bunny.png"]
@@ -2610,6 +2630,7 @@ packable = false
 
 [inputs."images/decals/talismans/Artifact Dual Talisman.png"]
 hash = "7dfdb6429e041c5d58cd3329270479e2bdc61f8f17e202fc58affde1ddea79c6"
+id = 14375579552
 packable = false
 
 [inputs."images/decals/talismans/Artifact GearWorx Talisman.png"]
@@ -2619,6 +2640,7 @@ packable = false
 
 [inputs."images/decals/talismans/Artifact Guere Talisman.png"]
 hash = "47e427eacfa6abee272c187417428232956fe460a9285e0848670a9b05267d1a"
+id = 14375579648
 packable = false
 
 [inputs."images/decals/talismans/Artifact Heart Talisman.png"]
@@ -2638,6 +2660,7 @@ packable = false
 
 [inputs."images/decals/talismans/Artifact Phoenix Talisman.png"]
 hash = "37b83c01054e24e15d0c044ecf78bf77485a79e13aa17bd50320d929b7332d68"
+id = 14375579813
 packable = false
 
 [inputs."images/decals/talismans/Artifact Skull Talisman.png"]
@@ -2652,6 +2675,7 @@ packable = false
 
 [inputs."images/decals/talismans/Artifact Sun Talisman.png"]
 hash = "1954b7ee1e3fc29e466abeae2b07eaddc45ee31a8a8d367457c24c5f9e4e0830"
+id = 14375580018
 packable = false
 
 [inputs."images/decals/talismans/Artifact Target Talisman.png"]
@@ -2671,6 +2695,7 @@ packable = false
 
 [inputs."images/decals/talismans/Awakend Dual Talisman.png"]
 hash = "8e1c9b559df826c983f0b231e524619ad58516da48b2fb86e11de9e04c90b34a"
+id = 14375580237
 packable = false
 
 [inputs."images/decals/talismans/Awakend GearWorx Talisman.png"]
@@ -2680,6 +2705,7 @@ packable = false
 
 [inputs."images/decals/talismans/Awakend Guere Talisman.png"]
 hash = "1eed46c596ba1b934713d0438ed270ba233fc6ca1220b1b688cdba0ce32a0fd2"
+id = 14375580385
 packable = false
 
 [inputs."images/decals/talismans/Awakend Heart Talisman.png"]
@@ -2699,6 +2725,7 @@ packable = false
 
 [inputs."images/decals/talismans/Awakend Phoenix Talisman.png"]
 hash = "ce999b710e23bb15ec779ad8f71faa6845d6a4313662cddb3a21c488f8bb7929"
+id = 14375580495
 packable = false
 
 [inputs."images/decals/talismans/Awakend Skull Talisman.png"]
@@ -2713,6 +2740,7 @@ packable = false
 
 [inputs."images/decals/talismans/Awakend Sun Talisman.png"]
 hash = "8b213bb0a2dc98e97d296803eb3fba1cc62ded53fea2baae09958253e99b0a63"
+id = 14375580609
 packable = false
 
 [inputs."images/decals/talismans/Awakend Target Talisman.png"]
@@ -2727,6 +2755,7 @@ packable = false
 
 [inputs."images/decals/talismans/Dual Talisman.png"]
 hash = "2f5dc451349be84a1fbf2b58ce2386032cb73a256265c1c0e8be47584a7b74e4"
+id = 14375580711
 packable = false
 
 [inputs."images/decals/talismans/GearWorx Talisman.png"]
@@ -2736,6 +2765,7 @@ packable = false
 
 [inputs."images/decals/talismans/Guere Talisman.png"]
 hash = "1636619b47daaa57dcc98284a987f77c623f0c6a1e1ffb434a32ae6a4bb7ffa1"
+id = 14375580844
 packable = false
 
 [inputs."images/decals/talismans/Heart Talisman.png"]
@@ -2755,6 +2785,7 @@ packable = false
 
 [inputs."images/decals/talismans/Phoenix Talisman.png"]
 hash = "6ce4143ff0bb021d16fed13f770233ce5120b0af32da859ec392288b15da51a1"
+id = 14375580982
 packable = false
 
 [inputs."images/decals/talismans/Skull Talisman.png"]
@@ -2769,6 +2800,7 @@ packable = false
 
 [inputs."images/decals/talismans/Sun Talisman.png"]
 hash = "5352e8e72be969556558a6e1a97f835573ded09c4c32a47b20d79c0270fc0055"
+id = 14375581128
 packable = false
 
 [inputs."images/decals/talismans/Target Talisman.png"]
@@ -2853,10 +2885,12 @@ packable = false
 
 [inputs."images/decals/weapons/City Lights Slasher.png"]
 hash = "1a6fcdec8f105d86bde3e0a124aabafc6c22543cf7060e218720288082e9701c"
+id = 14375581286
 packable = false
 
 [inputs."images/decals/weapons/City Lights Smasher.png"]
 hash = "3bc54706e8cd5f2001aeb444d3ec1eecac15b6858b2ec0a18697d56239dec592"
+id = 14375581412
 packable = false
 
 [inputs."images/decals/weapons/Crimson Jewel.png"]
@@ -2876,10 +2910,12 @@ packable = false
 
 [inputs."images/decals/weapons/Cyber Slasher.png"]
 hash = "ae4112df95a1f829fd5a416476358c2842ac2f01a21ff473cc4c6d6a441dc4a2"
+id = 14375581597
 packable = false
 
 [inputs."images/decals/weapons/Cyber Smasher.png"]
 hash = "4da11dddbbd29c51a142fb587db0400a2c835b25de6ef127bc8378d9645e61bf"
+id = 14375581739
 packable = false
 
 [inputs."images/decals/weapons/Darkest Desires.png"]
@@ -2889,10 +2925,12 @@ packable = false
 
 [inputs."images/decals/weapons/Digital Slasher.png"]
 hash = "671a9b94232f6691d552df800fb985b908ddc7733915bcb3208a41f44bcc4065"
+id = 14375581879
 packable = false
 
 [inputs."images/decals/weapons/Digital Thrasher.png"]
 hash = "3de13e758a60ccf32e35fabc7b2d2aa7adb9feca4b587ede6e873520d7e2faa5"
+id = 14375582059
 packable = false
 
 [inputs."images/decals/weapons/Dune Glass.png"]
@@ -2902,10 +2940,12 @@ packable = false
 
 [inputs."images/decals/weapons/Electro Basher.png"]
 hash = "9a25401b708e4bdbeee6fb91a276f4a5e92edfc0c351a3237145852397ae7f8b"
+id = 14375582194
 packable = false
 
 [inputs."images/decals/weapons/Electro Slicer.png"]
 hash = "03a66f34d0c66056ddf2bfab3570ef4d3b8434662d4d709decc36b475c721e72"
+id = 14375582318
 packable = false
 
 [inputs."images/decals/weapons/Enchanted Greatsword.png"]
@@ -2965,10 +3005,12 @@ packable = false
 
 [inputs."images/decals/weapons/Glitched Banner.png"]
 hash = "2f3e62dd465462ea39d5df739d2ffd50637c8e25bc737c6ae339ec123afe0cbf"
+id = 14375582605
 packable = false
 
 [inputs."images/decals/weapons/Glitched Slasher.png"]
 hash = "6a63a69287b923d0d43b3cc921392c86f1216afc95c66922c81157c413571f37"
+id = 14375582870
 packable = false
 
 [inputs."images/decals/weapons/Gooey Brawler.png"]
@@ -3018,10 +3060,12 @@ packable = false
 
 [inputs."images/decals/weapons/Matrix Conductor.png"]
 hash = "5f119345270faeba8dfd603a9a4e6be0b573abee0e991989063700b0103555d4"
+id = 14375583252
 packable = false
 
 [inputs."images/decals/weapons/Matrix Enforcer.png"]
 hash = "47360a7900bd5b559b1317ebc01473b9949085db453ecb3f797c7840967d8ad0"
+id = 14375583446
 packable = false
 
 [inputs."images/decals/weapons/Molten Scythe.png"]
@@ -3041,10 +3085,12 @@ packable = false
 
 [inputs."images/decals/weapons/Naonic GreatBlade.png"]
 hash = "75b3907fb504bbfea4dce120eec27a976c2c1f3ef981e0ecfd5dfd97d1e4029c"
+id = 14375583616
 packable = false
 
 [inputs."images/decals/weapons/Neon Thrasher.png"]
 hash = "e02259cf9a78f33a571d766f21b1bfce14aa3d38f623ce7dcba7f7a918f98a9d"
+id = 14375583772
 packable = false
 
 [inputs."images/decals/weapons/Peppermint Scythe.png"]
@@ -3174,10 +3220,12 @@ packable = false
 
 [inputs."images/decals/weapons/UFO Slammer.png"]
 hash = "5435594e71c1d461204b08fd3733dce627e39711b67704b15832ef4ad8a4764e"
+id = 14375584013
 packable = false
 
 [inputs."images/decals/weapons/UFO Slasher.png"]
 hash = "40c04177995d24db794b2cefff35629b5b4b91b737b6154f051eb5178ffcf1df"
+id = 14375584201
 packable = false
 
 [inputs."images/decals/worlds/Ban Land.png"]
@@ -3185,178 +3233,109 @@ hash = "35cfabf6226041b887dd2c25da58c11f44f65e278d2fd904bc8a37f3a3ec2e5a"
 id = 11701906366
 packable = false
 
-[inputs."images/maps/Ban Land/world.jpg"]
-hash = "ca1e87c9948257fed7ac980ef92c8398b411f49a7e6d0b7b598646e8fd832b3a"
-id = 10509318265
-packable = false
-
-[inputs."images/ranks/enemy/boss/Bronze.png"]
-hash = "633e0523334d54884e2511b425e9b9a6d016f732673a745e0209bf1109be5e87"
-id = 11090708263
-packable = false
-
-[inputs."images/ranks/enemy/boss/Diamond.png"]
-hash = "c0509a49eb58add265d7632e58dfa7bfbcbd22cdd59a8356b0194006272edd42"
-id = 11090708380
-packable = false
-
-[inputs."images/ranks/enemy/boss/Gold.png"]
-hash = "71cc341a679bf515f665dffbb3a2e8ccc5d5ccf84f3c747b6143eea24db63ed4"
-id = 11090708492
-packable = false
-
-[inputs."images/ranks/enemy/boss/Ruby.png"]
-hash = "8363628ca2e4def57ccf57d877d0f81f923bc187211255aebeb788abcaa9a961"
-id = 11090708586
-packable = false
-
-[inputs."images/ranks/enemy/boss/Silver.png"]
-hash = "1ac32c01c5e58a13870fafd8d0e1070914ba5b56d8f4f05c2e86f423e575418a"
-id = 11090695009
-packable = false
-
-[inputs."images/ranks/enemy/regular/Bronze.png"]
-hash = "53fcadf17b2829d25ba9e8b8294a45d0006a0b83011908644ef2750b2a3f36fe"
-id = 11090695088
-packable = false
-
-[inputs."images/ranks/enemy/regular/Diamond.png"]
-hash = "dbfe7ca6f5e9d4ac8a60e6108152f37bd25a2f5741847648ea9713bc0d7ea7de"
-id = 11090695164
-packable = false
-
-[inputs."images/ranks/enemy/regular/Gold.png"]
-hash = "b46358ab078613f25da2cbba191f633a2cf1e907224ca0db9fe55e603634e5b1"
-id = 11090695295
-packable = false
-
-[inputs."images/ranks/enemy/regular/Ruby.png"]
-hash = "9a79e7a9bd0220a95a21746365aa64d4a4b6358a69f2e2618a293df6c25d0859"
-id = 11090695398
-packable = false
-
-[inputs."images/ranks/enemy/regular/Silver.png"]
-hash = "355231d051253820347bf1e411ff1fe9fe14c622a21dad834195641614e457a1"
-id = 11090695552
-packable = false
-
-[inputs."images/ranks/friendly/Bronze.png"]
+[inputs."images/ranks/Bronze.png"]
 hash = "d43dff26054adf47dbaee9d02707cb6bc56883c9a7de5dd0d67404ee594f8dd4"
-id = 11866055470
+id = 14375584442
 packable = false
 
-[inputs."images/ranks/friendly/Celestial.png"]
+[inputs."images/ranks/Celestial.png"]
 hash = "585ce8e2c140a5db076e4c6a481ca3c17d3de8d3fb213a75f2bd124836ba3b10"
-id = 13979658120
+id = 14375584610
 packable = false
 
-[inputs."images/ranks/friendly/Cyber Ascendant.png"]
+[inputs."images/ranks/Cyber Ascendant.png"]
 hash = "c0f8778bc722a1d53976b1e17b07932f68115a29e29e270139cf14527fda1680"
+id = 14375584808
 packable = false
 
-[inputs."images/ranks/friendly/Cyber Champion.png"]
+[inputs."images/ranks/Cyber Champion.png"]
 hash = "cfd0c2bb5083164056cdbc4864395fb32fb744177cffb59e0e07fd72b4e95561"
+id = 14375584930
 packable = false
 
-[inputs."images/ranks/friendly/Cyber Elite.png"]
+[inputs."images/ranks/Cyber Elite.png"]
 hash = "7599672bf21cc3fbd57ecd3d3808d5fe7585de8a5857c0ce14aa44199dc822f3"
+id = 14375585092
 packable = false
 
-[inputs."images/ranks/friendly/Cyber Exarch.png"]
+[inputs."images/ranks/Cyber Exarch.png"]
 hash = "a9d0fd2e01e9fecd6393b69976ee186f54ae212ad261f99b60a3dc65acabfccd"
+id = 14375585324
 packable = false
 
-[inputs."images/ranks/friendly/Cyber Immortal.png"]
+[inputs."images/ranks/Cyber Immortal.png"]
 hash = "6cd8d4ec3965aae78d2814ab7fb5f83f9724924ac7b7ca0e151c63277d0770b5"
+id = 14375585975
 packable = false
 
-[inputs."images/ranks/friendly/Cyber Initiate.png"]
+[inputs."images/ranks/Cyber Initiate.png"]
 hash = "257ef13cdafc57511eb1d99b992246ee845d58a6fcf1628823ad19f7ae9f5169"
+id = 14375586212
 packable = false
 
-[inputs."images/ranks/friendly/Cyber Legend.png"]
+[inputs."images/ranks/Cyber Legend.png"]
 hash = "6af6f28db93277759e3815cfa974a198d9a33cdbb18c26550dadffcffbdef945"
+id = 14375586551
 packable = false
 
-[inputs."images/ranks/friendly/Cyber Mythic.png"]
+[inputs."images/ranks/Cyber Mythic.png"]
 hash = "eaded86a2f1eea50e7ebee0a90e88513e4be5e896c237ae90aa30de68b1515e5"
+id = 14375586765
 packable = false
 
-[inputs."images/ranks/friendly/Cyber Neophyte.png"]
+[inputs."images/ranks/Cyber Neophyte.png"]
 hash = "65ef958f3b88e8e4aafd3fd2db9d5bdba21028085829f6e3dee090a63cf0ba4a"
+id = 14375586926
 packable = false
 
-[inputs."images/ranks/friendly/Cyber Paragon.png"]
+[inputs."images/ranks/Cyber Paragon.png"]
 hash = "d35344f84cf10fc9c7fede0027ba33d4dcb78702c12688f687c2b6fd97a41f38"
+id = 14375587061
 packable = false
 
-[inputs."images/ranks/friendly/Cyber Sovereign.png"]
-hash = "1d7725bf4b7942d670a8f1b8b8df71dcc173f07a81748523077e4e4cf23d103e"
+[inputs."images/ranks/Cyber Sovereign.png"]
+hash = "a11eaee9ff7e27ee8df491f566334437b486cbc6ab70e7ddf04084226968ac90"
+id = 14375587244
 packable = false
 
-[inputs."images/ranks/friendly/Diamond.png"]
+[inputs."images/ranks/Diamond.png"]
 hash = "232088c18d8db36459dc052236fc5b6b0b1b936198b818c59f116f652db0c44e"
-id = 11866055545
+id = 14375587379
 packable = false
 
-[inputs."images/ranks/friendly/Draconic.png"]
+[inputs."images/ranks/Draconic.png"]
 hash = "0a07ceff29a9f9a3f3c07a123e3f165be468b8633a46c466220fc902b88bbc83"
-id = 11866055677
+id = 14375587507
 packable = false
 
-[inputs."images/ranks/friendly/Emerald.png"]
+[inputs."images/ranks/Emerald.png"]
 hash = "a3bdc98af206e631fc85f18011a836f5d922cad1bfa29e3421f760d18cd18915"
-id = 11866055833
+id = 14375587730
 packable = false
 
-[inputs."images/ranks/friendly/Gold.png"]
+[inputs."images/ranks/Gold.png"]
 hash = "25ea149f529d5054dca66a4e098f2b0b80fd10a63ccffd1c387b947f60270dee"
-id = 11866055963
+id = 14375587961
 packable = false
 
-[inputs."images/ranks/friendly/Infinitium.png"]
+[inputs."images/ranks/Infinitium.png"]
 hash = "4aae48031b3046c1771bd61ce84ca19811f215ec0a8a1a49cef5993461fac9cf"
-id = 13979653364
+id = 14375588116
 packable = false
 
-[inputs."images/ranks/friendly/Pendulum.png"]
+[inputs."images/ranks/Pendulum.png"]
 hash = "06430115e507924f509b5e3a56fc9c9fcc638eb2fa0cbb6b4982bd450dad199f"
-id = 11866056106
+id = 14375588260
 packable = false
 
-[inputs."images/ranks/friendly/Phoenix.png"]
+[inputs."images/ranks/Phoenix.png"]
 hash = "f9485725ae1336731f329f489099b699a52ed363c187e1ee00b076cdf5bae513"
-id = 13979653469
+id = 14375588390
 packable = false
 
-[inputs."images/ranks/friendly/Silver.png"]
+[inputs."images/ranks/Silver.png"]
 hash = "cce0a022b202fd39be6c7691201784a9b85724a0ac320dcfe32f9c14704830be"
-id = 11866056302
-packable = false
-
-[inputs."images/ranks/prestiges/Prestige1.png"]
-hash = "841b3259515b70d7860e16cdef7b5711fbd031df35b0c73fe5dfa08416f03b0c"
-id = 11866056439
-packable = false
-
-[inputs."images/ranks/prestiges/Prestige2.png"]
-hash = "60b52d38c7581ae711ea9ef3a5716bb7dcb9aa12689ff2b246bfa80248c7a7a5"
-id = 11866056520
-packable = false
-
-[inputs."images/ranks/prestiges/Prestige3.png"]
-hash = "69736c9353c8df5e05a785b0005dacedc0b3b466dcc1218b60979737f8c17718"
-id = 11866056589
-packable = false
-
-[inputs."images/ranks/prestiges/Prestige4.png"]
-hash = "85ff67868601e07edb89b2fc1c1aa8f6599ff855fde7a269f47485f5a8597aea"
-id = 11866056703
-packable = false
-
-[inputs."images/ranks/prestiges/Prestige5.png"]
-hash = "d4ff26dcc1d1adb415537916d479d4c42f4731e51add965b014d060679e7b370"
-id = 11866056838
+id = 14375588591
 packable = false
 
 [inputs."images/ui/account/Accolades.png"]
@@ -3846,10 +3825,12 @@ packable = false
 
 [inputs."images/ui/teleportation/B1n4ry Z0n3 Locked.png"]
 hash = "fcba5be6a3e55197d68e46999e40fbc3d78f496cedaa1577046110a7c5f5edb5"
+id = 14375588743
 packable = false
 
 [inputs."images/ui/teleportation/B1n4ry Z0n3.png"]
 hash = "b2381df3bc810d0523a357b04337b166986871f3d762d314a5005e77969d25e9"
+id = 14375588808
 packable = false
 
 [inputs."images/ui/teleportation/Ban Land Locked.png"]
@@ -3883,19 +3864,23 @@ id = 11704139756
 packable = false
 
 [inputs."images/ui/teleportation/Cyber Cities Locked.png"]
-hash = "31f62849150c264509bd1aa037cf674f70f91bc6a95e89f9db7025c7e97ee234"
+hash = "e0662523b5da2254218a3c1a1056ae731ade134a151bf47c35fcb7a11c48d646"
+id = 14375588913
 packable = false
 
 [inputs."images/ui/teleportation/Cyber Cities.png"]
-hash = "39a5b8039549352f7cd7c753fbbd7c515b9402e10b1e872f16fcbe4d6a15e235"
+hash = "fe8815c8940bc5e14a2deb962e02c832784e54c7ed3ec5b8ab3b7d214430b9fd"
+id = 14375589104
 packable = false
 
 [inputs."images/ui/teleportation/Cybershroom Forest Locked.png"]
 hash = "8fcfe6d169d4385ff6353d1a53ade6da201bbaf4d11718831525066653aa67af"
+id = 14375589196
 packable = false
 
 [inputs."images/ui/teleportation/Cybershroom Forest.png"]
 hash = "9d6f5298b6b9774b098edd994d64b581b219335d6e0e6d13d8d7f25c8f028abb"
+id = 14375589292
 packable = false
 
 [inputs."images/ui/teleportation/Desert Locked.png"]
@@ -3910,10 +3895,12 @@ packable = false
 
 [inputs."images/ui/teleportation/Electric Center Locked.png"]
 hash = "bed88e832e3e327197326fae4f3db4d6f788af667630a2d3a30f1103634e3922"
+id = 14375589389
 packable = false
 
 [inputs."images/ui/teleportation/Electric Center.png"]
 hash = "9c59a73f57759330300ee331f9ffa73d0abd3abfc2d6813a2aacb85bef04f0ac"
+id = 14375589487
 packable = false
 
 [inputs."images/ui/teleportation/Enchanted Forest Locked.png"]
@@ -3938,10 +3925,12 @@ packable = false
 
 [inputs."images/ui/teleportation/Holographic Musuem Locked.png"]
 hash = "2e832097322ef6f1bf797eadec4434d2ead29a01650d4b10b46d8f318c24686b"
+id = 14375589606
 packable = false
 
 [inputs."images/ui/teleportation/Holographic Musuem.png"]
 hash = "43cd73ad73ddd96ccc97da098ea9abcb2675673e3cd8e34bc12683c3e8bb8efe"
+id = 14375589788
 packable = false
 
 [inputs."images/ui/teleportation/Honeycomb Locked.png"]
@@ -3986,26 +3975,32 @@ packable = false
 
 [inputs."images/ui/teleportation/Malware Mayhem Locked.png"]
 hash = "f1aa0933ac704c133201888322e75f36aec2bb09041caff2bf6183553e538a44"
+id = 14375589962
 packable = false
 
 [inputs."images/ui/teleportation/Malware Mayhem.png"]
 hash = "e988fc1497157eb58d2b53ed7587e53be88b26775fcb2af01648392af38ad31f"
+id = 14375590154
 packable = false
 
 [inputs."images/ui/teleportation/Neon City Locked.png"]
 hash = "42dc8c13962945d8a8f6f7ada3a83d5ef77d26123ed9067e89f11af42258c447"
+id = 14375590302
 packable = false
 
 [inputs."images/ui/teleportation/Neon City.png"]
 hash = "ef3d7d2fc5c791ea09489450d40696892569a49a634a1ba76f9cc4070ec0582b"
+id = 14375590471
 packable = false
 
 [inputs."images/ui/teleportation/Neon District Locked.png"]
 hash = "8f9b8c855c1049879d441936468c48cb230ab1e7f1c1e7b3ef717311090579f8"
+id = 14375590640
 packable = false
 
 [inputs."images/ui/teleportation/Neon District.png"]
 hash = "07c300f411aefd3e59c8e7843501e14d760ae559b3be6bb3246eb069b1dfe3b2"
+id = 14375590800
 packable = false
 
 [inputs."images/ui/teleportation/Sunflower Field Locked.png"]
@@ -4040,10 +4035,12 @@ packable = false
 
 [inputs."images/ui/teleportation/UFO Valley Locked.png"]
 hash = "04b26c6e7baa9b8652a52743b1f9303fb9dfd7e58635dc122733ef2205ba6c35"
+id = 14375590897
 packable = false
 
 [inputs."images/ui/teleportation/UFO Valley.png"]
 hash = "d69b99d3197b8094e4589b21f06e0073c363555fb0337f3484476fbf7d4d3209"
+id = 14375591046
 packable = false
 
 [inputs."images/ui/teleportation/background.png"]

@@ -63,18 +63,6 @@ const isPlayerTag = t.intersection(
 								),
 							}),
 						),
-						prestige: t.intersection(
-							t.instanceIsA("ImageLabel"),
-							t.children({
-								UIAspectRatioConstraint: t.instanceIsA("UIAspectRatioConstraint"),
-								amount: t.intersection(
-									t.instanceIsA("TextLabel"),
-									t.children({
-										UIStroke: t.instanceIsA("UIStroke"),
-									}),
-								),
-							}),
-						),
 					}),
 				),
 				name: t.intersection(
@@ -139,11 +127,6 @@ function createPlayerTag(player: Player, store: Store): void {
 		tag.hold.name.rank.Image = getRankIcon(storeState.rank);
 		tag.hold.title.Visible = storeState.title !== undefined;
 		tag.hold.staff.Visible = false;
-
-		if (storeState.worldPrestige["Ban Land"].currentPrestige > 0) {
-			tag.hold.badges.prestige.amount.Text = `P. ${storeState.worldPrestige["Ban Land"].currentPrestige}`;
-			tag.hold.badges.prestige.Visible = true;
-		}
 
 		const bansLeaderboard = ReplicatedStorage.leaderboards.bans.FindFirstChild(tostring(player.UserId));
 		if (bansLeaderboard !== undefined) {
@@ -280,15 +263,7 @@ function updatePlayerTag(player: Player, store: Store): void {
 		return;
 	}
 	assert(isPlayerTag(tag), `Player tag for ${player.Name} was not a valid player tag.`);
-
 	tag.hold.name.rank.Image = getRankIcon(storeState.rank);
-
-	if (storeState.worldPrestige["Ban Land"].currentPrestige > 0) {
-		tag.hold.badges.prestige.amount.Text = `P. ${storeState.worldPrestige["Ban Land"].currentPrestige}`;
-		tag.hold.badges.prestige.Visible = true;
-	} else {
-		tag.hold.badges.prestige.Visible = false;
-	}
 
 	const bansLeaderboard = ReplicatedStorage.leaderboards.bans.FindFirstChild(tostring(player.UserId));
 	if (bansLeaderboard !== undefined) {
@@ -498,10 +473,6 @@ function onPlayerAdded(player: Player): void {
 				}
 
 				if (newState.title !== oldState.title) {
-					updatePlayerTag(player, store);
-				}
-
-				if (newState.worldPrestige["Ban Land"].currentPrestige !== oldState.worldPrestige["Ban Land"].currentPrestige) {
 					updatePlayerTag(player, store);
 				}
 			});

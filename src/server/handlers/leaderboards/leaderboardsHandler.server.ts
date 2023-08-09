@@ -6,7 +6,6 @@ import {
 	EGGS_LEADERBOARD_ODS,
 	LEADERBOARD_UPDATE_INTERVAL,
 	TIME_TRIALS_LEADERBOARD_ODS,
-	WORLD_PRESTIGE_LEADERBOARD_ODS,
 } from "shared/configs/game";
 import { WORLDS } from "shared/configs/worlds";
 
@@ -15,7 +14,6 @@ import { LeaderboardDataStore } from "./leaderboardClass";
 const bansOds = new LeaderboardDataStore(BANS_LEADERBOARD_ODS);
 const eggsOds = new LeaderboardDataStore(EGGS_LEADERBOARD_ODS);
 const timeTrialsOds = new LeaderboardDataStore(TIME_TRIALS_LEADERBOARD_ODS); // will need to set this up to support scopes for the next world update
-const worldPrestigeOds = new LeaderboardDataStore(WORLD_PRESTIGE_LEADERBOARD_ODS); // will need to set this up to support scopes for the next world update
 const connectionMaids: Map<number, RBXScriptConnection> = new Map();
 
 Players.PlayerAdded.Connect(async (player) => {
@@ -23,11 +21,10 @@ Players.PlayerAdded.Connect(async (player) => {
 	const playerId = tostring(player.UserId);
 
 	task.defer(async () => {
-		const { bans, eggs, worldPrestige, timeTrials } = store.getState();
+		const { bans, eggs, timeTrials } = store.getState();
 		await bansOds.setAsync(playerId, bans);
 		await eggsOds.setAsync(playerId, eggs.eggs);
 		await timeTrialsOds.setAsync(playerId, timeTrials["Ban Land"].highestHardWave);
-		await worldPrestigeOds.setAsync(playerId, worldPrestige["Ban Land"].currentPrestige);
 	});
 
 	let lastUpdateTime = time();
@@ -39,12 +36,11 @@ Players.PlayerAdded.Connect(async (player) => {
 
 		lastUpdateTime = now;
 
-		const { bans, eggs, worldPrestige, timeTrials } = store.getState();
+		const { bans, eggs, timeTrials } = store.getState();
 		task.defer(async () => {
 			await bansOds.setAsync(playerId, bans);
 			await eggsOds.setAsync(playerId, eggs.eggs);
 			await timeTrialsOds.setAsync(playerId, timeTrials["Ban Land"].highestHardWave);
-			await worldPrestigeOds.setAsync(playerId, worldPrestige["Ban Land"].currentPrestige);
 		});
 	});
 	connectionMaids.set(player.UserId, updateConnection);
@@ -70,9 +66,6 @@ while (true) {
 
 		const timeTrialsFolder = ReplicatedStorage.leaderboards.timeTrials[worldName];
 		timeTrialsFolder.GetChildren().forEach((child) => child.Destroy());
-
-		const worldPrestigeFolder = ReplicatedStorage.leaderboards.worldPrestige[worldName];
-		worldPrestigeFolder.GetChildren().forEach((child) => child.Destroy());
 	}
 
 	bansOds
@@ -110,20 +103,6 @@ while (true) {
 				const playerConfig = new Instance("Configuration");
 				playerConfig.Name = playerData[0];
 				playerConfig.Parent = ReplicatedStorage.leaderboards.timeTrials["Ban Land"];
-
-				playerConfig.SetAttribute("amount", playerData[1]);
-				playerConfig.SetAttribute("position", playerPosition + 1);
-			}),
-		)
-		.catch((err) => warn(`Failed to update eggs leaderboard: ${err}`));
-
-	worldPrestigeOds
-		.getSortedAsync(false, 100)
-		.andThen((data) =>
-			data.forEach((playerData, playerPosition) => {
-				const playerConfig = new Instance("Configuration");
-				playerConfig.Name = playerData[0];
-				playerConfig.Parent = ReplicatedStorage.leaderboards.worldPrestige["Ban Land"];
 
 				playerConfig.SetAttribute("amount", playerData[1]);
 				playerConfig.SetAttribute("position", playerPosition + 1);

@@ -1,7 +1,6 @@
 import { Workspace } from "@rbxts/services";
 import { DEFAULT_EQUIP_AMOUNT } from "shared/configs/pets";
 import { GamepassesState } from "shared/rodux/gamepasses";
-import { WorldPrestigeState } from "shared/rodux/worldPrestige";
 
 import { isValidWorld } from "./isValidWorld";
 
@@ -10,10 +9,9 @@ import { isValidWorld } from "./isValidWorld";
  *
  * @param player The player object.
  * @param gamepasses The gamepasses state.
- * @param worldPrestige The world prestige state.
  * @returns The amount of pets a player can equip.
  */
-export function getMaxPetEquip(player: Player, gamepasses: GamepassesState, worldPrestige: WorldPrestigeState): number {
+export function getMaxPetEquip(player: Player, gamepasses: GamepassesState): number {
 	let additionalPets = 0;
 	if (gamepasses["+2 Pets Equipped"]) {
 		additionalPets += 2;
@@ -75,10 +73,5 @@ export function getMaxPetEquip(player: Player, gamepasses: GamepassesState, worl
 		return DEFAULT_EQUIP_AMOUNT + additionalPets;
 	}
 
-	if (worldPrestige[world.Name] === undefined) {
-		warn(`Couldn't add world prestige pet equips. Couldn't find data for the world prestige for for ${world.Name}.`);
-		return DEFAULT_EQUIP_AMOUNT + additionalPets;
-	}
-
-	return DEFAULT_EQUIP_AMOUNT + additionalPets + worldPrestige[world.Name].additionalPetsUpgrades;
+	return DEFAULT_EQUIP_AMOUNT + additionalPets;
 }

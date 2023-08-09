@@ -146,36 +146,6 @@ export const TitlesItems = RoactRodux.connect(mapStateToProps)(
 							/* eslint-disable jsdoc/require-jsdoc */
 							Activated: (): void => {
 								playSFX(UIEngagement.MinorEngagement);
-								setTitlesDisplayed(TitleType.Worlds);
-							},
-							/* eslint-enable jsdoc/require-jsdoc */
-						}}
-					>
-						<uicorner CornerRadius={new UDim(0.12, 0)} />
-						<BaseUIStroke native={{ Thickness: 2, Color: uiDarkStrokeColor }} />
-						<uiaspectratioconstraint AspectRatio={3.7} />
-
-						<StrokeTextLabel
-							native={{
-								Size: UDim2.fromScale(0.95, 0.95),
-								Text: "Prestige",
-							}}
-							stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
-						/>
-					</SpringImageButton>
-
-					<SpringImageButton
-						native={{
-							BackgroundTransparency: 0,
-							BackgroundColor3: Color3.fromRGB(49, 123, 188),
-							LayoutOrder: 3,
-							Image: "",
-						}}
-						size={{ minSize: 0.8, maxSize: 0.9 }}
-						events={{
-							/* eslint-disable jsdoc/require-jsdoc */
-							Activated: (): void => {
-								playSFX(UIEngagement.MinorEngagement);
 								setTitlesDisplayed(TitleType.Trials);
 							},
 							/* eslint-enable jsdoc/require-jsdoc */

@@ -5,7 +5,6 @@ import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import assetIds from "shared/assets";
 import { hatchDebounce } from "shared/configs/eggs";
 import { Rarities } from "shared/configs/rarities";
-import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { remotes } from "shared/remotes";
 import { HatchEggFailKind } from "shared/remotes/eggs/hatchEgg";
 import { hatchEgg } from "shared/rodux/eggs";
@@ -84,26 +83,11 @@ hatchEggRemote.SetCallback(
 		}
 
 		// check cost
-		if (isVoid && eggData.world !== "Limited" && currentState.worldPrestige[eggData.world] !== undefined) {
-			const trueCost =
-				eggCost.amount -
-				eggCost.amount *
-					currentState.worldPrestige[eggData.world].reducedVoidEggCostUpgrades *
-					WORLD_PRESTIGE.reducedVoidEggCost.reducedCostMultiplier;
-
-			if (currentState.currencies[eggCost.currencyType] < trueCost * amount) {
-				return {
-					success: false,
-					reason: HatchEggFailKind.NoCurrency,
-				};
-			}
-		} else {
-			if (currentState.currencies[eggCost.currencyType] < eggCost.amount * amount) {
-				return {
-					success: false,
-					reason: HatchEggFailKind.NoCurrency,
-				};
-			}
+		if (currentState.currencies[eggCost.currencyType] < eggCost.amount * amount) {
+			return {
+				success: false,
+				reason: HatchEggFailKind.NoCurrency,
+			};
 		}
 
 		// check inventory space

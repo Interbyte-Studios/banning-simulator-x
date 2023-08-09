@@ -27,7 +27,6 @@ import { defaultTalismans } from "shared/rodux/talismans";
 import { defaultTimeTrialsState } from "shared/rodux/timeTrials";
 import { SerializedTradeLogState } from "shared/rodux/tradeLogs";
 import { defaultWeaponsState } from "shared/rodux/weapons";
-import { defaultWorldPrestigeState } from "shared/rodux/worldPrestige";
 import { defaultWorlds } from "shared/rodux/worlds";
 import { Modify } from "shared/util/modify";
 
@@ -117,5 +116,4 @@ export const profileTemplate: ProfileState = {
 	worlds: defaultWorlds,
 	dataVersion: getServerDataVersion(),
 	invitedFriend: defaultInvitedFriendState,
-	worldPrestige: defaultWorldPrestigeState,
 };

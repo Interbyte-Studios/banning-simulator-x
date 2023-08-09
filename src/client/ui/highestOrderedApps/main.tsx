@@ -33,8 +33,6 @@ import { Settings } from "../components/features/settings";
 import { SpinWheel } from "../components/features/spinWheel";
 import { Teleportation } from "../components/features/teleportation";
 import { TimeTrials } from "../components/features/timeTrials";
-import { WorldPrestige } from "../components/features/worldPrestige";
-import { WorldPrestigeViewType } from "../components/features/worldPrestige/prestigeEnum";
 import { RankUpgrade } from "../components/ranks/menu";
 import { TalismanTowerHandle } from "../components/shops/talismanShop";
 import { WeaponShopHandle } from "../components/shops/weaponShop";
@@ -79,7 +77,6 @@ const visibilityStates = {
 	settings: false,
 	codes: false,
 	robuxShop: false,
-	worldPrestige: false,
 	updateLog: false,
 	spinWheel: false,
 	timeTrials: false,
@@ -96,7 +93,6 @@ blurEffect.Parent = Lighting;
 export const Main = hooks((props: AppProps, { useState, useEffect, useContext, useCallback, useMemo }) => {
 	const [visibility, setVisibility] = useState(visibilityStates);
 	const [fusingVariant, setFusingVariant] = useState<Exclude<Variants, "regular"> | undefined>(undefined);
-	const [prestigeViewType, setPrestigeViewType] = useState<WorldPrestigeViewType>(WorldPrestigeViewType.Prestige);
 
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 	const { equipWeapon, unequipWeapon } = useContext(remoteContext);
@@ -382,12 +378,6 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 						setVisibility({ ...visibilityStates, fusing: value });
 					}}
 				/>,
-				<WorldPrestige
-					isVisible={false}
-					viewType={prestigeViewType}
-					setViewType={(viewType: WorldPrestigeViewType): void => setPrestigeViewType(viewType)}
-					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, worldPrestige: value })}
-				/>,
 				<WeaponLevelUpAnimation />,
 				<TalismanLevelUpAnimation />,
 				<CurrencyGainAnimation />,
@@ -441,15 +431,6 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					hiddenHud={true}
 					autoFightActive={false}
 					disableAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: false })}
-				/>,
-			);
-		} else if (isVisible("worldPrestige")) {
-			components.push(
-				<WorldPrestige
-					isVisible={true}
-					viewType={prestigeViewType}
-					setViewType={(viewType: WorldPrestigeViewType): void => setPrestigeViewType(viewType)}
-					setVisibility={(value: boolean): void => setVisibility({ ...visibilityStates, worldPrestige: value })}
 				/>,
 			);
 		} else if (isVisible("fusing")) {

@@ -1,6 +1,5 @@
 import { ReplicatedStorage } from "@rbxts/services";
 import { playerStores } from "server/playerStore";
-import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { WORLDS } from "shared/configs/worlds";
 import { zones } from "shared/configs/zones";
 import { NpcCharacter } from "shared/remotes/damageNPC";
@@ -198,8 +197,6 @@ export function runStep(
 			currencyBoosters.forEach((booster) => {
 				currencyMultiplier += booster;
 			});
-			currencyMultiplier +=
-				store.getState().worldPrestige[npc.world.name].currencyUpgrades * WORLD_PRESTIGE.currency.multiplierIncrement;
 			currencyMultiplier = currencyMultiplier > 1 ? currencyMultiplier : 1;
 			currencyMultiplier += masteryCurrencyMultiplier - 1;
 

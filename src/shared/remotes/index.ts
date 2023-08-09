@@ -28,7 +28,6 @@ import { timeTrials } from "./timeTrials";
 import { trading } from "./trading";
 import { unlockRankDefinition } from "./unlockRank";
 import { weapons } from "./weapons";
-import { worldPrestige } from "./worldPrestige";
 
 export const remotes = Net.Definitions.Create({
 	accolades: accolades,
@@ -42,7 +41,6 @@ export const remotes = Net.Definitions.Create({
 	rodux: roduxDefinitions,
 	settings: settings,
 	weapons: weapons,
-	worldPrestige: worldPrestige,
 	talismans: talismans,
 	timeTrials: timeTrials,
 	trades: trading,
