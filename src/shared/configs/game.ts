@@ -20,9 +20,6 @@ export const MAX_TRADE_LOGS = 25;
 export const TEN_SPINS = 1583558881;
 export const ONE_HUNDRED_SPINS = 1583561170;
 
-export const BIG_CRATE_BUNDLE = 1584133242;
-export const EXTREME_EXPERIENCE_BUNDLE = 1584133443;
-
 export const isCurrencyPurchaseOption = t.literal("pile", "bag", "chest", "vault");
 export type CurrencyPurchaseOption = t.static<typeof isCurrencyPurchaseOption>;
 

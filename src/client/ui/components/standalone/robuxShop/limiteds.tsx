@@ -196,7 +196,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 				stroke={{ native: { Thickness: 2.5, Color: uiTextStrokeColor } }}
 			/>
 			<BaseFrame
-				Position={UDim2.fromScale(0.5, 0.05)}
+				Position={UDim2.fromScale(0.5, 0.055)}
 				Size={UDim2.fromScale(0.95, 0.065)}
 				BackgroundColor3={Color3.fromRGB(12, 134, 211)}
 				BackgroundTransparency={0}
