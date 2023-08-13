@@ -97,6 +97,30 @@ export const CYBER_CITY_NPCS = {
 		rank: 18,
 		isBoss: false,
 	},
+	officialJBbossplayz: {
+		name: "officialJBbossplayz",
+		health: 104_857_700,
+		reward: {
+			bans: 8_192,
+			currency: 196_830,
+			currencyType: "coins",
+			experience: 40_960_000,
+		},
+		rank: 19,
+		isBoss: false,
+	},
+	RemDaBomRBLX: {
+		name: "RemDaBomRBLX",
+		health: 209_715_200,
+		reward: {
+			bans: 8_192,
+			currency: 590_490,
+			currencyType: "coins",
+			experience: 81_890_000,
+		},
+		rank: 20,
+		isBoss: false,
+	},
 
 	// Bosses
 	New_Item: {
@@ -188,11 +212,35 @@ export const CYBER_CITY_NPCS = {
 		health: 157_286_400,
 		reward: {
 			bans: 8_192,
-			currency: 131_220,
+			currency: 196_830,
 			currencyType: "coins",
 			experience: 61_440_000,
 		},
 		rank: 18,
+		isBoss: true,
+	},
+	cookieDAmain: {
+		name: "cookieDAmain",
+		health: 314_572_800,
+		reward: {
+			bans: 8_192,
+			currency: 590_490,
+			currencyType: "coins",
+			experience: 122_880_000,
+		},
+		rank: 19,
+		isBoss: true,
+	},
+	SinisterGh0ulz: {
+		name: "SinisterGh0ulz",
+		health: 629_145_600,
+		reward: {
+			bans: 8_192,
+			currency: 1_771_470,
+			currencyType: "coins",
+			experience: 245_760_000,
+		},
+		rank: 20,
 		isBoss: true,
 	},
 } satisfies Record<string, Npc>;

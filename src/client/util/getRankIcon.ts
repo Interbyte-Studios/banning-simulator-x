@@ -10,7 +10,7 @@ export function getRankIcon(rank: number): string {
 	const rankData = RANKS.find((rankData) => rankData.id === rank);
 	assert(rankData, `Failed to get data for rank of id: ${rank}`);
 
-	const rankName = rankData.name as keyof typeof assetIds.images.ranks.friendly;
-	const rankImage = assetIds.images.ranks.friendly[rankName];
+	const rankName = rankData.name as keyof typeof assetIds.images.ranks;
+	const rankImage = assetIds.images.ranks[rankName];
 	return rankImage;
 }

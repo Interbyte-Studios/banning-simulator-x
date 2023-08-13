@@ -194,7 +194,7 @@ const CurrencyOptions = hooks((props: { currency: CurrencyPurchaseType; position
 			>
 				<uicorner CornerRadius={new UDim(0.1, 0)} />
 				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(0, 75, 122) }} />
-				<uiaspectratioconstraint AspectRatio={4} />
+				<uiaspectratioconstraint AspectRatio={4.4} />
 				<CurrencyOption currency={props.currency} purchaseOption={"pile"} />
 				<CurrencyOption currency={props.currency} purchaseOption={"bag"} />
 				<CurrencyOption currency={props.currency} purchaseOption={"chest"} />
@@ -212,13 +212,13 @@ export const CurrencyShop = hooks(() => {
 		<>
 			<StrokeTextLabel
 				native={{
-					Position: UDim2.fromScale(0.5, 0.86),
+					Position: UDim2.fromScale(0.5, 0.854),
 					Size: UDim2.fromScale(0.5, 0.015),
 					Text: "Currencies",
 				}}
 				stroke={{ native: { Thickness: 2, Color: uiDarkStrokeColor } }}
 			/>
-			<CurrencyOptions currency={"coins"} position={UDim2.fromScale(0.5, 0.9)} />
+			<CurrencyOptions currency={"coins"} position={UDim2.fromScale(0.5, 0.895)} />
 			<CurrencyOptions currency={"gems"} position={UDim2.fromScale(0.5, 0.966)} />
 		</>
 	);

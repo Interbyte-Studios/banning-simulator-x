@@ -155,7 +155,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 	useEffect(() => {
-		const newLimiteds = DateTime.fromUniversalTime(2023, 8, 13, 12).UnixTimestamp;
+		const newLimiteds = DateTime.fromUniversalTime(2023, 9, 4, 12).UnixTimestamp;
 		const connection = RunService.Heartbeat.Connect(() => {
 			debug.profilebegin("limitedsShop");
 			const timeCheck = time();
@@ -196,7 +196,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 				stroke={{ native: { Thickness: 2.5, Color: uiTextStrokeColor } }}
 			/>
 			<BaseFrame
-				Position={UDim2.fromScale(0.5, 0.05)}
+				Position={UDim2.fromScale(0.5, 0.055)}
 				Size={UDim2.fromScale(0.95, 0.065)}
 				BackgroundColor3={Color3.fromRGB(12, 134, 211)}
 				BackgroundTransparency={0}
@@ -210,7 +210,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 						Position: UDim2.fromScale(0.5, 0.2),
 						Size: UDim2.fromScale(0.415, 0.394),
 						TextColor3: Color3.fromRGB(255, 71, 74),
-						Text: "Dweller!",
+						Text: "Neon Egg!",
 					}}
 					stroke={{ native: { Thickness: 2.5, Color: Color3.fromRGB(116, 32, 34) } }}
 				/>
@@ -219,7 +219,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					native={{
 						Position: UDim2.fromScale(0.11, 0.5),
 						Size: UDim2.fromScale(1, 1),
-						Image: assetIds.images.decals.eggs["Dweller Egg"],
+						Image: assetIds.images.decals.eggs["Neon"],
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
@@ -249,7 +249,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(124, "regular"),
+							Image: getPetImage(141, "regular"),
 						}}
 					/>
 
@@ -277,13 +277,13 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(125, "regular"),
+							Image: getPetImage(142, "regular"),
 						}}
 					/>
 
 					<StrokeTextLabel
 						native={{
-							Text: "20%",
+							Text: "21`%",
 							Position: UDim2.fromScale(0.8, 0.96),
 							Size: UDim2.fromScale(0.646, 0.56),
 						}}
@@ -305,7 +305,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(126, "regular"),
+							Image: getPetImage(143, "regular"),
 						}}
 					/>
 
@@ -333,13 +333,13 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(127, "regular"),
+							Image: getPetImage(144, "regular"),
 						}}
 					/>
 
 					<StrokeTextLabel
 						native={{
-							Text: "1.5%",
+							Text: "0.5%",
 							Position: UDim2.fromScale(0.8, 0.96),
 							Size: UDim2.fromScale(0.646, 0.56),
 						}}

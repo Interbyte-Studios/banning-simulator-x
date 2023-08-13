@@ -142,11 +142,11 @@ const MasteryChallengeFrame = hooks(
 								return;
 							}
 
-							const requestClaimPetMastery = await claimPetMastery.CallServerAsync(
-								props.pet,
-								props.variant,
-								props.challengeType,
-							);
+							const requestClaimPetMastery = await claimPetMastery.CallServerAsync({
+								id: props.pet,
+								variant: props.variant,
+								method: props.challengeType,
+							});
 
 							if (requestClaimPetMastery.success) {
 								addAnnouncement("You've claimed mastery of a pet!", AnnouncementType.Announcement);

@@ -1,16 +1,34 @@
 import Roact from "@rbxts/roact";
+import RoactRodux from "@rbxts/roact-rodux";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
+import { ValidEggAmount, validEggAmount } from "shared/remotes/eggs/hatchEgg";
+import { StoreState } from "shared/rodux";
+import { RebirthState } from "shared/rodux/rebirths";
 
-interface HatchEggProps {
+interface HatchEggProps extends HatchEggMappedProps {
 	eggName: EggName;
 	isVoid: boolean;
-	handleHatch: (eggName: EggName, variant: Exclude<Variants, "radiant">, amount: 1 | 3) => void;
+	handleHatch: (eggName: EggName, variant: Exclude<Variants, "radiant">, amount: ValidEggAmount) => void;
 }
+
+interface HatchEggMappedProps {
+	rebirths: RebirthState;
+}
+
+/**
+ * @param state The Rodux state.
+ * @returns The mapped props.
+ */
+const mapStateToProps = (state: StoreState): HatchEggMappedProps => {
+	return {
+		rebirths: state.rebirths,
+	};
+};
 
 /**
  * Roact imagebutton component to hatch an egg.
@@ -21,7 +39,7 @@ interface HatchEggProps {
  * @param props.handleHatch The callback to handle the hatch.
  * @returns The Roact element.
  */
-export const HatchEggButton = (props: HatchEggProps): Roact.Element => {
+export const HatchEggButton = RoactRodux.connect(mapStateToProps)((props: HatchEggProps): Roact.Element => {
 	return (
 		<SpringImageButton
 			native={{
@@ -34,7 +52,12 @@ export const HatchEggButton = (props: HatchEggProps): Roact.Element => {
 				Activated: async (): Promise<void> => {
 					playSFX(UIEngagement.MajorEngagement);
 
-					props.handleHatch(props.eggName, props.isVoid ? "void" : "regular", 1);
+					const hatchAmount = 1 + props.rebirths.additionalEggs;
+					if (!validEggAmount(hatchAmount)) {
+						return warn(`Attempt to hatch invalid amount of eggs: ${hatchAmount}`);
+					}
+
+					props.handleHatch(props.eggName, props.isVoid ? "void" : "regular", hatchAmount);
 				},
 			}}
 		>
@@ -56,4 +79,4 @@ export const HatchEggButton = (props: HatchEggProps): Roact.Element => {
 			</StrokeTextLabel>
 		</SpringImageButton>
 	);
-};
+});

@@ -11,7 +11,7 @@ export const DWELLER_EGG_PETS: Record<string, Pet> = {
 		fusionCost: 125_000,
 		stats: {
 			additionalDamage: 5500,
-			additionalBans: 275,
+			additionalBans: 300,
 		},
 	},
 	"Darkness Phoenix": {
@@ -21,7 +21,7 @@ export const DWELLER_EGG_PETS: Record<string, Pet> = {
 		fusionCost: 500_000,
 		stats: {
 			additionalDamage: 10000,
-			additionalBans: 350,
+			additionalBans: 450,
 		},
 	},
 	"Deadly Dark Dominus": {
@@ -31,7 +31,7 @@ export const DWELLER_EGG_PETS: Record<string, Pet> = {
 		fusionCost: 2_000_000,
 		stats: {
 			additionalDamage: 14500,
-			additionalBans: 750,
+			additionalBans: 900,
 		},
 	},
 	Mida: {
@@ -41,7 +41,7 @@ export const DWELLER_EGG_PETS: Record<string, Pet> = {
 		fusionCost: 7_500_000,
 		stats: {
 			additionalDamage: 25000,
-			additionalBans: 1500,
+			additionalBans: 1900,
 		},
 	},
 };

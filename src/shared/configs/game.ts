@@ -9,7 +9,6 @@ export const STORE_SCOPE = "mainstore"; // Last test store was "TEST_STORE_5"
 export const MAIN_GROUP = 5126818;
 export const BANS_LEADERBOARD_ODS = `${STORE_SCOPE}_BANS_ODS_1`;
 export const EGGS_LEADERBOARD_ODS = `${STORE_SCOPE}_EGGS_ODS_1`;
-export const WORLD_PRESTIGE_LEADERBOARD_ODS = `${STORE_SCOPE}_WORLD_PRESTIGE_ODS_1`;
 export const TIME_TRIALS_LEADERBOARD_ODS = `${STORE_SCOPE}_TIME_TRIALS_ODS_1`;
 export const LEADERBOARD_UPDATE_INTERVAL = 60;
 
@@ -20,9 +19,6 @@ export const MAX_TRADE_LOGS = 25;
 
 export const TEN_SPINS = 1583558881;
 export const ONE_HUNDRED_SPINS = 1583561170;
-
-export const BIG_CRATE_BUNDLE = 1584133242;
-export const EXTREME_EXPERIENCE_BUNDLE = 1584133443;
 
 export const isCurrencyPurchaseOption = t.literal("pile", "bag", "chest", "vault");
 export type CurrencyPurchaseOption = t.static<typeof isCurrencyPurchaseOption>;
@@ -192,6 +188,8 @@ export const TELEPORTATIONS = {
 		"UFO Valley": new Vector3(19092.432, 9.243, -25688.607),
 		"Holographic Musuem": new Vector3(19092.432, 9.243, -25863.529),
 		"B1n4ry Z0n3": new Vector3(19092.432, 9.243, -26045.961),
+		Cortex: new Vector3(19110.428, 11.115, -26231.828),
+		"Lunar Realm": new Vector3(19110.428, 11.115, -26402.367),
 	},
 	"Ban Land": {
 		RANK_UPGRADE: new Vector3(22918.633, 46.567, -194.273),
@@ -316,11 +314,11 @@ export const VIP_PET_ID = 10002;
 export const GROUP_PET_ID = 10001;
 
 export const LIMITED_EGG_DEVPRODUCT = {
-	OneEgg: 1590044586,
-	ThreeEggs: 1590044799,
+	OneEgg: 1611641663,
+	ThreeEggs: 1611641870,
 };
 
-export const LIMITED_EGG: EggName = "Dweller";
+export const LIMITED_EGG: EggName = "Neon";
 export const EXCLUSIVE_PETS = [
 	// The shop only supports adding 3 pets for exclusive pets. If we want to add more, we'll need to rework the shop a bit.
 	{

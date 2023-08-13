@@ -35,17 +35,10 @@ export type PetsActions =
 export interface HatchedPet extends HatchablePet {
 	autoDeleted: boolean;
 	guid: string;
+	magicPet: boolean;
 }
 
-export type HatchablePet = Omit<
-	Modify<
-		PetData,
-		{
-			variant: Exclude<Variants, "radiant">;
-		}
-	>,
-	"method"
->;
+export type HatchablePet = Omit<PetData, "method">;
 
 export interface FusedPet extends FusablePet {
 	guid: string;

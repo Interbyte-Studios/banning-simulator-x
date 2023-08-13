@@ -31,9 +31,6 @@ declare global {
 							eggs: ImageLabel & {
 								amount: TextLabel;
 							};
-							prestige: ImageLabel & {
-								amount: TextLabel;
-							};
 						};
 						name: TextLabel & {
 							UIStroke: UIStroke;
@@ -66,9 +63,6 @@ declare global {
 						};
 						name: TextLabel & {
 							UIStroke: UIStroke;
-							rank: ImageLabel & {
-								UIAspectRatioConstraint: UIAspectRatioConstraint;
-							};
 						};
 						title: TextLabel & {
 							UIStroke: UIStroke;
@@ -165,9 +159,6 @@ declare global {
 		leaderboards: Folder & {
 			bans: Folder;
 			eggs: Folder;
-			worldPrestige: {
-				[World in WorldName]: Folder;
-			};
 			timeTrials: {
 				[World in WorldName]: Folder;
 			};

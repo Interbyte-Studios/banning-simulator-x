@@ -9,8 +9,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		id: 73,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 2_250_000,
+			additionalBans: 395,
 		},
 	},
 	"Armored Bunny": {
@@ -18,8 +18,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		id: 74,
 		rarity: "Basic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 2_850_000,
+			additionalBans: 395,
 		},
 	},
 	"Armored Kitty": {
@@ -27,8 +27,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		id: 75,
 		rarity: "Ordinary",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 4_350_000,
+			additionalBans: 500,
 		},
 	},
 	"Armored Deer": {
@@ -36,8 +36,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		id: 76,
 		rarity: "Rare",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 7_750_000,
+			additionalBans: 650,
 		},
 	},
 	"Armored Pegasus": {
@@ -45,8 +45,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		id: 77,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 9_750_000,
+			additionalBans: 800,
 		},
 	},
 	"Armored Dragon": {
@@ -54,8 +54,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		id: 78,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 11_250_000,
+			additionalBans: 875,
 		},
 	},
 	"Armored Angel": {
@@ -63,8 +63,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		id: 79,
 		rarity: "Epic",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 13_500_000,
+			additionalBans: 950,
 		},
 	},
 	"Armored Guard": {
@@ -72,8 +72,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		id: 80,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 18_500_000,
+			additionalBans: 1_150,
 		},
 	},
 	"Armored Spartan": {
@@ -81,8 +81,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		id: 81,
 		rarity: "Legendary",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 21_215_000,
+			additionalBans: 1_400,
 		},
 	},
 	"Glitchbot NEO": {
@@ -90,8 +90,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		id: 82,
 		rarity: "Primordial",
 		stats: {
-			additionalDamage: 1,
-			additionalBans: 1,
+			additionalDamage: 75_000_000,
+			additionalBans: 25_000,
 		},
 	},
 };

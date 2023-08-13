@@ -19,20 +19,6 @@ declare global {
 			timeTrials: Folder & {
 				[P in keyof Worlds]: BasePart;
 			};
-			worldPrestige: Folder & {
-				[WORLD in keyof Worlds]: Folder & {
-					prestige: Folder & {
-						vendor: Model & {
-							primary: BasePart;
-						};
-					};
-					upgrades: Folder & {
-						vendor: Model & {
-							primary: BasePart;
-						};
-					};
-				};
-			};
 			chests: Folder & {
 				vip: Folder;
 				group: Folder;
@@ -45,7 +31,6 @@ declare global {
 			leaderboards: Folder & {
 				bans: Folder;
 				eggs: Folder;
-				worldPrestige: Folder;
 				timeTrials: Folder;
 			};
 			radiantMachines: Folder & {

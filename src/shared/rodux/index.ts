@@ -22,6 +22,7 @@ import { PetTeamsActions, petTeamsReducer, PetTeamsState } from "./petTeams";
 import { PlayerIndexActions, playerIndexReducer, PlayerIndexState } from "./playerIndex";
 import { QuestsAction, questsReducer, QuestsState } from "./quests";
 import { RankActions, rankReducer, RankState } from "./rank";
+import { RebirthActions, rebirthsReducer, RebirthState } from "./rebirths";
 import { SettingsActions, settingsReducer, SettingsState } from "./settings";
 import { SpinWheelActions, spinWheelReducer, SpinWheelState } from "./spinWheel";
 import { TalismanActions, talismanReducer, TalismansState } from "./talismans";
@@ -29,7 +30,6 @@ import { TimeTrialsActions, timeTrialsReducer, TimeTrialsState } from "./timeTri
 import { TitleActions, titleReducer, TitleState } from "./title";
 import { TradeLogActions, tradeLogsReducer, TradeLogsState } from "./tradeLogs";
 import { WeaponsActions, weaponsReducer, WeaponsState } from "./weapons";
-import { WorldPrestigeActions, worldPrestigeReducer, WorldPrestigeState } from "./worldPrestige";
 import { WorldActions, worldsReducer, WorldsState } from "./worlds";
 
 export type StoreState = {
@@ -49,6 +49,7 @@ export type StoreState = {
 	invitedFriend: InvitedFriendState;
 	media: MediaState;
 	pets: PetsState;
+	rebirths: RebirthState;
 	petQuests: PetQuestState;
 	petMastery: PetMasteryState;
 	petTeams: PetTeamsState;
@@ -63,7 +64,6 @@ export type StoreState = {
 	weapons: WeaponsState;
 	worlds: WorldsState;
 	dataVersion: DataVersionState;
-	worldPrestige: WorldPrestigeState;
 };
 
 export type StoreActions = (
@@ -87,7 +87,6 @@ export type StoreActions = (
 	| TimeTrialsActions
 	| WeaponsActions
 	| WorldActions
-	| WorldPrestigeActions
 	| TalismanActions
 	| CurrentTalismanActions
 	| PetMasteryActions
@@ -97,6 +96,7 @@ export type StoreActions = (
 	| DevProductActions
 	| TradeLogActions
 	| InvitedFriendActions
+	| RebirthActions
 ) &
 	Rodux.AnyAction;
 
@@ -121,7 +121,6 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	timeTrials: timeTrialsReducer,
 	weapons: weaponsReducer,
 	worlds: worldsReducer,
-	worldPrestige: worldPrestigeReducer,
 	talismans: talismanReducer,
 	currentTalisman: currentTalismanReducer,
 	index: playerIndexReducer,
@@ -132,6 +131,7 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	devProducts: devProductReducer,
 	tradeLogs: tradeLogsReducer,
 	dataVersion: dataVersionReducer,
+	rebirths: rebirthsReducer,
 });
 
 export type Store = Rodux.Store<StoreState, StoreActions>;

@@ -9,14 +9,14 @@ import assetIds from "shared/assets";
 import { StoreState } from "shared/rodux";
 import { GamepassesState } from "shared/rodux/gamepasses";
 import { PetsState } from "shared/rodux/pets";
-import { WorldPrestigeState } from "shared/rodux/worldPrestige";
+import { RebirthState } from "shared/rodux/rebirths";
 import { getMaxPetEquip } from "shared/util/getMaxPetEquip";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
 
 interface PetInventoryCounterMappedProps {
 	pets: PetsState;
 	gamepassesSize: GamepassesState;
-	worldPrestige: WorldPrestigeState;
+	rebirths: RebirthState;
 }
 
 /**
@@ -27,7 +27,7 @@ function petInventoryCounterMapStateToProps(state: StoreState): PetInventoryCoun
 	return {
 		pets: state.pets,
 		gamepassesSize: state.gamepasses,
-		worldPrestige: state.worldPrestige,
+		rebirths: state.rebirths,
 	};
 }
 
@@ -54,7 +54,7 @@ export const PetsEquippedCounter = RoactRodux.connect(petInventoryCounterMapStat
 						Text: `${props.pets.filter((pet) => pet.equipped).size()}/${getMaxPetEquip(
 							Players.LocalPlayer,
 							props.gamepassesSize,
-							props.worldPrestige,
+							props.rebirths,
 						)}`,
 						TextXAlignment: Enum.TextXAlignment.Left,
 					}}

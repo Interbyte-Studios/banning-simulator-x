@@ -133,7 +133,6 @@ export const defaultBoosts: BoostsState = {
 	},
 	uses: 0,
 };
-
 /* eslint-disable jsdoc/require-jsdoc */
 export const boostsReducer = Rodux.createReducer<
 	BoostsState,

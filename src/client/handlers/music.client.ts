@@ -65,7 +65,6 @@ function loopPlaylist(): void {
 			Volume: volume,
 		});
 
-		warn(`Playing`);
 		sound.Play();
 		sound.Ended.Wait();
 

@@ -2,7 +2,7 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { ContextActionService, MarketplaceService, Players, Workspace } from "@rbxts/services";
-import { animateSingleEggHatch, animateTripleEggHatch } from "client/modules/eggs/hatchEgg";
+import { animateEggHatch } from "client/modules/eggs/hatchEgg";
 import { getIsHatching } from "client/modules/eggs/isHatching";
 import { getIsTrading } from "client/modules/isTradingCache";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
@@ -11,16 +11,16 @@ import { remoteContext } from "client/ui/mocks/remoteContext";
 import { EggName, EGGS, hatchDebounce } from "shared/configs/eggs";
 import { GAMEPASSES } from "shared/configs/game";
 import { Pet, Variants } from "shared/configs/pets";
-import { HatchEggFailKind } from "shared/remotes/eggs/hatchEgg";
+import { HatchEggFailKind, ValidEggAmount, validEggAmount } from "shared/remotes/eggs/hatchEgg";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
 import { EggsState } from "shared/rodux/eggs";
 import { GamepassesState } from "shared/rodux/gamepasses";
 import { PetsState } from "shared/rodux/pets";
+import { RebirthState } from "shared/rodux/rebirths";
 import { SettingsState } from "shared/rodux/settings";
 import { WorldsState } from "shared/rodux/worlds";
 import { getEggCost } from "shared/util/getEggCost";
-import { getEggData } from "shared/util/getEggData";
 import { getEggsMastery } from "shared/util/getEggsMastery";
 import { getPetInventorySize } from "shared/util/getPetInventorySize";
 import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
@@ -45,6 +45,7 @@ interface EggHudMappedProps {
 	pets: PetsState;
 	gamepasses: GamepassesState;
 	settings: SettingsState;
+	rebirths: RebirthState;
 }
 
 /**
@@ -61,6 +62,7 @@ function mapStateToProps(state: StoreState): EggHudMappedProps {
 		pets: state.pets,
 		gamepasses: state.gamepasses,
 		settings: state.settings,
+		rebirths: state.rebirths,
 	};
 }
 
@@ -94,7 +96,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 		 * @param amount The amount of eggs to check.
 		 */
 		const handleHatch = useCallback(
-			async (eggName: EggName, variant: Exclude<Variants, "radiant">, amount: 1 | 3) => {
+			async (eggName: EggName, variant: Exclude<Variants, "radiant">, amount: ValidEggAmount) => {
 				if (autoEnabled) {
 					return;
 				}
@@ -120,35 +122,6 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 				// initial trading check
 				if (getIsTrading()) {
 					addAnnouncement(`You cannot hatch while your trading!`, AnnouncementType.Error);
-					return;
-				}
-
-				// check that user owns world
-				const eggData = getEggData(eggName);
-				const ownsWorld = props.worlds.find((x) => x.name === eggData.world);
-				if (ownsWorld === undefined) {
-					addAnnouncement(`You must own the ${eggData.world} world to hatch this egg!`, AnnouncementType.Error);
-					return;
-				}
-
-				// check that user owns zone
-				const ownsZone = ownsWorld.zones.find((x) => x === eggData.zone);
-				if (ownsZone === undefined) {
-					addAnnouncement(`You must own the ${eggData.zone} zone to hatch this egg!`, AnnouncementType.Error);
-					return;
-				}
-
-				// check that character still exists (if it doesn't, neither does the camera)
-				const character = Players.LocalPlayer.Character;
-				if (character === undefined) {
-					addAnnouncement(`Could not find your character. Please rejoin.`, AnnouncementType.Error);
-					return;
-				}
-
-				// check that user is within distance
-				const isWithinDistance = withinDistanceToHatch(character, eggName, variant === "void");
-				if (!isWithinDistance) {
-					addAnnouncement(`You aren't close enough to hatch that egg!`, AnnouncementType.Error);
 					return;
 				}
 
@@ -233,17 +206,8 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 
 							const requestHatch = await hatchEgg.CallServerAsync(amount, eggName, variant === "void");
 							if (requestHatch.success) {
-								if (requestHatch.pets.size() === 3) {
-									animateTripleEggHatch(eggName, variant === "void", requestHatch.pets, props.gamepasses["Fast Hatch"]);
-								} else {
-									animateSingleEggHatch(
-										eggName,
-										requestHatch.pets[0].id,
-										variant === "void",
-										requestHatch.pets[0].autoDeleted,
-										props.gamepasses["Fast Hatch"],
-									);
-								}
+								const ownsFastHatch = props.gamepasses["Fast Hatch"] || props.rebirths.fastHatch;
+								animateEggHatch(eggName, variant === "void", requestHatch.pets, ownsFastHatch);
 							} else {
 								if (requestHatch.reason === HatchEggFailKind.NoCharacter) {
 									addAnnouncement(
@@ -298,23 +262,14 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 
 					const requestHatch = await hatchEgg.CallServerAsync(amount, eggName, variant === "void");
 					if (requestHatch.success) {
-						if (requestHatch.pets.size() === 3) {
-							animateTripleEggHatch(eggName, variant === "void", requestHatch.pets, props.gamepasses["Fast Hatch"]);
-						} else {
-							animateSingleEggHatch(
-								eggName,
-								requestHatch.pets[0].id,
-								variant === "void",
-								requestHatch.pets[0].autoDeleted,
-								props.gamepasses["Fast Hatch"],
-							);
-						}
+						const ownsFastHatch = props.gamepasses["Fast Hatch"] || props.rebirths.fastHatch;
+						animateEggHatch(eggName, variant === "void", requestHatch.pets, ownsFastHatch);
 					} else {
 						addAnnouncement(`There was an issue hatching the egg. Try again later. [5]`, AnnouncementType.Error);
 					}
 				}
 			},
-			[props.eggs, props.worlds, props.currencies, props.pets, props.settings, props.gamepasses],
+			[props.eggs, props.currencies, props.pets, props.settings, props.gamepasses, props.rebirths],
 		);
 
 		useEffect(() => {
@@ -426,7 +381,12 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							if (autoEnabled) {
 								autoEnabled = false;
 							} else {
-								await handleHatch(eggName, "regular", 1);
+								const hatchAmount = 1 + props.rebirths.additionalEggs;
+								if (!validEggAmount(hatchAmount)) {
+									return warn(`Attempted to hatch invalid amount of eggs: ${hatchAmount}`);
+								}
+
+								await handleHatch(eggName, "regular", hatchAmount);
 							}
 							break;
 						} else {
@@ -435,7 +395,12 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 								if (autoEnabled) {
 									autoEnabled = false;
 								} else {
-									await handleHatch(eggName, "void", 1);
+									const hatchAmount = 1 + props.rebirths.additionalEggs;
+									if (!validEggAmount(hatchAmount)) {
+										return warn(`Attempted to hatch invalid amount of eggs: ${hatchAmount}`);
+									}
+
+									await handleHatch(eggName, "void", hatchAmount);
 								}
 								break;
 							}
@@ -478,7 +443,11 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							if (autoEnabled) {
 								autoEnabled = false;
 							} else {
-								await handleHatch(eggName, "regular", 3);
+								const hatchAmount = 3 + props.rebirths.additionalEggs;
+								if (!validEggAmount(hatchAmount)) {
+									return warn(`Attempted to hatch invalid amount of eggs: ${hatchAmount}`);
+								}
+								await handleHatch(eggName, "regular", hatchAmount);
 							}
 							break;
 						} else {
@@ -487,7 +456,11 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 								if (autoEnabled) {
 									autoEnabled = false;
 								} else {
-									await handleHatch(eggName, "void", 3);
+									const hatchAmount = 3 + props.rebirths.additionalEggs;
+									if (!validEggAmount(hatchAmount)) {
+										return warn(`Attempted to hatch invalid amount of eggs: ${hatchAmount}`);
+									}
+									await handleHatch(eggName, "void", hatchAmount);
 								}
 								break;
 							}
@@ -502,7 +475,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 				ContextActionService.UnbindAction("hatchEgg");
 				ContextActionService.UnbindAction("hatchEggTriple");
 			};
-		}, [props.settings.gameplay.autoHatch]);
+		}, [props.settings.gameplay.autoHatch, props.rebirths]);
 
 		return (
 			<frame Visible={false}>

@@ -17,6 +17,7 @@ import { pets } from "./pets";
 import { playerLoaded } from "./playerLoaded";
 import { purchaseWorldDefinition } from "./purchaseWorld";
 import { purchaseZoneDefinition } from "./purchaseZone";
+import { rebirthsNamespace } from "./rebirth";
 import { redeemQuestDefinition } from "./redeemQuest";
 import { rewardsDefinition } from "./rewards";
 import { roduxDefinitions } from "./rodux";
@@ -28,7 +29,6 @@ import { timeTrials } from "./timeTrials";
 import { trading } from "./trading";
 import { unlockRankDefinition } from "./unlockRank";
 import { weapons } from "./weapons";
-import { worldPrestige } from "./worldPrestige";
 
 export const remotes = Net.Definitions.Create({
 	accolades: accolades,
@@ -42,11 +42,11 @@ export const remotes = Net.Definitions.Create({
 	rodux: roduxDefinitions,
 	settings: settings,
 	weapons: weapons,
-	worldPrestige: worldPrestige,
 	talismans: talismans,
 	timeTrials: timeTrials,
 	trades: trading,
 
+	rebirth: rebirthsNamespace,
 	purchaseWorld: purchaseWorldDefinition,
 	claimPetQuest: claimPetQuestDefinition,
 	claimDailyRewards: claimDailyRewardsDefinition,

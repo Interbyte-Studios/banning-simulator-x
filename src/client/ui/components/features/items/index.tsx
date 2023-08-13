@@ -58,13 +58,13 @@ export const ItemInventory = hooks((props: ItemInventoryProps, hooks) => {
 			>
 				<BaseUIStroke native={{ Thickness: 2, Color: Color3.fromRGB(122, 41, 0) }} />
 			</textlabel>
-			{inventoryToDisplay}
 			<BottomBar
 				displayPetInventory={(): void => setTypeOfInventoryDisplayed("Pets")}
 				displayWeaponsInventory={(): void => setTypeOfInventoryDisplayed("Weapons")}
 				displayTalismansInventory={(): void => setTypeOfInventoryDisplayed("Talismans")}
 				displayTitlesInventory={(): void => setTypeOfInventoryDisplayed("Titles")}
 			/>
+			{inventoryToDisplay}
 			<ExitButton
 				Position={UDim2.fromScale(0.985, 0.115)}
 				minimizedSize={0.09}

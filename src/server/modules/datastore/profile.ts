@@ -21,13 +21,13 @@ import { defaultPlayerIndexState } from "shared/rodux/playerIndex";
 import { SerializedPetIndexState } from "shared/rodux/playerIndex/pets";
 import { defaultQuestsState } from "shared/rodux/quests";
 import { defaultRank } from "shared/rodux/rank";
+import { defaultRebirths } from "shared/rodux/rebirths";
 import { defaultSettings } from "shared/rodux/settings";
 import { defaultSpinWheel } from "shared/rodux/spinWheel";
 import { defaultTalismans } from "shared/rodux/talismans";
 import { defaultTimeTrialsState } from "shared/rodux/timeTrials";
 import { SerializedTradeLogState } from "shared/rodux/tradeLogs";
 import { defaultWeaponsState } from "shared/rodux/weapons";
-import { defaultWorldPrestigeState } from "shared/rodux/worldPrestige";
 import { defaultWorlds } from "shared/rodux/worlds";
 import { Modify } from "shared/util/modify";
 
@@ -117,5 +117,5 @@ export const profileTemplate: ProfileState = {
 	worlds: defaultWorlds,
 	dataVersion: getServerDataVersion(),
 	invitedFriend: defaultInvitedFriendState,
-	worldPrestige: defaultWorldPrestigeState,
+	rebirths: defaultRebirths,
 };

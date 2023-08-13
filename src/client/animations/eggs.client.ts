@@ -75,9 +75,11 @@ for (const [name, data] of pairs(EGGS)) {
 	task.spawn(() => {
 		task.wait(5);
 		animateEgg(name, "regular");
+		warn(`Animating regular ${name} `);
 		if (name !== "Throwback") {
 			task.wait(1);
 			animateEgg(name, "void");
+			warn(`Animating void ${name}`);
 		}
 	});
 }

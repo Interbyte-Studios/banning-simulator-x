@@ -177,7 +177,7 @@ export const TALISMANS = {
 		stats: {
 			experience: 1,
 			damage: 655_360,
-			walkspeed: 55,
+			walkspeed: 56,
 		},
 	},
 	"Dual Talisman": {
@@ -190,7 +190,20 @@ export const TALISMANS = {
 		stats: {
 			experience: 1,
 			damage: 2_621_440,
-			walkspeed: 55,
+			walkspeed: 58,
+		},
+	},
+	"Music Talisman": {
+		id: 14,
+		cost: {
+			currency: "cyber tokens",
+			amount: 147_622_500,
+			rank: 20,
+		},
+		stats: {
+			experience: 1.5,
+			damage: 15_728_640,
+			walkspeed: 60,
 		},
 	},
 } satisfies Record<string, Talisman>;

@@ -38,9 +38,15 @@ remotes.Server.GetNamespace("timeTrials")
 						player.SetAttribute(TIME_TRIAL_DIFFICULTY_ATTRIBUTE, undefined);
 
 						// todo: compute rewards, give them to player, tell player
+						const currentState = store.getState();
+						const currencyMultiplier = currentState.rebirths.currencyMultipliers.gears * 0.3;
+
 						const difficultyMultiplier = difficulty === "easy" ? 1.25 : difficulty === "medium" ? 1.3 : 1.35;
 						const waveMultiplier = 5 * wave;
-						store.dispatch(awardCurrency("gears", waveMultiplier * difficultyMultiplier ** wave));
+
+						const reward = waveMultiplier * difficultyMultiplier ** wave;
+						const rewardWithMultiplier = reward + reward * currencyMultiplier;
+						store.dispatch(awardCurrency("gears", rewardWithMultiplier));
 
 						if (difficulty === "hard") {
 							if (wave > store.getState().timeTrials["Ban Land"].highestHardWave) {

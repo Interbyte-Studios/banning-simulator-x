@@ -38,6 +38,7 @@ export = (): void => {
 					guid: petGuid,
 					variant: "regular",
 					tradeLocked: false,
+					magicPet: false,
 				},
 			]);
 

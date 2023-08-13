@@ -16,6 +16,7 @@ import { Update2Log } from "./logs/update2";
 import { Update3Log } from "./logs/update3";
 import { Update4Log } from "./logs/update4";
 import { Update5Log } from "./logs/update5";
+import { Update6Log } from "./logs/update6";
 import { UpdateLogType } from "./updateLogEnumerators";
 
 /**
@@ -65,7 +66,7 @@ export const SetUpdateLogType = (props: { updateLogType: UpdateLogType; onActiva
  * In-game update log.
  */
 export const UpdateLog = hooks((props: { hideMenu: () => void }, { useState }) => {
-	const [logToShow, setLogToShow] = useState<UpdateLogType>(UpdateLogType.Update5);
+	const [logToShow, setLogToShow] = useState<UpdateLogType>(UpdateLogType.Update6);
 
 	return (
 		<ImageLabel
@@ -122,6 +123,10 @@ export const UpdateLog = hooks((props: { hideMenu: () => void }, { useState }) =
 					updateLogType={UpdateLogType.Update5}
 					onActivated={(): void => setLogToShow(UpdateLogType.Update5)}
 				/>
+				<SetUpdateLogType
+					updateLogType={UpdateLogType.Update6}
+					onActivated={(): void => setLogToShow(UpdateLogType.Update6)}
+				/>
 			</scrollingframe>
 			<BaseFrame
 				BackgroundColor3={uiTextStrokeColor}
@@ -149,7 +154,9 @@ export const UpdateLog = hooks((props: { hideMenu: () => void }, { useState }) =
 					BorderSizePixel={0}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 					CanvasSize={
-						logToShow === UpdateLogType.Release || logToShow === UpdateLogType.Update5
+						logToShow === UpdateLogType.Release ||
+						logToShow === UpdateLogType.Update5 ||
+						logToShow === UpdateLogType.Update6
 							? UDim2.fromScale(0, 0)
 							: logToShow === UpdateLogType.Update4
 							? UDim2.fromScale(0, 3)
@@ -162,6 +169,7 @@ export const UpdateLog = hooks((props: { hideMenu: () => void }, { useState }) =
 					{logToShow === UpdateLogType.Update3 && <Update3Log />}
 					{logToShow === UpdateLogType.Update4 && <Update4Log />}
 					{logToShow === UpdateLogType.Update5 && <Update5Log />}
+					{logToShow === UpdateLogType.Update6 && <Update6Log />}
 				</scrollingframe>
 			</BaseFrame>
 			<ExitButton

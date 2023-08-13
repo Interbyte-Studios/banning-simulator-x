@@ -15,10 +15,20 @@ export enum ClaimPetMasteryFailKind {
 }
 
 export const claimPetMasteryDefinition = Net.Definitions.ServerAsyncFunction<
-	(
-		petId: number,
-		variant: Variants,
-		method: PetMasteryChallengeType,
-	) => { success: true } | { success: false; reason: ClaimPetMasteryFailKind }
->([createTypeChecker(t.number, isVariant, t.literal("maxLevel", "hatch", "fuse"))]);
+	(pet?: {
+		id: number;
+		variant: Variants;
+		method: PetMasteryChallengeType;
+	}) => { success: true } | { success: false; reason: ClaimPetMasteryFailKind }
+>([
+	createTypeChecker(
+		t.optional(
+			t.interface({
+				id: t.number,
+				variant: isVariant,
+				method: t.literal("maxLevel", "hatch", "fuse"),
+			}),
+		),
+	),
+]);
 export type ClaimPetMasteryDefinition = typeof claimPetMasteryDefinition;

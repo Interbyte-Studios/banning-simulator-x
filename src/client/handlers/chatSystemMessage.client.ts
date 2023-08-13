@@ -9,11 +9,11 @@ hatchSystemMessage.Connect((playerWhoHatched, petId, petVariant, hatchedOrFused)
 
 	let Color: Color3;
 	if (petData.rarity === "Legendary") {
-		Color = Color3.fromRGB(255, 198, 82);
+		Color = Color3.fromRGB(255, 77, 77);
 	} else if (petData.rarity === "Secret") {
-		Color = Color3.fromRGB(53, 255, 8);
+		Color = Color3.fromRGB(143, 255, 117);
 	} else if (petData.rarity === "Primordial") {
-		Color = Color3.fromRGB(255, 0, 255);
+		Color = Color3.fromRGB(250, 133, 250);
 	} else {
 		Color = Color3.fromRGB(255, 255, 255);
 	}

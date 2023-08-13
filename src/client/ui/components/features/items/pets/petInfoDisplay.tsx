@@ -24,7 +24,7 @@ import { RARITIES } from "shared/configs/rarities";
 import { StoreState } from "shared/rodux";
 import { GamepassesState } from "shared/rodux/gamepasses";
 import { Pet, PetsState } from "shared/rodux/pets";
-import { WorldPrestigeState } from "shared/rodux/worldPrestige";
+import { RebirthState } from "shared/rodux/rebirths";
 import { getMaxPetEquip } from "shared/util/getMaxPetEquip";
 import { getPetData } from "shared/util/getPetData";
 import { getPetLevel } from "shared/util/getPetLevel";
@@ -97,7 +97,7 @@ interface DeletePetProps extends EquipPetProps, PetInfoDisplayMappedProps {
 interface PetInfoDisplayMappedProps {
 	pets: PetsState;
 	gamepassesState: GamepassesState;
-	worldPrestige: WorldPrestigeState;
+	rebirths: RebirthState;
 }
 
 /**
@@ -108,7 +108,7 @@ function mapStateToProps(state: StoreState): PetInfoDisplayMappedProps {
 	return {
 		pets: state.pets,
 		gamepassesState: state.gamepasses,
-		worldPrestige: state.worldPrestige,
+		rebirths: state.rebirths,
 	};
 }
 
@@ -136,7 +136,7 @@ const EquipPet = RoactRodux.connect(mapStateToProps)(
 						if (props.storedPet.equipped) {
 							equipPets.SendToServer([{ guid: props.storedPet.guid, enabled: false }], false);
 						} else {
-							const maxPetsEquipped = getMaxPetEquip(Players.LocalPlayer, props.gamepassesState, props.worldPrestige);
+							const maxPetsEquipped = getMaxPetEquip(Players.LocalPlayer, props.gamepassesState, props.rebirths);
 							const equippedPets = props.pets.filter((pet) => pet.equipped).size();
 
 							if (equippedPets >= maxPetsEquipped) {

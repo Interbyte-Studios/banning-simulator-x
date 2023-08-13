@@ -16,14 +16,11 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EGGS } from "shared/configs/eggs";
 import { RARITIES } from "shared/configs/rarities";
-import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { FusionFailKind } from "shared/remotes/fusing";
 import { StoreState } from "shared/rodux";
 import { GamepassesState } from "shared/rodux/gamepasses";
 import { FusableVariant, Pet, PetsState } from "shared/rodux/pets";
-import { WorldPrestigeState } from "shared/rodux/worldPrestige";
 import { getEggCost } from "shared/util/getEggCost";
-import { getEggData } from "shared/util/getEggData";
 import { getEggNameFromPetId } from "shared/util/getEggFromPetId";
 import { getPetData } from "shared/util/getPetData";
 import { getPetLevel } from "shared/util/getPetLevel";
@@ -38,7 +35,6 @@ interface DisplayPetsProps extends DisplayPetsMappedProps {
 interface DisplayPetsMappedProps {
 	gamepasses: GamepassesState;
 	pets: PetsState;
-	worldPrestige: WorldPrestigeState;
 }
 
 /**
@@ -51,7 +47,6 @@ function mapStateToProps(state: StoreState): DisplayPetsMappedProps {
 	return {
 		gamepasses: state.gamepasses,
 		pets: state.pets,
-		worldPrestige: state.worldPrestige,
 	};
 }
 
@@ -108,7 +103,6 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 
 		// isVoid is set to true since this is radiant fusion.
 		const eggName = getEggNameFromPetId(props.petSelected);
-		const eggData = getEggData(eggName);
 		const eggCost = getEggCost(eggName, true, 0);
 
 		// fusion cost = egg cost / rarityId * amount of pets selected or specified fusion cost
@@ -119,13 +113,6 @@ export const DisplayPets = RoactRodux.connect(mapStateToProps)(
 
 		fusionCost =
 			fusionCost * selectedPets.size() * (props.variant === "radiant" ? 3 : props.variant === "void" ? 2 : 1);
-
-		if (eggData.world !== "Limited" && props.worldPrestige[eggData.world] !== undefined) {
-			fusionCost -=
-				fusionCost *
-				props.worldPrestige[eggData.world].reducedFusionCostUpgrades *
-				WORLD_PRESTIGE.reducedFusionCost.reducedCostMultiplier;
-		}
 
 		return (
 			<>

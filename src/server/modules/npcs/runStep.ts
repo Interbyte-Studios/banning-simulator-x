@@ -1,6 +1,5 @@
 import { ReplicatedStorage } from "@rbxts/services";
 import { playerStores } from "server/playerStore";
-import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { WORLDS } from "shared/configs/worlds";
 import { zones } from "shared/configs/zones";
 import { NpcCharacter } from "shared/remotes/damageNPC";
@@ -191,6 +190,7 @@ export function runStep(
 			const boostCurrencyMultiplier = store.getState().boosts.active["x2 Currency"] > 0 ? 2 : 0;
 			const gamepassCurrencyMultiplier = store.getState().gamepasses["x2 Currency"] ? 2 : 0;
 			const masteryCurrencyMultiplier = getBanningMastery(store.getState().bans).currencyGainedMultiplier;
+			const rebirthMultiplier = store.getState().rebirths.currencyMultipliers[WORLDS[npc.world.name].reward] * 0.3;
 
 			currencyBoosters.push(globalCurrencyEventMultiplier, boostCurrencyMultiplier, gamepassCurrencyMultiplier);
 
@@ -198,8 +198,6 @@ export function runStep(
 			currencyBoosters.forEach((booster) => {
 				currencyMultiplier += booster;
 			});
-			currencyMultiplier +=
-				store.getState().worldPrestige[npc.world.name].currencyUpgrades * WORLD_PRESTIGE.currency.multiplierIncrement;
 			currencyMultiplier = currencyMultiplier > 1 ? currencyMultiplier : 1;
 			currencyMultiplier += masteryCurrencyMultiplier - 1;
 
@@ -227,12 +225,14 @@ export function runStep(
 			petExperienceMultiplier = petExperienceMultiplier > 1 ? petExperienceMultiplier : 1;
 			petExperienceMultiplier += getPetExperienceMastery(store.getState().index).additionalPetExperienceMultiplier - 1;
 
+			const rebirthBansMultiplier = 5 * store.getState().rebirths.rebirth;
+
 			// apply reward
 			store.dispatch(
 				killNpc(
-					reward.currency * currencyMultiplier,
+					reward.currency * currencyMultiplier + reward.currency * currencyMultiplier * rebirthMultiplier,
 					WORLDS[npc.world.name].reward,
-					petBansBonus,
+					petBansBonus + petBansBonus * rebirthBansMultiplier,
 					reward.experience * experienceMultiplier,
 					storeState.currentWeapon.id,
 					storeState.currentTalisman,

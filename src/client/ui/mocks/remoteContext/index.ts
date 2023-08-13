@@ -14,6 +14,7 @@ import { petsRemoteContext } from "./remoteDefinitions/pets";
 import { playerLoadedContext } from "./remoteDefinitions/playerLoaded";
 import { questsRemoteContext } from "./remoteDefinitions/quests";
 import { ranksRemoteContext } from "./remoteDefinitions/ranks";
+import { rebirthsRemoteContext } from "./remoteDefinitions/rebirths";
 import { rewardsRemoteContext } from "./remoteDefinitions/rewards";
 import { settingsRemoteContext } from "./remoteDefinitions/settings";
 import { talismansRemoteContext } from "./remoteDefinitions/talismans";
@@ -22,7 +23,6 @@ import { titlesRemoteContext } from "./remoteDefinitions/titles";
 import { tradingRemoteContext } from "./remoteDefinitions/trading";
 import { weaponsRemoteContext } from "./remoteDefinitions/weapons";
 import { wheelSpinRemoteContext } from "./remoteDefinitions/wheelSpin";
-import { worldPrestigeRemoteContext } from "./remoteDefinitions/worldPrestige";
 import { zonesRemoteContext } from "./remoteDefinitions/zones";
 
 /**
@@ -51,8 +51,8 @@ export const fakeRemoteContext = {
 	...fusionRemoteContext,
 	...tradingRemoteContext,
 	...boostsRemoteContext,
-	...worldPrestigeRemoteContext,
 	...gamepassEremoteContext,
+	...rebirthsRemoteContext,
 };
 
 export const remoteContext = createContext(fakeRemoteContext);

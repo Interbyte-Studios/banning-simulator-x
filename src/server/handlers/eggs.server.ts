@@ -5,7 +5,6 @@ import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import assetIds from "shared/assets";
 import { hatchDebounce } from "shared/configs/eggs";
 import { Rarities } from "shared/configs/rarities";
-import { WORLD_PRESTIGE } from "shared/configs/worldPrestige";
 import { remotes } from "shared/remotes";
 import { HatchEggFailKind } from "shared/remotes/eggs/hatchEgg";
 import { hatchEgg } from "shared/rodux/eggs";
@@ -53,7 +52,38 @@ hatchEggRemote.SetCallback(
 
 		// verify that the user can hatch the eggs
 		const currentState = store.getState();
-		if (amount > 1 && !currentState.gamepasses["Triple Hatch"]) {
+		if (amount === 2 || amount === 4) {
+			if (amount === 2 && currentState.rebirths.additionalEggs !== 1) {
+				return {
+					success: false,
+					reason: HatchEggFailKind.NoGamepass,
+				};
+			} else if (amount === 4) {
+				if (!(currentState.gamepasses["Triple Hatch"] && currentState.rebirths.additionalEggs === 1)) {
+					print(currentState.gamepasses["Triple Hatch"], currentState.rebirths.additionalEggs);
+					return {
+						success: false,
+						reason: HatchEggFailKind.NoGamepass,
+					};
+				}
+			}
+		} else if (amount === 3 || amount === 5) {
+			if (amount === 3 && currentState.rebirths.additionalEggs !== 2 && !currentState.gamepasses["Triple Hatch"]) {
+				return {
+					success: false,
+					reason: HatchEggFailKind.NoGamepass,
+				};
+			} else if (amount === 5) {
+				if (!(currentState.gamepasses["Triple Hatch"] && currentState.rebirths.additionalEggs === 2)) {
+					return {
+						success: false,
+						reason: HatchEggFailKind.NoGamepass,
+					};
+				}
+			}
+		}
+
+		if (amount > 3 && !currentState.gamepasses["Triple Hatch"]) {
 			return {
 				success: false,
 				reason: HatchEggFailKind.NoGamepass,
@@ -84,26 +114,11 @@ hatchEggRemote.SetCallback(
 		}
 
 		// check cost
-		if (isVoid && eggData.world !== "Limited" && currentState.worldPrestige[eggData.world] !== undefined) {
-			const trueCost =
-				eggCost.amount -
-				eggCost.amount *
-					currentState.worldPrestige[eggData.world].reducedVoidEggCostUpgrades *
-					WORLD_PRESTIGE.reducedVoidEggCost.reducedCostMultiplier;
-
-			if (currentState.currencies[eggCost.currencyType] < trueCost * amount) {
-				return {
-					success: false,
-					reason: HatchEggFailKind.NoCurrency,
-				};
-			}
-		} else {
-			if (currentState.currencies[eggCost.currencyType] < eggCost.amount * amount) {
-				return {
-					success: false,
-					reason: HatchEggFailKind.NoCurrency,
-				};
-			}
+		if (currentState.currencies[eggCost.currencyType] < eggCost.amount * amount) {
+			return {
+				success: false,
+				reason: HatchEggFailKind.NoCurrency,
+			};
 		}
 
 		// check inventory space
@@ -157,6 +172,10 @@ hatchEggRemote.SetCallback(
 				if (boostEnabled) {
 					newPetData.chance *= 2;
 				}
+
+				if (currentState.rebirths.extraLuck) {
+					newPetData.chance *= 2;
+				}
 			}
 
 			return newPetData;
@@ -188,43 +207,37 @@ hatchEggRemote.SetCallback(
 		// confirm pet
 		const selectedPets: Array<HatchedPet> = [];
 		for (const pet of hatchedPets) {
-			// check for currency
-			if (currentState.currencies[eggCost.currencyType] < eggCost.amount) {
-				continue;
-			}
-
-			// check inventory space
-			if (currentState.pets.size() >= getPetInventorySize(currentState.gamepasses) + 1) {
-				continue;
-			}
-
 			// check if it should be auto deleted
 			let autoDeleted = false;
 			if (!isImmuneRarity(pet.rarity)) {
 				autoDeleted = currentState.settings.autoDelete.includes(pet.id);
 			}
 
+			const magicEggsGenerator = randomGenerator.NextInteger(0, 100);
+			const magicEggChance = currentState.rebirths.magicEggUpgrades * 2; // max 10% chance
+			const isMagicPet = magicEggsGenerator <= magicEggChance;
+			const variant = isMagicPet ? (isVoid ? "radiant" : "void") : isVoid ? "void" : "regular";
+
 			// check if it should be saved to the memory store service (rarity of `Primordial` or higher)
 			if (pet.rarity === "Secret" || pet.rarity === "Primordial") {
-				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
+				hatchSystemMessage.SendToAllPlayers(player, pet.id, variant, "hatched");
 
 				const petData = getPetData(pet.id);
-				const variantUpperCase = isVoid ? "Void" : "Regular";
-				const petVariantName = !isVoid ? petData.name : `${variantUpperCase} ${petData.name}`;
+				const variantUpperCase = variant === "radiant" ? "Radiant" : variant === "void" ? "Void" : "";
+				const petVariantName = variant === "regular" ? petData.name : `${variantUpperCase} ${petData.name}`;
 
 				const image = assetIds.images.decals.pets[petVariantName as keyof typeof assetIds.images.decals.pets];
 				let decalToPass = 0;
 				if (image !== undefined) {
-					// bugged
 					decalToPass = image.match("%d+")[0] as number;
 				}
 
 				let existAmount = 0;
 				const petExistCache = ReplicatedStorage.PetExistStores.FindFirstChild(pet.id) as Configuration;
 				if (petExistCache !== undefined) {
-					const variantCache = petExistCache.FindFirstChild(isVoid ? "void" : "regular") as IntValue;
+					const variantCache = petExistCache.FindFirstChild(variant) as IntValue;
 					if (variantCache !== undefined) {
-						const variantCache = petExistCache.FindFirstChild(isVoid ? "void" : "regular") as IntValue;
+						const variantCache = petExistCache.FindFirstChild(variant) as IntValue;
 						if (variantCache !== undefined) {
 							existAmount += variantCache.Value;
 						}
@@ -239,7 +252,7 @@ hatchEggRemote.SetCallback(
 								roblox_uid: player.UserId,
 								secret_name: petData.name,
 								secret_type: pet.rarity,
-								pet_variant: isVoid ? "void" : "regular",
+								pet_variant: variant,
 								decal: decalToPass,
 								exist: existAmount + 1,
 							}),
@@ -252,14 +265,14 @@ hatchEggRemote.SetCallback(
 					});
 				});
 			} else if (pet.rarity === "Legendary" && !autoDeleted) {
-				hatchSystemMessage.SendToAllPlayers(player, pet.id, isVoid ? "void" : "regular", "hatched");
+				hatchSystemMessage.SendToAllPlayers(player, pet.id, variant, "hatched");
 			}
 
 			if (!autoDeleted) {
 				modifyPetCount({
 					type: "addPet",
 					petId: pet.id,
-					variant: isVoid ? "void" : "regular",
+					variant: variant,
 				});
 			}
 
@@ -267,9 +280,9 @@ hatchEggRemote.SetCallback(
 				autoDeleted,
 				id: pet.id,
 				guid: HttpService.GenerateGUID(false),
-				variant: isVoid ? "void" : "regular",
-				//enhancements: { [pet.rarity]: selectedEnhancement },
+				variant: variant,
 				tradeLocked: false,
+				magicPet: isMagicPet,
 			});
 		}
 
