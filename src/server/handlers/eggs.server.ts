@@ -214,7 +214,7 @@ hatchEggRemote.SetCallback(
 			}
 
 			const magicEggsGenerator = randomGenerator.NextInteger(0, 100);
-			const magicEggChance = currentState.rebirths.magicEggUpgrades * 10;
+			const magicEggChance = currentState.rebirths.magicEggUpgrades * 2; // max 10% chance
 			const isMagicPet = magicEggsGenerator <= magicEggChance;
 			const variant = isMagicPet ? (isVoid ? "radiant" : "void") : isVoid ? "void" : "regular";
 

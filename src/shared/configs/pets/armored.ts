@@ -10,7 +10,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
-			additionalBans: 1,
+			additionalBans: 395,
 		},
 	},
 	"Armored Bunny": {
@@ -19,7 +19,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 1,
-			additionalBans: 1,
+			additionalBans: 395,
 		},
 	},
 	"Armored Kitty": {
@@ -28,7 +28,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 1,
-			additionalBans: 1,
+			additionalBans: 500,
 		},
 	},
 	"Armored Deer": {
@@ -37,7 +37,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Rare",
 		stats: {
 			additionalDamage: 1,
-			additionalBans: 1,
+			additionalBans: 650,
 		},
 	},
 	"Armored Pegasus": {
@@ -46,7 +46,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
-			additionalBans: 1,
+			additionalBans: 800,
 		},
 	},
 	"Armored Dragon": {
@@ -55,7 +55,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
-			additionalBans: 1,
+			additionalBans: 875,
 		},
 	},
 	"Armored Angel": {
@@ -64,7 +64,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 1,
-			additionalBans: 1,
+			additionalBans: 950,
 		},
 	},
 	"Armored Guard": {
@@ -73,7 +73,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
-			additionalBans: 1,
+			additionalBans: 1_150,
 		},
 	},
 	"Armored Spartan": {
@@ -82,7 +82,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 1,
-			additionalBans: 1,
+			additionalBans: 1_400,
 		},
 	},
 	"Glitchbot NEO": {
@@ -91,7 +91,7 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 		rarity: "Primordial",
 		stats: {
 			additionalDamage: 1,
-			additionalBans: 1,
+			additionalBans: 25_000,
 		},
 	},
 };

@@ -170,7 +170,7 @@ export const EGGS = {
 		world: "Cyber Cities",
 		zone: "B1n4ry Z0n3",
 		hatchable: true,
-		hidden: true,
+		hidden: false,
 		luckApplies: true,
 	},
 	Armored: {

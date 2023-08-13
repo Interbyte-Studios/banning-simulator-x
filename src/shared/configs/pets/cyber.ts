@@ -10,7 +10,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 75_000,
-			additionalBans: 125,
+			additionalBans: 215,
 		},
 	},
 	"Cyber Bunny": {
@@ -19,7 +19,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Basic",
 		stats: {
 			additionalDamage: 75_000,
-			additionalBans: 125,
+			additionalBans: 215,
 		},
 	},
 	"Cyber Kitty": {
@@ -28,7 +28,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Ordinary",
 		stats: {
 			additionalDamage: 100_000,
-			additionalBans: 155,
+			additionalBans: 245,
 		},
 	},
 	"Cyber Bear": {
@@ -37,7 +37,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Rare",
 		stats: {
 			additionalDamage: 130_000,
-			additionalBans: 175,
+			additionalBans: 285,
 		},
 	},
 	"Cyber Angel": {
@@ -46,7 +46,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 195_000,
-			additionalBans: 260,
+			additionalBans: 365,
 		},
 	},
 	"Cyber Pegasus": {
@@ -55,7 +55,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 220_000,
-			additionalBans: 275,
+			additionalBans: 395,
 		},
 	},
 	"Cybernetic Phoenix": {
@@ -64,7 +64,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 275_000,
-			additionalBans: 375,
+			additionalBans: 500,
 		},
 	},
 	"Cybernetic Guard": {
@@ -73,7 +73,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 300_000,
-			additionalBans: 385,
+			additionalBans: 535,
 		},
 	},
 	"Cybernetic Dementor": {
@@ -82,7 +82,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 327_680,
-			additionalBans: 400,
+			additionalBans: 570,
 		},
 	},
 	"Cybernetic Destroyer": {
@@ -91,7 +91,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		rarity: "Secret",
 		stats: {
 			additionalDamage: 2_500_000,
-			additionalBans: 3_150,
+			additionalBans: 3_750,
 		},
 	},
 };
