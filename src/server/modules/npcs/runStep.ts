@@ -230,7 +230,7 @@ export function runStep(
 			// apply reward
 			store.dispatch(
 				killNpc(
-					reward.currency * currencyMultiplier * rebirthMultiplier,
+					reward.currency * currencyMultiplier + reward.currency * currencyMultiplier * rebirthMultiplier,
 					WORLDS[npc.world.name].reward,
 					petBansBonus + petBansBonus * rebirthBansMultiplier,
 					reward.experience * experienceMultiplier,

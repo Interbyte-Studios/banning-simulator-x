@@ -293,14 +293,19 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 						icon={assetIds.images.vectors.MagicEgg}
 						name={"Magic Egg"}
 						upgradeProgress={`(${props.rebirths.magicEggUpgrades}/5)`}
-						cost={statsAbbreviator.numberToString(5_000)}
+						cost={statsAbbreviator.numberToString(
+							props.rebirths.magicEggUpgrades === 0 ? 5_000 : 5_000 + 5_000 * props.rebirths.magicEggUpgrades,
+						)}
 						onPurchased={(): void => {
 							if (props.rebirths.magicEggUpgrades >= 5) {
 								addAnnouncement(`You already have max upgrades!`, AnnouncementType.Error);
 								return;
 							}
 
-							if (props.currencies.gems < 5_000) {
+							const cost =
+								props.rebirths.magicEggUpgrades === 0 ? 5_000 : 5_000 + 5_000 * props.rebirths.magicEggUpgrades;
+
+							if (props.currencies.gems < cost) {
 								addAnnouncement(`You don't have enough gems!`, AnnouncementType.Error);
 								return;
 							}
@@ -314,14 +319,19 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 						icon={assetIds.images.vectors.Egg}
 						name={"Additional Eggs"}
 						upgradeProgress={`(${props.rebirths.additionalEggs}/2)`}
-						cost={statsAbbreviator.numberToString(15_000)}
+						cost={statsAbbreviator.numberToString(
+							props.rebirths.additionalEggs === 0 ? 15_000 : 15_000 + 15_000 * props.rebirths.additionalEggs,
+						)}
 						onPurchased={(): void => {
 							if (props.rebirths.additionalEggs >= 2) {
 								addAnnouncement(`You already have max upgrades!`, AnnouncementType.Error);
 								return;
 							}
 
-							if (props.currencies.gems < 15_000) {
+							const cost =
+								props.rebirths.additionalEggs === 0 ? 15_000 : 15_000 + 15_000 * props.rebirths.additionalEggs;
+
+							if (props.currencies.gems < cost) {
 								addAnnouncement(`You don't have enough gems!`, AnnouncementType.Error);
 								return;
 							}
@@ -335,14 +345,19 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 						icon={assetIds.images.vectors.PetPaw}
 						name={"Additional Pets"}
 						upgradeProgress={`(${props.rebirths.additionalPets}/4)`}
-						cost={statsAbbreviator.numberToString(15_000)}
+						cost={statsAbbreviator.numberToString(
+							props.rebirths.additionalPets === 0 ? 15_000 : 15_000 + 15_000 * props.rebirths.additionalPets,
+						)}
 						onPurchased={(): void => {
 							if (props.rebirths.additionalPets >= 4) {
 								addAnnouncement(`You already have max upgrades!`, AnnouncementType.Error);
 								return;
 							}
 
-							if (props.currencies.gems < 15_000) {
+							const cost =
+								props.rebirths.additionalPets === 0 ? 15_000 : 15_000 + 15_000 * props.rebirths.additionalPets;
+
+							if (props.currencies.gems < cost) {
 								addAnnouncement(`You don't have enough gems!`, AnnouncementType.Error);
 								return;
 							}
@@ -356,14 +371,23 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 						icon={assetIds.images.vectors.Coin}
 						name={"Coin Multiplier"}
 						upgradeProgress={`(${props.rebirths.currencyMultipliers.coins}/10)`}
-						cost={statsAbbreviator.numberToString(1_500)}
+						cost={statsAbbreviator.numberToString(
+							props.rebirths.currencyMultipliers.coins === 0
+								? 1_500
+								: 1_500 + 1_500 * props.rebirths.currencyMultipliers.coins,
+						)}
 						onPurchased={(): void => {
 							if (props.rebirths.currencyMultipliers.coins >= 10) {
 								addAnnouncement(`You already have max upgrades!`, AnnouncementType.Error);
 								return;
 							}
 
-							if (props.currencies.gems < 1_500) {
+							const cost =
+								props.rebirths.currencyMultipliers.coins === 0
+									? 1_500
+									: 1_500 + 1_500 * props.rebirths.currencyMultipliers.coins;
+
+							if (props.currencies.gems < cost) {
 								addAnnouncement(`You don't have enough gems!`, AnnouncementType.Error);
 								return;
 							}
@@ -377,14 +401,23 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 						icon={assetIds.images.vectors.Gem}
 						name={"Gem Multiplier"}
 						upgradeProgress={`(${props.rebirths.currencyMultipliers.gems}/10)`}
-						cost={statsAbbreviator.numberToString(1_500)}
+						cost={statsAbbreviator.numberToString(
+							props.rebirths.currencyMultipliers.gems === 0
+								? 1_500
+								: 1_500 + 1_500 * props.rebirths.currencyMultipliers.gems,
+						)}
 						onPurchased={(): void => {
 							if (props.rebirths.currencyMultipliers.gems >= 10) {
 								addAnnouncement(`You already have max upgrades!`, AnnouncementType.Error);
 								return;
 							}
 
-							if (props.currencies.gems < 1_500) {
+							const cost =
+								props.rebirths.currencyMultipliers.gems === 0
+									? 1_500
+									: 1_500 + 1_500 * props.rebirths.currencyMultipliers.gems;
+
+							if (props.currencies.gems < cost) {
 								addAnnouncement(`You don't have enough gems!`, AnnouncementType.Error);
 								return;
 							}
@@ -398,14 +431,23 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 						icon={assetIds.images.vectors.Gear}
 						name={"Gear Multiplier"}
 						upgradeProgress={`(${props.rebirths.currencyMultipliers.gears}/10)`}
-						cost={statsAbbreviator.numberToString(1_500)}
+						cost={statsAbbreviator.numberToString(
+							props.rebirths.currencyMultipliers.gears === 0
+								? 1_500
+								: 1_500 + 1_500 * props.rebirths.currencyMultipliers.gears,
+						)}
 						onPurchased={(): void => {
 							if (props.rebirths.currencyMultipliers.gears >= 10) {
 								addAnnouncement(`You already have max upgrades!`, AnnouncementType.Error);
 								return;
 							}
 
-							if (props.currencies.gems < 1_500) {
+							const cost =
+								props.rebirths.currencyMultipliers.gears === 0
+									? 1_500
+									: 1_500 + 1_500 * props.rebirths.currencyMultipliers.gears;
+
+							if (props.currencies.gems < cost) {
 								addAnnouncement(`You don't have enough gems!`, AnnouncementType.Error);
 								return;
 							}
@@ -419,14 +461,23 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 						icon={assetIds.images.vectors.CyberToken}
 						name={"Cyber Multiplier"}
 						upgradeProgress={`(${props.rebirths.currencyMultipliers["cyber tokens"]}/10)`}
-						cost={statsAbbreviator.numberToString(1_500)}
+						cost={statsAbbreviator.numberToString(
+							props.rebirths.currencyMultipliers["cyber tokens"] === 0
+								? 1_500
+								: 1_500 + 1_500 * props.rebirths.currencyMultipliers["cyber tokens"],
+						)}
 						onPurchased={(): void => {
 							if (props.rebirths.currencyMultipliers["cyber tokens"] >= 10) {
 								addAnnouncement(`You already have max upgrades!`, AnnouncementType.Error);
 								return;
 							}
 
-							if (props.currencies.gems < 1_500) {
+							const cost =
+								props.rebirths.currencyMultipliers["cyber tokens"] === 0
+									? 1_500
+									: 1_500 + 1_500 * props.rebirths.currencyMultipliers["cyber tokens"];
+
+							if (props.currencies.gems < cost) {
 								addAnnouncement(`You don't have enough gems!`, AnnouncementType.Error);
 								return;
 							}
@@ -440,14 +491,14 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 						icon={assetIds.images.decals.gamepasses.Teleportation}
 						name={"Teleport"}
 						upgradeProgress={`(${props.rebirths.teleport === true ? 1 : 0}/1)`}
-						cost={statsAbbreviator.numberToString(5_000)}
+						cost={statsAbbreviator.numberToString(25_000)}
 						onPurchased={(): void => {
 							if (props.rebirths.teleport) {
 								addAnnouncement(`You already have max upgrades!`, AnnouncementType.Error);
 								return;
 							}
 
-							if (props.currencies.gems < 5_000) {
+							if (props.currencies.gems < 25_000) {
 								addAnnouncement(`You don't have enough gems!`, AnnouncementType.Error);
 								return;
 							}
@@ -461,14 +512,14 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 						icon={assetIds.images.decals.gamepasses["Fast Hatch"]}
 						name={"Fast Hatch"}
 						upgradeProgress={`(${props.rebirths.fastHatch === true ? 1 : 0}/1)`}
-						cost={statsAbbreviator.numberToString(5_000)}
+						cost={statsAbbreviator.numberToString(25_000)}
 						onPurchased={(): void => {
 							if (props.rebirths.fastHatch) {
 								addAnnouncement(`You already have max upgrades!`, AnnouncementType.Error);
 								return;
 							}
 
-							if (props.currencies.gems < 5_000) {
+							if (props.currencies.gems < 25_000) {
 								addAnnouncement(`You don't have enough gems!`, AnnouncementType.Error);
 								return;
 							}
@@ -482,14 +533,14 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 						icon={assetIds.images.vectors.Clover}
 						name={"Extra Luck"}
 						upgradeProgress={`(${props.rebirths.extraLuck === true ? 1 : 0}/1)`}
-						cost={statsAbbreviator.numberToString(5_000)}
+						cost={statsAbbreviator.numberToString(25_000)}
 						onPurchased={(): void => {
 							if (props.rebirths.extraLuck) {
 								addAnnouncement(`You already have max upgrades!`, AnnouncementType.Error);
 								return;
 							}
 
-							if (props.currencies.gems < 5_000) {
+							if (props.currencies.gems < 25_000) {
 								addAnnouncement(`You don't have enough gems!`, AnnouncementType.Error);
 								return;
 							}

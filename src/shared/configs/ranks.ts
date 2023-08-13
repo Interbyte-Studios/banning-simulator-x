@@ -44,7 +44,7 @@ interface Rank {
 	requiredExperience: number;
 }
 
-export const MAX_RANK = 18;
+export const MAX_RANK = 21;
 export const RANKS: Array<Rank> = [
 	{
 		name: "Bronze",

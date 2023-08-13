@@ -38,7 +38,8 @@ namespace.Get("rebirth").Connect(
 namespace.Get("purchaseMagicEggs").Connect(
 	withPlayerStore((_, store) => {
 		const currentState = store.getState();
-		const cost = 5_000;
+		const cost =
+			currentState.rebirths.magicEggUpgrades === 0 ? 5_000 : 5_000 + 5_000 * currentState.rebirths.magicEggUpgrades;
 
 		if (currentState.rebirths.magicEggUpgrades >= 5) {
 			return;
@@ -56,7 +57,8 @@ namespace.Get("purchaseMagicEggs").Connect(
 namespace.Get("purchaseAdditionalEggs").Connect(
 	withPlayerStore((_, store) => {
 		const currentState = store.getState();
-		const cost = 15_000;
+		const cost =
+			currentState.rebirths.additionalEggs === 0 ? 15_000 : 15_000 + 15_000 * currentState.rebirths.additionalEggs;
 
 		if (currentState.rebirths.additionalEggs >= 2) {
 			return;
@@ -74,7 +76,8 @@ namespace.Get("purchaseAdditionalEggs").Connect(
 namespace.Get("purchaseAdditionalPets").Connect(
 	withPlayerStore((_, store) => {
 		const currentState = store.getState();
-		const cost = 15_000;
+		const cost =
+			currentState.rebirths.additionalPets === 0 ? 15_000 : 15_000 + 15_000 * currentState.rebirths.additionalPets;
 
 		if (currentState.rebirths.additionalPets >= 4) {
 			return;
@@ -92,7 +95,10 @@ namespace.Get("purchaseAdditionalPets").Connect(
 namespace.Get("purchaseCurrency").Connect(
 	withPlayerStore((_, store, currency) => {
 		const currentState = store.getState();
-		const cost = 1_500;
+		const cost =
+			currentState.rebirths.currencyMultipliers[currency] === 0
+				? 1_500
+				: 1_500 + 1_500 * currentState.rebirths.currencyMultipliers[currency];
 
 		if (currentState.rebirths.currencyMultipliers[currency] >= 10) {
 			return;
@@ -110,7 +116,7 @@ namespace.Get("purchaseCurrency").Connect(
 namespace.Get("purchaseTeleport").Connect(
 	withPlayerStore((_, store) => {
 		const currentState = store.getState();
-		const cost = 5_000;
+		const cost = 25_000;
 
 		if (currentState.rebirths.teleport) {
 			return;
@@ -128,7 +134,7 @@ namespace.Get("purchaseTeleport").Connect(
 namespace.Get("purchaseFastHatch").Connect(
 	withPlayerStore((_, store) => {
 		const currentState = store.getState();
-		const cost = 5_000;
+		const cost = 25_000;
 
 		if (currentState.rebirths.fastHatch) {
 			return;
@@ -146,7 +152,7 @@ namespace.Get("purchaseFastHatch").Connect(
 namespace.Get("purchaseExtraLuck").Connect(
 	withPlayerStore((_, store) => {
 		const currentState = store.getState();
-		const cost = 5_000;
+		const cost = 25_000;
 
 		if (currentState.rebirths.extraLuck) {
 			return;

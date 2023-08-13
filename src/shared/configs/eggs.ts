@@ -79,6 +79,7 @@ export const isValidMasteryEgg = t.literal(
 	"City",
 	"Cybernetic",
 	"Corrupt",
+	"Armored",
 	"Royalty",
 	"Neon",
 );
@@ -178,10 +179,10 @@ export const EGGS = {
 	Armored: {
 		id: 10,
 		pets: ARMORED_EGG_PETS,
-		world: "Limited",
-		zone: "Limited",
-		hatchable: false,
-		hidden: true,
+		world: "Cyber Cities",
+		zone: "Lunar Realm",
+		hatchable: true,
+		hidden: false,
 		luckApplies: true,
 	},
 	Radioactive: {
