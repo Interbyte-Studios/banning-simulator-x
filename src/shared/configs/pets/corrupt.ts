@@ -90,7 +90,7 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 		id: 72,
 		rarity: "Primordial",
 		stats: {
-			additionalDamage: 22_500_000,
+			additionalDamage: 50_500_000,
 			additionalBans: 12_500,
 		},
 	},

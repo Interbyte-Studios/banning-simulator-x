@@ -3988,6 +3988,16 @@ hash = "64e442acce2abdc2e3114f8a40509c172902cba73050e2a508ff2ac2bbda004a"
 id = 11704139756
 packable = false
 
+[inputs."images/ui/teleportation/Cortex Locked.png"]
+hash = "0a0a01e97729c2ba80abcb0c25609b5c5ba538604ec508330bd15813de202f06"
+id = 14425748510
+packable = false
+
+[inputs."images/ui/teleportation/Cortex.png"]
+hash = "d890d78cee64187b614d49f4998dcfd8ba2ccf8ee9894d7aaa5588b5cda45912"
+id = 14425748587
+packable = false
+
 [inputs."images/ui/teleportation/Cyber Cities Locked.png"]
 hash = "e0662523b5da2254218a3c1a1056ae731ade134a151bf47c35fcb7a11c48d646"
 id = 14375588913
@@ -4096,6 +4106,16 @@ packable = false
 [inputs."images/ui/teleportation/Lava Lands.png"]
 hash = "b3b5dad734aa77befb4a627ea709975aa6e0e477241d443bbfa988a44a3323c7"
 id = 11704140110
+packable = false
+
+[inputs."images/ui/teleportation/Lunar Realm Locked.png"]
+hash = "1e5b415298b4e2f41fc55f7564d09b7ef3e51f4f3dc4e66132b56c106099e8ce"
+id = 14425748696
+packable = false
+
+[inputs."images/ui/teleportation/Lunar Realm.png"]
+hash = "9895b0c505db49ab25767cf89a2a6449cb9dbf9a369a9b1b21231b5745fcc03c"
+id = 14425748785
 packable = false
 
 [inputs."images/ui/teleportation/Malware Mayhem Locked.png"]

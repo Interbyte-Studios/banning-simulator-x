@@ -280,4 +280,43 @@ export const RANKS: Array<Rank> = [
 		},
 		requiredExperience: 10_240_000_000, // 1000 B1n4ry Z0n3 npcs
 	},
+	{
+		name: "Cyber Immortal",
+		id: 19,
+		cost: {
+			amount: 65_610_000,
+			currency: "cyber tokens",
+		},
+		gradient: {
+			beginningColor: Color3.fromRGB(163, 66, 255),
+			endingColor: Color3.fromRGB(18, 18, 18),
+		},
+		requiredExperience: 20_480_000_000, // 1000 B1n4ry Z0n3 npcs
+	},
+	{
+		name: "Cyber Mythic",
+		id: 20,
+		cost: {
+			amount: 196_830_000,
+			currency: "cyber tokens",
+		},
+		gradient: {
+			beginningColor: Color3.fromRGB(163, 66, 255),
+			endingColor: Color3.fromRGB(48, 217, 237),
+		},
+		requiredExperience: 40_960_000_000, // 1000 B1n4ry Z0n3 npcs
+	},
+	{
+		name: "Cyber Legend",
+		id: 21,
+		cost: {
+			amount: 590_490_000,
+			currency: "cyber tokens",
+		},
+		gradient: {
+			beginningColor: Color3.fromRGB(255, 94, 94),
+			endingColor: Color3.fromRGB(224, 242, 18),
+		},
+		requiredExperience: 81_920_000_000, // 1000 B1n4ry Z0n3 npcs
+	},
 ];

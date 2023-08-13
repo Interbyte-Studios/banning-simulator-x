@@ -90,7 +90,7 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 		id: 62,
 		rarity: "Secret",
 		stats: {
-			additionalDamage: 2_500_000,
+			additionalDamage: 16_500_000,
 			additionalBans: 3_750,
 		},
 	},

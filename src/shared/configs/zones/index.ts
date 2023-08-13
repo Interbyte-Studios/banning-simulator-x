@@ -63,6 +63,8 @@ export const isZoneName = t.literal(
 	"UFO Valley",
 	"Holographic Musuem",
 	"B1n4ry Z0n3",
+	"Cortex",
+	"Lunar Realm",
 );
 export type ZoneNames = t.static<typeof isZoneName>;
 
@@ -321,6 +323,32 @@ export const zones: Record<ZoneNames, Zone> = {
 			requiredRank: 18,
 		},
 		color: Color3.fromRGB(222, 36, 10),
+	},
+
+	// zone 9
+	Cortex: {
+		id: 21,
+		worldParent: "Cyber Cities",
+		npcs: [CYBER_CITY_NPCS.officialJBbossplayz, CYBER_CITY_NPCS.cookieDAmain],
+		cost: {
+			currency: "cyber tokens",
+			amount: 32_805_000,
+			requiredRank: 19,
+		},
+		color: Color3.fromRGB(133, 245, 99),
+	},
+
+	// zone 10
+	"Lunar Realm": {
+		id: 22,
+		worldParent: "Cyber Cities",
+		npcs: [CYBER_CITY_NPCS.RemDaBomRBLX, CYBER_CITY_NPCS.SinisterGh0ulz],
+		cost: {
+			currency: "cyber tokens",
+			amount: 98_415_000,
+			requiredRank: 20,
+		},
+		color: Color3.fromRGB(245, 120, 250),
 	},
 };
 

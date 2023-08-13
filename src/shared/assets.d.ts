@@ -840,6 +840,10 @@ declare namespace assetIds {
 				"Enchanted Forest Locked": string;
 				"B1n4ry Z0n3": string;
 				"The Mines Locked": string;
+				Cortex: string;
+				"Cortex Locked": string;
+				"Lunar Realm": string;
+				"Lunar Realm Locked": string;
 				Desert: string;
 			};
 			levelup: {

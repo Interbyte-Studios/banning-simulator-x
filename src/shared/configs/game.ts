@@ -188,6 +188,8 @@ export const TELEPORTATIONS = {
 		"UFO Valley": new Vector3(19092.432, 9.243, -25688.607),
 		"Holographic Musuem": new Vector3(19092.432, 9.243, -25863.529),
 		"B1n4ry Z0n3": new Vector3(19092.432, 9.243, -26045.961),
+		Cortex: new Vector3(19110.428, 11.115, -26231.828),
+		"Lunar Realm": new Vector3(19110.428, 11.115, -26402.367),
 	},
 	"Ban Land": {
 		RANK_UPGRADE: new Vector3(22918.633, 46.567, -194.273),

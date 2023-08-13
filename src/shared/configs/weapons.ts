@@ -19,7 +19,7 @@ export interface Weapon {
 	weaponType: WeaponType;
 }
 
-export const MAX_WEAPON_ID = 67;
+export const MAX_WEAPON_ID = 71;
 export const WEAPONS = {
 	/* First Zone */
 	"Stone Hammer": {
@@ -796,6 +796,54 @@ export const WEAPONS = {
 			amount: 5_248_800,
 		},
 		damage: 8_388_608,
+		world: "Ban Land",
+		weaponType: "Sword",
+	},
+
+	// Cortex
+	"Energy Slammer": {
+		id: 68,
+		cost: {
+			requiredRank: 19,
+			currency: "cyber tokens",
+			amount: 9_850_000,
+		},
+		damage: 14_225_000,
+		world: "Ban Land",
+		weaponType: "Hammer",
+	},
+	"Energy Slasher": {
+		id: 69,
+		cost: {
+			requiredRank: 19,
+			currency: "cyber tokens",
+			amount: 15_746_400,
+		},
+		damage: 16_777_216,
+		world: "Ban Land",
+		weaponType: "Sword",
+	},
+
+	// Lunar Realm
+	"Dreamy Slammer": {
+		id: 70,
+		cost: {
+			requiredRank: 20,
+			currency: "cyber tokens",
+			amount: 35_250_000,
+		},
+		damage: 28_500_000,
+		world: "Ban Land",
+		weaponType: "Hammer",
+	},
+	"Dreamy Slasher": {
+		id: 71,
+		cost: {
+			requiredRank: 20,
+			currency: "cyber tokens",
+			amount: 47_239_200,
+		},
+		damage: 33_554_432,
 		world: "Ban Land",
 		weaponType: "Sword",
 	},

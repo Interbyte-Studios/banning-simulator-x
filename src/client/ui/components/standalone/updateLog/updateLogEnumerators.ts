@@ -5,4 +5,5 @@ export enum UpdateLogType {
 	Update3 = "Update 3",
 	Update4 = "Update 4",
 	Update5 = "Update 5",
+	Update6 = "Update 6",
 }
