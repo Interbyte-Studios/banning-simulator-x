@@ -8,17 +8,20 @@ import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
 import { GAMEPASSES } from "shared/configs/game";
 import { Variants } from "shared/configs/pets";
+import { ValidEggAmount, validEggAmount } from "shared/remotes/eggs/hatchEgg";
 import { StoreState } from "shared/rodux";
 import { GamepassesState } from "shared/rodux/gamepasses";
+import { RebirthState } from "shared/rodux/rebirths";
 
 interface TripleHatchEggProps extends TripleHatchEggMappedProps {
 	eggName: EggName;
 	isVoid: boolean;
-	handleHatch: (eggName: EggName, variant: Exclude<Variants, "radiant">, amount: 1 | 3) => void;
+	handleHatch: (eggName: EggName, variant: Exclude<Variants, "radiant">, amount: ValidEggAmount) => void;
 }
 
 interface TripleHatchEggMappedProps {
 	gamepassesState: GamepassesState;
+	rebirths: RebirthState;
 }
 
 /**
@@ -30,6 +33,7 @@ interface TripleHatchEggMappedProps {
 function mapStateToProps(state: StoreState): TripleHatchEggMappedProps {
 	return {
 		gamepassesState: state.gamepasses,
+		rebirths: state.rebirths,
 	};
 }
 
@@ -54,7 +58,11 @@ export const TripleHatchEggButton = RoactRodux.connect(mapStateToProps)((props: 
 						return;
 					}
 
-					props.handleHatch(props.eggName, props.isVoid ? "void" : "regular", 3);
+					const hatchAmount = 3 + props.rebirths.additionalEggs;
+					if (!validEggAmount(hatchAmount)) {
+						return warn(`Attempt to hatch invalid amount of eggs: ${hatchAmount}`);
+					}
+					props.handleHatch(props.eggName, props.isVoid ? "void" : "regular", hatchAmount);
 				},
 			}}
 		>

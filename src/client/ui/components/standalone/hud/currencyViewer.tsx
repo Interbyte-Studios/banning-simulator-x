@@ -53,7 +53,7 @@ export const CurrencyViewer = RoactRodux.connect(mapStateToProps)(
 						Text: twoDpAbbreviator.numberToString(props.currencies[props.currencyType]),
 					}}
 					stroke={{
-						currencyGradient: "coins",
+						currencyGradient: props.currencyType,
 						native: { Thickness: 1.5, Color: Color3.fromRGB(255, 255, 255) },
 					}}
 				/>

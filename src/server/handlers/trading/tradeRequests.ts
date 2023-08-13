@@ -2,6 +2,7 @@ debug.setmemorycategory("tradeRequest");
 import { retrieveStore } from "server/playerStore";
 import { Store } from "shared/rodux";
 import { TRADING_ATTRIBUTE } from "shared/trading/tradingAttributes";
+import { getPetInventorySize } from "shared/util/getPetInventorySize";
 
 import { createTrade, getTradeStatus } from "./trades";
 
@@ -31,6 +32,13 @@ export function requestTrade(player: Player, store: Store, targetPlayer: Player)
 			.filter((isEnabled) => !isEnabled)
 			.size() > 0;
 	if (hasPrivateTrader) {
+		return false;
+	}
+
+	const hasOverflownInventory = playerStores.filter(
+		(store) => store.getState().pets.size() + 10 > getPetInventorySize(store.getState().gamepasses),
+	);
+	if (hasOverflownInventory) {
 		return false;
 	}
 

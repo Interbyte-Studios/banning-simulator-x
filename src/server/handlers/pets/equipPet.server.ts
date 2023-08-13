@@ -21,7 +21,7 @@ remotes.Server.GetNamespace("pets")
 				petsToEquip.push(petToEquip);
 			}
 
-			const maxPetEquip = getMaxPetEquip(player, currentState.gamepasses);
+			const maxPetEquip = getMaxPetEquip(player, currentState.gamepasses, currentState.rebirths);
 
 			const currentlyEquippedPets = currentState.pets.filter(
 				(pet) => pet.equipped && !petsToEquip.find((newPet) => newPet.guid === pet.guid),

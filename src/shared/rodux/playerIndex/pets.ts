@@ -127,6 +127,10 @@ export const petIndexReducer = Rodux.createReducer<
 		const newState = new Map([...state]);
 
 		for (const { id, variant } of action.pets) {
+			if (variant === "radiant") {
+				continue;
+			}
+
 			const pet = newState.get(id) ?? defaultPetData;
 			pet.hatched = {
 				...pet.hatched,
@@ -147,7 +151,6 @@ export const petIndexReducer = Rodux.createReducer<
 			}
 
 			const pet = newState.get(id) ?? defaultPetData;
-			print(`${variant} ${id}: ${pet.hatched[variant]}`);
 
 			pet.hatched = {
 				...pet.hatched,

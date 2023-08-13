@@ -20,6 +20,10 @@ export const eggIndexReducer = Rodux.createReducer<EggIndexState, HatchEgg>(defa
 		const newState = new Map([...state]);
 
 		for (const { id, variant } of action.pets) {
+			if (variant === "radiant") {
+				continue;
+			}
+
 			const eggName = getEggNameFromPetId(id);
 			const egg = newState.get(eggName) ?? { regular: 0, void: 0, radiant: 0 };
 

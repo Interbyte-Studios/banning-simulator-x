@@ -668,6 +668,8 @@ declare namespace assetIds {
 			};
 		};
 		vectors: {
+			MagicEgg: string;
+			Rebirth: string;
 			Calendar: string;
 			Gift: string;
 			Settings: string;
@@ -869,6 +871,7 @@ declare namespace assetIds {
 				upgrade: string;
 				"viewer background": string;
 				icons: {
+					rebirths: string;
 					options: string;
 					teleport: string;
 					rewards: string;

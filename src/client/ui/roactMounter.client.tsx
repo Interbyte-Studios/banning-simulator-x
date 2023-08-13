@@ -20,6 +20,7 @@ import { petRemtoes } from "./remotes/pets";
 import { playerLoadedRemtoes } from "./remotes/playerLoaded";
 import { questsRemotes } from "./remotes/quests";
 import { ranksRemotes } from "./remotes/ranks";
+import { rebirthRemotes } from "./remotes/rebirths";
 import { rewardRemotes } from "./remotes/rewards";
 import { settingsRemotes } from "./remotes/settings";
 import { talismanRemotes } from "./remotes/talismans";
@@ -65,6 +66,7 @@ onStoreCreated(player)
 					...weaponsRemotes,
 					...wheelSpinRemotes,
 					...zonesRemotes,
+					...rebirthRemotes,
 				}}
 			>
 				<AnnouncementAPI>

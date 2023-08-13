@@ -13,7 +13,7 @@ Players.PlayerAdded.Connect(async (player) => {
 	});
 	const bans = Make("StringValue", {
 		Name: "🔨 Bans 🔨",
-		Value: statsAbbreviator.numberToString(store.getState().bans),
+		Value: statsAbbreviator.numberToString(store.getState().bans.bans),
 	});
 
 	// create leaderstats
@@ -25,7 +25,7 @@ Players.PlayerAdded.Connect(async (player) => {
 
 	store.changed.connect((newState, oldState) => {
 		if (newState.bans !== oldState.bans) {
-			bans.Value = statsAbbreviator.numberToString(newState.bans);
+			bans.Value = statsAbbreviator.numberToString(newState.bans.bans);
 		}
 
 		if (newState.eggs.eggs !== oldState.eggs.eggs) {

@@ -4,6 +4,7 @@ import { Players, RunService } from "@rbxts/services";
 import { retrieveStore } from "client/clientStores";
 import { getAmountOfPets } from "client/modules/uiNotifications/petsModule";
 import { uiTextStrokeColor } from "client/ui/commonValues";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
@@ -20,9 +21,12 @@ import { EGGS } from "shared/configs/eggs";
 import { WorldName, WORLDS } from "shared/configs/worlds";
 import { StoreState } from "shared/rodux";
 import { AccoladeState } from "shared/rodux/accolade";
+import { BansState } from "shared/rodux/bans";
 import { DailyRewardsState } from "shared/rodux/dailyRewards";
+import { GamepassesState } from "shared/rodux/gamepasses";
 import { PetsState } from "shared/rodux/pets";
 import { RankState } from "shared/rodux/rank";
+import { RebirthState } from "shared/rodux/rebirths";
 import { SpinWheelState } from "shared/rodux/spinWheel";
 import { TalismansState } from "shared/rodux/talismans";
 import { WeaponsState } from "shared/rodux/weapons";
@@ -61,6 +65,9 @@ interface HudMappedProps {
 	wheelSpin: SpinWheelState;
 	dailyRewards: DailyRewardsState;
 	rank: RankState;
+	gamepasses: GamepassesState;
+	rebirths: RebirthState;
+	bans: BansState;
 }
 
 /**
@@ -71,6 +78,7 @@ interface HudMappedProps {
  */
 const mapStateToProps = (state: StoreState): HudMappedProps => {
 	return {
+		bans: state.bans,
 		pets: state.pets,
 		accolades: state.accolades,
 		weapons: state.weapons,
@@ -78,6 +86,8 @@ const mapStateToProps = (state: StoreState): HudMappedProps => {
 		wheelSpin: state.spinWheel,
 		dailyRewards: state.dailyRewards,
 		rank: state.rank,
+		gamepasses: state.gamepasses,
+		rebirths: state.rebirths,
 	};
 };
 
@@ -162,9 +172,12 @@ function getTime(): number {
  * The main hud that is displayed on the screen.
  */
 export const Hud = RoactRodux.connect(mapStateToProps)(
-	hooks((props: HudProps, { useState, useEffect }) => {
+	hooks((props: HudProps, { useState, useEffect, useContext }) => {
 		const [world, setWorld] = useState<WorldName>("Ban Land");
 		const [time, setTime] = useState(0);
+
+		const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
+
 		useEffect(() => {
 			const connection = RunService.RenderStepped.Connect(() => {
 				debug.setmemorycategory("hudDailyRewardsCounter");
@@ -230,6 +243,11 @@ export const Hud = RoactRodux.connect(mapStateToProps)(
 			}
 		}
 
+		const currentRebirth = props.rebirths.rebirth;
+		const nextRebirth = currentRebirth + 1;
+		const rebirthThreshold = nextRebirth > 1 ? nextRebirth ** 5 : 10;
+		const unseenRebirths = props.bans.bans >= rebirthThreshold;
+
 		// for currency display
 		const worldData = WORLDS[world];
 
@@ -252,16 +270,32 @@ export const Hud = RoactRodux.connect(mapStateToProps)(
 							<HudIcon
 								icon={assetIds.images.ui.hud.icons.teleport}
 								title={"Teleport"}
-								onClick={(): void => props.displayTeleportation()}
+								onClick={(): void => {
+									if (!(props.gamepasses.Teleportation || props.rebirths.teleport)) {
+										addAnnouncement(`Purchase Teleportation from Rebirths!`, AnnouncementType.Error);
+										return;
+									}
+
+									props.displayTeleportation();
+								}}
 								position={UDim2.fromScale(0.032, 0.409)}
 								size={{ minSize: 0.9, maxSize: 1 }}
 							/>
 							<HudIcon
-								icon={assetIds.images.ui.hud.icons.rewards}
-								title={"Stats"}
+								icon={assetIds.images.ui.hud.icons.rebirths}
+								title={"Rebirth"}
 								onClick={(): void => props.displayAccount()}
 								position={UDim2.fromScale(0.083, 0.409)}
 								size={{ minSize: 0.9, maxSize: 1 }}
+								notification={
+									unseenRebirths === true
+										? {
+												amount: 1,
+												size: UDim2.fromScale(0.4, 0.4),
+												position: UDim2.fromScale(0.1, 0.9),
+										  }
+										: undefined
+								}
 							/>
 							<HudIcon
 								icon={assetIds.images.ui.hud.icons.wheel}

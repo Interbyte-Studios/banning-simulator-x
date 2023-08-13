@@ -3498,6 +3498,11 @@ hash = "b92c65f1696e2473b1181a7d68db7059699c390f0123484a23ae1cfe1a694f28"
 id = 14250591237
 packable = false
 
+[inputs."images/ui/hud/icons/rebirths.png"]
+hash = "78a3b355e06182180e98d9b5f45e9fb134327ef419b32415553af8ed56288fa0"
+id = 14408266384
+packable = false
+
 [inputs."images/ui/hud/icons/rewards.png"]
 hash = "542b0a435c17c54ed6020829e46ce40b81537e11e2a169a13ca2f9970eceb37b"
 id = 11591957156
@@ -4203,6 +4208,11 @@ hash = "a04c8dd0ee7f28852208585d0ab48556a7ca6a797ed9ae6c0d7473bebea3f636"
 id = 11866057058
 packable = false
 
+[inputs."images/vectors/MagicEgg.png"]
+hash = "4f7a54b468ca7395afd589e24b58c4e4afa825621ad4e8adce259ecfd08ce766"
+id = 14415765782
+packable = false
+
 [inputs."images/vectors/Medal.png"]
 hash = "f750ac2499508342ab567602f1b1631117f8857b6f27ffbe4e96e3f1b18fc2d1"
 id = 11591958260
@@ -4211,6 +4221,11 @@ packable = false
 [inputs."images/vectors/PetPaw.png"]
 hash = "482ce011902a10a7fbd1ac2d31a5086734fa71ee4e31f252902ff25c3cb9f960"
 id = 11591958324
+packable = false
+
+[inputs."images/vectors/Rebirth.png"]
+hash = "13348eedd8ea5dfb78323b3ed2c0ae7e99076c798150c462a1fd966f7647da7e"
+id = 14407072993
 packable = false
 
 [inputs."images/vectors/RedMark.png"]

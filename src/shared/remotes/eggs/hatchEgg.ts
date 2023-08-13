@@ -4,8 +4,8 @@ import { t } from "@rbxts/t";
 import { EggName, isEggName } from "shared/configs/eggs";
 import { HatchedPet } from "shared/rodux/pets";
 
-export const validEggEmount = t.literal(1, 2, 3);
-export type ValidEggAmount = t.static<typeof validEggEmount>;
+export const validEggAmount = t.literal(1, 2, 3, 4, 5);
+export type ValidEggAmount = t.static<typeof validEggAmount>;
 
 export enum HatchEggFailKind {
 	TooFast,
@@ -25,5 +25,5 @@ export const hatchEggDefinition = Net.Definitions.ServerAsyncFunction<
 		egg: EggName,
 		isVoid: boolean,
 	) => { success: false; reason: HatchEggFailKind } | { success: true; pets: Array<HatchedPet> }
->([createTypeChecker(t.literal(1, 2, 3), isEggName, t.boolean)]);
+>([createTypeChecker(validEggAmount, isEggName, t.boolean)]);
 export type HatchEggDefinition = typeof hatchEggDefinition;

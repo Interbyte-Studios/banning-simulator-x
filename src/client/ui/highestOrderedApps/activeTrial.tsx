@@ -14,6 +14,7 @@ import {
 	TimeTrialDifficulty,
 } from "shared/configs/timeTrials";
 import { StoreState } from "shared/rodux";
+import { RebirthState } from "shared/rodux/rebirths";
 import { TimeTrialsState } from "shared/rodux/timeTrials";
 import { statsAbbreviator, twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
@@ -38,6 +39,7 @@ interface ActiveTrialProps extends ActiveTrialMappedProps {
 
 interface ActiveTrialMappedProps {
 	timeTrials: TimeTrialsState;
+	rebirths: RebirthState;
 }
 
 /**
@@ -49,6 +51,7 @@ interface ActiveTrialMappedProps {
 export const mapStateToProps = (state: StoreState): ActiveTrialMappedProps => {
 	return {
 		timeTrials: state.timeTrials,
+		rebirths: state.rebirths,
 	};
 };
 
@@ -101,7 +104,9 @@ export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
 							if (prev > 0 && attributeValue < 1) {
 								const difficultyMultiplier = difficulty === "easy" ? 1.25 : difficulty === "medium" ? 1.3 : 1.35;
 								const waveMultiplier = 5 * wave;
-								props.finish(waveMultiplier * difficultyMultiplier ** wave);
+								const reward = waveMultiplier * difficultyMultiplier ** wave;
+								const rewardWithRebirthMultiplier = reward + reward * props.rebirths.currencyMultipliers.gears * 0.3;
+								props.finish(rewardWithRebirthMultiplier);
 							}
 							return attributeValue;
 						});
@@ -150,7 +155,9 @@ export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
 				if (started) {
 					const difficultyMultiplier = difficulty === "easy" ? 1.25 : difficulty === "medium" ? 1.35 : 1.45;
 					const waveMultiplier = 5 * wave;
-					props.stopTrial(waveMultiplier * difficultyMultiplier ** wave);
+					const reward = waveMultiplier * difficultyMultiplier ** wave;
+					const rewardWithRebirthMultiplier = reward + reward * props.rebirths.currencyMultipliers.gears * 0.3;
+					props.stopTrial(rewardWithRebirthMultiplier);
 				}
 			});
 
@@ -163,6 +170,8 @@ export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
 		if (started) {
 			const difficultyMultiplier = difficulty === "easy" ? 1.25 : difficulty === "medium" ? 1.3 : 1.35;
 			const waveMultiplier = 5 * wave;
+			const reward = waveMultiplier * difficultyMultiplier ** wave;
+			const rewardWithRebirthMultiplier = reward + reward * props.rebirths.currencyMultipliers.gears * 0.3;
 			return (
 				<>
 					<SpringImageButton
@@ -178,9 +187,11 @@ export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
 							Activated: (): void => {
 								const difficultyMultiplier = difficulty === "easy" ? 1.25 : difficulty === "medium" ? 1.3 : 1.35;
 								const waveMultiplier = 5 * wave;
+								const reward = waveMultiplier * difficultyMultiplier ** wave;
+								const rewardWithRebirthMultiplier = reward + reward * props.rebirths.currencyMultipliers.gears * 0.3;
 								playSFX(UIEngagement.MajorEngagement);
 								stopTimeTrial.SendToServer();
-								props.stopTrial(waveMultiplier * difficultyMultiplier ** wave);
+								props.stopTrial(rewardWithRebirthMultiplier);
 							},
 						}}
 					>
@@ -232,9 +243,7 @@ export const ActiveTrial = RoactRodux.connect(mapStateToProps)(
 						native={{
 							Position: UDim2.fromScale(0.5, 0.165),
 							Size: UDim2.fromScale(0.2, 0.035),
-							Text: `Currency Earned: ${statsAbbreviator.numberToString(
-								waveMultiplier * difficultyMultiplier ** wave,
-							)}`,
+							Text: `Currency Earned: ${statsAbbreviator.numberToString(rewardWithRebirthMultiplier)}`,
 						}}
 						stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(163, 58, 7) } }}
 					/>

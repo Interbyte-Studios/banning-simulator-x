@@ -17,6 +17,7 @@ import { pets } from "./pets";
 import { playerLoaded } from "./playerLoaded";
 import { purchaseWorldDefinition } from "./purchaseWorld";
 import { purchaseZoneDefinition } from "./purchaseZone";
+import { rebirthsNamespace } from "./rebirth";
 import { redeemQuestDefinition } from "./redeemQuest";
 import { rewardsDefinition } from "./rewards";
 import { roduxDefinitions } from "./rodux";
@@ -45,6 +46,7 @@ export const remotes = Net.Definitions.Create({
 	timeTrials: timeTrials,
 	trades: trading,
 
+	rebirth: rebirthsNamespace,
 	purchaseWorld: purchaseWorldDefinition,
 	claimPetQuest: claimPetQuestDefinition,
 	claimDailyRewards: claimDailyRewardsDefinition,

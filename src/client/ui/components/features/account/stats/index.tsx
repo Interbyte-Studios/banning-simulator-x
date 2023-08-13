@@ -255,7 +255,7 @@ export const PlayerStats = hooks((props: { viewedPlayer: Player; returnToSelecti
 				<StatCard header={"Title:"} stat={titleName} additionalElements={titleSpecialElement} layoutId={1} />
 				<StatCard header={"Rank:"} stat={rank} layoutId={2} />
 				<StatCard header={"NPCs Banned:"} stat={statsAbbreviator.numberToString(npcBans)} layoutId={3} />
-				<StatCard header={"Bans:"} stat={statsAbbreviator.numberToString(bans)} layoutId={3} />
+				<StatCard header={"All-Time Bans:"} stat={statsAbbreviator.numberToString(bans.allTimeBans)} layoutId={3} />
 				<StatCard
 					header={"Started Playing:"}
 					stat={playerStore.getState().index.joinDate.FormatLocalTime("LL", "en-us")}

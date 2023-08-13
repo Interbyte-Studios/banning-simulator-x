@@ -22,7 +22,7 @@ Players.PlayerAdded.Connect(async (player) => {
 
 	task.defer(async () => {
 		const { bans, eggs, timeTrials } = store.getState();
-		await bansOds.setAsync(playerId, bans);
+		await bansOds.setAsync(playerId, bans.bans);
 		await eggsOds.setAsync(playerId, eggs.eggs);
 		await timeTrialsOds.setAsync(playerId, timeTrials["Ban Land"].highestHardWave);
 	});
@@ -38,7 +38,7 @@ Players.PlayerAdded.Connect(async (player) => {
 
 		const { bans, eggs, timeTrials } = store.getState();
 		task.defer(async () => {
-			await bansOds.setAsync(playerId, bans);
+			await bansOds.setAsync(playerId, bans.bans);
 			await eggsOds.setAsync(playerId, eggs.eggs);
 			await timeTrialsOds.setAsync(playerId, timeTrials["Ban Land"].highestHardWave);
 		});

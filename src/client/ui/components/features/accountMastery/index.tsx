@@ -152,7 +152,7 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 		for (const masteryData of AccountMastery.banning) {
 			masteryElements.push(
 				<MasteryCard
-					progress={playerStore.getState().bans}
+					progress={playerStore.getState().bans.bans}
 					requiredProgress={masteryData.requiredBans}
 					header={`Banning (Level ${masteryData.level})`}
 					description={`Currency Multiple: x${masteryData.currencyGainedMultiplier}`}

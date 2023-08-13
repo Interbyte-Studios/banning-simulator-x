@@ -63,9 +63,6 @@ declare global {
 						};
 						name: TextLabel & {
 							UIStroke: UIStroke;
-							rank: ImageLabel & {
-								UIAspectRatioConstraint: UIAspectRatioConstraint;
-							};
 						};
 						title: TextLabel & {
 							UIStroke: UIStroke;

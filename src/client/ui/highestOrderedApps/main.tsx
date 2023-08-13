@@ -14,6 +14,7 @@ import Icon from "@rbxts/topbar-plus";
 import { getAutoFightCache, setAutoFightCache, setFocusedNPC } from "client/modules/autoFightCache";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
+import { MODERATOR_RANK } from "shared/configs/admin";
 import { Variants } from "shared/configs/pets";
 import { Store } from "shared/rodux";
 import { isValidWorld } from "shared/util/isValidWorld";
@@ -29,6 +30,7 @@ import { Codes } from "../components/features/codes";
 import { ItemInventory } from "../components/features/items";
 import { PetMastery } from "../components/features/petMastery";
 import { PetQuest } from "../components/features/petQuest";
+import { Rebirths } from "../components/features/rebirths";
 import { Settings } from "../components/features/settings";
 import { SpinWheel } from "../components/features/spinWheel";
 import { Teleportation } from "../components/features/teleportation";
@@ -71,7 +73,7 @@ const visibilityStates = {
 	talismanTower: false,
 	items: false,
 	autoFight: false,
-	accountHub: false,
+	rebirths: false,
 	petMastery: false,
 	fusing: false,
 	settings: false,
@@ -81,6 +83,7 @@ const visibilityStates = {
 	spinWheel: false,
 	timeTrials: false,
 	petQuest: false,
+	admin: false,
 };
 
 let popupsShown = false;
@@ -261,9 +264,21 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 	useEffect(() => {
 		if (!popupsShown) {
 			popupsShown = true;
-			setVisibility({ ...visibilityStates, updateLog: true, dailyRewards: true, petQuest: true });
+			setVisibility({ ...visibilityStates, updateLog: true });
 		}
 	}, []);
+
+	useEffect(() => {
+		if (props.store.getState().index.groupRank < MODERATOR_RANK) {
+			return;
+		}
+
+		Players.LocalPlayer.Chatted.Connect((message) => {
+			if (message.match("/admin")[0] !== undefined) {
+				setVisibility({ ...visibilityStates, admin: true });
+			}
+		});
+	}, [props.store]);
 
 	/**
 	 * Toggles the blur effect.
@@ -319,7 +334,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
 					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
 					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
-					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, rebirths: true })}
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
@@ -385,6 +400,8 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 				<RankUpgrade />,
 				<DatastoreEvents />,
 			);
+		} else if (isVisible("admin")) {
+			components.push(<AccountHub hideMenu={(): void => setVisibility((prev) => ({ ...prev, admin: false }))} />);
 		} else if (isVisible("timeTrials")) {
 			components.push(
 				<TimeTrials
@@ -410,7 +427,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
 					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
 					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
-					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, rebirths: true })}
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
@@ -449,7 +466,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
 					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
 					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
-					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, rebirths: true })}
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
@@ -480,7 +497,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
 					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
 					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
-					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, rebirths: true })}
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
@@ -511,7 +528,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
 					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
 					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
-					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, rebirths: true })}
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
@@ -552,7 +569,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
 					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
 					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
-					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, rebirths: true })}
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
@@ -577,8 +594,8 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 			components.push(<Accolades hideMenu={(): void => setVisibility((prev) => ({ ...prev, accolades: false }))} />);
 		} else if (isVisible("accountMastery")) {
 			components.push(<Mastery hideMenu={(): void => setVisibility((prev) => ({ ...prev, accountMastery: false }))} />);
-		} else if (isVisible("accountHub")) {
-			components.push(<AccountHub hideMenu={(): void => setVisibility((prev) => ({ ...prev, accountHub: false }))} />);
+		} else if (isVisible("rebirths")) {
+			components.push(<Rebirths hideMenu={(): void => setVisibility((prev) => ({ ...prev, rebirths: false }))} />);
 		} else if (isVisible("codes")) {
 			components.push(<Codes hideMenu={(): void => setVisibility((prev) => ({ ...prev, codes: false }))} />);
 		} else if (isVisible("settings")) {
@@ -594,7 +611,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
 					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
 					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
-					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, rebirths: true })}
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}
@@ -624,7 +641,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayTeleportation={(): void => setVisibility({ ...visibilityStates, teleportation: true })}
 					displayItems={(): void => setVisibility({ ...visibilityStates, items: true })}
 					displayAutoFight={(): void => setVisibility({ ...visibilityStates, autoFight: true })}
-					displayAccount={(): void => setVisibility({ ...visibilityStates, accountHub: true })}
+					displayAccount={(): void => setVisibility({ ...visibilityStates, rebirths: true })}
 					displayCodes={(): void => setVisibility({ ...visibilityStates, codes: true })}
 					displaySettings={(): void => setVisibility({ ...visibilityStates, settings: true })}
 					displayShop={(): void => setVisibility({ ...visibilityStates, robuxShop: true })}

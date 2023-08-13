@@ -21,6 +21,7 @@ import { defaultPlayerIndexState } from "shared/rodux/playerIndex";
 import { SerializedPetIndexState } from "shared/rodux/playerIndex/pets";
 import { defaultQuestsState } from "shared/rodux/quests";
 import { defaultRank } from "shared/rodux/rank";
+import { defaultRebirths } from "shared/rodux/rebirths";
 import { defaultSettings } from "shared/rodux/settings";
 import { defaultSpinWheel } from "shared/rodux/spinWheel";
 import { defaultTalismans } from "shared/rodux/talismans";
@@ -116,4 +117,5 @@ export const profileTemplate: ProfileState = {
 	worlds: defaultWorlds,
 	dataVersion: getServerDataVersion(),
 	invitedFriend: defaultInvitedFriendState,
+	rebirths: defaultRebirths,
 };

@@ -52,10 +52,16 @@ remotes.Server.GetNamespace("timeTrials")
 				humanoid.Died.Once(() => {
 					const playerTrial = currentTimeTrials.get(player);
 					if (playerTrial !== undefined) {
+						const currentState = store.getState();
+						const currencyMultiplier = currentState.rebirths.currencyMultipliers.gears * 0.3;
+
 						const difficultyMultiplier =
 							playerTrial.difficulty === "easy" ? 1.25 : playerTrial.difficulty === "medium" ? 1.3 : 1.35;
 						const waveMultiplier = 5 * playerTrial.wave;
-						store.dispatch(awardCurrency("gears", waveMultiplier * difficultyMultiplier ** playerTrial.wave));
+
+						const reward = waveMultiplier * difficultyMultiplier ** playerTrial.wave;
+						const rewardWithMultiplier = reward + reward * currencyMultiplier;
+						store.dispatch(awardCurrency("gears", rewardWithMultiplier));
 
 						if (playerTrial.difficulty === "hard") {
 							if (playerTrial.wave > store.getState().timeTrials["Ban Land"].highestHardWave) {
@@ -89,10 +95,16 @@ remotes.Server.GetNamespace("timeTrials")
 		withPlayerStore((player, store) => {
 			const playerTrial = currentTimeTrials.get(player);
 			if (playerTrial !== undefined) {
+				const currentState = store.getState();
+				const currencyMultiplier = currentState.rebirths.currencyMultipliers.gears * 0.3;
+
 				const difficultyMultiplier =
 					playerTrial.difficulty === "easy" ? 1.25 : playerTrial.difficulty === "medium" ? 1.3 : 1.35;
 				const waveMultiplier = 5 * playerTrial.wave;
-				store.dispatch(awardCurrency("gears", waveMultiplier * difficultyMultiplier ** playerTrial.wave));
+
+				const reward = waveMultiplier * difficultyMultiplier ** playerTrial.wave;
+				const rewardWithMultiplier = reward + reward * currencyMultiplier;
+				store.dispatch(awardCurrency("gears", rewardWithMultiplier));
 
 				if (playerTrial.difficulty === "hard") {
 					if (playerTrial.wave > store.getState().timeTrials["Ban Land"].highestHardWave) {

@@ -13,6 +13,7 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
 import { Pet, Variants } from "shared/configs/pets";
+import { ValidEggAmount } from "shared/remotes/eggs/hatchEgg";
 import { StoreState } from "shared/rodux";
 import { EggsState } from "shared/rodux/eggs";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
@@ -36,7 +37,7 @@ interface EggHudProps extends EggHudMappedProps {
 	eggName: EggName;
 	isVoid: boolean;
 	possiblePets: Array<Pet>;
-	handleHatch: (eggName: EggName, variant: Exclude<Variants, "radiant">, amount: 1 | 3) => void;
+	handleHatch: (eggName: EggName, variant: Exclude<Variants, "radiant">, amount: ValidEggAmount) => void;
 }
 
 interface EggHudMappedProps {
