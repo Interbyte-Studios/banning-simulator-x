@@ -16,6 +16,7 @@ import { GROUP_CHEST_PETS } from "./pets/group";
 import { HONEYCOMB_EGG_PETS } from "./pets/honeycomb";
 import { JESTER_EGG_PETS } from "./pets/jester";
 import { MOLTEN_EGG_PETS } from "./pets/molten";
+import { NEON_EGG_PETS } from "./pets/neon";
 import { RADIOACTIVE_EGG_PETS } from "./pets/radioactive";
 import { ROYALTY_EGG_PETS } from "./pets/royalty";
 import { STARTER_EGG_PETS } from "./pets/starter";
@@ -79,13 +80,14 @@ export const isValidMasteryEgg = t.literal(
 	"Cybernetic",
 	"Corrupt",
 	"Royalty",
+	"Neon",
 );
 export type ValidMasteryEgg = t.static<typeof isValidMasteryEgg>;
 
 export const isEventEgg = t.literal("500k Event", "Throwback");
 export type EventEgg = t.static<typeof isEventEgg>;
 
-export const isExclusiveEgg = t.literal("Royalty", "Radioactive", "Divine", "Dweller", "Exclusive");
+export const isExclusiveEgg = t.literal("Royalty", "Radioactive", "Divine", "Dweller", "Neon", "Exclusive");
 export type ExclusiveEgg = t.static<typeof isExclusiveEgg>;
 
 /**
@@ -271,6 +273,15 @@ export const EGGS = {
 		hatchable: false,
 		hidden: false,
 		luckApplies: true,
+	},
+	Neon: {
+		id: 18,
+		pets: NEON_EGG_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: false,
+		hidden: false,
+		luckApplies: false,
 	},
 } satisfies Record<string, Egg>;
 

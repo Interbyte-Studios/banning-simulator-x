@@ -312,11 +312,11 @@ export const VIP_PET_ID = 10002;
 export const GROUP_PET_ID = 10001;
 
 export const LIMITED_EGG_DEVPRODUCT = {
-	OneEgg: 1590044586,
-	ThreeEggs: 1590044799,
+	OneEgg: 1611641663,
+	ThreeEggs: 1611641870,
 };
 
-export const LIMITED_EGG: EggName = "Dweller";
+export const LIMITED_EGG: EggName = "Neon";
 export const EXCLUSIVE_PETS = [
 	// The shop only supports adding 3 pets for exclusive pets. If we want to add more, we'll need to rework the shop a bit.
 	{

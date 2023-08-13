@@ -143,6 +143,11 @@ hash = "cc3d2bfb25df2e8dfdd437dfb128314ac26b08dd9ed8a2ccc2812005b0872837"
 id = 11627644653
 packable = false
 
+[inputs."images/decals/eggs/Neon.png"]
+hash = "d875001e53ec2b6a380eaa744f56cccf5aa6309ed3859b3069bfc130a7418ab6"
+id = 14424622749
+packable = false
+
 [inputs."images/decals/eggs/Radioactive.png"]
 hash = "f2dac9467451da412312b85b251faab19ea91d06cdf307632f25cb19853ed6cf"
 id = 13989137443
@@ -334,8 +339,8 @@ id = 11440087067
 packable = false
 
 [inputs."images/decals/pets/Armored Dragon.png"]
-hash = "80842f59354033cde7cfcc0d091aea54637b90ebf5d94afc6e76d3a33a406be5"
-id = 11440087135
+hash = "4aea6104db0eca2db0ea6c558f234c5d34ac8f6a597042607a4599ec8fd66396"
+id = 14424623501
 packable = false
 
 [inputs."images/decals/pets/Armored Guard.png"]
@@ -708,6 +713,11 @@ hash = "6f8fd09dcbbd707cb9014d72743de1460771356c6af63043ba02853977ac4eb3"
 id = 14153235714
 packable = false
 
+[inputs."images/decals/pets/Glitchbot NEO.png"]
+hash = "e9f516a65974a0ad44a87c41575147561700dcf3c2b47aafe8ca6408d88195f2"
+id = 14424624099
+packable = false
+
 [inputs."images/decals/pets/Googly Chest.png"]
 hash = "4fca2db3b68aacfb6e1514d7a937afbc5f09cddeb9d7dbc6b4364f53b2448ec2"
 id = 14112092959
@@ -903,9 +913,29 @@ hash = "83c7eeeea7e297a634747c46d367ad44a417d5f5387445b4fea0e100d7e8cd5b"
 id = 11440106364
 packable = false
 
+[inputs."images/decals/pets/Neon  Imp.png"]
+hash = "9b1be8a47df4e35a48b0b71f592d4797a900103bb572bde76ba8ca8d5c660850"
+id = 14424624586
+packable = false
+
+[inputs."images/decals/pets/Neon Bee.png"]
+hash = "a2b49e7f20c5704efedcb018bfe4c7592b1ca4b99d5a581b95ec40ed86c71f70"
+id = 14424624741
+packable = false
+
+[inputs."images/decals/pets/Neon Cerberus.png"]
+hash = "09ca019c1e11771112ed9005a754751971c25665422f08acf826e081e1c84c62"
+id = 14424624949
+packable = false
+
 [inputs."images/decals/pets/Neon Doggy.png"]
 hash = "d8fff499d996b4b781978a6525b03232b2a7525146443c71c601054452ea161c"
 id = 14239629536
+packable = false
+
+[inputs."images/decals/pets/Neon Seekstress.png"]
+hash = "df1c701a471d821bb61a66236e0090dacd7a3ccdf9858ff8067ed20f91883386"
+id = 14424625154
 packable = false
 
 [inputs."images/decals/pets/Oceanic Kitty.png"]
@@ -1029,8 +1059,8 @@ id = 11440107161
 packable = false
 
 [inputs."images/decals/pets/Radiant Armored Dragon.png"]
-hash = "b689c7b568745deb3b16ebcba8e085db1ad04d9b546fac23cf2be3f07455a805"
-id = 11440107238
+hash = "9fb3fbcf33a7020e057c4f48d6aff9f59e699c91d7ea6c415959ae275e5fc9ba"
+id = 14424625449
 packable = false
 
 [inputs."images/decals/pets/Radiant Armored Guard.png"]
@@ -1398,6 +1428,11 @@ hash = "da71f676151d764b982e92d09f506514b07e5b6849f0532ec60ec8f7ff570193"
 id = 14153237171
 packable = false
 
+[inputs."images/decals/pets/Radiant Glitchbot NEO.png"]
+hash = "921cb574bda8d547ad07271932cbe1ed13c6c87fd9b54db2af0ef7fdf86c0724"
+id = 14424625877
+packable = false
+
 [inputs."images/decals/pets/Radiant Googly Chest.png"]
 hash = "845e676d8835a7f0bcabd826daaa934e6cf369007533e69451315b1517db1cfe"
 id = 14078494743
@@ -1593,9 +1628,29 @@ hash = "566249bc812abe54e6e2a9822e14d1408ed1f16cc5861819341acf1ed1ec742c"
 id = 11440113960
 packable = false
 
+[inputs."images/decals/pets/Radiant Neon  Imp.png"]
+hash = "33d6ad6d18c50b2930c63b48e82c03669d389afe81ec6a2ac98cb0513946e36a"
+id = 14424626201
+packable = false
+
+[inputs."images/decals/pets/Radiant Neon Bee.png"]
+hash = "6f4b8fc0f9fe0351f2bfa220ca89c1c8d236f3244dce08881f407b56bc64b2c2"
+id = 14424626336
+packable = false
+
+[inputs."images/decals/pets/Radiant Neon Cerberus.png"]
+hash = "7c70d187c34721c3cee2fcc74e04b0a63f27736d1a9644863b0d5c2f4de83064"
+id = 14424626486
+packable = false
+
 [inputs."images/decals/pets/Radiant Neon Doggy.png"]
 hash = "8be0f66b92feacd1dc0457b0090e9f58bc3ada63776adeca3144156f9a9735fb"
 id = 14239631893
+packable = false
+
+[inputs."images/decals/pets/Radiant Neon Seekstress.png"]
+hash = "d95b1195e4186e544ebe6d1e4af48f46554cd5ad5979e870d07525ec8b9535b9"
+id = 14424626637
 packable = false
 
 [inputs."images/decals/pets/Radiant Oceanic Kitty.png"]
@@ -1911,6 +1966,11 @@ packable = false
 [inputs."images/decals/pets/Void Armored Doggy.png"]
 hash = "a2e969995ad0061e008d6d1bac88427cc688c970b0ffddacf6c3ce76edbce9d5"
 id = 11440115188
+packable = false
+
+[inputs."images/decals/pets/Void Armored Dragon.png"]
+hash = "3fa1b4d82654d15500fcc6ec8b7ba5326697b4316b5674d5838277293cd7ee28"
+id = 14424627059
 packable = false
 
 [inputs."images/decals/pets/Void Armored Guard.png"]
@@ -2278,6 +2338,11 @@ hash = "a7d506af9357fdefd071185fdb8e1ec707c4bbac525caa13aadf419f29239a0e"
 id = 14153239270
 packable = false
 
+[inputs."images/decals/pets/Void Glitchbot NEO.png"]
+hash = "ea122f68f6852f55b9e21c914d23bf28d5c27bf93033168a426585ee3959dd6e"
+id = 14424627706
+packable = false
+
 [inputs."images/decals/pets/Void Googly Chest.png"]
 hash = "806b9121a63a55a2ff469f829d7cfbd592adb40f928a86f1b619d78c6bc19732"
 id = 14078498662
@@ -2478,9 +2543,29 @@ hash = "75c8a96c3d9f5db7984c8fac1b66fabc285fc30c73f6ad5cae918a5d0fdbd81a"
 id = 11440121951
 packable = false
 
+[inputs."images/decals/pets/Void Neon  Imp.png"]
+hash = "649330e139ed4d6cc362cb86c8bfcb6ee549ecb0cf0fac5d54aa7f9e5904038a"
+id = 14424628121
+packable = false
+
+[inputs."images/decals/pets/Void Neon Bee.png"]
+hash = "941bbc020cdc7d9e67b5a84e9f55d0d1b0cbbafb153da89f8a69e0c00aeee055"
+id = 14424628276
+packable = false
+
+[inputs."images/decals/pets/Void Neon Cerberus.png"]
+hash = "ed485cb639e6d91c3b025bfdafceee2a45c0ffcac2349ebd6fce52587889ac00"
+id = 14424628497
+packable = false
+
 [inputs."images/decals/pets/Void Neon Doggy.png"]
 hash = "26f3e3d3b795c058a43e129902bdfede8fc28b5699b66ecc9c18b3015a3f99a7"
 id = 14239635424
+packable = false
+
+[inputs."images/decals/pets/Void Neon Seekstress.png"]
+hash = "af438c8d532e46a7d7b906069b68f97a60516d5d044ba17372666acadc7785ba"
+id = 14424628823
 packable = false
 
 [inputs."images/decals/pets/Void Oceanic Kitty.png"]
@@ -2658,6 +2743,11 @@ hash = "fc66970b515106ec454265f4a699fccafc8d78c8118237b597b09f356690d8f1"
 id = 11827145398
 packable = false
 
+[inputs."images/decals/talismans/Artifact Music Talisman.png"]
+hash = "4c71aa1f6c6cf62be16fe23d8a7573b9060a479cf1f0ea71dcfbeb70773d548e"
+id = 14424629319
+packable = false
+
 [inputs."images/decals/talismans/Artifact Phoenix Talisman.png"]
 hash = "37b83c01054e24e15d0c044ecf78bf77485a79e13aa17bd50320d929b7332d68"
 id = 14375579813
@@ -2723,6 +2813,11 @@ hash = "ad3adab61280e47bcc6e751bed55186253e139814eca321b1fb3ae2f2c216bf9"
 id = 11829175298
 packable = false
 
+[inputs."images/decals/talismans/Awakend Music Talisman.png"]
+hash = "97bb34c8cd770c4452826f867b0bcccef05a25777fa0166286a04b3041df22fa"
+id = 14424629595
+packable = false
+
 [inputs."images/decals/talismans/Awakend Phoenix Talisman.png"]
 hash = "ce999b710e23bb15ec779ad8f71faa6845d6a4313662cddb3a21c488f8bb7929"
 id = 14375580495
@@ -2781,6 +2876,11 @@ packable = false
 [inputs."images/decals/talismans/Lunar Talisman.png"]
 hash = "3ef45892e6f4f664e747d4c065c64241ac6e36d04ad50af1ccfc37f0feb5c7a6"
 id = 11827146661
+packable = false
+
+[inputs."images/decals/talismans/Music Talisman.png"]
+hash = "0727b55d8f79ef4d17be94d61b78d02030db322e2546aa4c13fd7c1bdfd92757"
+id = 14424629852
 packable = false
 
 [inputs."images/decals/talismans/Phoenix Talisman.png"]
@@ -2933,6 +3033,16 @@ hash = "3de13e758a60ccf32e35fabc7b2d2aa7adb9feca4b587ede6e873520d7e2faa5"
 id = 14375582059
 packable = false
 
+[inputs."images/decals/weapons/Dreamy Slammer.png"]
+hash = "40cd0402aa032069b76a8eca694755bd395c285421d2aec1291d914053af42c8"
+id = 14424630225
+packable = false
+
+[inputs."images/decals/weapons/Dreamy Slasher.png"]
+hash = "d628c75dbe50e51dd847be0003173dbe37b869b5e05b137f6fc9246620eb991d"
+id = 14424630402
+packable = false
+
 [inputs."images/decals/weapons/Dune Glass.png"]
 hash = "5fd56af00cb99bb612e89f2b10f271e4e1b1303e57345e5d50e5760bbf806c01"
 id = 11827147705
@@ -2966,6 +3076,16 @@ packable = false
 [inputs."images/decals/weapons/Enchanted Scythe.png"]
 hash = "360a9c29f298f7c8cab9ea4220f502688a27016584c4bd1ce36f78a0abba1fa4"
 id = 13355554595
+packable = false
+
+[inputs."images/decals/weapons/Energy Slammer.png"]
+hash = "040e8899302db5095afac5181016a606785ea33c413d27dad6a9ebd9d459b536"
+id = 14424630655
+packable = false
+
+[inputs."images/decals/weapons/Energy Slasher.png"]
+hash = "a0fb654f94434d0cc3a8a109a75bc8d7689f7a4d1998be68f83fda621150e4e4"
+id = 14424630798
 packable = false
 
 [inputs."images/decals/weapons/Flower Blade.png"]
