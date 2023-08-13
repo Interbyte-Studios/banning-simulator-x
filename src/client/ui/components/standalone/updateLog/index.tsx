@@ -66,7 +66,7 @@ export const SetUpdateLogType = (props: { updateLogType: UpdateLogType; onActiva
  * In-game update log.
  */
 export const UpdateLog = hooks((props: { hideMenu: () => void }, { useState }) => {
-	const [logToShow, setLogToShow] = useState<UpdateLogType>(UpdateLogType.Update5);
+	const [logToShow, setLogToShow] = useState<UpdateLogType>(UpdateLogType.Update6);
 
 	return (
 		<ImageLabel
