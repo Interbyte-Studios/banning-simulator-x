@@ -5,7 +5,6 @@ import { currentTimeTrials } from "server/modules/timeTrials";
 import { WORLDS } from "shared/configs/worlds";
 import { zones } from "shared/configs/zones";
 import { remotes } from "shared/remotes";
-import { isNpcCharacter, NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 import { addBans } from "shared/rodux/bans";
 import { getPetStrength } from "shared/util/getPetStrength";
@@ -15,7 +14,7 @@ import { getWeaponDamage } from "shared/util/getWeaponDamage";
 import { runStep } from "../modules/npcs/runStep";
 import { NpcWorldState } from "../modules/npcs/worldState";
 
-let npcAttacks: Array<{ player: Player; store: Store; character: NpcCharacter }> = [];
+let npcAttacks: Array<{ player: Player; store: Store; character: BasePart }> = [];
 remotes.Server.Get("damageNPC").Connect(
 	withPlayerStore((player, store, character, wasTrials) => {
 		debug.setmemorycategory("damageNPCs");
@@ -24,20 +23,12 @@ remotes.Server.Get("damageNPC").Connect(
 			return;
 		}
 
-		if (character === undefined) {
+		const playerCharacter = player.Character;
+		if (playerCharacter === undefined) {
 			return;
 		}
 
-		if (!isNpcCharacter(character)) {
-			return;
-		}
-
-		const playercharacter = player.Character;
-		if (playercharacter === undefined) {
-			return;
-		}
-
-		const playerHumanoid = playercharacter.FindFirstChildOfClass("Humanoid");
+		const playerHumanoid = playerCharacter.FindFirstChildOfClass("Humanoid");
 		if (playerHumanoid === undefined) {
 			return;
 		}
@@ -47,8 +38,7 @@ remotes.Server.Get("damageNPC").Connect(
 			return;
 		}
 
-		const npcRoot = character.Humanoid.RootPart;
-		if (npcRoot === undefined) {
+		if (playerRoot.Position.sub(character.Position).Magnitude > 50) {
 			return;
 		}
 
@@ -85,23 +75,25 @@ remotes.Server.Get("damageNPC").Connect(
 			}
 
 			const damageAmount = weaponDamage + talismanStatEffects.damage + petDamageBonus;
-			character.Humanoid.TakeDamage(damageAmount + damageAmount * timeTrialDamageMultiplier);
+			const currentHealth = character.GetAttribute("Health") as number;
+			if (currentHealth !== undefined) {
+				const damage = damageAmount + damageAmount * timeTrialDamageMultiplier;
+				const newHealth = currentHealth - damage;
+				character.SetAttribute("Health", newHealth);
 
-			if (character.Humanoid.Health <= 0) {
-				currentTimeTrials.set(player, {
-					...currentTimeTrial,
-					npcs: currentTimeTrial.npcs.filter((npc) => npc.instance !== character),
-				});
+				if (newHealth <= 0) {
+					currentTimeTrials.set(player, {
+						...currentTimeTrial,
+						npcs: currentTimeTrial.npcs.filter((npc) => npc.instance !== character),
+					});
 
-				store.dispatch(addBans(petBansBonus));
-
-				task.delay(0.5, (): void => {
 					clearAttackLog(character);
 					character.Destroy();
 
 					const questBans = (player.GetAttribute("petQuestBan") as number) + 1 ?? 0;
 					player.SetAttribute("petQuestBan", questBans ?? 0);
-				});
+					store.dispatch(addBans(petBansBonus));
+				}
 			}
 		} else {
 			const currentState = store.getState();
@@ -164,15 +156,14 @@ for (const [worldName] of pairs(WORLDS)) {
 		const halfSize = size.div(2).mul(new Vector3(1, 0, 1));
 
 		const halfHeight = new Vector3(0, size.Y / 2, 0);
-		const fiveStuds = new Vector3(0, 10, 0);
 
 		npcZones.push({
 			name: zoneName,
 			npcs: [],
 			spawn: {
 				floor,
-				min: position.sub(halfSize).add(halfHeight).add(fiveStuds),
-				max: position.add(halfSize).add(halfHeight).add(fiveStuds),
+				min: position.sub(halfSize).add(halfHeight),
+				max: position.add(halfSize).add(halfHeight),
 			},
 		});
 	}

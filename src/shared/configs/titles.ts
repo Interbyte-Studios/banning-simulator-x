@@ -87,7 +87,7 @@ export const TITLES = [
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
+				maxPets += petData.index.maxLevel.radiant + petData.index.maxLevel.void + petData.index.maxLevel.regular;
 			});
 
 			return maxPets >= 25;
@@ -102,7 +102,7 @@ export const TITLES = [
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
+				maxPets += petData.index.maxLevel.radiant + petData.index.maxLevel.void + petData.index.maxLevel.regular;
 			});
 
 			return maxPets >= 50;
@@ -117,7 +117,7 @@ export const TITLES = [
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
+				maxPets += petData.index.maxLevel.radiant + petData.index.maxLevel.void + petData.index.maxLevel.regular;
 			});
 
 			return maxPets >= 75;
@@ -132,7 +132,7 @@ export const TITLES = [
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
+				maxPets += petData.index.maxLevel.radiant + petData.index.maxLevel.void + petData.index.maxLevel.regular;
 			});
 
 			return maxPets >= 100;
@@ -147,7 +147,7 @@ export const TITLES = [
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
+				maxPets += petData.index.maxLevel.radiant + petData.index.maxLevel.void + petData.index.maxLevel.regular;
 			});
 
 			return maxPets >= 250;
@@ -162,7 +162,7 @@ export const TITLES = [
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
+				maxPets += petData.index.maxLevel.radiant + petData.index.maxLevel.void + petData.index.maxLevel.regular;
 			});
 
 			return maxPets >= 500;
@@ -177,7 +177,7 @@ export const TITLES = [
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
+				maxPets += petData.index.maxLevel.radiant + petData.index.maxLevel.void + petData.index.maxLevel.regular;
 			});
 
 			return maxPets >= 750;
@@ -200,7 +200,7 @@ export const TITLES = [
 		condition: (state): boolean => {
 			let maxPets = 0;
 			state.index.pets.forEach((petData) => {
-				maxPets += petData.maxLevel.radiant.amount + petData.maxLevel.void.amount + petData.maxLevel.regular.amount;
+				maxPets += petData.index.maxLevel.radiant + petData.index.maxLevel.void + petData.index.maxLevel.regular;
 			});
 
 			return maxPets >= 1000;
@@ -217,7 +217,7 @@ export const TITLES = [
 		condition: (state): boolean => {
 			let fusions = 0;
 			state.index.pets.forEach((petData) => {
-				fusions += petData.fused.radiant + petData.fused.void;
+				fusions += petData.index.fused.radiant + petData.index.fused.void;
 			});
 
 			return fusions > 250;
@@ -232,7 +232,7 @@ export const TITLES = [
 		condition: (state): boolean => {
 			let fusions = 0;
 			state.index.pets.forEach((petData) => {
-				fusions += petData.fused.radiant + petData.fused.void;
+				fusions += petData.index.fused.radiant + petData.index.fused.void;
 			});
 
 			return fusions > 500;
@@ -247,7 +247,7 @@ export const TITLES = [
 		condition: (state): boolean => {
 			let fusions = 0;
 			state.index.pets.forEach((petData) => {
-				fusions += petData.fused.radiant + petData.fused.void;
+				fusions += petData.index.fused.radiant + petData.index.fused.void;
 			});
 
 			return fusions > 1000;
@@ -262,7 +262,7 @@ export const TITLES = [
 		condition: (state): boolean => {
 			let fusions = 0;
 			state.index.pets.forEach((petData) => {
-				fusions += petData.fused.radiant + petData.fused.void;
+				fusions += petData.index.fused.radiant + petData.index.fused.void;
 			});
 
 			return fusions > 2500;
@@ -277,7 +277,7 @@ export const TITLES = [
 		condition: (state): boolean => {
 			let fusions = 0;
 			state.index.pets.forEach((petData) => {
-				fusions += petData.fused.radiant + petData.fused.void;
+				fusions += petData.index.fused.radiant + petData.index.fused.void;
 			});
 
 			return fusions > 5000;
@@ -300,7 +300,7 @@ export const TITLES = [
 		condition: (state): boolean => {
 			let fusions = 0;
 			state.index.pets.forEach((petData) => {
-				fusions += petData.fused.radiant + petData.fused.void;
+				fusions += petData.index.fused.radiant + petData.index.fused.void;
 			});
 
 			return fusions > 10000;

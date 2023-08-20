@@ -70,9 +70,6 @@ export const PurchaseWeapon = RoactRodux.connect(mapStateToProps)(
 					Activated: (): void => {
 						playSFX(UIEngagement.MajorEngagement);
 
-						warn(`Clicked button`);
-						print(weaponOwned, weaponIsSheathed, props.currentWeapon.id !== props.weaponId);
-
 						// If they own the weapon, handle equip/unequip instead
 						if (weaponOwned) {
 							// if weapon is owned, but not equipped, handle equipping

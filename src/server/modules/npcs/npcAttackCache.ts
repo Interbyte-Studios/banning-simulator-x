@@ -1,4 +1,4 @@
-export type NpcAttackCache = Map<Model, Array<{ player: Player; lastAttack: number }>>;
+export type NpcAttackCache = Map<BasePart, Array<{ player: Player; lastAttack: number }>>;
 const npcAttackCache: NpcAttackCache = new Map();
 
 /**
@@ -16,7 +16,7 @@ export function getNpcAttackCache(): NpcAttackCache {
  * @param now The current time.
  * @returns Whether or not the player can attack the npc.
  */
-export function checkCanAttack(player: Player, npc: Model, now: number): boolean {
+export function checkCanAttack(player: Player, npc: BasePart, now: number): boolean {
 	const lastAttack = npcAttackCache.get(npc);
 	if (lastAttack !== undefined) {
 		const playerLog = lastAttack.find((log) => log.player === player);
@@ -44,6 +44,6 @@ export function checkCanAttack(player: Player, npc: Model, now: number): boolean
  *
  * @param npc The npc to clear the attack log for.
  */
-export function clearAttackLog(npc: Model): void {
+export function clearAttackLog(npc: BasePart): void {
 	npcAttackCache.delete(npc);
 }

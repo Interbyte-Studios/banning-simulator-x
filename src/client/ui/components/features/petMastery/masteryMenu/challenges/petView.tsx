@@ -40,7 +40,7 @@ function mapStateToProps(state: StoreState): PetViewMappedProps {
  */
 export const PetView = RoactRodux.connect(mapStateToProps)(
 	hooks((props: PetViewProps, hooks) => {
-		const petsIndex = props.index.pets.get(props.pet);
+		const petsIndex = props.index.pets.find((index) => index.id === props.pet);
 
 		const raisedPosition = 0.4;
 		const raisedSpring = new Flipper.Spring(raisedPosition, { frequency: 5 });

@@ -121,7 +121,7 @@ export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useState, use
 						BackgroundColor3: Color3.fromRGB(3, 255, 108),
 						BackgroundTransparency: 0,
 					}}
-					size={{ minSize: 0.225, maxSize: 0.25 }}
+					size={{ minSize: 0.15, maxSize: 0.175 }}
 					events={{
 						/**
 						 *
@@ -152,7 +152,7 @@ export const PetMasteryMenu = hooks((props: PetMasteryMenuProps, { useState, use
 								Position: UDim2.fromScale(0.5, 0.5),
 								Size: UDim2.fromScale(0.9, 0.9),
 							}}
-							stroke={{ native: { Thickness: 2.5, Color: Color3.fromRGB(2, 147, 62) } }}
+							stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(2, 147, 62) } }}
 						/>
 					</BaseFrame>
 				</SpringImageButton>

@@ -41,7 +41,7 @@ function mapStateToProps(state: StoreState): RegularEggProgressMappedProps {
  */
 export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 	hooks((props: ProgressBarProps) => {
-		const petsIndex = props.index.pets.get(props.pet);
+		const petsIndex = props.index.pets.find((mastery) => mastery.id === props.pet);
 
 		const petData = getPetData(props.pet);
 		const masteryRequirements = PET_MASTERY_REQUIREMENTS[petData.rarity][props.variant];
@@ -52,31 +52,31 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 		const totalChallenges = props.variant === "radiant" || props.variant === "regular" ? 2 : 3;
 		if (petsIndex !== undefined) {
 			if (props.variant === "regular") {
-				if (petsIndex.hatched.regular >= masteryRequirements.hatch) {
+				if (petsIndex.index.hatched.regular >= masteryRequirements.hatch) {
 					potentiallyFinishedChallenges += 1;
 				}
 
-				if (petsIndex.maxLevel.regular.cachedMaxLevel.size() >= masteryRequirements.maxLevel) {
+				if (petsIndex.index.maxLevel.regular >= masteryRequirements.maxLevel) {
 					potentiallyFinishedChallenges += 1;
 				}
 			} else if (props.variant === "void") {
-				if (petsIndex.hatched.void >= masteryRequirements.hatch) {
+				if (petsIndex.index.hatched.void >= masteryRequirements.hatch) {
 					potentiallyFinishedChallenges += 1;
 				}
 
-				if (petsIndex.maxLevel.void.cachedMaxLevel.size() >= masteryRequirements.maxLevel) {
+				if (petsIndex.index.maxLevel.void >= masteryRequirements.maxLevel) {
 					potentiallyFinishedChallenges += 1;
 				}
 
-				if (petsIndex.fused.void >= masteryRequirements.fuse) {
+				if (petsIndex.index.fused.void >= masteryRequirements.fuse) {
 					potentiallyFinishedChallenges += 1;
 				}
 			} else if (props.variant === "radiant") {
-				if (petsIndex.maxLevel.radiant.cachedMaxLevel.size() >= masteryRequirements.maxLevel) {
+				if (petsIndex.index.maxLevel.radiant >= masteryRequirements.maxLevel) {
 					potentiallyFinishedChallenges += 1;
 				}
 
-				if (petsIndex.fused.radiant >= masteryRequirements.fuse) {
+				if (petsIndex.index.fused.radiant >= masteryRequirements.fuse) {
 					potentiallyFinishedChallenges += 1;
 				}
 			}

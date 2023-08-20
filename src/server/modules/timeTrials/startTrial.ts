@@ -9,6 +9,8 @@ import {
 	TIME_TRIAL_WAVE_ATTRIBUTE,
 } from "shared/configs/timeTrials";
 
+import { getNpcFolder } from "../npcs/getNpcFolder";
+import { lerpPosition } from "../npcs/runStep";
 import { currentTimeTrials, TimeTrialStatus } from ".";
 
 /**
@@ -32,32 +34,23 @@ export function startTrial(player: Player): {
 	);
 
 	// spawn initial NPCs
-	const newNPCs: Array<{ instance: Model; lastAttack: number; attackAnim: AnimationTrack }> = [];
+	const newNPCs: Array<{ instance: BasePart; lastAttack: number }> = [];
 	while (newNPCs.size() < TIME_TRIAL_BASE_NPCS) {
 		task.wait(0.5);
 		const npc = ReplicatedStorage.assetObjects.npcs.FindFirstChild(playerTrial.selectedNPC) as Model;
 		assert(npc !== undefined, "Could not find NPC to spawn for time trial");
 
-		const newNpc = npc.Clone();
-		const humanoid = newNpc.FindFirstChildOfClass("Humanoid");
-		if (humanoid === undefined) {
-			continue;
-		}
-
 		const healthMultiplier =
 			playerTrial.difficulty === "easy" ? 1.25 : playerTrial.difficulty === "medium" ? 1.28 : 1.3;
-		humanoid.MaxHealth = 200 * healthMultiplier ** playerTrial.wave + 1;
-		humanoid.Health = humanoid.MaxHealth;
 
-		const root = humanoid.RootPart;
-		if (root === undefined) {
-			continue;
-		}
-
-		const animator = humanoid.FindFirstChildOfClass("Animator");
-		if (animator === undefined) {
-			continue;
-		}
+		const newNpc = new Instance("Part");
+		newNpc.Size = new Vector3(1, 1, 1);
+		newNpc.Anchored = true;
+		newNpc.CanCollide = false;
+		newNpc.Name = playerTrial.selectedNPC;
+		newNpc.SetAttribute("MaxHealth", 200 * healthMultiplier ** playerTrial.wave + 1);
+		newNpc.SetAttribute("Health", 200 * healthMultiplier ** playerTrial.wave + 1);
+		newNpc.Parent = getNpcFolder();
 
 		const spawnSize = playerTrial.npcSpawns.GetChildren().size();
 		let randomSpawn: BasePart | undefined;
@@ -72,13 +65,11 @@ export function startTrial(player: Player): {
 		if (randomSpawn === undefined) {
 			continue;
 		}
-		root.CFrame = new CFrame(randomSpawn.Position);
+		newNpc.CFrame = new CFrame(randomSpawn.Position);
 		newNpc.Parent = playerTrial.npcFolder;
-		const attackAnim = animator.LoadAnimation(ReplicatedStorage.animations.weapons.Sword.Attack);
 		newNPCs.push({
 			instance: newNpc,
 			lastAttack: 0,
-			attackAnim: attackAnim,
 		});
 	}
 
@@ -105,44 +96,42 @@ export function startTrial(player: Player): {
 
 			player.SetAttribute(TIME_TRIAL_TIMER_ATTRIBUTE, currentTrial.timeRemaining - step);
 
-			const newNPCs: Array<{ instance: Model; lastAttack: number; attackAnim: AnimationTrack }> = [];
+			const newNPCs: Array<{ instance: BasePart; lastAttack: number }> = [];
 			if (currentTrial.npcs.size() === 0) {
 				for (let i = 0; i < TIME_TRIAL_BASE_NPCS + TIME_TRIAL_NPCS_PER_WAVE * currentTrial.wave; i++) {
-					const npc = ReplicatedStorage.assetObjects.npcs.FindFirstChild(currentTrial.selectedNPC) as Model;
-					assert(npc !== undefined, `Could not find NPC ${currentTrial.selectedNPC} to spawn for time trial`);
-
-					const newNpc = npc.Clone();
-					const humanoid = newNpc.FindFirstChildOfClass("Humanoid");
-					if (humanoid === undefined) {
-						continue;
-					}
+					const npc = ReplicatedStorage.assetObjects.npcs.FindFirstChild(playerTrial.selectedNPC) as Model;
+					assert(npc !== undefined, "Could not find NPC to spawn for time trial");
 
 					const healthMultiplier =
 						playerTrial.difficulty === "easy" ? 1.25 : playerTrial.difficulty === "medium" ? 1.28 : 1.3;
-					humanoid.MaxHealth = 200 * healthMultiplier ** playerTrial.wave + 1;
-					humanoid.Health = humanoid.MaxHealth;
 
-					const root = humanoid.RootPart;
-					if (root === undefined) {
+					const newNpc = new Instance("Part");
+					newNpc.Size = new Vector3(1, 1, 1);
+					newNpc.Name = playerTrial.selectedNPC;
+					newNpc.Anchored = true;
+					newNpc.CanCollide = false;
+					newNpc.SetAttribute("MaxHealth", 200 * healthMultiplier ** playerTrial.wave + 1);
+					newNpc.SetAttribute("Health", 200 * healthMultiplier ** playerTrial.wave + 1);
+					newNpc.Parent = getNpcFolder();
+
+					const spawnSize = playerTrial.npcSpawns.GetChildren().size();
+					let randomSpawn: BasePart | undefined;
+					for (let i = 0; i < spawnSize; i++) {
+						const random = math.random(1, spawnSize);
+						const spawn = playerTrial.npcSpawns.GetChildren()[random] as BasePart;
+						if (spawn !== undefined) {
+							randomSpawn = spawn;
+							break;
+						}
+					}
+					if (randomSpawn === undefined) {
 						continue;
 					}
-
-					const animator = humanoid.FindFirstChildOfClass("Animator");
-					if (animator === undefined) {
-						continue;
-					}
-
-					const randomSpawn = currentTrial.npcSpawns.GetChildren()[
-						math.random(1, currentTrial.npcSpawns.GetChildren().size() - 1)
-					] as BasePart;
-					root.CFrame = new CFrame(randomSpawn.Position);
-					newNpc.Parent = currentTrial.npcFolder;
-
-					const attackAnim = animator.LoadAnimation(ReplicatedStorage.animations.weapons.Sword.Attack);
+					newNpc.CFrame = new CFrame(randomSpawn.Position);
+					newNpc.Parent = playerTrial.npcFolder;
 					newNPCs.push({
 						instance: newNpc,
 						lastAttack: 0,
-						attackAnim: attackAnim,
 					});
 				}
 			}
@@ -152,16 +141,6 @@ export function startTrial(player: Player): {
 
 			const npcs = newNPCs.size() > 0 ? newNPCs : currentTrial.npcs;
 			for (const npc of npcs) {
-				const humanoid = npc.instance.FindFirstChildOfClass("Humanoid");
-				if (humanoid === undefined) {
-					continue;
-				}
-
-				const npcRoot = humanoid.RootPart;
-				if (npcRoot === undefined) {
-					continue;
-				}
-
 				const playerCharacter = player.Character;
 				if (playerCharacter === undefined) {
 					continue;
@@ -177,7 +156,8 @@ export function startTrial(player: Player): {
 					continue;
 				}
 
-				if (npcRoot.Position.sub(playerRoot.Position).Magnitude < 5) {
+				// Might start handling this on client via remote as well
+				if (npc.instance.Position.sub(playerRoot.Position).Magnitude < 5) {
 					if (now - npc.lastAttack > 1) {
 						const increasedDamageTaken =
 							currentTrial.difficulty === "easy" ? 1.05 : currentTrial.difficulty === "medium" ? 1.055 : 1.06;
@@ -187,11 +167,10 @@ export function startTrial(player: Player): {
 						const totalDamage = damageTaken - damageTaken * reducedDamageMultiplier;
 
 						npc.lastAttack = now;
-						npc.attackAnim.Play();
 						playerHumanoid.TakeDamage(totalDamage);
 					}
 				} else {
-					humanoid.MoveTo(playerRoot.Position);
+					lerpPosition(npc.instance, playerRoot.Position, 0.1);
 				}
 			}
 

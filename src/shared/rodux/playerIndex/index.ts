@@ -17,7 +17,7 @@ import {
 	HasMetDeveloperState,
 } from "./hasMetDeveloper";
 import { defaultJoinDateState, JoinDateActions, joinDateReducer, JoinDateState } from "./joinDate";
-import { defaultPetIndexReducerState, petIndexReducer, PetIndexState } from "./pets";
+import { defaultPetIndexReducerState, PetIndexActions, petIndexReducer, PetIndexState } from "./pets";
 import { defaultTimePlayedState, TimePlayedActions, timePlayedReducer, TimePlayedState } from "./timePlayed";
 import { defaultVipRewardsState, VipRewardsActions, vipRewardsReducer, VipRewardsState } from "./vipRewards";
 
@@ -35,6 +35,7 @@ export interface PlayerIndexState {
 }
 
 export type PlayerIndexActions =
+	| PetIndexActions
 	| TimePlayedActions
 	| GroupRankActions
 	| GroupRewardsActions

@@ -174,11 +174,9 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 					setTimeLeft(0);
 					return;
 				}
-				debug.profilebegin("spinWheel");
 
 				setTimeLeft(math.ceil(props.spinWheel.lastSpinTime + 86400 - now));
 				task.wait(1);
-				debug.profileend();
 			});
 
 			return (): void => connection.Disconnect();

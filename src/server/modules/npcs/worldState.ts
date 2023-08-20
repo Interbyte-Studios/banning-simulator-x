@@ -1,15 +1,16 @@
 import { WorldName } from "shared/configs/worlds";
 import { Npc, ZoneNames } from "shared/configs/zones";
-import { NpcCharacter } from "shared/remotes/damageNPC";
 
-type NpcState = { state: "FOLLOWING"; lastAttackTime: number } | { state: "WANDERING"; nextWanderTime: number };
+type NpcState = { nextWanderTime: number };
 
 export interface NpcInstance {
 	npc: Npc;
-	instance: NpcCharacter;
+	instance: BasePart;
 	spawn: NpcWorldState["zones"][number]["spawn"];
 	state: NpcState;
 	world: NpcWorldState;
+	lerpTarget?: Vector3;
+	lerpProgress?: number;
 }
 
 export interface NpcWorldState {

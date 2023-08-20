@@ -44,21 +44,21 @@ export const IndexPetScroll = hooks(
 
 			scrollingFrame.GetChildren().forEach((card) => {
 				if (card.IsA("Frame")) {
-					card.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+					card.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X / 1.1, scrollingFrame.AbsoluteSize.X / 4);
 				}
 			});
 
 			const connection = scrollingFrame.GetPropertyChangedSignal("AbsoluteSize").Connect(() => {
 				scrollingFrame.GetChildren().forEach((card) => {
 					if (card.IsA("Frame")) {
-						card.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+						card.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X / 1.1, scrollingFrame.AbsoluteSize.X / 4);
 					}
 				});
 			});
 
 			const conn = scrollingFrame.ChildAdded.Connect((child) => {
 				if (child.IsA("Frame")) {
-					child.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 4);
+					child.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X / 1.1, scrollingFrame.AbsoluteSize.X / 4);
 				}
 			});
 			return (): void => {
@@ -80,7 +80,7 @@ export const IndexPetScroll = hooks(
 			>
 				<uilistlayout
 					SortOrder={Enum.SortOrder.LayoutOrder}
-					HorizontalAlignment={Enum.HorizontalAlignment.Right}
+					HorizontalAlignment={Enum.HorizontalAlignment.Left}
 					Padding={new UDim(0.01, 0)}
 					Ref={uiListLayoutRef.value}
 				/>

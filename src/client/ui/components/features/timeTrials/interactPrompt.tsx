@@ -2,6 +2,7 @@
 import Roact from "@rbxts/roact";
 import { Workspace } from "@rbxts/services";
 import { uiClaimButtonStrokeColor } from "client/ui/commonValues";
+import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { hooks } from "client/ui/hooks";
@@ -96,7 +97,9 @@ const Prompt = (props: { adornee: BasePart; displayInterface: () => void }): Roa
 /**
  * Displays a custom proximity prompt interface allowing the player to intract with the talisman tower.
  */
-export const TimeTrialsInteractionPrompts = hooks((props: { displayInterface: () => void }) => {
+export const TimeTrialsInteractionPrompts = hooks((props: { displayInterface: () => void }, { useContext }) => {
+	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
+
 	const interactions = new Array<BasePart>();
 	for (const adornee of Workspace.interactions.timeTrials.GetChildren()) {
 		if (!adornee.IsA("BasePart")) continue;
@@ -107,7 +110,13 @@ export const TimeTrialsInteractionPrompts = hooks((props: { displayInterface: ()
 	return (
 		<>
 			{interactions.map((adornee) => (
-				<Prompt adornee={adornee} displayInterface={props.displayInterface} />
+				<Prompt
+					adornee={adornee}
+					displayInterface={(): void => {
+						addAnnouncement(`Time Trials is disabled. It will be back soon!`, AnnouncementType.Error);
+						//props.displayInterface()
+					}}
+				/>
 			))}
 		</>
 	);

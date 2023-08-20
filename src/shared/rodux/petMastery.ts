@@ -1,40 +1,42 @@
-import Object from "@rbxts/object-utils";
 import Rodux from "@rbxts/rodux";
 import { Variants } from "shared/configs/pets";
 
-export type PetMasteryState = Map<
-	number,
-	{
-		regular: {
-			hatchClaimed: boolean;
-			maxLevelClaimed: boolean;
-			cosmeticEnabled: boolean;
-		};
-		void: {
-			hatchClaimed: boolean;
-			maxLevelClaimed: boolean;
-			fuseClaimed: boolean;
-			cosmeticEnabled: boolean;
-		};
-		radiant: {
-			maxLevelClaimed: boolean;
-			fuseClaimed: boolean;
-			cosmeticEnabled: boolean;
-		};
-	}
->;
-export type PetMasteryStateVariant = PetMasteryState extends Map<unknown, infer T> ? T : never;
-
-export type SerializedPetMasteryState = Array<PetMasteryStateVariant & { petId: number }>;
-
-export type PetMasteryActions = ClaimHatchMastery | ClaimMaxLevelMastery | ClaimFuseMastery | ToggleMasteryCosmetic;
-
-export const defaultPetMasteryState: PetMasteryState extends Map<unknown, infer T> ? T : never = {
-	regular: { hatchClaimed: false, maxLevelClaimed: false, cosmeticEnabled: false },
-	void: { hatchClaimed: false, maxLevelClaimed: false, fuseClaimed: false, cosmeticEnabled: false },
-	radiant: { maxLevelClaimed: false, fuseClaimed: false, cosmeticEnabled: false },
+export type PetMastery = {
+	regular: {
+		hatchClaimed: boolean;
+		maxLevelClaimed: boolean;
+	};
+	void: {
+		hatchClaimed: boolean;
+		maxLevelClaimed: boolean;
+		fuseClaimed: boolean;
+	};
+	radiant: {
+		maxLevelClaimed: boolean;
+		fuseClaimed: boolean;
+	};
+};
+const defaultPetMastery: PetMastery = {
+	regular: {
+		hatchClaimed: false,
+		maxLevelClaimed: false,
+	},
+	void: {
+		hatchClaimed: false,
+		maxLevelClaimed: false,
+		fuseClaimed: false,
+	},
+	radiant: {
+		maxLevelClaimed: false,
+		fuseClaimed: false,
+	},
 };
 
+export type PetMasteryState = Array<{
+	id: number;
+	mastery: PetMastery;
+}>;
+export type PetMasteryActions = ClaimHatchMastery | ClaimMaxLevelMastery | ClaimFuseMastery;
 export type PetMasteryChallengeType = "maxLevel" | "hatch" | "fuse";
 
 interface ClaimHatchMastery extends Rodux.Action<"claimHatchMastery"> {
@@ -100,134 +102,101 @@ export function claimFuseMastery(
 	};
 }
 
-interface ToggleMasteryCosmetic extends Rodux.Action<"toggleMasteryCosmetic"> {
-	petId: number;
-	variant: Variants;
-}
-
-/**
- * @param petId The id of the pet.
- * @param variant The variant of the pet.
- * @returns The Rodux action to dispatch.
- */
-export function toggleMasteryCosmetic(petId: number, variant: Variants): ToggleMasteryCosmetic & Rodux.AnyAction {
-	return {
-		type: "toggleMasteryCosmetic",
-		petId,
-		variant,
-	};
-}
-
 /* eslint-disable jsdoc/require-jsdoc */
-export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMasteryActions>(new Map(), {
+export const petMasteryReducer = Rodux.createReducer<PetMasteryState, PetMasteryActions>([], {
 	claimHatchMastery: (state, action) => {
-		const newState = new Map([...state]);
+		const newState = [...state];
 
-		let petMasteryData = newState.get(action.petId) ?? defaultPetMasteryState;
+		const pet = newState.find((mastery) => mastery.id === action.petId);
+		const petIndex = newState.findIndex((mastery) => mastery.id === action.petId);
+		if (pet !== undefined && petIndex !== -1) {
+			const newPet = {
+				...pet,
+				mastery: {
+					...pet.mastery,
+					[action.variant]: {
+						...pet.mastery[action.variant],
+						hatchClaimed: true,
+					},
+				},
+			};
 
-		petMasteryData = {
-			...petMasteryData,
-			[action.variant]: {
-				...petMasteryData[action.variant],
-			},
-		};
-
-		const masteryData = petMasteryData[action.variant];
-		masteryData.hatchClaimed = true;
-
-		// we enable the cosmetic by default if we were hatching a regular and we have achieved the max level
-		if (!masteryData.cosmeticEnabled && action.variant === "regular" && masteryData.maxLevelClaimed) {
-			masteryData.cosmeticEnabled = true;
+			newState[petIndex] = newPet;
+		} else {
+			newState.push({
+				id: action.petId,
+				mastery: {
+					...defaultPetMastery,
+					[action.variant]: {
+						...defaultPetMastery[action.variant],
+						hatchClaimed: true,
+					},
+				},
+			});
 		}
-
-		newState.set(action.petId, petMasteryData);
 		return newState;
 	},
 	claimMaxLevelMastery: (state, action) => {
-		const newState = new Map([...state]);
+		const newState = [...state];
 
-		let petMasteryData = newState.get(action.petId) ?? defaultPetMasteryState;
-
-		petMasteryData = {
-			...petMasteryData,
-			[action.variant]: {
-				...petMasteryData[action.variant],
-			},
-		};
-
-		const masteryData = petMasteryData[action.variant];
-		masteryData.maxLevelClaimed = true;
-
-		// we enable the cosmetic by default if we were hatching a regular and we have achieved the max level
-		if (!masteryData.cosmeticEnabled && action.variant === "regular" && masteryData.maxLevelClaimed) {
-			masteryData.cosmeticEnabled = true;
+		const pet = newState.find((mastery) => mastery.id === action.petId);
+		const petIndex = newState.findIndex((mastery) => mastery.id === action.petId);
+		if (pet !== undefined && petIndex !== -1) {
+			const newPet = {
+				...pet,
+				mastery: {
+					...pet.mastery,
+					[action.variant]: {
+						...pet.mastery[action.variant],
+						maxLevelClaimed: true,
+					},
+				},
+			};
+			newState[petIndex] = newPet;
+		} else {
+			newState.push({
+				id: action.petId,
+				mastery: {
+					...defaultPetMastery,
+					[action.variant]: {
+						...defaultPetMastery[action.variant],
+						maxLevelClaimed: true,
+					},
+				},
+			});
 		}
-
-		newState.set(action.petId, petMasteryData);
 		return newState;
 	},
 	claimFuseMastery: (state, action) => {
-		const newState = new Map([...state]);
+		const newState = [...state];
 
-		let petMasteryData = newState.get(action.petId) ?? defaultPetMasteryState;
-
-		petMasteryData = {
-			...petMasteryData,
-			[action.variant]: {
-				...petMasteryData[action.variant],
-			},
-		};
-
-		const masteryData = petMasteryData[action.variant];
-		masteryData.fuseClaimed = true;
-
-		newState.set(action.petId, petMasteryData);
-		return newState;
-	},
-	toggleMasteryCosmetic: (state, action) => {
-		const newState = new Map([...state]);
-
-		let petMasteryData = newState.get(action.petId) ?? defaultPetMasteryState;
-
-		petMasteryData = {
-			...petMasteryData,
-			[action.variant]: {
-				...petMasteryData[action.variant],
-			},
-		};
-
-		const masteryData = petMasteryData[action.variant];
-		masteryData.cosmeticEnabled = !masteryData.cosmeticEnabled;
-
-		newState.set(action.petId, petMasteryData);
+		const pet = newState.find((mastery) => mastery.id === action.petId);
+		const petIndex = newState.findIndex((mastery) => mastery.id === action.petId);
+		if (pet !== undefined && petIndex !== -1) {
+			const newPet = {
+				...pet,
+				mastery: {
+					...pet.mastery,
+					[action.variant]: {
+						...pet.mastery[action.variant],
+						fuseClaimed: true,
+					},
+				},
+			};
+			newState[petIndex] = newPet;
+		} else {
+			newState.push({
+				id: action.petId,
+				mastery: {
+					...defaultPetMastery,
+					[action.variant]: {
+						...defaultPetMastery[action.variant],
+						fuseClaimed: true,
+					},
+				},
+			});
+		}
 		return newState;
 	},
 });
 /* eslint-enable jsdoc/require-jsdoc */
-
-/**
- *
- * @param store The Rodux state of the pet mastery.
- * @returns The serialized version of the pet mastery.
- */
-export function serializePetMastery(store: PetMasteryState): SerializedPetMasteryState {
-	return Object.entries(store).map(([petId, value]) => ({ petId, ...value }));
-}
-
-/**
- *
- * @param state The serialized version of the pet mastery.
- * @returns Th deserialized version that is able to be loaded into a Rodux store.
- */
-export function deserializePetMastery(state: SerializedPetMasteryState): PetMasteryState {
-	return new Map(
-		state.map((value) => {
-			const petId = value.petId;
-
-			// remove petId
-			value.petId = undefined as unknown as number;
-
-			return [petId, value];
-		}),
-	);
-}

@@ -7,7 +7,7 @@ import { hooks } from "client/ui/hooks";
 import { EggName } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
-import { PetMasteryState, PetMasteryStateVariant } from "shared/rodux/petMastery";
+import { PetMasteryState } from "shared/rodux/petMastery";
 import { getEggData } from "shared/util/getEggData";
 import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 
@@ -58,16 +58,13 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 				totalChallenges += 2;
 			}
 
-			const petsMasteryIndex = props.petMastery.get(data.id);
+			const petsMasteryIndex = props.petMastery.find((mastery) => mastery.id === data.id);
 			if (petsMasteryIndex === undefined) {
 				continue;
 			}
-
-			const _masteryData = petsMasteryIndex[props.variant];
 			switch (props.variant) {
 				case "regular": {
-					const masteryData = _masteryData as PetMasteryStateVariant[typeof props.variant];
-
+					const masteryData = petsMasteryIndex.mastery[props.variant];
 					if (masteryData.hatchClaimed) {
 						completedChallenges += 1;
 					}
@@ -78,7 +75,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 					break;
 				}
 				case "void": {
-					const masteryData = _masteryData as PetMasteryStateVariant[typeof props.variant];
+					const masteryData = petsMasteryIndex.mastery[props.variant];
 
 					if (masteryData.hatchClaimed) {
 						completedChallenges += 1;
@@ -95,7 +92,7 @@ export const ProgressBar = RoactRodux.connect(mapStateToProps)(
 					break;
 				}
 				case "radiant": {
-					const masteryData = _masteryData as PetMasteryStateVariant[typeof props.variant];
+					const masteryData = petsMasteryIndex.mastery[props.variant];
 
 					if (masteryData.maxLevelClaimed) {
 						completedChallenges += 1;

@@ -55,6 +55,7 @@ interface HudProps extends HudMappedProps {
 	hiddenHud: boolean;
 	autoFightActive: boolean;
 	disableAutoFight: () => void;
+	displayAdmin: () => void;
 }
 
 interface HudMappedProps {
@@ -449,7 +450,14 @@ export const Hud = RoactRodux.connect(mapStateToProps)(
 								icon={assetIds.images.ui.hud.icons.options}
 								title={"Settings"}
 								onClick={(): void => props.displaySettings()}
-								position={UDim2.fromScale(0.83, 0 - 0.65)}
+								position={UDim2.fromScale(0.83, -0.65)}
+								size={{ minSize: 0.3, maxSize: 0.35 }}
+							/>
+							<HudIcon
+								icon={assetIds.images.ui.hud.icons.rewards}
+								title={"Stats"}
+								onClick={(): void => props.displayAdmin()}
+								position={UDim2.fromScale(0.15, -1.4)}
 								size={{ minSize: 0.3, maxSize: 0.35 }}
 							/>
 							<SpringImageButton
