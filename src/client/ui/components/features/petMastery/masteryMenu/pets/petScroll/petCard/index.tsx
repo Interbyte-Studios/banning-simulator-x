@@ -55,7 +55,7 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 		const petData = getPetData(props.pet);
 		const egg = getEggNameFromPetId(petData.id);
 
-		const petIndex = props.index.pets.get(props.pet);
+		const petIndex = props.index.pets.find((index) => index.id === props.pet);
 		const isDiscovered = petIndex !== undefined;
 
 		const raisedPosition = 0.4;
@@ -68,63 +68,63 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 
 		let unseenChallenges = 0;
 		if (isDiscovered && props.currentVariant !== undefined) {
-			const petMasteryPet = props.petMastery.get(petData.id);
+			const petMasteryPet = props.petMastery.find((mastery) => mastery.id === petData.id);
 
 			if (props.currentVariant === "radiant") {
-				if (petIndex.fused.radiant >= PET_MASTERY_REQUIREMENTS[petData.rarity].radiant.fuse) {
+				if (petIndex.index.fused.radiant >= PET_MASTERY_REQUIREMENTS[petData.rarity].radiant.fuse) {
 					if (petMasteryPet === undefined) {
 						unseenChallenges++;
-					} else if (!petMasteryPet.radiant.fuseClaimed) {
+					} else if (!petMasteryPet.mastery.radiant.fuseClaimed) {
 						unseenChallenges++;
 					}
 				}
 
-				if (petIndex.maxLevel.radiant.amount >= PET_MASTERY_REQUIREMENTS[petData.rarity].radiant.maxLevel) {
+				if (petIndex.index.maxLevel.radiant >= PET_MASTERY_REQUIREMENTS[petData.rarity].radiant.maxLevel) {
 					if (petMasteryPet === undefined) {
 						unseenChallenges++;
-					} else if (!petMasteryPet.radiant.maxLevelClaimed) {
+					} else if (!petMasteryPet.mastery.radiant.maxLevelClaimed) {
 						unseenChallenges++;
 					}
 				}
 			} else if (props.currentVariant === "void") {
-				if (petIndex.fused.void >= PET_MASTERY_REQUIREMENTS[petData.rarity].void.fuse) {
+				if (petIndex.index.fused.void >= PET_MASTERY_REQUIREMENTS[petData.rarity].void.fuse) {
 					if (petMasteryPet === undefined) {
 						unseenChallenges++;
-					} else if (!petMasteryPet.void.fuseClaimed) {
+					} else if (!petMasteryPet.mastery.void.fuseClaimed) {
 						unseenChallenges++;
 					}
 				}
 
-				if (petIndex.maxLevel.void.amount >= PET_MASTERY_REQUIREMENTS[petData.rarity].void.maxLevel) {
+				if (petIndex.index.maxLevel.void >= PET_MASTERY_REQUIREMENTS[petData.rarity].void.maxLevel) {
 					if (petMasteryPet === undefined) {
 						unseenChallenges++;
-					} else if (!petMasteryPet.void.maxLevelClaimed) {
+					} else if (!petMasteryPet.mastery.void.maxLevelClaimed) {
 						unseenChallenges++;
 					}
 				}
 
-				if (petIndex.hatched.void >= PET_MASTERY_REQUIREMENTS[petData.rarity].void.hatch) {
+				if (petIndex.index.hatched.void >= PET_MASTERY_REQUIREMENTS[petData.rarity].void.hatch) {
 					if (!isEventEgg(egg) && !isExclusiveEgg(egg)) {
 						if (petMasteryPet === undefined) {
 							unseenChallenges++;
-						} else if (!petMasteryPet.void.hatchClaimed) {
+						} else if (!petMasteryPet.mastery.void.hatchClaimed) {
 							unseenChallenges++;
 						}
 					}
 				}
 			} else if (props.currentVariant === "regular") {
-				if (petIndex.hatched.regular >= PET_MASTERY_REQUIREMENTS[petData.rarity].regular.hatch) {
+				if (petIndex.index.hatched.regular >= PET_MASTERY_REQUIREMENTS[petData.rarity].regular.hatch) {
 					if (petMasteryPet === undefined) {
 						unseenChallenges++;
-					} else if (!petMasteryPet.regular.hatchClaimed) {
+					} else if (!petMasteryPet.mastery.regular.hatchClaimed) {
 						unseenChallenges++;
 					}
 				}
 
-				if (petIndex.maxLevel.regular.amount >= PET_MASTERY_REQUIREMENTS[petData.rarity].regular.maxLevel) {
+				if (petIndex.index.maxLevel.regular >= PET_MASTERY_REQUIREMENTS[petData.rarity].regular.maxLevel) {
 					if (petMasteryPet === undefined) {
 						unseenChallenges++;
-					} else if (!petMasteryPet.regular.maxLevelClaimed) {
+					} else if (!petMasteryPet.mastery.regular.maxLevelClaimed) {
 						unseenChallenges++;
 					}
 				}
@@ -136,8 +136,8 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 				<uiaspectratioconstraint AspectRatio={4.5} />
 				<ImageButton
 					native={{
-						Position: UDim2.fromScale(0.53, 0.525),
-						Size: UDim2.fromScale(0.825, 0.95),
+						Position: UDim2.fromScale(0.57, 0.525),
+						Size: UDim2.fromScale(0.85, 0.95),
 						BackgroundTransparency: 0,
 						BackgroundColor3: Color3.fromRGB(0, 131, 213),
 						LayoutOrder: petData.id,
@@ -197,8 +197,8 @@ export const IndexPetCard = RoactRodux.connect(mapStateToProps)(
 					{unseenChallenges > 0 && (
 						<Notification
 							amount={unseenChallenges}
-							position={UDim2.fromScale(0.9, 0.9)}
-							size={UDim2.fromScale(0.5, 0.5)}
+							position={UDim2.fromScale(1, 0.5)}
+							size={UDim2.fromScale(0.45, 0.45)}
 						/>
 					)}
 				</ImageButton>

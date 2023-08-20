@@ -54,7 +54,7 @@ export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
 		let isDiscovered = false;
 		const eggData = getEggData(props.egg);
 		for (const [, petData] of pairs(eggData.pets)) {
-			if (props.index.pets.get(petData.id) !== undefined) {
+			if (props.index.pets.find((index) => index.id === petData.id) !== undefined) {
 				isDiscovered = true;
 				break;
 			}
@@ -77,8 +77,8 @@ export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
 				<uiaspectratioconstraint AspectRatio={4.5} />
 				<ImageButton
 					native={{
-						Position: UDim2.fromScale(0.53, 0.525),
-						Size: UDim2.fromScale(0.825, 0.95),
+						Position: UDim2.fromScale(0.57, 0.525),
+						Size: UDim2.fromScale(0.85, 0.95),
 						BackgroundTransparency: 0,
 						BackgroundColor3: Color3.fromRGB(0, 131, 213),
 						LayoutOrder: props.layoutOrder,
@@ -136,8 +136,8 @@ export const IndexEggCard = RoactRodux.connect(mapStateToProps)(
 					{unseenChallenges > 0 && (
 						<Notification
 							amount={unseenChallenges}
-							position={UDim2.fromScale(0.9, 0.9)}
-							size={UDim2.fromScale(0.5, 0.5)}
+							position={UDim2.fromScale(1, 0.5)}
+							size={UDim2.fromScale(0.45, 0.45)}
 						/>
 					)}
 				</ImageButton>

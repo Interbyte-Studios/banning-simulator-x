@@ -1,6 +1,6 @@
 debug.setmemorycategory("eggAnimations");
 import { RunService, TweenService, Workspace } from "@rbxts/services";
-import { EggName, EGGS } from "shared/configs/eggs";
+import { EggName, EGGS, isEventEgg } from "shared/configs/eggs";
 import { Variants } from "shared/configs/pets";
 
 export {};
@@ -75,11 +75,9 @@ for (const [name, data] of pairs(EGGS)) {
 	task.spawn(() => {
 		task.wait(5);
 		animateEgg(name, "regular");
-		warn(`Animating regular ${name} `);
-		if (name !== "Throwback") {
+		if (!isEventEgg(name)) {
 			task.wait(1);
 			animateEgg(name, "void");
-			warn(`Animating void ${name}`);
 		}
 	});
 }

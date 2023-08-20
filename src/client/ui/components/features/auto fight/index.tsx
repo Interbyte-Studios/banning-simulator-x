@@ -48,7 +48,7 @@ let lastTimerCheck = 0;
 const NPC_ATTACK_DEBOUNCE = 1.5;
 let lastNPCAttackCheck = 0;
 
-const npcsFolder = Workspace.WaitForChild("npcs") as Folder;
+const npcsFolder = Workspace.WaitForChild("mockNpcs") as Folder;
 
 interface AutoFightProps extends AutoFightMappedProps {
 	hideMenu: () => void;

@@ -30,59 +30,59 @@ export function getPetMasteryUnclaimedChallenges(eggName: EggName, specificVaria
 
 	let unseenChallenges = 0;
 	for (const [, petData] of pairs(eggData.pets)) {
-		const discoveredPet = index.pets.get(petData.id);
+		const discoveredPet = index.pets.find((index) => index.id === petData.id);
 		if (discoveredPet !== undefined) {
-			const petMasteryPet = petMastery.get(petData.id);
+			const petMasteryPet = petMastery.find((mastery) => mastery.id === petData.id);
 			const petMasteryRequirements = PET_MASTERY_REQUIREMENTS[petData.rarity];
 
 			let radiantUnseen = 0;
 			let voidUnseen = 0;
 			let regularUnseen = 0;
 
-			if (discoveredPet.fused.radiant >= petMasteryRequirements.radiant.fuse) {
-				if (petMasteryPet === undefined || !petMasteryPet.radiant.fuseClaimed) {
+			if (discoveredPet.index.fused.radiant >= petMasteryRequirements.radiant.fuse) {
+				if (petMasteryPet === undefined || !petMasteryPet.mastery.radiant.fuseClaimed) {
 					radiantUnseen++;
 				}
 			}
 
-			if (discoveredPet.maxLevel.radiant.amount >= petMasteryRequirements.radiant.maxLevel) {
-				if (petMasteryPet === undefined || !petMasteryPet.radiant.maxLevelClaimed) {
+			if (discoveredPet.index.maxLevel.radiant >= petMasteryRequirements.radiant.maxLevel) {
+				if (petMasteryPet === undefined || !petMasteryPet.mastery.radiant.maxLevelClaimed) {
 					radiantUnseen++;
 				}
 			}
 
-			if (discoveredPet.fused.void >= petMasteryRequirements.void.fuse) {
-				if (petMasteryPet === undefined || !petMasteryPet.void.fuseClaimed) {
+			if (discoveredPet.index.fused.void >= petMasteryRequirements.void.fuse) {
+				if (petMasteryPet === undefined || !petMasteryPet.mastery.void.fuseClaimed) {
 					voidUnseen++;
 				}
 			}
 
-			if (discoveredPet.hatched.void >= petMasteryRequirements.void.hatch) {
+			if (discoveredPet.index.hatched.void >= petMasteryRequirements.void.hatch) {
 				if (!isEventEgg(eggName) && !isExclusiveEgg(eggName)) {
 					if (eggData.id < 100) {
-						if (petMasteryPet === undefined || !petMasteryPet.void.hatchClaimed) {
+						if (petMasteryPet === undefined || !petMasteryPet.mastery.void.hatchClaimed) {
 							voidUnseen++;
 						}
 					}
 				}
 			}
 
-			if (discoveredPet.maxLevel.void.amount >= petMasteryRequirements.void.maxLevel) {
-				if (petMasteryPet === undefined || !petMasteryPet.void.maxLevelClaimed) {
+			if (discoveredPet.index.maxLevel.void >= petMasteryRequirements.void.maxLevel) {
+				if (petMasteryPet === undefined || !petMasteryPet.mastery.void.maxLevelClaimed) {
 					voidUnseen++;
 				}
 			}
 
-			if (discoveredPet.hatched.regular >= petMasteryRequirements.regular.hatch) {
+			if (discoveredPet.index.hatched.regular >= petMasteryRequirements.regular.hatch) {
 				if (eggData.id < 100) {
-					if (petMasteryPet === undefined || !petMasteryPet.regular.hatchClaimed) {
+					if (petMasteryPet === undefined || !petMasteryPet.mastery.regular.hatchClaimed) {
 						regularUnseen++;
 					}
 				}
 			}
 
-			if (discoveredPet.maxLevel.regular.amount >= petMasteryRequirements.regular.maxLevel) {
-				if (petMasteryPet === undefined || !petMasteryPet.regular.maxLevelClaimed) {
+			if (discoveredPet.index.maxLevel.regular >= petMasteryRequirements.regular.maxLevel) {
+				if (petMasteryPet === undefined || !petMasteryPet.mastery.regular.maxLevelClaimed) {
 					regularUnseen++;
 				}
 			}

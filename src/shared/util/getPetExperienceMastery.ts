@@ -9,10 +9,10 @@ import { PlayerIndexState } from "shared/rodux/playerIndex";
  */
 export const getPetExperienceMastery = (indexState: PlayerIndexState): RankMastery => {
 	let totalMaxLevelPetsEarned = 0;
-	for (const [, petMastery] of pairs(indexState.pets)) {
-		totalMaxLevelPetsEarned += petMastery.maxLevel.regular.amount;
-		totalMaxLevelPetsEarned += petMastery.maxLevel.void.amount;
-		totalMaxLevelPetsEarned += petMastery.maxLevel.radiant.amount;
+	for (const petMastery of indexState.pets) {
+		totalMaxLevelPetsEarned += petMastery.index.maxLevel.regular;
+		totalMaxLevelPetsEarned += petMastery.index.maxLevel.void;
+		totalMaxLevelPetsEarned += petMastery.index.maxLevel.radiant;
 	}
 
 	let mastery: RankMastery | undefined = AccountMastery.rank.find((mastery) => mastery.level === 1);

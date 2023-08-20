@@ -174,12 +174,12 @@ export const EggHudDisplay = RoactRodux.connect(mapStateToProps)(
 
 								let hasHatchedVariant = false;
 
-								const ownsPetInIndex = props.index.pets.get(petInfo.id);
+								const ownsPetInIndex = props.index.pets.find((mastery) => petInfo.id === mastery.id);
 								if (ownsPetInIndex !== undefined) {
 									if (props.isVoid) {
-										hasHatchedVariant = ownsPetInIndex.hatched.void > 0;
+										hasHatchedVariant = ownsPetInIndex.index.hatched.void > 0;
 									} else {
-										hasHatchedVariant = ownsPetInIndex.hatched.regular > 0;
+										hasHatchedVariant = ownsPetInIndex.index.hatched.regular > 0;
 									}
 								}
 

@@ -103,9 +103,9 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 		for (const masteryData of AccountMastery.rank) {
 			let totalMaxLevels = 0;
 			playerStore.getState().index.pets.forEach((petIndex) => {
-				totalMaxLevels += petIndex.maxLevel.radiant.amount;
-				totalMaxLevels += petIndex.maxLevel.void.amount;
-				totalMaxLevels += petIndex.maxLevel.regular.amount;
+				totalMaxLevels += petIndex.index.maxLevel.radiant;
+				totalMaxLevels += petIndex.index.maxLevel.void;
+				totalMaxLevels += petIndex.index.maxLevel.regular;
 			});
 
 			masteryElements.push(
@@ -121,8 +121,8 @@ export const Mastery = hooks((props: MasteryProps, { useState, useValue, useEffe
 	} else if (masteryDisplayed === "Fusing") {
 		let totalFusions = 0;
 		playerStore.getState().index.pets.forEach((petIndex) => {
-			totalFusions += petIndex.fused.radiant;
-			totalFusions += petIndex.fused.void;
+			totalFusions += petIndex.index.fused.radiant;
+			totalFusions += petIndex.index.fused.void;
 		});
 
 		for (const masteryData of AccountMastery.fusing) {

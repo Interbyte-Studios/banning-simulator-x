@@ -128,7 +128,7 @@ export const PET_MAX_LEVELS = {
 
 // Amount of bans required per level
 export const PET_LEVEL_REQUIREMENTS = {
-	regular: 30,
-	void: 45,
-	radiant: 72,
+	regular: 10,
+	void: 20,
+	radiant: 30,
 };

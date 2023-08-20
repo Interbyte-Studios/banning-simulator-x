@@ -4,6 +4,7 @@ import { retrieveStore } from "server/playerStore";
 import { MODERATOR_RANK } from "shared/configs/admin";
 import { remotes } from "shared/remotes";
 import { admin_ModifyPetLevel } from "shared/rodux/pets";
+import { logPetMaxLevel } from "shared/rodux/playerIndex/pets";
 
 remotes.Server.GetNamespace("admin")
 	.Get("admin_ModifyPetLevel")
@@ -31,5 +32,6 @@ remotes.Server.GetNamespace("admin")
 						: `${adminPlayer.Name} modified pet level for user with id: ${targetPlayer.UserId} | Pet: ${ownsPet.id} | Level: ${petData.level}`,
 			});
 			targetPlayerStore.dispatch(admin_ModifyPetLevel(ownsPet.guid, ownsPet.id, ownsPet.variant, petData.level));
+			targetPlayerStore.dispatch(logPetMaxLevel([{ id: ownsPet.id, variant: ownsPet.variant }]));
 		}),
 	);

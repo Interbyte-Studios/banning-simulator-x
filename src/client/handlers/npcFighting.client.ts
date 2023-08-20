@@ -5,7 +5,7 @@ import { getIsHatching } from "client/modules/eggs/isHatching";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 
-const npcs = Workspace.WaitForChild("npcs") as Folder;
+const npcs = Workspace.WaitForChild("mockNpcs") as Folder;
 let currentConnection: RBXScriptConnection | undefined;
 let lastSwingTime = 0;
 

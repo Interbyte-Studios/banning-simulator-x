@@ -4,7 +4,7 @@ import RoactRodux from "@rbxts/roact-rodux";
 import { Workspace } from "@rbxts/services";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
 import { hooks } from "client/ui/hooks";
-import { EGGS } from "shared/configs/eggs";
+import { EGGS, isEventEgg } from "shared/configs/eggs";
 import { StoreState } from "shared/rodux";
 import { EggsState } from "shared/rodux/eggs";
 import { getEggCost } from "shared/util/getEggCost";
@@ -46,6 +46,21 @@ export const EggCost = RoactRodux.connect(mapStateToProps)(
 						// find reduced egg cost provided by player mastery
 						const eggMasteryReducedMultiplier = getEggsMastery(props.eggs).reducedEggCostMultiplier;
 						const eggCostRegular = getEggCost(eggName, false, eggMasteryReducedMultiplier);
+
+						if (isEventEgg(eggName)) {
+							return (
+								<>
+									{regularCost !== undefined && (
+										<EggCostDisplay
+											adornee={regularCost}
+											cost={eggCostRegular.amount}
+											currency={eggCostRegular.currencyType}
+											isVoid={false}
+										/>
+									)}
+								</>
+							);
+						}
 
 						const voidCost = eggModel.void.FindFirstChild("cost") as BasePart;
 						const eggCostVoid = getEggCost(eggName, true, eggMasteryReducedMultiplier);

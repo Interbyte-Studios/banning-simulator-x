@@ -1,8 +1,6 @@
 import { ProfileState } from "server/modules/datastore/profile";
 import { StoreState } from "shared/rodux";
 import { deserializeBoosts, serializeBoosts } from "shared/rodux/boosts";
-import { deserializePetMastery, serializePetMastery } from "shared/rodux/petMastery";
-import { deserializePetIndexState, serializePetIndexState } from "shared/rodux/playerIndex/pets";
 
 /**
  * Serializes a Rodux store state to be saved in a DataStore.
@@ -25,13 +23,12 @@ export function serialize(store: StoreState): ProfileState {
 				lastClaimed: store.index.groupRewards.lastClaimed.UnixTimestampMillis,
 			},
 			joinDate: store.index.joinDate.UnixTimestampMillis,
-			pets: serializePetIndexState(store.index.pets),
+			pets: store.index.pets,
 			vipRewards: {
 				...store.index.vipRewards,
 				lastClaimed: store.index.vipRewards.lastClaimed.UnixTimestampMillis,
 			},
 		},
-		petMastery: serializePetMastery(store.petMastery),
 		tradeLogs: store.tradeLogs.map((log) => {
 			return {
 				...log,
@@ -62,13 +59,11 @@ export function deserialize(state: ProfileState): StoreState {
 				lastClaimed: DateTime.fromUnixTimestampMillis(state.index.groupRewards.lastClaimed),
 			},
 			joinDate: DateTime.fromUnixTimestampMillis(state.index.joinDate),
-			pets: deserializePetIndexState(state.index.pets),
 			vipRewards: {
 				...state.index.vipRewards,
 				lastClaimed: DateTime.fromUnixTimestampMillis(state.index.vipRewards.lastClaimed),
 			},
 		},
-		petMastery: deserializePetMastery(state.petMastery),
 		tradeLogs: state.tradeLogs.map((log) => {
 			return {
 				...log,

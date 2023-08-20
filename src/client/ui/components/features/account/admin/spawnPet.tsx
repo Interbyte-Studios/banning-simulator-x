@@ -1,21 +1,22 @@
 import Roact from "@rbxts/roact";
 import { CollectionService } from "@rbxts/services";
-import { vec2Middle } from "client/ui/commonValues";
+import { uiTextStrokeColor, vec2Middle } from "client/ui/commonValues";
 import { BaseFrame } from "client/ui/elements/baseElements/baseFrame";
+import { BaseUIStroke } from "client/ui/elements/baseElements/baseUIStroke";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
+import { SpringImageLabel } from "client/ui/elements/baseElements/imagelabels/springImage";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { PetFrame } from "client/ui/elements/common/petFrame";
 import { RescalingScrollingFrame } from "client/ui/elements/common/rescalingScrollingFrame";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
+import { getEggImage } from "client/util/getEggImage";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { EGGS } from "shared/configs/eggs";
+import { EggName, EGGS } from "shared/configs/eggs";
 import { Pet, Variants } from "shared/configs/pets";
-import { ZoneNames } from "shared/configs/zones";
 import { getPetData } from "shared/util/getPetData";
 
-import { ZoneTeleportCard } from "../../teleportation/zoneCard";
 import { FullComponentHeader } from "../util/fullComponentHeader";
 
 interface SpawnedPet extends Pet {
@@ -25,7 +26,7 @@ interface SpawnedPet extends Pet {
 /* eslint-disable jsdoc/require-jsdoc */
 export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAction: () => void }, hooks) => {
 	const { useValue, useEffect, useState, useContext } = hooks;
-	const [zoneSelected, setZoneSelected] = useState<ZoneNames | "Exclusive" | undefined>(undefined);
+	const [eggSelected, setEggSelected] = useState<EggName | undefined>(undefined);
 	const [petSelected, setPetSelected] = useState<SpawnedPet | undefined>(undefined);
 
 	const { admin_SpawnPet } = useContext(remoteContext);
@@ -68,7 +69,7 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 						Activated: (): void => {
 							playSFX(UIEngagement.MajorEngagement);
 							setPetSelected(undefined);
-							setZoneSelected(undefined);
+							setEggSelected(undefined);
 							props.setActiveAction();
 							admin_SpawnPet.SendToServer(props.playerViewing.UserId, {
 								petId: petSelected.id,
@@ -119,53 +120,76 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 				</SpringImageButton>
 			</>
 		);
-	} else if (zoneSelected === undefined) {
-		const uiListLayoutRef = useValue(Roact.createRef<UIListLayout>());
+	} else if (eggSelected === undefined) {
+		const layoutRef = useValue(Roact.createRef<UIGridLayout>());
 		useEffect(() => {
-			const uiListLayout = uiListLayoutRef.value.getValue();
-			assert(uiListLayout, `Failed to get Spawn Pet Admin UIListLayout.`);
+			const uiGridLayout = layoutRef.value.getValue();
+			assert(uiGridLayout, "Failed to get UIGridLayout for administrative pet spawning ui.");
 
-			const scrollingFrame = uiListLayout.Parent;
-			assert(scrollingFrame, `Failed to get Spawn Pet Admin ScrollingFrame.`);
-			assert(scrollingFrame.IsA("ScrollingFrame"), `Expected Spawn Pet Admin to have a ScrollingFrame.`);
+			const scrollingFrame = uiGridLayout.Parent;
+			assert(scrollingFrame, "Failed to get ScrollingFrame for administrative pet spawning ui.");
+			assert(scrollingFrame.IsA("ScrollingFrame"), "Expected administrative pet spawning ui to have a ScrollingFrame.");
 
-			scrollingFrame.GetChildren().forEach((adminCard) => {
-				if (adminCard.IsA("ImageLabel")) {
-					adminCard.Size = UDim2.fromOffset(scrollingFrame.AbsoluteSize.X, scrollingFrame.AbsoluteSize.X / 5.75);
-				}
-			});
+			scrollingFrame.CanvasPosition = new Vector2(0, 0);
+			CollectionService.AddTag(uiGridLayout, `InventoryGridLayout`);
 		});
 
-		const zonesToDisplay: Array<Roact.Element> = [];
-		for (const [, eggData] of pairs(EGGS)) {
-			if (eggData.world === "Limited") {
-				continue;
+		const eggsToDisplay: Array<Roact.Element> = [];
+		for (const [eggName, eggData] of pairs(EGGS)) {
+			let eggDecal: string | undefined;
+			const [success, result] = pcall(() => getEggImage(eggName));
+			if (success) {
+				eggDecal = result;
 			}
 
-			zonesToDisplay.push(
-				<ZoneTeleportCard
-					world={eggData.world}
-					zone={eggData.zone}
-					id={eggData.id}
-					onActivated={(): void => setZoneSelected(eggData.zone)}
-				/>,
+			eggsToDisplay.push(
+				<BaseFrame LayoutOrder={eggData.id}>
+					<BaseFrame Size={UDim2.fromScale(0.85, 0.85)}>
+						<SpringImageButton
+							native={{
+								BackgroundTransparency: 0,
+								BackgroundColor3: Color3.fromRGB(46, 115, 179),
+								Image: "",
+							}}
+							events={{
+								Activated: (): void => {
+									playSFX(UIEngagement.MajorEngagement);
+									setEggSelected(eggName);
+								},
+							}}
+							size={{ minSize: 0.825, maxSize: 0.925 }}
+						>
+							<uiaspectratioconstraint AspectRatio={1} />
+							<uicorner CornerRadius={new UDim(1, 0)} />
+
+							<BaseUIStroke native={{ Thickness: 3, Transparency: 0.5 }} />
+							{eggDecal !== undefined && (
+								<SpringImageLabel
+									native={{
+										Image: eggDecal,
+									}}
+									size={{ minSize: 0.75, maxSize: 0.8 }}
+								/>
+							)}
+							<StrokeTextLabel
+								native={{
+									Position: UDim2.fromScale(0.5, 0),
+									Size: UDim2.fromScale(0.9, 0.2),
+									Text: eggName,
+								}}
+								stroke={{ native: { Thickness: 1.5, Color: uiTextStrokeColor } }}
+							/>
+						</SpringImageButton>
+					</BaseFrame>
+				</BaseFrame>,
 			);
 		}
-
-		zonesToDisplay.push(
-			<ZoneTeleportCard
-				world={"Exclusive"}
-				zone={"Exclusive"}
-				id={500}
-				onActivated={(): void => setZoneSelected("Exclusive")}
-			/>,
-		);
 
 		return (
 			<>
 				<FullComponentHeader
 					storeFound={true}
-					headerText={`Select Zone to Spawn a Pet from`}
+					headerText={`Select an egg to spawn a pet from`}
 					returnToSelection={(): void => props.setActiveAction()}
 					displayReturn={true}
 				/>
@@ -176,17 +200,18 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 					Position={UDim2.fromScale(0.5, 0.62)}
 					Size={UDim2.fromScale(0.95, 0.675)}
 					ScrollBarThickness={12}
-					ScrollBarImageColor3={Color3.fromRGB(0, 51, 80)}
 					BorderSizePixel={0}
+					ScrollBarImageColor3={Color3.fromRGB(0, 51, 80)}
 					ScrollingDirection={Enum.ScrollingDirection.Y}
 				>
-					<uilistlayout
+					<uigridlayout
+						CellPadding={UDim2.fromOffset(6, 6)}
+						CellSize={UDim2.fromOffset(110, 110)}
 						SortOrder={Enum.SortOrder.LayoutOrder}
-						Ref={uiListLayoutRef.value}
-						HorizontalAlignment={Enum.HorizontalAlignment.Center}
-						Padding={new UDim(0, 10)}
+						FillDirectionMaxCells={5}
+						Ref={layoutRef.value}
 					/>
-					{zonesToDisplay}
+					{eggsToDisplay}
 				</RescalingScrollingFrame>
 			</>
 		);
@@ -205,19 +230,8 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 		});
 
 		const petsSelection: Array<SpawnedPet> = [];
-		for (const [, eggData] of pairs(EGGS)) {
-			if (zoneSelected === "Exclusive" && eggData.zone === "Limited") {
-				for (const [, petData] of pairs(eggData.pets)) {
-					petsSelection.push(
-						{ ...petData, variant: "regular" },
-						{ ...petData, variant: "void" },
-						{ ...petData, variant: "radiant" },
-					);
-				}
-				continue;
-			}
-
-			if (eggData.zone !== zoneSelected) {
+		for (const [eggName, eggData] of pairs(EGGS)) {
+			if (eggName !== eggSelected) {
 				continue;
 			}
 
@@ -234,8 +248,8 @@ export const SpawnPetAdmin = hooks((props: { playerViewing: Player; setActiveAct
 			<>
 				<FullComponentHeader
 					storeFound={true}
-					headerText={`Spawn Pet for ${props.playerViewing.Name} from ${zoneSelected} Zone`}
-					returnToSelection={(): void => setZoneSelected(undefined)}
+					headerText={`Spawn Pet for ${props.playerViewing.Name} from ${eggSelected} Egg`}
+					returnToSelection={(): void => setEggSelected(undefined)}
 					displayReturn={true}
 				/>
 				<RescalingScrollingFrame

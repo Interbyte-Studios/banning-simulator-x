@@ -149,7 +149,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 
 					const magnitude = rootPart.Position.sub(interaction.Position).Magnitude;
 					if (magnitude <= 30) {
-						setVisibility({ ...visibilityStates, timeTrials: true });
+						//setVisibility({ ...visibilityStates, timeTrials: true });
 						return;
 					}
 				}
@@ -344,6 +344,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
 					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
 					displayPetQuest={(): void => setVisibility({ ...visibilityStates, petQuest: true })}
+					displayAdmin={(): void => setVisibility({ ...visibilityStates, admin: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -437,6 +438,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
 					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
 					displayPetQuest={(): void => setVisibility({ ...visibilityStates, petQuest: true })}
+					displayAdmin={(): void => setVisibility({ ...visibilityStates, admin: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -476,6 +478,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
 					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
 					displayPetQuest={(): void => setVisibility({ ...visibilityStates, petQuest: true })}
+					displayAdmin={(): void => setVisibility({ ...visibilityStates, admin: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -507,6 +510,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
 					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
 					displayPetQuest={(): void => setVisibility({ ...visibilityStates, petQuest: true })}
+					displayAdmin={(): void => setVisibility({ ...visibilityStates, admin: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -538,6 +542,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
 					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
 					displayPetQuest={(): void => setVisibility({ ...visibilityStates, petQuest: true })}
+					displayAdmin={(): void => setVisibility({ ...visibilityStates, admin: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -579,6 +584,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
 					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
 					displayPetQuest={(): void => setVisibility({ ...visibilityStates, petQuest: true })}
+					displayAdmin={(): void => setVisibility({ ...visibilityStates, admin: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -621,6 +627,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
 					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
 					displayPetQuest={(): void => setVisibility({ ...visibilityStates, petQuest: true })}
+					displayAdmin={(): void => setVisibility({ ...visibilityStates, admin: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);
@@ -651,6 +658,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					displayPetMastery={(): void => setVisibility({ ...visibilityStates, petMastery: true })}
 					displayDailyRewards={(): void => setVisibility({ ...visibilityStates, dailyRewards: true })}
 					displayPetQuest={(): void => setVisibility({ ...visibilityStates, petQuest: true })}
+					displayAdmin={(): void => setVisibility({ ...visibilityStates, admin: true })}
 					displayTradingMenu={(): void => {
 						if (!ReplicatedStorage.events.trading.enabled.Value) {
 							addAnnouncement(`Trading is currently disabled. Try again later.`, AnnouncementType.Error);

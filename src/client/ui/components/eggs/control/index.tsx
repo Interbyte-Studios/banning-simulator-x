@@ -8,7 +8,7 @@ import { getIsTrading } from "client/modules/isTradingCache";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
-import { EggName, EGGS, hatchDebounce } from "shared/configs/eggs";
+import { EggName, EGGS, hatchDebounce, isEventEgg } from "shared/configs/eggs";
 import { GAMEPASSES } from "shared/configs/game";
 import { Pet, Variants } from "shared/configs/pets";
 import { HatchEggFailKind, ValidEggAmount, validEggAmount } from "shared/remotes/eggs/hatchEgg";
@@ -489,6 +489,22 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					const pets: Array<Pet> = [];
 					for (const [, petData] of pairs(eggData.pets)) {
 						pets.push(petData);
+					}
+
+					if (isEventEgg(eggName)) {
+						return (
+							<frame Visible={false}>
+								{regularEgg && (
+									<EggHudDisplay
+										adornee={regularEgg}
+										eggName={eggName}
+										isVoid={false}
+										possiblePets={pets}
+										handleHatch={handleHatch}
+									/>
+								)}
+							</frame>
+						);
 					}
 
 					const voidEgg = eggFolder.void.egg.PrimaryPart;

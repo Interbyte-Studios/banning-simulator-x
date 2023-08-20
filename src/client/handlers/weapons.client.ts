@@ -5,7 +5,6 @@ import { NPCImpact, playSFX, WeaponSlash } from "client/util/playSound";
 import { WeaponIndex, WEAPONS } from "shared/configs/weapons";
 import Hitbox from "shared/modules/raycastModule";
 import { remotes } from "shared/remotes";
-import { isNpcCharacter } from "shared/remotes/damageNPC";
 import { getItemById } from "shared/util/getItemById";
 
 const player = Players.LocalPlayer;
@@ -14,7 +13,7 @@ const player = Players.LocalPlayer;
 StarterGui.SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false);
 
 // get npcs folder
-const npcsFolder = Workspace.WaitForChild("npcs") as Folder;
+const npcsFolder = Workspace.WaitForChild("mockNpcs") as Folder;
 
 // cache connections
 const connections: Array<RBXScriptConnection> = [];
@@ -212,7 +211,13 @@ function equipWeapon(weaponName: WeaponIndex): void {
 			return;
 		}
 
-		if (!isNpcCharacter(npcCharacter)) {
+		const parentNpcObject = npcCharacter.FindFirstChildOfClass("ObjectValue");
+		if (parentNpcObject === undefined) {
+			return;
+		}
+
+		const parentNpc = parentNpcObject.Value as BasePart;
+		if (parentNpc === undefined) {
 			return;
 		}
 
@@ -235,7 +240,7 @@ function equipWeapon(weaponName: WeaponIndex): void {
 		}
 
 		playSFX(NPCImpact.NPCImpact1);
-		remotes.Client.Get("damageNPC").SendToServer(npcCharacter, !npcCharacter.IsDescendantOf(npcsFolder));
+		remotes.Client.Get("damageNPC").SendToServer(parentNpc, !npcCharacter.IsDescendantOf(npcsFolder));
 	});
 	connections.push(hitBox);
 

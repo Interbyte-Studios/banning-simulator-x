@@ -291,7 +291,6 @@ hatchEggRemote.SetCallback(
 				player.Name
 			} | Amount: ${amount} | Egg: ${eggName} | Void: ${isVoid} | Amount that server hatched: ${selectedPets.size()}}`;
 		}
-
 		store.dispatch(hatchEgg(eggCost.amount * selectedPets.size(), eggCost.currencyType, selectedPets));
 		return {
 			success: true,

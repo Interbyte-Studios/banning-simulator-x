@@ -19,7 +19,7 @@ export const currentTimeTrials: Map<
 		 */
 		timeRemaining: number;
 		selectedNPC: string;
-		npcs: Array<{ instance: Model; lastAttack: number; attackAnim: AnimationTrack }>;
+		npcs: Array<{ instance: BasePart; lastAttack: number }>;
 		npcFolder: Folder;
 		npcSpawns: Folder;
 	}

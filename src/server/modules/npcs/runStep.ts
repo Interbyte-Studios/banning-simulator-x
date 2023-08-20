@@ -1,40 +1,45 @@
 import { ReplicatedStorage } from "@rbxts/services";
 import { playerStores } from "server/playerStore";
+import { PET_MAX_LEVELS } from "shared/configs/pets";
 import { WORLDS } from "shared/configs/worlds";
 import { zones } from "shared/configs/zones";
-import { NpcCharacter } from "shared/remotes/damageNPC";
 import { Store } from "shared/rodux";
 import { killNpc } from "shared/rodux/currencies";
+import { logPetMaxLevel } from "shared/rodux/playerIndex/pets";
 import { getBanningMastery } from "shared/util/getBanningMastery";
 import { getPetExperienceMastery } from "shared/util/getPetExperienceMastery";
+import { getPetLevel } from "shared/util/getPetLevel";
 import { getPetStrength } from "shared/util/getPetStrength";
 import { getTalismanStatEffect } from "shared/util/getTalismanDamage";
 import { getWeaponDamage } from "shared/util/getWeaponDamage";
 
-import { getNpcCharacter } from "./getNpcCharacter";
 import { getNpcFolder } from "./getNpcFolder";
 import { getRandomCFrame } from "./getRandomCFrame";
 import { NpcInstance, NpcWorldState } from "./worldState";
 
 // how far the npc will travel around spawn
 const NPC_SPAWN_SURROUNDING = 15;
+
 // min and max times for an NPC to wait between wanders
 const NPC_WANDER_COOLDOWN_MIN = 7;
 const NPC_WANDER_COOLDOWN_MAX = 15;
+
 // amount of NPCs in a zone
 const ZONE_NPC_AMOUNT = 11;
 const ZONE_NPC_BOSS_AMOUNT = 3;
 
-/*
-// distance units for following a player
-const NPC_FOLLOW_DISTANCE = 20;
-// distance to attack a player
-const NPC_ATTACK_DISTANCE = 2;
-// cooldown between attacks the NPC performs
-const NPC_ATTACK_COOLDOWN = 2;
-*/
-
 const random = new Random();
+
+/**
+ * @param part The part to lerp.
+ * @param target The target to travel too.
+ * @param t The speed of the part.
+ */
+export function lerpPosition(part: BasePart, target: Vector3, t: number): void {
+	const startPosition = part.Position;
+	const direction = target.sub(startPosition);
+	part.Position = startPosition.add(direction.mul(t));
+}
 
 /**
  * Runs a simulation step for NPCs.
@@ -45,12 +50,12 @@ const random = new Random();
  */
 export function runStep(
 	state: Array<NpcWorldState>,
-	npcAttacks: Array<{ player: Player; store: Store; character: NpcCharacter }>,
+	npcAttacks: Array<{ player: Player; store: Store; character: BasePart }>,
 	time: number,
 ): void {
 	// get npcs
 	const npcs: Set<NpcInstance> = new Set();
-	const npcCharacterToNpc: Map<NpcCharacter, NpcInstance> = new Map();
+	const npcCharacterToNpc: Map<BasePart, NpcInstance> = new Map();
 	for (const world of state) {
 		for (const zone of world.zones) {
 			// spawn any npcs that need spawning
@@ -72,18 +77,21 @@ export function runStep(
 				}
 
 				// spawn npc which will immediately start wandering
-				const npcCharacter = getNpcCharacter(selectedNpc.name).Clone();
-				npcCharacter.Humanoid.MaxHealth = selectedNpc.health;
-				npcCharacter.Humanoid.Health = selectedNpc.health;
-				npcCharacter.PivotTo(getRandomCFrame(zone.spawn.min, zone.spawn.max, random));
-				npcCharacter.Parent = getNpcFolder();
+				const npcPart = new Instance("Part");
+				npcPart.Size = new Vector3(1, 1, 1);
+				npcPart.Name = selectedNpc.name;
+				npcPart.Anchored = true;
+				npcPart.CanCollide = false;
+				npcPart.PivotTo(getRandomCFrame(zone.spawn.min, zone.spawn.max, random));
+				npcPart.SetAttribute("MaxHealth", selectedNpc.health);
+				npcPart.SetAttribute("Health", selectedNpc.health);
+				npcPart.Parent = getNpcFolder();
 
 				zone.npcs.push({
 					npc: selectedNpc,
-					instance: npcCharacter,
+					instance: npcPart,
 					spawn: zone.spawn,
 					state: {
-						state: "WANDERING",
 						nextWanderTime: 0,
 					},
 					world,
@@ -104,15 +112,12 @@ export function runStep(
 			continue;
 		}
 
-		// check that npc is alive
-		if (!(npc.instance.Humanoid.Health > 0)) {
-			// currently this is possible if two players kill and NPC in the same tick
+		const currentHealth = character.GetAttribute("Health") as number;
+		if (currentHealth === undefined) {
 			continue;
 		}
 
-		// check that npc has a root part
-		const humanoidRootPart = npc.instance.Humanoid.RootPart;
-		if (humanoidRootPart === undefined) {
+		if (currentHealth <= 0) {
 			continue;
 		}
 
@@ -121,7 +126,7 @@ export function runStep(
 			continue;
 		}
 
-		const playerHumanoid = character.FindFirstChildOfClass("Humanoid");
+		const playerHumanoid = playerCharacter.FindFirstChildOfClass("Humanoid");
 		if (playerHumanoid === undefined) {
 			continue;
 		}
@@ -132,7 +137,7 @@ export function runStep(
 		}
 
 		// check distance between player and npc
-		if (playerRootPart.Position.sub(humanoidRootPart.Position).Magnitude > 8) {
+		if (playerRootPart.Position.sub(character.Position).Magnitude > 50) {
 			continue;
 		}
 
@@ -167,10 +172,12 @@ export function runStep(
 		}
 
 		const damageAmount = weaponDamage + talismanStatEffects.damage + petDamageBonus;
-		npc.instance.Humanoid.TakeDamage(damageAmount);
+		const health = currentHealth - damageAmount;
+		character.SetAttribute("Health", health);
 
 		// check if npc is dead
-		if (npc.instance.Humanoid.Health <= 0) {
+		const newHealth = character.GetAttribute("Health") as number;
+		if (newHealth !== undefined && newHealth <= 0) {
 			// reward player
 			const store = playerStores.get(player);
 			if (store === undefined) {
@@ -227,6 +234,20 @@ export function runStep(
 
 			const rebirthBansMultiplier = 5 * store.getState().rebirths.rebirth;
 
+			for (const pet of equippedPets) {
+				const petLevel = getPetLevel(pet);
+				const maxLevel = PET_MAX_LEVELS[pet.variant];
+
+				const petAfterKill = {
+					...pet,
+					bans: pet.bans + 1,
+				};
+				const nextPetLevel = getPetLevel(petAfterKill);
+				if (petLevel < maxLevel && nextPetLevel >= maxLevel) {
+					store.dispatch(logPetMaxLevel([{ id: pet.id, variant: pet.variant }]));
+				}
+			}
+
 			// apply reward
 			store.dispatch(
 				killNpc(
@@ -243,6 +264,9 @@ export function runStep(
 
 			// kill npc
 			npcs.delete(npc);
+			if (character) {
+				character.Destroy();
+			}
 
 			// remove from state
 			const npcZone = npc.world.zones.find((zone) => zone.spawn === npc.spawn);
@@ -259,166 +283,23 @@ export function runStep(
 
 	// move & wander & attack players
 	for (const npc of npcs) {
-		// sometimes the head of an npc disappears
-		// we need to investigate this further (TODO), but for now
-		// we want to just remove the npc if that happens
-		if (npc.instance.FindFirstChild("Head") === undefined) {
-			// kill npc
-			npcs.delete(npc);
+		const wanderingDistance = npc.instance.Position.sub(npc.spawn.floor.Position).Magnitude;
+		const outsideWanderingZone = wanderingDistance > npc.spawn.floor.Size.X / 2 + NPC_SPAWN_SURROUNDING;
 
-			// remove from state
-			const npcZone = npc.world.zones.find((zone) => zone.spawn === npc.spawn);
-			npcZone?.npcs.unorderedRemove(npcZone.npcs.indexOf(npc));
-
-			// get rid of npc instance
-			npc.instance.Parent = undefined;
-			npcCharacterToNpc.delete(npc.instance);
-
-			continue;
+		if ((outsideWanderingZone && !npc.lerpTarget) || (!npc.lerpTarget && time >= npc.state.nextWanderTime)) {
+			const targetPosition = getRandomCFrame(npc.spawn.min, npc.spawn.max, random).Position;
+			npc.lerpTarget = targetPosition;
+			npc.lerpProgress = 0;
 		}
-
-		const npcRoot = npc.instance.Humanoid.RootPart;
-		if (npcRoot === undefined) {
-			// kill npc
-			npcs.delete(npc);
-
-			// remove from state
-			const npcZone = npc.world.zones.find((zone) => zone.spawn === npc.spawn);
-			npcZone?.npcs.unorderedRemove(npcZone.npcs.indexOf(npc));
-
-			// get rid of npc instance
-			npc.instance.Parent = undefined;
-			npcCharacterToNpc.delete(npc.instance);
-
-			continue;
-		}
-
-		if (npcRoot.Position.sub(npc.spawn.floor.Position).Magnitude > 110) {
-			// kill npc
-			npcs.delete(npc);
-
-			// remove from state
-			const npcZone = npc.world.zones.find((zone) => zone.spawn === npc.spawn);
-			npcZone?.npcs.unorderedRemove(npcZone.npcs.indexOf(npc));
-
-			// get rid of npc instance
-			npc.instance.Parent = undefined;
-			npcCharacterToNpc.delete(npc.instance);
-
-			continue;
-		}
-
-		const leftFoot = npc.instance.FindFirstChild("LeftFoot") as BasePart;
-		if (leftFoot !== undefined && leftFoot.Position.Y < npc.spawn.floor.Position.Y - 1.5 - npc.spawn.floor.Size.Y / 2) {
-			// kill npc
-			npcs.delete(npc);
-
-			// remove from state
-			const npcZone = npc.world.zones.find((zone) => zone.spawn === npc.spawn);
-			npcZone?.npcs.unorderedRemove(npcZone.npcs.indexOf(npc));
-
-			// get rid of npc instance
-			npc.instance.Parent = undefined;
-			npcCharacterToNpc.delete(npc.instance);
-
-			continue;
-		}
-
-		const wanderingDistance = npc.instance.Head.Position.sub(npc.spawn.floor.Position).Magnitude;
-
-		if (
-			// check if npc has walked outside of wandering zone
-			wanderingDistance > npc.spawn.floor.Size.X / 2 + NPC_SPAWN_SURROUNDING ||
-			// check if npc needs to re-wander
-			(npc.state.state === "WANDERING" && time >= npc.state.nextWanderTime)
-		) {
-			// return back to a random spawn
-			let returnState = {
-				state: "WANDERING" as const,
-				nextWanderTime: time,
-			};
-			if (npc.state.state !== "WANDERING") {
-				npc.state = returnState;
-			} else {
-				returnState = npc.state;
-			}
-
-			npc.instance.Humanoid.MoveTo(getRandomCFrame(npc.spawn.min, npc.spawn.max, random).Position);
-
-			returnState.nextWanderTime = time + random.NextInteger(NPC_WANDER_COOLDOWN_MIN, NPC_WANDER_COOLDOWN_MAX);
-		}
-
-		/*
-		// move to closest player if they are close enough and exist
-		// get closest character
-		let closestDistance = math.huge;
-		let closestPlayer;
-		for (const player of Players.GetPlayers()) {
-			const distance = player.DistanceFromCharacter(npc.instance.Head.Position);
-
-			if (distance !== 0 && distance < closestDistance) {
-				closestDistance = distance;
-				closestPlayer = player;
+		if (npc.lerpTarget !== undefined && npc.lerpProgress !== undefined) {
+			const t = 0.005;
+			lerpPosition(npc.instance, npc.lerpTarget, t);
+			npc.lerpProgress += t;
+			if (npc.lerpProgress >= 1) {
+				npc.lerpTarget = undefined;
+				npc.lerpProgress = undefined;
+				npc.state.nextWanderTime = time + random.NextInteger(NPC_WANDER_COOLDOWN_MIN, NPC_WANDER_COOLDOWN_MAX);
 			}
 		}
-
-		if (
-			closestPlayer &&
-			closestDistance < NPC_FOLLOW_DISTANCE &&
-			wanderingDistance < npc.spawn.floor.Size.X / 2 + NPC_SPAWN_SURROUNDING &&
-			// check that npc would not walk to the player outside the region
-			closestPlayer.DistanceFromCharacter(npc.spawn.floor.Position) < npc.spawn.floor.Size.X / 2 + NPC_SPAWN_SURROUNDING
-		) {
-			const closestCharacter = closestPlayer.Character?.FindFirstChildWhichIsA("Humanoid");
-			if (!(closestCharacter && closestCharacter.RootPart)) {
-				continue;
-			}
-
-			npc.instance.Humanoid.MoveTo(closestCharacter.RootPart.Position);
-
-			// change to following state if not already
-			let followingState = {
-				state: "FOLLOWING" as const,
-				lastAttackTime: 0,
-			};
-			if (npc.state.state !== "FOLLOWING") {
-				npc.state = followingState;
-			} else {
-				followingState = npc.state;
-			}
-
-			// attack player if they are close enough
-			if (closestDistance < NPC_ATTACK_DISTANCE) {
-				if (followingState.lastAttackTime + NPC_ATTACK_COOLDOWN < time) {
-					// perform attack
-					closestCharacter.TakeDamage(npc.npc.damage);
-					followingState.lastAttackTime = time;
-				}
-			}
-		} else if (
-			// check if npc has walked outside of wandering zone
-			wanderingDistance > npc.spawn.floor.Size.X / 2 + NPC_SPAWN_SURROUNDING ||
-			// check if npc needs to re-wander
-			(npc.state.state === "WANDERING" && time >= npc.state.nextWanderTime) ||
-			// check if npc has walked outside follow distance
-			(closestDistance > NPC_FOLLOW_DISTANCE && npc.state.state === "FOLLOWING")
-		) {
-			// return back to a random spawn
-			let returnState = {
-				state: "WANDERING" as const,
-				nextWanderTime: time,
-			};
-			if (npc.state.state !== "WANDERING") {
-				npc.state = returnState;
-			} else {
-				returnState = npc.state;
-			}
-
-			npc.instance.Humanoid.MoveTo(getRandomCFrame(npc.spawn.min, npc.spawn.max, random).Position);
-
-			returnState.nextWanderTime = time + random.NextInteger(NPC_WANDER_COOLDOWN_MIN, NPC_WANDER_COOLDOWN_MAX);
-		}
-
-		*/
 	}
 }

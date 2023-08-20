@@ -22,10 +22,10 @@ remotes.Server.GetNamespace("petMastery")
 			if (pet !== undefined) {
 				const { id, variant, method } = pet;
 
-				const petMastery = state.petMastery.get(id);
+				const petMastery = state.petMastery.find((mastery) => mastery.id === id);
 
 				// Check to be sure they've discovered the pet.
-				const petsIndex = state.index.pets.get(id);
+				const petsIndex = state.index.pets.find((index) => index.id === id);
 				if (petsIndex === undefined) {
 					return {
 						success: false,
@@ -41,14 +41,14 @@ remotes.Server.GetNamespace("petMastery")
 				switch (variant) {
 					case "regular": {
 						if (method === "maxLevel") {
-							if (petMastery !== undefined && petMastery[variant].maxLevelClaimed) {
+							if (petMastery !== undefined && petMastery.mastery[variant].maxLevelClaimed) {
 								return {
 									success: false,
 									reason: ClaimPetMasteryFailKind.InternalError,
 								};
 							}
 
-							if (petsIndex.maxLevel[variant].cachedMaxLevel.size() < variantMasteryRequirements.maxLevel) {
+							if (petsIndex.index.maxLevel[variant] < variantMasteryRequirements.maxLevel) {
 								return {
 									success: false,
 									reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
@@ -58,14 +58,14 @@ remotes.Server.GetNamespace("petMastery")
 							const boostReward = PET_MASTERY_REWARDS[petData.rarity][variant][method];
 							store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
 						} else if (method === "hatch") {
-							if (petMastery !== undefined && petMastery[variant].hatchClaimed) {
+							if (petMastery !== undefined && petMastery.mastery[variant].hatchClaimed) {
 								return {
 									success: false,
 									reason: ClaimPetMasteryFailKind.InternalError,
 								};
 							}
 
-							if (petsIndex.hatched[variant] < variantMasteryRequirements.hatch) {
+							if (petsIndex.index.hatched[variant] < variantMasteryRequirements.hatch) {
 								return {
 									success: false,
 									reason: ClaimPetMasteryFailKind.NotEnoughHatches,
@@ -85,14 +85,14 @@ remotes.Server.GetNamespace("petMastery")
 					}
 					case "void": {
 						if (method === "maxLevel") {
-							if (petMastery !== undefined && petMastery.void.maxLevelClaimed) {
+							if (petMastery !== undefined && petMastery.mastery.void.maxLevelClaimed) {
 								return {
 									success: false,
 									reason: ClaimPetMasteryFailKind.InternalError,
 								};
 							}
 
-							if (petsIndex.maxLevel.void.cachedMaxLevel.size() < variantMasteryRequirements.maxLevel) {
+							if (petsIndex.index.maxLevel.void < variantMasteryRequirements.maxLevel) {
 								return {
 									success: false,
 									reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
@@ -102,7 +102,7 @@ remotes.Server.GetNamespace("petMastery")
 							const boostReward = PET_MASTERY_REWARDS[petData.rarity].void[method];
 							store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
 						} else if (method === "hatch") {
-							if (petMastery !== undefined && petMastery.void.hatchClaimed) {
+							if (petMastery !== undefined && petMastery.mastery.void.hatchClaimed) {
 								return {
 									success: false,
 									reason: ClaimPetMasteryFailKind.InternalError,
@@ -116,7 +116,7 @@ remotes.Server.GetNamespace("petMastery")
 								};
 							}
 
-							if (petsIndex.hatched[variant] < variantMasteryRequirements.hatch) {
+							if (petsIndex.index.hatched[variant] < variantMasteryRequirements.hatch) {
 								return {
 									success: false,
 									reason: ClaimPetMasteryFailKind.NotEnoughHatches,
@@ -126,14 +126,14 @@ remotes.Server.GetNamespace("petMastery")
 							const boostReward = PET_MASTERY_REWARDS[petData.rarity].void[method];
 							store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
 						} else if (method === "fuse") {
-							if (petMastery !== undefined && petMastery.void.fuseClaimed) {
+							if (petMastery !== undefined && petMastery.mastery.void.fuseClaimed) {
 								return {
 									success: false,
 									reason: ClaimPetMasteryFailKind.InternalError,
 								};
 							}
 
-							if (petsIndex.fused.void < variantMasteryRequirements.fuse) {
+							if (petsIndex.index.fused.void < variantMasteryRequirements.fuse) {
 								return {
 									success: false,
 									reason: ClaimPetMasteryFailKind.NotEnoughFusions,
@@ -148,14 +148,14 @@ remotes.Server.GetNamespace("petMastery")
 					}
 					case "radiant": {
 						if (method === "maxLevel") {
-							if (petMastery !== undefined && petMastery.radiant.maxLevelClaimed) {
+							if (petMastery !== undefined && petMastery.mastery.radiant.maxLevelClaimed) {
 								return {
 									success: false,
 									reason: ClaimPetMasteryFailKind.InternalError,
 								};
 							}
 
-							if (petsIndex.maxLevel.radiant.cachedMaxLevel.size() < variantMasteryRequirements.maxLevel) {
+							if (petsIndex.index.maxLevel.radiant < variantMasteryRequirements.maxLevel) {
 								return {
 									success: false,
 									reason: ClaimPetMasteryFailKind.NotEnoughMaxLevels,
@@ -170,14 +170,14 @@ remotes.Server.GetNamespace("petMastery")
 								reason: ClaimPetMasteryFailKind.InvalidMastery,
 							};
 						} else if (method === "fuse") {
-							if (petMastery !== undefined && petMastery.radiant.fuseClaimed) {
+							if (petMastery !== undefined && petMastery.mastery.radiant.fuseClaimed) {
 								return {
 									success: false,
 									reason: ClaimPetMasteryFailKind.InternalError,
 								};
 							}
 
-							if (petsIndex.fused.radiant < variantMasteryRequirements.fuse) {
+							if (petsIndex.index.fused.radiant < variantMasteryRequirements.fuse) {
 								return {
 									success: false,
 									reason: ClaimPetMasteryFailKind.NotEnoughFusions,
@@ -223,73 +223,73 @@ remotes.Server.GetNamespace("petMastery")
 						throw new UnreachableCaseError(method);
 				}
 			} else {
-				for (const [id, data] of store.getState().index.pets) {
-					const mastery = store.getState().petMastery.get(id);
-					const petData = getPetData(id);
+				for (const petIndex of store.getState().index.pets) {
+					const mastery = store.getState().petMastery.find((mastery) => mastery.id === petIndex.id);
+					const petData = getPetData(petIndex.id);
 
 					for (const variant of PetVariants) {
 						const variantMasteryRequirements = PET_MASTERY_REQUIREMENTS[petData.rarity][variant];
 
 						switch (variant) {
 							case "regular": {
-								if (data.maxLevel[variant].cachedMaxLevel.size() > variantMasteryRequirements.maxLevel) {
-									if (mastery === undefined || !mastery[variant].maxLevelClaimed) {
+								if (petIndex.index.maxLevel[variant] > variantMasteryRequirements.maxLevel) {
+									if (mastery === undefined || !mastery.mastery[variant].maxLevelClaimed) {
 										const boostReward = PET_MASTERY_REWARDS[petData.rarity][variant].maxLevel;
 										store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
-										store.dispatch(claimMaxLevelMastery(id, variant));
+										store.dispatch(claimMaxLevelMastery(petIndex.id, variant));
 									}
 								}
 
-								if (data.hatched[variant] > variantMasteryRequirements.hatch) {
-									if (mastery === undefined || !mastery[variant].hatchClaimed) {
+								if (petIndex.index.hatched[variant] > variantMasteryRequirements.hatch) {
+									if (mastery === undefined || !mastery.mastery[variant].hatchClaimed) {
 										const boostReward = PET_MASTERY_REWARDS[petData.rarity][variant].hatch;
 										store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
-										store.dispatch(claimHatchMastery(id, variant));
+										store.dispatch(claimHatchMastery(petIndex.id, variant));
 									}
 								}
 								break;
 							}
 							case "void": {
-								if (data.maxLevel[variant].cachedMaxLevel.size() > variantMasteryRequirements.maxLevel) {
-									if (mastery === undefined || !mastery[variant].maxLevelClaimed) {
+								if (petIndex.index.maxLevel[variant] > variantMasteryRequirements.maxLevel) {
+									if (mastery === undefined || !mastery.mastery[variant].maxLevelClaimed) {
 										const boostReward = PET_MASTERY_REWARDS[petData.rarity][variant].maxLevel;
 										store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
-										store.dispatch(claimMaxLevelMastery(id, variant));
+										store.dispatch(claimMaxLevelMastery(petIndex.id, variant));
 									}
 								}
 
-								if (data.hatched[variant] > variantMasteryRequirements.hatch) {
-									if (mastery === undefined || !mastery[variant].hatchClaimed) {
+								if (petIndex.index.hatched[variant] > variantMasteryRequirements.hatch) {
+									if (mastery === undefined || !mastery.mastery[variant].hatchClaimed) {
 										const boostReward = PET_MASTERY_REWARDS[petData.rarity][variant].hatch;
 										store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
-										store.dispatch(claimHatchMastery(id, variant));
+										store.dispatch(claimHatchMastery(petIndex.id, variant));
 									}
 								}
 
-								if (data.fused[variant] > variantMasteryRequirements.fuse) {
-									if (mastery === undefined || !mastery[variant].fuseClaimed) {
+								if (petIndex.index.fused[variant] > variantMasteryRequirements.fuse) {
+									if (mastery === undefined || !mastery.mastery[variant].fuseClaimed) {
 										const boostReward = PET_MASTERY_REWARDS[petData.rarity][variant].fuse;
 										store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
-										store.dispatch(claimFuseMastery(id, variant));
+										store.dispatch(claimFuseMastery(petIndex.id, variant));
 									}
 								}
 
 								break;
 							}
 							case "radiant": {
-								if (data.maxLevel[variant].cachedMaxLevel.size() > variantMasteryRequirements.maxLevel) {
-									if (mastery === undefined || !mastery[variant].maxLevelClaimed) {
+								if (petIndex.index.maxLevel[variant] > variantMasteryRequirements.maxLevel) {
+									if (mastery === undefined || !mastery.mastery[variant].maxLevelClaimed) {
 										const boostReward = PET_MASTERY_REWARDS[petData.rarity][variant].maxLevel;
 										store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
-										store.dispatch(claimMaxLevelMastery(id, variant));
+										store.dispatch(claimMaxLevelMastery(petIndex.id, variant));
 									}
 								}
 
-								if (data.fused[variant] > variantMasteryRequirements.fuse) {
-									if (mastery === undefined || !mastery[variant].fuseClaimed) {
+								if (petIndex.index.fused[variant] > variantMasteryRequirements.fuse) {
+									if (mastery === undefined || !mastery.mastery[variant].fuseClaimed) {
 										const boostReward = PET_MASTERY_REWARDS[petData.rarity][variant].fuse;
 										store.dispatch(storeBoost(boostReward.boost, boostReward.duration));
-										store.dispatch(claimFuseMastery(id, variant));
+										store.dispatch(claimFuseMastery(petIndex.id, variant));
 									}
 								}
 

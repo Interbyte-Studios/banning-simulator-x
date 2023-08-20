@@ -10,7 +10,6 @@ import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/stro
 import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
 import assetIds from "shared/assets";
-import { ADMIN_RANK } from "shared/configs/admin";
 import { StoreState } from "shared/rodux";
 import { CurrentWeaponState } from "shared/rodux/currentWeapon";
 
@@ -21,7 +20,6 @@ import { ReturnToAccountView } from "./playerSelection/returnToAccountView";
 import { SelectPlayer } from "./playerSelection/selectPlayer";
 import { PlayerStats } from "./stats";
 import { TradeHistory } from "./trades";
-import { AccountIconTemplate } from "./util/accountIconTemplate";
 import { RightComponentHeader } from "./util/rightComponentHeader";
 
 interface AccountHubProps extends AccountHubMappedProps {
@@ -283,7 +281,8 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 					/>
 				);
 			} else {
-				const adminAccessToTradeLogs =
+				{
+					/*const adminAccessToTradeLogs =
 					playerViewing.UserId === Players.LocalPlayer.UserId ||
 					(props.groupRank !== undefined && props.groupRank >= ADMIN_RANK);
 				const publicAccessToTradeLogs = playerStore.getState().settings.privacy.publicTradeHistory;
@@ -305,9 +304,7 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 						layoutOrder={4}
 						onPressed={(): void => setRightComponentDisplayed(RightComponent.TradeHistory)}
 					/>,
-				];
-
-				rightComponent = (
+				]; rightComponent = (
 					<BaseFrame Position={UDim2.fromScale(0.725, 0.565)} Size={UDim2.fromScale(0.5, 0.765)}>
 						<uigridlayout
 							CellPadding={UDim2.fromScale(0.09, 0.09)}
@@ -316,7 +313,14 @@ export const AccountHub = RoactRodux.connect(mapStateToProps)(
 						/>
 
 						{featureIcons}
-					</BaseFrame>
+					</BaseFrame>*/
+				}
+
+				rightComponent = (
+					<PlayerStats
+						viewedPlayer={playerViewing}
+						returnToSelection={(): void => setRightComponentDisplayed(undefined)}
+					/>
 				);
 			}
 		}

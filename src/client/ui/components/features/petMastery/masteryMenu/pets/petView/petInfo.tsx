@@ -200,7 +200,7 @@ function mapIndexStateToIndexStatProps(state: StoreState): IndexStatsMappedProps
  */
 const IndexStats = RoactRodux.connect(mapIndexStateToIndexStatProps)(
 	hooks((props: IndexStatsProps) => {
-		const petsIndex = props.index.pets.get(props.pet);
+		const petsIndex = props.index.pets.find((index) => index.id === props.pet);
 
 		let hatches = 0;
 		let fuses = 0;
@@ -208,21 +208,21 @@ const IndexStats = RoactRodux.connect(mapIndexStateToIndexStatProps)(
 		if (petsIndex !== undefined) {
 			switch (props.variant) {
 				case "regular": {
-					hatches = petsIndex.hatched.regular;
-					maxLevels = petsIndex.maxLevel.regular.amount;
+					hatches = petsIndex.index.hatched.regular;
+					maxLevels = petsIndex.index.maxLevel.regular;
 
 					break;
 				}
 				case "void": {
-					hatches = petsIndex.hatched.void;
-					fuses = petsIndex.fused.void;
-					maxLevels = petsIndex.maxLevel.void.amount;
+					hatches = petsIndex.index.hatched.void;
+					fuses = petsIndex.index.fused.void;
+					maxLevels = petsIndex.index.maxLevel.void;
 
 					break;
 				}
 				case "radiant": {
-					fuses = petsIndex.fused.radiant;
-					maxLevels = petsIndex.maxLevel.radiant.amount;
+					fuses = petsIndex.index.fused.radiant;
+					maxLevels = petsIndex.index.maxLevel.radiant;
 				}
 			}
 		}

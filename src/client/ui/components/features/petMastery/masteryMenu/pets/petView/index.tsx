@@ -61,7 +61,7 @@ export const IndexPetView = RoactRodux.connect(mapStateToProps)(
 			);
 		}
 
-		const petsIndex = props.index.pets.get(props.pet);
+		const petsIndex = props.index.pets.find((index) => index.id === props.pet);
 
 		return (
 			<BaseFrame

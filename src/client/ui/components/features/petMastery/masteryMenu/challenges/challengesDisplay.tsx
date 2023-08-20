@@ -329,7 +329,7 @@ function mapStateToProps(state: StoreState): PetMasteryChallengesMappedProps {
  */
 export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 	hooks((props: PetMasteryChallengesProps) => {
-		const petsIndex = props.index.pets.get(props.pet);
+		const petsIndex = props.index.pets.find((mastery) => mastery.id === props.pet);
 		if (petsIndex === undefined) {
 			return (
 				<StrokeTextLabel
@@ -343,7 +343,7 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 			);
 		}
 
-		const petsMasteryIndex = props.petMastery.get(props.pet);
+		const petsMasteryIndex = props.petMastery.find((mastery) => mastery.id === props.pet);
 
 		const eggName = getEggNameFromPetId(props.pet);
 		const petData = getPetData(props.pet);
@@ -353,10 +353,10 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 
 		switch (props.variant) {
 			case "regular": {
-				const hatchCompleted = petsMasteryIndex?.regular.hatchClaimed ?? false;
-				const maxLevelCompleted = petsMasteryIndex?.regular.maxLevelClaimed ?? false;
+				const hatchCompleted = petsMasteryIndex?.mastery.regular.hatchClaimed ?? false;
+				const maxLevelCompleted = petsMasteryIndex?.mastery.regular.maxLevelClaimed ?? false;
 
-				const hatchProgress = math.min(petsIndex.hatched.regular / requirements.hatch, 1); // clamp to 1
+				const hatchProgress = math.min(petsIndex.index.hatched.regular / requirements.hatch, 1); // clamp to 1
 				challengesToDisplay.push(
 					<MasteryChallengeFrame
 						pet={props.pet}
@@ -365,13 +365,13 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						number={1}
 						challengeType={"hatch"}
 						requirement={requirements.hatch}
-						amount={petsIndex.hatched.regular}
+						amount={petsIndex.index.hatched.regular}
 						progress={hatchCompleted ? 1 : hatchProgress}
 						hasBeenClaimed={hatchCompleted}
 					/>,
 				);
 
-				const maxLevelProgress = math.min(petsIndex.maxLevel.regular.cachedMaxLevel.size() / requirements.maxLevel, 1); // clamp to 1
+				const maxLevelProgress = math.min(petsIndex.index.maxLevel.regular / requirements.maxLevel, 1); // clamp to 1
 				challengesToDisplay.push(
 					<MasteryChallengeFrame
 						pet={props.pet}
@@ -380,7 +380,7 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						number={2}
 						challengeType={"maxLevel"}
 						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.regular.cachedMaxLevel.size()}
+						amount={petsIndex.index.maxLevel.regular}
 						progress={maxLevelCompleted ? 1 : maxLevelProgress}
 						hasBeenClaimed={maxLevelCompleted}
 					/>,
@@ -389,12 +389,12 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 				break;
 			}
 			case "void": {
-				const hatchCompleted = petsMasteryIndex?.void.hatchClaimed ?? false;
-				const maxLevelCompleted = petsMasteryIndex?.void.maxLevelClaimed ?? false;
-				const fuseCompleted = petsMasteryIndex?.void.fuseClaimed ?? false;
+				const hatchCompleted = petsMasteryIndex?.mastery.void.hatchClaimed ?? false;
+				const maxLevelCompleted = petsMasteryIndex?.mastery.void.maxLevelClaimed ?? false;
+				const fuseCompleted = petsMasteryIndex?.mastery.void.fuseClaimed ?? false;
 
 				if (isEventEgg(eggName) || isExclusiveEgg(eggName)) {
-					const maxLevelProgress = math.min(petsIndex.maxLevel.void.cachedMaxLevel.size() / requirements.maxLevel, 1);
+					const maxLevelProgress = math.min(petsIndex.index.maxLevel.void / requirements.maxLevel, 1);
 					challengesToDisplay.push(
 						<MasteryChallengeFrame
 							pet={props.pet}
@@ -403,13 +403,13 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 							number={1}
 							challengeType={"maxLevel"}
 							requirement={requirements.maxLevel}
-							amount={petsIndex.maxLevel.void.cachedMaxLevel.size()}
+							amount={petsIndex.index.maxLevel.void}
 							progress={maxLevelCompleted ? 1 : maxLevelProgress}
 							hasBeenClaimed={maxLevelCompleted}
 						/>,
 					);
 
-					const fusedProgress = math.min(petsIndex.fused.void / requirements.fuse, 1);
+					const fusedProgress = math.min(petsIndex.index.fused.void / requirements.fuse, 1);
 					challengesToDisplay.push(
 						<MasteryChallengeFrame
 							pet={props.pet}
@@ -418,13 +418,13 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 							number={2}
 							challengeType={"fuse"}
 							requirement={requirements.fuse}
-							amount={petsIndex.fused.void}
+							amount={petsIndex.index.fused.void}
 							progress={fuseCompleted ? 1 : fusedProgress}
 							hasBeenClaimed={fuseCompleted}
 						/>,
 					);
 				} else {
-					const hatchProgress = math.min(petsIndex.hatched.void / requirements.hatch, 1);
+					const hatchProgress = math.min(petsIndex.index.hatched.void / requirements.hatch, 1);
 					challengesToDisplay.push(
 						<MasteryChallengeFrame
 							pet={props.pet}
@@ -433,13 +433,13 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 							number={1}
 							challengeType={"hatch"}
 							requirement={requirements.hatch}
-							amount={petsIndex.hatched.void}
+							amount={petsIndex.index.hatched.void}
 							progress={hatchCompleted ? 1 : hatchProgress}
 							hasBeenClaimed={hatchCompleted}
 						/>,
 					);
 
-					const maxLevelProgress = math.min(petsIndex.maxLevel.void.cachedMaxLevel.size() / requirements.maxLevel, 1);
+					const maxLevelProgress = math.min(petsIndex.index.maxLevel.void / requirements.maxLevel, 1);
 					challengesToDisplay.push(
 						<MasteryChallengeFrame
 							pet={props.pet}
@@ -448,13 +448,13 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 							number={1}
 							challengeType={"maxLevel"}
 							requirement={requirements.maxLevel}
-							amount={petsIndex.maxLevel.void.cachedMaxLevel.size()}
+							amount={petsIndex.index.maxLevel.void}
 							progress={maxLevelCompleted ? 1 : maxLevelProgress}
 							hasBeenClaimed={maxLevelCompleted}
 						/>,
 					);
 
-					const fusedProgress = math.min(petsIndex.fused.void / requirements.fuse, 1);
+					const fusedProgress = math.min(petsIndex.index.fused.void / requirements.fuse, 1);
 					challengesToDisplay.push(
 						<MasteryChallengeFrame
 							pet={props.pet}
@@ -463,7 +463,7 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 							number={2}
 							challengeType={"fuse"}
 							requirement={requirements.fuse}
-							amount={petsIndex.fused.void}
+							amount={petsIndex.index.fused.void}
 							progress={fuseCompleted ? 1 : fusedProgress}
 							hasBeenClaimed={fuseCompleted}
 						/>,
@@ -473,10 +473,10 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 				break;
 			}
 			case "radiant": {
-				const maxLevelCompleted = petsMasteryIndex?.radiant.maxLevelClaimed ?? false;
-				const fuseCompleted = petsMasteryIndex?.radiant.fuseClaimed ?? false;
+				const maxLevelCompleted = petsMasteryIndex?.mastery.radiant.maxLevelClaimed ?? false;
+				const fuseCompleted = petsMasteryIndex?.mastery.radiant.fuseClaimed ?? false;
 
-				const maxLevelProgress = math.min(petsIndex.maxLevel.radiant.cachedMaxLevel.size() / requirements.maxLevel, 1);
+				const maxLevelProgress = math.min(petsIndex.index.maxLevel.radiant / requirements.maxLevel, 1);
 				challengesToDisplay.push(
 					<MasteryChallengeFrame
 						pet={props.pet}
@@ -485,13 +485,13 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						number={1}
 						challengeType={"maxLevel"}
 						requirement={requirements.maxLevel}
-						amount={petsIndex.maxLevel.radiant.cachedMaxLevel.size()}
+						amount={petsIndex.index.maxLevel.radiant}
 						progress={maxLevelCompleted ? 1 : maxLevelProgress}
 						hasBeenClaimed={maxLevelCompleted}
 					/>,
 				);
 
-				const fusedProgress = math.min(petsIndex.fused.radiant / requirements.fuse, 1);
+				const fusedProgress = math.min(petsIndex.index.fused.radiant / requirements.fuse, 1);
 				challengesToDisplay.push(
 					<MasteryChallengeFrame
 						pet={props.pet}
@@ -500,7 +500,7 @@ export const PetMasteryChallenges = RoactRodux.connect(mapStateToProps)(
 						number={2}
 						challengeType={"fuse"}
 						requirement={requirements.fuse}
-						amount={petsIndex.fused.radiant}
+						amount={petsIndex.index.fused.radiant}
 						progress={fuseCompleted ? 1 : fusedProgress}
 						hasBeenClaimed={fuseCompleted}
 					/>,

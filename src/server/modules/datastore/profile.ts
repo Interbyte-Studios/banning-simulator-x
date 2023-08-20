@@ -13,12 +13,11 @@ import { defaultGamepasses } from "shared/rodux/gamepasses";
 import { defaultGamepassGifts } from "shared/rodux/gamepassGifts";
 import { defaultInvitedFriendState } from "shared/rodux/invitedFriend";
 import { defaultMediaState } from "shared/rodux/media";
-import { SerializedPetMasteryState } from "shared/rodux/petMastery";
 import { defaultPetQuestState } from "shared/rodux/petQuest";
 import { defaultPets } from "shared/rodux/pets";
 import { defaultPetTeamsState } from "shared/rodux/petTeams";
 import { defaultPlayerIndexState } from "shared/rodux/playerIndex";
-import { SerializedPetIndexState } from "shared/rodux/playerIndex/pets";
+import { PetIndexState } from "shared/rodux/playerIndex/pets";
 import { defaultQuestsState } from "shared/rodux/quests";
 import { defaultRank } from "shared/rodux/rank";
 import { defaultRebirths } from "shared/rodux/rebirths";
@@ -53,7 +52,7 @@ export type ProfileState = Modify<
 					}
 				>;
 				joinDate: number;
-				pets: SerializedPetIndexState;
+				pets: PetIndexState;
 				vipRewards: Modify<
 					StoreState["index"]["vipRewards"],
 					{
@@ -62,7 +61,6 @@ export type ProfileState = Modify<
 				>;
 			}
 		>;
-		petMastery: SerializedPetMasteryState;
 		tradeLogs: SerializedTradeLogState;
 	}
 >;

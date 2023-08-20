@@ -1,32 +1,20 @@
 import { GameAnalytics } from "@rbxts/gameanalytics";
-import { Players, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
+import { Players, ReplicatedStorage, RunService } from "@rbxts/services";
 import { t } from "@rbxts/t";
 import { onStoreCreated } from "client/clientStores";
 import { getRankIcon } from "client/util/getRankIcon";
 import { GROUP_ROLES } from "shared/configs/game";
 import { TITLES } from "shared/configs/titles";
 import { Store } from "shared/rodux";
-import { getNPCByName } from "shared/util/getNpcByName";
-import { twoDpAbbreviator } from "shared/util/twoDpAbbreviator";
 
 const localPlayer = Players.LocalPlayer;
 const playerGui = localPlayer.WaitForChild("PlayerGui") as PlayerGui;
-
-const npcsFolder = Workspace.WaitForChild("npcs");
-
 const gradients: Array<UIGradient> = [];
 
 const friendlyTags = new Instance("ScreenGui");
 friendlyTags.ResetOnSpawn = false;
 friendlyTags.Name = "FriendlyTags";
 friendlyTags.Parent = playerGui;
-
-const enemyTags = new Instance("ScreenGui");
-enemyTags.ResetOnSpawn = false;
-enemyTags.Name = "EnemyTags";
-enemyTags.Parent = playerGui;
-
-const healthbarTween = new TweenInfo(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.In);
 
 const isPlayerTag = t.intersection(
 	t.instanceIsA("BillboardGui"),
@@ -348,111 +336,6 @@ function updatePlayerTag(player: Player, store: Store): void {
 }
 
 /**
- * Creates an enemy tag that's displayed above the enemy's head.
- *
- * @param enemy The enemy.
- */
-function createEnemyTag(enemy: Model): void {
-	const enemyTag = ReplicatedStorage.assetObjects.tags.enemyTag;
-	assert(enemyTag, `Failed to get enemy tag from rep storage`);
-	const humanoid = enemy.FindFirstChildOfClass("Humanoid");
-	if (humanoid === undefined) {
-		return;
-	}
-
-	const head = enemy.FindFirstChild("Head") as BasePart;
-	if (head === undefined) {
-		return;
-	}
-
-	const npcData = getNPCByName(enemy.Name);
-	if (npcData === undefined) {
-		return;
-	}
-
-	const tag = enemyTag.Clone();
-	tag.hold.name.Text = enemy.Name;
-	tag.hold.title.Visible = npcData.isBoss;
-	tag.hold.title.Text = npcData.isBoss ? `Boss` : `NPC`;
-	tag.hold.title.TextColor3 = npcData.isBoss ? Color3.fromRGB(250, 112, 112) : Color3.fromRGB(255, 255, 255);
-
-	tag.hold.fillBackground.fill.Size = UDim2.fromScale(1, 1);
-	tag.hold.fillBackground.health.Text = `[${twoDpAbbreviator.numberToString(
-		humanoid.Health,
-	)} / ${twoDpAbbreviator.numberToString(humanoid.MaxHealth)}]`;
-
-	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
-	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
-
-	tag.Adornee = head;
-	tag.Parent = enemyTags;
-
-	let healthConnection: RBXScriptConnection | undefined = humanoid.GetPropertyChangedSignal("Health").Connect(() => {
-		if (humanoid === undefined) {
-			return;
-		}
-
-		const health = humanoid.Health;
-		const maxHealth = humanoid.MaxHealth;
-
-		const healthPercentage = health / maxHealth;
-
-		if (healthPercentage > 0.7) {
-			tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(85, 255, 127);
-		} else if (healthPercentage > 0.3) {
-			tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(255, 237, 84);
-		} else {
-			tag.hold.fillBackground.fill.BackgroundColor3 = Color3.fromRGB(255, 92, 84);
-		}
-
-		const healthTween = TweenService.Create(tag.hold.fillBackground.fill, healthbarTween, {
-			Size: UDim2.fromScale(healthPercentage, 1),
-		});
-		healthTween.Play();
-		healthTween.Completed.Wait();
-
-		const hold = tag.FindFirstChild("hold");
-		if (hold === undefined) {
-			return;
-		}
-
-		const fillBackground = hold.FindFirstChild("fillBackground");
-		if (fillBackground === undefined) {
-			return;
-		}
-
-		const healthText = fillBackground.FindFirstChild("health") as TextLabel;
-		if (healthText === undefined) {
-			return;
-		}
-
-		healthText.Text = `[${twoDpAbbreviator.numberToString(humanoid.Health)} / ${twoDpAbbreviator.numberToString(
-			humanoid.MaxHealth,
-		)}]`;
-	});
-
-	let ancestryChangedConnection: RBXScriptConnection | undefined = humanoid.AncestryChanged.Connect(() => {
-		if (healthConnection !== undefined) {
-			healthConnection.Disconnect();
-			healthConnection = undefined;
-		}
-
-		tag.Parent = undefined;
-		tag.Destroy();
-
-		if (humanoid !== undefined) {
-			humanoid.Parent = undefined;
-			humanoid.Destroy();
-		}
-
-		if (ancestryChangedConnection !== undefined) {
-			ancestryChangedConnection.Disconnect();
-			ancestryChangedConnection = undefined;
-		}
-	});
-}
-
-/**
  * @param player The player.
  */
 function onPlayerAdded(player: Player): void {
@@ -492,56 +375,6 @@ function onPlayerAdded(player: Player): void {
 
 Players.PlayerAdded.Connect(onPlayerAdded);
 Players.GetPlayers().forEach(onPlayerAdded);
-
-npcsFolder.ChildAdded.Connect((enemy) => {
-	debug.setmemorycategory("tags");
-	if (!enemy.IsA("Model")) {
-		return;
-	}
-
-	task.delay(2, () => createEnemyTag(enemy));
-});
-
-npcsFolder.GetChildren().forEach((enemy) => {
-	debug.setmemorycategory("tags");
-	if (!enemy.IsA("Model")) {
-		return;
-	}
-
-	task.delay(2, () => createEnemyTag(enemy));
-});
-
-Workspace.trials.ChildAdded.Connect((timeTrialMap) => {
-	debug.setmemorycategory("tags");
-	task.delay(2, () => {
-		const npcs = timeTrialMap.FindFirstChild("npcs");
-		if (npcs === undefined) {
-			return;
-		}
-
-		npcs.GetChildren().forEach((enemy) => {
-			if (!enemy.IsA("Model")) {
-				return;
-			}
-
-			task.delay(2, () => createEnemyTag(enemy));
-		});
-
-		const npcAddedConnection = npcs.ChildAdded.Connect((enemy) => {
-			if (!enemy.IsA("Model")) {
-				return;
-			}
-
-			task.delay(2, () => createEnemyTag(enemy));
-		});
-
-		const ancestryChangedConnection = timeTrialMap.AncestryChanged.Connect(() => {
-			npcAddedConnection.Disconnect();
-			ancestryChangedConnection.Disconnect();
-			return;
-		});
-	});
-});
 
 RunService.RenderStepped.Connect((deltaTime) => {
 	debug.setmemorycategory("tags");

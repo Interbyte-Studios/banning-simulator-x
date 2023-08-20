@@ -126,36 +126,36 @@ export const ACCOLADES: Array<Accolade> = [
 
 					totalObjectives += 7; // total objectives per pet
 
-					const storedMasteryData = state.petMastery.get(petData.id);
+					const storedMasteryData = state.petMastery.find((mastery) => mastery.id === petData.id);
 					if (storedMasteryData === undefined) {
 						continue;
 					}
 
-					if (storedMasteryData.radiant.fuseClaimed) {
+					if (storedMasteryData.mastery.radiant.fuseClaimed) {
 						completedObjectives += 1;
 					}
 
-					if (storedMasteryData.radiant.maxLevelClaimed) {
+					if (storedMasteryData.mastery.radiant.maxLevelClaimed) {
 						completedObjectives += 1;
 					}
 
-					if (storedMasteryData.void.fuseClaimed) {
+					if (storedMasteryData.mastery.void.fuseClaimed) {
 						completedObjectives += 1;
 					}
 
-					if (storedMasteryData.void.maxLevelClaimed) {
+					if (storedMasteryData.mastery.void.maxLevelClaimed) {
 						completedObjectives += 1;
 					}
 
-					if (storedMasteryData.void.hatchClaimed) {
+					if (storedMasteryData.mastery.void.hatchClaimed) {
 						completedObjectives += 1;
 					}
 
-					if (storedMasteryData.regular.maxLevelClaimed) {
+					if (storedMasteryData.mastery.regular.maxLevelClaimed) {
 						completedObjectives += 1;
 					}
 
-					if (storedMasteryData.regular.hatchClaimed) {
+					if (storedMasteryData.mastery.regular.hatchClaimed) {
 						completedObjectives += 1;
 					}
 				}

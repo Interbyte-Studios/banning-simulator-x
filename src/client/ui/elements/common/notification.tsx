@@ -38,7 +38,7 @@ export const Notification = (props: { position: UDim2; size: UDim2; amount: numb
 					Size: UDim2.fromScale(0.7, 0.7),
 					Text: tostring(props.amount),
 				}}
-				stroke={{ native: { Thickness: 3, Color: Color3.fromRGB(112, 34, 37) } }}
+				stroke={{ native: { Thickness: 1.5, Color: Color3.fromRGB(112, 34, 37) } }}
 			/>
 		</BaseFrame>
 	);
