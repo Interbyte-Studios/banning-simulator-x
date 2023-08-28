@@ -67,8 +67,6 @@ function onPlayerRemoving(player: Player): void {
 remotes.Client.GetNamespace("rodux")
 	.Get("storeStateCreated")
 	.Connect((player, state) => {
-		debug.setmemorycategory("clientStores");
-		debug.profilebegin("clientStoreEvent");
 		const store = new Rodux.Store(storeReducer, deserialize(state));
 		stores.set(player, store);
 
@@ -79,12 +77,9 @@ remotes.Client.GetNamespace("rodux")
 		}
 
 		storeCreationCallbacks.delete(player);
-		debug.profileend();
 	});
 
 Players.GetPlayers().forEach(async (player) => {
-	debug.setmemorycategory("clientStores");
-	debug.profilebegin("clientStoreStart");
 	if (player.UserId === Players.LocalPlayer.UserId) {
 		return;
 	}
@@ -110,7 +105,6 @@ Players.GetPlayers().forEach(async (player) => {
 	}
 
 	storeCreationCallbacks.delete(player);
-	debug.profileend();
 });
 
 Players.PlayerRemoving.Connect(onPlayerRemoving);

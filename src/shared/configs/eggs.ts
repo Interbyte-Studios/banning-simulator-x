@@ -5,6 +5,7 @@ import { ARMORED_EGG_PETS } from "./pets/armored";
 import { CANDY_EGG_PETS } from "./pets/candy";
 import { CITY_EGG_PETS } from "./pets/city";
 import { CORRUPT_EGG_PETS } from "./pets/corrupt";
+import { CRYSTAL_EGG_PETS } from "./pets/crystal";
 import { CYBER_EGG_PETS } from "./pets/cyber";
 import { DESERT_EGG_PETS } from "./pets/desert";
 import { DIVINE_EGG_PETS } from "./pets/divine";
@@ -84,10 +85,11 @@ export const isValidMasteryEgg = t.literal(
 	"Royalty",
 	"Neon",
 	"Pixel",
+	"Crystal",
 );
 export type ValidMasteryEgg = t.static<typeof isValidMasteryEgg>;
 
-export const isEventEgg = t.literal("500k Event", "Throwback", "Pixel");
+export const isEventEgg = t.literal("500k Event", "Throwback", "Pixel", "Crystal");
 export type EventEgg = t.static<typeof isEventEgg>;
 
 export const isExclusiveEgg = t.literal("Royalty", "Radioactive", "Divine", "Dweller", "Neon", "Exclusive");
@@ -289,6 +291,15 @@ export const EGGS = {
 	Pixel: {
 		id: 19,
 		pets: PIXEL_EGG_PETS,
+		world: "Ban Land",
+		zone: "Forest",
+		hatchable: false,
+		hidden: false,
+		luckApplies: true,
+	},
+	Crystal: {
+		id: 20,
+		pets: CRYSTAL_EGG_PETS,
 		world: "Ban Land",
 		zone: "Forest",
 		hatchable: true,
