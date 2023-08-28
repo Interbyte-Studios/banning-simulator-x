@@ -146,7 +146,6 @@ remotes.Server.Get("claimDailyRewards").Connect(
 			}
 			case 7: {
 				// robux egg
-				// robux egg
 				const randomObject = new Random();
 				let selectedPet = 0;
 				let chance = randomObject.NextNumber(0, 100);
