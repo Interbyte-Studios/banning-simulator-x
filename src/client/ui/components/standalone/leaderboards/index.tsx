@@ -5,7 +5,6 @@ import { findFirstChildByNameWhichIsA } from "shared/util/findFirstChildByNameWh
 
 import { BanLeaderboard } from "./bansLeaderboards";
 import { EggLeaderboard } from "./eggsLeaderboards";
-import { TimeTrialsLeaderboard } from "./timeTrialsLeaderboards";
 
 /**
  * A component that displays global leaderboard data.
@@ -15,7 +14,6 @@ import { TimeTrialsLeaderboard } from "./timeTrialsLeaderboards";
 export const Leaderboards = hooks((_, { useState, useEffect }) => {
 	const [banBoards, setBanBoards] = useState<Array<BasePart>>([]);
 	const [eggBoards, setEggBoards] = useState<Array<BasePart>>([]);
-	const [timeTrialsBoards, setTimeTrialsBoards] = useState<Array<BasePart>>([]);
 
 	useEffect(() => {
 		const banLeaderboards: Array<BasePart> = [];
@@ -38,30 +36,17 @@ export const Leaderboards = hooks((_, { useState, useEffect }) => {
 			eggLeaderboards.push(basePart);
 		});
 
-		const trialsBoards: Array<BasePart> = [];
-		Workspace.interactions.leaderboards.timeTrials.GetChildren().forEach((leaderboard) => {
-			const basePart = findFirstChildByNameWhichIsA(leaderboard, "board", "BasePart");
-			if (basePart === undefined) {
-				return;
-			}
-
-			trialsBoards.push(basePart);
-		});
-
 		setBanBoards(banLeaderboards);
 		setEggBoards(eggLeaderboards);
-		setTimeTrialsBoards(trialsBoards);
 	}, []);
 
 	const banBoardComponents = banBoards.map((basePart) => <BanLeaderboard adornee={basePart} />);
 	const eggBoardComponents = eggBoards.map((basePart) => <EggLeaderboard adornee={basePart} />);
-	const timeTrialsBoardComponents = timeTrialsBoards.map((basePart) => <TimeTrialsLeaderboard adornee={basePart} />);
 
 	return (
 		<>
 			{banBoardComponents}
 			{eggBoardComponents}
-			{timeTrialsBoardComponents}
 		</>
 	);
 });
