@@ -16,7 +16,7 @@ import { NpcWorldState } from "../modules/npcs/worldState";
 
 let npcAttacks: Array<{ player: Player; store: Store; character: BasePart }> = [];
 remotes.Server.Get("damageNPC").Connect(
-	withPlayerStore((player, store, character, wasTrials) => {
+	withPlayerStore((player, store, character) => {
 		debug.setmemorycategory("damageNPCs");
 		const canAttack = checkCanAttack(player, character, time());
 		if (!canAttack) {
@@ -42,12 +42,8 @@ remotes.Server.Get("damageNPC").Connect(
 			return;
 		}
 
-		if (wasTrials) {
-			const currentTimeTrial = currentTimeTrials.get(player);
-			if (currentTimeTrial === undefined) {
-				return;
-			}
-
+		const currentTimeTrial = currentTimeTrials.get(player);
+		if (currentTimeTrial !== undefined) {
 			if (currentTimeTrial.npcs.find((npc) => npc.instance === character) === undefined) {
 				return;
 			}

@@ -28,9 +28,10 @@ namespace.Get("rebirth").Connect(
 
 		const reward = 500 * nextRebirth;
 		const gemMultiplier = reward * currentState.rebirths.currencyMultipliers.gems * 0.3;
+		const totalReward = (reward + gemMultiplier) * (currentState.boosts.active["x2 Currency"] > 0 ? 2 : 1);
 
 		store.dispatch(claimRebirth());
-		store.dispatch(awardCurrency("gems", reward + gemMultiplier));
+		store.dispatch(awardCurrency("gems", totalReward));
 		store.dispatch(resetBans());
 	}),
 );

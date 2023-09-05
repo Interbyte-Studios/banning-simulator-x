@@ -3,7 +3,6 @@ import { ReplicatedStorage } from "@rbxts/services";
 import { retrieveStore } from "server/playerStore";
 import {
 	TIME_TRIAL_BASE_NPCS,
-	TIME_TRIAL_NPCS_PER_WAVE,
 	TIME_TRIAL_NPCS_REMAINING,
 	TIME_TRIAL_TIMER_ATTRIBUTE,
 	TIME_TRIAL_WAVE_ATTRIBUTE,
@@ -66,7 +65,6 @@ export function startTrial(player: Player): {
 			continue;
 		}
 		newNpc.CFrame = new CFrame(randomSpawn.Position);
-		newNpc.Parent = playerTrial.npcFolder;
 		newNPCs.push({
 			instance: newNpc,
 			lastAttack: 0,
@@ -98,7 +96,7 @@ export function startTrial(player: Player): {
 
 			const newNPCs: Array<{ instance: BasePart; lastAttack: number }> = [];
 			if (currentTrial.npcs.size() === 0) {
-				for (let i = 0; i < TIME_TRIAL_BASE_NPCS + TIME_TRIAL_NPCS_PER_WAVE * currentTrial.wave; i++) {
+				for (let i = 0; i < TIME_TRIAL_BASE_NPCS + math.floor(currentTrial.wave / 5); i++) {
 					const npc = ReplicatedStorage.assetObjects.npcs.FindFirstChild(playerTrial.selectedNPC) as Model;
 					assert(npc !== undefined, "Could not find NPC to spawn for time trial");
 
@@ -128,7 +126,7 @@ export function startTrial(player: Player): {
 						continue;
 					}
 					newNpc.CFrame = new CFrame(randomSpawn.Position);
-					newNpc.Parent = playerTrial.npcFolder;
+					newNpc.Parent = getNpcFolder();
 					newNPCs.push({
 						instance: newNpc,
 						lastAttack: 0,
@@ -170,7 +168,7 @@ export function startTrial(player: Player): {
 						playerHumanoid.TakeDamage(totalDamage);
 					}
 				} else {
-					lerpPosition(npc.instance, playerRoot.Position, 0.1);
+					lerpPosition(npc.instance, playerRoot.Position, 0.01);
 				}
 			}
 
