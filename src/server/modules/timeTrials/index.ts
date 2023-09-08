@@ -20,7 +20,7 @@ export const currentTimeTrials: Map<
 		timeRemaining: number;
 		selectedNPC: string;
 		npcs: Array<{ instance: BasePart; lastAttack: number }>;
-		npcFolder: Folder;
 		npcSpawns: Folder;
+		eggsClaimed: Array<number>;
 	}
 > = new Map();

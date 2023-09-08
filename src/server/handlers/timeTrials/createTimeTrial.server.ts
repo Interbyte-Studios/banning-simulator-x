@@ -68,6 +68,11 @@ remotes.Server.GetNamespace("timeTrials")
 								store.dispatch(setHighestHardWave("Ban Land", playerTrial.wave));
 							}
 						}
+
+						// clear all the npc parts
+						for (const npc of playerTrial.npcs) {
+							npc.instance.Destroy();
+						}
 					}
 
 					cleanupHandler.Cleanup();
@@ -110,6 +115,11 @@ remotes.Server.GetNamespace("timeTrials")
 					if (playerTrial.wave > store.getState().timeTrials["Ban Land"].highestHardWave) {
 						store.dispatch(setHighestHardWave("Ban Land", playerTrial.wave));
 					}
+				}
+
+				// clear all the npc parts
+				for (const npc of playerTrial.npcs) {
+					npc.instance.Destroy();
 				}
 			}
 			cleanupTrial(player);

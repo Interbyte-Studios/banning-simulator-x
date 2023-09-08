@@ -46,7 +46,6 @@ import { CurrencyGainAnimation } from "../components/standalone/notifications/cu
 import { DatastoreEvents } from "../components/standalone/notifications/datastoreEvents";
 import { TalismanLevelUpAnimation } from "../components/standalone/notifications/talismanLevelUp";
 import { WeaponLevelUpAnimation } from "../components/standalone/notifications/weaponLevelUp";
-import { Rewards } from "../components/standalone/rewards";
 import { RobuxShop } from "../components/standalone/robuxShop";
 import { UpdateLog } from "../components/standalone/updateLog";
 import { WeaponEquip } from "../components/standalone/weapons/weaponEquip";
@@ -149,7 +148,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 
 					const magnitude = rootPart.Position.sub(interaction.Position).Magnitude;
 					if (magnitude <= 30) {
-						//setVisibility({ ...visibilityStates, timeTrials: true });
+						setVisibility({ ...visibilityStates, timeTrials: true });
 						return;
 					}
 				}
@@ -362,12 +361,12 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					setVisibility={(value): void => setVisibility({ ...visibilityStates, timeTrials: value })}
 					setTrialsEnabled={(value: boolean): void => {
 						if (value) {
-							TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 0 }).Play();
 							Lighting.Ambient = Color3.fromRGB(255, 198, 149);
 							Lighting.ColorShift_Bottom = Color3.fromRGB(255, 170, 0);
 							Lighting.ColorShift_Top = Color3.fromRGB(85, 0, 127);
 							Lighting.ClockTime = 0;
 							Lighting.FogColor = Color3.fromRGB(255, 170, 0);
+							TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 0 }).Play();
 						}
 						props.setTrialsEnabled(value);
 					}}
@@ -410,12 +409,12 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 					setVisibility={(value): void => setVisibility({ ...visibilityStates, timeTrials: value })}
 					setTrialsEnabled={(value: boolean): void => {
 						if (value) {
-							TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 0 }).Play();
 							Lighting.Ambient = Color3.fromRGB(255, 198, 149);
 							Lighting.ColorShift_Bottom = Color3.fromRGB(255, 170, 0);
 							Lighting.ColorShift_Top = Color3.fromRGB(85, 0, 127);
 							Lighting.ClockTime = 0;
 							Lighting.FogColor = Color3.fromRGB(255, 170, 0);
+							TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 0 }).Play();
 						}
 						props.setTrialsEnabled(value);
 					}}
@@ -683,15 +682,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 			);
 		}
 
-		components.push(
-			<ZonesUI />,
-			<Rewards />,
-			<LocalMessages />,
-			<EggCost />,
-			<EggHud />,
-			<BoostCounter />,
-			<WorldsControl />,
-		);
+		components.push(<ZonesUI />, <LocalMessages />, <EggCost />, <EggHud />, <BoostCounter />, <WorldsControl />);
 
 		return components;
 	}, [visibility, isMenuVisible]);
