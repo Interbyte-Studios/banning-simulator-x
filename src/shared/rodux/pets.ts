@@ -8,7 +8,6 @@ import { Modify } from "shared/util/modify";
 
 import { KillNpc } from "./currencies";
 import { HatchEgg } from "./eggs";
-import { RedeemQuest } from "./quests";
 
 export interface Pet {
 	id: number;
@@ -234,7 +233,7 @@ export function addPets(pets: Array<AddedPet>): AddPets & Rodux.AnyAction {
 export const defaultPets: PetsState = [];
 
 /* eslint-disable jsdoc/require-jsdoc */
-export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQuest | KillNpc | HatchEgg>(defaultPets, {
+export const petsReducer = Rodux.createReducer<PetsState, PetsActions | KillNpc | HatchEgg>(defaultPets, {
 	hatchEgg: (state, action) => {
 		const newPets = action.pets
 			.filter((pet) => !pet.autoDeleted)
@@ -325,27 +324,6 @@ export const petsReducer = Rodux.createReducer<PetsState, PetsActions | RedeemQu
 	},
 	enhancePet: (state) => {
 		return state;
-	},
-	redeemQuest: (state, action) => {
-		if (action.rewardType.kind !== "pet") {
-			return state;
-		}
-
-		const { id, guid, variant } = action.rewardType;
-
-		return [
-			...state,
-			{
-				id,
-				bans: 0,
-				guid,
-				equipped: false,
-				locked: false,
-				tradeLocked: false,
-				variant,
-				enhancements: {},
-			},
-		];
 	},
 	killNpc: (state, action) => {
 		const newState = state.map((pet) => {
