@@ -2,7 +2,7 @@ import { Players, ReplicatedStorage, RunService, StarterGui, TweenService, Works
 import { onStoreCreated } from "client/clientStores";
 import { NPCImpact, playSFX, WeaponSlash } from "client/util/playSound";
 import { WeaponIndex, WEAPONS } from "shared/configs/weapons";
-import Hitbox from "shared/modules/raycastModule";
+import Hitbox from "shared/raycastModule";
 import { remotes } from "shared/remotes";
 import { getItemById } from "shared/util/getItemById";
 
