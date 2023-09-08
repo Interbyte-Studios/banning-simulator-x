@@ -1,4 +1,3 @@
-import { GameAnalytics } from "@rbxts/gameanalytics";
 import { deepEquals } from "@rbxts/object-utils";
 import { Profile } from "@rbxts/profileservice/globals";
 import { HttpService } from "@rbxts/services";
@@ -58,11 +57,6 @@ export async function savePlayerData(player: Player): Promise<boolean> {
 
 	const [getStoreSuccess, store] = pcall(retrieveStore, player);
 	if (!getStoreSuccess) {
-		GameAnalytics.addErrorEvent(player.UserId, {
-			severity: "error",
-			message: `Failed to retrieve store when saving player data`,
-		});
-
 		profile.Release();
 		return false;
 	}
@@ -77,10 +71,6 @@ export async function savePlayerData(player: Player): Promise<boolean> {
 		${HttpService.JSONEncode(deserialize(serialize(state)))}`;
 
 		warn(warningMessage);
-		GameAnalytics.addErrorEvent(player.UserId, {
-			severity: "critical",
-			message: warningMessage,
-		});
 	}
 
 	// serialize the player's data

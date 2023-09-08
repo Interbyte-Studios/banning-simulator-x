@@ -1,4 +1,3 @@
-import { GameAnalytics } from "@rbxts/gameanalytics";
 import { HttpService } from "@rbxts/services";
 import { modifyPetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
@@ -38,13 +37,6 @@ remotes.Server.GetNamespace("admin")
 				tradeLocked: groupRank !== 254,
 			};
 
-			GameAnalytics.addErrorEvent(adminPlayer.UserId, {
-				severity: "warning",
-				message:
-					targetPlayer.UserId === adminPlayer.UserId
-						? `${adminPlayer.Name} spawned pet | Pet: ${pet.id} | Variant: ${pet.variant}`
-						: `${adminPlayer.Name} spawned pet for user with id: ${targetPlayer.UserId} | Pet: ${pet.id} | Variant: ${pet.variant}`,
-			});
 			modifyPetCount({
 				type: "addPet",
 				petId: petData.petId,

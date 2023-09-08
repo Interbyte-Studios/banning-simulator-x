@@ -1,10 +1,9 @@
-import { GameAnalytics } from "@rbxts/gameanalytics";
 import ProfileService from "@rbxts/profileservice";
 import { Players, RunService } from "@rbxts/services";
 import { STORE_SCOPE } from "shared/configs/game";
 
 import { deserialize } from "../shared/datastore/serde";
-import { getServerDataVersion, hasExpectedDataVersion, runMigrations } from "./modules/datastore/migrations";
+import { hasExpectedDataVersion, runMigrations } from "./modules/datastore/migrations";
 import { profileTemplate } from "./modules/datastore/profile";
 import { deleteProfile, getProfile, savePlayerData, setProfile } from "./modules/datastore/savePlayerData";
 import { createPlayerStore, removeStore } from "./playerStore";
@@ -42,10 +41,6 @@ async function onPlayerAdded(player: Player): Promise<void> {
 
 	const profile = playerDataStore.LoadProfileAsync(tostring(player.UserId));
 	if (profile === undefined) {
-		GameAnalytics.addErrorEvent(player.UserId, {
-			severity: "error",
-			message: "ProfileService failed to acquire lock on profile",
-		});
 		player.Kick("Failed to load your data. Please rejoin.");
 		return;
 	}
@@ -67,12 +62,6 @@ async function onPlayerAdded(player: Player): Promise<void> {
 	profile.Data = runMigrations(profile.Data);
 
 	if (!hasExpectedDataVersion(profile.Data)) {
-		GameAnalytics.addErrorEvent(player.UserId, {
-			severity: "error",
-			message: `Attempt to join server with dataVersion ${
-				profile.Data.dataVersion
-			}, but we cannot process it (up to data version ${getServerDataVersion()}).`,
-		});
 		return player.Kick("This server may be outdated. Please rejoin.");
 	}
 
@@ -95,10 +84,6 @@ Players.PlayerRemoving.Connect(async (player) => {
 
 	const profile = getProfile(player);
 	if (profile === undefined) {
-		GameAnalytics.addErrorEvent(player.UserId, {
-			severity: "critical",
-			message: "Failed to retrieve player store on `PlayerRemoving`.",
-		});
 		return;
 	}
 	deleteProfile(player);
@@ -118,10 +103,7 @@ game.BindToClose(() => {
 	});
 	const [didSave, saveError] = Promise.all(saveDataPromises).await();
 	if (!didSave) {
-		GameAnalytics.addErrorEvent(0, {
-			severity: "critical",
-			message: `Failed to handle data saving during BindToClose:\n${saveError}`,
-		});
+		throw `Failed to handle data saving during BindToClose:\n${saveError}`;
 	}
 });
 
@@ -149,10 +131,7 @@ while (RunService.Heartbeat.Wait()) {
 		for (const player of Players.GetPlayers()) {
 			const [didSave, saveError] = pcall(savePlayerData, player);
 			if (!didSave) {
-				GameAnalytics.addErrorEvent(player.UserId, {
-					severity: "critical",
-					message: `Failed to handle data saving during Heartbeat:\n${saveError}`,
-				});
+				throw `Failed to handle data saving during Heartbeat:\n${saveError}`;
 			}
 		}
 	}

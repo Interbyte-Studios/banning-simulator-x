@@ -1,5 +1,4 @@
 debug.setmemorycategory("walkSpeed");
-import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { getAutoFightState } from "client/modules/autoFightWalkspeedHandler";
@@ -46,10 +45,5 @@ onStoreCreated(player)
 		});
 	})
 	.catch((e) => {
-		// do not include player names. against the rules apparently.
-		GameAnalytics.addErrorEvent(Players.LocalPlayer.UserId, {
-			severity: "error",
-			message: `[ WalkSpeed Handler ] - Failed to run promise callback on "onStoreCreated" | ${e}`,
-		});
 		throw `[ WalkSpeed Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 	});

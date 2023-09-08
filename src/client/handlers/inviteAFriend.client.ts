@@ -1,4 +1,3 @@
-import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players, SocialService, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { remotes } from "shared/remotes";
@@ -41,10 +40,5 @@ onStoreCreated(player)
 		}
 	})
 	.catch((e) => {
-		// do not include player names. against the rules apparently.
-		GameAnalytics.addErrorEvent(Players.LocalPlayer.UserId, {
-			severity: "error",
-			message: `[ Invite A Friend Handler ] - Failed to run promise callback on "onStoreCreated" | ${e}`,
-		});
 		throw `[ Invite A Friend Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 	});
