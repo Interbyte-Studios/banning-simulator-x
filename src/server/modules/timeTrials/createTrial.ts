@@ -84,8 +84,8 @@ export function createTrial(
 		timeRemaining: TIME_TRIAL_LENGTH,
 		selectedNPC: randomNPC.Name,
 		npcs: [],
-		npcFolder: playerTimeTrial.npcs,
 		npcSpawns: playerTimeTrial.npcSpawn,
+		eggsClaimed: [],
 	});
 
 	cleanup.Add(() => currentTimeTrials.delete(player));

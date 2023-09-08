@@ -31,14 +31,31 @@ const ZONE_NPC_BOSS_AMOUNT = 3;
 const random = new Random();
 
 /**
- * @param part The part to lerp.
- * @param target The target to travel too.
- * @param t The speed of the part.
+ * @param part The part to move.
+ * @param target The target to travel to.
+ * @param speed The speed of the part per frame.
  */
-export function lerpPosition(part: BasePart, target: Vector3, t: number): void {
+export function lerpPosition(part: BasePart, target: Vector3, speed: number): void {
 	const startPosition = part.Position;
 	const direction = target.sub(startPosition);
-	part.Position = startPosition.add(direction.mul(t));
+
+	// Calculate the normalized direction manually
+	const magnitude = math.sqrt(direction.X * direction.X + direction.Y * direction.Y + direction.Z * direction.Z);
+
+	// Check for a zero vector to avoid division by zero
+	if (magnitude === 0) return;
+
+	const normalizedDirection = new Vector3(direction.X / magnitude, direction.Y / magnitude, direction.Z / magnitude);
+
+	// Determine how much to move in this frame
+	const moveDistance = new Vector3(
+		normalizedDirection.X * speed,
+		normalizedDirection.Y * speed,
+		normalizedDirection.Z * speed,
+	);
+
+	// Apply the movement
+	part.Position = startPosition.add(moveDistance);
 }
 
 /**
@@ -292,10 +309,10 @@ export function runStep(
 			npc.lerpProgress = 0;
 		}
 		if (npc.lerpTarget !== undefined && npc.lerpProgress !== undefined) {
-			const t = 0.005;
+			const t = 0.3;
 			lerpPosition(npc.instance, npc.lerpTarget, t);
 			npc.lerpProgress += t;
-			if (npc.lerpProgress >= 1) {
+			if (npc.lerpProgress >= 35) {
 				npc.lerpTarget = undefined;
 				npc.lerpProgress = undefined;
 				npc.state.nextWanderTime = time + random.NextInteger(NPC_WANDER_COOLDOWN_MIN, NPC_WANDER_COOLDOWN_MAX);
