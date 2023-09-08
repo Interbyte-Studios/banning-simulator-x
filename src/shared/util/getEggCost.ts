@@ -188,6 +188,11 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 			eggCost.currencyType = "coins";
 			break;
 		}
+		case 23: {
+			eggCost.amount = 5;
+			eggCost.currencyType = "gems";
+			break;
+		}
 		default: {
 			if (zoneData.cost === undefined) {
 				throw `Unexpected issue while finding cost for "${egg}"`;

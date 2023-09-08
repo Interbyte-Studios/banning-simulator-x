@@ -13,16 +13,19 @@ import { DWELLER_EGG_PETS } from "./pets/dweller";
 import { EVENT_500k_EGG_PETS } from "./pets/event500k";
 import { EXCLUSIVE_PETS } from "./pets/exclusive";
 import { GEARWORX_EGG_PETS } from "./pets/gearworx";
+import { GEOMETRIC_EGG_PETS } from "./pets/geometric";
 import { GROUP_CHEST_PETS } from "./pets/group";
 import { HONEYCOMB_EGG_PETS } from "./pets/honeycomb";
 import { JESTER_EGG_PETS } from "./pets/jester";
 import { MOLTEN_EGG_PETS } from "./pets/molten";
 import { NEON_EGG_PETS } from "./pets/neon";
+import { PASTEL_EGG_PETS } from "./pets/pastel";
 import { PIXEL_EGG_PETS } from "./pets/pixel";
 import { RADIOACTIVE_EGG_PETS } from "./pets/radioactive";
 import { ROYALTY_EGG_PETS } from "./pets/royalty";
 import { STARTER_EGG_PETS } from "./pets/starter";
 import { THROWBACK_EGG_PETS } from "./pets/throwback";
+import { THROWBACK_2_EGG_PETS } from "./pets/throwback2";
 import { WORLD_PRESTIGE_PETS } from "./pets/worldPrestige";
 import { WorldName } from "./worlds";
 import { ZoneNames } from "./zones";
@@ -86,13 +89,25 @@ export const isValidMasteryEgg = t.literal(
 	"Neon",
 	"Pixel",
 	"Crystal",
+	"Pastel",
+	"Geometric",
+	"Throwback 2.0",
 );
 export type ValidMasteryEgg = t.static<typeof isValidMasteryEgg>;
 
-export const isEventEgg = t.literal("500k Event", "Throwback", "Pixel", "Crystal");
+export const isEventEgg = t.literal("500k Event", "Throwback", "Pixel", "Crystal", "Throwback 2.0");
 export type EventEgg = t.static<typeof isEventEgg>;
 
-export const isExclusiveEgg = t.literal("Royalty", "Radioactive", "Divine", "Dweller", "Neon", "Exclusive");
+export const isExclusiveEgg = t.literal(
+	"Royalty",
+	"Radioactive",
+	"Divine",
+	"Dweller",
+	"Neon",
+	"Geometric",
+	"Pastel",
+	"Exclusive",
+);
 export type ExclusiveEgg = t.static<typeof isExclusiveEgg>;
 
 /**
@@ -300,6 +315,33 @@ export const EGGS = {
 	Crystal: {
 		id: 20,
 		pets: CRYSTAL_EGG_PETS,
+		world: "Ban Land",
+		zone: "Forest",
+		hatchable: false,
+		hidden: false,
+		luckApplies: true,
+	},
+	Pastel: {
+		id: 21,
+		pets: PASTEL_EGG_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: false,
+		hidden: false,
+		luckApplies: false,
+	},
+	Geometric: {
+		id: 22,
+		pets: GEOMETRIC_EGG_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: false,
+		hidden: false,
+		luckApplies: false,
+	},
+	"Throwback 2.0": {
+		id: 23,
+		pets: THROWBACK_2_EGG_PETS,
 		world: "Ban Land",
 		zone: "Forest",
 		hatchable: true,

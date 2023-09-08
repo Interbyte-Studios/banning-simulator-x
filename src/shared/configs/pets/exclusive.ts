@@ -104,4 +104,24 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 900,
 		},
 	},
+	"Radioactive Defender": {
+		chance: 0,
+		id: 10013,
+		rarity: "Exclusive",
+		fusionCost: 1_500_000,
+		stats: {
+			additionalDamage: 16_250_000,
+			additionalBans: 850,
+		},
+	},
+	Pufferfish: {
+		chance: 0,
+		id: 10014,
+		rarity: "Exclusive",
+		fusionCost: 10_000_000,
+		stats: {
+			additionalDamage: 18_000_000,
+			additionalBans: 1_350,
+		},
+	},
 };

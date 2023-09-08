@@ -264,7 +264,7 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 	useEffect(() => {
 		if (!popupsShown) {
 			popupsShown = true;
-			setVisibility({ ...visibilityStates, updateLog: true });
+			//setVisibility({ ...visibilityStates, updateLog: true });
 		}
 	}, []);
 
