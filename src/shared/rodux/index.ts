@@ -20,7 +20,6 @@ import { PetQuestActions, petQuestReducer, PetQuestState } from "./petQuest";
 import { PetsActions, petsReducer, PetsState } from "./pets";
 import { PetTeamsActions, petTeamsReducer, PetTeamsState } from "./petTeams";
 import { PlayerIndexActions, playerIndexReducer, PlayerIndexState } from "./playerIndex";
-import { QuestsAction, questsReducer, QuestsState } from "./quests";
 import { RankActions, rankReducer, RankState } from "./rank";
 import { RebirthActions, rebirthsReducer, RebirthState } from "./rebirths";
 import { SettingsActions, settingsReducer, SettingsState } from "./settings";
@@ -53,7 +52,6 @@ export type StoreState = {
 	petQuests: PetQuestState;
 	petMastery: PetMasteryState;
 	petTeams: PetTeamsState;
-	quests: QuestsState;
 	rank: RankState;
 	settings: SettingsState;
 	spinWheel: SpinWheelState;
@@ -80,7 +78,6 @@ export type StoreActions = (
 	| MediaActions
 	| PetsActions
 	| PetQuestActions
-	| QuestsAction
 	| RankActions
 	| SettingsActions
 	| TitleActions
@@ -114,7 +111,6 @@ export const storeReducer = Rodux.combineReducers<StoreState, StoreActions>({
 	media: mediaReducer,
 	pets: petsReducer,
 	petQuests: petQuestReducer,
-	quests: questsReducer,
 	settings: settingsReducer,
 	rank: rankReducer,
 	title: titleReducer,

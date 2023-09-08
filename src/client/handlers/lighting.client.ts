@@ -1,4 +1,3 @@
-import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Lighting, Players, RunService } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { getCurrentWorld } from "client/util/getCurrentWorld";
@@ -65,10 +64,5 @@ onStoreCreated(player)
 		});
 	})
 	.catch((e) => {
-		// do not include player names. against the rules apparently.
-		GameAnalytics.addErrorEvent(Players.LocalPlayer.UserId, {
-			severity: "error",
-			message: `[ Lighting Handler ] - Failed to run promise callback on "onStoreCreated" | ${e}`,
-		});
 		throw `[ Lighting Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 	});

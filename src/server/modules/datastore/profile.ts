@@ -18,7 +18,6 @@ import { defaultPets } from "shared/rodux/pets";
 import { defaultPetTeamsState } from "shared/rodux/petTeams";
 import { defaultPlayerIndexState } from "shared/rodux/playerIndex";
 import { PetIndexState } from "shared/rodux/playerIndex/pets";
-import { defaultQuestsState } from "shared/rodux/quests";
 import { defaultRank } from "shared/rodux/rank";
 import { defaultRebirths } from "shared/rodux/rebirths";
 import { defaultSettings } from "shared/rodux/settings";
@@ -103,7 +102,6 @@ export const profileTemplate: ProfileState = {
 	petQuests: defaultPetQuestState,
 	petMastery: [],
 	petTeams: defaultPetTeamsState,
-	quests: defaultQuestsState,
 	rank: defaultRank,
 	settings: defaultSettings,
 	spinWheel: defaultSpinWheel,

@@ -1,4 +1,3 @@
-import { GameAnalytics } from "@rbxts/gameanalytics";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { retrieveStore } from "server/playerStore";
 import { MODERATOR_RANK } from "shared/configs/admin";
@@ -23,13 +22,6 @@ remotes.Server.GetNamespace("admin")
 			const ownsWeapon = targetPlayerStore.getState().weapons.find((weapon) => weapon.id === weaponData.weaponId);
 			if (ownsWeapon === undefined) return;
 
-			GameAnalytics.addErrorEvent(adminPlayer.UserId, {
-				severity: "warning",
-				message:
-					targetPlayer.UserId === adminPlayer.UserId
-						? `${adminPlayer.Name} modified weapon level self | Weapon: ${ownsWeapon.id} | Level: ${weaponData.level}`
-						: `${adminPlayer.Name} modified weapon level for user with id: ${targetPlayer.UserId} | Weapon: ${ownsWeapon.id} | Level: ${weaponData.level}`,
-			});
 			targetPlayerStore.dispatch(admin_ModifyWeaponLevel(weaponData.weaponId, weaponData.level));
 		}),
 	);

@@ -1,4 +1,3 @@
-import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players, ReplicatedStorage, RunService } from "@rbxts/services";
 import { t } from "@rbxts/t";
 import { onStoreCreated } from "client/clientStores";
@@ -364,11 +363,6 @@ function onPlayerAdded(player: Player): void {
 			});
 		})
 		.catch((e) => {
-			// do not include player names. against the rules apparently.
-			GameAnalytics.addErrorEvent(Players.LocalPlayer.UserId, {
-				severity: "error",
-				message: `[ Billboard Tags Handler ] - Failed to run promise callback on "onStoreCreated" | ${e}`,
-			});
 			throw `[ Billboard Tags Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 		});
 }

@@ -1,4 +1,3 @@
-import { GameAnalytics } from "@rbxts/gameanalytics";
 import Make from "@rbxts/make";
 import { Players, RunService, SoundService } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
@@ -42,11 +41,6 @@ onStoreCreated(player)
 		});
 	})
 	.catch((e) => {
-		// do not include player names. against the rules apparently.
-		GameAnalytics.addErrorEvent(Players.LocalPlayer.UserId, {
-			severity: "error",
-			message: `[ Music Handler ] - Failed to run promise callback on "onStoreCreated" | ${e}`,
-		});
 		throw `[ Lighting Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 	});
 

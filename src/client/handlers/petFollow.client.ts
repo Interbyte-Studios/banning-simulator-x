@@ -1,4 +1,3 @@
-import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Players, RunService, Workspace } from "@rbxts/services";
 import { onStoreCreated } from "client/clientStores";
 import { cachePetForAnimation } from "client/modules/pets/createPetFollow";
@@ -153,11 +152,6 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 			);
 		})
 		.catch((e) => {
-			// do not include player names. against the rules apparently.
-			GameAnalytics.addErrorEvent(Players.LocalPlayer.UserId, {
-				severity: "error",
-				message: `[ Pet Follow Handler ] - Failed to run promise callback on "onStoreCreated" | ${e}`,
-			});
 			throw `[ Pet Follow Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;
 		});
 
