@@ -18,7 +18,6 @@ import { petMasteryRemotes } from "./remotes/petMastery";
 import { petQuestRemotes } from "./remotes/petQuest";
 import { petRemtoes } from "./remotes/pets";
 import { playerLoadedRemtoes } from "./remotes/playerLoaded";
-import { questsRemotes } from "./remotes/quests";
 import { ranksRemotes } from "./remotes/ranks";
 import { rebirthRemotes } from "./remotes/rebirths";
 import { rewardRemotes } from "./remotes/rewards";
@@ -55,7 +54,6 @@ onStoreCreated(player)
 					...petQuestRemotes,
 					...petMasteryRemotes,
 					...playerLoadedRemtoes,
-					...questsRemotes,
 					...ranksRemotes,
 					...rewardRemotes,
 					...settingsRemotes,

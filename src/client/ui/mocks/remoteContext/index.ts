@@ -12,7 +12,6 @@ import { petMasteryRemoteContext } from "./remoteDefinitions/petMastery";
 import { petQuestRemoteContext } from "./remoteDefinitions/petQuest";
 import { petsRemoteContext } from "./remoteDefinitions/pets";
 import { playerLoadedContext } from "./remoteDefinitions/playerLoaded";
-import { questsRemoteContext } from "./remoteDefinitions/quests";
 import { ranksRemoteContext } from "./remoteDefinitions/ranks";
 import { rebirthsRemoteContext } from "./remoteDefinitions/rebirths";
 import { rewardsRemoteContext } from "./remoteDefinitions/rewards";
@@ -39,7 +38,6 @@ export const fakeRemoteContext = {
 	...eggsRemoteContext,
 	...adminRemoteContext,
 	...mediaRemoteContext,
-	...questsRemoteContext,
 	...settingsRemoteContext,
 	...talismansRemoteContext,
 	...ranksRemoteContext,

@@ -18,7 +18,6 @@ import { playerLoaded } from "./playerLoaded";
 import { purchaseWorldDefinition } from "./purchaseWorld";
 import { purchaseZoneDefinition } from "./purchaseZone";
 import { rebirthsNamespace } from "./rebirth";
-import { redeemQuestDefinition } from "./redeemQuest";
 import { rewardsDefinition } from "./rewards";
 import { roduxDefinitions } from "./rodux";
 import { settings } from "./settings";
@@ -56,7 +55,6 @@ export const remotes = Net.Definitions.Create({
 	equipTitle: equipTitleDefinition,
 	damageNPC: damageNPCDefinition,
 	purchaseZone: purchaseZoneDefinition,
-	redeemQuest: redeemQuestDefinition,
 	unlockRank: unlockRankDefinition,
 	spinWheel: spinWheelDefinition,
 	spinWheelInfo: spinWheelInfoDefinition,

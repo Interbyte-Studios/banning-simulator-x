@@ -4,7 +4,6 @@ import { currencies, Currency } from "shared/configs/currencies";
 
 import { HatchEgg } from "./eggs";
 import { EnhancePet, FusePet, Pet } from "./pets";
-import { RedeemQuest } from "./quests";
 import { UnlockRank } from "./rank";
 import { PurchaseTalisman } from "./talismans";
 import { PurchaseWeapon } from "./weapons";
@@ -90,7 +89,6 @@ export const currenciesReducer = Rodux.createReducer<
 	| UnlockWorld
 	| UnlockZone
 	| HatchEgg
-	| RedeemQuest
 	| PurchaseTalisman
 	| EnhancePet
 	| UnlockRank
@@ -124,16 +122,6 @@ export const currenciesReducer = Rodux.createReducer<
 		return {
 			...state,
 			[action.currencyType]: state[action.currencyType] - action.cost,
-		};
-	},
-	redeemQuest: (state, action) => {
-		if (action.rewardType.kind !== "currency") {
-			return state;
-		}
-
-		return {
-			...state,
-			[action.rewardType.currency]: state[action.rewardType.currency] + action.rewardType.amount,
 		};
 	},
 	purchaseTalisman: (state, action) => {
