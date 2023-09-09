@@ -11,7 +11,7 @@ for (const [eggName, eggData] of pairs(EGGS)) {
 	}
 
 	let chance = 0;
-	for (const [, petData] of pairs(eggData.pets)) {
+	for (const petData of eggData.pets) {
 		chance += petData.chance;
 	}
 
@@ -26,7 +26,7 @@ for (const [eggName, eggData] of pairs(EGGS)) {
 // next we want to ensure that the limited egg in rotation also has pet chances that add to 100
 const limitedEggData = getEggData(LIMITED_EGG);
 let limitedEggTotalChance = 0;
-for (const [, petData] of pairs(limitedEggData.pets)) {
+for (const petData of limitedEggData.pets) {
 	limitedEggTotalChance += petData.chance;
 }
 

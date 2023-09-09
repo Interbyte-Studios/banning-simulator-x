@@ -38,7 +38,7 @@ export type PetHatched = {
  */
 export function hatchGameEgg(storeState: StoreState, egg: EggName, variant: Exclude<Variants, "radiant">): PetHatched {
 	const eggData = getEggData(egg);
-	const randomNum = random.NextNumber(0, 100);
+	const randomNum = random.NextNumber(99.999976, 100);
 
 	let luckMultiplier = 0;
 	luckMultiplier += storeState.boosts.active["x2 Hatching Luck"] > 0 ? 2 : 0;
@@ -64,22 +64,34 @@ export function hatchGameEgg(storeState: StoreState, egg: EggName, variant: Excl
 
 	let hatchedPet: Pet | undefined;
 	let cumulativeChance = 0;
+	warn(`---------------------------------------------------`);
 	for (let i = 0; i < eggData.pets.size(); i++) {
+		warn(`----------------------------`);
 		const pet = eggData.pets[i];
 
 		// we need to check if there are any legendary+ pets if they have luck enabled
 		// if there are, we need to remove their chance * luck from the 1st pet in the egg
+		print(luckMultiplier > 0, hasLegendPets);
 		if (luckMultiplier > 0 && hasLegendPets) {
-			for (const immunePet of eggData.pets) {
-				if (!isImmuneRarity(pet.rarity)) {
-					continue;
-				}
+			warn(i);
+			if (i === 0) {
+				warn(`It's 0!`);
+				for (const immunePet of eggData.pets) {
+					warn(`Iterating over pet! Rarity: ${immunePet.rarity}`);
+					if (!isImmuneRarity(immunePet.rarity)) {
+						continue;
+					}
 
-				pet.chance -= immunePet.chance * luckMultiplier;
-				pet.chance += immunePet.chance;
+					pet.chance -= immunePet.chance * luckMultiplier;
+					pet.chance += immunePet.chance;
+					warn(`Removed ${-(immunePet.chance * luckMultiplier) + immunePet.chance} from ${pet.name}`);
+				}
+			} else if (isImmuneRarity(pet.rarity)) {
+				pet.chance *= luckMultiplier;
 			}
 		}
 		cumulativeChance += pet.chance;
+		warn(`Pet id: ${pet.id} | Chance: ${pet.chance} | Cumulative: ${cumulativeChance} | Random: ${randomNum}`);
 
 		if (randomNum <= cumulativeChance) {
 			hatchedPet = {
@@ -91,8 +103,11 @@ export function hatchGameEgg(storeState: StoreState, egg: EggName, variant: Excl
 				variant: magicVariant,
 				tradeLocked: false,
 			};
+			break;
 		}
+		warn(`----------------------------`);
 	}
+	warn(`---------------------------------------------------`);
 	assert(hatchedPet, `Failed to hatch pet in egg ${egg}`);
 
 	return {

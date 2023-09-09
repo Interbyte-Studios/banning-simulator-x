@@ -204,13 +204,11 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							}
 
 							hatchEgg.SendToServer(amount, eggName, variant === "void");
-							warn(`Sent request`);
 						}
 					});
 				} else {
 					lastHatchTime = now;
 					hatchEgg.SendToServer(amount, eggName, variant === "void");
-					warn(`Sent request`);
 				}
 			},
 			[props.eggs, props.currencies, props.pets, props.settings, props.gamepasses, props.rebirths],

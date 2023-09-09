@@ -29,7 +29,7 @@ export function getPetMasteryUnclaimedChallenges(eggName: EggName, specificVaria
 	const eggData = getEggData(eggName);
 
 	let unseenChallenges = 0;
-	for (const [, petData] of pairs(eggData.pets)) {
+	for (const petData of eggData.pets) {
 		const discoveredPet = index.pets.find((index) => index.id === petData.id);
 		if (discoveredPet !== undefined) {
 			const petMasteryPet = petMastery.find((mastery) => mastery.id === petData.id);

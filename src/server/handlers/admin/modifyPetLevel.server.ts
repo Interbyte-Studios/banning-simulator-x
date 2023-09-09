@@ -1,4 +1,3 @@
-
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
 import { retrieveStore } from "server/playerStore";
 import { MODERATOR_RANK } from "shared/configs/admin";
@@ -9,7 +8,7 @@ import { logPetMaxLevel } from "shared/rodux/playerIndex/pets";
 remotes.Server.GetNamespace("admin")
 	.Get("admin_ModifyPetLevel")
 	.Connect(
-		withPlayerStore((adminPlayer, store, targetPlayerId, petData) => {
+		withPlayerStore((_, store, targetPlayerId, petData) => {
 			const groupRank = store.getState().index.groupRank;
 			if (groupRank < MODERATOR_RANK) {
 				return;
