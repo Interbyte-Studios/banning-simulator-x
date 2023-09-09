@@ -38,7 +38,7 @@ export type PetHatched = {
  */
 export function hatchGameEgg(storeState: StoreState, egg: EggName, variant: Exclude<Variants, "radiant">): PetHatched {
 	const eggData = getEggData(egg);
-	const randomNum = random.NextNumber(99.999976, 100);
+	const randomNum = random.NextNumber(0, 100);
 
 	let luckMultiplier = 0;
 	luckMultiplier += storeState.boosts.active["x2 Hatching Luck"] > 0 ? 2 : 0;
