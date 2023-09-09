@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Pixel egg.
  */
-export const PIXEL_EGG_PETS: Record<string, Pet> = {
-	"Pixel Doggy": {
+export const PIXEL_EGG_PETS: Array<Pet> = [
+	{
+		name: "Pixel Doggy",
 		chance: 37.0479435,
 		id: 145,
 		rarity: "Basic",
@@ -13,7 +14,8 @@ export const PIXEL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 150,
 		},
 	},
-	"Pixel Bunny": {
+	{
+		name: "Pixel Bunny",
 		chance: 30,
 		id: 146,
 		rarity: "Basic",
@@ -22,7 +24,8 @@ export const PIXEL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 175,
 		},
 	},
-	"Pixel Kitty": {
+	{
+		name: "Pixel Kitty",
 		chance: 20,
 		id: 147,
 		rarity: "Ordinary",
@@ -31,7 +34,8 @@ export const PIXEL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 200,
 		},
 	},
-	"Pixel Piggy": {
+	{
+		name: "Pixel Piggy",
 		chance: 10,
 		id: 148,
 		rarity: "Rare",
@@ -40,7 +44,8 @@ export const PIXEL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 300,
 		},
 	},
-	"Pixel Deer": {
+	{
+		name: "Pixel Deer",
 		chance: 1.5,
 		id: 149,
 		rarity: "Epic",
@@ -49,7 +54,8 @@ export const PIXEL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 400,
 		},
 	},
-	"Pixel Angel": {
+	{
+		name: "Pixel Angel",
 		chance: 1.4,
 		id: 150,
 		rarity: "Epic",
@@ -58,7 +64,8 @@ export const PIXEL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 500,
 		},
 	},
-	"Pixel Gryphon": {
+	{
+		name: "Pixel Gryphon",
 		chance: 0.05,
 		id: 151,
 		rarity: "Epic",
@@ -67,7 +74,8 @@ export const PIXEL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 600,
 		},
 	},
-	"Pixel Cerberus": {
+	{
+		name: "Pixel Cerberus",
 		chance: 0.002,
 		id: 152,
 		rarity: "Legendary",
@@ -76,7 +84,8 @@ export const PIXEL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1_250,
 		},
 	},
-	"Glitch Pot": {
+	{
+		name: "Glitch Pot",
 		chance: 0.00005,
 		id: 153,
 		rarity: "Secret",
@@ -85,7 +94,8 @@ export const PIXEL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 3_350,
 		},
 	},
-	"Glitched Digital Crystal": {
+	{
+		name: "Glitched Digital Crystal",
 		chance: 0.0000065,
 		id: 154,
 		rarity: "Primordial",
@@ -94,4 +104,4 @@ export const PIXEL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 35_000,
 		},
 	},
-};
+];

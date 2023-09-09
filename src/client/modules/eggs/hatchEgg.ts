@@ -57,7 +57,6 @@ topRightScreenCFrame.Value = new CFrame(5.5, 2.6, 0);
  * @param fastHatch Whether or not the user owns fast hatch.
  */
 export const animateEggHatch = (egg: EggName, isVoid: boolean, pets: Array<HatchedPet>, fastHatch: boolean): void => {
-	debug.setmemorycategory("hatchEggModule");
 	const camera = Workspace.CurrentCamera;
 	assert(camera, `Failed to animate single egg hatch | Couldn't find camera.`);
 	setIsHatching(true);
@@ -134,7 +133,12 @@ export const animateEggHatch = (egg: EggName, isVoid: boolean, pets: Array<Hatch
 	const petsData = pets.map((hatchedPet) => {
 		const data = getPetData(hatchedPet.id);
 		const variant = hatchedPet.magicPet ? (isVoid ? "radiant" : "void") : isVoid ? "void" : "regular";
-		const model = ReplicatedStorage.assetObjects.pets[egg][data.name].Clone();
+
+		const petModel = ReplicatedStorage.assetObjects.pets[egg].FindFirstChild(data.name) as Model;
+		if (petModel === undefined) {
+			throw `Expected to find pet model for pet with name ${data.name}`;
+		}
+		const model = petModel.Clone();
 
 		const rarityData = RARITIES[data.rarity];
 		const rarityColorSequence = new ColorSequence([

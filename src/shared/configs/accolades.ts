@@ -119,7 +119,7 @@ export const ACCOLADES: Array<Accolade> = [
 					continue;
 				}
 
-				for (const [, petData] of pairs(eggData.pets)) {
+				for (const petData of eggData.pets) {
 					if (petData.rarity === "Secret" || petData.rarity === "Primordial") {
 						continue;
 					}

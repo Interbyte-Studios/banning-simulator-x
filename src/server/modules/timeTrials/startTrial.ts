@@ -1,26 +1,23 @@
 import { Janitor } from "@rbxts/janitor";
-import { HttpService, ReplicatedStorage } from "@rbxts/services";
+import { ReplicatedStorage } from "@rbxts/services";
 import { retrieveStore } from "server/playerStore";
-import assetIds from "shared/assets";
 import {
 	TIME_TRIAL_BASE_NPCS,
+	TIME_TRIAL_EGG,
 	TIME_TRIAL_NPCS_REMAINING,
 	TIME_TRIAL_TIMER_ATTRIBUTE,
 	TIME_TRIAL_WAVE_ATTRIBUTE,
 } from "shared/configs/timeTrials";
 import { remotes } from "shared/remotes";
-import { addPets } from "shared/rodux/pets";
-import { getEggData } from "shared/util/getEggData";
-import { getPetData } from "shared/util/getPetData";
+import { hatchEgg } from "shared/rodux/eggs";
 
-import { modifyPetCount } from "../datastore/pets";
 import { getNpcFolder } from "../npcs/getNpcFolder";
 import { lerpPosition } from "../npcs/runStep";
+import { hatchHatchableEgg } from "../pets/hatchEgg";
 import { currentTimeTrials, TimeTrialStatus } from ".";
 
-const hatchExclusiveEggRemote = remotes.Server.GetNamespace("eggs").Get("hatchSingleExclusiveEgg");
-const hatchSystemMessage = remotes.Server.GetNamespace("eggs").Get("hatchEggSystemMessage");
-const random = new Random();
+const eggsNamespace = remotes.Server.GetNamespace("eggs");
+const conveyHatch = eggsNamespace.Get("conveyHatch");
 
 /**
  * Starts a time trial for a certain player.
@@ -97,6 +94,7 @@ export function startTrial(player: Player): {
 		 * @returns If the time trial has completed.
 		 */
 		stepHandler: (step: number): boolean => {
+			const currentState = store.getState();
 			const now = time();
 
 			const currentTrial = currentTimeTrials.get(player);
@@ -183,87 +181,31 @@ export function startTrial(player: Player): {
 			}
 
 			// award egg if the previous wave is a multiple of 5
-			if (
-				currentTrial.wave > 5 &&
-				(currentTrial.wave - 1) % 5 === 0 &&
-				!currentTrial.eggsClaimed.includes(currentTrial.wave - 1)
-			) {
-				let selectedPet = 0;
-				let chance = random.NextNumber(0, 100);
-				const eggData = getEggData("Geometric");
-				for (const [, petData] of pairs(eggData.pets)) {
-					chance -= petData.chance;
-					if (chance > 0) {
-						continue;
-					}
+			const currentWave = currentTrial.wave;
+			const hasClaimedEgg = currentTrial.eggsClaimed.includes(currentWave - 1);
+			if (currentWave > 5 && (currentWave - 1) % 5 === 0 && !hasClaimedEgg) {
+				if (currentTrial.difficulty === "easy") {
+					// find the eggs to hatch
+					const hatchedEggs = hatchHatchableEgg(player, currentState, TIME_TRIAL_EGG, 1, "regular");
 
-					selectedPet = petData.id;
-					break;
+					// dispatch the pets
+					store.dispatch(hatchEgg(0, "coins", hatchedEggs));
+					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs);
+				} else if (currentTrial.difficulty === "medium") {
+					// find the eggs to hatch
+					const hatchedEggs = hatchHatchableEgg(player, currentState, TIME_TRIAL_EGG, 3, "regular");
+
+					// dispatch the pets
+					store.dispatch(hatchEgg(0, "coins", hatchedEggs));
+					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs);
+				} else if (currentTrial.difficulty === "hard") {
+					// find the eggs to hatch
+					const hatchedEggs = hatchHatchableEgg(player, currentState, TIME_TRIAL_EGG, 5, "regular");
+
+					// dispatch the pets
+					store.dispatch(hatchEgg(0, "coins", hatchedEggs));
+					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs);
 				}
-				const pet = getPetData(selectedPet);
-
-				store.dispatch(
-					addPets([
-						{
-							id: selectedPet,
-							variant: "regular",
-							tradeLocked: false,
-							guid: HttpService.GenerateGUID(false),
-						},
-					]),
-				);
-
-				modifyPetCount({
-					type: "addPet",
-					petId: selectedPet,
-					variant: "regular",
-				});
-
-				if (pet.rarity === "Secret" || pet.rarity === "Primordial") {
-					hatchSystemMessage.SendToAllPlayers(player, pet.id, "regular", "hatched");
-					const image = assetIds.images.decals.pets[pet.name as keyof typeof assetIds.images.decals.pets];
-					let decalToPass = 0;
-					if (image !== undefined) {
-						decalToPass = image.match("%d+")[0] as number;
-					}
-
-					let existAmount = 0;
-					const petExistCache = ReplicatedStorage.PetExistStores.FindFirstChild(pet.id) as Configuration;
-					if (petExistCache !== undefined) {
-						const variantCache = petExistCache.FindFirstChild("regular") as IntValue;
-						if (variantCache !== undefined) {
-							const variantCache = petExistCache.FindFirstChild("regular") as IntValue;
-							if (variantCache !== undefined) {
-								existAmount += variantCache.Value;
-							}
-						}
-					}
-
-					task.spawn(() => {
-						pcall(() => {
-							HttpService.RequestAsync({
-								Url: "http://137.184.152.180:8765/hatch",
-								Body: HttpService.JSONEncode({
-									roblox_uid: player.UserId,
-									secret_name: pet.name,
-									secret_type: pet.rarity,
-									pet_variant: "regular",
-									decal: decalToPass,
-									exist: existAmount + 1,
-								}),
-								Method: "POST",
-								Headers: {
-									"Content-Type": "application/json",
-									"X-ACCESS-TOKEN": "V1qijQkozBm1LdD5SsO1",
-								},
-							});
-						});
-					});
-				} else if (pet.rarity === "Legendary") {
-					hatchSystemMessage.SendToAllPlayers(player, pet.id, "regular", "hatched");
-				}
-
-				hatchExclusiveEggRemote.SendToPlayer(player, "Geometric", selectedPet);
 				currentTrial.eggsClaimed.push(currentTrial.wave - 1);
 			}
 

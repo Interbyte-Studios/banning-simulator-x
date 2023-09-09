@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Armored egg.
  */
-export const GROUP_CHEST_PETS: Record<string, Pet> = {
-	Byte: {
+export const GROUP_CHEST_PETS: Array<Pet> = [
+	{
+		name: "Byte",
 		chance: 0,
 		id: 10001,
 		rarity: "Exclusive",
@@ -14,7 +15,8 @@ export const GROUP_CHEST_PETS: Record<string, Pet> = {
 			additionalBans: 5,
 		},
 	},
-	"Shade Glider": {
+	{
+		name: "Shade Glider",
 		chance: 0,
 		id: 10002,
 		rarity: "Exclusive",
@@ -24,4 +26,4 @@ export const GROUP_CHEST_PETS: Record<string, Pet> = {
 			additionalBans: 15,
 		},
 	},
-};
+];

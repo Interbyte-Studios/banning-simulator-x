@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Neon egg (Limited).
  */
-export const NEON_EGG_PETS: Record<string, Pet> = {
-	"Neon Bee": {
+export const NEON_EGG_PETS: Array<Pet> = [
+	{
+		name: "Neon Bee",
 		chance: 75,
 		id: 141,
 		rarity: "Exclusive",
@@ -14,7 +15,8 @@ export const NEON_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 550,
 		},
 	},
-	"Neon  Imp": {
+	{
+		name: "Neon  Imp",
 		chance: 21,
 		id: 142,
 		rarity: "Exclusive",
@@ -24,7 +26,8 @@ export const NEON_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 950,
 		},
 	},
-	"Neon Seekstress": {
+	{
+		name: "Neon Seekstress",
 		chance: 3.5,
 		id: 143,
 		rarity: "Exclusive",
@@ -34,7 +37,8 @@ export const NEON_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1_200,
 		},
 	},
-	"Neon Cerberus": {
+	{
+		name: "Neon Cerberus",
 		chance: 0.5,
 		id: 144,
 		rarity: "Exclusive",
@@ -44,4 +48,4 @@ export const NEON_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 2_250,
 		},
 	},
-};
+];

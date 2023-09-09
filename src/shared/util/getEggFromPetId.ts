@@ -1,9 +1,9 @@
 import { EggName, EGGS } from "shared/configs/eggs";
 
-const petIdToName: Map<number, EggName> = new Map();
+const petIdToEggName: Map<number, EggName> = new Map();
 for (const [eggName, eggData] of pairs(EGGS)) {
-	for (const [, petData] of pairs(eggData.pets)) {
-		petIdToName.set(petData.id, eggName);
+	for (const pet of eggData.pets) {
+		petIdToEggName.set(pet.id, eggName);
 	}
 }
 
@@ -14,8 +14,7 @@ for (const [eggName, eggData] of pairs(EGGS)) {
  * @returns The name of the egg.
  */
 export function getEggNameFromPetId(petId: number): EggName {
-	const originEgg = petIdToName.get(petId);
-
+	const originEgg = petIdToEggName.get(petId);
 	assert(originEgg, `Failed to get name of egg for pet with id: "${petId}"`);
 
 	return originEgg;

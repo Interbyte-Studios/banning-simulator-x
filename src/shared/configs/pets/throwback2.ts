@@ -1,7 +1,8 @@
 import { Pet } from ".";
 
-export const THROWBACK_2_EGG_PETS: Record<string, Pet> = {
-	"Candy Doggy": {
+export const THROWBACK_2_EGG_PETS: Array<Pet> = [
+	{
+		name: "Candy Doggy",
 		chance: 38.329916,
 		id: 165,
 		rarity: "Basic",
@@ -10,7 +11,8 @@ export const THROWBACK_2_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 200,
 		},
 	},
-	"Yeti Bunny": {
+	{
+		name: "Yeti Bunny",
 		chance: 30,
 		id: 166,
 		rarity: "Ordinary",
@@ -19,7 +21,8 @@ export const THROWBACK_2_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 225,
 		},
 	},
-	"Mint Kitty": {
+	{
+		name: "Mint Kitty",
 		chance: 20,
 		id: 167,
 		rarity: "Ordinary",
@@ -28,7 +31,8 @@ export const THROWBACK_2_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 245,
 		},
 	},
-	"Frostbite Bear": {
+	{
+		name: "Frostbite Bear",
 		chance: 10,
 		id: 168,
 		rarity: "Rare",
@@ -37,7 +41,8 @@ export const THROWBACK_2_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 385,
 		},
 	},
-	"Galactic Imp": {
+	{
+		name: "Galactic Imp",
 		chance: 1.5,
 		id: 169,
 		rarity: "Epic",
@@ -46,7 +51,8 @@ export const THROWBACK_2_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 495,
 		},
 	},
-	"Mint Angel": {
+	{
+		name: "Mint Angel",
 		chance: 0.1,
 		id: 170,
 		rarity: "Legendary",
@@ -55,7 +61,8 @@ export const THROWBACK_2_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 595,
 		},
 	},
-	"Honey Jar": {
+	{
+		name: "Honey Jar",
 		chance: 0.05,
 		id: 171,
 		rarity: "Legendary",
@@ -64,7 +71,8 @@ export const THROWBACK_2_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 695,
 		},
 	},
-	"Moonrock Protector": {
+	{
+		name: "Moonrock Protector",
 		chance: 0.02,
 		id: 172,
 		rarity: "Legendary",
@@ -73,7 +81,8 @@ export const THROWBACK_2_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 735,
 		},
 	},
-	"Dominus Phaedra": {
+	{
+		name: "Dominus Phaedra",
 		chance: 0.00005,
 		id: 173,
 		rarity: "Secret",
@@ -82,7 +91,8 @@ export const THROWBACK_2_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 5_650,
 		},
 	},
-	"Magma Diamond": {
+	{
+		name: "Magma Diamond",
 		chance: 0.00002,
 		id: 174,
 		rarity: "Secret",
@@ -91,7 +101,8 @@ export const THROWBACK_2_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 6_150,
 		},
 	},
-	"Dark Illuminosity": {
+	{
+		name: "Dark Illuminosity",
 		chance: 0.00001,
 		id: 175,
 		rarity: "Primordial",
@@ -100,7 +111,8 @@ export const THROWBACK_2_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 60_000,
 		},
 	},
-	"P U F F E R F I S H": {
+	{
+		name: "P U F F E R F I S H",
 		chance: 0.000004,
 		id: 176,
 		rarity: "Primordial",
@@ -109,4 +121,4 @@ export const THROWBACK_2_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 75_000,
 		},
 	},
-};
+];

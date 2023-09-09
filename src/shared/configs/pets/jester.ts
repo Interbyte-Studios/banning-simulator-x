@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Jester egg.
  */
-export const JESTER_EGG_PETS: Record<string, Pet> = {
-	"Jester Doggy": {
+export const JESTER_EGG_PETS: Array<Pet> = [
+	{
+		name: "Jester Doggy",
 		chance: 37.92988,
 		id: 86,
 		rarity: "Basic",
@@ -13,7 +14,8 @@ export const JESTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 150,
 		},
 	},
-	"Jester Red Panda": {
+	{
+		name: "Jester Red Panda",
 		chance: 30,
 		id: 87,
 		rarity: "Basic",
@@ -22,7 +24,8 @@ export const JESTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 150,
 		},
 	},
-	"Jester Narwhal": {
+	{
+		name: "Jester Narwhal",
 		chance: 20,
 		id: 88,
 		rarity: "Ordinary",
@@ -31,7 +34,8 @@ export const JESTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 182,
 		},
 	},
-	"Clown Dragon": {
+	{
+		name: "Clown Dragon",
 		chance: 10,
 		id: 89,
 		rarity: "Rare",
@@ -40,7 +44,8 @@ export const JESTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 214,
 		},
 	},
-	"Balloon Dragon": {
+	{
+		name: "Balloon Dragon",
 		chance: 1.5,
 		id: 90,
 		rarity: "Epic",
@@ -49,7 +54,8 @@ export const JESTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 246,
 		},
 	},
-	"Jester Ghost": {
+	{
+		name: "Jester Ghost",
 		chance: 0.5,
 		id: 91,
 		rarity: "Epic",
@@ -58,7 +64,8 @@ export const JESTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 246,
 		},
 	},
-	"Jester Angel": {
+	{
+		name: "Jester Angel",
 		chance: 0.04,
 		id: 92,
 		rarity: "Legendary",
@@ -67,7 +74,8 @@ export const JESTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 278,
 		},
 	},
-	"Jester Diamond": {
+	{
+		name: "Jester Diamond",
 		chance: 0.02,
 		id: 93,
 		rarity: "Legendary",
@@ -76,7 +84,8 @@ export const JESTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 280,
 		},
 	},
-	"Jester Defender": {
+	{
+		name: "Jester Defender",
 		chance: 0.01,
 		id: 94,
 		rarity: "Legendary",
@@ -85,7 +94,8 @@ export const JESTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 290,
 		},
 	},
-	"All Seeing Jester": {
+	{
+		name: "All Seeing Jester",
 		chance: 0.0001,
 		id: 95,
 		rarity: "Secret",
@@ -94,7 +104,8 @@ export const JESTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1500,
 		},
 	},
-	"Chromatic Obliterator": {
+	{
+		name: "Chromatic Obliterator",
 		chance: 0.00002,
 		id: 96,
 		rarity: "Primordial",
@@ -103,4 +114,4 @@ export const JESTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 4000,
 		},
 	},
-};
+];

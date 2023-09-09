@@ -1,6 +1,5 @@
-import { HttpService } from "@rbxts/services";
-import { modifyPetCount } from "server/modules/datastore/pets";
 import { withPlayerStore } from "server/modules/net/withPlayerStore";
+import { hatchGameEgg } from "server/modules/pets/hatchEgg";
 import { LIMITED_EGG } from "shared/configs/game";
 import { WORLDS } from "shared/configs/worlds";
 import { zones } from "shared/configs/zones";
@@ -8,12 +7,15 @@ import { remotes } from "shared/remotes";
 import { storeBoost } from "shared/rodux/boosts";
 import { awardCurrency } from "shared/rodux/currencies";
 import { claimDailyRewards } from "shared/rodux/dailyRewards";
-import { addPets } from "shared/rodux/pets";
-import { getEggData } from "shared/util/getEggData";
+import { hatchEgg } from "shared/rodux/eggs";
+import { HatchedPet } from "shared/rodux/pets";
 
-const hatchSingleExclusive = remotes.Server.GetNamespace("eggs").Get("hatchSingleExclusiveEgg");
+const claimDailyRewardsRemote = remotes.Server.Get("claimDailyRewards");
 
-remotes.Server.Get("claimDailyRewards").Connect(
+const eggsNamespace = remotes.Server.GetNamespace("eggs");
+const conveyHatch = eggsNamespace.Get("conveyHatch");
+
+claimDailyRewardsRemote.Connect(
 	withPlayerStore((player, store) => {
 		debug.setmemorycategory("dailyRewards");
 		const currentState = store.getState();
@@ -66,39 +68,17 @@ remotes.Server.Get("claimDailyRewards").Connect(
 				break;
 			}
 			case 3: {
-				// robux egg
-				const randomObject = new Random();
-				let selectedPet = 0;
-				let chance = randomObject.NextNumber(0, 100);
-				const eggData = getEggData(LIMITED_EGG);
-				for (const [, petData] of pairs(eggData.pets)) {
-					chance -= petData.chance;
-					if (chance > 0) {
-						continue;
-					}
+				const hatchedPet = hatchGameEgg(currentState, LIMITED_EGG, "regular");
 
-					selectedPet = petData.id;
-					break;
-				}
+				// log pet
+				const storedPet: HatchedPet = {
+					...hatchedPet.pet,
+					autoDeleted: currentState.settings.autoDelete.includes(hatchedPet.pet.id),
+					magicPet: hatchedPet.isMagic,
+				};
+				store.dispatch(hatchEgg(0, "coins", [storedPet]));
 
-				store.dispatch(
-					addPets([
-						{
-							id: selectedPet,
-							variant: "regular",
-							tradeLocked: false,
-							guid: HttpService.GenerateGUID(false),
-						},
-					]),
-				);
-
-				modifyPetCount({
-					type: "addPet",
-					petId: selectedPet,
-					variant: "regular",
-				});
-
-				hatchSingleExclusive.SendToPlayer(player, LIMITED_EGG, selectedPet);
+				conveyHatch.SendToPlayer(player, LIMITED_EGG, [storedPet]);
 				break;
 			}
 			case 4: {
@@ -145,39 +125,17 @@ remotes.Server.Get("claimDailyRewards").Connect(
 				break;
 			}
 			case 7: {
-				// robux egg
-				const randomObject = new Random();
-				let selectedPet = 0;
-				let chance = randomObject.NextNumber(0, 100);
-				const eggData = getEggData(LIMITED_EGG);
-				for (const [, petData] of pairs(eggData.pets)) {
-					chance -= petData.chance;
-					if (chance > 0) {
-						continue;
-					}
+				const hatchedPet = hatchGameEgg(currentState, LIMITED_EGG, "regular");
 
-					selectedPet = petData.id;
-					break;
-				}
+				// log pet
+				const storedPet: HatchedPet = {
+					...hatchedPet.pet,
+					autoDeleted: currentState.settings.autoDelete.includes(hatchedPet.pet.id),
+					magicPet: hatchedPet.isMagic,
+				};
+				store.dispatch(hatchEgg(0, "coins", [storedPet]));
 
-				store.dispatch(
-					addPets([
-						{
-							id: selectedPet,
-							variant: "regular",
-							tradeLocked: false,
-							guid: HttpService.GenerateGUID(false),
-						},
-					]),
-				);
-
-				modifyPetCount({
-					type: "addPet",
-					petId: selectedPet,
-					variant: "regular",
-				});
-
-				hatchSingleExclusive.SendToPlayer(player, LIMITED_EGG, selectedPet);
+				conveyHatch.SendToPlayer(player, LIMITED_EGG, [storedPet]);
 				break;
 			}
 		}

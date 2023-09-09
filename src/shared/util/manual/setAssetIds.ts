@@ -13,12 +13,12 @@ export function setAssetIds(assetType: "pets" | "weapons"): void {
 	switch (assetType) {
 		case "pets": {
 			for (const [eggName, eggData] of pairs(EGGS)) {
-				for (const [petName, petData] of pairs(eggData.pets)) {
-					const petModel = ReplicatedStorage.assetObjects.pets[eggName].FindFirstChild(petName);
+				for (const pet of eggData.pets) {
+					const petModel = ReplicatedStorage.assetObjects.pets[eggName].FindFirstChild(pet.name);
 
 					if (petModel) {
-						petModel.SetAttribute("id", petData.id);
-					} else warn(`No pet model found for ${petName}`);
+						petModel.SetAttribute("id", pet.id);
+					} else warn(`No pet model found for ${pet.name}`);
 				}
 			}
 			break;

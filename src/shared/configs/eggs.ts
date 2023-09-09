@@ -39,7 +39,7 @@ export interface Egg {
 	/**
 	 * The pets in the egg.
 	 */
-	pets: Record<string, Pet>;
+	pets: Array<Pet>;
 
 	/**
 	 * The world the egg comes from.

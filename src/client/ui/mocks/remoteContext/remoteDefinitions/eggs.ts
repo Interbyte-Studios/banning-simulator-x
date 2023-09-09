@@ -1,8 +1,10 @@
-import { fakeHatchEgg } from "../../hatchEgg";
+import { HatchEggDefinition } from "shared/remotes/eggs/hatchEgg";
+
+import { fakeRemoteCall } from "../fakeRemoteCall";
 
 /**
  *  This is the remote context for the eggs remote functions.
  */
 export const eggsRemoteContext = {
-	hatchEgg: fakeHatchEgg,
+	hatchEgg: fakeRemoteCall<HatchEggDefinition>("hatchEgg"),
 };

@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Armored egg.
  */
-export const ARMORED_EGG_PETS: Record<string, Pet> = {
-	"Armored Doggy": {
+export const ARMORED_EGG_PETS: Array<Pet> = [
+	{
+		name: "Armored Doggy",
 		chance: 36.88499,
 		id: 73,
 		rarity: "Basic",
@@ -13,7 +14,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 395,
 		},
 	},
-	"Armored Bunny": {
+	{
+		name: "Armored Bunny",
 		chance: 30,
 		id: 74,
 		rarity: "Basic",
@@ -22,7 +24,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 395,
 		},
 	},
-	"Armored Kitty": {
+	{
+		name: "Armored Kitty",
 		chance: 20,
 		id: 75,
 		rarity: "Ordinary",
@@ -31,7 +34,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 500,
 		},
 	},
-	"Armored Deer": {
+	{
+		name: "Armored Deer",
 		chance: 10,
 		id: 76,
 		rarity: "Rare",
@@ -40,7 +44,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 650,
 		},
 	},
-	"Armored Pegasus": {
+	{
+		name: "Armored Pegasus",
 		chance: 1.5,
 		id: 77,
 		rarity: "Epic",
@@ -49,7 +54,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 800,
 		},
 	},
-	"Armored Dragon": {
+	{
+		name: "Armored Dragon",
 		chance: 1.4,
 		id: 78,
 		rarity: "Epic",
@@ -58,7 +64,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 875,
 		},
 	},
-	"Armored Angel": {
+	{
+		name: "Armored Angel",
 		chance: 0.2,
 		id: 79,
 		rarity: "Epic",
@@ -67,7 +74,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 950,
 		},
 	},
-	"Armored Guard": {
+	{
+		name: "Armored Guard",
 		chance: 0.01,
 		id: 80,
 		rarity: "Legendary",
@@ -76,7 +84,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1_150,
 		},
 	},
-	"Armored Spartan": {
+	{
+		name: "Armored Spartan",
 		chance: 0.005,
 		id: 81,
 		rarity: "Legendary",
@@ -85,7 +94,8 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1_400,
 		},
 	},
-	"Glitchbot NEO": {
+	{
+		name: "Glitchbot NEO",
 		chance: 0.00001,
 		id: 82,
 		rarity: "Primordial",
@@ -94,4 +104,4 @@ export const ARMORED_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 25_000,
 		},
 	},
-};
+];

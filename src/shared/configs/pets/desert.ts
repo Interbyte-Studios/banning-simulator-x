@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Desert egg.
  */
-export const DESERT_EGG_PETS: Record<string, Pet> = {
-	"Desert Demon": {
+export const DESERT_EGG_PETS: Array<Pet> = [
+	{
+		name: "Desert Demon",
 		chance: 25,
 		id: 7,
 		rarity: "Basic",
@@ -13,7 +14,8 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 4,
 		},
 	},
-	"Desert Pegasus": {
+	{
+		name: "Desert Pegasus",
 		chance: 25,
 		id: 8,
 		rarity: "Basic",
@@ -22,7 +24,8 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 4,
 		},
 	},
-	"Desert Ram": {
+	{
+		name: "Desert Ram",
 		chance: 25,
 		id: 9,
 		rarity: "Basic",
@@ -31,7 +34,8 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 4,
 		},
 	},
-	"Desert Angel": {
+	{
+		name: "Desert Angel",
 		chance: 15,
 		id: 10,
 		rarity: "Ordinary",
@@ -40,7 +44,8 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 6,
 		},
 	},
-	"Desert Dragon": {
+	{
+		name: "Desert Dragon",
 		chance: 7.5,
 		id: 11,
 		rarity: "Rare",
@@ -49,7 +54,8 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 8,
 		},
 	},
-	"Desert Spider": {
+	{
+		name: "Desert Spider",
 		chance: 1.7,
 		id: 12,
 		rarity: "Epic",
@@ -58,7 +64,8 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 10,
 		},
 	},
-	"Desert Wraith": {
+	{
+		name: "Desert Wraith",
 		chance: 0.5,
 		id: 13,
 		rarity: "Epic",
@@ -67,7 +74,8 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 10,
 		},
 	},
-	"Desert Scorpilord": {
+	{
+		name: "Desert Scorpilord",
 		chance: 0.3,
 		id: 14,
 		rarity: "Legendary",
@@ -76,4 +84,4 @@ export const DESERT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 15,
 		},
 	},
-};
+];

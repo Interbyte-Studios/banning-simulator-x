@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Crystal egg.
  */
-export const CRYSTAL_EGG_PETS: Record<string, Pet> = {
-	"Crystal Doggy": {
+export const CRYSTAL_EGG_PETS: Array<Pet> = [
+	{
+		name: "Crystal Doggy",
 		chance: 37.089946,
 		id: 155,
 		rarity: "Basic",
@@ -13,7 +14,8 @@ export const CRYSTAL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 165,
 		},
 	},
-	"Crystal Bunny": {
+	{
+		name: "Crystal Bunny",
 		chance: 30,
 		id: 156,
 		rarity: "Ordinary",
@@ -22,7 +24,8 @@ export const CRYSTAL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 180,
 		},
 	},
-	"Crystal Kitty": {
+	{
+		name: "Crystal Kitty",
 		chance: 20,
 		id: 157,
 		rarity: "Ordinary",
@@ -31,7 +34,8 @@ export const CRYSTAL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 215,
 		},
 	},
-	"Crystal Piggy": {
+	{
+		name: "Crystal Piggy",
 		chance: 10,
 		id: 158,
 		rarity: "Rare",
@@ -40,7 +44,8 @@ export const CRYSTAL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 350,
 		},
 	},
-	"Crystal Deer": {
+	{
+		name: "Crystal Deer",
 		chance: 1.5,
 		id: 159,
 		rarity: "Epic",
@@ -49,7 +54,8 @@ export const CRYSTAL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 450,
 		},
 	},
-	"Crystal Angel": {
+	{
+		name: "Crystal Angel",
 		chance: 1.4,
 		id: 160,
 		rarity: "Epic",
@@ -58,7 +64,8 @@ export const CRYSTAL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 550,
 		},
 	},
-	"Crystal Dominus": {
+	{
+		name: "Crystal Dominus",
 		chance: 0.01,
 		id: 161,
 		rarity: "Legendary",
@@ -67,7 +74,8 @@ export const CRYSTAL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 650,
 		},
 	},
-	"Amethyst Griffon": {
+	{
+		name: "Amethyst Griffon",
 		chance: 0.00003,
 		id: 162,
 		rarity: "Secret",
@@ -76,7 +84,8 @@ export const CRYSTAL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 3_500,
 		},
 	},
-	"Crystal Guardian": {
+	{
+		name: "Crystal Guardian",
 		chance: 0.00002,
 		id: 163,
 		rarity: "Secret",
@@ -85,7 +94,8 @@ export const CRYSTAL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 5_000,
 		},
 	},
-	"Blazing Glory": {
+	{
+		name: "Blazing Glory",
 		chance: 0.000004,
 		id: 164,
 		rarity: "Primordial",
@@ -94,4 +104,4 @@ export const CRYSTAL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 50_000,
 		},
 	},
-};
+];

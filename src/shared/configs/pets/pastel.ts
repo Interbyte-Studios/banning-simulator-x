@@ -1,7 +1,8 @@
 import { Pet } from ".";
 
-export const PASTEL_EGG_PETS: Record<string, Pet> = {
-	"Pastel Bee": {
+export const PASTEL_EGG_PETS: Array<Pet> = [
+	{
+		name: "Pastel Bee",
 		chance: 75,
 		id: 181,
 		rarity: "Exclusive",
@@ -10,7 +11,8 @@ export const PASTEL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 500,
 		},
 	},
-	"Pastel Doggy Plushie": {
+	{
+		name: "Pastel Doggy Plushie",
 		chance: 21,
 		id: 182,
 		rarity: "Exclusive",
@@ -19,7 +21,8 @@ export const PASTEL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1_125,
 		},
 	},
-	"Pastel Bunny Plushie": {
+	{
+		name: "Pastel Bunny Plushie",
 		chance: 3.5,
 		id: 183,
 		rarity: "Exclusive",
@@ -28,7 +31,8 @@ export const PASTEL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1_687,
 		},
 	},
-	"Pastel Dragon Plushie": {
+	{
+		name: "Pastel Dragon Plushie",
 		chance: 0.5,
 		id: 184,
 		rarity: "Exclusive",
@@ -37,4 +41,4 @@ export const PASTEL_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 2_530,
 		},
 	},
-};
+];

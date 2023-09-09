@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Corrupt egg.
  */
-export const CORRUPT_EGG_PETS: Record<string, Pet> = {
-	"Corrupt Doggy": {
+export const CORRUPT_EGG_PETS: Array<Pet> = [
+	{
+		name: "Corrupt Doggy",
 		chance: 38.37995,
 		id: 63,
 		rarity: "Basic",
@@ -13,7 +14,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 335,
 		},
 	},
-	"Corrupt Bunny": {
+	{
+		name: "Corrupt Bunny",
 		chance: 30,
 		id: 64,
 		rarity: "Basic",
@@ -22,7 +24,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 335,
 		},
 	},
-	"Corrupt Bear": {
+	{
+		name: "Corrupt Bear",
 		chance: 20,
 		id: 65,
 		rarity: "Ordinary",
@@ -31,7 +34,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 400,
 		},
 	},
-	"Corrupt Deer": {
+	{
+		name: "Corrupt Deer",
 		chance: 10,
 		id: 66,
 		rarity: "Rare",
@@ -40,7 +44,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 550,
 		},
 	},
-	"Corrupt Pegasus": {
+	{
+		name: "Corrupt Pegasus",
 		chance: 1,
 		id: 67,
 		rarity: "Epic",
@@ -49,7 +54,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 625,
 		},
 	},
-	"Corrupt Demon": {
+	{
+		name: "Corrupt Demon",
 		chance: 0.5,
 		id: 68,
 		rarity: "Epic",
@@ -58,7 +64,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 700,
 		},
 	},
-	"Corrupt Hyperhalo": {
+	{
+		name: "Corrupt Hyperhalo",
 		chance: 0.1,
 		id: 69,
 		rarity: "Epic",
@@ -67,7 +74,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 800,
 		},
 	},
-	"Corrupt Duke": {
+	{
+		name: "Corrupt Duke",
 		chance: 0.02,
 		id: 70,
 		rarity: "Legendary",
@@ -76,7 +84,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 950,
 		},
 	},
-	"Corrupted Titan": {
+	{
+		name: "Corrupted Titan",
 		chance: 0.01,
 		id: 71,
 		rarity: "Legendary",
@@ -85,7 +94,8 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1_250,
 		},
 	},
-	"Corrupted Overseer": {
+	{
+		name: "Corrupted Overseer",
 		chance: 0.00001,
 		id: 72,
 		rarity: "Primordial",
@@ -94,4 +104,4 @@ export const CORRUPT_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 12_500,
 		},
 	},
-};
+];
