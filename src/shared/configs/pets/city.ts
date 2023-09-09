@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * City egg.
  */
-export const CITY_EGG_PETS: Record<string, Pet> = {
-	"City Doggy": {
+export const CITY_EGG_PETS: Array<Pet> = [
+	{
+		name: "City Doggy",
 		chance: 32.3,
 		id: 47,
 		rarity: "Basic",
@@ -13,7 +14,8 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 175,
 		},
 	},
-	"City Bunny": {
+	{
+		name: "City Bunny",
 		chance: 30,
 		id: 48,
 		rarity: "Basic",
@@ -22,7 +24,8 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 175,
 		},
 	},
-	"City Kitty": {
+	{
+		name: "City Kitty",
 		chance: 20,
 		id: 49,
 		rarity: "Ordinary",
@@ -31,7 +34,8 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 195,
 		},
 	},
-	"City Deer": {
+	{
+		name: "City Deer",
 		chance: 10,
 		id: 50,
 		rarity: "Rare",
@@ -40,7 +44,8 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 215,
 		},
 	},
-	"City Angel": {
+	{
+		name: "City Angel",
 		chance: 7.5,
 		id: 51,
 		rarity: "Rare",
@@ -49,7 +54,8 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 235,
 		},
 	},
-	"City Defender": {
+	{
+		name: "City Defender",
 		chance: 0.2,
 		id: 52,
 		rarity: "Legendary",
@@ -58,4 +64,4 @@ export const CITY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 485,
 		},
 	},
-};
+];

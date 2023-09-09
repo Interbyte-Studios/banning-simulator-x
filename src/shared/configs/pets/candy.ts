@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Candy egg.
  */
-export const CANDY_EGG_PETS: Record<string, Pet> = {
-	"Gummy Doggy": {
+export const CANDY_EGG_PETS: Array<Pet> = [
+	{
+		name: "Gummy Doggy",
 		chance: 34.8499,
 		id: 24,
 		rarity: "Basic",
@@ -13,7 +14,8 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 16,
 		},
 	},
-	"Gummy Bunny": {
+	{
+		name: "Gummy Bunny",
 		chance: 25,
 		id: 25,
 		rarity: "Ordinary",
@@ -22,7 +24,8 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 24,
 		},
 	},
-	"Gummy Kitty": {
+	{
+		name: "Gummy Kitty",
 		chance: 25,
 		id: 26,
 		rarity: "Ordinary",
@@ -31,7 +34,8 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 24,
 		},
 	},
-	"Gummy Bear": {
+	{
+		name: "Gummy Bear",
 		chance: 9,
 		id: 27,
 		rarity: "Rare",
@@ -40,7 +44,8 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 32,
 		},
 	},
-	Gumdrop: {
+	{
+		name: "Gumdrop",
 		chance: 2.2,
 		id: 28,
 		rarity: "Epic",
@@ -49,7 +54,8 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 40,
 		},
 	},
-	"Gummy Bee": {
+	{
+		name: "Gummy Bee",
 		chance: 2,
 		id: 29,
 		rarity: "Epic",
@@ -58,7 +64,8 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 45,
 		},
 	},
-	"Gummy Dragon": {
+	{
+		name: "Gummy Dragon",
 		chance: 1.8,
 		id: 30,
 		rarity: "Epic",
@@ -67,7 +74,8 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 50,
 		},
 	},
-	"Gummy Striker": {
+	{
+		name: "Gummy Striker",
 		chance: 0.1,
 		id: 31,
 		rarity: "Legendary",
@@ -76,7 +84,8 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 65,
 		},
 	},
-	"Gummy Wyvern": {
+	{
+		name: "Gummy Wyvern",
 		chance: 0.05,
 		id: 32,
 		rarity: "Legendary",
@@ -85,7 +94,8 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 75,
 		},
 	},
-	"Ice Cream Pop": {
+	{
+		name: "Ice Cream Pop",
 		chance: 0.0001,
 		id: 33,
 		rarity: "Secret",
@@ -94,4 +104,4 @@ export const CANDY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 550,
 		},
 	},
-};
+];

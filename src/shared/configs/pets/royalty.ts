@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Royalty egg (Limited).
  */
-export const ROYALTY_EGG_PETS: Record<string, Pet> = {
-	"Royal Dragon": {
+export const ROYALTY_EGG_PETS: Array<Pet> = [
+	{
+		name: "Royal Dragon",
 		chance: 75,
 		id: 44,
 		rarity: "Exclusive",
@@ -14,7 +15,8 @@ export const ROYALTY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 30,
 		},
 	},
-	"Royal Pegasus": {
+	{
+		name: "Royal Pegasus",
 		chance: 23,
 		id: 45,
 		rarity: "Exclusive",
@@ -24,7 +26,8 @@ export const ROYALTY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 80,
 		},
 	},
-	"Prime Royal": {
+	{
+		name: "Prime Royal",
 		chance: 2,
 		id: 46,
 		rarity: "Exclusive",
@@ -34,4 +37,4 @@ export const ROYALTY_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 150,
 		},
 	},
-};
+];

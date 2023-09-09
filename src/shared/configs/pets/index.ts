@@ -4,6 +4,11 @@ import { Rarities, RarityGradient } from "../rarities";
 
 export interface Pet {
 	/**
+	 * The name of the pet.
+	 */
+	name: string;
+
+	/**
 	 * The chance of the pet (0 - 100).
 	 */
 	chance: number;

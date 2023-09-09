@@ -1,6 +1,7 @@
 import { t } from "@rbxts/t";
 
 import { Currency } from "./currencies";
+import { EggName } from "./eggs";
 import { WorldName } from "./worlds";
 
 export const isTimeTrialUpgrade = t.literal("health", "damage", "damageReduction", "criticalChance");
@@ -10,6 +11,8 @@ export type TimeTrialUpgrade = Record<
 	TimeTrialUpgradeType,
 	{ maxUpgrades: number; benefitPerUpgrade: number; baseCost: number; costMultiplier: number }
 >;
+
+export const TIME_TRIAL_EGG: EggName = "Geometric";
 
 export const TIME_TRIAL_UPGRADES = {
 	health: {

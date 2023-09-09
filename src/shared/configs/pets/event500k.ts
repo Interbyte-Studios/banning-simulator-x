@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Armored egg.
  */
-export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
-	"500K Doggy": {
+export const EVENT_500k_EGG_PETS: Array<Pet> = [
+	{
+		name: "500K Doggy",
 		chance: 37.66484,
 		id: 101,
 		rarity: "Basic",
@@ -13,7 +14,8 @@ export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 80,
 		},
 	},
-	"500K Bunny": {
+	{
+		name: "500K Bunny",
 		chance: 30,
 		id: 102,
 		rarity: "Basic",
@@ -22,7 +24,8 @@ export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 80,
 		},
 	},
-	"500K Cat": {
+	{
+		name: "500K Cat",
 		chance: 20,
 		id: 103,
 		rarity: "Ordinary",
@@ -31,7 +34,8 @@ export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 90,
 		},
 	},
-	"500K Ram": {
+	{
+		name: "500K Ram",
 		chance: 10,
 		id: 104,
 		rarity: "Rare",
@@ -40,7 +44,8 @@ export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 90,
 		},
 	},
-	"500K Angel": {
+	{
+		name: "500K Angel",
 		chance: 1.5,
 		id: 105,
 		rarity: "Rare",
@@ -49,7 +54,8 @@ export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 110,
 		},
 	},
-	"500K Dragon": {
+	{
+		name: "500K Dragon",
 		chance: 0.8,
 		id: 106,
 		rarity: "Epic",
@@ -58,7 +64,8 @@ export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 185,
 		},
 	},
-	"500k Wraith": {
+	{
+		name: "500k Wraith",
 		chance: 0.02,
 		id: 107,
 		rarity: "Legendary",
@@ -67,7 +74,8 @@ export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 280,
 		},
 	},
-	"500K Leviathan": {
+	{
+		name: "500K Leviathan",
 		chance: 0.01,
 		id: 108,
 		rarity: "Legendary",
@@ -76,7 +84,8 @@ export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 300,
 		},
 	},
-	"500K Archmage": {
+	{
+		name: "500K Archmage",
 		chance: 0.005,
 		id: 109,
 		rarity: "Legendary",
@@ -85,7 +94,8 @@ export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 315,
 		},
 	},
-	"500K Dominus": {
+	{
+		name: "500K Dominus",
 		chance: 0.0001,
 		id: 110,
 		rarity: "Secret",
@@ -94,7 +104,8 @@ export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1550,
 		},
 	},
-	"Supreme Dove": {
+	{
+		name: "Supreme Dove",
 		chance: 0.00005,
 		id: 111,
 		rarity: "Secret",
@@ -103,7 +114,8 @@ export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1600,
 		},
 	},
-	"Supernova Striker": {
+	{
+		name: "Supernova Striker",
 		chance: 0.00001,
 		id: 112,
 		rarity: "Primordial",
@@ -112,4 +124,4 @@ export const EVENT_500k_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 4250,
 		},
 	},
-};
+];

@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Starter egg.
  */
-export const STARTER_EGG_PETS: Record<string, Pet> = {
-	Doggy: {
+export const STARTER_EGG_PETS: Array<Pet> = [
+	{
+		name: "Doggy",
 		chance: 30,
 		id: 1,
 		rarity: "Basic",
@@ -13,7 +14,8 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1,
 		},
 	},
-	Bunny: {
+	{
+		name: "Bunny",
 		chance: 25,
 		id: 2,
 		rarity: "Basic",
@@ -22,7 +24,8 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1,
 		},
 	},
-	Kitty: {
+	{
+		name: "Kitty",
 		chance: 25,
 		id: 3,
 		rarity: "Basic",
@@ -31,7 +34,8 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1,
 		},
 	},
-	Piggy: {
+	{
+		name: "Piggy",
 		chance: 16,
 		id: 4,
 		rarity: "Ordinary",
@@ -40,7 +44,8 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 2,
 		},
 	},
-	Deer: {
+	{
+		name: "Deer",
 		chance: 3.5,
 		id: 5,
 		rarity: "Rare",
@@ -49,7 +54,8 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 3,
 		},
 	},
-	"Royal Bunny": {
+	{
+		name: "Royal Bunny",
 		chance: 0.5,
 		id: 6,
 		rarity: "Epic",
@@ -58,4 +64,4 @@ export const STARTER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 4,
 		},
 	},
-};
+];

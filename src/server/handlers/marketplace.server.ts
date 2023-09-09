@@ -2,6 +2,7 @@ import Object from "@rbxts/object-utils";
 import { HttpService, MarketplaceService, Players } from "@rbxts/services";
 import { modifyPetCount } from "server/modules/datastore/pets";
 import { savePlayerData } from "server/modules/datastore/savePlayerData";
+import { hatchGameEgg } from "server/modules/pets/hatchEgg";
 import { retrieveStore } from "server/playerStore";
 import {
 	BOOST_PRODUCTS,
@@ -23,16 +24,15 @@ import { remotes } from "shared/remotes";
 import { storeBoost } from "shared/rodux/boosts";
 import { awardCurrency } from "shared/rodux/currencies";
 import { claimDevProduct } from "shared/rodux/devProducts";
+import { hatchEgg } from "shared/rodux/eggs";
 import { claimGamepass } from "shared/rodux/gamepasses";
 import { claimGamepassGift } from "shared/rodux/gamepassGifts";
-import { addPets } from "shared/rodux/pets";
+import { addPets, HatchedPet } from "shared/rodux/pets";
 import { purchasePetTeam } from "shared/rodux/petTeams";
 import { addPurchasedSpins } from "shared/rodux/spinWheel";
-import { getEggData } from "shared/util/getEggData";
 
-const marketplaceRemotes = remotes.Server.GetNamespace("eggs");
-const hatchSingleExclusive = marketplaceRemotes.Get("hatchSingleExclusiveEgg");
-const tripleSingleExclusive = marketplaceRemotes.Get("hatchTripleExclusiveEgg");
+const eggsNamespace = remotes.Server.GetNamespace("eggs");
+const conveyHatch = eggsNamespace.Get("conveyHatch");
 
 MarketplaceService.PromptGamePassPurchaseFinished.Connect((player, id, purchased) => {
 	debug.setmemorycategory("MarketplacePromptGamePassPurchaseFinished");
@@ -59,9 +59,10 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 	}
 
 	const store = retrieveStore(player);
-	const alreadyReceivedRewards = store
-		.getState()
-		.devProducts.find((purchaseLog) => purchaseLog.purchaseId === receiptInfo.PurchaseId);
+	const currentState = store.getState();
+	const alreadyReceivedRewards = currentState.devProducts.find(
+		(purchaseLog) => purchaseLog.purchaseId === receiptInfo.PurchaseId,
+	);
 	if (alreadyReceivedRewards !== undefined) {
 		return Enum.ProductPurchaseDecision.NotProcessedYet;
 	}
@@ -73,7 +74,7 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 				let highestIndex = 0;
 				let highestReward = 0;
 				for (const [worldName, worldData] of pairs(WORLDS)) {
-					const storedWorld = store.getState().worlds.find((world) => world.name === worldName);
+					const storedWorld = currentState.worlds.find((world) => world.name === worldName);
 					if (storedWorld === undefined) {
 						continue;
 					}
@@ -136,7 +137,7 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 	}
 
 	if (receiptInfo.ProductId === PURCHASE_PET_TEAM_PRODUCT) {
-		if (store.getState().petTeams.maxTeams >= 10) {
+		if (currentState.petTeams.maxTeams >= 10) {
 			return Enum.ProductPurchaseDecision.NotProcessedYet;
 		}
 
@@ -145,82 +146,38 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 	}
 
 	if (receiptInfo.ProductId === LIMITED_EGG_DEVPRODUCT.OneEgg) {
-		const randomObject = new Random();
+		const hatchedPet = hatchGameEgg(currentState, LIMITED_EGG, "regular");
 
-		let selectedPet = 0;
-		let chance = randomObject.NextNumber(0, 100);
-		const eggData = getEggData(LIMITED_EGG);
-		for (const [, petData] of pairs(eggData.pets)) {
-			chance -= petData.chance;
-			if (chance > 0) {
-				continue;
-			}
+		// log pet
+		const storedPet: HatchedPet = {
+			...hatchedPet.pet,
+			autoDeleted: currentState.settings.autoDelete.includes(hatchedPet.pet.id),
+			magicPet: hatchedPet.isMagic,
+		};
+		store.dispatch(hatchEgg(0, "coins", [storedPet]));
 
-			selectedPet = petData.id;
-			break;
-		}
-
-		store.dispatch(
-			addPets([
-				{
-					id: selectedPet,
-					variant: "regular",
-					tradeLocked: false,
-					guid: HttpService.GenerateGUID(false),
-				},
-			]),
-		);
-
-		modifyPetCount({
-			type: "addPet",
-			petId: selectedPet,
-			variant: "regular",
-		});
-
-		hatchSingleExclusive.SendToPlayer(player, LIMITED_EGG, selectedPet);
+		conveyHatch.SendToPlayer(player, LIMITED_EGG, [storedPet]);
 		purchaseProcessed = true;
 	}
 
 	if (receiptInfo.ProductId === LIMITED_EGG_DEVPRODUCT.ThreeEggs) {
-		const selectedPets: Array<number> = [];
+		const hatchedEggs: Array<HatchedPet> = [];
+		for (let i = 0; i < 3; i++) {
+			// invoke a hatched egg
+			const hatchedPet = hatchGameEgg(currentState, LIMITED_EGG, "regular");
 
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		for (const _ of $range(1, 3)) {
-			const randomObject = new Random();
-
-			const eggData = getEggData(LIMITED_EGG);
-			let chance = randomObject.NextNumber(0, 100);
-			for (const [, petData] of pairs(eggData.pets)) {
-				chance -= petData.chance;
-				if (chance > 0) {
-					continue;
-				}
-
-				modifyPetCount({
-					type: "addPet",
-					petId: petData.id,
-					variant: "regular",
-				});
-
-				selectedPets.push(petData.id);
-				break;
-			}
+			// log pet
+			const storedPet: HatchedPet = {
+				...hatchedPet.pet,
+				autoDeleted: currentState.settings.autoDelete.includes(hatchedPet.pet.id),
+				magicPet: hatchedPet.isMagic,
+			};
+			hatchedEggs.push(storedPet);
 		}
 
-		store.dispatch(
-			addPets(
-				selectedPets.map((petId) => {
-					return {
-						id: petId,
-						variant: "regular",
-						tradeLocked: false,
-						guid: HttpService.GenerateGUID(false),
-					};
-				}),
-			),
-		);
+		store.dispatch(hatchEgg(0, "coins", hatchedEggs));
 
-		tripleSingleExclusive.SendToPlayer(player, LIMITED_EGG, selectedPets);
+		conveyHatch.SendToPlayer(player, LIMITED_EGG, hatchedEggs);
 		purchaseProcessed = true;
 	}
 
@@ -271,7 +228,7 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 	store.dispatch(claimDevProduct(receiptInfo.ProductId, receiptInfo.PurchaseId));
 	const successfullySaved = savePlayerData(player).await();
 	if (!(successfullySaved[0] && successfullySaved[1])) {
-		throw `Failed to save player data after purchasing dev product with an id of: "${receiptInfo.ProductId}".`;
+		warn(`Failed to save player data after purchasing dev product with an id of: "${receiptInfo.ProductId}".`);
 		return Enum.ProductPurchaseDecision.NotProcessedYet;
 	}
 

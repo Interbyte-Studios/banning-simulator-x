@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Exclusive pets (Limited).
  */
-export const EXCLUSIVE_PETS: Record<string, Pet> = {
-	"Quiet Angel": {
+export const EXCLUSIVE_PETS: Array<Pet> = [
+	{
+		name: "Quiet Angel",
 		chance: 0,
 		id: 10003,
 		rarity: "Exclusive",
@@ -14,7 +15,8 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 15,
 		},
 	},
-	Seekstress: {
+	{
+		name: "Seekstress",
 		chance: 0,
 		id: 10004,
 		rarity: "Exclusive",
@@ -24,7 +26,8 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 35,
 		},
 	},
-	PeaceKeeper: {
+	{
+		name: "PeaceKeeper",
 		chance: 0,
 		id: 10005,
 		rarity: "Exclusive",
@@ -34,7 +37,8 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 120,
 		},
 	},
-	"Developer Gummy Bunny": {
+	{
+		name: "Developer Gummy Bunny",
 		chance: 0,
 		id: 10006,
 		rarity: "Exclusive",
@@ -44,7 +48,8 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 1,
 		},
 	},
-	"Radioactive Gryphon": {
+	{
+		name: "Radioactive Gryphon",
 		chance: 0,
 		id: 10007,
 		rarity: "Exclusive",
@@ -54,7 +59,8 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 40,
 		},
 	},
-	"Minty Kitty": {
+	{
+		name: "Minty Kitty",
 		chance: 0,
 		id: 10008,
 		rarity: "Exclusive",
@@ -64,7 +70,8 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 280,
 		},
 	},
-	"Serene Bunny": {
+	{
+		name: "Serene Bunny",
 		chance: 0,
 		id: 10009,
 		rarity: "Exclusive",
@@ -74,7 +81,8 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 550,
 		},
 	},
-	"Shattered Diety": {
+	{
+		name: "Shattered Diety",
 		chance: 0,
 		id: 10010,
 		rarity: "Exclusive",
@@ -84,7 +92,8 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 800,
 		},
 	},
-	"Googly Chest": {
+	{
+		name: "Googly Chest",
 		chance: 0,
 		id: 10011,
 		rarity: "Exclusive",
@@ -94,7 +103,8 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 200,
 		},
 	},
-	"Bio Destroyer": {
+	{
+		name: "Bio Destroyer",
 		chance: 0,
 		id: 10012,
 		rarity: "Secret",
@@ -104,7 +114,8 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 900,
 		},
 	},
-	"Radioactive Defender": {
+	{
+		name: "Radioactive Defender",
 		chance: 0,
 		id: 10013,
 		rarity: "Exclusive",
@@ -114,7 +125,8 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 850,
 		},
 	},
-	Pufferfish: {
+	{
+		name: "Pufferfish",
 		chance: 0,
 		id: 10014,
 		rarity: "Exclusive",
@@ -124,4 +136,4 @@ export const EXCLUSIVE_PETS: Record<string, Pet> = {
 			additionalBans: 1_350,
 		},
 	},
-};
+];

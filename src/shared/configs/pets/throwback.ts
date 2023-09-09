@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Throwback egg (Limited).
  */
-export const THROWBACK_EGG_PETS: Record<string, Pet> = {
-	"Neon Doggy": {
+export const THROWBACK_EGG_PETS: Array<Pet> = [
+	{
+		name: "Neon Doggy",
 		chance: 37.66482,
 		id: 128,
 		rarity: "Basic",
@@ -13,7 +14,8 @@ export const THROWBACK_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 90,
 		},
 	},
-	"Oceanic Kitty": {
+	{
+		name: "Oceanic Kitty",
 		chance: 30,
 		id: 129,
 		rarity: "Basic",
@@ -22,7 +24,8 @@ export const THROWBACK_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 90,
 		},
 	},
-	"Sugar Bunny": {
+	{
+		name: "Sugar Bunny",
 		chance: 20,
 		id: 130,
 		rarity: "Ordinary",
@@ -31,7 +34,8 @@ export const THROWBACK_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 105,
 		},
 	},
-	"Altar Pegasus": {
+	{
+		name: "Altar Pegasus",
 		chance: 10,
 		id: 131,
 		rarity: "Rare",
@@ -40,7 +44,8 @@ export const THROWBACK_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 130,
 		},
 	},
-	"Space Spider": {
+	{
+		name: "Space Spider",
 		chance: 1.5,
 		id: 132,
 		rarity: "Rare",
@@ -49,7 +54,8 @@ export const THROWBACK_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 145,
 		},
 	},
-	"Faded Bear": {
+	{
+		name: "Faded Bear",
 		chance: 0.8,
 		id: 133,
 		rarity: "Epic",
@@ -58,7 +64,8 @@ export const THROWBACK_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 225,
 		},
 	},
-	"Minty Angel": {
+	{
+		name: "Minty Angel",
 		chance: 0.02,
 		id: 134,
 		rarity: "Legendary",
@@ -67,7 +74,8 @@ export const THROWBACK_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 315,
 		},
 	},
-	"Frosty Wyvern": {
+	{
+		name: "Frosty Wyvern",
 		chance: 0.01,
 		id: 135,
 		rarity: "Legendary",
@@ -76,7 +84,8 @@ export const THROWBACK_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 330,
 		},
 	},
-	"Ultimate Vial": {
+	{
+		name: "Ultimate Vial",
 		chance: 0.005,
 		id: 136,
 		rarity: "Legendary",
@@ -85,7 +94,8 @@ export const THROWBACK_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 350,
 		},
 	},
-	"Crowned Sugar Princess": {
+	{
+		name: "Crowned Sugar Princess",
 		chance: 0.00008,
 		id: 137,
 		rarity: "Secret",
@@ -94,7 +104,8 @@ export const THROWBACK_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 2850,
 		},
 	},
-	"Violet Striker": {
+	{
+		name: "Violet Striker",
 		chance: 0.00005,
 		id: 138,
 		rarity: "Secret",
@@ -103,7 +114,8 @@ export const THROWBACK_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 2900,
 		},
 	},
-	"Danger of the Deep": {
+	{
+		name: "Danger of the Deep",
 		chance: 0.00004,
 		id: 139,
 		rarity: "Secret",
@@ -112,7 +124,8 @@ export const THROWBACK_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 3150,
 		},
 	},
-	"Crescential Orbit": {
+	{
+		name: "Crescential Orbit",
 		chance: 0.00001,
 		id: 140,
 		rarity: "Primordial",
@@ -121,4 +134,4 @@ export const THROWBACK_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 4750,
 		},
 	},
-};
+];

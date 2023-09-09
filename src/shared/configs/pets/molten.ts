@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Molten egg.
  */
-export const MOLTEN_EGG_PETS: Record<string, Pet> = {
-	"Molten Doggy": {
+export const MOLTEN_EGG_PETS: Array<Pet> = [
+	{
+		name: "Molten Doggy",
 		chance: 32.7399,
 		id: 34,
 		rarity: "Basic",
@@ -13,7 +14,8 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 48,
 		},
 	},
-	"Molten Bunny": {
+	{
+		name: "Molten Bunny",
 		chance: 22,
 		id: 35,
 		rarity: "Ordinary",
@@ -22,7 +24,8 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 64,
 		},
 	},
-	"Molten Kitty": {
+	{
+		name: "Molten Kitty",
 		chance: 21.5,
 		id: 36,
 		rarity: "Ordinary",
@@ -31,7 +34,8 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 64,
 		},
 	},
-	"Molten Squirrel": {
+	{
+		name: "Molten Squirrel",
 		chance: 21.5,
 		id: 37,
 		rarity: "Ordinary",
@@ -40,7 +44,8 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 64,
 		},
 	},
-	"Molten Pegasus": {
+	{
+		name: "Molten Pegasus",
 		chance: 1.2,
 		id: 38,
 		rarity: "Epic",
@@ -49,7 +54,8 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 80,
 		},
 	},
-	"Molten Blob": {
+	{
+		name: "Molten Blob",
 		chance: 0.8,
 		id: 39,
 		rarity: "Epic",
@@ -58,7 +64,8 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 85,
 		},
 	},
-	"Molten Wraith": {
+	{
+		name: "Molten Wraith",
 		chance: 0.2,
 		id: 40,
 		rarity: "Epic",
@@ -67,7 +74,8 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 90,
 		},
 	},
-	"Molten Leviathan": {
+	{
+		name: "Molten Leviathan",
 		chance: 0.04,
 		id: 41,
 		rarity: "Legendary",
@@ -76,7 +84,8 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 110,
 		},
 	},
-	"Molten Destroyer": {
+	{
+		name: "Molten Destroyer",
 		chance: 0.02,
 		id: 42,
 		rarity: "Legendary",
@@ -85,7 +94,8 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 125,
 		},
 	},
-	Coreye: {
+	{
+		name: "Coreye",
 		chance: 0.0001,
 		id: 43,
 		rarity: "Secret",
@@ -94,4 +104,4 @@ export const MOLTEN_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1000,
 		},
 	},
-};
+];

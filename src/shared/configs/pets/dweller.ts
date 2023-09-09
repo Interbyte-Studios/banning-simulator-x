@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Divine egg (Limited).
  */
-export const DWELLER_EGG_PETS: Record<string, Pet> = {
-	Siphon: {
+export const DWELLER_EGG_PETS: Array<Pet> = [
+	{
+		name: "Siphon",
 		chance: 75,
 		id: 124,
 		rarity: "Exclusive",
@@ -14,7 +15,8 @@ export const DWELLER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 300,
 		},
 	},
-	"Darkness Phoenix": {
+	{
+		name: "Darkness Phoenix",
 		chance: 20,
 		id: 125,
 		rarity: "Exclusive",
@@ -24,7 +26,8 @@ export const DWELLER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 450,
 		},
 	},
-	"Deadly Dark Dominus": {
+	{
+		name: "Deadly Dark Dominus",
 		chance: 3.5,
 		id: 126,
 		rarity: "Exclusive",
@@ -34,7 +37,8 @@ export const DWELLER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 675,
 		},
 	},
-	Mida: {
+	{
+		name: "Mida",
 		chance: 1.5,
 		id: 127,
 		rarity: "Exclusive",
@@ -44,4 +48,4 @@ export const DWELLER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 1100,
 		},
 	},
-};
+];

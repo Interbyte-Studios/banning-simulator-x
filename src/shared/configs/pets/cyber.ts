@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Cyber egg.
  */
-export const CYBER_EGG_PETS: Record<string, Pet> = {
-	"Cyber Doggy": {
+export const CYBER_EGG_PETS: Array<Pet> = [
+	{
+		name: "Cyber Doggy",
 		chance: 37.01995,
 		id: 53,
 		rarity: "Basic",
@@ -13,7 +14,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 215,
 		},
 	},
-	"Cyber Bunny": {
+	{
+		name: "Cyber Bunny",
 		chance: 30,
 		id: 54,
 		rarity: "Basic",
@@ -22,7 +24,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 215,
 		},
 	},
-	"Cyber Kitty": {
+	{
+		name: "Cyber Kitty",
 		chance: 20,
 		id: 55,
 		rarity: "Ordinary",
@@ -31,7 +34,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 245,
 		},
 	},
-	"Cyber Bear": {
+	{
+		name: "Cyber Bear",
 		chance: 10,
 		id: 56,
 		rarity: "Rare",
@@ -40,7 +44,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 285,
 		},
 	},
-	"Cyber Angel": {
+	{
+		name: "Cyber Angel",
 		chance: 1.5,
 		id: 57,
 		rarity: "Epic",
@@ -49,7 +54,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 365,
 		},
 	},
-	"Cyber Pegasus": {
+	{
+		name: "Cyber Pegasus",
 		chance: 1.4,
 		id: 58,
 		rarity: "Epic",
@@ -58,7 +64,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 395,
 		},
 	},
-	"Cybernetic Phoenix": {
+	{
+		name: "Cybernetic Phoenix",
 		chance: 0.05,
 		id: 59,
 		rarity: "Legendary",
@@ -67,7 +74,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 500,
 		},
 	},
-	"Cybernetic Guard": {
+	{
+		name: "Cybernetic Guard",
 		chance: 0.02,
 		id: 60,
 		rarity: "Legendary",
@@ -76,7 +84,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 535,
 		},
 	},
-	"Cybernetic Dementor": {
+	{
+		name: "Cybernetic Dementor",
 		chance: 0.01,
 		id: 61,
 		rarity: "Legendary",
@@ -85,7 +94,8 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 570,
 		},
 	},
-	"Cybernetic Destroyer": {
+	{
+		name: "Cybernetic Destroyer",
 		chance: 0.00005,
 		id: 62,
 		rarity: "Secret",
@@ -94,4 +104,4 @@ export const CYBER_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 3_750,
 		},
 	},
-};
+];

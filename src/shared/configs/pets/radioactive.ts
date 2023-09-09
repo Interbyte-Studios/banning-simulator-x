@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Radioactive Egg (Limited).
  */
-export const RADIOACTIVE_EGG_PETS: Record<string, Pet> = {
-	"Radioactive Imp": {
+export const RADIOACTIVE_EGG_PETS: Array<Pet> = [
+	{
+		name: "Radioactive Imp",
 		chance: 75,
 		id: 83,
 		rarity: "Exclusive",
@@ -14,7 +15,8 @@ export const RADIOACTIVE_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 225,
 		},
 	},
-	"Radioactive Phoenix": {
+	{
+		name: "Radioactive Phoenix",
 		chance: 20,
 		id: 84,
 		rarity: "Exclusive",
@@ -24,7 +26,8 @@ export const RADIOACTIVE_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 285,
 		},
 	},
-	"Radioactive Vision": {
+	{
+		name: "Radioactive Vision",
 		chance: 5,
 		id: 85,
 		rarity: "Exclusive",
@@ -34,4 +37,4 @@ export const RADIOACTIVE_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 350,
 		},
 	},
-};
+];

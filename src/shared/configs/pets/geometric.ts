@@ -1,7 +1,8 @@
 import { Pet } from ".";
 
-export const GEOMETRIC_EGG_PETS: Record<string, Pet> = {
-	"Ice Diablo": {
+export const GEOMETRIC_EGG_PETS: Array<Pet> = [
+	{
+		name: "Ice Diablo",
 		chance: 91.9988,
 		id: 177,
 		rarity: "Epic",
@@ -10,7 +11,8 @@ export const GEOMETRIC_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 550,
 		},
 	},
-	Yatagarasu: {
+	{
+		name: "Yatagarasu",
 		chance: 8,
 		id: 178,
 		rarity: "Legendary",
@@ -19,7 +21,8 @@ export const GEOMETRIC_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 815,
 		},
 	},
-	Cataclysm: {
+	{
+		name: "Cataclysm",
 		chance: 0.001,
 		id: 179,
 		rarity: "Secret",
@@ -28,7 +31,8 @@ export const GEOMETRIC_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 20_000,
 		},
 	},
-	"Limbo State": {
+	{
+		name: "Limbo State",
 		chance: 0.0002,
 		id: 180,
 		rarity: "Primordial",
@@ -37,4 +41,4 @@ export const GEOMETRIC_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 250_000,
 		},
 	},
-};
+];

@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * Candy egg.
  */
-export const WORLD_PRESTIGE_PETS: Record<string, Pet> = {
-	"Hellfire Infernum": {
+export const WORLD_PRESTIGE_PETS: Array<Pet> = [
+	{
+		name: "Hellfire Infernum",
 		chance: 0,
 		id: 15000,
 		rarity: "Legendary",
@@ -13,7 +14,8 @@ export const WORLD_PRESTIGE_PETS: Record<string, Pet> = {
 			additionalBans: 330,
 		},
 	},
-	"Hellfire Ball": {
+	{
+		name: "Hellfire Ball",
 		chance: 0,
 		id: 15001,
 		rarity: "Legendary",
@@ -22,7 +24,8 @@ export const WORLD_PRESTIGE_PETS: Record<string, Pet> = {
 			additionalBans: 450,
 		},
 	},
-	"Hellfire Hound": {
+	{
+		name: "Hellfire Hound",
 		chance: 0,
 		id: 15002,
 		rarity: "Legendary",
@@ -31,7 +34,8 @@ export const WORLD_PRESTIGE_PETS: Record<string, Pet> = {
 			additionalBans: 600,
 		},
 	},
-	Hychampion: {
+	{
+		name: "Hychampion",
 		chance: 0,
 		id: 15003,
 		rarity: "Legendary",
@@ -40,7 +44,8 @@ export const WORLD_PRESTIGE_PETS: Record<string, Pet> = {
 			additionalBans: 850,
 		},
 	},
-	"Hellfire Dragon": {
+	{
+		name: "Hellfire Dragon",
 		chance: 0,
 		id: 15004,
 		rarity: "Exclusive",
@@ -49,4 +54,4 @@ export const WORLD_PRESTIGE_PETS: Record<string, Pet> = {
 			additionalBans: 2000,
 		},
 	},
-};
+];

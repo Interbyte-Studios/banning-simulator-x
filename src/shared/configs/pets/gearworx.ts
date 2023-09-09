@@ -3,8 +3,9 @@ import { Pet } from ".";
 /**
  * GearWorx egg.
  */
-export const GEARWORX_EGG_PETS: Record<string, Pet> = {
-	"Gear Doggy": {
+export const GEARWORX_EGG_PETS: Array<Pet> = [
+	{
+		name: "Gear Doggy",
 		chance: 37.66494,
 		id: 113,
 		rarity: "Basic",
@@ -13,7 +14,8 @@ export const GEARWORX_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 80,
 		},
 	},
-	"Gear Bunny": {
+	{
+		name: "Gear Bunny",
 		chance: 30,
 		id: 114,
 		rarity: "Basic",
@@ -22,7 +24,8 @@ export const GEARWORX_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 80,
 		},
 	},
-	"Gear Cat": {
+	{
+		name: "Gear Cat",
 		chance: 20,
 		id: 115,
 		rarity: "Ordinary",
@@ -31,7 +34,8 @@ export const GEARWORX_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 95,
 		},
 	},
-	"Gear Pig": {
+	{
+		name: "Gear Pig",
 		chance: 10,
 		id: 116,
 		rarity: "Rare",
@@ -40,7 +44,8 @@ export const GEARWORX_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 125,
 		},
 	},
-	"Gear Bee": {
+	{
+		name: "Gear Bee",
 		chance: 1.5,
 		id: 117,
 		rarity: "Rare",
@@ -49,7 +54,8 @@ export const GEARWORX_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 135,
 		},
 	},
-	"Gear Dragon": {
+	{
+		name: "Gear Dragon",
 		chance: 0.8,
 		id: 118,
 		rarity: "Epic",
@@ -58,7 +64,8 @@ export const GEARWORX_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 200,
 		},
 	},
-	"Gear Destroyer": {
+	{
+		name: "Gear Destroyer",
 		chance: 0.02,
 		id: 119,
 		rarity: "Legendary",
@@ -67,7 +74,8 @@ export const GEARWORX_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 305,
 		},
 	},
-	"Gear Dominus": {
+	{
+		name: "Gear Dominus",
 		chance: 0.01,
 		id: 120,
 		rarity: "Legendary",
@@ -76,7 +84,8 @@ export const GEARWORX_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 315,
 		},
 	},
-	"Gear Striker": {
+	{
+		name: "Gear Striker",
 		chance: 0.005,
 		id: 121,
 		rarity: "Legendary",
@@ -85,7 +94,8 @@ export const GEARWORX_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 335,
 		},
 	},
-	"Eternal Gear": {
+	{
+		name: "Eternal Gear",
 		chance: 0.00005,
 		id: 122,
 		rarity: "Secret",
@@ -94,7 +104,8 @@ export const GEARWORX_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 2750,
 		},
 	},
-	Steambot: {
+	{
+		name: "Steambot",
 		chance: 0.00001,
 		id: 123,
 		rarity: "Primordial",
@@ -103,4 +114,4 @@ export const GEARWORX_EGG_PETS: Record<string, Pet> = {
 			additionalBans: 4500,
 		},
 	},
-};
+];

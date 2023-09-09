@@ -2,7 +2,6 @@ import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { ContextActionService, MarketplaceService, Players, Workspace } from "@rbxts/services";
-import { animateEggHatch } from "client/modules/eggs/hatchEgg";
 import { getIsHatching } from "client/modules/eggs/isHatching";
 import { getIsTrading } from "client/modules/isTradingCache";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
@@ -11,7 +10,7 @@ import { remoteContext } from "client/ui/mocks/remoteContext";
 import { EggName, EGGS, hatchDebounce, isEventEgg } from "shared/configs/eggs";
 import { GAMEPASSES } from "shared/configs/game";
 import { Pet, Variants } from "shared/configs/pets";
-import { HatchEggFailKind, ValidEggAmount, validEggAmount } from "shared/remotes/eggs/hatchEgg";
+import { ValidEggAmount, validEggAmount } from "shared/remotes/eggs/hatchEgg";
 import { StoreState } from "shared/rodux";
 import { CurrenciesState } from "shared/rodux/currencies";
 import { EggsState } from "shared/rodux/eggs";
@@ -103,7 +102,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 
 				// initial time check
 				const now = time();
-				const canHatch = now - lastHatchTime > hatchDebounce;
+				const canHatch = now - lastHatchTime > 0.5;
 				if (!canHatch) {
 					addAnnouncement(
 						`You must wait ${statsAbbreviator.numberToString(
@@ -159,7 +158,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 
 							// check to be sure they've waited long enough
 							const now = time();
-							const canHatch = now - lastHatchTime > hatchDebounce;
+							const canHatch = now - lastHatchTime > 0.5;
 							if (!canHatch) {
 								continue;
 							}
@@ -204,69 +203,14 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 								break;
 							}
 
-							const requestHatch = await hatchEgg.CallServerAsync(amount, eggName, variant === "void");
-							if (requestHatch.success) {
-								const ownsFastHatch = props.gamepasses["Fast Hatch"] || props.rebirths.fastHatch;
-								animateEggHatch(eggName, variant === "void", requestHatch.pets, ownsFastHatch);
-							} else {
-								if (requestHatch.reason === HatchEggFailKind.NoCharacter) {
-									addAnnouncement(
-										`You could not hatch because your character could not be found.`,
-										AnnouncementType.Error,
-									);
-								} else if (requestHatch.reason === HatchEggFailKind.NoCurrency) {
-									addAnnouncement(
-										`You could not hatch because you do not have enough currency.`,
-										AnnouncementType.Error,
-									);
-								} else if (requestHatch.reason === HatchEggFailKind.NoGamepass) {
-									addAnnouncement(
-										`You could not hatch because you do not own the triple egg gamepass.`,
-										AnnouncementType.Error,
-									);
-								} else if (requestHatch.reason === HatchEggFailKind.NoInventory) {
-									addAnnouncement(
-										`You could not hatch because you do not have enough inventory space.`,
-										AnnouncementType.Error,
-									);
-								} else if (requestHatch.reason === HatchEggFailKind.NoWorld) {
-									addAnnouncement(
-										`You could not hatch because you do not own the world required to hatch that egg.`,
-										AnnouncementType.Error,
-									);
-								} else if (requestHatch.reason === HatchEggFailKind.NoZone) {
-									addAnnouncement(
-										`You could not hatch because you do not own the zone required to hatch that egg.`,
-										AnnouncementType.Error,
-									);
-								} else if (requestHatch.reason === HatchEggFailKind.NotWithinDistance) {
-									addAnnouncement(
-										`You could not hatch because you are not close enough to hatch an egg.`,
-										AnnouncementType.Error,
-									);
-								} else if (requestHatch.reason === HatchEggFailKind.TooFast) {
-									addAnnouncement(`You could not hatch because you are hatching too fast.`, AnnouncementType.Error);
-								} else if (requestHatch.reason === HatchEggFailKind.Trading) {
-									addAnnouncement(
-										`You could not hatch because you cannot hatch while you are trading.`,
-										AnnouncementType.Error,
-									);
-								} else {
-									addAnnouncement(`There was an issue hatching the egg. Try again later. [4]`, AnnouncementType.Error);
-								}
-							}
+							hatchEgg.SendToServer(amount, eggName, variant === "void");
+							warn(`Sent request`);
 						}
 					});
 				} else {
 					lastHatchTime = now;
-
-					const requestHatch = await hatchEgg.CallServerAsync(amount, eggName, variant === "void");
-					if (requestHatch.success) {
-						const ownsFastHatch = props.gamepasses["Fast Hatch"] || props.rebirths.fastHatch;
-						animateEggHatch(eggName, variant === "void", requestHatch.pets, ownsFastHatch);
-					} else {
-						addAnnouncement(`There was an issue hatching the egg. Try again later. [5]`, AnnouncementType.Error);
-					}
+					hatchEgg.SendToServer(amount, eggName, variant === "void");
+					warn(`Sent request`);
 				}
 			},
 			[props.eggs, props.currencies, props.pets, props.settings, props.gamepasses, props.rebirths],
