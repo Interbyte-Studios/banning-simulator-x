@@ -190,21 +190,21 @@ export function startTrial(player: Player): {
 
 					// dispatch the pets
 					store.dispatch(hatchEgg(0, "coins", hatchedEggs));
-					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs);
+					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs, false);
 				} else if (currentTrial.difficulty === "medium") {
 					// find the eggs to hatch
 					const hatchedEggs = hatchHatchableEgg(player, currentState, TIME_TRIAL_EGG, 3, "regular");
 
 					// dispatch the pets
 					store.dispatch(hatchEgg(0, "coins", hatchedEggs));
-					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs);
+					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs, false);
 				} else if (currentTrial.difficulty === "hard") {
 					// find the eggs to hatch
 					const hatchedEggs = hatchHatchableEgg(player, currentState, TIME_TRIAL_EGG, 5, "regular");
 
 					// dispatch the pets
 					store.dispatch(hatchEgg(0, "coins", hatchedEggs));
-					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs);
+					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs, false);
 				}
 				currentTrial.eggsClaimed.push(currentTrial.wave - 1);
 			}

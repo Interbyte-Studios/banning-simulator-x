@@ -151,18 +151,19 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					task.spawn(async () => {
 						// eslint-disable-next-line no-constant-condition
 						while (true) {
-							task.wait(0.05);
-							if (!autoEnabled) {
-								break;
-							}
+							task.wait();
 
 							// check to be sure they've waited long enough
 							const now = time();
-							const canHatch = now - lastHatchTime > 0.5;
+							const canHatch = now - lastHatchTime > 0.4;
 							if (!canHatch) {
 								continue;
 							}
 							lastHatchTime = now;
+
+							if (!autoEnabled) {
+								break;
+							}
 
 							// make sure they aren't still hatching
 							if (getIsHatching()) {

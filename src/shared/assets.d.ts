@@ -671,6 +671,7 @@ declare namespace assetIds {
 				"Artifact Phoenix Talisman": string;
 			};
 			eggs: {
+				"Autumn Egg": string;
 				Pastel: string;
 				Geometric: string;
 				"Throwback 2.0": string;

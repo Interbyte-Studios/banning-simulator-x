@@ -47,13 +47,27 @@ export function playSFX(soundType: UIEngagement | WeaponSlash | NPCImpact | Hatc
 		}
 	}
 
-	pcall(() => {
-		const sound = Make("Sound", { SoundId: `rbxassetid://${soundType}`, Parent: SoundService });
-		sound.Volume = store.getState().settings.sound.soundEffects * 0.05;
-		sound.Play();
-		sound.Ended.Connect(() => {
-			sound.Parent = undefined;
-			sound.Destroy();
-		});
+	const [soundLoadSuccess, sound] = pcall(() => {
+		return Make("Sound", { SoundId: `rbxassetid://${soundType}`, Parent: SoundService });
+	});
+
+	if (!(soundLoadSuccess && sound)) {
+		return;
+	}
+
+	sound.Volume = store.getState().settings.sound.soundEffects * 0.05;
+
+	const [playSoundSuccess, playConn] = pcall(() => {
+		return sound.Play();
+	});
+
+	if (!(playSoundSuccess && playConn)) {
+		return;
+	}
+
+	const connection = sound.Ended.Connect(() => {
+		sound.Parent = undefined;
+		sound.Destroy();
+		connection.Disconnect();
 	});
 }

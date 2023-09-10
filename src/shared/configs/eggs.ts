@@ -2,6 +2,7 @@ import { t } from "@rbxts/t";
 
 import { Pet } from "./pets";
 import { ARMORED_EGG_PETS } from "./pets/armored";
+import { AUTUMN_EGG_PETS } from "./pets/autumn";
 import { CANDY_EGG_PETS } from "./pets/candy";
 import { CITY_EGG_PETS } from "./pets/city";
 import { CORRUPT_EGG_PETS } from "./pets/corrupt";
@@ -92,10 +93,11 @@ export const isValidMasteryEgg = t.literal(
 	"Pastel",
 	"Geometric",
 	"Throwback 2.0",
+	"Autumn",
 );
 export type ValidMasteryEgg = t.static<typeof isValidMasteryEgg>;
 
-export const isEventEgg = t.literal("500k Event", "Throwback", "Pixel", "Crystal", "Throwback 2.0");
+export const isEventEgg = t.literal("500k Event", "Throwback", "Pixel", "Crystal", "Throwback 2.0", "Autumn");
 export type EventEgg = t.static<typeof isEventEgg>;
 
 export const isExclusiveEgg = t.literal(
@@ -342,6 +344,15 @@ export const EGGS = {
 	"Throwback 2.0": {
 		id: 23,
 		pets: THROWBACK_2_EGG_PETS,
+		world: "Ban Land",
+		zone: "Forest",
+		hatchable: false,
+		hidden: false,
+		luckApplies: false,
+	},
+	Autumn: {
+		id: 24,
+		pets: AUTUMN_EGG_PETS,
 		world: "Ban Land",
 		zone: "Forest",
 		hatchable: true,

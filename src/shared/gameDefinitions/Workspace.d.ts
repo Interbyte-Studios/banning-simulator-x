@@ -31,7 +31,7 @@ declare global {
 			leaderboards: Folder & {
 				bans: Folder;
 				eggs: Folder;
-				timeTrials: Folder;
+				rebirths: Folder;
 			};
 			radiantMachines: Folder & {
 				interactions: Folder;

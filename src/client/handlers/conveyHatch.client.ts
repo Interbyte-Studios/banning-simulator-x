@@ -9,8 +9,8 @@ const conveyHatch = eggNamespace.Get("conveyHatch");
 const player = Players.LocalPlayer;
 onStoreCreated(player)
 	.andThen((store) => {
-		conveyHatch.Connect((eggName, pets) =>
-			animateEggHatch(eggName, false, pets, store.getState().gamepasses["Fast Hatch"]),
+		conveyHatch.Connect((eggName, pets, isVoid) =>
+			animateEggHatch(eggName, isVoid, pets, store.getState().gamepasses["Fast Hatch"]),
 		);
 	})
 	.catch((e) => {

@@ -4,7 +4,7 @@ export const GEOMETRIC_EGG_PETS: Array<Pet> = [
 	{
 		name: "Ice Diablo",
 		chance: 91.9988,
-		id: 177,
+		id: 1_000_000,
 		rarity: "Epic",
 		stats: {
 			additionalDamage: 11_500_000,
@@ -14,7 +14,7 @@ export const GEOMETRIC_EGG_PETS: Array<Pet> = [
 	{
 		name: "Yatagarasu",
 		chance: 8,
-		id: 178,
+		id: 1_000_001,
 		rarity: "Legendary",
 		stats: {
 			additionalDamage: 18_500_000,
@@ -24,7 +24,7 @@ export const GEOMETRIC_EGG_PETS: Array<Pet> = [
 	{
 		name: "Cataclysm",
 		chance: 0.001,
-		id: 179,
+		id: 1_000_002,
 		rarity: "Secret",
 		stats: {
 			additionalDamage: 100_000_000,
@@ -34,7 +34,7 @@ export const GEOMETRIC_EGG_PETS: Array<Pet> = [
 	{
 		name: "Limbo State",
 		chance: 0.0002,
-		id: 180,
+		id: 1_000_003,
 		rarity: "Primordial",
 		stats: {
 			additionalDamage: 500_000_000,

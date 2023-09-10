@@ -100,6 +100,6 @@ hatchEggRemote.Connect(
 
 		// dispatch the pets
 		store.dispatch(hatchEgg(eggCost.amount * hatchedEggs.size(), eggCost.currencyType, hatchedEggs));
-		conveyHatch.SendToPlayer(player, eggName, hatchedEggs);
+		conveyHatch.SendToPlayer(player, eggName, hatchedEggs, isVoid);
 	}),
 );

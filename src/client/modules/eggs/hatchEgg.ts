@@ -1,12 +1,4 @@
-import {
-	ContentProvider,
-	Lighting,
-	Players,
-	ReplicatedStorage,
-	RunService,
-	TweenService,
-	Workspace,
-} from "@rbxts/services";
+import { Lighting, Players, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
 import { HatchEffect, playSFX } from "client/util/playSound";
 import { EggName } from "shared/configs/eggs";
 import { RARITIES } from "shared/configs/rarities";
@@ -124,7 +116,6 @@ export const animateEggHatch = (egg: EggName, isVoid: boolean, pets: Array<Hatch
 	const eggModels = pets.map(() => {
 		const model = eggModel.Clone();
 		setAssetProperties("egg", model, isVoid ? "void" : "regular");
-		ContentProvider.PreloadAsync([model]);
 		model.Parent = Workspace;
 
 		return model;
@@ -150,7 +141,6 @@ export const animateEggHatch = (egg: EggName, isVoid: boolean, pets: Array<Hatch
 		rarityGradient.Color = rarityColorSequence;
 
 		setAssetProperties("pet", model, variant);
-		ContentProvider.PreloadAsync([model]);
 		model.Parent = Workspace;
 		return {
 			data,

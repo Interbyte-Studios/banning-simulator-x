@@ -93,6 +93,11 @@ hash = "106ce8135c9007ecb971abab0fe336d744485783474de9962b330b4c2ca84ed1"
 id = 14375576800
 packable = false
 
+[inputs."images/decals/eggs/Autumn Egg.png"]
+hash = "4d0d57afdf62d59e9af923d6e52244d99f3fa188c9468b9c751c3c411617b530"
+id = 14744670421
+packable = false
+
 [inputs."images/decals/eggs/Candy.png"]
 hash = "f1ea9b24a95160d30a19ada4300f9ee0e71da10d6dfde2a120a8282c4793466f"
 id = 11627644446
@@ -391,6 +396,46 @@ packable = false
 [inputs."images/decals/pets/Armored Spartan.png"]
 hash = "ffe67662b81623c9e2574943e83ac4b65cd0c9c0a2897f243a2ff31554e20662"
 id = 11440087542
+packable = false
+
+[inputs."images/decals/pets/Autumn Bunny.png"]
+hash = "dca9139bfc7255cebea0704453e3db67466f270e1bc5c330cb185ddbd227371b"
+id = 14744671089
+packable = false
+
+[inputs."images/decals/pets/Autumn Deer.png"]
+hash = "a0a2c4069e0c2b6e3843349e6b269a2f6bd4342c71623ec19e8a1977051cb15a"
+id = 14744671251
+packable = false
+
+[inputs."images/decals/pets/Autumn Destroyer.png"]
+hash = "cc89c80902c1e51ace7c83bc6a5de11761b63aaa0c14a50a5062a78575622e06"
+id = 14744671437
+packable = false
+
+[inputs."images/decals/pets/Autumn Doggy.png"]
+hash = "58edfa57d1a5f1771f748c78f27e1864caf53d3182c30fd23bb709743329609a"
+id = 14744671683
+packable = false
+
+[inputs."images/decals/pets/Autumn Kitty.png"]
+hash = "9a0b35e6e71b0da430f09e290bf84e9b6fddbed9c843a71b46135be295a96afc"
+id = 14744671876
+packable = false
+
+[inputs."images/decals/pets/Autumn Meister.png"]
+hash = "5852d5ad3aa40baba830c8e94d0fa46305833d787b98e18ffdf1d56bd69d4392"
+id = 14744672116
+packable = false
+
+[inputs."images/decals/pets/Autumn Phoenix.png"]
+hash = "ed67a10990414913365d25b8a72f87a8c25d51aa67030a4f3d6a2f8d8c5b6b7e"
+id = 14744672324
+packable = false
+
+[inputs."images/decals/pets/Autumn Piggy.png"]
+hash = "a7d242b3f3d556063f3ab9f49f5d8ac5d22487ad2893a9f2edf8b76febe8fa82"
+id = 14744672535
 packable = false
 
 [inputs."images/decals/pets/BIG Royal Bunny.png"]
@@ -746,6 +791,11 @@ packable = false
 [inputs."images/decals/pets/Eternal Gear.png"]
 hash = "3f7059f6e34eeca52c7e888a153a8a1880a55fc0e7868a470018b0b28bd6712f"
 id = 14153252209
+packable = false
+
+[inputs."images/decals/pets/Eternal Shine.png"]
+hash = "7721fc5b77cf94b5983edb97dec3c7ba5cbeec478eb69717dca60dd758d8022c"
+id = 14744673075
 packable = false
 
 [inputs."images/decals/pets/Evil Bee.png"]
@@ -1303,6 +1353,46 @@ hash = "88010b11813f979a6fa6bf5878403e81faf91ef823c26cdcf90ed83a9c289cf5"
 id = 11440107622
 packable = false
 
+[inputs."images/decals/pets/Radiant Autumn Bunny.png"]
+hash = "30adfdc5cafe333e71d1a74c88ddc3121c21c09b5d552fcf86ab40f69b0d247b"
+id = 14744673652
+packable = false
+
+[inputs."images/decals/pets/Radiant Autumn Deer.png"]
+hash = "adb36f724fbc8ce4f0e47ad050bd958306a32b42c37dce28cd2812c16c7e8355"
+id = 14744673876
+packable = false
+
+[inputs."images/decals/pets/Radiant Autumn Destroyer.png"]
+hash = "832dd8f215c08b635b2d9f9134b05c4b637e336806312a803e596ea21871f9cd"
+id = 14744674058
+packable = false
+
+[inputs."images/decals/pets/Radiant Autumn Doggy.png"]
+hash = "ce9cedcc921e658aa7d78eb449ed96412cba48942ee1eea01bcedd55732d1188"
+id = 14744674233
+packable = false
+
+[inputs."images/decals/pets/Radiant Autumn Kitty.png"]
+hash = "142ff5e13a83d9640bec266cfc19edae33a340b04be4674da8f91df7fd0369ec"
+id = 14744674399
+packable = false
+
+[inputs."images/decals/pets/Radiant Autumn Meister.png"]
+hash = "29b24ffe81c9c8634358e4219b17a15f8b1d5793a894cacbdce13e170c3e9264"
+id = 14744674609
+packable = false
+
+[inputs."images/decals/pets/Radiant Autumn Phoenix.png"]
+hash = "4c9d60373627cc18370bc3177b0e058afb961164f7270dc8deb5bab4b3c1fe0b"
+id = 14744674774
+packable = false
+
+[inputs."images/decals/pets/Radiant Autumn Piggy.png"]
+hash = "be2b7180c480ecc1371620ba41c4c3c969a5f26c4667210004f631d46a714821"
+id = 14744674910
+packable = false
+
 [inputs."images/decals/pets/Radiant BIG Royal Bunny.png"]
 hash = "da680726829ab679b3d6af42a2f7cf6a19fb88062fecaf7cecd866cdd49f4999"
 id = 13813996835
@@ -1651,6 +1741,11 @@ packable = false
 [inputs."images/decals/pets/Radiant Eternal Gear.png"]
 hash = "faefaa3f4291b57a457ac2a4c5024b1df97671bb5947eb67ea977f7045136340"
 id = 14153236168
+packable = false
+
+[inputs."images/decals/pets/Radiant Eternal Shine.png"]
+hash = "0c3d92fce1de8090917458355a91220fed0b81e9fc482a0bc771a23749d46830"
+id = 14744675241
 packable = false
 
 [inputs."images/decals/pets/Radiant Evil Bee.png"]
@@ -2138,6 +2233,11 @@ hash = "df756e7679091532350f3e366a13d4506d9984b61c28aa0c2d6320fa5d8c983b"
 id = 13813997398
 packable = false
 
+[inputs."images/decals/pets/Radiant Royal Pumpkin.png"]
+hash = "892ed07a2b717db6b75657befce4569eeb639ad3b944e231c5652164ee06e273"
+id = 14744675853
+packable = false
+
 [inputs."images/decals/pets/Radiant Seekstress.png"]
 hash = "fd1966d3fb52771d203a7ad489e8c979d19d721d96b534342f68072123d7f170"
 id = 13814449895
@@ -2246,6 +2346,11 @@ packable = false
 [inputs."images/decals/pets/Royal Pegasus.png"]
 hash = "6937466101f389c5d2029d8ddc3c0c6707227e68db3d3f71f433ef20a7632fc6"
 id = 13813997557
+packable = false
+
+[inputs."images/decals/pets/Royal Pumpkin.png"]
+hash = "b7fce3be8bef7a326697cb223384482cca1aca1ec36404f5600aa233dd8b065d"
+id = 14744676165
 packable = false
 
 [inputs."images/decals/pets/Seekstress.png"]
@@ -2426,6 +2531,46 @@ packable = false
 [inputs."images/decals/pets/Void Armored Spartan.png"]
 hash = "2873c3b2e81a7d86007957a41085d67540937fd72119a7adbafac150c9cfb1f6"
 id = 13989407535
+packable = false
+
+[inputs."images/decals/pets/Void Autumn Bunny.png"]
+hash = "8e91bd4d64c730ba7c08a127779185e6b723b8f757113b4b2875df1b499dffeb"
+id = 14744676498
+packable = false
+
+[inputs."images/decals/pets/Void Autumn Deer.png"]
+hash = "1c5c713f73f2c7c62808b6b567564dcfb0167bf8b69134d934d0ad1474c5e78b"
+id = 14744676685
+packable = false
+
+[inputs."images/decals/pets/Void Autumn Destroyer.png"]
+hash = "94df75589770ecd0ac773edef2625e7b87fa34df0f1efdea2681e8a640ecfac7"
+id = 14744676860
+packable = false
+
+[inputs."images/decals/pets/Void Autumn Doggy.png"]
+hash = "f1d3edb8cce9c34c7b921dc10e4c0525bfc3b77ae7714b8a5aea6727e39e9e3a"
+id = 14744677027
+packable = false
+
+[inputs."images/decals/pets/Void Autumn Kitty.png"]
+hash = "4959d35baf2fd5166a51732d2b3acdb43c80a07275c09b1b22e2bc4a408d03e6"
+id = 14744677151
+packable = false
+
+[inputs."images/decals/pets/Void Autumn Meister.png"]
+hash = "be1ac7fa5f66880f4dec528ded176ca4f9c583ff93572a87454b9bef620ab54a"
+id = 14744677311
+packable = false
+
+[inputs."images/decals/pets/Void Autumn Phoenix.png"]
+hash = "c4b7ddc5d7a3749a47aa866f3005bc41fd34436f6f5078195789bc68de1e9c28"
+id = 14744677506
+packable = false
+
+[inputs."images/decals/pets/Void Autumn Piggy.png"]
+hash = "961610197f34dedf297c34e89a8e4d67654348954ede308112d63462ade39faf"
+id = 14744677685
 packable = false
 
 [inputs."images/decals/pets/Void BIG Royal Bunny.png"]
@@ -2776,6 +2921,11 @@ packable = false
 [inputs."images/decals/pets/Void Eternal Gear.png"]
 hash = "df076b051dc19c6f01925cadde1aff4845f196d0739adc19a96d89afd206cbda"
 id = 14153238061
+packable = false
+
+[inputs."images/decals/pets/Void Eternal Shine.png"]
+hash = "44fe8aba37332f4af457967e9d9f8796e1514ec04355a47de31afcf2c4c37351"
+id = 14744678162
 packable = false
 
 [inputs."images/decals/pets/Void Evil Bee.png"]
@@ -3266,6 +3416,11 @@ packable = false
 [inputs."images/decals/pets/Void Royal Pegasus.png"]
 hash = "472385bdc4031473065f74818865fdb5dfb6daa1ff575eebc9ab34ecaa3447ad"
 id = 13813998223
+packable = false
+
+[inputs."images/decals/pets/Void Royal Pumpkin.png"]
+hash = "8a1324198a7d5ec3512f36c07b13370a286ee2dd92f5bb4898fd516c5b08106a"
+id = 14744678836
 packable = false
 
 [inputs."images/decals/pets/Void Seekstress.png"]

@@ -1,3 +1,4 @@
+import Object from "@rbxts/object-utils";
 import { HttpService, ReplicatedStorage } from "@rbxts/services";
 import assetIds from "shared/assets";
 import { EggName } from "shared/configs/eggs";
@@ -5,7 +6,6 @@ import { Variants } from "shared/configs/pets";
 import { remotes } from "shared/remotes";
 import { StoreState } from "shared/rodux";
 import { HatchedPet, Pet } from "shared/rodux/pets";
-import { isImmuneRarity } from "shared/rodux/settings";
 import { getEggData } from "shared/util/getEggData";
 import { getPetData } from "shared/util/getPetData";
 
@@ -38,7 +38,7 @@ export type PetHatched = {
  */
 export function hatchGameEgg(storeState: StoreState, egg: EggName, variant: Exclude<Variants, "radiant">): PetHatched {
 	const eggData = getEggData(egg);
-	const randomNum = random.NextNumber(0, 100);
+	let randomNum = random.NextNumber(0, 100);
 
 	let luckMultiplier = 0;
 	luckMultiplier += storeState.boosts.active["x2 Hatching Luck"] > 0 ? 2 : 0;
@@ -60,43 +60,38 @@ export function hatchGameEgg(storeState: StoreState, egg: EggName, variant: Excl
 		}
 	}
 
-	const hasLegendPets = eggData.pets.find((p) => isImmuneRarity(p.rarity)) !== undefined;
+	const petChances = Object.entries(eggData.pets).map(([, pet]) => {
+		const newPetData = { ...pet };
+
+		if (pet.rarity === "Legendary" || pet.rarity === "Secret" || pet.rarity === "Primordial") {
+			newPetData.chance *= luckMultiplier;
+		}
+
+		return newPetData;
+	});
+
+	const totalChance = Object.values(petChances).reduce((total, pet) => total + pet.chance, 0);
+	for (const pet of petChances) {
+		pet.chance = (pet.chance / totalChance) * 100;
+	}
 
 	let hatchedPet: Pet | undefined;
-	let cumulativeChance = 0;
-	for (let i = 0; i < eggData.pets.size(); i++) {
-		const pet = eggData.pets[i];
-
-		// we need to check if there are any legendary+ pets if they have luck enabled
-		// if there are, we need to remove their chance * luck from the 1st pet in the egg
-		if (luckMultiplier > 0 && hasLegendPets) {
-			if (i === 0) {
-				for (const immunePet of eggData.pets) {
-					if (!isImmuneRarity(immunePet.rarity)) {
-						continue;
-					}
-
-					pet.chance -= immunePet.chance * luckMultiplier;
-					pet.chance += immunePet.chance;
-				}
-			} else if (isImmuneRarity(pet.rarity)) {
-				pet.chance *= luckMultiplier;
-			}
+	for (const pet of petChances) {
+		randomNum -= pet.chance;
+		if (randomNum > 0) {
+			continue;
 		}
-		cumulativeChance += pet.chance;
 
-		if (randomNum <= cumulativeChance) {
-			hatchedPet = {
-				id: pet.id,
-				bans: 0,
-				guid: HttpService.GenerateGUID(false),
-				equipped: false,
-				locked: false,
-				variant: magicVariant,
-				tradeLocked: false,
-			};
-			break;
-		}
+		hatchedPet = {
+			id: pet.id,
+			bans: 0,
+			guid: HttpService.GenerateGUID(false),
+			equipped: false,
+			locked: false,
+			variant: magicVariant,
+			tradeLocked: false,
+		};
+		break;
 	}
 	assert(hatchedPet, `Failed to hatch pet in egg ${egg}`);
 
@@ -167,7 +162,6 @@ export function hatchHatchableEgg(
 					}
 				}
 			}
-
 			task.spawn(() => {
 				pcall(() => {
 					HttpService.RequestAsync({
@@ -191,6 +185,7 @@ export function hatchHatchableEgg(
 		} else if (petData.rarity === "Legendary" && !storedPet.autoDeleted) {
 			hatchSystemMessage.SendToAllPlayers(player, petData.id, storedPet.variant, "hatched");
 		}
+
 		hatchedEggs.push(storedPet);
 	}
 	return hatchedEggs;

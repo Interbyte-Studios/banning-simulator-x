@@ -97,7 +97,7 @@ export const JESTER_EGG_PETS: Array<Pet> = [
 	{
 		name: "All Seeing Jester",
 		chance: 0.0001,
-		id: 95,
+		id: 1_000_000_000,
 		rarity: "Secret",
 		stats: {
 			additionalDamage: 48000,
@@ -107,7 +107,7 @@ export const JESTER_EGG_PETS: Array<Pet> = [
 	{
 		name: "Chromatic Obliterator",
 		chance: 0.00002,
-		id: 96,
+		id: 1_000_000_001,
 		rarity: "Primordial",
 		stats: {
 			additionalDamage: 172000,
