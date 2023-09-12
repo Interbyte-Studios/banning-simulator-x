@@ -31,27 +31,16 @@ interface InactiveTradeProps {
  * @returns The Roact element to render.
  */
 export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
-	const { useContext, useState, useEffect } = hooks;
-
-	const [displaySendTradeRequest, setDisplaySentTradeRequest] = useState<Player | undefined>(undefined);
+	const { useContext } = hooks;
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 	const { acceptTradeRequest, declineTradeRequest, requestTrading } = useContext(remoteContext);
-
-	useEffect(() => setDisplaySentTradeRequest(props.tradingPlayer), [props.tradingPlayer]);
 
 	if (!props.isEnabled) {
 		return <></>;
 	} else {
 		let elementToRender: Roact.Element | undefined;
-		if (displaySendTradeRequest !== undefined) {
-			elementToRender = (
-				<SentTradeRequest
-					player={displaySendTradeRequest}
-					hideMenu={(): void => setDisplaySentTradeRequest(undefined)}
-				/>
-			);
-		} else if (props.displayTradeRequest) {
+		if (props.displayTradeRequest) {
 			if (props.tradingPlayer === undefined) {
 				throw `Attempted to render a trade request, but the trading player is undefined.`;
 			}
@@ -86,6 +75,10 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 					}}
 				/>
 			);
+		} else if (props.tradingPlayer !== undefined) {
+			elementToRender = (
+				<SentTradeRequest player={props.tradingPlayer} hideMenu={(): void => props.setTradingPlayer(undefined)} />
+			);
 		} else {
 			elementToRender = (
 				<TradeList
@@ -105,7 +98,6 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 							return;
 						}
 
-						setDisplaySentTradeRequest(player);
 						props.setTradingPlayer(player);
 						requestTrading.SendToServer(player);
 					}}
