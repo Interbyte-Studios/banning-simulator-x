@@ -41,6 +41,7 @@ export const ActiveOffer = hooks(
 			<BaseFrame Size={UDim2.fromScale(1, 1)}>
 				<ActiveTradeOffer
 					player={Players.LocalPlayer}
+					otherPlayer={props.foreign.player}
 					currentOffer={props.local.tradeOffer}
 					confirmed={props.local.confirmed}
 					setOffer={props.setOffer}
@@ -49,6 +50,7 @@ export const ActiveOffer = hooks(
 
 				<ActiveTradeOffer
 					player={props.foreign.player}
+					otherPlayer={Players.LocalPlayer}
 					currentOffer={props.foreign.tradeOffer}
 					confirmed={props.foreign.confirmed}
 					setOffer={props.setOffer}

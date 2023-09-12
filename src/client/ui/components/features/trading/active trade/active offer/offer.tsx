@@ -13,6 +13,7 @@ import { playSFX, UIEngagement } from "client/util/playSound";
 import { MAX_TRADE_OFFER_SIZE } from "shared/configs/game";
 import { PlayerTradeItem } from "shared/configs/trading";
 import { Pet } from "shared/rodux/pets";
+import { getPetInventorySize } from "shared/util/getPetInventorySize";
 
 import { ActiveOfferConfirmed } from "./confirmed";
 import { ActiveCurrencyOffer } from "./currency";
@@ -20,6 +21,7 @@ import { LocalSearch } from "./search";
 
 interface ActiveTradeOfferProps {
 	player: Player;
+	otherPlayer: Player;
 	currentOffer: PlayerTradeItem;
 	setOffer: (offer: PlayerTradeItem) => void;
 	confirmed: boolean;
@@ -106,7 +108,15 @@ export const ActiveTradeOffer = hooks((props: ActiveTradeOfferProps, { useContex
 
 	const playerStore = retrieveStore(props.player);
 	if (playerStore === undefined) {
-		addAnnouncement("There was an issue with the trade. It's been cancelled.", AnnouncementType.Error);
+		addAnnouncement("There was an issue with the trade. Please rejoin.", AnnouncementType.Error);
+
+		props.resetTrade();
+		return <></>;
+	}
+
+	const otherPlayerStore = retrieveStore(props.otherPlayer);
+	if (otherPlayerStore === undefined) {
+		addAnnouncement("There was an issue with the trade. Please rejoin.", AnnouncementType.Error);
 
 		props.resetTrade();
 		return <></>;
@@ -167,9 +177,18 @@ export const ActiveTradeOffer = hooks((props: ActiveTradeOfferProps, { useContex
 							newPets.unorderedRemove(petIndex);
 
 							const newOffer = { ...props.currentOffer, pets: newPets };
-
 							props.setOffer(newOffer);
 						} else {
+							if (
+								otherPlayerStore.getState().pets.size() >= getPetInventorySize(otherPlayerStore.getState().gamepasses)
+							) {
+								addAnnouncement(
+									`The other player has a full inventory. You cannot give them pets!`,
+									AnnouncementType.Error,
+								);
+								return;
+							}
+
 							if (props.currentOffer.pets.size() >= MAX_TRADE_OFFER_SIZE) {
 								addAnnouncement(`You can only offer ${MAX_TRADE_OFFER_SIZE} pets!`, AnnouncementType.Error);
 								return;
