@@ -76,6 +76,7 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 				setDisplayTradeRequest(false);
 				setActiveTrade(false);
 				setTradingPlayer(undefined);
+				warn(`Trade was declined`);
 			}),
 			tradeRequestAccepted.Connect((receivingPlayer) => {
 				if (tradingPlayer === undefined) {

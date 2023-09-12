@@ -80,7 +80,7 @@ export const TAG_CONFIG = {
 /**
  * The default inventory size someone's allowed.
  */
-export const DEFAULT_INVENTORY_SIZE = 100;
+export const DEFAULT_INVENTORY_SIZE = 250;
 
 /**
  * The default amount of pets a player can equip at once.

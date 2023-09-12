@@ -56,6 +56,7 @@ export function startTrial(player: Player): {
 		newNpc.Name = playerTrial.selectedNPC;
 		newNpc.SetAttribute("MaxHealth", 200 * healthMultiplier ** playerTrial.wave + 1);
 		newNpc.SetAttribute("Health", 200 * healthMultiplier ** playerTrial.wave + 1);
+		newNpc.SetAttribute("TimeTrial", true);
 		newNpc.Parent = getNpcFolder();
 
 		const spawnSize = playerTrial.npcSpawns.GetChildren().size();
@@ -118,6 +119,7 @@ export function startTrial(player: Player): {
 					newNpc.CanCollide = false;
 					newNpc.SetAttribute("MaxHealth", 200 * healthMultiplier ** playerTrial.wave + 1);
 					newNpc.SetAttribute("Health", 200 * healthMultiplier ** playerTrial.wave + 1);
+					newNpc.SetAttribute("TimeTrial", true);
 					newNpc.Parent = getNpcFolder();
 
 					const spawnSize = playerTrial.npcSpawns.GetChildren().size();
@@ -176,7 +178,7 @@ export function startTrial(player: Player): {
 						playerHumanoid.TakeDamage(totalDamage);
 					}
 				} else {
-					lerpPosition(npc.instance, playerRoot.Position, 0.275);
+					lerpPosition(npc.instance, playerRoot.Position, 0.55);
 				}
 			}
 

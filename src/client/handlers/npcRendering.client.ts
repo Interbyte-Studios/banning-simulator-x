@@ -61,8 +61,13 @@ function handleMockNPC(npc: Instance): void {
 
 	const maxHealth = parentNPC.GetAttribute("MaxHealth") as number;
 	const health = parentNPC.GetAttribute("Health") as number;
+	const isTrialNpc = parentNPC.GetAttribute("TimeTrial") as true | undefined;
 	if (maxHealth === undefined || health === undefined) {
 		return;
+	}
+
+	if (isTrialNpc === true) {
+		humanoid.WalkSpeed = 32;
 	}
 
 	const tag = enemyTag.Clone();
@@ -106,7 +111,7 @@ function handleMockNPC(npc: Instance): void {
 	const healthConnection = parentNPC.AttributeChanged.Connect((attribute) => {
 		if (attribute === "Health") {
 			const health = parentNPC.GetAttribute("Health") as number;
-			const maxHealth = parentNPC.GetAttribute("Health") as number;
+			const maxHealth = parentNPC.GetAttribute("MaxHealth") as number;
 
 			const newHealth = health;
 			const damage = lastHealth - newHealth;
@@ -205,7 +210,7 @@ function mockNPCs(): void {
 		}
 
 		if (npcPart.Transparency !== 1) {
-			npcPart.Transparency = 1;
+			npcPart.Transparency = 0;
 		}
 
 		let correspondingCharacter = npcPart.FindFirstChild("CorrespondingCharacter") as ObjectValue | undefined;

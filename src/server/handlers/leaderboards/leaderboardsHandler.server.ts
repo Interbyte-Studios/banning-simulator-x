@@ -53,55 +53,58 @@ Players.PlayerRemoving.Connect((player) => {
 	}
 });
 
-// eslint-disable-next-line no-constant-condition
-while (true) {
-	ReplicatedStorage.leaderboards.bans.GetChildren().forEach((child) => child.Destroy());
-	ReplicatedStorage.leaderboards.eggs.GetChildren().forEach((child) => child.Destroy());
-	ReplicatedStorage.leaderboards.rebirths.GetChildren().forEach((child) => child.Destroy());
+task.spawn(() => {
+	// eslint-disable-next-line no-constant-condition
+	while (true) {
+		const now = time();
+		task.wait(LEADERBOARD_UPDATE_INTERVAL);
 
-	bansOds
-		.getSortedAsync(false, 100)
-		.andThen((data) =>
-			data.forEach((playerData, playerPosition) => {
-				const playerConfig = new Instance("Configuration");
-				playerConfig.Name = playerData[0];
-				playerConfig.Parent = ReplicatedStorage.leaderboards.bans;
+		ReplicatedStorage.leaderboards.bans.GetChildren().forEach((child) => child.Destroy());
+		ReplicatedStorage.leaderboards.eggs.GetChildren().forEach((child) => child.Destroy());
+		ReplicatedStorage.leaderboards.rebirths.GetChildren().forEach((child) => child.Destroy());
 
-				playerConfig.SetAttribute("amount", playerData[1]);
-				playerConfig.SetAttribute("position", playerPosition + 1);
-			}),
-		)
-		.catch((err) => warn(`Failed to update bans leaderboard: ${err}`));
+		bansOds
+			.getSortedAsync(false, 100)
+			.andThen((data) =>
+				data.forEach((playerData, playerPosition) => {
+					const playerConfig = new Instance("Configuration");
+					playerConfig.Name = playerData[0];
+					playerConfig.Parent = ReplicatedStorage.leaderboards.bans;
 
-	eggsOds
-		.getSortedAsync(false, 100)
-		.andThen((data) =>
-			data.forEach((playerData, playerPosition) => {
-				const playerConfig = new Instance("Configuration");
-				playerConfig.Name = playerData[0];
-				playerConfig.Parent = ReplicatedStorage.leaderboards.eggs;
+					playerConfig.SetAttribute("amount", playerData[1]);
+					playerConfig.SetAttribute("position", playerPosition + 1);
+				}),
+			)
+			.catch((err) => warn(`Failed to update bans leaderboard: ${err}`));
 
-				playerConfig.SetAttribute("amount", playerData[1]);
-				playerConfig.SetAttribute("position", playerPosition + 1);
-			}),
-		)
-		.catch((err) => warn(`Failed to update eggs leaderboard: ${err}`));
+		eggsOds
+			.getSortedAsync(false, 100)
+			.andThen((data) =>
+				data.forEach((playerData, playerPosition) => {
+					const playerConfig = new Instance("Configuration");
+					playerConfig.Name = playerData[0];
+					playerConfig.Parent = ReplicatedStorage.leaderboards.eggs;
 
-	rebirthsOds
-		.getSortedAsync(false, 100)
-		.andThen((data) =>
-			data.forEach((playerData, playerPosition) => {
-				const playerConfig = new Instance("Configuration");
-				playerConfig.Name = playerData[0];
-				playerConfig.Parent = ReplicatedStorage.leaderboards.rebirths;
+					playerConfig.SetAttribute("amount", playerData[1]);
+					playerConfig.SetAttribute("position", playerPosition + 1);
+				}),
+			)
+			.catch((err) => warn(`Failed to update eggs leaderboard: ${err}`));
 
-				playerConfig.SetAttribute("amount", playerData[1]);
-				playerConfig.SetAttribute("position", playerPosition + 1);
-			}),
-		)
-		.catch((err) => warn(`Failed to update rebirths leaderboard: ${err}`));
+		rebirthsOds
+			.getSortedAsync(false, 100)
+			.andThen((data) =>
+				data.forEach((playerData, playerPosition) => {
+					const playerConfig = new Instance("Configuration");
+					playerConfig.Name = playerData[0];
+					playerConfig.Parent = ReplicatedStorage.leaderboards.rebirths;
 
-	ReplicatedStorage.leaderboards.timeUpdated.Value = time();
-	task.wait(1);
-	task.wait(LEADERBOARD_UPDATE_INTERVAL);
-}
+					playerConfig.SetAttribute("amount", playerData[1]);
+					playerConfig.SetAttribute("position", playerPosition + 1);
+				}),
+			)
+			.catch((err) => warn(`Failed to update rebirths leaderboard: ${err}`));
+
+		ReplicatedStorage.leaderboards.timeUpdated.Value = now;
+	}
+});

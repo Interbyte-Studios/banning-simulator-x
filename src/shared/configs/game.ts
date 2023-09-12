@@ -14,7 +14,7 @@ export const LEADERBOARD_UPDATE_INTERVAL = 60;
 
 export const GAME_VERSION = "10.0";
 
-export const MAX_TRADE_OFFER_SIZE = 10;
+export const MAX_TRADE_OFFER_SIZE = 20;
 export const MAX_TRADE_LOGS = 50;
 
 export const TEN_SPINS = 1583558881;

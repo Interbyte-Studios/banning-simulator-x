@@ -36,23 +36,14 @@ export const InactiveTrade = hooks((props: InactiveTradeProps, hooks) => {
 	const [displaySendTradeRequest, setDisplaySentTradeRequest] = useState<Player | undefined>(undefined);
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
-	const { acceptTradeRequest, declineTradeRequest, requestTrading, tradeRequestDeclined } = useContext(remoteContext);
+	const { acceptTradeRequest, declineTradeRequest, requestTrading } = useContext(remoteContext);
 
-	useEffect(() => {
-		const connection = tradeRequestDeclined.Connect((player) => {
-			if (player === props.tradingPlayer) {
-				setDisplaySentTradeRequest(undefined);
-			}
-		});
-
-		return (): void => connection.Disconnect();
-	}, [tradeRequestDeclined, props.tradingPlayer]);
+	useEffect(() => setDisplaySentTradeRequest(props.tradingPlayer), [props.tradingPlayer]);
 
 	if (!props.isEnabled) {
 		return <></>;
 	} else {
 		let elementToRender: Roact.Element | undefined;
-
 		if (displaySendTradeRequest !== undefined) {
 			elementToRender = (
 				<SentTradeRequest

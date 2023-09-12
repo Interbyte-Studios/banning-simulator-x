@@ -27,7 +27,7 @@ function updateCodesCache(): void {
 	setCodesCache(dataOrError);
 }
 
-task.defer(() => {
+task.spawn(() => {
 	// eslint-disable-next-line no-constant-condition
 	while (true) {
 		updateCodesCache();

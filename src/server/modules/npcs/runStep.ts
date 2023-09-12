@@ -293,8 +293,8 @@ export function runStep(
 			npc.instance.Parent = undefined;
 			npcCharacterToNpc.delete(character);
 
-			const questBans = (player.GetAttribute("petQuestBan") as number) + 1 ?? 0;
-			player.SetAttribute("petQuestBan", questBans ?? 0);
+			const questBans = player.GetAttribute("petQuestBan") as number | undefined;
+			player.SetAttribute("petQuestBan", questBans !== undefined ? questBans + 1 : 0);
 		}
 	}
 

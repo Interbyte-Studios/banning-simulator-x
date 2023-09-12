@@ -180,13 +180,19 @@ export const ActiveTradeOffer = hooks((props: ActiveTradeOfferProps, { useContex
 							props.setOffer(newOffer);
 						} else {
 							if (
-								otherPlayerStore.getState().pets.size() >= getPetInventorySize(otherPlayerStore.getState().gamepasses)
+								otherPlayerStore.getState().pets.size() + props.currentOffer.pets.size() >=
+								getPetInventorySize(otherPlayerStore.getState().gamepasses)
 							) {
 								addAnnouncement(
 									`The other player has a full inventory. You cannot give them pets!`,
 									AnnouncementType.Error,
 								);
 								return;
+							} else {
+								print(
+									otherPlayerStore.getState().pets.size(),
+									getPetInventorySize(otherPlayerStore.getState().gamepasses),
+								);
 							}
 
 							if (props.currentOffer.pets.size() >= MAX_TRADE_OFFER_SIZE) {
@@ -196,7 +202,7 @@ export const ActiveTradeOffer = hooks((props: ActiveTradeOfferProps, { useContex
 
 							const storedPetData = pets.find((pet) => pet.guid === guid);
 							if (storedPetData === undefined) {
-								addAnnouncement(`There was an issue adding that pet to the trade!	`, AnnouncementType.Error);
+								addAnnouncement(`There was an issue adding that pet to the trade!`, AnnouncementType.Error);
 								return;
 							}
 
@@ -219,7 +225,6 @@ export const ActiveTradeOffer = hooks((props: ActiveTradeOfferProps, { useContex
 							newPets.push(guid);
 
 							const newOffer = { ...props.currentOffer, pets: newPets };
-							print(props.currentOffer.currency?.amount);
 							props.setOffer(newOffer);
 						}
 					}}
