@@ -7,7 +7,7 @@ import { getIsTrading } from "client/modules/isTradingCache";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
-import { EggName, EGGS, hatchDebounce, isEventEgg } from "shared/configs/eggs";
+import { EggName, EGGS, isEventEgg } from "shared/configs/eggs";
 import { GAMEPASSES } from "shared/configs/game";
 import { Pet, Variants } from "shared/configs/pets";
 import { ValidEggAmount, validEggAmount } from "shared/remotes/eggs/hatchEgg";
@@ -26,11 +26,6 @@ import { statsAbbreviator } from "shared/util/twoDpAbbreviator";
 import { withinDistanceToHatch } from "shared/util/withinDistanceToHatch";
 
 import { EggHudDisplay } from "./eggHudDisplay";
-
-/**
- * A log of when the player last hatched.
- */
-let lastHatchTime = 0;
 
 /**
  * Whether or not the player is auto hatching.
@@ -100,19 +95,6 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					return;
 				}
 
-				// initial time check
-				const now = time();
-				const canHatch = now - lastHatchTime > 0.5;
-				if (!canHatch) {
-					addAnnouncement(
-						`You must wait ${statsAbbreviator.numberToString(
-							hatchDebounce - (now - lastHatchTime),
-						)} seconds before hatching another egg!`,
-						AnnouncementType.Error,
-					);
-					return;
-				}
-
 				// Check that the user isn't already hatching an egg.
 				if (getIsHatching()) {
 					return;
@@ -151,16 +133,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					task.spawn(async () => {
 						// eslint-disable-next-line no-constant-condition
 						while (true) {
-							task.wait();
-
-							// check to be sure they've waited long enough
-							const now = time();
-							const canHatch = now - lastHatchTime > 0.4;
-							if (!canHatch) {
-								continue;
-							}
-							lastHatchTime = now;
-
+							task.wait(0.25);
 							if (!autoEnabled) {
 								break;
 							}
@@ -208,7 +181,6 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 						}
 					});
 				} else {
-					lastHatchTime = now;
 					hatchEgg.SendToServer(amount, eggName, variant === "void");
 				}
 			},
@@ -430,8 +402,8 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 					const regularEgg = eggFolder.regular.egg.PrimaryPart;
 
 					const pets: Array<Pet> = [];
-					for (const [, petData] of pairs(eggData.pets)) {
-						pets.push(petData);
+					for (const pet of eggData.pets) {
+						pets.push(pet);
 					}
 
 					if (isEventEgg(eggName)) {

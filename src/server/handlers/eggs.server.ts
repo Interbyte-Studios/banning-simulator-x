@@ -90,7 +90,7 @@ hatchEggRemote.Connect(
 		}
 
 		// check that they're not hatching to fast
-		const checksOut = canHatch(player, currentState.gamepasses["Fast Hatch"]);
+		const checksOut = canHatch(player, currentState.gamepasses["Fast Hatch"], currentState.rebirths.fastHatch);
 		if (!checksOut) {
 			return warn(`Cannot Hatch!`);
 		}
