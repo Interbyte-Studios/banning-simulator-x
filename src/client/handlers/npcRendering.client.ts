@@ -210,7 +210,7 @@ function mockNPCs(): void {
 		}
 
 		if (npcPart.Transparency !== 1) {
-			npcPart.Transparency = 0;
+			npcPart.Transparency = 1;
 		}
 
 		let correspondingCharacter = npcPart.FindFirstChild("CorrespondingCharacter") as ObjectValue | undefined;
