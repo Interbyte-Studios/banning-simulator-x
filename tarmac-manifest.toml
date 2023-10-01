@@ -78,14 +78,9 @@ hash = "3ade169784bccee8b79fe4648df19def3d288411b44545593f48d7c5fbc84c3b"
 id = 11676506054
 packable = false
 
-[inputs."images/decals/eggs/500K Egg.png"]
+[inputs."images/decals/eggs/500k Event.png"]
 hash = "3bfc7f06a03e99422fac8498017eb73a38eaa7999c155e0ec5350d1dca1e7444"
-id = 14078798969
-packable = false
-
-[inputs."images/decals/eggs/Angelic Egg.png"]
-hash = "1750e5b8355fc10b0cc09a1b2f3d40590844bf27e89ceeb2aa6dbafedcf2a31c"
-id = 14078799195
+id = 14811198680
 packable = false
 
 [inputs."images/decals/eggs/Armored.png"]
@@ -93,9 +88,14 @@ hash = "106ce8135c9007ecb971abab0fe336d744485783474de9962b330b4c2ca84ed1"
 id = 14375576800
 packable = false
 
-[inputs."images/decals/eggs/Autumn Egg.png"]
+[inputs."images/decals/eggs/Autumn.png"]
 hash = "4d0d57afdf62d59e9af923d6e52244d99f3fa188c9468b9c751c3c411617b530"
-id = 14744670421
+id = 14811198944
+packable = false
+
+[inputs."images/decals/eggs/Blackhole.png"]
+hash = "214fe4ef3ebb4bbbf606b5a0c344c2f552f7018bc19979ce8f660e733532a1b5"
+id = 14810918699
 packable = false
 
 [inputs."images/decals/eggs/Candy.png"]
@@ -128,9 +128,14 @@ hash = "390f0fd9c5dfc38ea6eaff94b22e223ce7f5a618a7cb6d16049a94843c51d6f3"
 id = 11627644517
 packable = false
 
-[inputs."images/decals/eggs/Dweller Egg.png"]
+[inputs."images/decals/eggs/Divine.png"]
+hash = "1750e5b8355fc10b0cc09a1b2f3d40590844bf27e89ceeb2aa6dbafedcf2a31c"
+id = 14811199354
+packable = false
+
+[inputs."images/decals/eggs/Dweller.png"]
 hash = "5a542f52b04806b34362a5d7da5d9af00b9512e1f345148154b55da4119febce"
-id = 14191955239
+id = 14811199595
 packable = false
 
 [inputs."images/decals/eggs/GearWorx.png"]
@@ -178,9 +183,14 @@ hash = "f2dac9467451da412312b85b251faab19ea91d06cdf307632f25cb19853ed6cf"
 id = 13989137443
 packable = false
 
-[inputs."images/decals/eggs/Royal.png"]
+[inputs."images/decals/eggs/Royalty.png"]
 hash = "cca7d6ccd750effe955252bcb706fadf03d793f4778f931b6902f747a32682d6"
-id = 13813996377
+id = 14811199874
+packable = false
+
+[inputs."images/decals/eggs/Solar System.png"]
+hash = "30fc6b75edf9ec8bc8674180fe4bdf00132f4465f5b8f4b2b49a1b13ca1809ea"
+id = 14811200100
 packable = false
 
 [inputs."images/decals/eggs/Starter.png"]
@@ -451,6 +461,56 @@ packable = false
 [inputs."images/decals/pets/Bio Destroyer.png"]
 hash = "29a0033e668326f13066144fcf60420ace8e44073e1e85cba695a37af2894274"
 id = 14220697737
+packable = false
+
+[inputs."images/decals/pets/Blackhole Angel.png"]
+hash = "b71ac429a9f9e66046efca0a23a8f9103dbf4472d7b01537029463d27d39bceb"
+id = 14810551333
+packable = false
+
+[inputs."images/decals/pets/Blackhole Archmage.png"]
+hash = "c9ca6d5aa0b816157b4dac58218e04fa4ff72f6e4ea23f32408ccfe90b2b2653"
+id = 14811234300
+packable = false
+
+[inputs."images/decals/pets/Blackhole Bunny.png"]
+hash = "91be7147e24dcc21e98ec9dd96117661b31d0b7c8d93ef429a21250602066b51"
+id = 14810551461
+packable = false
+
+[inputs."images/decals/pets/Blackhole Cat.png"]
+hash = "971d946226ba40aecebd3292ef57cf795fa1773fd0ce050f6a493724a7121374"
+id = 14810551603
+packable = false
+
+[inputs."images/decals/pets/Blackhole Doggy.png"]
+hash = "8e1d25e1fb0f2333e5ae5399e4953f73f08e9bb992269bbe9fab9e44a7e022e4"
+id = 14810551669
+packable = false
+
+[inputs."images/decals/pets/Blackhole Dragon.png"]
+hash = "eed94969574b4cfcca0ff1ff37893e7ffe974750f5b039a2d685051f82db9e53"
+id = 14810551781
+packable = false
+
+[inputs."images/decals/pets/Blackhole Guardian.png"]
+hash = "2200a15a7113a0483d51ca17176c4c6adc0a1af04af6118888b39081231bd64a"
+id = 14811234567
+packable = false
+
+[inputs."images/decals/pets/Blackhole Ram.png"]
+hash = "34a363e0826c3f13d469f62f6b164d89c778155106aeca29f3825e36648e8c39"
+id = 14810551914
+packable = false
+
+[inputs."images/decals/pets/Blackhole Scorpilord.png"]
+hash = "902d270aee359ab81e55d8775c30db3d7a0121e208b3b9ddde5492572c19f2f8"
+id = 14810552119
+packable = false
+
+[inputs."images/decals/pets/Blackhole Striker.png"]
+hash = "6e2fe183d60dde3e04724a88fe0037699326bb705c17f0db4e80d30cfabd33c2"
+id = 14810552213
 packable = false
 
 [inputs."images/decals/pets/Blazing Glory.png"]
@@ -1218,6 +1278,11 @@ hash = "ac8d2751875135e16176287d9134dc63e5ee08c80ca1b852f4de6362d57f3f65"
 id = 14511641264
 packable = false
 
+[inputs."images/decals/pets/Pluto.png"]
+hash = "079e6c0ce3b40545ba5f5543adc99c56cd065bbb187fa6f0411955bee51a6871"
+id = 14810552659
+packable = false
+
 [inputs."images/decals/pets/Prime Royal.png"]
 hash = "0a9f771a3e1ceec5824f668412f119c2d34fefba96c8db2f2757c485c5b62e0b"
 id = 13813996718
@@ -1406,6 +1471,56 @@ packable = false
 [inputs."images/decals/pets/Radiant Bio Destroyer.png"]
 hash = "bd092a0cc55032b041dd9b5477904be759773f60d7e3bb9e30f9e4d8e11111ad"
 id = 14239630283
+packable = false
+
+[inputs."images/decals/pets/Radiant Blackhole Angel.png"]
+hash = "0ed2e4047399803556f26ddbc1b0daf4fff97b983afb552628eed905f13e61ec"
+id = 14810552949
+packable = false
+
+[inputs."images/decals/pets/Radiant Blackhole Archmage.png"]
+hash = "fda439348619a0aa356af36cda85ec81ae904496ab3f968c700e0aadbc28bc07"
+id = 14810553081
+packable = false
+
+[inputs."images/decals/pets/Radiant Blackhole Bunny.png"]
+hash = "963111bb2d5cf46846002f594849d8aae708ce97cd6bd078f0a83199496649c8"
+id = 14810553165
+packable = false
+
+[inputs."images/decals/pets/Radiant Blackhole Cat.png"]
+hash = "0b7ee8b52ab41867f6945682815b6df16550ccaa31275a23e67cf5d23f26b16a"
+id = 14810553239
+packable = false
+
+[inputs."images/decals/pets/Radiant Blackhole Doggy.png"]
+hash = "e40aeffe10bc434c8a0cf837df997dd094617862f3ed8ef7e0c36525585dbc8d"
+id = 14810553331
+packable = false
+
+[inputs."images/decals/pets/Radiant Blackhole Dragon.png"]
+hash = "bc790642a5ae61374dd0684fede532890cd88e440eaa1f855e318118d4d2e1e9"
+id = 14810553465
+packable = false
+
+[inputs."images/decals/pets/Radiant Blackhole Guardian.png"]
+hash = "c4f2823ac7414ff7f775adbe9ae918fc1fe91f2cebc9e8d64eef27de358a10ee"
+id = 14811235904
+packable = false
+
+[inputs."images/decals/pets/Radiant Blackhole Ram.png"]
+hash = "8af6ca3545b9b4c5e82520c1b422e02dff185757448058a2ef06ed5c96da3137"
+id = 14810553575
+packable = false
+
+[inputs."images/decals/pets/Radiant Blackhole Scorpilord.png"]
+hash = "2edfeeba46ebdd908753ba702bf1ee5cf242dc2b035a65ab3051f21c9e3cc381"
+id = 14810553662
+packable = false
+
+[inputs."images/decals/pets/Radiant Blackhole Striker.png"]
+hash = "7a18c5c0a08cbf8b79f56cf5eb96f0aa270b5e100ab12bb2b4e1da81a9c3e82a"
+id = 14810553781
 packable = false
 
 [inputs."images/decals/pets/Radiant Blazing Glory.png"]
@@ -2173,6 +2288,11 @@ hash = "30392e5e48620cca3d7a44b007c41ad3ad50ea1cb56a8deb8ef7b8bc85815121"
 id = 14511643362
 packable = false
 
+[inputs."images/decals/pets/Radiant Pluto.png"]
+hash = "db85bb61389899b42b065cc0652146b3be859573e95cd78ad7c55bb5d65e0a47"
+id = 14810554264
+packable = false
+
 [inputs."images/decals/pets/Radiant Prime Royal.png"]
 hash = "fbad6d8dec3f60f3eded50cb3182ea92d6735c2bd0bb5a0eefd234b0fbea6dd6"
 id = 13813997104
@@ -2288,6 +2408,26 @@ hash = "f1741c30d2cf9ae1c451182e8dc1fa02f162b4c31beb4aafe093d5d84b0a03cc"
 id = 14078495792
 packable = false
 
+[inputs."images/decals/pets/Radiant TON 618.png"]
+hash = "64de24b8c59d828e61e1e8dd8a953103066102a43c2ff3d4e528ec498a75fd16"
+id = 14810554515
+packable = false
+
+[inputs."images/decals/pets/Radiant The Earth.png"]
+hash = "b3ca36f66d4659d4095a9a49bc20150dc13f07adcff17d239b087ca554d18e2a"
+id = 14810554583
+packable = false
+
+[inputs."images/decals/pets/Radiant The Moon.png"]
+hash = "d68b599ad8c1ced9bbe7215842111aeed235ec30f33fd6efac6b60184722cc39"
+id = 14810554638
+packable = false
+
+[inputs."images/decals/pets/Radiant The Sun.png"]
+hash = "ec6b200342bceed36db154757f90d7f99396d9d094d7d46b8480d42fa0ade8a8"
+id = 14810554736
+packable = false
+
 [inputs."images/decals/pets/Radiant Ultimate Vial.png"]
 hash = "7504a39f390d257a92e8acdf78d924d1af912c5caf8c8e9ed21b59e4a388d4f2"
 id = 14239632469
@@ -2401,6 +2541,26 @@ packable = false
 [inputs."images/decals/pets/Supreme Dove.png"]
 hash = "4a7045099a49f883ed89af6bc34f1cc1954423edcc3acce9b1732db31df3dfe3"
 id = 14078496438
+packable = false
+
+[inputs."images/decals/pets/TON 618.png"]
+hash = "9c7750eb5725bafb8bd01c56617752ddee29855aadb12fee51f3a08bcccf7c42"
+id = 14810555100
+packable = false
+
+[inputs."images/decals/pets/The Earth.png"]
+hash = "9e7a021c58d77bd7a4d4dad1966f30cfd5327be390f12107ca37eff01d0f9511"
+id = 14810555190
+packable = false
+
+[inputs."images/decals/pets/The Moon.png"]
+hash = "6e77ba23a6f3bb4ee4cfb976fec619c49ef828608b8272f6ad9b216324679525"
+id = 14810555325
+packable = false
+
+[inputs."images/decals/pets/The Sun.png"]
+hash = "27e0472d53d54e4dfd815cb00f8d99b3aa2eb16ebb79bac688f43e93e0ebc483"
+id = 14810555447
 packable = false
 
 [inputs."images/decals/pets/Ultimate Vial.png"]
@@ -2586,6 +2746,56 @@ packable = false
 [inputs."images/decals/pets/Void Bio Destroyer.png"]
 hash = "a87ac3fc63eff99f39b1569336cef51a491e014086f916fcd20baf3f3c836123"
 id = 14239633787
+packable = false
+
+[inputs."images/decals/pets/Void Blackhole Angel.png"]
+hash = "844cc5b0eb7a09c29d492c4a10878bc81c334e8276cb6fe67a2deba3b97b19fa"
+id = 14810555728
+packable = false
+
+[inputs."images/decals/pets/Void Blackhole Archmage.png"]
+hash = "2f8ece52b41e3813e466db3217a66549efe64317559c1d00e73b00dd9c2adb6e"
+id = 14810555869
+packable = false
+
+[inputs."images/decals/pets/Void Blackhole Bunny.png"]
+hash = "6bf2df36c335b6e4dec44cac1dd1126ec884d53c3126c279ab52e2f385fb092c"
+id = 14810556005
+packable = false
+
+[inputs."images/decals/pets/Void Blackhole Cat.png"]
+hash = "e95acd3ddeccb1289868b3f9b3151d40decdabe73e5b27775f9e778481fffdc3"
+id = 14810556135
+packable = false
+
+[inputs."images/decals/pets/Void Blackhole Doggy.png"]
+hash = "746b78b0e53e61e20a3dbe9f6e5760aff511bf6a289c906b6ebe85deda5c8047"
+id = 14810556224
+packable = false
+
+[inputs."images/decals/pets/Void Blackhole Dragon.png"]
+hash = "8495ebceaf99bacccf87f7478d2297d6a2a44cde2cac6612b7d626698d0ca06e"
+id = 14810556323
+packable = false
+
+[inputs."images/decals/pets/Void Blackhole Guardian.png"]
+hash = "53a57ebd40ecd0bed589490c49c93f273f0572df60954d074bd82f575f66985c"
+id = 14811237270
+packable = false
+
+[inputs."images/decals/pets/Void Blackhole Ram.png"]
+hash = "ff3504281bbf921f53ffb7b9de86372fe54d7d7d266887745de406a187197b19"
+id = 14810556464
+packable = false
+
+[inputs."images/decals/pets/Void Blackhole Scorpilord.png"]
+hash = "30a09adc21d6ead0f6ea35bc48483f539acf06e206e1dfe3ee68bd07a870ca08"
+id = 14810556586
+packable = false
+
+[inputs."images/decals/pets/Void Blackhole Striker.png"]
+hash = "8a065af763c7ce44a6353d7e2fb7b08ecd250b62ce49b4e4df9bc5be4fa72a2c"
+id = 14810556700
 packable = false
 
 [inputs."images/decals/pets/Void Blazing Glory.png"]
@@ -3358,6 +3568,11 @@ hash = "3e307680e1098a2e970dd13505ae94b993a6f57e96f95f63040d680bb61cf0b0"
 id = 14511645573
 packable = false
 
+[inputs."images/decals/pets/Void Pluto.png"]
+hash = "c62285b5c7f99711426dba02be6bf64e813f73fd39b88316bb2f77f294289413"
+id = 14810557078
+packable = false
+
 [inputs."images/decals/pets/Void Prime Royal.png"]
 hash = "f4d9eeb15cb886a4ddd3959cb9318ebfb4fca2267a0ef83640bb803d4bdd0163"
 id = 13813997964
@@ -3471,6 +3686,26 @@ packable = false
 [inputs."images/decals/pets/Void Supreme Dove.png"]
 hash = "e1560d60caa25604844d6622c5095c90e80745fd9865cd25645954f6b69965eb"
 id = 14078499864
+packable = false
+
+[inputs."images/decals/pets/Void TON 618.png"]
+hash = "2c773b1fbd58c8881f728dd90e46caaa57e05929eb426fe8bdd30e0768dc33d4"
+id = 14810557263
+packable = false
+
+[inputs."images/decals/pets/Void The Earth.png"]
+hash = "12bb467d98c15e319dcdef57c7f081db42ce485b1521c1f079cea272248df52e"
+id = 14810557364
+packable = false
+
+[inputs."images/decals/pets/Void The Moon.png"]
+hash = "a7b60de741bca9f0fd140527e524f7c0aae5ef5f9bf2307e14ad4647a2967396"
+id = 14810557483
+packable = false
+
+[inputs."images/decals/pets/Void The Sun.png"]
+hash = "4de6838168bfc6af2730d73efd35b89d7b2cd8bb12d7c8c9ac82871dc80f3717"
+id = 14810557576
 packable = false
 
 [inputs."images/decals/pets/Void Ultimate Vial.png"]

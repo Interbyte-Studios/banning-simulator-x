@@ -3,6 +3,7 @@ import { t } from "@rbxts/t";
 import { Pet } from "./pets";
 import { ARMORED_EGG_PETS } from "./pets/armored";
 import { AUTUMN_EGG_PETS } from "./pets/autumn";
+import { BLACKHOLE_EGG_PETS } from "./pets/blackhole";
 import { CANDY_EGG_PETS } from "./pets/candy";
 import { CITY_EGG_PETS } from "./pets/city";
 import { CORRUPT_EGG_PETS } from "./pets/corrupt";
@@ -24,6 +25,7 @@ import { PASTEL_EGG_PETS } from "./pets/pastel";
 import { PIXEL_EGG_PETS } from "./pets/pixel";
 import { RADIOACTIVE_EGG_PETS } from "./pets/radioactive";
 import { ROYALTY_EGG_PETS } from "./pets/royalty";
+import { SOLAR_SYSTEM_EGG_PETS } from "./pets/solarSystem";
 import { STARTER_EGG_PETS } from "./pets/starter";
 import { THROWBACK_EGG_PETS } from "./pets/throwback";
 import { THROWBACK_2_EGG_PETS } from "./pets/throwback2";
@@ -61,11 +63,6 @@ export interface Egg {
 	 * Whether or not the egg is hidden.
 	 */
 	hidden: boolean;
-
-	/**
-	 * Whether or not luck boost and luck events apply to the egg.
-	 */
-	luckApplies: boolean;
 }
 
 export const isValidMasteryEgg = t.literal(
@@ -94,10 +91,20 @@ export const isValidMasteryEgg = t.literal(
 	"Geometric",
 	"Throwback 2.0",
 	"Autumn",
+	"Solar System",
+	"Blackhole",
 );
 export type ValidMasteryEgg = t.static<typeof isValidMasteryEgg>;
 
-export const isEventEgg = t.literal("500k Event", "Throwback", "Pixel", "Crystal", "Throwback 2.0", "Autumn");
+export const isEventEgg = t.literal(
+	"500k Event",
+	"Throwback",
+	"Pixel",
+	"Crystal",
+	"Throwback 2.0",
+	"Autumn",
+	"Blackhole",
+);
 export type EventEgg = t.static<typeof isEventEgg>;
 
 export const isExclusiveEgg = t.literal(
@@ -109,6 +116,7 @@ export const isExclusiveEgg = t.literal(
 	"Geometric",
 	"Pastel",
 	"Exclusive",
+	"Solar System",
 );
 export type ExclusiveEgg = t.static<typeof isExclusiveEgg>;
 
@@ -123,7 +131,6 @@ export const EGGS = {
 		zone: "Forest",
 		hatchable: true,
 		hidden: false,
-		luckApplies: true,
 	},
 	Desert: {
 		id: 2,
@@ -132,7 +139,6 @@ export const EGGS = {
 		zone: "Desert",
 		hatchable: true,
 		hidden: false,
-		luckApplies: true,
 	},
 	Honeycomb: {
 		id: 3,
@@ -141,7 +147,6 @@ export const EGGS = {
 		zone: "Honeycomb",
 		hatchable: true,
 		hidden: false,
-		luckApplies: true,
 	},
 	Candy: {
 		id: 4,
@@ -150,7 +155,6 @@ export const EGGS = {
 		zone: "Candy Land",
 		hatchable: true,
 		hidden: false,
-		luckApplies: true,
 	},
 	Molten: {
 		id: 5,
@@ -159,7 +163,6 @@ export const EGGS = {
 		zone: "Lava Lands",
 		hatchable: true,
 		hidden: false,
-		luckApplies: true,
 	},
 	Royalty: {
 		id: 6,
@@ -168,7 +171,6 @@ export const EGGS = {
 		zone: "Limited",
 		hatchable: false,
 		hidden: false,
-		luckApplies: false,
 	},
 	City: {
 		id: 7,
@@ -177,7 +179,6 @@ export const EGGS = {
 		zone: "Neon City",
 		hatchable: true,
 		hidden: false,
-		luckApplies: true,
 	},
 	Cybernetic: {
 		id: 8,
@@ -186,7 +187,6 @@ export const EGGS = {
 		zone: "Malware Mayhem",
 		hatchable: true,
 		hidden: false,
-		luckApplies: true,
 	},
 	Corrupt: {
 		id: 9,
@@ -195,7 +195,6 @@ export const EGGS = {
 		zone: "B1n4ry Z0n3",
 		hatchable: true,
 		hidden: false,
-		luckApplies: true,
 	},
 	Armored: {
 		id: 10,
@@ -204,7 +203,6 @@ export const EGGS = {
 		zone: "Lunar Realm",
 		hatchable: true,
 		hidden: false,
-		luckApplies: true,
 	},
 	Radioactive: {
 		id: 11,
@@ -213,7 +211,6 @@ export const EGGS = {
 		zone: "Limited",
 		hatchable: false,
 		hidden: false,
-		luckApplies: false,
 	},
 	Jester: {
 		id: 12,
@@ -222,7 +219,6 @@ export const EGGS = {
 		zone: "Jester Castle",
 		hatchable: true,
 		hidden: false,
-		luckApplies: true,
 	},
 	Group: {
 		id: 499,
@@ -231,7 +227,6 @@ export const EGGS = {
 		zone: "Limited",
 		hatchable: false,
 		hidden: false,
-		luckApplies: false,
 	},
 	Exclusive: {
 		id: 500,
@@ -240,7 +235,6 @@ export const EGGS = {
 		zone: "Limited",
 		hatchable: false,
 		hidden: false,
-		luckApplies: false,
 	},
 	WorldPrestige: {
 		id: 501,
@@ -249,7 +243,6 @@ export const EGGS = {
 		zone: "Limited",
 		hatchable: false,
 		hidden: false,
-		luckApplies: false,
 	},
 	Divine: {
 		id: 13,
@@ -258,7 +251,6 @@ export const EGGS = {
 		zone: "Limited",
 		hatchable: false,
 		hidden: false,
-		luckApplies: false,
 	},
 	"500k Event": {
 		id: 14,
@@ -267,7 +259,6 @@ export const EGGS = {
 		zone: "Limited",
 		hatchable: false,
 		hidden: false,
-		luckApplies: true,
 	},
 	GearWorx: {
 		id: 15,
@@ -276,7 +267,6 @@ export const EGGS = {
 		zone: "Forest",
 		hatchable: true,
 		hidden: false,
-		luckApplies: true,
 	},
 	Dweller: {
 		id: 16,
@@ -285,7 +275,6 @@ export const EGGS = {
 		zone: "Limited",
 		hatchable: false,
 		hidden: false,
-		luckApplies: false,
 	},
 	Throwback: {
 		id: 17,
@@ -294,7 +283,6 @@ export const EGGS = {
 		zone: "Forest",
 		hatchable: false,
 		hidden: false,
-		luckApplies: true,
 	},
 	Neon: {
 		id: 18,
@@ -303,7 +291,6 @@ export const EGGS = {
 		zone: "Limited",
 		hatchable: false,
 		hidden: false,
-		luckApplies: false,
 	},
 	Pixel: {
 		id: 19,
@@ -312,7 +299,6 @@ export const EGGS = {
 		zone: "Forest",
 		hatchable: false,
 		hidden: false,
-		luckApplies: true,
 	},
 	Crystal: {
 		id: 20,
@@ -321,7 +307,6 @@ export const EGGS = {
 		zone: "Forest",
 		hatchable: false,
 		hidden: false,
-		luckApplies: true,
 	},
 	Pastel: {
 		id: 21,
@@ -330,7 +315,6 @@ export const EGGS = {
 		zone: "Limited",
 		hatchable: false,
 		hidden: false,
-		luckApplies: false,
 	},
 	Geometric: {
 		id: 22,
@@ -339,7 +323,6 @@ export const EGGS = {
 		zone: "Limited",
 		hatchable: false,
 		hidden: false,
-		luckApplies: false,
 	},
 	"Throwback 2.0": {
 		id: 23,
@@ -348,16 +331,30 @@ export const EGGS = {
 		zone: "Forest",
 		hatchable: false,
 		hidden: false,
-		luckApplies: false,
 	},
 	Autumn: {
 		id: 24,
 		pets: AUTUMN_EGG_PETS,
 		world: "Ban Land",
 		zone: "Forest",
+		hatchable: false,
+		hidden: false,
+	},
+	"Solar System": {
+		id: 25,
+		pets: SOLAR_SYSTEM_EGG_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: false,
+		hidden: false,
+	},
+	Blackhole: {
+		id: 26,
+		pets: BLACKHOLE_EGG_PETS,
+		world: "Ban Land",
+		zone: "Forest",
 		hatchable: true,
 		hidden: false,
-		luckApplies: true,
 	},
 } satisfies Record<string, Egg>;
 

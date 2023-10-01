@@ -38,7 +38,7 @@ export const GEOMETRIC_EGG_PETS: Array<Pet> = [
 		rarity: "Primordial",
 		stats: {
 			additionalDamage: 500_000_000,
-			additionalBans: 250_000,
+			additionalBans: 100_000,
 		},
 	},
 ];
