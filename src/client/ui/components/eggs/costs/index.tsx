@@ -41,7 +41,15 @@ export const EggCost = RoactRodux.connect(mapStateToProps)(
 							return <></>;
 						}
 						const eggModel = Workspace.interactions.eggs[eggName];
-						const regularCost = eggModel.regular.FindFirstChild("cost") as BasePart;
+						const regularEgg = eggModel.FindFirstChild("regular") as Folder;
+						if (regularEgg === undefined) {
+							return <></>;
+						}
+
+						const regularCost = regularEgg.FindFirstChild("cost") as BasePart;
+						if (regularCost === undefined) {
+							return <></>;
+						}
 
 						// find reduced egg cost provided by player mastery
 						const eggMasteryReducedMultiplier = getEggsMastery(props.eggs).reducedEggCostMultiplier;

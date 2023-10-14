@@ -73,7 +73,7 @@ for (const [name, data] of pairs(EGGS)) {
 	}
 
 	task.spawn(() => {
-		task.wait(5);
+		task.wait(10);
 		animateEgg(name, "regular");
 		if (!isEventEgg(name)) {
 			task.wait(1);

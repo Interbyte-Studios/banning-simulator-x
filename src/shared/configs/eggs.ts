@@ -23,12 +23,14 @@ import { MOLTEN_EGG_PETS } from "./pets/molten";
 import { NEON_EGG_PETS } from "./pets/neon";
 import { PASTEL_EGG_PETS } from "./pets/pastel";
 import { PIXEL_EGG_PETS } from "./pets/pixel";
+import { PUFFERFISH_EGG_PETS } from "./pets/pufferfish";
 import { RADIOACTIVE_EGG_PETS } from "./pets/radioactive";
 import { ROYALTY_EGG_PETS } from "./pets/royalty";
 import { SOLAR_SYSTEM_EGG_PETS } from "./pets/solarSystem";
 import { STARTER_EGG_PETS } from "./pets/starter";
 import { THROWBACK_EGG_PETS } from "./pets/throwback";
 import { THROWBACK_2_EGG_PETS } from "./pets/throwback2";
+import { TWO_MILLION_EGG_PETS } from "./pets/twoMillion";
 import { WORLD_PRESTIGE_PETS } from "./pets/worldPrestige";
 import { WorldName } from "./worlds";
 import { ZoneNames } from "./zones";
@@ -93,6 +95,8 @@ export const isValidMasteryEgg = t.literal(
 	"Autumn",
 	"Solar System",
 	"Blackhole",
+	"Pufferfish",
+	"TwoMillion",
 );
 export type ValidMasteryEgg = t.static<typeof isValidMasteryEgg>;
 
@@ -104,6 +108,7 @@ export const isEventEgg = t.literal(
 	"Throwback 2.0",
 	"Autumn",
 	"Blackhole",
+	"TwoMillion",
 );
 export type EventEgg = t.static<typeof isEventEgg>;
 
@@ -117,6 +122,7 @@ export const isExclusiveEgg = t.literal(
 	"Pastel",
 	"Exclusive",
 	"Solar System",
+	"Pufferfish",
 );
 export type ExclusiveEgg = t.static<typeof isExclusiveEgg>;
 
@@ -351,6 +357,22 @@ export const EGGS = {
 	Blackhole: {
 		id: 26,
 		pets: BLACKHOLE_EGG_PETS,
+		world: "Ban Land",
+		zone: "Forest",
+		hatchable: false,
+		hidden: false,
+	},
+	Pufferfish: {
+		id: 27,
+		pets: PUFFERFISH_EGG_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: false,
+		hidden: false,
+	},
+	TwoMillion: {
+		id: 28,
+		pets: TWO_MILLION_EGG_PETS,
 		world: "Ban Land",
 		zone: "Forest",
 		hatchable: true,

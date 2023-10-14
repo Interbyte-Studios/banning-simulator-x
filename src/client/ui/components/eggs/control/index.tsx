@@ -399,7 +399,15 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 						return <></>;
 					}
 					const eggFolder = Workspace.interactions.eggs[eggName];
-					const regularEgg = eggFolder.regular.egg.PrimaryPart;
+					const regularEgg = eggFolder.FindFirstChild("regular");
+					if (regularEgg === undefined) {
+						return <></>;
+					}
+
+					const eggPrimary = (regularEgg.FindFirstChild("egg") as Model).PrimaryPart;
+					if (eggPrimary === undefined) {
+						return <></>;
+					}
 
 					const pets: Array<Pet> = [];
 					for (const pet of eggData.pets) {
@@ -411,7 +419,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							<frame Visible={false}>
 								{regularEgg && (
 									<EggHudDisplay
-										adornee={regularEgg}
+										adornee={eggPrimary}
 										eggName={eggName}
 										isVoid={false}
 										possiblePets={pets}
@@ -428,7 +436,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 						<frame Visible={false}>
 							{regularEgg && (
 								<EggHudDisplay
-									adornee={regularEgg}
+									adornee={eggPrimary}
 									eggName={eggName}
 									isVoid={false}
 									possiblePets={pets}
