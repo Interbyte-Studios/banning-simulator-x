@@ -65,21 +65,21 @@ function handleTimeTrial(player: Player, store: Store): void {
 
 					// dispatch the pets
 					store.dispatch(hatchEgg(0, "coins", hatchedEggs));
-					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs);
+					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs, false);
 				} else if (trials.difficulty === "medium") {
 					// find the eggs to hatch
 					const hatchedEggs = hatchHatchableEgg(player, currentState, TIME_TRIAL_EGG, 3, "regular");
 
 					// dispatch the pets
 					store.dispatch(hatchEgg(0, "coins", hatchedEggs));
-					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs);
+					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs, false);
 				} else if (trials.difficulty === "hard") {
 					// find the eggs to hatch
 					const hatchedEggs = hatchHatchableEgg(player, currentState, TIME_TRIAL_EGG, 5, "regular");
 
 					// dispatch the pets
 					store.dispatch(hatchEgg(0, "coins", hatchedEggs));
-					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs);
+					conveyHatch.SendToPlayer(player, TIME_TRIAL_EGG, hatchedEggs, false);
 				}
 
 				cleanupHandler.Cleanup();

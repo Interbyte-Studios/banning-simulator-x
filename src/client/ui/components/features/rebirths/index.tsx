@@ -313,7 +313,7 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 							purchaseMagicEggs.SendToServer();
 							addAnnouncement(`Upgrade complete!!`, AnnouncementType.Announcement);
 						}}
-						layoutOrder={1}
+						layoutOrder={4}
 					/>
 					<RebirthCard
 						icon={assetIds.images.vectors.Egg}
@@ -339,7 +339,7 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 							purchaseAdditionalEggs.SendToServer();
 							addAnnouncement(`Upgrade complete!!`, AnnouncementType.Announcement);
 						}}
-						layoutOrder={2}
+						layoutOrder={5}
 					/>
 					<RebirthCard
 						icon={assetIds.images.vectors.PetPaw}
@@ -365,7 +365,7 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 							purchaseAdditionalPets.SendToServer();
 							addAnnouncement(`Upgrade complete!!`, AnnouncementType.Announcement);
 						}}
-						layoutOrder={3}
+						layoutOrder={6}
 					/>
 					<RebirthCard
 						icon={assetIds.images.vectors.Coin}
@@ -395,7 +395,7 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 							purchaseCurrencyUpgrade.SendToServer("coins");
 							addAnnouncement(`Upgrade complete!!`, AnnouncementType.Announcement);
 						}}
-						layoutOrder={4}
+						layoutOrder={7}
 					/>
 					<RebirthCard
 						icon={assetIds.images.vectors.Gem}
@@ -425,7 +425,7 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 							purchaseCurrencyUpgrade.SendToServer("gems");
 							addAnnouncement(`Upgrade complete!!`, AnnouncementType.Announcement);
 						}}
-						layoutOrder={5}
+						layoutOrder={8}
 					/>
 					<RebirthCard
 						icon={assetIds.images.vectors.Gear}
@@ -455,7 +455,7 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 							purchaseCurrencyUpgrade.SendToServer("gears");
 							addAnnouncement(`Upgrade complete!!`, AnnouncementType.Announcement);
 						}}
-						layoutOrder={6}
+						layoutOrder={9}
 					/>
 					<RebirthCard
 						icon={assetIds.images.vectors.CyberToken}
@@ -485,7 +485,7 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 							purchaseCurrencyUpgrade.SendToServer("cyber tokens");
 							addAnnouncement(`Upgrade complete!!`, AnnouncementType.Announcement);
 						}}
-						layoutOrder={7}
+						layoutOrder={10}
 					/>
 					<RebirthCard
 						icon={assetIds.images.decals.gamepasses.Teleportation}
@@ -506,7 +506,7 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 							purchaseTeleport.SendToServer();
 							addAnnouncement(`Upgrade complete!!`, AnnouncementType.Announcement);
 						}}
-						layoutOrder={8}
+						layoutOrder={3}
 					/>
 					<RebirthCard
 						icon={assetIds.images.decals.gamepasses["Fast Hatch"]}
@@ -527,7 +527,7 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 							purchaseFastHatch.SendToServer();
 							addAnnouncement(`Upgrade complete!!`, AnnouncementType.Announcement);
 						}}
-						layoutOrder={9}
+						layoutOrder={2}
 					/>
 					<RebirthCard
 						icon={assetIds.images.vectors.Clover}
@@ -548,7 +548,7 @@ export const Rebirths = RoactRodux.connect(mapStateToProps)(
 							purchaseExtraLuck.SendToServer();
 							addAnnouncement(`Upgrade complete!!`, AnnouncementType.Announcement);
 						}}
-						layoutOrder={10}
+						layoutOrder={1}
 					/>
 				</scrollingframe>
 

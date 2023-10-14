@@ -9,12 +9,13 @@ export const STORE_SCOPE = "mainstore"; // Last test store was "TEST_STORE_5"
 export const MAIN_GROUP = 5126818;
 export const BANS_LEADERBOARD_ODS = `${STORE_SCOPE}_BANS_ODS_1`;
 export const EGGS_LEADERBOARD_ODS = `${STORE_SCOPE}_EGGS_ODS_1`;
+export const REBIRTH_LEADERBOARD_ODS = `${STORE_SCOPE}_REBIRTHS_ODS_1`;
 export const LEADERBOARD_UPDATE_INTERVAL = 60;
 
-export const GAME_VERSION = "9.0";
+export const GAME_VERSION = "10.0";
 
-export const MAX_TRADE_OFFER_SIZE = 10;
-export const MAX_TRADE_LOGS = 25;
+export const MAX_TRADE_OFFER_SIZE = 20;
+export const MAX_TRADE_LOGS = 50;
 
 export const TEN_SPINS = 1583558881;
 export const ONE_HUNDRED_SPINS = 1583561170;
@@ -313,11 +314,11 @@ export const VIP_PET_ID = 10002;
 export const GROUP_PET_ID = 10001;
 
 export const LIMITED_EGG_DEVPRODUCT = {
-	OneEgg: 1635052174,
-	ThreeEggs: 1635052347,
+	OneEgg: 1657789643,
+	ThreeEggs: 1657789995,
 };
 
-export const LIMITED_EGG: EggName = "Pastel";
+export const LIMITED_EGG: EggName = "Pufferfish";
 export const EXCLUSIVE_PETS = [
 	// The shop only supports adding 3 pets for exclusive pets. If we want to add more, we'll need to rework the shop a bit.
 	{

@@ -1,18 +1,25 @@
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
 import { ReplicatedStorage } from "@rbxts/services";
-import { uiDarkStrokeColor, uiHeaderStrokeColor } from "client/ui/commonValues";
+import {
+	uiClaimButtonStrokeColor,
+	uiDarkStrokeColor,
+	uiHeaderStrokeColor,
+	uiOffButtonStrokeColor,
+} from "client/ui/commonValues";
 import { SpringImageButton } from "client/ui/elements/baseElements/imagebuttons/springImage";
 import { ImageLabel } from "client/ui/elements/baseElements/imagelabels/image";
 import { StrokeTextLabel } from "client/ui/elements/baseElements/textlabels/strokeTextLabel";
 import { RarityGradient } from "client/ui/elements/gradients/rarityGradient";
 import { DamageIcon } from "client/ui/elements/icons/damageIcon";
 import { hooks } from "client/ui/hooks";
+import { remoteContext } from "client/ui/mocks/remoteContext";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
 import { Pet, PET_MAX_LEVELS, Variants } from "shared/configs/pets";
 import { StoreState } from "shared/rodux";
 import { PlayerIndexState } from "shared/rodux/playerIndex";
+import { SettingsState } from "shared/rodux/settings";
 import { getPetData } from "shared/util/getPetData";
 import { twoDpAbbreviator, zeroDecimalAbbreviator } from "shared/util/twoDpAbbreviator";
 
@@ -381,6 +388,28 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
 	);
 });
 
+interface PetInfoViewProps extends PetInfoViewMappedProps {
+	pet: number;
+	variant: Variants;
+	isDiscovered: boolean;
+}
+
+interface PetInfoViewMappedProps {
+	settings: SettingsState;
+}
+
+/**
+ * Maps the Rodux store's state to the props.
+ *
+ * @param state The current store state.
+ * @returns The mapped props to render with.
+ */
+function petInfoViweMappedProps(state: StoreState): PetInfoViewMappedProps {
+	return {
+		settings: state.settings,
+	};
+}
+
 /**
  * @param props The properties of the roact component.
  * @param props.pet The id of the pet.
@@ -388,37 +417,79 @@ const MinAndMaxStats = hooks((props: { pet: PetData; variant: Variants }) => {
  * @param props.isDiscovered Whether or not the pet is discovered.
  * @returns A Roact component.
  */
-export function PetInfoView(props: { pet: number; variant: Variants; isDiscovered: boolean }): Roact.Element {
-	const petData = getPetData(props.pet);
-	const existElement: Array<Roact.Element> = [];
+export const PetInfoView = RoactRodux.connect(petInfoViweMappedProps)(
+	hooks((props: PetInfoViewProps, hooks) => {
+		const petData = getPetData(props.pet);
+		const existElement: Array<Roact.Element> = [];
 
-	const existAmount = ReplicatedStorage.PetExistStores.FindFirstChild(props.pet);
-	if (existAmount !== undefined) {
-		const variantAmount = existAmount.FindFirstChild(props.variant) as IntValue;
-		if (variantAmount !== undefined) {
-			existElement.push(
-				<StrokeTextLabel
-					native={{
-						Position: UDim2.fromScale(0.7, 0.375),
-						Size: UDim2.fromScale(0.5, 0.07),
-						TextColor3: Color3.fromRGB(255, 170, 255),
-						Text: `⭐ ${twoDpAbbreviator.numberToString(variantAmount.Value)} Exist`,
-					}}
-					stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(111, 74, 111) } }}
-				/>,
-			);
+		const { useContext } = hooks;
+		const { addOrRemoveToAutoDelete } = useContext(remoteContext);
+
+		const existAmount = ReplicatedStorage.PetExistStores.FindFirstChild(props.pet);
+		if (existAmount !== undefined) {
+			const variantAmount = existAmount.FindFirstChild(props.variant) as IntValue;
+			if (variantAmount !== undefined) {
+				existElement.push(
+					<StrokeTextLabel
+						native={{
+							Position: UDim2.fromScale(0.7, 0.375),
+							Size: UDim2.fromScale(0.5, 0.07),
+							TextColor3: Color3.fromRGB(255, 170, 255),
+							Text: `⭐ ${twoDpAbbreviator.numberToString(variantAmount.Value)} Exist`,
+						}}
+						stroke={{ native: { Thickness: 2, Color: Color3.fromRGB(111, 74, 111) } }}
+					/>,
+				);
+			}
 		}
-	}
 
-	return (
-		<>
-			<PetName pet={petData} isDiscovered={props.isDiscovered} />
-			<PetRarity pet={petData} isDiscovered={props.isDiscovered} />
-			<HatchChance pet={petData} variant={props.variant} />
-			<ExtraStats pet={props.pet} variant={props.variant} />
-			<MinAndMaxStats pet={petData} variant={props.variant} />
+		return (
+			<>
+				<PetName pet={petData} isDiscovered={props.isDiscovered} />
+				<PetRarity pet={petData} isDiscovered={props.isDiscovered} />
+				<HatchChance pet={petData} variant={props.variant} />
+				<ExtraStats pet={props.pet} variant={props.variant} />
+				<MinAndMaxStats pet={petData} variant={props.variant} />
 
-			{existElement}
-		</>
-	);
-}
+				{petData.rarity !== "Secret" && petData.rarity !== "Primordial" && (
+					<SpringImageButton
+						native={{
+							Position: UDim2.fromScale(0.5, 1.075),
+							Image: props.settings.autoDelete.includes(props.pet)
+								? assetIds.images.ui.index.Off
+								: assetIds.images.ui.index.Claim,
+						}}
+						size={{ minSize: 0.25, maxSize: 0.35 }}
+						events={{
+							/**
+							 *
+							 */
+							Activated: (): void => {
+								playSFX(UIEngagement.MajorEngagement);
+								addOrRemoveToAutoDelete.SendToServer(props.pet);
+							},
+						}}
+					>
+						<uiaspectratioconstraint AspectRatio={2} />
+						<StrokeTextLabel
+							native={{
+								Size: UDim2.fromScale(0.9, 0.7),
+								Text: "Auto Delete",
+							}}
+							stroke={{
+								native: {
+									Thickness: 2,
+									Color: props.settings.autoDelete.includes(props.pet)
+										? uiOffButtonStrokeColor
+										: uiClaimButtonStrokeColor,
+								},
+							}}
+						/>
+					</SpringImageButton>
+				)}
+
+				{existElement}
+			</>
+		);
+	}),
+);

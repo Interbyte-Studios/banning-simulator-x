@@ -10,10 +10,7 @@ import {
 	TweenService,
 	Workspace,
 } from "@rbxts/services";
-import Icon from "@rbxts/topbar-plus";
 import { getAutoFightCache, setAutoFightCache, setFocusedNPC } from "client/modules/autoFightCache";
-import { playSFX, UIEngagement } from "client/util/playSound";
-import assetIds from "shared/assets";
 import { MODERATOR_RANK } from "shared/configs/admin";
 import { Variants } from "shared/configs/pets";
 import { Store } from "shared/rodux";
@@ -87,7 +84,6 @@ const visibilityStates = {
 
 let popupsShown = false;
 
-const updateLogIcon = new Icon().setImage(assetIds.images.decals.UpdateLog).setLabel("Update Log");
 const blurEffect = Lighting.WaitForChild("Blur") as BlurEffect;
 blurEffect.Size = 0;
 blurEffect.Parent = Lighting;
@@ -242,23 +238,6 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 			ContextActionService.UnbindAction("openShop");
 		};
 	}, [visibility]);
-
-	useEffect(() => {
-		const connection = updateLogIcon.selected.Connect(() => {
-			playSFX(UIEngagement.MajorEngagement);
-			setVisibility({ ...visibilityStates, updateLog: true });
-		});
-
-		const deselectedConnection = updateLogIcon.deselected.Connect(() => {
-			playSFX(UIEngagement.MajorEngagement);
-			setVisibility({ ...visibilityStates, updateLog: false });
-		});
-
-		return (): void => {
-			connection.Disconnect();
-			deselectedConnection.Disconnect();
-		};
-	});
 
 	useEffect(() => {
 		if (!popupsShown) {

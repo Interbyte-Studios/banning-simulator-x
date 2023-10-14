@@ -8,10 +8,6 @@ import { fakeRemoteCall } from "../fakeRemoteCall";
  * This is the remote context for the wheel spin remote functions.
  */
 export const wheelSpinRemoteContext = {
-	spinWheel: fakeFunctionCall<SpinWheelDefinition>("spinWheel", () => {
-		return {
-			reward: 1,
-		};
-	}),
+	spinWheel: fakeFunctionCall<SpinWheelDefinition>("spinWheel", () => 1),
 	spinWheelInfo: fakeRemoteCall<SpinWheelInfoDefinition>("spinWheelInfo"),
 };

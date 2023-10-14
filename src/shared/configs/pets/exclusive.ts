@@ -121,8 +121,8 @@ export const EXCLUSIVE_PETS: Array<Pet> = [
 		rarity: "Exclusive",
 		fusionCost: 1_500_000,
 		stats: {
-			additionalDamage: 16_250_000,
-			additionalBans: 850,
+			additionalDamage: 22_000_000,
+			additionalBans: 1_750,
 		},
 	},
 	{

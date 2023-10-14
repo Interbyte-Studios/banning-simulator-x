@@ -13,12 +13,13 @@ import { ExitButton } from "client/ui/elements/common/exitButton";
 import { hooks } from "client/ui/hooks";
 import { remoteContext } from "client/ui/mocks/remoteContext";
 import { formatTime } from "client/util/formatTime";
-import { getCurrencyIcon } from "client/util/getCurrencyIcon";
+import { getEggImage } from "client/util/getEggImage";
 import { getPetImage } from "client/util/getPetImage";
 import { playSFX, UIEngagement } from "client/util/playSound";
 import assetIds from "shared/assets";
-import { BOOST_IMAGES, ONE_HUNDRED_SPINS, TEN_SPINS } from "shared/configs/game";
-import { spinRewards } from "shared/configs/spinWheel";
+import { isEggName } from "shared/configs/eggs";
+import { BOOST_IMAGES, CURRENCY_PURCHASES, isBoost, ONE_HUNDRED_SPINS, TEN_SPINS } from "shared/configs/game";
+import { isWheelSpinCurrencyReward, isWheelSpinPetReward, WHEEL_SPIN } from "shared/configs/wheelSpin";
 import { StoreState } from "shared/rodux";
 import { SpinWheelState } from "shared/rodux/spinWheel";
 
@@ -54,34 +55,32 @@ const slotPositions: Record<number, { pos: UDim2; rot?: number }> = {
 	7: { pos: UDim2.fromScale(0.6, 0.125), rot: 45 },
 	8: { pos: UDim2.fromScale(0.389, 0.64), rot: 180 },
 };
+const slotsData: Record<number, { image: string; chance: number; rewardType: "boost" | "currency" | "pet" | "egg" }> =
+	[];
 
-const slotsData: Record<number, { image: string; amount: number; rewardType: "boost" | "currency" | "pet" }> = [];
-
-for (const [index, rewardInfo] of pairs(spinRewards)) {
-	if (rewardInfo.rewardType === "currency" && rewardInfo.rewardData.name !== undefined) {
-		slotsData[index] = {
-			image: getCurrencyIcon(rewardInfo.rewardData.name),
-			amount: rewardInfo.rewardData.amount ?? 1,
-			rewardType: "currency",
-		};
-	} else if (rewardInfo.rewardType === "boosts") {
-		if (rewardInfo.rewardData.boostName === undefined) {
-			throw `Boost name is undefined for reward ${index}!`;
-		}
-
-		if (rewardInfo.rewardData.boostAmount === undefined) {
-			throw `Boost amount is undefined for reward ${index}!`;
-		}
-
-		slotsData[index] = {
-			image: BOOST_IMAGES[rewardInfo.rewardData.boostName][rewardInfo.rewardData.boostAmount],
-			amount: rewardInfo.rewardData.boostAmount ?? 1,
+for (const spinReward of WHEEL_SPIN) {
+	if (isBoost(spinReward.reward)) {
+		slotsData[spinReward.id] = {
+			image: BOOST_IMAGES[spinReward.reward][30],
+			chance: spinReward.chance,
 			rewardType: "boost",
 		};
-	} else if (rewardInfo.rewardType === "pet" && rewardInfo.rewardData.petId !== undefined) {
-		slotsData[index] = {
-			image: getPetImage(rewardInfo.rewardData.petId, "regular"),
-			amount: rewardInfo.rewardData.amount ?? 1,
+	} else if (isWheelSpinCurrencyReward(spinReward.reward)) {
+		slotsData[spinReward.id] = {
+			image: CURRENCY_PURCHASES[spinReward.reward.name][spinReward.reward.tier].image,
+			chance: spinReward.chance,
+			rewardType: "currency",
+		};
+	} else if (isWheelSpinPetReward(spinReward.reward)) {
+		slotsData[spinReward.id] = {
+			image: getPetImage(spinReward.reward.petId, "regular"),
+			chance: spinReward.chance,
+			rewardType: "pet",
+		};
+	} else if (isEggName(spinReward.reward)) {
+		slotsData[spinReward.id] = {
+			image: getEggImage(spinReward.reward),
+			chance: spinReward.chance,
 			rewardType: "pet",
 		};
 	}
@@ -97,13 +96,13 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 		const [rewardFrameVisibility, updateRewardFrameVisibility] = useState<boolean>(false);
 		const [timeLeft, setTimeLeft] = useState(0);
 		const [displayedInfo, updateDisplayedInfo] = useState<{
-			rewardType: "boost" | "currency" | "pet";
+			rewardType: "boost" | "currency" | "pet" | "egg";
 			image: string;
-			amount: number;
+			chance: number;
 		}>({
 			rewardType: "boost",
 			image: "",
-			amount: 0,
+			chance: 0,
 		});
 
 		const defaultButtonScale = 1;
@@ -124,7 +123,7 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 				<RewardSlot
 					rewardType={rewardData.rewardType}
 					pos={slotPositions[index].pos}
-					amount={rewardData.amount}
+					chance={rewardData.chance}
 					image={rewardData.image}
 					rot={slotPositions[index].rot ?? 0}
 				/>,
@@ -192,7 +191,7 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 				/>
 				<SpinRewardFrame
 					rewardType={displayedInfo.rewardType}
-					rewardData={{ image: displayedInfo.image, amount: displayedInfo.amount }}
+					rewardData={{ image: displayedInfo.image, chance: displayedInfo.chance }}
 					closed={(): void => updateRewardFrameVisibility(false)}
 					visible={rewardFrameVisibility}
 				/>
@@ -240,15 +239,15 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 								spinWheel
 									.CallServerAsync()
 									.andThen((rewardData) => {
-										if (rewardData.reward === undefined) {
+										if (rewardData === undefined) {
 											return;
 										}
 
-										rotateWheel(rewardData.reward);
+										rotateWheel(rewardData);
 										updateDisplayedInfo({
-											rewardType: slotsData[rewardData.reward].rewardType,
-											image: slotsData[rewardData.reward].image,
-											amount: slotsData[rewardData.reward].amount,
+											rewardType: slotsData[rewardData].rewardType,
+											image: slotsData[rewardData].image,
+											chance: slotsData[rewardData].chance,
 										});
 									})
 									.catch(warn);
@@ -310,15 +309,15 @@ export const SpinWheel = RoactRodux.connect(mapStateToProps)(
 							spinWheel
 								.CallServerAsync()
 								.andThen((rewardData) => {
-									if (rewardData.reward === undefined) {
+									if (rewardData === undefined) {
 										return;
 									}
 
-									rotateWheel(rewardData.reward);
+									rotateWheel(rewardData);
 									updateDisplayedInfo({
-										rewardType: slotsData[rewardData.reward].rewardType,
-										image: slotsData[rewardData.reward].image,
-										amount: slotsData[rewardData.reward].amount,
+										rewardType: slotsData[rewardData].rewardType,
+										image: slotsData[rewardData].image,
+										chance: slotsData[rewardData].chance,
 									});
 								})
 								.catch(warn);

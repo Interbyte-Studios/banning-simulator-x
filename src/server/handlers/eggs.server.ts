@@ -90,7 +90,7 @@ hatchEggRemote.Connect(
 		}
 
 		// check that they're not hatching to fast
-		const checksOut = canHatch(player, currentState.gamepasses["Fast Hatch"]);
+		const checksOut = canHatch(player, currentState.gamepasses["Fast Hatch"], currentState.rebirths.fastHatch);
 		if (!checksOut) {
 			return warn(`Cannot Hatch!`);
 		}
@@ -100,6 +100,6 @@ hatchEggRemote.Connect(
 
 		// dispatch the pets
 		store.dispatch(hatchEgg(eggCost.amount * hatchedEggs.size(), eggCost.currencyType, hatchedEggs));
-		conveyHatch.SendToPlayer(player, eggName, hatchedEggs);
+		conveyHatch.SendToPlayer(player, eggName, hatchedEggs, isVoid);
 	}),
 );

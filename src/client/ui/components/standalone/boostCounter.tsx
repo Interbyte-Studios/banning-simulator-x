@@ -37,14 +37,22 @@ export const BoostCounter = RoactRodux.connect(mapStateToProps)(
 		const [hasFriend, setHasFriend] = useState(false);
 		useEffect(() => {
 			for (const player of Players.GetPlayers()) {
-				if (Players.LocalPlayer.IsFriendsWith(player.UserId)) {
+				const [success, result] = pcall(() => {
+					return Players.LocalPlayer.IsFriendsWith(player.UserId);
+				});
+
+				if (success && result) {
 					setHasFriend(true);
 					break;
 				}
 			}
 
 			const playerAddedConnection = Players.PlayerAdded.Connect((player) => {
-				if (Players.LocalPlayer.IsFriendsWith(player.UserId)) {
+				const [success, result] = pcall(() => {
+					return Players.LocalPlayer.IsFriendsWith(player.UserId);
+				});
+
+				if (success && result) {
 					setHasFriend(true);
 				}
 			});
@@ -52,10 +60,11 @@ export const BoostCounter = RoactRodux.connect(mapStateToProps)(
 			const playerRemovingConnection = Players.PlayerRemoving.Connect(() => {
 				let hasFriend = false;
 				for (const player of Players.GetPlayers()) {
-					if (Players.LocalPlayer.IsFriendsWith(player.UserId)) {
-						hasFriend = true;
-						break;
-					}
+					const [success, result] = pcall(() => {
+						return Players.LocalPlayer.IsFriendsWith(player.UserId);
+					});
+
+					hasFriend = success && result;
 				}
 				setHasFriend(hasFriend);
 			});

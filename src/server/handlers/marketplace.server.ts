@@ -156,7 +156,7 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 		};
 		store.dispatch(hatchEgg(0, "coins", [storedPet]));
 
-		conveyHatch.SendToPlayer(player, LIMITED_EGG, [storedPet]);
+		conveyHatch.SendToPlayer(player, LIMITED_EGG, [storedPet], false);
 		purchaseProcessed = true;
 	}
 
@@ -177,7 +177,7 @@ MarketplaceService.ProcessReceipt = (receiptInfo): Enum.ProductPurchaseDecision 
 
 		store.dispatch(hatchEgg(0, "coins", hatchedEggs));
 
-		conveyHatch.SendToPlayer(player, LIMITED_EGG, hatchedEggs);
+		conveyHatch.SendToPlayer(player, LIMITED_EGG, hatchedEggs, false);
 		purchaseProcessed = true;
 	}
 

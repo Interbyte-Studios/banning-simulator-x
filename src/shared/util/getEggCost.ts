@@ -193,6 +193,27 @@ export function getEggCost(egg: EggName, isVoid: boolean, reducedCost: number): 
 			eggCost.currencyType = "gems";
 			break;
 		}
+		case 24: {
+			const cost = 15_000;
+			eggCost.amount = cost - cost * reducedCost;
+			eggCost.amount = math.ceil(eggCost.amount);
+			eggCost.currencyType = "coins";
+			break;
+		}
+		case 26: {
+			const cost = 15_000;
+			eggCost.amount = cost - cost * reducedCost;
+			eggCost.amount = math.ceil(eggCost.amount);
+			eggCost.currencyType = "coins";
+			break;
+		}
+		case 28: {
+			const cost = 15_000;
+			eggCost.amount = cost - cost * reducedCost;
+			eggCost.amount = math.ceil(eggCost.amount);
+			eggCost.currencyType = "coins";
+			break;
+		}
 		default: {
 			if (zoneData.cost === undefined) {
 				throw `Unexpected issue while finding cost for "${egg}"`;
