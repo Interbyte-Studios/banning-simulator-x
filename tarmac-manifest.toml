@@ -138,6 +138,11 @@ hash = "5a542f52b04806b34362a5d7da5d9af00b9512e1f345148154b55da4119febce"
 id = 14811199595
 packable = false
 
+[inputs."images/decals/eggs/Fighter.png"]
+hash = "30c0f40e3823908c4b0628c153990a0ad1420b5027d370065711fa2a2abad58e"
+id = 15078382976
+packable = false
+
 [inputs."images/decals/eggs/GearWorx.png"]
 hash = "fac2e02db20bba392db5590c663251f355933396cbc9bd306b002b0314d2f940"
 id = 14183429574
@@ -146,6 +151,11 @@ packable = false
 [inputs."images/decals/eggs/Geometric.png"]
 hash = "cbf0c0f96a01dcf91352f9272589856143923d244ea589b0c7751a09d11e70eb"
 id = 14685742648
+packable = false
+
+[inputs."images/decals/eggs/Ghosty.png"]
+hash = "16f246cf3c03ddb110a2adef8cd934bfffcd7408ee08d23336f76f7e8173716e"
+id = 15078383285
 packable = false
 
 [inputs."images/decals/eggs/Honeycomb.png"]
@@ -573,6 +583,11 @@ hash = "7f38a242ca84c161686f36b744ce2f412830d1c5d38928031b6feb28e191e4e6"
 id = 14603658341
 packable = false
 
+[inputs."images/decals/pets/Blazing Jack O' Lantern.png"]
+hash = "48653488d5ac886e1032b7ca5be8d59357133153499592218efb5fff8a34be99"
+id = 15078384594
+packable = false
+
 [inputs."images/decals/pets/Bumble Bee.png"]
 hash = "9ec49c83b44546661c0a3a9c506f0d55af94af89b7a0bc11120c6f7ad96feb04"
 id = 11440087721
@@ -908,6 +923,11 @@ hash = "c1373923b23839e16dbce8602655817c2bf6cb4a24cfcb0f1d5577d6dfccf054"
 id = 14685646600
 packable = false
 
+[inputs."images/decals/pets/Duo Fighter.png"]
+hash = "a0f2c4d59affd11e392d980924f07ab38a17f1e9de01f99ee07aa9902bfbdfac"
+id = 15078385084
+packable = false
+
 [inputs."images/decals/pets/Eternal Gear.png"]
 hash = "3f7059f6e34eeca52c7e888a153a8a1880a55fc0e7868a470018b0b28bd6712f"
 id = 14153252209
@@ -988,6 +1008,41 @@ hash = "6f8fd09dcbbd707cb9014d72743de1460771356c6af63043ba02853977ac4eb3"
 id = 14153235714
 packable = false
 
+[inputs."images/decals/pets/Ghost Bear.png"]
+hash = "a514b6545ed02b70afa82cd9bc6f92e993b3c0d74fc0a591632efc9061d00241"
+id = 15078385352
+packable = false
+
+[inputs."images/decals/pets/Ghost Bunny.png"]
+hash = "1c60d62deec2d2354d89bd3f51c64ebdf42f1d6170568a176b47e15fea5bfb81"
+id = 15078385611
+packable = false
+
+[inputs."images/decals/pets/Ghost Deer.png"]
+hash = "a0823a0bf4bce3870098293a6e2c36f4e7bcf04d92ce040ecf30e308f47b6229"
+id = 15078385877
+packable = false
+
+[inputs."images/decals/pets/Ghost Doggy.png"]
+hash = "d24b0155b58b4d75a7162a9b2aefd205f8868857390ddd9badd6ccd1b14019be"
+id = 15078386163
+packable = false
+
+[inputs."images/decals/pets/Ghost Imp.png"]
+hash = "8f76b4a2b3386bbb660f4ce2d653ca88feafe6fffca7e9af4bde8c3d73c4588d"
+id = 15078386447
+packable = false
+
+[inputs."images/decals/pets/Ghost Kitty.png"]
+hash = "737e1a72540249ffb4bb0097bd5eb0fbb6b55829442445bf99ceb329d39b7bff"
+id = 15078386648
+packable = false
+
+[inputs."images/decals/pets/Ghost Phoenix.png"]
+hash = "7368c515924d4a9fbfc1e0ba3be165285870c853bb98dca3ccd70413fd44d7ab"
+id = 15078386823
+packable = false
+
 [inputs."images/decals/pets/Glitch Pot.png"]
 hash = "734c669e65f3be7f59f1efee95b90e58871531865b5ed6f327f10647b98128f1"
 id = 14511639496
@@ -1001,6 +1056,11 @@ packable = false
 [inputs."images/decals/pets/Glitched Digital Crystal.png"]
 hash = "7eff61200c417d0fb1fa8583da5e3f526ce18d9aadc13f669315c3e62cb76c83"
 id = 14511639636
+packable = false
+
+[inputs."images/decals/pets/Gold Fighter.png"]
+hash = "0c9a4a1874469d89b15b66d57d508619cf6c7ae33931e9e9fbfca96bc3583f52"
+id = 15078387045
 packable = false
 
 [inputs."images/decals/pets/Golden Pufferfish.png"]
@@ -1643,6 +1703,11 @@ hash = "8c3e36c1f3c7bba170d5a85590c0b998c849ca9087fa14f7186c26c4dc9028aa"
 id = 14603660380
 packable = false
 
+[inputs."images/decals/pets/Radiant Blazing Jack O' Lantern.png"]
+hash = "728f706062f10fb65dcc380b2a1f8af45bfc07e9baa7522f8f886c551fa1b94a"
+id = 15078387768
+packable = false
+
 [inputs."images/decals/pets/Radiant Bumble Bee.png"]
 hash = "60bc6c079d0b44ba9fa88accc3d3927b33d7adbc90823013c6347109ce5e1d59"
 id = 11440107844
@@ -1973,6 +2038,11 @@ hash = "983593fceb5f6e325e4ac1e1dae47b2f49a9d92fd2f24ad15d541d1595af21c9"
 id = 14685649487
 packable = false
 
+[inputs."images/decals/pets/Radiant Duo Fighter.png"]
+hash = "99b44aa165de7f3d0fc537b6a5072a11628acfb4775ce8a837bc1681ba0279f4"
+id = 15078388371
+packable = false
+
 [inputs."images/decals/pets/Radiant Eternal Gear.png"]
 hash = "faefaa3f4291b57a457ac2a4c5024b1df97671bb5947eb67ea977f7045136340"
 id = 14153236168
@@ -2058,6 +2128,41 @@ hash = "da71f676151d764b982e92d09f506514b07e5b6849f0532ec60ec8f7ff570193"
 id = 14153237171
 packable = false
 
+[inputs."images/decals/pets/Radiant Ghost Bear.png"]
+hash = "0239204618a9215f68b3908afbd3837c3fb3d1017bfc7dc0ccd51283b6e38d20"
+id = 15078388547
+packable = false
+
+[inputs."images/decals/pets/Radiant Ghost Bunny.png"]
+hash = "316fabbe90b72399065ff6fc61b1953dc19b3b43f91764661458fa3fe34e9ae8"
+id = 15078388728
+packable = false
+
+[inputs."images/decals/pets/Radiant Ghost Deer.png"]
+hash = "b0f84eb941862d565618890f6edddafa5ad5de0bbebc8813f5f115e6bb325bf5"
+id = 15078388999
+packable = false
+
+[inputs."images/decals/pets/Radiant Ghost Doggy.png"]
+hash = "16e862b99f02b4cef9b11dd7c0723487f315e51a1ffef55cb4b25dbe51bcc325"
+id = 15078389372
+packable = false
+
+[inputs."images/decals/pets/Radiant Ghost Imp.png"]
+hash = "1c8ffc532ff111b6991fafbfff73f85d938474592dd9a4eb63176a0261951391"
+id = 15078389742
+packable = false
+
+[inputs."images/decals/pets/Radiant Ghost Kitty.png"]
+hash = "6b176e412321ba11737d6250d710f291315e11120eb01279d554ec08496f2a60"
+id = 15078390006
+packable = false
+
+[inputs."images/decals/pets/Radiant Ghost Phoenix.png"]
+hash = "4b8e003078aff176fe04411e98fb01163f702a5b416556f8bbe547cb71254ad4"
+id = 15078390238
+packable = false
+
 [inputs."images/decals/pets/Radiant Glitch Pot.png"]
 hash = "de9ada7d911553d5668e8b4e39417307ecb8272765c1176563fba1df8f1bf82e"
 id = 14511641895
@@ -2071,6 +2176,11 @@ packable = false
 [inputs."images/decals/pets/Radiant Glitched Digital Crystal.png"]
 hash = "a37b346657405fd694a0652927c87dc7d986ef453353141cea6b9ab433b2220f"
 id = 14511642060
+packable = false
+
+[inputs."images/decals/pets/Radiant Gold Fighter.png"]
+hash = "af271f2bf1f3af89d799bbdc3c6d637426db004befc5c6c938350f57e9c6f7b6"
+id = 15078390473
 packable = false
 
 [inputs."images/decals/pets/Radiant Golden Pufferfish.png"]
@@ -2473,6 +2583,11 @@ hash = "8183851af95c3be4e1ec7d961ad094043d6953797da5dbc62859a1a92eb054e0"
 id = 13989143291
 packable = false
 
+[inputs."images/decals/pets/Radiant Red Fighter.png"]
+hash = "b71ce684e46acd9cd3e32eed7cdf3ab293ef35b853cebc4c7ee6d91b31b6e2a3"
+id = 15078391009
+packable = false
+
 [inputs."images/decals/pets/Radiant Royal Bunny.png"]
 hash = "e4f5d0dd8b184badc8ab1992c443171c5bdbcda431af39e9c9bbccf39646327e"
 id = 11440347182
@@ -2523,6 +2638,11 @@ hash = "a584200896df288bbad01e451a800a2f8473365eabb73cba02a78eb95a1a099c"
 id = 14940050535
 packable = false
 
+[inputs."images/decals/pets/Radiant Sinister Dominus.png"]
+hash = "c91aa2c9a1019698ad2c64ef3c706086a49fd6283fe860dcab90fe0b774dc971"
+id = 15078391360
+packable = false
+
 [inputs."images/decals/pets/Radiant Siphon.png"]
 hash = "3bfd44df02ac1bba8a6641b0c6896bf82aa0f3135f9a9c610df6350fdfae40e4"
 id = 14191958468
@@ -2531,6 +2651,11 @@ packable = false
 [inputs."images/decals/pets/Radiant Space Spider.png"]
 hash = "828f6c0c3800c8b65dafcbd06fe34717e7c24763bde8f8e1fe4a68acb03ab54b"
 id = 14239632163
+packable = false
+
+[inputs."images/decals/pets/Radiant Spirit Apex.png"]
+hash = "3c882c4e1a1e715e9396b144f8f19e36a6d74678e49374ad2a425c70dabd92cb"
+id = 15078391568
 packable = false
 
 [inputs."images/decals/pets/Radiant Steambot.png"]
@@ -2583,6 +2708,11 @@ hash = "7504a39f390d257a92e8acdf78d924d1af912c5caf8c8e9ed21b59e4a388d4f2"
 id = 14239632469
 packable = false
 
+[inputs."images/decals/pets/Radiant Ultra Fighter.png"]
+hash = "2fdc223b50f4bc3838c6b5ae1e9babbab85b1d85d7a82b0f53a2f855c9944aae"
+id = 15078391900
+packable = false
+
 [inputs."images/decals/pets/Radiant Violet Striker.png"]
 hash = "24af92cf09427c3d36d2d3ca3cb56123327dc7d7d0e3836908ef6b067c6cb59c"
 id = 14239632645
@@ -2631,6 +2761,11 @@ packable = false
 [inputs."images/decals/pets/Radioactive Vision.png"]
 hash = "4de761a68bd246473f2996070574c3c60b6a6eec6cbc073ebb05fed3c5e8c4df"
 id = 13989143661
+packable = false
+
+[inputs."images/decals/pets/Red Fighter.png"]
+hash = "91a3861395b56d208468629661d5b5170b58d824f3aa6fbdcd7d7764fd286bad"
+id = 15078392119
 packable = false
 
 [inputs."images/decals/pets/Royal Bunny.png"]
@@ -2683,6 +2818,11 @@ hash = "5e3574b6e6a3ecbaeb56578521775a15c878881a73bea63d46a7194ffe4df3b3"
 id = 14940051541
 packable = false
 
+[inputs."images/decals/pets/Sinister Dominus.png"]
+hash = "8fe2df72c666bcb91c6ac4afafb8f1073bea8b8ce356eb96bacc84a5d6dd9cfe"
+id = 15078392433
+packable = false
+
 [inputs."images/decals/pets/Siphon.png"]
 hash = "ff451beed9d56c00bf3b397ec3b739ec9b1c2667d9a33d6a6fa3d41c412a68f3"
 id = 14191958682
@@ -2691,6 +2831,11 @@ packable = false
 [inputs."images/decals/pets/Space Spider.png"]
 hash = "8cf372f2e2beaf997a887315c3543b84c219621e323923fd061916b500c62536"
 id = 14239632830
+packable = false
+
+[inputs."images/decals/pets/Spirit Apex.png"]
+hash = "e611035ed57b4e67cd02108ce27492d1ec367cbb7a27c8eab18c2613c0eca9d5"
+id = 15078392600
 packable = false
 
 [inputs."images/decals/pets/Steambot.png"]
@@ -2741,6 +2886,11 @@ packable = false
 [inputs."images/decals/pets/Ultimate Vial.png"]
 hash = "8f7762bdd61752cbc0d05023556c1c27db8b7a08cae833ba710d7f6b0af933cd"
 id = 14239633207
+packable = false
+
+[inputs."images/decals/pets/Ultra Fighter.png"]
+hash = "f136562cd94ffea5c47ee6f0c1025b0433e4843d48d8975fc56b6609753f8922"
+id = 15078392807
 packable = false
 
 [inputs."images/decals/pets/Violet Striker.png"]
@@ -3021,6 +3171,11 @@ packable = false
 [inputs."images/decals/pets/Void Blazing Glory.png"]
 hash = "d9aec8c259d056422ab871af7dc36a411e8a383e1cef992a7e56adbce5b704f3"
 id = 14603662796
+packable = false
+
+[inputs."images/decals/pets/Void Blazing Jack O' Lantern.png"]
+hash = "ae76c5fb16ad70246a7d734e025d504f91789607ad2eed43033c43ba048417a2"
+id = 15078393276
 packable = false
 
 [inputs."images/decals/pets/Void Bumble Bee.png"]
@@ -3353,6 +3508,11 @@ hash = "7401189a9e53cd4b127aaf03a1c0e03de07ece3d3b2016a214687de51500be31"
 id = 14685653157
 packable = false
 
+[inputs."images/decals/pets/Void Duo Fighter.png"]
+hash = "f6cd93c01ea2ea250312055b96b09531e9c3da6dfddaffb647c47274c44779fb"
+id = 15078393789
+packable = false
+
 [inputs."images/decals/pets/Void Eternal Gear.png"]
 hash = "df076b051dc19c6f01925cadde1aff4845f196d0739adc19a96d89afd206cbda"
 id = 14153238061
@@ -3438,6 +3598,41 @@ hash = "a7d506af9357fdefd071185fdb8e1ec707c4bbac525caa13aadf419f29239a0e"
 id = 14153239270
 packable = false
 
+[inputs."images/decals/pets/Void Ghost Bear.png"]
+hash = "a83d188650d477eff0de1d73debcddde6b4b08d51bf989be9fafe86ec1ff9e19"
+id = 15078394107
+packable = false
+
+[inputs."images/decals/pets/Void Ghost Bunny.png"]
+hash = "28636b0e6fa476c07e31e730588f5a45a9db945854487da2e677177d9e26ac97"
+id = 15078394287
+packable = false
+
+[inputs."images/decals/pets/Void Ghost Deer.png"]
+hash = "47434813f611301f6965cca57f4e33cdbeeb95965c133c8b3cc36262982eb7da"
+id = 15078394567
+packable = false
+
+[inputs."images/decals/pets/Void Ghost Doggy.png"]
+hash = "30ccf03bdd22673b825e636fe8a703443a2562527892f0cf7a66494fb8bea6a3"
+id = 15078394805
+packable = false
+
+[inputs."images/decals/pets/Void Ghost Imp.png"]
+hash = "21e7bf80182437bac27e99bd456b03d4fcd3df4fd7d076f87b8cfb3d6d8c6e9f"
+id = 15078395086
+packable = false
+
+[inputs."images/decals/pets/Void Ghost Kitty.png"]
+hash = "cff03fea3020a545464a2278d83ab425d42097789f67b17eec686dad5ce6aaa3"
+id = 15078395415
+packable = false
+
+[inputs."images/decals/pets/Void Ghost Phoenix.png"]
+hash = "9df8d7f771cf4a3759ddffa3bbfc6038fccf0df1d1ac427831ae8b518f3e010a"
+id = 15078395712
+packable = false
+
 [inputs."images/decals/pets/Void Glitch Pot.png"]
 hash = "5d99d09e0dba6192eef0ef0b9992f504832d4b5889104a663b41e58e6576ccfb"
 id = 14511644033
@@ -3451,6 +3646,11 @@ packable = false
 [inputs."images/decals/pets/Void Glitched Digital Crystal.png"]
 hash = "585c00c2c6569c8f987feeb32a2188b45d1baef433150721d0bec725c8ff2c99"
 id = 14511644227
+packable = false
+
+[inputs."images/decals/pets/Void Gold Fighter.png"]
+hash = "fe83cc22e7a7b7c4e9300e08ebcb929a333270e02c3ad1564d19daf37d713ff7"
+id = 15078396017
 packable = false
 
 [inputs."images/decals/pets/Void Golden Pufferfish.png"]
@@ -3858,6 +4058,11 @@ hash = "d4cdc2f9bada2c3171224751aacdba2d176030e6d4d98419ed8dda2f6c7a7f24"
 id = 13989146537
 packable = false
 
+[inputs."images/decals/pets/Void Red Fighter.png"]
+hash = "a4eeb74f0839abcdf7b9a8971a1a55358655d84564a65caec02caddd087a8ad3"
+id = 15078396600
+packable = false
+
 [inputs."images/decals/pets/Void Royal Bunny.png"]
 hash = "396d86627444518e3da2228d90b0f374057108bf770db796cfc936e432d9c72d"
 id = 11440356107
@@ -3908,6 +4113,11 @@ hash = "9cd7afdcb4fb4e3dae042779117640bc8549c41669042b312b6e7f854a8f2d5a"
 id = 14940055602
 packable = false
 
+[inputs."images/decals/pets/Void Sinister Dominus.png"]
+hash = "3f02f1653dff0a46aac75475e0367c0286ef37e882c1e271901fcb6035bf4bec"
+id = 15078396894
+packable = false
+
 [inputs."images/decals/pets/Void Siphon.png"]
 hash = "5cda010c41f771ef6a27125a4428dc84d720074b631c7347c08194c06d721715"
 id = 14191960255
@@ -3916,6 +4126,11 @@ packable = false
 [inputs."images/decals/pets/Void Space Spider.png"]
 hash = "e769db39b57125a65909d5c36d119f80f6040a3b30a2607d3f803c17a903588b"
 id = 14239635789
+packable = false
+
+[inputs."images/decals/pets/Void Spirit Apex.png"]
+hash = "7942d7063bfb507dbaffb75a0b885a5926fa3f4217ca8a9f198b5012ef8cc241"
+id = 15078396997
 packable = false
 
 [inputs."images/decals/pets/Void Steambot.png"]
@@ -3966,6 +4181,11 @@ packable = false
 [inputs."images/decals/pets/Void Ultimate Vial.png"]
 hash = "12628853912b122e90e19c94a99f8bc2a13f1439031a20623c3bcb3af3f7b3b1"
 id = 14239636069
+packable = false
+
+[inputs."images/decals/pets/Void Ultra Fighter.png"]
+hash = "1d84ea5ce0355c4ff6c81fcd05695d87fa1e8d75c36e16029f4fe7f710c5c37b"
+id = 15078397228
 packable = false
 
 [inputs."images/decals/pets/Void Violet Striker.png"]

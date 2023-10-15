@@ -155,7 +155,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 	const addAnnouncement = useContext(AnnouncementContext).addAnnouncement;
 
 	useEffect(() => {
-		const newLimiteds = DateTime.fromUniversalTime(2023, 10, 15, 18).UnixTimestamp;
+		const newLimiteds = DateTime.fromUniversalTime(2023, 10, 29, 18).UnixTimestamp;
 		const connection = RunService.Heartbeat.Connect(() => {
 			debug.profilebegin("limitedsShop");
 			const timeCheck = time();
@@ -210,7 +210,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 						Position: UDim2.fromScale(0.5, 0.2),
 						Size: UDim2.fromScale(0.415, 0.394),
 						TextColor3: Color3.fromRGB(255, 71, 74),
-						Text: "Pufferfish Egg!",
+						Text: "Fighter Egg!",
 					}}
 					stroke={{ native: { Thickness: 2.5, Color: Color3.fromRGB(116, 32, 34) } }}
 				/>
@@ -219,7 +219,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					native={{
 						Position: UDim2.fromScale(0.11, 0.5),
 						Size: UDim2.fromScale(1, 1),
-						Image: assetIds.images.decals.eggs.Pufferfish,
+						Image: assetIds.images.decals.eggs.Fighter,
 					}}
 				>
 					<uiaspectratioconstraint AspectRatio={1} />
@@ -249,7 +249,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(225, "regular"),
+							Image: getPetImage(252, "regular"),
 						}}
 					/>
 
@@ -277,7 +277,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(226, "regular"),
+							Image: getPetImage(253, "regular"),
 						}}
 					/>
 
@@ -305,7 +305,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(227, "regular"),
+							Image: getPetImage(254, "regular"),
 						}}
 					/>
 
@@ -333,7 +333,7 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 					<ImageLabel
 						native={{
 							Size: UDim2.fromScale(1, 1),
-							Image: getPetImage(228, "regular"),
+							Image: getPetImage(255, "regular"),
 						}}
 					/>
 

@@ -14,8 +14,10 @@ import { DIVINE_EGG_PETS } from "./pets/divine";
 import { DWELLER_EGG_PETS } from "./pets/dweller";
 import { EVENT_500k_EGG_PETS } from "./pets/event500k";
 import { EXCLUSIVE_PETS } from "./pets/exclusive";
+import { FIGHTER_EGG_PETS } from "./pets/fighter";
 import { GEARWORX_EGG_PETS } from "./pets/gearworx";
 import { GEOMETRIC_EGG_PETS } from "./pets/geometric";
+import { GHOSTY_EGG_PETS } from "./pets/ghosty";
 import { GROUP_CHEST_PETS } from "./pets/group";
 import { HONEYCOMB_EGG_PETS } from "./pets/honeycomb";
 import { JESTER_EGG_PETS } from "./pets/jester";
@@ -97,6 +99,8 @@ export const isValidMasteryEgg = t.literal(
 	"Blackhole",
 	"Pufferfish",
 	"TwoMillion",
+	"Ghosty",
+	"Fighter",
 );
 export type ValidMasteryEgg = t.static<typeof isValidMasteryEgg>;
 
@@ -109,6 +113,7 @@ export const isEventEgg = t.literal(
 	"Autumn",
 	"Blackhole",
 	"TwoMillion",
+	"Ghosty",
 );
 export type EventEgg = t.static<typeof isEventEgg>;
 
@@ -123,6 +128,7 @@ export const isExclusiveEgg = t.literal(
 	"Exclusive",
 	"Solar System",
 	"Pufferfish",
+	"Fighter",
 );
 export type ExclusiveEgg = t.static<typeof isExclusiveEgg>;
 
@@ -375,7 +381,23 @@ export const EGGS = {
 		pets: TWO_MILLION_EGG_PETS,
 		world: "Ban Land",
 		zone: "Forest",
+		hatchable: false,
+		hidden: false,
+	},
+	Ghosty: {
+		id: 29,
+		pets: GHOSTY_EGG_PETS,
+		world: "Ban Land",
+		zone: "Forest",
 		hatchable: true,
+		hidden: false,
+	},
+	Fighter: {
+		id: 30,
+		pets: FIGHTER_EGG_PETS,
+		world: "Limited",
+		zone: "Limited",
+		hatchable: false,
 		hidden: false,
 	},
 } satisfies Record<string, Egg>;

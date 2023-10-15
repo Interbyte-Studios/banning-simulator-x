@@ -314,8 +314,8 @@ export const VIP_PET_ID = 10002;
 export const GROUP_PET_ID = 10001;
 
 export const LIMITED_EGG_DEVPRODUCT = {
-	OneEgg: 1657789643,
-	ThreeEggs: 1657789995,
+	OneEgg: 1668977194,
+	ThreeEggs: 1668977397,
 };
 
 export const LIMITED_EGG: EggName = "Pufferfish";
