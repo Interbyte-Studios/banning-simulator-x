@@ -40,7 +40,7 @@ const PlayerImage = hooks((props: { playerId: number; position: UDim2; size: UDi
 		const thumbnailType = Enum.ThumbnailType.HeadShot;
 		const thumbnailSize = Enum.ThumbnailSize.Size420x420;
 
-		task.spawn(() => {
+		const threadConnection = task.spawn(() => {
 			const [success, result] = pcall(() =>
 				Players.GetUserThumbnailAsync(props.playerId, thumbnailType, thumbnailSize),
 			);
@@ -48,6 +48,7 @@ const PlayerImage = hooks((props: { playerId: number; position: UDim2; size: UDi
 				setContent(result);
 			}
 		});
+		return (): void => task.cancel(threadConnection);
 	}, [props.playerId]);
 
 	return (
@@ -187,12 +188,13 @@ const TradeCard = hooks(
 				return;
 			}
 
-			task.spawn((): void => {
+			const threadConnection = task.spawn((): void => {
 				const [success, result] = pcall(() => Players.GetNameFromUserIdAsync(props.tradeLog.otherPlayerId));
 				if (success) {
 					setOtherPlayerName(result);
 				}
 			});
+			return (): void => task.cancel(threadConnection);
 		}, [otherPlayerName]);
 
 		return (
@@ -351,12 +353,13 @@ export const TradeHistory = hooks((props: TradeHistoryProps, { useEffect, useVal
 			return;
 		}
 
-		task.spawn((): void => {
+		const threadConnection = task.spawn((): void => {
 			const [success, result] = pcall(() => Players.GetNameFromUserIdAsync(viewedTrade.otherPlayerId));
 			if (success) {
 				setOtherPlayerName(result);
 			} else warn(`Failed to get username for ${viewedTrade.otherPlayerId}`);
 		});
+		return (): void => task.cancel(threadConnection);
 	}, [viewedTrade]);
 
 	if (viewedTrade === undefined) {

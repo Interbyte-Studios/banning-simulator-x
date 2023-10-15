@@ -47,7 +47,7 @@ const CurrencyOption = RoactRodux.connect(mapStateToProps)(
 	hooks((props: CurrencyOptionProps, { useState, useEffect }) => {
 		const [price, setPrice] = useState(0);
 		useEffect(() => {
-			task.spawn(() => {
+			const threadConnection = task.spawn(() => {
 				const [success, result] = pcall(() => {
 					return MarketplaceService.GetProductInfo(
 						CURRENCY_PURCHASES[props.currency][props.purchaseOption].devId,
@@ -58,6 +58,7 @@ const CurrencyOption = RoactRodux.connect(mapStateToProps)(
 					setPrice(result.PriceInRobux);
 				}
 			});
+			return (): void => task.cancel(threadConnection);
 		}, []);
 
 		const position =

@@ -23,16 +23,22 @@ remotes.Client.Get("gamepassGiftReceived").Connect((gamepassName, playerWhoGifte
 
 	const originalSize = closeGift.Size;
 	const tweenInfo = new TweenInfo(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out);
-	const enterConnection = closeGift.MouseEnter.Connect(() =>
-		TweenService.Create(closeGift, tweenInfo, {
+	const enterConnection = closeGift.MouseEnter.Connect(() => {
+		const tween = TweenService.Create(closeGift, tweenInfo, {
 			Size: UDim2.fromScale(originalSize.X.Scale - 0.1, originalSize.Y.Scale - 0.1),
-		}).Play(),
-	);
-	const leftConnection = closeGift.MouseEnter.Connect(() =>
-		TweenService.Create(closeGift, tweenInfo, {
+		});
+		tween.Play();
+		tween.Completed.Wait();
+		tween.Destroy();
+	});
+	const leftConnection = closeGift.MouseEnter.Connect(() => {
+		const tween = TweenService.Create(closeGift, tweenInfo, {
 			Size: originalSize,
-		}).Play(),
-	);
+		});
+		tween.Play();
+		tween.Completed.Wait();
+		tween.Destroy();
+	});
 	const clickConnection = closeGift.MouseButton1Click.Connect(() => {
 		giftMessage.Destroy();
 		enterConnection.Disconnect();

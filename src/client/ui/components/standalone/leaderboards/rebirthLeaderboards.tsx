@@ -17,13 +17,14 @@ interface LeaderboardEntry {
 const LeaderboardCard = hooks((props: { entry: LeaderboardEntry }, { useState, useEffect }) => {
 	const [playerName, setPlayerName] = useState("unknown");
 	useEffect(() => {
-		task.spawn(() => {
+		const threadConnection = task.spawn(() => {
 			const [success, result] = pcall((): string => Players.GetNameFromUserIdAsync(props.entry.playerId));
 
 			if (success) {
 				setPlayerName(result);
 			}
 		});
+		return (): void => task.cancel(threadConnection);
 	}, [props.entry, props.entry.playerId, props.entry.position]);
 
 	return (

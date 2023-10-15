@@ -50,12 +50,13 @@ export const Control = hooks((props: ControlProps, { useState, useEffect, useCon
 			return;
 		}
 
-		task.spawn(() => {
+		const threadConnection = task.spawn(() => {
 			const userRestrictions = PolicyService.GetPolicyInfoForPlayerAsync(Players.LocalPlayer);
 			if (!userRestrictions.IsPaidItemTradingAllowed) {
 				setCanTrade(false);
 			}
 		});
+		return (): void => task.cancel(threadConnection);
 	}, []);
 
 	useEffect(() => {

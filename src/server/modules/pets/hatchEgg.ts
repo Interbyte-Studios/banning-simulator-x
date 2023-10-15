@@ -162,26 +162,27 @@ export function hatchHatchableEgg(
 					}
 				}
 			}
-			task.spawn(() => {
-				pcall(() => {
-					HttpService.RequestAsync({
-						Url: "http://137.184.152.180:8765/hatch",
-						Body: HttpService.JSONEncode({
-							roblox_uid: player.UserId,
-							secret_name: petData.name,
-							secret_type: petData.rarity,
-							pet_variant: storedPet.variant,
-							decal: decalToPass,
-							exist: existAmount + 1,
-						}),
-						Method: "POST",
-						Headers: {
-							"Content-Type": "application/json",
-							"X-ACCESS-TOKEN": "V1qijQkozBm1LdD5SsO1",
-						},
-					});
-				});
-			});
+			const [success, result] = pcall(() =>
+				HttpService.RequestAsync({
+					Url: "http://137.184.152.180:8765/hatch",
+					Body: HttpService.JSONEncode({
+						roblox_uid: player.UserId,
+						secret_name: petData.name,
+						secret_type: petData.rarity,
+						pet_variant: storedPet.variant,
+						decal: decalToPass,
+						exist: existAmount + 1,
+					}),
+					Method: "POST",
+					Headers: {
+						"Content-Type": "application/json",
+						"X-ACCESS-TOKEN": "V1qijQkozBm1LdD5SsO1",
+					},
+				}),
+			);
+			if (!success) {
+				warn(`Failed to post ${petData.rarity} to hatch bot. Error: ${result}`);
+			}
 		} else if (petData.rarity === "Legendary" && !storedPet.autoDeleted) {
 			hatchSystemMessage.SendToAllPlayers(player, petData.id, storedPet.variant, "hatched");
 		}

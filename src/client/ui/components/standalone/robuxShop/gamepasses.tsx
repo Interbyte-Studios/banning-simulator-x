@@ -51,12 +51,13 @@ const Gamepass = hooks(
 	) => {
 		const [itemPrice, setItemPrice] = useState(0);
 		useEffect(() => {
-			task.spawn(() => {
+			const threadConnection = task.spawn(() => {
 				const productInfo = MarketplaceService.GetProductInfo(props.devProductId, Enum.InfoType.GamePass);
 				if (productInfo.PriceInRobux !== undefined) {
 					setItemPrice(productInfo.PriceInRobux);
 				}
 			});
+			return (): void => task.cancel(threadConnection);
 		}, []);
 
 		const layoutOrder = GAMEPASS_ORDER[props.gamepassName];

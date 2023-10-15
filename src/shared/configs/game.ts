@@ -318,7 +318,7 @@ export const LIMITED_EGG_DEVPRODUCT = {
 	ThreeEggs: 1668977397,
 };
 
-export const LIMITED_EGG: EggName = "Pufferfish";
+export const LIMITED_EGG: EggName = "Fighter";
 export const EXCLUSIVE_PETS = [
 	// The shop only supports adding 3 pets for exclusive pets. If we want to add more, we'll need to rework the shop a bit.
 	{

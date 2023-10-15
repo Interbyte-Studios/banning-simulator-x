@@ -41,7 +41,7 @@ export const PlayerHeadshot = hooks((props: { player: Player }, { useState, useE
 		const thumbnailType = Enum.ThumbnailType.HeadShot;
 		const thumbnailSize = Enum.ThumbnailSize.Size420x420;
 
-		task.spawn(() => {
+		const threadConnection = task.spawn(() => {
 			const [success, result] = pcall(() =>
 				Players.GetUserThumbnailAsync(props.player.UserId, thumbnailType, thumbnailSize),
 			);
@@ -49,6 +49,7 @@ export const PlayerHeadshot = hooks((props: { player: Player }, { useState, useE
 				setContent(result);
 			}
 		});
+		return (): void => task.cancel(threadConnection);
 	}, [props.player]);
 
 	const isLocalPlayer = props.player.UserId === Players.LocalPlayer.UserId;

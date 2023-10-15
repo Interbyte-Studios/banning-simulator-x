@@ -16,6 +16,8 @@ stopButton.MouseEnter.Connect(() => {
 		Size: UDim2.fromScale(buttonSize.Y.Scale * 0.8, buttonSize.Y.Scale * 0.8),
 	});
 	tween.Play();
+	tween.Completed.Wait();
+	tween.Destroy();
 });
 stopButton.MouseLeave.Connect(() => {
 	debug.setmemorycategory("disableHatching");
@@ -24,4 +26,6 @@ stopButton.MouseLeave.Connect(() => {
 		Size: buttonSize,
 	});
 	tween.Play();
+	tween.Completed.Wait();
+	tween.Destroy();
 });

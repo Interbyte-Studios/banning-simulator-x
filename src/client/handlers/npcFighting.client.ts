@@ -212,28 +212,6 @@ UserInputService.TouchMoved.Connect((_, gameProcessedEvent) => {
 	}
 });
 
-task.spawn(() => {
-	debug.setmemorycategory("npcFighting");
-	const player = Players.LocalPlayer;
-	const mouse = player.GetMouse();
-
-	RunService.RenderStepped.Connect(() => {
-		debug.profilebegin("mouseIcon");
-		const target = mouse.Target;
-		if (!target) {
-			mouse.Icon = "rbxasset://textures/ArrowFarCursor.png";
-			return;
-		}
-
-		if (target.IsDescendantOf(npcs)) {
-			mouse.Icon = assetIds.images.vectors.SmallSword;
-			return;
-		}
-		mouse.Icon = "rbxasset://textures/ArrowFarCursor.png";
-		debug.profileend();
-	});
-});
-
 RunService.RenderStepped.Connect(() => {
 	debug.setmemorycategory("npcFighting");
 	debug.profilebegin("npcFighting");
@@ -245,5 +223,24 @@ RunService.RenderStepped.Connect(() => {
 		}
 	}
 
+	debug.profileend();
+});
+
+const player = Players.LocalPlayer;
+const mouse = player.GetMouse();
+
+RunService.RenderStepped.Connect(() => {
+	debug.profilebegin("mouseIcon");
+	const target = mouse.Target;
+	if (!target) {
+		mouse.Icon = "rbxasset://textures/ArrowFarCursor.png";
+		return;
+	}
+
+	if (target.IsDescendantOf(npcs)) {
+		mouse.Icon = assetIds.images.vectors.SmallSword;
+		return;
+	}
+	mouse.Icon = "rbxasset://textures/ArrowFarCursor.png";
 	debug.profileend();
 });

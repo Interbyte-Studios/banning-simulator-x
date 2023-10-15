@@ -627,32 +627,28 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 			otherPlayerOfferPets.push({ ...storedPet });
 		}
 
-		task.spawn(() => {
-			// remove the pets from the players
-			store.dispatch(deletePets(playerOffer.pets));
-			store.dispatch(tradePets(otherPlayerOfferPets));
+		// remove the pets from the players
+		store.dispatch(deletePets(playerOffer.pets));
+		store.dispatch(tradePets(otherPlayerOfferPets));
 
-			if (playerOffer.currency !== undefined) {
-				// remove the currency from the player
-				store.dispatch(awardCurrency(playerOffer.currency.type, -playerOffer.currency.amount));
+		if (playerOffer.currency !== undefined) {
+			// remove the currency from the player
+			store.dispatch(awardCurrency(playerOffer.currency.type, -playerOffer.currency.amount));
 
-				// add the currency to the other player
-				otherPlayerStore.dispatch(awardCurrency(playerOffer.currency.type, playerOffer.currency.amount));
-			}
-		});
+			// add the currency to the other player
+			otherPlayerStore.dispatch(awardCurrency(playerOffer.currency.type, playerOffer.currency.amount));
+		}
 
-		task.spawn(() => {
-			otherPlayerStore.dispatch(deletePets(otherPlayerOffer.pets));
-			otherPlayerStore.dispatch(tradePets(playerOfferPets));
+		otherPlayerStore.dispatch(deletePets(otherPlayerOffer.pets));
+		otherPlayerStore.dispatch(tradePets(playerOfferPets));
 
-			if (otherPlayerOffer.currency !== undefined) {
-				// remove the currency from the other player
-				otherPlayerStore.dispatch(awardCurrency(otherPlayerOffer.currency.type, -otherPlayerOffer.currency.amount));
+		if (otherPlayerOffer.currency !== undefined) {
+			// remove the currency from the other player
+			otherPlayerStore.dispatch(awardCurrency(otherPlayerOffer.currency.type, -otherPlayerOffer.currency.amount));
 
-				// add the currency to the player
-				store.dispatch(awardCurrency(otherPlayerOffer.currency.type, otherPlayerOffer.currency.amount));
-			}
-		});
+			// add the currency to the player
+			store.dispatch(awardCurrency(otherPlayerOffer.currency.type, otherPlayerOffer.currency.amount));
+		}
 
 		// log the trade for both players
 		const tradeTimestamp = DateTime.now();
@@ -687,43 +683,39 @@ export function confirmFinalizedTradeOffer(player: Player, store: Store): boolea
 			}),
 		};
 
-		task.spawn(() => {
-			if (store.getState().tradeLogs.size() >= MAX_TRADE_LOGS) {
-				let tradeToRemove: SavedTrade | undefined;
-				store.getState().tradeLogs.forEach((trade) => {
-					if (
-						tradeToRemove === undefined ||
-						trade.timestamp.UnixTimestampMillis < tradeToRemove.timestamp.UnixTimestampMillis
-					) {
-						tradeToRemove = trade;
-					}
-				});
+		if (store.getState().tradeLogs.size() >= MAX_TRADE_LOGS) {
+			let tradeToRemove: SavedTrade | undefined;
+			store.getState().tradeLogs.forEach((trade) => {
+				if (
+					tradeToRemove === undefined ||
+					trade.timestamp.UnixTimestampMillis < tradeToRemove.timestamp.UnixTimestampMillis
+				) {
+					tradeToRemove = trade;
+				}
+			});
 
-				if (tradeToRemove) {
-					store.dispatch(removeTradeLog(tradeToRemove));
-				} else warn(`Failed to remove overflowing trade logs for player ${player.Name}`);
-			}
-			store.dispatch(saveTrade(otherPlayer.player.UserId, tradeTimestamp, otherPlayerTrade, playerTrade));
-		});
+			if (tradeToRemove) {
+				store.dispatch(removeTradeLog(tradeToRemove));
+			} else warn(`Failed to remove overflowing trade logs for player ${player.Name}`);
+		}
+		store.dispatch(saveTrade(otherPlayer.player.UserId, tradeTimestamp, otherPlayerTrade, playerTrade));
 
-		task.spawn(() => {
-			if (otherPlayerStore.getState().tradeLogs.size() >= MAX_TRADE_LOGS) {
-				let tradeToRemove: SavedTrade | undefined;
-				otherPlayerStore.getState().tradeLogs.forEach((trade) => {
-					if (
-						tradeToRemove === undefined ||
-						trade.timestamp.UnixTimestampMillis < tradeToRemove.timestamp.UnixTimestampMillis
-					) {
-						tradeToRemove = trade;
-					}
-				});
+		if (otherPlayerStore.getState().tradeLogs.size() >= MAX_TRADE_LOGS) {
+			let tradeToRemove: SavedTrade | undefined;
+			otherPlayerStore.getState().tradeLogs.forEach((trade) => {
+				if (
+					tradeToRemove === undefined ||
+					trade.timestamp.UnixTimestampMillis < tradeToRemove.timestamp.UnixTimestampMillis
+				) {
+					tradeToRemove = trade;
+				}
+			});
 
-				if (tradeToRemove) {
-					otherPlayerStore.dispatch(removeTradeLog(tradeToRemove));
-				} else warn(`Failed to remove overflowing trade logs for player ${player.Name}`);
-			}
-			otherPlayerStore.dispatch(saveTrade(player.UserId, tradeTimestamp, playerTrade, otherPlayerTrade));
-		});
+			if (tradeToRemove) {
+				otherPlayerStore.dispatch(removeTradeLog(tradeToRemove));
+			} else warn(`Failed to remove overflowing trade logs for player ${player.Name}`);
+		}
+		otherPlayerStore.dispatch(saveTrade(player.UserId, tradeTimestamp, playerTrade, otherPlayerTrade));
 
 		const flaggedPlayerPets: FlaggedPetCollection = [];
 		for (const pet of playerOfferPets) {

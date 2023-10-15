@@ -84,41 +84,55 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 	onStoreCreated(player)
 		.andThen((store) => {
 			debug.setmemorycategory("cachePlayerPetAnimation");
-			task.spawn(() =>
-				task.delay(5, () => {
-					const currentState = store.getState();
-					const playerCache = createPetAnimationCache(player);
-					updatePlayerCacheVisuals(playerCache, currentState.settings.visual);
+			task.delay(5, () => {
+				const currentState = store.getState();
+				const playerCache = createPetAnimationCache(player);
+				updatePlayerCacheVisuals(playerCache, currentState.settings.visual);
 
-					currentState.pets.forEach((pet) => {
-						if (pet.equipped) {
-							createAndCachePet(player, playerCache, pet);
-						}
-					});
+				currentState.pets.forEach((pet) => {
+					if (pet.equipped) {
+						createAndCachePet(player, playerCache, pet);
+					}
+				});
 
-					store.changed.connect((newState, oldState) => {
-						if (newState.settings.visual !== oldState.settings.visual) {
-							updatePlayerCacheVisuals(playerCache, newState.settings.visual);
-						}
+				store.changed.connect((newState, oldState) => {
+					if (newState.settings.visual !== oldState.settings.visual) {
+						updatePlayerCacheVisuals(playerCache, newState.settings.visual);
+					}
 
-						if (newState.pets !== oldState.pets) {
-							newState.pets.forEach((pet) => {
-								if (pet.equipped) {
-									const cachedPetIndex = playerCache.pets.find((animatedPet) => animatedPet.guid === pet.guid);
-									if (cachedPetIndex === undefined) {
-										createAndCachePet(player, playerCache, pet);
-									}
-								} else {
-									const cachedPetIndex = playerCache.pets.findIndex((animatedPet) => animatedPet.guid === pet.guid);
-									if (cachedPetIndex !== -1) {
-										playerCache.pets.unorderedRemove(cachedPetIndex);
-										removePet(pet.guid);
-									}
+					if (newState.pets !== oldState.pets) {
+						newState.pets.forEach((pet) => {
+							if (pet.equipped) {
+								const cachedPetIndex = playerCache.pets.find((animatedPet) => animatedPet.guid === pet.guid);
+								if (cachedPetIndex === undefined) {
+									createAndCachePet(player, playerCache, pet);
 								}
-							});
-						}
-					});
+							} else {
+								const cachedPetIndex = playerCache.pets.findIndex((animatedPet) => animatedPet.guid === pet.guid);
+								if (cachedPetIndex !== -1) {
+									playerCache.pets.unorderedRemove(cachedPetIndex);
+									removePet(pet.guid);
+								}
+							}
+						});
+					}
+				});
 
+				if (player.UserId !== Players.LocalPlayer.UserId) {
+					for (const pet of playerCache.pets) {
+						pet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
+					}
+					return;
+				}
+
+				const currentCacheState = getPetAnimationCache();
+				for (const _playerCache of currentCacheState) {
+					for (const pet of _playerCache.pets) {
+						pet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
+					}
+				}
+
+				playerCache.petsDisplayed.GetPropertyChangedSignal("Value").Connect(() => {
 					if (player.UserId !== Players.LocalPlayer.UserId) {
 						for (const pet of playerCache.pets) {
 							pet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
@@ -132,24 +146,8 @@ const cachePlayerPetanimation = (player: Player): Promise<void> =>
 							pet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
 						}
 					}
-
-					playerCache.petsDisplayed.GetPropertyChangedSignal("Value").Connect(() => {
-						if (player.UserId !== Players.LocalPlayer.UserId) {
-							for (const pet of playerCache.pets) {
-								pet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
-							}
-							return;
-						}
-
-						const currentCacheState = getPetAnimationCache();
-						for (const _playerCache of currentCacheState) {
-							for (const pet of _playerCache.pets) {
-								pet.model.Parent = playerCache.petsDisplayed.Value ? Workspace["client objects"].pets : undefined;
-							}
-						}
-					});
-				}),
-			);
+				});
+			});
 		})
 		.catch((e) => {
 			throw `[ Pet Follow Handler ] - Failed to run promise callback on "onStoreCreated" for ${player.Name} | ${e}`;

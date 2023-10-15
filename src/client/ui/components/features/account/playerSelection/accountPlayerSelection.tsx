@@ -19,7 +19,7 @@ const PlayerCard = hooks(
 			const thumbnailType = Enum.ThumbnailType.HeadShot;
 			const thumbnailSize = Enum.ThumbnailSize.Size420x420;
 
-			task.spawn(() => {
+			const threadConnection = task.spawn(() => {
 				const [success, result] = pcall(() =>
 					Players.GetUserThumbnailAsync(props.player.UserId, thumbnailType, thumbnailSize),
 				);
@@ -27,6 +27,7 @@ const PlayerCard = hooks(
 					setContent(result);
 				}
 			});
+			return (): void => task.cancel(threadConnection);
 		}, [props.player]);
 
 		const minimizedSize = 0.8;

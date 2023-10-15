@@ -91,125 +91,123 @@ function createPlayerTag(player: Player, store: Store): void {
 	const playerTag = ReplicatedStorage.assetObjects.tags.playerTag;
 	assert(playerTag, `Failed to get player tag from rep storage`);
 
-	task.spawn(() => {
-		const character = player.Character;
-		if (character === undefined) {
-			return;
-		}
+	const character = player.Character;
+	if (character === undefined) {
+		return;
+	}
 
-		const humanoid = character.FindFirstChildOfClass("Humanoid");
-		if (humanoid === undefined) {
-			return;
-		}
+	const humanoid = character.FindFirstChildOfClass("Humanoid");
+	if (humanoid === undefined) {
+		return;
+	}
 
-		const head = character.FindFirstChild("Head") as BasePart;
-		if (head === undefined) {
-			return;
-		}
+	const head = character.FindFirstChild("Head") as BasePart;
+	if (head === undefined) {
+		return;
+	}
 
-		const storeState = store.getState();
+	const storeState = store.getState();
 
-		const tag = playerTag.Clone();
-		tag.hold.name.Text = player.Name;
-		tag.hold.name.rank.Image = getRankIcon(storeState.rank);
-		tag.hold.title.Visible = storeState.title !== undefined;
-		tag.hold.staff.Visible = false;
+	const tag = playerTag.Clone();
+	tag.hold.name.Text = player.Name;
+	tag.hold.name.rank.Image = getRankIcon(storeState.rank);
+	tag.hold.title.Visible = storeState.title !== undefined;
+	tag.hold.staff.Visible = false;
 
-		const bansLeaderboard = ReplicatedStorage.leaderboards.bans.FindFirstChild(tostring(player.UserId));
-		if (bansLeaderboard !== undefined) {
-			const position = bansLeaderboard.GetAttribute("position") as number;
-			let title = "Top 100";
-			if (position !== undefined) {
-				if (position === 1) {
-					title = "Top 1";
-				} else if (position <= 3) {
-					title = "Top 3";
-				} else if (position <= 10) {
-					title = "Top 10";
-				} else if (position <= 25) {
-					title = "Top 25";
-				} else if (position <= 50) {
-					title = "Top 50";
-				}
+	const bansLeaderboard = ReplicatedStorage.leaderboards.bans.FindFirstChild(tostring(player.UserId));
+	if (bansLeaderboard !== undefined) {
+		const position = bansLeaderboard.GetAttribute("position") as number;
+		let title = "Top 100";
+		if (position !== undefined) {
+			if (position === 1) {
+				title = "Top 1";
+			} else if (position <= 3) {
+				title = "Top 3";
+			} else if (position <= 10) {
+				title = "Top 10";
+			} else if (position <= 25) {
+				title = "Top 25";
+			} else if (position <= 50) {
+				title = "Top 50";
 			}
-			tag.hold.badges.bans.amount.Text = title;
-			tag.hold.badges.bans.Visible = true;
 		}
+		tag.hold.badges.bans.amount.Text = title;
+		tag.hold.badges.bans.Visible = true;
+	}
 
-		const eggsLeaderboard = ReplicatedStorage.leaderboards.eggs.FindFirstChild(tostring(player.UserId));
-		if (eggsLeaderboard !== undefined) {
-			const position = eggsLeaderboard.GetAttribute("position") as number;
-			let title = "Top 100";
-			if (position !== undefined) {
-				if (position === 1) {
-					title = "Top 1";
-				} else if (position <= 3) {
-					title = "Top 3";
-				} else if (position <= 10) {
-					title = "Top 10";
-				} else if (position <= 25) {
-					title = "Top 25";
-				} else if (position <= 50) {
-					title = "Top 50";
-				}
+	const eggsLeaderboard = ReplicatedStorage.leaderboards.eggs.FindFirstChild(tostring(player.UserId));
+	if (eggsLeaderboard !== undefined) {
+		const position = eggsLeaderboard.GetAttribute("position") as number;
+		let title = "Top 100";
+		if (position !== undefined) {
+			if (position === 1) {
+				title = "Top 1";
+			} else if (position <= 3) {
+				title = "Top 3";
+			} else if (position <= 10) {
+				title = "Top 10";
+			} else if (position <= 25) {
+				title = "Top 25";
+			} else if (position <= 50) {
+				title = "Top 50";
 			}
-			tag.hold.badges.eggs.amount.Text = title;
-			tag.hold.badges.eggs.Visible = true;
 		}
+		tag.hold.badges.eggs.amount.Text = title;
+		tag.hold.badges.eggs.Visible = true;
+	}
 
-		if (storeState.title !== undefined) {
-			const titleData = TITLES.find((title) => title.name === storeState.title);
-			assert(titleData, `Failed to get data for title "${storeState.title}" while creating player tag`);
+	if (storeState.title !== undefined) {
+		const titleData = TITLES.find((title) => title.name === storeState.title);
+		assert(titleData, `Failed to get data for title "${storeState.title}" while creating player tag`);
 
-			tag.hold.title.Text = storeState.title;
+		tag.hold.title.Text = storeState.title;
 
-			if (typeIs(titleData.effect, "Color3")) {
-				tag.hold.title.TextColor3 = titleData.effect;
-			} else {
-				const titleGradient = new Instance("UIGradient");
-				titleGradient.Color = titleData.effect;
-				titleGradient.Offset = new Vector2(-0.75, 0);
-				titleGradient.Parent = tag.hold.title;
-				gradients.push(titleGradient);
+		if (typeIs(titleData.effect, "Color3")) {
+			tag.hold.title.TextColor3 = titleData.effect;
+		} else {
+			const titleGradient = new Instance("UIGradient");
+			titleGradient.Color = titleData.effect;
+			titleGradient.Offset = new Vector2(-0.75, 0);
+			titleGradient.Parent = tag.hold.title;
+			gradients.push(titleGradient);
 
-				const connection = titleGradient.Destroying.Connect(() => {
-					gradients.forEach((gradient, index) => {
-						if (gradient === titleGradient) {
-							gradients.unorderedRemove(index);
-							return;
-						}
-					});
-
-					connection.Disconnect();
+			const connection = titleGradient.Destroying.Connect(() => {
+				gradients.forEach((gradient, index) => {
+					if (gradient === titleGradient) {
+						gradients.unorderedRemove(index);
+						return;
+					}
 				});
 
-				tag.hold.title.Visible = true;
-			}
+				connection.Disconnect();
+			});
+
+			tag.hold.title.Visible = true;
 		}
+	}
 
-		if (storeState.index.groupRank !== undefined) {
-			const groupRank = storeState.index.groupRank;
-			const groupRankData = GROUP_ROLES[groupRank];
-			if (groupRankData === undefined) {
-				return;
-			}
-
-			tag.hold.staff.Text = groupRankData.tag;
-			tag.hold.staff.TextColor3 = groupRankData.color;
-			tag.hold.staff.Visible = true;
-		}
-
-		humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
-		humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
-
-		tag.Adornee = head;
-		tag.Parent = friendlyTags;
-
-		const connection = humanoid.AncestryChanged.Connect(() => {
-			tag.Destroy();
-			connection.Disconnect();
+	if (storeState.index.groupRank !== undefined) {
+		const groupRank = storeState.index.groupRank;
+		const groupRankData = GROUP_ROLES[groupRank];
+		if (groupRankData === undefined) {
 			return;
-		});
+		}
+
+		tag.hold.staff.Text = groupRankData.tag;
+		tag.hold.staff.TextColor3 = groupRankData.color;
+		tag.hold.staff.Visible = true;
+	}
+
+	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
+	humanoid.HealthDisplayType = Enum.HumanoidHealthDisplayType.AlwaysOff;
+
+	tag.Adornee = head;
+	tag.Parent = friendlyTags;
+
+	const connection = humanoid.AncestryChanged.Connect(() => {
+		tag.Destroy();
+		connection.Disconnect();
+		return;
 	});
 }
 

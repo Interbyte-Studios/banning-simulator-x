@@ -36,13 +36,14 @@ const ExclusivePet = hooks(
 		const petData = getPetData(props.petId);
 		const petDecal = getPetImage(props.petId, "regular");
 		useEffect(() => {
-			task.spawn(() => {
+			const threadConnection = task.spawn(() => {
 				const productInfo = MarketplaceService.GetProductInfo(props.devProductId, Enum.InfoType.Product);
 
 				if (productInfo.PriceInRobux !== undefined) {
 					setItemCost(productInfo.PriceInRobux);
 				}
 			});
+			return (): void => task.cancel(threadConnection);
 		}, []);
 
 		useEffect(() => {
@@ -50,12 +51,13 @@ const ExclusivePet = hooks(
 				return;
 			}
 
-			task.spawn(() => {
+			const threadConnection = task.spawn(() => {
 				const playerRestrictions = PolicyService.GetPolicyInfoForPlayerAsync(Players.LocalPlayer);
 				if (playerRestrictions.ArePaidRandomItemsRestricted) {
 					setCanBuy(false);
 				}
 			});
+			return (): void => task.cancel(threadConnection);
 		});
 
 		return (
@@ -177,12 +179,13 @@ export const Limiteds = hooks((_, { useState, useEffect, useContext }) => {
 			return;
 		}
 
-		task.spawn(() => {
+		const threadConnection = task.spawn(() => {
 			const playerRestrictions = PolicyService.GetPolicyInfoForPlayerAsync(Players.LocalPlayer);
 			if (playerRestrictions.ArePaidRandomItemsRestricted) {
 				setCanBuy(false);
 			}
 		});
+		return (): void => task.cancel(threadConnection);
 	});
 
 	return (

@@ -73,12 +73,10 @@ function updateGlobalCache(): void {
 	}
 }
 
-task.spawn(() => {
-	// eslint-disable-next-line no-constant-condition
-	while (true) {
-		updateGlobalCache();
-		task.wait(getAsyncInterval);
-	}
-});
+// eslint-disable-next-line no-constant-condition
+while (true) {
+	updateGlobalCache();
+	task.wait(getAsyncInterval);
+}
 
 game.BindToClose(updateGlobalCache);

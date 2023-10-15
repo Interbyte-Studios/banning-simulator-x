@@ -232,10 +232,13 @@ function equipWeapon(weaponName: WeaponIndex): void {
 			npcNPCHighlight.Parent = npcCharacter;
 			npcHighlights.push({ object: npcNPCHighlight, timeDisplayed: time() });
 
-			TweenService.Create(npcNPCHighlight, new TweenInfo(0.25), {
+			const tween = TweenService.Create(npcNPCHighlight, new TweenInfo(0.25), {
 				FillTransparency: 0.5,
 				OutlineTransparency: 0,
-			}).Play();
+			});
+			tween.Play();
+			tween.Completed.Wait();
+			tween.Destroy();
 		}
 
 		playSFX(NPCImpact.NPCImpact1);

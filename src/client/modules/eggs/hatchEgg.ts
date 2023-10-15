@@ -100,6 +100,7 @@ export const animateEggHatch = (
 	camera.CameraType = Enum.CameraType.Scriptable;
 	cameraTweenAnimation.Play();
 	cameraTweenAnimation.Completed.Wait();
+	cameraTweenAnimation.Destroy();
 
 	// verify we have a max of 5 pets to hatch
 	if (pets.size() > 5) {

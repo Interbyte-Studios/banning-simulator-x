@@ -364,7 +364,7 @@ export const TalismanInfoDisplay = RoactRodux.connect(mapStateToProps)(
 					maximizedSize={0.15}
 					onClosed={(): void => {
 						motor.setGoal(minimizedSpring);
-						task.spawn(() => task.delay(0.3, () => props.hideDisplay()));
+						task.delay(0.3, () => props.hideDisplay());
 					}}
 				/>
 			</imagelabel>

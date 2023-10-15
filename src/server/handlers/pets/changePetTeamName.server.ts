@@ -38,11 +38,8 @@ remotes.Server.GetNamespace("pets")
 			});
 
 			if (filterText) {
-				task.spawn(() => {
-					const filteredText = result.GetNonChatStringForUserAsync(player.UserId);
-
-					store.dispatch(updateTeamName(teamId, filteredText));
-				});
+				const filteredText = result.GetNonChatStringForUserAsync(player.UserId);
+				store.dispatch(updateTeamName(teamId, filteredText));
 			} else warn(`Failed to filter text sent by player: ${player.Name} when changing team name.`);
 		}),
 	);

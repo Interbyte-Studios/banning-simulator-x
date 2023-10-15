@@ -266,9 +266,15 @@ export const Main = hooks((props: AppProps, { useState, useEffect, useContext, u
 	const toggleBlur = (display: boolean): void => {
 		if (display) {
 			blurEffect.Size = 0;
-			TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 20 }).Play();
+			const tween = TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 20 });
+			tween.Play();
+			tween.Completed.Wait();
+			tween.Destroy();
 		} else {
-			TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 0 }).Play();
+			const tween = TweenService.Create(blurEffect, new TweenInfo(0.5), { Size: 0 });
+			tween.Play();
+			tween.Completed.Wait();
+			tween.Destroy();
 		}
 	};
 

@@ -34,7 +34,7 @@ export const TradeRequest = hooks(
 			const thumbnailType = Enum.ThumbnailType.HeadShot;
 			const thumbnailSize = Enum.ThumbnailSize.Size420x420;
 
-			task.spawn(() => {
+			const threadConnection = task.spawn(() => {
 				const [success, result] = pcall(() =>
 					Players.GetUserThumbnailAsync(props.player.UserId, thumbnailType, thumbnailSize),
 				);
@@ -42,6 +42,7 @@ export const TradeRequest = hooks(
 					setContent(result);
 				}
 			});
+			return (): void => task.cancel(threadConnection);
 		}, [props.player]);
 
 		return (

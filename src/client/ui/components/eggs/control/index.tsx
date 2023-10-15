@@ -1,7 +1,7 @@
 import Object from "@rbxts/object-utils";
 import Roact from "@rbxts/roact";
 import RoactRodux from "@rbxts/roact-rodux";
-import { ContextActionService, MarketplaceService, Players, Workspace } from "@rbxts/services";
+import { ContextActionService, MarketplaceService, Players, RunService, Workspace } from "@rbxts/services";
 import { getIsHatching } from "client/modules/eggs/isHatching";
 import { getIsTrading } from "client/modules/isTradingCache";
 import { AnnouncementContext, AnnouncementType } from "client/ui/context/AnnouncementsAPI";
@@ -65,6 +65,7 @@ function mapStateToProps(state: StoreState): EggHudMappedProps {
  */
 export function disableHatch(): void {
 	autoEnabled = false;
+	RunService.UnbindFromRenderStep("autoHatchEgg");
 }
 
 /**
@@ -129,56 +130,57 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 
 				if (props.settings.gameplay.autoHatch) {
 					autoEnabled = true;
-
-					task.spawn(async () => {
-						// eslint-disable-next-line no-constant-condition
-						while (true) {
-							task.wait(0.25);
-							if (!autoEnabled) {
-								break;
-							}
-
-							// make sure they aren't still hatching
-							if (getIsHatching()) {
-								continue;
-							}
-
-							// make sure they're not trading
-							if (getIsTrading()) {
-								addAnnouncement(`You cannot hatch while your trading!`, AnnouncementType.Error);
-								autoEnabled = false;
-								break;
-							}
-
-							// check that character still exists (if it doesn't, neither does the camera)
-							const character = Players.LocalPlayer.Character;
-							if (character === undefined) {
-								addAnnouncement(`There was an issue hatching the egg. Try again later. [3]`, AnnouncementType.Error);
-								autoEnabled = false;
-								break;
-							}
-
-							// check cost
-							if (currencies.value[eggCost.currencyType] < eggCost.amount * amount) {
-								addAnnouncement(
-									`You need ${statsAbbreviator.numberToString(
-										eggCost.amount * amount - currencies.value[eggCost.currencyType],
-									)} more ${eggCost.currencyType} to hatch ${amount} ${eggName} eggs!`,
-									AnnouncementType.Error,
-								);
-								autoEnabled = false;
-								break;
-							}
-
-							// check inventory space
-							if (inventorySize.value + amount > getPetInventorySize(props.gamepasses)) {
-								addAnnouncement(`You do not have enough inventory space to hatch the egg!`, AnnouncementType.Error);
-								autoEnabled = false;
-								break;
-							}
-
-							hatchEgg.SendToServer(amount, eggName, variant === "void");
+					RunService.BindToRenderStep("autoHatchEgg", Enum.RenderPriority.Camera.Value + 1, () => {
+						// make sure they aren't still hatching
+						if (getIsHatching()) {
+							return;
 						}
+
+						if (!autoEnabled) {
+							autoEnabled = false;
+							RunService.UnbindFromRenderStep("autoHatchEgg");
+							return;
+						}
+
+						// make sure they're not trading
+						if (getIsTrading()) {
+							addAnnouncement(`You cannot hatch while your trading!`, AnnouncementType.Error);
+							autoEnabled = false;
+							RunService.UnbindFromRenderStep("autoHatchEgg");
+							return;
+						}
+
+						// check that character still exists (if it doesn't, neither does the camera)
+						const character = Players.LocalPlayer.Character;
+						if (character === undefined) {
+							addAnnouncement(`There was an issue hatching the egg. Try again later. [3]`, AnnouncementType.Error);
+							autoEnabled = false;
+							RunService.UnbindFromRenderStep("autoHatchEgg");
+							return;
+						}
+
+						// check cost
+						if (currencies.value[eggCost.currencyType] < eggCost.amount * amount) {
+							addAnnouncement(
+								`You need ${statsAbbreviator.numberToString(
+									eggCost.amount * amount - currencies.value[eggCost.currencyType],
+								)} more ${eggCost.currencyType} to hatch ${amount} ${eggName} eggs!`,
+								AnnouncementType.Error,
+							);
+							autoEnabled = false;
+							RunService.UnbindFromRenderStep("autoHatchEgg");
+							return;
+						}
+
+						// check inventory space
+						if (inventorySize.value + amount > getPetInventorySize(props.gamepasses)) {
+							addAnnouncement(`You do not have enough inventory space to hatch the egg!`, AnnouncementType.Error);
+							autoEnabled = false;
+							RunService.UnbindFromRenderStep("autoHatchEgg");
+							return;
+						}
+
+						hatchEgg.SendToServer(amount, eggName, variant === "void");
 					});
 				} else {
 					hatchEgg.SendToServer(amount, eggName, variant === "void");
@@ -204,6 +206,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 			let movementConnection = humanoid.GetPropertyChangedSignal("MoveDirection").Connect(() => {
 				if (autoEnabled) {
 					autoEnabled = false;
+					RunService.UnbindFromRenderStep("autoHatchEgg");
 				}
 
 				return;
@@ -212,6 +215,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 			let diedConnection = humanoid.Died.Connect(() => {
 				if (autoEnabled) {
 					autoEnabled = false;
+					RunService.UnbindFromRenderStep("autoHatchEgg");
 				}
 
 				const camera = Workspace.CurrentCamera;
@@ -237,6 +241,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 			const characterAdded = Players.LocalPlayer.CharacterAdded.Connect(() => {
 				movementConnection = humanoid.GetPropertyChangedSignal("MoveDirection").Connect(() => {
 					autoEnabled = false;
+					RunService.UnbindFromRenderStep("autoHatchEgg");
 
 					return;
 				});
@@ -244,6 +249,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 				diedConnection = humanoid.Died.Connect(() => {
 					if (autoEnabled) {
 						autoEnabled = false;
+						RunService.UnbindFromRenderStep("autoHatchEgg");
 					}
 
 					const camera = Workspace.CurrentCamera;
@@ -295,6 +301,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 						if (withinDistanceForRegular) {
 							if (autoEnabled) {
 								autoEnabled = false;
+								RunService.UnbindFromRenderStep("autoHatchEgg");
 							} else {
 								const hatchAmount = 1 + props.rebirths.additionalEggs;
 								if (!validEggAmount(hatchAmount)) {
@@ -309,6 +316,7 @@ export const EggHud = RoactRodux.connect(mapStateToProps)(
 							if (withinDistanceForVoid) {
 								if (autoEnabled) {
 									autoEnabled = false;
+									RunService.UnbindFromRenderStep("autoHatchEgg");
 								} else {
 									const hatchAmount = 1 + props.rebirths.additionalEggs;
 									if (!validEggAmount(hatchAmount)) {

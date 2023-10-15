@@ -132,6 +132,7 @@ function handleMockNPC(npc: Instance): void {
 			});
 			healthTween.Play();
 			healthTween.Completed.Wait();
+			healthTween.Destroy();
 
 			const hold = tag.FindFirstChild("hold");
 			if (hold === undefined) {
@@ -164,14 +165,13 @@ function handleMockNPC(npc: Instance): void {
 			newDamageCounter.Parent = damageCounterClone;
 			newDamageCounter.Visible = true;
 
-			task.spawn(() => {
-				const anim = TweenService.Create(newDamageCounter, new TweenInfo(0.85), {
-					Position: UDim2.fromScale(randomPosition.X.Scale, randomPosition.Y.Scale - 0.2),
-				});
-				anim.Play();
-				anim.Completed.Wait();
-				newDamageCounter.Destroy();
+			const anim = TweenService.Create(newDamageCounter, new TweenInfo(0.85), {
+				Position: UDim2.fromScale(randomPosition.X.Scale, randomPosition.Y.Scale - 0.2),
 			});
+			anim.Play();
+			anim.Completed.Wait();
+			anim.Destroy();
+			newDamageCounter.Destroy();
 		}
 	});
 	const movementConnection = parentNPC.GetPropertyChangedSignal("Position").Connect(() => {
